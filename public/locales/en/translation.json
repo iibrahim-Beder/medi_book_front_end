@@ -1,0 +1,741 @@
+{
+
+
+
+
+
+    
+  "sidebar": {
+    "insights": "Insights",
+    "appointmentList": "Appointment List",
+    "appointmentSetting": "Appointment Setting",
+    "appointmentLocation": "Appointment Location",
+    "manageServices": "Manage Services",
+    "manageTeam": "Manage Team",
+    "messages": "Messages",
+    "manageArticles": "Manage Articles",
+    "accountSettings": "Account Settings",
+    "securitySettings": "Security Settings",
+    "logout": "Logout",
+    "allRightsReserved": "All Rights Reserved."
+  }
+  ,
+  "accountSecurity": {
+    "title": "Account Security & Settings",
+    "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniamac quis nostrud exercitation ullamco laboris.",
+    "publicProfile": "Make my profile public",
+    "searchableProfile": "Make my profile searchable",
+    "sharePhoto": "Share my profile photo",
+    "disableAccount": "Disable my account temporarily",
+    "showFeedback": "Show my client feedback",
+    "enableDisable": "Enable/ Disable"
+  },
+  "languageCurrency": {
+    "title": "Language & Currency",
+    "selectLanguage": "Select System Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "selectCurrency": "Select Currency",
+    "real": "Brazilian Real",
+    "usd": "US Dollar",
+    "yuan": "Yuan Renminbi",
+    "peso": "Colombian Peso",
+    "euro": "Euro",
+    "hkd": "Hong Kong Dollar"
+  },
+  "dashboardColor": {
+    "title": "Dashboard Color Settings",
+    "description": "Incididunt ut labore et dolore magna aliqua aut enim ad exercitation ullamco laboris.",
+    "useDarkMode": "Use dark version for my dashboard"
+  },
+  
+  "userMenu": {
+    "doctor": "Doctor",
+    "insights": "Insights",
+    "appointmentList": "Appointment List",
+    "appointmentSetting": "Appointment Setting",
+    "appointmentLocation": "Appointment Location",
+    "manageServices": "Manage Services",
+    "manageTeam": "Manage Team",
+    "messages": "Messages",
+    "inbox": "Inbox",
+    "send": "Send",
+    "trash": "Trash",
+    "manageArticles": "Manage Articles",
+    "accountSettings": "Account Settings",
+    "securitySettings": "Security Settings",
+    "logout": "Logout"
+  },
+"navbar": {
+  "healthForum": "Health Forum",
+  "healthForumAnswer": "Health Forum Answer",
+  "howItWorks": "How It Works?",
+  "howItWorksV1": "How It Works V1",
+  "howItWorksV2": "How It Works V2",
+  "pages": "Pages",
+  "homeV1": "Home Version 1",
+  "homeV2": "Home Version 2",
+  "articles": "Articles",
+  "about": "About",
+  "contact": "Contact Us"
+},
+"profileSettings": {
+  "title": "Profile Settings",
+  "basicInfo": "Doctor Basic Info",
+  "specializations": "Profile and Specializations",
+  "education": "Education",
+  "experience": "Experience",
+  "updateNote": "Update all the latest changes made by you, by just clicking on “Save & Continue” button.",
+  "saveUpdate": "Save & Update"
+},
+"yourDetails": {
+  "title": "Your Details",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "selectGender": "Select Gender",
+  "male": "Male",
+  "female": "Female",
+  "dob": "Date of Birth",
+  "email": "Email",
+  "phone": "Phone (Optional)",
+  "license": "License number",
+  "description": "Description"
+}
+  ,
+  
+  "profilePhoto": {
+  "title": "Profile Photo",
+  "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniamac quis nostrud exercitation ullamco laboris.",
+  "selectFiles": "Select Files",
+  "dropFiles": "Drop files here to upload",
+  "uploading": "Uploading",
+  "fileName": "Profile Photo.jpg",
+  "fileSize": "File size: 300 kb"
+}
+,"bannerPhoto": {
+  "title": "Banner Photo",
+  "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniamac quis nostrud exercitation ullamco laboris.",
+  "selectFiles": "Select Files",
+  "dropFiles": "Drop files here to upload",
+  "uploading": "Uploading",
+  "alt": "Banner Photo",
+  "fileName": "Banner Photo.jpg",
+  "fileSize": "File size: 300 kb"
+}
+,"education": {
+  "title": "Add Your Education",
+  "addNew": "Add New",
+  "items": [
+    { "title": "Periodontology & Oral Implantology", "period": "(2010 - 2012)" },
+    { "title": "MBA - Hospital Management", "period": "(2008 - 2010)" },
+    { "title": "Oral Medicine and Radiology", "period": "(2006 - 2008)" }
+  ],
+  "form": {
+    "companyTitle": "Company Title",
+    "startingDate": "Starting Date",
+    "endingDate": "Ending Date *",
+    "jobTitle": "Your Job Title",
+    "jobDescription": "Your Job Description",
+    "note": "* Leave ending date empty if it's your current job"
+}
+  },
+    "profile": {
+    "title": "Your Profile",
+    "experience": "Years of Experience",
+    "bio": "Bio",
+    "languages": "Languages spoken",
+    "speciality": "Speciality ID"
+}
+, 
+ "specializations": {
+    "title": "Specializations",
+    "placeholder": "Select your specialization",
+    "addBtn": "Add Now"
+  },
+"userExperience": {
+  "addYourExperience": "Add Your Experience",
+  "addNew": "Add New Experience",
+  "generalDentistry": "General Dentistry",
+  "newExperience": "New Experience",
+  "companyTitle": "Company Title",
+  "startingDate": "Starting Date",
+  "endingDate": "Ending Date *",
+  "jobTitle": "Your Job Title",
+  "jobDescription": "Your Job Description",
+  "noteEndingDate": "* Leave ending date empty if it's your current job"
+}
+ , "password": {
+    "title": "Change Your Password",
+    "old": "Last Remember Password",
+    "new": "New Password",
+    "logoutAll": "Logout from all other web/mobile session now.",
+    "updateBtn": "Update Password",
+    "error": "Please fill in all fields.",
+    "success": "Your password has been updated successfully."
+  }
+,
+  "securitySettings": {
+    "securityTab": "Security & Settings",
+    "passwordTab": "Password Settings",
+    "emailTab": "Email Notifications",
+    "deleteTab": "Delete Account"
+  },
+
+  "emailNotifications": {
+    "title": "Manage Email Notifications",
+    "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniam.",
+    "weeklyNewsletter": "Send me Weekly newsletter alerts",
+    "forwardMessages": "Forward messages on this ID",
+    "bonusPromos": "Send me bonus & promo alerts",
+    "securityAlerts": "Share latest security alerts"
+  }
+, "deleteAccount": {
+    "title": "Delete Account",
+    "placeholders": {
+      "password": "Enter Password",
+      "confirmPassword": "Confirm Password",
+      "reason": "Select Reason to Leave",
+      "description": "Description (Optional)"
+    },
+    "reasons": {
+      "reason1": "Reason 1",
+      "reason2": "Reason 2",
+      "noReason": "There is no reason"
+    },
+    "unsubscribe": "Unsubscribe me from all newsletter list",
+    "button": "Delete Account",
+    "errors": {
+      "emptyPassword": "Please enter your password.",
+      "notMatch": "Passwords do not match."
+    },
+    "confirmMessage": "Are you sure you want to delete your account? This action cannot be undone.",
+    "successMessage": "Simulation: Account has been deleted."
+  }
+,
+  "slotsSelct": {
+    "all": "All",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "empty": "Empty",
+    "pending": "Pending",
+    "spaces": "Spaces"
+  }
+  ,
+   "Slots": {
+    "title": "Manage Your Appointment Slots"
+  }
+   ,
+   "slots": {
+    "title": "Manage Your Appointment Slots",
+    "status": "Status",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "empty": "Empty",
+    "pending": "Pending",
+    "bookingDate": "Booking Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration",
+    "shiftName": "Shift Name",
+    "location": "Location",
+    "price": "Price"
+  }
+  ,
+  
+  "patient": {
+    "name": "Patient Name",
+    "idNumber": "File or ID Number",
+    "contact": "Contact Information",
+    "notes": "Booking Notes",
+    "bookingType": "Booking Type"
+  }
+  ,
+    "cancellation": {
+    "time": "Cancellation Time",
+    "by": "Cancelled By",
+    "financialStatus": "Financial Status",
+    "reason": "Cancellation Reason"
+  }
+,
+ "days": {
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday"
+  }
+   ,
+   "locationInfo":{
+    "title": "Location Information"
+   }
+   ,
+   
+  "clinic": "Clinic",
+  "selectClinic": "Select Clinic",
+  "slotDurationMinutes": "Slot Duration (minutes)",
+  "daysInAdvance": "Days in Advance",
+  "startTime": "Start Time",
+  "endTime": "End Time",
+  "price": "Price",
+  "currency": "Currency",
+  "selectCurrency": "Select Currency",
+  "allowedAppointmentTypes": "Allowed Appointment Types",
+  "saveChanges": "Save Changes",
+  "appointmentTypes": {
+    "Follow-up": "Follow-up",
+    "Check-up": "Check-up",
+    "Consultation": "Consultation",
+    "FollowUp": "Follow Up",
+    "Emergency": "Emergency"
+  }
+   ,
+   "locationSettings": "Location Settings",
+  "addLocation": "Add Location",
+  "locationAndWorkingHours": "Location and Working Hours"
+  ,
+  "manageYourShifts": "Manage Your Shifts",
+  "addNew": "Add New",
+  "LocationInformation": "Location Information",
+  "AddLocation": "Add Location",
+  "NoLocationSelected": "No location selected",
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "LocationName": "Location Name",
+  "OfficialAddress": "Official Address",
+  "Coordinates": "Coordinates",
+  "NotSpecified": "Not specified",
+  "NoLocationsAddedYet": "No locations added yet. Click \"Add Location\" to get started."
+  ,
+    "LocateYourBusiness": "Locate your business",
+  "SearchForAddress": "Search for the address",
+  "PlaceNotFound": "Place not found",
+  "SearchError": "An error occurred during search",
+  "OfficialWebsite": "Official website",
+  "LoadingPlaceName": "Loading place name",
+  "DragPinMessage": "Drag the pin to change location",
+  "SpecialPlaceNameOptional": "Name of the special place (optional)",
+  "Cancel": "Cancel",
+  "Save": "Save",
+  "TapOrDragMapNote": "Note: Tap or drag the map to move the pin",
+  "Saved": "Saved"
+  ,
+
+  "Clinic1": "Clinic 1",
+  "Clinic2": "Clinic 2",
+  "Saturday": "Saturday",
+  "Sunday": "Sunday",
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "Friday": "Friday",
+  "Morning": "Morning",
+  "Evening": "Evening",
+  "Night": "Night",
+  "CustomShift": "Custom Shift"
+  ,  "selectLocation": "Select Location",
+  "selectDay": "Select Day",
+  "selectShiftType": "Select Shift Type",
+  "CustomShift": "Custom Shift",
+
+  "breaks": "Breaks",
+  "addBreak": "Add Break",
+    "slots": {
+      "status": "Status",
+      "pending": "Pending",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "empty": "Empty",
+      "bookingDate": "Booking Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "duration": "Duration",
+      "shiftName": "Shift Name",
+      "location": "Location",
+      "price": "Price"
+}
+
+,
+   
+   "slots": "Slots"
+
+
+   , 
+    "slot": {
+    "status": "Status",
+    "bookingDate": "Booking Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration",
+    "shiftName": "Shift Name",
+    "location": "Location",
+    "price": "Price"
+  },
+  "slotStatuses": {
+    "Completed": "Completed",
+    "Cancelled": "Cancelled",
+    "Empty": "Empty",
+    "Pending": "Pending"
+  }
+
+
+
+,
+
+
+
+  "alerts": {
+    "reminderTitle": "Appointment Reminder",
+    "reminderMessage": "You have an upcoming appointment with Dr. Sarah Smith scheduled for tomorrow at 10:00 AM at CityCare Clinic.",
+    "warningTitle": "Warning",
+    "warningMessage": "You have a pending appointment that needs confirmation.",
+    "dangerTitle": "Danger",
+    "dangerMessage": "Your appointment has been cancelled!",
+    "infoTitle": "Information",
+    "infoMessage": "Check your appointment details.",
+    "visit": "Visit"
+  },
+  "dashboard": {
+    "healthForumFeedback": "Health Forum Feedback",
+    "totalAppointments": "Total Appointments",
+    "completedAppointments": "Completed Appointments",
+    "cancelledAppointments": "Cancelled Appointments",
+    "followupAppointments": "Follow-up Appointments",
+    "latestAppointments": "Latest Appointments",
+    "newMessages": "New Messages",
+    "latestProposals": "Latest Proposals",
+    "checkPackageExpiry": "Check Package Expiry",
+    "viewSavedItems": "View Saved Items"
+  },
+  "months": {
+    "march": "March",
+    "february": "February",
+    "january": "January"
+  }
+
+
+, "specialty": {
+    "select": "Select specialty",
+    "cardiology": "Cardiology",
+    "neurology": "Neurology",
+    "pediatrics": "Pediatrics",
+    "surgery": "Surgery",
+    "internal": "Internal Medicine",
+    "orthopedics": "Orthopedics",
+    "ophthalmology": "Ophthalmology",
+    "dermatology": "Dermatology"
+  },
+  "qualification": {
+    "select": "Select qualification",
+    "mbbs": "MBBS",
+    "master": "Master",
+    "phd": "PhD",
+    "board": "Board",
+    "other": "Other"
+  },
+  "steps": {
+    "personalInfo": "Personal Information",
+    "profileAndSpecialty": "Profile & Specialty",
+    "location": "Location",
+    "experience": "Experience",
+    "reviewConfirm": "Review & Confirm",
+    "education": "Education",
+    "PaymentInsurance": "Payment & Insurance",
+    "makeSlots": "Make Slots",
+    "shift": "Shift"
+  }
+
+,
+
+   "personalInfo": {
+    "title": "Basic Personal Information",
+    "fullName": {
+      "label": "Full Name",
+      "placeholder": "Enter your full name"
+    },
+    "email": {
+      "label": "Email Address",
+      "placeholder": "example@domain.com"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "05XXXXXXXX"
+    },
+    "nationalId": {
+      "label": "National ID",
+      "placeholder": "10 digits"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "At least 8 characters"
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Re-enter your password"
+    }
+  }
+
+
+
+  ,
+
+
+     "professionalInfo": {
+       "YearsOfExperience": {
+      "label": "Years of Experience",
+      "placeholder": "Enter your years of experience"
+    },
+    "Bio": {
+      "label": "Bio",
+      "placeholder": "Write a short bio about yourself"
+    },
+       "Specializations": {
+    "title": "Specializations",
+    "placeholder": "Enter your specialization",
+    "addBtnText": "Add Specialization"
+  },
+      "languages": {
+        "title": "Languages",
+        "placeholder": "Enter the languages you speak",
+        "addBtnText": "Add Language"
+      },
+    "title": "Professional Information",
+    "specialty": {
+      "label": "Specialty",
+      "placeholder": "Select your specialty"
+    },
+    "subspecialty": {
+      "label": "Subspecialty",
+      "placeholder": "Enter your subspecialty"
+    },
+    "licenseNumber": {
+      "label": "License Number",
+      "placeholder": "Enter your license number"
+    },
+    "languageSpoken": {
+      "label": "Languages Spoken",
+      "placeholder": "Enter the languages you speak"
+    },
+    "licenseFile": {
+      "label": "License File",
+      "hint": "Please upload an image or PDF file"
+    }
+  }
+
+  , "qualificationsInfo": {
+    "addNew": "Add New Qualification",
+    "title": "Qualifications & Certificates",
+    "qualification": {
+      "label": "Academic Qualification"
+    },
+    "university": {
+      "label": "University",
+      "placeholder": "University name"
+    },
+    "graduationYear": {
+      "label": "Graduation Year",
+      "placeholder": "Year of graduation"
+    },
+    "additionalCert": {
+      "label": "Additional Certificates",
+      "placeholder": "List of additional certificates"
+    },
+    "certificates": {
+      "label": "Certificates & Achievements Details",
+      "placeholder": "Mention important certificates, courses, and achievements"
+    },
+    "certFiles": {
+      "label": "Upload Certificates & Qualifications",
+      "hint": "Drag & drop files here or click to select (PDF, JPG)"
+    }
+  }
+
+  ,
+   "experienceInfo": {
+    "title": "Work Experience",
+    "addMore": "+ Add Another Company"
+  }
+
+  ,
+  "reviewInfo": {
+    "title": "Final Review & Confirmation",
+    "termsText": "I agree to the",
+    "termsOfUse": "Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "and": "and",
+    "confirm": "and confirm that the information is correct"
+  }
+
+
+  ,
+
+    "previous": "Previous",
+  "next": "Next",
+  "skip": "Skip",
+  "save": "Save",
+  "confirmRegistration": "Confirm Registration",
+  "validationError": "Validation Error",
+  "cancel": "Cancel"
+  
+ 
+
+
+  ,
+    "success": {
+    "title": "Registration Successful!",
+    "message1": "Your information has been successfully registered in MediPRO Elite system.",
+    "message2": "Your data will be reviewed by the administration and you will be contacted soon.",
+    "requestNumber": "Request Number",
+    "newRegister": "New Registration"
+ 
+  }
+,
+"paymentMethods": {
+    "title": "Payment & Insurance",
+    "infoBanner": "You must select at least one payment method to proceed with booking.",
+    "acceptedMethods": "Accepted Payment Methods",
+    "cash": {
+      "label": "Cash",
+      "description": "Pay directly at the clinic"
+    },
+    "card": {
+      "label": "Credit/Debit Card",
+      "description": "Pay using credit or debit card"
+    },
+    "bankTransfer": {
+      "label": "Bank Transfer",
+      "description": "Transfer the amount to the clinic's bank account"
+    },
+    "insurance": {
+      "label": "Health Insurance",
+      "description": "Pay through your insurance provider"
+    },
+    "insuranceCompanies": "Insurance Companies",
+    "insuranceDescription": "Select the insurance companies you accept in your clinic. Patients can filter clinics by their insurance provider.",
+    "searchPlaceholder": "Search insurance company...",
+    "noResults": "No insurance companies match your search.",
+    "addNewCompany": "Add New Company",
+    "addNewCompanyTitle": "Add a New Insurance Company",
+    "companyName": {
+      "label": "Company Name",
+      "placeholder": "Enter company name"
+    },
+    "companyCode": {
+      "label": "Company Code",
+      "placeholder": "Enter short code"
+    },
+    "companyType": {
+      "label": "Insurance Type",
+      "select": "Select insurance type",
+      "medical": "Medical Insurance",
+      "health": "Health Insurance",
+      "dental": "Dental Insurance"
+    },
+    "addCompanyButton": "Add Company",
+    "addCompanySuccess": "Company will be added:"
+  },
+  "common": {
+    "cancel": "Cancel"
+  }
+,
+ "Experience": {
+  "title": "Work Experience",
+  "companyName": "Company Name",
+  "startDate": "Start Date",
+  "endDate": "End Date",
+  "stillWorking": "I am still working here",
+  "removeCompany": "Remove Company"
+  },
+ "validation": {
+  "dynamic": {
+    "minItems": "⚠️ You must add at least {{minItems}} item(s)",
+    "required": "⚠️ This field cannot be empty"
+  },
+    "step1": {
+      "fullName": "Full name is required",
+      "email": "Invalid email address",
+      "phone": "Invalid phone number",
+      "nationalId": "Invalid national ID",
+      "password": "Password must be at least 8 characters",
+      "confirmPassword": "Passwords do not match"
+    },
+     "step2": {
+    "atLeastOne": "At least one qualification is required",
+    "qualification": "Qualification is required",
+    "university": "University name is required",
+    "graduationYearRequired": "Graduation year is required",
+    "graduationYear": "Graduation year must be between 1950 and {{year}}"
+  },
+    "step3": {
+      "Bio": "Bio is required",
+      "yearsOfExperience": "Years of experience is required",
+      "specialty": "Specialty is required",
+      "licenseNumber": "License number is required",
+      "languageSpoken": "Languages spoken are required",
+      "licenseFile": "License file is required"
+    },
+    "step4": {
+      "locationsRequired": "At least one location is required",
+      "locationNameRequired": "Location name is required",
+      "officialAddressRequired": "Official address is required",
+      "invalidCoordinates": "Invalid coordinates"
+    },
+    "step5": {
+      "shiftsRequired": "At least one shift is required",
+      "clinicRequired": "Clinic name is required",
+      "dayRequired": "Day is required",
+      "shiftTypeRequired": "Shift type is required",
+      "customFromRequired": "Start time is required",
+      "customToRequired": "End time is required",
+      "invalidTimeRange": "Start time must be before end time",
+      "breakFromRequired": "Break start time is required",
+      "breakToRequired": "Break end time is required",
+      "invalidBreakTimeRange": "Break end time must be after break start time"
+    },
+    "step6": {
+      "slotsRequired": "At least one slot is required",
+      "clinicRequired": "Clinic is required",
+      "startTimeRequired": "Start time is required",
+      "endTimeRequired": "End time is required",
+      "invalidTimeRange": "Start time must be before end time",
+      "invalidDuration": "Duration must be between 15 and 120 minutes",
+      "invalidDaysInAdvance": "Days in advance must be between 1 and 365",
+      "invalidPrice": "Price must be greater than or equal to zero",
+      "currencyRequired": "Currency is required",
+      "appointmentTypesRequired": "At least one appointment type is required"
+    },
+   "step7": {
+      "experiences": "At least one experience is required",
+    "companyTitle": "Company title is required",
+    "startingDate": "Starting date is required",
+    "invalidDate": "Starting date must be between 1900 and {{year}}",
+    "invalidEndDate": "Ending date must be after the starting date",
+    "jobTitle": "Job title is required",
+    "jobDescription": "Job description is required"
+  },
+    "step8": {
+      "paymentMethodsRequired": "At least one payment method must be selected",
+      "insuranceCompaniesRequired": "At least one insurance company must be selected"
+    }
+    ,
+    "step9": {
+  "terms": "You must agree to the terms and conditions before submission"
+}
+  }
+  ,
+  "popup": {
+  "skipToStep7": "By skipping this step, you won't be able to add shifts or time slot rules later unless you go back and complete this step."
+}
+
+
+,
+"uploadFile": "Upload File"
+  ,
+  "shifts":{
+    "title": "Shifts",
+    "addNew": "Add New Shift"
+  }
+
+}

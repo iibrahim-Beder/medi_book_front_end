@@ -1,0 +1,736 @@
+{
+    "Doctor":"دكتور",
+     "sidebar": {
+    "insights": "الإحصائيات",
+    "appointmentList": "قائمة المواعيد",
+    "appointmentSetting": "إعدادات المواعيد",
+    "appointmentLocation": "موقع المواعيد",
+    "manageServices": "إدارة الخدمات",
+    "manageTeam": "إدارة الفريق",
+    "messages": "الرسائل",
+    "manageArticles": "إدارة المقالات",
+    "accountSettings": "إعدادات الحساب",
+    "securitySettings": "إعدادات الأمان",
+    "logout": "تسجيل الخروج",
+    "allRightsReserved": "جميع الحقوق محفوظة."
+  }
+  ,
+  "accountSecurity": {
+    "title": "أمان الحساب والإعدادات",
+    "description": "هذا النص تجريبي يوضح إعدادات الأمان والتحكم في الحساب.",
+    "publicProfile": "اجعل ملفي الشخصي عامًا",
+    "searchableProfile": "اجعل ملفي الشخصي قابلاً للبحث",
+    "sharePhoto": "مشاركة صورتي الشخصية",
+    "disableAccount": "تعطيل حسابي مؤقتًا",
+    "showFeedback": "عرض تقييمات العملاء",
+    "enableDisable": "تفعيل/إلغاء التفعيل"
+  },
+  "languageCurrency": {
+    "title": "اللغة والعملة",
+    "selectLanguage": "اختر لغة النظام",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "selectCurrency": "اختر العملة",
+    "real": "الريال البرازيلي",
+    "usd": "الدولار الأمريكي",
+    "yuan": "اليوان الصيني",
+    "peso": "البيزو الكولومبي",
+    "euro": "اليورو",
+    "hkd": "دولار هونغ كونغ"
+  },
+  "dashboardColor": {
+    "title": "إعدادات ألوان لوحة التحكم",
+    "description": "هذا النص تجريبي يوضح إعدادات الألوان في لوحة التحكم.",
+    "useDarkMode": "استخدام الوضع الداكن للوحة التحكم"
+  }
+  ,
+    "userMenu": {
+    "doctor": "دكتور",
+    "insights": "الإحصائيات",
+    "appointmentList": "قائمة المواعيد",
+    "appointmentSetting": "إعدادات المواعيد",
+    "appointmentLocation": "موقع الموعد",
+    "manageServices": "إدارة الخدمات",
+    "manageTeam": "إدارة الفريق",
+    "messages": "الرسائل",
+    "inbox": "الوارد",
+    "send": "إرسال",
+    "trash": "سلة المحذوفات",
+    "manageArticles": "إدارة المقالات",
+    "accountSettings": "إعدادات الحساب",
+    "securitySettings": "إعدادات الأمان",
+    "logout": "تسجيل الخروج"
+  }
+,"navbar": {
+  "healthForum": "منتدى الصحة",
+  "healthForumAnswer": "إجابات المنتدى",
+  "howItWorks": "كيف يعمل؟",
+  "howItWorksV1": "الشرح الإصدار الأول",
+  "howItWorksV2": "الشرح الإصدار الثاني",
+  "pages": "الصفحات",
+  "homeV1": "الصفحة الرئيسية 1",
+  "homeV2": "الصفحة الرئيسية 2",
+  "articles": "المقالات",
+  "about": "من نحن",
+  "contact": "تواصل معنا"
+},
+"profileSettings": {
+  "title": "إعدادات الملف الشخصي",
+  "basicInfo": "المعلومات الأساسية للطبيب",
+  "specializations": "الملف الشخصي والتخصصات",
+  "education": "التعليم",
+  "experience": "الخبرات",
+  "updateNote": "قم بتحديث جميع التغييرات الأخيرة التي أجريتها بمجرد الضغط على زر “حفظ ومتابعة”.",
+  "saveUpdate": "حفظ وتحديث"
+}
+,"yourDetails": {
+  "title": "تفاصيلك",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "selectGender": "اختر الجنس",
+  "male": "ذكر",
+  "female": "أنثى",
+  "dob": "تاريخ الميلاد",
+  "email": "البريد الإلكتروني",
+  "phone": "الهاتف (اختياري)",
+  "license": "رقم الرخصة",
+  "description": "الوصف"
+}
+,"profilePhoto": {
+  "title": "صورة الملف الشخصي",
+  "description": "لوريم إيبسوم هو نص شكلي يستخدم في صناعة الطباعة والتنضيد. تم استخدامه كنص تجريبي منذ القرن السادس عشر.",
+  "selectFiles": "اختر الملفات",
+  "dropFiles": "اسحب الملفات هنا للتحميل",
+  "uploading": "جاري التحميل",
+  "fileName": "صورة الملف الشخصي.jpg",
+  "fileSize": "حجم الملف: 300 كيلوبايت"
+}
+,"bannerPhoto": {
+  "title": "صورة الغلاف",
+  "description": "هذا النص مثال وصفي لصورة الغلاف. يمكنك استبداله بالنص المناسب هنا.",
+  "selectFiles": "اختر الملفات",
+  "dropFiles": "اسحب الملفات هنا للرفع",
+  "uploading": "جاري الرفع",
+  "alt": "صورة الغلاف",
+  "fileName": "صورة الغلاف.jpg",
+  "fileSize": "حجم الملف: 300 كيلوبايت"
+}
+,"education": {
+  "title": "أضف تعليمك",
+  "addNew": "إضافة جديد",
+  "items": [
+    { "title": "أمراض اللثة وزراعة الأسنان", "period": "(2010 - 2012)" },
+    { "title": "ماجستير إدارة المستشفيات", "period": "(2008 - 2010)" },
+    { "title": "طب الفم والأشعة", "period": "(2006 - 2008)" }
+  ],
+  "form": {
+    "companyTitle": "اسم الشركة",
+    "startingDate": "تاريخ البدء",
+    "endingDate": "تاريخ الانتهاء *",
+    "jobTitle": "المسمى الوظيفي",
+    "jobDescription": "وصف الوظيفة",
+    "note": "* اترك تاريخ الانتهاء فارغًا إذا كانت وظيفتك الحالية"
+  }
+}
+,
+  "profile": {
+    "title": "ملفك الشخصي",
+    "experience": "سنوات الخبرة",
+    "bio": "نبذة عنك",
+    "languages": "اللغات التي تتحدثها",
+    "speciality": "تخصصك"
+  }
+,
+  "specializations": {
+    "title": "التخصصات",
+    "placeholder": "اختر تخصصك",
+    "addBtn": "أضف الآن"
+  }
+  ,
+"userExperience": {
+  "addYourExperience": "أضف خبرتك",
+  "addNew": "أضف خبره جديد",
+  "generalDentistry": "طب الأسنان العام",
+  "newExperience": "خبرة جديدة",
+  "companyTitle": "اسم الشركة",
+  "startingDate": "تاريخ البدء",
+  "endingDate": "تاريخ الانتهاء *",
+  "jobTitle": "المسمى الوظيفي",
+  "jobDescription": "وصف وظيفتك",
+  "noteEndingDate": "* اترك تاريخ الانتهاء فارغًا إذا كانت وظيفتك الحالية"
+}
+,
+ "password": {
+    "title": "تغيير كلمة المرور",
+    "old": "كلمة المرور السابقة",
+    "new": "كلمة المرور الجديدة",
+    "logoutAll": "تسجيل الخروج من كل الجلسات الأخرى (ويب/موبايل) الآن.",
+    "updateBtn": "تحديث كلمة المرور",
+    "error": "من فضلك املأ جميع الحقول.",
+    "success": "تم تحديث كلمة المرور بنجاح."
+  }
+
+  , 
+  "securitySettings": {
+    "securityTab": "الأمان والإعدادات",
+    "passwordTab": "إعدادات كلمة المرور",
+    "emailTab": "إشعارات البريد الإلكتروني",
+    "deleteTab": "حذف الحساب"
+    }
+
+
+
+,
+  "emailNotifications": {
+    "title": "إدارة إشعارات البريد الإلكتروني",
+    "description": "نص تجريبي يوضح كيفية التحكم في إشعارات البريد الإلكتروني الخاصة بك بسهولة.",
+    "weeklyNewsletter": "أرسل لي تنبيهات النشرة الأسبوعية",
+    "forwardMessages": "إعادة توجيه الرسائل إلى هذا البريد",
+    "bonusPromos": "أرسل لي العروض والمكافآت",
+    "securityAlerts": "مشاركة آخر تنبيهات الأمان"
+  },
+   "deleteAccount": {
+    "title": "حذف الحساب",
+    "placeholders": {
+      "password": "أدخل كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "reason": "اختر سبب المغادرة",
+      "description": "الوصف (اختياري)"
+    },
+    "reasons": {
+      "reason1": "السبب الأول",
+      "reason2": "السبب الثاني",
+      "noReason": "لا يوجد سبب"
+    },
+    "unsubscribe": "إلغاء الاشتراك من جميع النشرات البريدية",
+    "button": "حذف الحساب",
+    "errors": {
+      "emptyPassword": "من فضلك أدخل كلمة المرور.",
+      "notMatch": "كلمتا المرور غير متطابقتين."
+    },
+    "confirmMessage": "هل أنت متأكد أنك تريد حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.",
+    "successMessage": "محاكاة: تم حذف الحساب بنجاح."
+  }
+
+
+
+  ,
+   "slotsSelct": {
+    "all": "الكل",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "pending": "قيد الانتظار",
+    "spaces": "المقاعد"
+  }
+  ,
+  
+  "slots": {
+    "title": "إدارة مواعيدك",
+    "status": "الحالة",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "pending": "قيد الانتظار",
+    "bookingDate": "تاريخ الحجز",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "duration": "المدة",
+    "shiftName": "اسم الشفت",
+    "location": "المكان",
+    "price": "السعر"
+  },
+    "patient": {
+    "name": "اسم المريض",
+    "idNumber": "رقم الملف أو الهوية",
+    "contact": "بيانات الاتصال",
+    "notes": "ملاحظات الحجز",
+    "bookingType": "نوع الحجز"
+  },
+    "cancellation": {
+    "time": "وقت الإلغاء",
+    "by": "تم الإلغاء بواسطة",
+    "financialStatus": "الحالة المالية",
+    "reason": "سبب الإلغاء"}
+    , 
+     "days": {
+    "saturday": "السبت",
+    "sunday": "الأحد",
+    "monday": "الاثنين",
+    "tuesday": "الثلاثاء",
+    "wednesday": "الأربعاء",
+    "thursday": "الخميس",
+    "friday": "الجمعة"
+  }     
+  ,
+   "slots": "مواعيد"   
+   ,
+   
+  "clinic": "العيادة",
+  "selectClinic": "اختر العيادة",
+  "slotDurationMinutes": "مدة الحجز (بالدقائق)",
+  "daysInAdvance": "عدد الأيام مقدماً",
+  "startTime": "وقت البداية",
+  "endTime": "وقت الانتهاء",
+  "price": "السعر",
+  "currency": "العملة",
+  "selectCurrency": "اختر العملة",
+  "allowedAppointmentTypes": "أنواع المواعيد المسموح بها",
+  "saveChanges": "حفظ التغييرات",
+  "appointmentTypes": {
+        "FollowUp": "متابعة",
+  "CheckUp": "فحص دوري",
+    "Consultation": "استشارة",
+    "FollowUp": "متابعة",
+    "Emergency": "طوارئ"
+  },
+"locationSettings": "إعدادات الموقع",
+  "addLocation": "إضافة موقع",
+  "locationAndWorkingHours": "الموقع وساعات العمل",
+  "manageYourShifts": "إدارة الشفتات الخاصة بك",
+  "addNew": "إضافة شفت جديد"
+  ,
+  "LocationInformation":"معلومات المواقع"
+
+,
+
+
+  
+  "AddLocation": "إضافة موقع",
+  "NoLocationSelected": "لم يتم اختيار موقع",
+  "Edit": "تعديل",
+  "Delete": "حذف",
+  "LocationName": "اسم الموقع",
+  "OfficialAddress": "العنوان الرسمي",
+  "Coordinates": "الإحداثيات",
+  "NotSpecified": "غير محدد",
+  "NoLocationsAddedYet": "لم تتم إضافة أي موقع بعد. اضغط \"إضافة موقع\" للبدء.",
+  "LocateYourBusiness": "حدد موقع نشاطك",
+  "SearchForAddress": "ابحث عن العنوان",
+  "PlaceNotFound": "لم يتم العثور على المكان",
+  "SearchError": "حدث خطأ أثناء البحث",
+  "OfficialWebsite": "الموقع الرسمي",
+  "LoadingPlaceName": "جارٍ استرجاع اسم الموقع",
+  "DragPinMessage": "اسحب الدبوس لتغيير الموقع",
+  "SpecialPlaceNameOptional": "اسم المكان الخاص (اختياري)",
+  "Cancel": "إلغاء",
+  "Save": "حفظ",
+  "TapOrDragMapNote": "ملاحظة: اضغط أو اسحب على الخريطة لتحريك الدبوس",
+  "Saved": "تم الحفظ"
+
+,
+  "manageYourShifts": "إدارة الشفتات الخاصة بك",
+  "addNew": "إضافة جديد",
+  "Clinic1": "العيادة 1",
+  "Clinic2": "العيادة 2",
+  "Saturday": "السبت",
+  "Sunday": "الأحد",
+  "Monday": "الاثنين",
+  "Tuesday": "الثلاثاء",
+  "Wednesday": "الأربعاء",
+  "Thursday": "الخميس",
+  "Friday": "الجمعة",
+  "Morning": "صباحي",
+  "Evening": "مسائي",
+  "Night": "ليلي",
+  "CustomShift": "شفت مخصص"
+  ,  "selectLocation": "اختر العيادة",
+  "selectDay": "اختر اليوم",
+  "selectShiftType": "اختر نوع الشفت",
+  "CustomShift": "شفت مخصص",
+  "startTime": "وقت البداية",
+  "endTime": "وقت النهاية",
+  "breaks": "فترات الراحة",
+  "addBreak": "إضافة فترة راحة"
+  , "slots":"مواعيد",
+  "Make Slots":"توليد مواعيد"
+  , "slots": "مواعيد" 
+  , "Add Slot": " اضافة مواعيد " 
+,
+  
+"slots": {
+    "status": "الحالة",
+    "pending": "قيد الانتظار",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "bookingDate": "تاريخ الحجز",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "duration": "المدة",
+    "shiftName": "اسم الشفت",
+    "location": "المكان",
+    "price": "السعر"
+  },
+
+  "slots": "مواعيد"
+,
+
+ "slot": {
+    "status": "الحالة",
+    "bookingDate": "تاريخ الحجز",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "duration": "المدة",
+    "shiftName": "اسم الشفت",
+    "location": "الموقع",
+    "price": "السعر"
+  },
+  "slotStatuses": {
+    "Completed": "مكتمل",
+    "Cancelled": "ملغي",
+    "Empty": "فارغ",
+    "Pending": "قيد الانتظار"
+  }
+
+,
+
+  "alerts": {
+    "reminderTitle": "تذكير بالموعد",
+    "reminderMessage": "لديك موعد قادم مع الدكتورة سارة سميث غدًا الساعة 10:00 صباحًا في عيادة سيتي كير.",
+    "warningTitle": "تحذير",
+    "warningMessage": "لديك موعد معلق يحتاج إلى تأكيد.",
+    "dangerTitle": "خطأ",
+    "dangerMessage": "تم إلغاء موعدك!",
+    "infoTitle": "معلومة",
+    "infoMessage": "تحقق من تفاصيل موعدك.",
+    "visit": "زيارة"
+  },
+  "dashboard": {
+    "healthForumFeedback": "آراء المنتدى الصحي",
+    "totalAppointments": "إجمالي المواعيد",
+    "completedAppointments": "المواعيد المكتملة",
+    "cancelledAppointments": "المواعيد الملغاة",
+    "followupAppointments": "مواعيد المتابعة",
+    "latestAppointments": "أحدث المواعيد",
+    "newMessages": "رسائل جديدة",
+    "latestProposals": "آخر المقترحات",
+    "checkPackageExpiry": "تحقق من انتهاء الباقة",
+    "viewSavedItems": "عرض العناصر المحفوظة"
+  },
+  "months": {
+    "march": "مارس",
+    "february": "فبراير",
+    "january": "يناير"
+  }
+,
+
+  "specialty": {
+    "select": "اختر التخصص",
+    "cardiology": "أمراض القلب",
+    "neurology": "الأعصاب",
+    "pediatrics": "طب الأطفال",
+    "surgery": "الجراحة",
+    "internal": "الباطنة",
+    "orthopedics": "العظام",
+    "ophthalmology": "العيون",
+    "dermatology": "الجلدية"
+  },
+  "qualification": {
+    "select": "اختر المؤهل",
+    "mbbs": "بكالوريوس الطب والجراحة",
+    "master": "ماجستير",
+    "phd": "دكتوراه",
+    "board": "البورد",
+    "other": "أخرى"
+  },
+  "steps": {
+    "personalInfo": "المعلومات الشخصية",
+    "profileAndSpecialty": "الملف الشخصي والتخصص",
+    "location": "الموقع",
+    "experience": "الخبرة",
+    "reviewConfirm": "المراجعة والتأكيد",
+    "education": "التعليم",
+    "shift": "الشفتات",
+    "makeSlots": "توليد المواعيد",
+    "PaymentInsurance": "الدفع والتأمين"
+
+
+  },
+  
+  "Management slots": "إدارة المواعيد",
+
+  "personalInfo": {
+    "title": "المعلومات الشخصية الأساسية",
+    "fullName": {
+      "label": "الاسم بالكامل",
+      "placeholder": "الاسم الثلاثي الكامل"
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "example@domain.com"
+    },
+    "phone": {
+      "label": "رقم الهاتف",
+      "placeholder": "05XXXXXXXX"
+    },
+    "nationalId": {
+      "label": "رقم الهوية",
+      "placeholder": "10 أرقام"
+    },
+    "password": {
+      "label": "كلمة المرور",
+      "placeholder": "8 أحرف على الأقل"
+    },
+    "confirmPassword": {
+      "label": "تأكيد كلمة المرور",
+      "placeholder": "أعد إدخال كلمة المرور"
+    }
+
+
+  }
+
+,
+  "qualificationsInfo": {
+    "title": "المؤهلات والشهادات",
+    "qualification": {
+      "label": "المؤهل العلمي"
+    },
+    "university": {
+      "label": "الجامعة",
+      "placeholder": "اسم الجامعة"
+    },
+    "graduationYear": {
+      "label": "سنة التخرج",
+      "placeholder": "سنة التخرج"
+    },
+    "additionalCert": {
+      "label": "شهادات إضافية",
+      "placeholder": "أسماء الشهادات الإضافية"
+    },
+    "certificates": {
+      "label": "تفاصيل الشهادات والإنجازات",
+      "placeholder": "اذكر الشهادات والدورات والإنجازات الهامة"
+    },
+    "certFiles": {
+      "label": "رفع الشهادات والمؤهلات",
+      "hint": "اسحب وأسقط الملفات هنا أو انقر للاختيار (PDF, JPG)"
+    }
+  }
+
+  ,
+   "experienceInfo": {
+    "title": "الخبرة العملية",
+    "addMore": "+ إضافة شركة أخرى"
+  }
+
+  ,
+    "reviewInfo": {
+    "title": "التأكيد والمراجعة النهائية",
+    "termsText": "أوافق على",
+    "termsOfUse": "شروط الاستخدام",
+    "privacyPolicy": "سياسة الخصوصية",
+    "and": "و",
+    "confirm": "وأؤكد صحة المعلومات"
+  }
+  ,
+   "previous": "السابق",
+  "next": "التالي",
+  "skip": "تخطي",
+  "save": "حفظ",
+  "confirmRegistration": "تأكيد التسجيل",
+  "validationError": "خطأ في التحقق",
+  "cancel": "إلغاء"
+
+
+  ,
+   "success": {
+    "title": "تم التسجيل بنجاح!",
+    "message1": "لقد تم تسجيل بياناتك بنجاح في نظام MediPRO Elite",
+    "message2": "سيتم مراجعة بياناتك من قبل الإدارة وسيتم التواصل معك قريباً",
+    "requestNumber": "رقم الطلب",
+    "newRegister": "تسجيل جديد"
+  }
+,
+    "professionalInfo": {
+        "Specializations": {
+    "title": "التخصصات",
+    "placeholder": "أدخل تخصصك هنا",
+    "addBtnText": "إضافة تخصص"
+  },"YearsOfExperience": {
+      "label": "عدد سنوات الخبرة",
+      "placeholder": "أدخل عدد سنوات الخبرة"
+    },
+    "Bio": {
+      "label": "السيرة الذاتية",
+      "placeholder": "اكتب نبذة قصيرة عنك"
+    },
+
+      "languages": {
+        "title": "اللغات",
+        "placeholder": "اكتب لغاتك",
+        "addBtnText": "إضافة لغة"
+      },
+
+    "title": "المعلومات المهنية",
+    "specialty": {
+      "label": "التخصص",
+      "placeholder": "اختر تخصصك"
+    },
+    "subspecialty": {
+      "label": "التخصص الفرعي",
+      "placeholder": "أدخل تخصصك الفرعي"
+    },
+    "licenseNumber": {
+      "label": "رقم الترخيص",
+      "placeholder": "أدخل رقم الترخيص الخاص بك"
+    },
+    "languageSpoken": {
+      "label": "اللغات التي تتحدثها",
+      "placeholder": "أدخل اللغات التي تتحدثها"
+    },
+    "licenseFile": {
+      "label": "ملف الترخيص",
+      "hint": "يرجى تحميل صورة أو ملف PDF"
+    }
+}
+,
+   "locationInfo":{
+    "title": "معلومات الموقع"
+   }
+   ,
+
+   "paymentMethods": {
+    "title": "طرق الدفع والتأمين",
+    "infoBanner": "يجب اختيار طريقة دفع واحدة على الأقل لتتمكن من متابعة الحجز",
+    "acceptedMethods": "طرق الدفع المقبولة",
+    "cash": {
+      "label": "نقداً",
+      "description": "الدفع المباشر عند الحضور"
+    },
+    "card": {
+      "label": "بطاقة بنكية",
+      "description": "الدفع باستخدام بطاقة ائتمانية أو بطاقة مدى"
+    },
+    "bankTransfer": {
+      "label": "تحويل بنكي",
+      "description": "تحويل المبلغ إلى الحساب البنكي للعيادة"
+    },
+    "insurance": {
+      "label": "التأمين الصحي",
+      "description": "الدفع عبر شركة التأمين"
+    },
+    "insuranceCompanies": "شركات التأمين",
+    "insuranceDescription": "اختر شركات التأمين التي تقبلها في عيادتك. يمكن للمرضى تصفية العيادات حسب شركة التأمين الخاصة بهم.",
+    "searchPlaceholder": "ابحث عن شركة التأمين...",
+    "noResults": "لم يتم العثور على شركات تأمين تطابق بحثك.",
+    "addNewCompany": "إضافة شركة جديدة",
+    "addNewCompanyTitle": "إضافة شركة تأمين جديدة",
+    "companyName": {
+      "label": "اسم الشركة",
+      "placeholder": "أدخل اسم الشركة"
+    },
+    "companyCode": {
+      "label": "كود الشركة",
+      "placeholder": "أدخل الكود المختصر للشركة"
+    },
+    "companyType": {
+      "label": "نوع التأمين",
+      "select": "اختر نوع التأمين",
+      "medical": "تأمين طبي",
+      "health": "تأمين صحي",
+      "dental": "تأمين أسنان"
+    },
+    "addCompanyButton": "إضافة الشركة",
+    "addCompanySuccess": "سيتم إضافة شركة:"
+  },
+  "common": {
+    "cancel": "إلغاء"
+  }
+  ,
+    "experience": {
+    "companyName": "اسم الشركة",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ النهاية",
+    "stillWorking": "ما زلت أعمل هنا",
+    "removeCompany": "حذف الشركة"
+  }
+,
+  "validation": {
+      "dynamic": {
+    "minItems": "⚠️ يجب إضافة {{minItems}} عنصر على الأقل",
+    "required": "⚠️ الحقل لا يمكن أن يكون فارغًا"
+  },
+    "step1": {
+      "fullName": "الاسم الكامل مطلوب",
+      "email": "البريد الإلكتروني غير صالح",
+      "phone": "رقم الهاتف غير صحيح",
+      "nationalId": "الرقم القومي غير صحيح",
+      "password": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+      "confirmPassword": "كلمتا المرور غير متطابقتين"
+    },
+    "step2": {
+    "atLeastOne": "يجب إضافة مؤهل واحد على الأقل",
+    "qualification": "المؤهل مطلوب",
+    "university": "اسم الجامعة مطلوب",
+    "graduationYearRequired": "سنة التخرج مطلوبة",
+    "graduationYear": "سنة التخرج يجب أن تكون بين 1950 و {{year}}"
+  },
+    "step3": {
+      "specialty": "التخصص مطلوب",
+      "licenseNumber": "رقم الترخيص مطلوب",
+      "languageSpoken": "اللغات مطلوبة",
+      "licenseFile": "ملف الترخيص مطلوب"
+    },
+    "step4": {
+      "locationsRequired": "يجب إضافة موقع واحد على الأقل",
+      "locationNameRequired": "اسم الموقع مطلوب",
+      "officialAddressRequired": "العنوان الرسمي مطلوب",
+      "invalidCoordinates": "الإحداثيات غير صحيحة"
+        ,"Bio": "السيرة الذاتية مطلوبة",
+      "yearsOfExperience": "عدد سنوات الخبرة مطلوب"
+    },
+    "step5": {
+      "shiftsRequired": "يجب إضافة شفت واحد على الأقل",
+      "clinicRequired": "اسم العيادة مطلوب",
+      "dayRequired": "اليوم مطلوب",
+      "shiftTypeRequired": "نوع الشفت مطلوب",
+      "customFromRequired": "وقت البداية مطلوب",
+      "customToRequired": "وقت النهاية مطلوب",
+      "invalidTimeRange": "وقت البداية يجب أن يكون قبل وقت النهاية",
+      "breakFromRequired": "وقت بداية الراحة مطلوب",
+      "breakToRequired": "وقت نهاية الراحة مطلوب",
+      "invalidBreakTimeRange": "وقت نهاية الراحة يجب أن يكون بعد وقت البداية"
+    },
+    "step6": {
+      "slotsRequired": "يجب إضافة موعد واحد على الأقل",
+      "clinicRequired": "العيادة مطلوبة",
+      "startTimeRequired": "وقت البداية مطلوب",
+      "endTimeRequired": "وقت النهاية مطلوب",
+      "invalidTimeRange": "وقت البداية يجب أن يكون قبل وقت النهاية",
+      "invalidDuration": "مدة الجلسة يجب أن تكون بين 15 و 120 دقيقة",
+      "invalidDaysInAdvance": "الأيام المسبقة يجب أن تكون بين 1 و 365",
+      "invalidPrice": "السعر يجب أن يكون أكبر من أو يساوي صفر",
+      "currencyRequired": "العملة مطلوبة",
+      "appointmentTypesRequired": "يجب اختيار نوع واحد على الأقل من المواعيد"
+    },
+   "step7": {
+    "experiences": "يجب إضافة خبرة واحدة على الأقل",
+    "companyTitle": "اسم الشركة مطلوب",
+    "startingDate": "تاريخ البداية مطلوب",
+    "invalidDate": "تاريخ البداية يجب أن يكون بين 1900 و {{year}}",
+    "invalidEndDate": "تاريخ النهاية يجب أن يكون بعد تاريخ البداية",
+    "jobTitle": "المسمى الوظيفي مطلوب",
+    "jobDescription": "وصف الوظيفة مطلوب"
+  },
+    "step8": {
+      "paymentMethodsRequired": "يجب اختيار وسيلة دفع واحدة على الأقل",
+      "insuranceCompaniesRequired": "يجب اختيار شركة تأمين واحدة على الأقل"
+    }
+
+    ,
+      "step9": {
+        "terms": "يجب الموافقة على الشروط والأحكام قبل الإرسال"
+      }
+  }
+  ,
+  "popup": {
+  "skipToStep7": "بتخطي هذه الخطوة لن تتمكن من إضافة الورديات أو قواعد الفترات الزمنية لاحقًا إلا إذا رجعت وأكملت هذه الخطوة"
+}
+,
+  "uploadFile": "رفع ملف"
+,  "shifts":{
+    "title": "الورديات",
+    "addNew": "أضف وردية جديدة"
+  }
+}
