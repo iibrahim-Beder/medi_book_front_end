@@ -13,21 +13,35 @@ const BlueMapPicker = ({
   onCancel,
 }) => {
   const { t } = useTranslation();
+
+  // state for map position
   const [position, setPosition] = useState({
     lat: initial.lat,
     lng: initial.lng,
   });
+
+  // state for official place name (from Google Maps API)
   const [officialName, setOfficialName] = useState(initial.officialName || "");
+
+  // state for custom/display name chosen by the user
   const [displayName, setDisplayName] = useState(initial.displayName || "");
+
+  // state to show loading when fetching place name
   const [loadingName, setLoadingName] = useState(false);
+
+  // ref for Google Autocomplete instance
   const [autocomplete, setAutocomplete] = useState(null);
+
+  // reference to map instance
   const mapRef = useRef(null);
 
+  // load Google Maps API
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ", // 🔑 API Key
+    googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ",
     libraries: ["places"],
   });
 
+  // custom map styles
   const mapStyles = [
     {
       featureType: "landscape.natural",
@@ -74,8 +88,10 @@ const BlueMapPicker = ({
       elementType: "geometry.fill",
       stylers: [{ color: "#a6cbe3" }, { visibility: "on" }],
     },
+    
   ];
 
+  // get location name from latitude and longitude
   const reverseGeocode = async (lat, lng) => {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ&language=ar`;
     try {
@@ -91,6 +107,7 @@ const BlueMapPicker = ({
     }
   };
 
+  // when user clicks on map
   const handleMapClick = async (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
@@ -103,6 +120,7 @@ const BlueMapPicker = ({
     setLoadingName(false);
   };
 
+  // when user drags the marker
   const handleDragEnd = async (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
@@ -115,6 +133,7 @@ const BlueMapPicker = ({
     setLoadingName(false);
   };
 
+  // save location data
   const handleSave = () => {
     const payload = {
       lat: position.lat,
@@ -126,6 +145,7 @@ const BlueMapPicker = ({
     else alert(t("Saved") + ": " + JSON.stringify(payload, null, 2));
   };
 
+  // when user selects a place from autocomplete search box
   const onPlaceChanged = () => {
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
@@ -142,6 +162,7 @@ const BlueMapPicker = ({
     }
   };
 
+  // show loading until map is ready
   if (!isLoaded) return <div>{t("LoadingMap")}...</div>;
 
   return (
@@ -150,7 +171,7 @@ const BlueMapPicker = ({
         <h3>{t("LocateYourBusiness")}</h3>
       </div>
 
-      {/* البحث Autocomplete */}
+      {/* search input with autocomplete */}
       <Autocomplete
         onLoad={(autoC) => setAutocomplete(autoC)}
         onPlaceChanged={onPlaceChanged}
@@ -167,11 +188,13 @@ const BlueMapPicker = ({
         />
       </Autocomplete>
 
+      {/* show official place name */}
       <div style={{ marginBottom: 8 }}>
         <strong>{t("OfficialWebsite")}: </strong>
         {loadingName ? t("LoadingPlaceName") + " ⏳" : officialName || "—"}
       </div>
 
+      {/* google map container */}
       <div style={{ height: 450, marginBottom: 12 }}>
         <GoogleMap
           center={position}
@@ -189,6 +212,7 @@ const BlueMapPicker = ({
         </GoogleMap>
       </div>
 
+      {/* custom place name input */}
       <input
         type="text"
         className="form-control"
@@ -198,14 +222,19 @@ const BlueMapPicker = ({
         style={{ marginBottom: 12 }}
       />
 
-      {/* زرارين بس: Save + Cancel */}
-      <div style={{ display: "flex", justifyContent: "space-between"}}>
-        <button className="btn btn-light" onClick={onCancel}>
+      {/* action buttons */}
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <button
+          type="button"
+          className="btn-simple"
+          onClick={onCancel}
+        >
           {t("Cancel")}
         </button>
         <button
-         type="submit" className="dc-btn"
-         style={{ minWidth:"80px"}}
+          type="submit"
+          className="dc-btn"
+          style={{ minWidth: "100px" }}
           onClick={handleSave}
           disabled={!displayName.trim()}
         >
@@ -213,9 +242,11 @@ const BlueMapPicker = ({
         </button>
       </div>
 
+      {/* footer with coordinates */}
       <div style={{ marginTop: 10, fontSize: 13, color: "#666" }}>
         <div>
-          {t("Coordinates")}: {position.lat.toFixed(6)}, {position.lng.toFixed(6)}
+          {t("Coordinates")}: {position.lat.toFixed(6)},{" "}
+          {position.lng.toFixed(6)}
         </div>
         <div>{t("TapOrDragMapNote")}</div>
       </div>
