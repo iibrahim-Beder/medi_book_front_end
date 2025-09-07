@@ -17,7 +17,7 @@ import { BrowserRouter } from "react-router-dom";
 import './assets/css/font-awesome.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/css/transitions.css'
-import "leaflet/dist/leaflet.css";
+// import "leaflet/dist/leaflet.css";
 import $ from 'jquery';
 import './i18n';
 window.$ = window.jQuery = $;
