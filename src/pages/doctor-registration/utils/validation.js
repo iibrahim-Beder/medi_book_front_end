@@ -24,13 +24,24 @@ export const validateStep = (step, formData) => {
   const errors = {};
   const thisYear = new Date().getFullYear();
 
-  if (step === 1) {
-    if (!formData.fullName?.trim()) errors.fullName = i18n.t("validation.step1.fullName");
-    if (!validateEmail(formData.email)) errors.email = i18n.t("validation.step1.email");
-    if (!validatePhone(formData.phone)) errors.phone = i18n.t("validation.step1.phone");
-    if (!validateNationalId(formData.nationalId)) errors.nationalId = i18n.t("validation.step1.nationalId");
-    if (!validatePassword(formData.password)) errors.password = i18n.t("validation.step1.password");
-    if (formData.password !== formData.confirmPassword) errors.confirmPassword = i18n.t("validation.step1.confirmPassword");
+if (step === 1) {
+    if (!formData.fullName?.trim())
+      errors.fullName = i18n.t("validation.step1.fullName");
+
+    if (!validateEmail(formData.email))
+      errors.email = i18n.t("validation.step1.email");
+
+    if (!validatePhone(formData.phone))
+      errors.phone = i18n.t("validation.step1.phone");
+
+    if (!validateNationalId(formData.nationalId))
+      errors.nationalId = i18n.t("validation.step1.nationalId");
+
+    if (!validatePassword(formData.password))
+      errors.password = i18n.t("validation.step1.password");
+
+    if (formData.password !== formData.confirmPassword)
+      errors.confirmPassword = i18n.t("validation.step1.confirmPassword");
   }
 
 if (step === 2) {

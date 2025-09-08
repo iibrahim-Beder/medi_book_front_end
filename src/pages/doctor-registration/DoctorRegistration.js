@@ -23,19 +23,17 @@ import PaymentInsuranceStep from "./steps/Step8paymentMethods";
      
    
 
-
+// Redux imports
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setExperiences
-} from "../../redux/Slices/doctor-information/experienceSlice";
-import {
-  setProfessionalInfo
-} from "../../redux/Slices/doctor-information/professionalInfoSlice";
+import {setExperiences} from "../../redux/Slices/doctor-information/experienceSlice";
+import {setProfessionalInfo} from "../../redux/Slices/doctor-information/professionalInfoSlice";
+import {setPersonalInfo} from "../../redux/Slices/doctor-information/personalInfoSlice";
 export default function DoctorRegistration() {
 
   
   const experiencesFromRedux = useSelector((state) => state.experience);
   const professionalInfoFromRedux = useSelector((state) => state.professionalInfo);
+  const personalInfoFromRedux = useSelector((state) => state.personalInfo);
   const [stepData, setStepData] = useState();
 
 
@@ -61,7 +59,9 @@ export default function DoctorRegistration() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    if (currentStep === 4) {
+    if (currentStep === 1) {
+      setStepData(personalInfoFromRedux);
+    }else if (currentStep === 4) {
       setStepData(experiencesFromRedux);
     }else if (currentStep === 3) {
       setStepData(professionalInfoFromRedux);
@@ -73,7 +73,9 @@ useEffect(() => {
   const dataForStep = currentStep === 7
     ? { ...formData, experiences: stepData }
     : formData;
-    if (currentStep === 3) {
+    if (currentStep === 1) {
+     Object.assign(dataForStep, stepData);
+    } else if (currentStep === 3) {
      Object.assign(dataForStep, stepData);
     }
 
@@ -131,10 +133,10 @@ const [isSaveClicked, setIsSaveClicked] = useState(false);
       setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS));
       if (currentStep === 7) {
         dispatch(setExperiences(stepData));
-      }
-      if (currentStep === 3) {
+      } else if (currentStep === 3) {
         dispatch(setProfessionalInfo(stepData));
-        console.log("Dispatched professional info:", stepData);
+      } else if (currentStep === 1) {
+        dispatch(setPersonalInfo(stepData));
       }
            
 
@@ -184,8 +186,8 @@ setPopupErrors(t("popup.skipToStep7"));
       case 1:
         return (
        <Step1PersonalInfo
-        formData={formData}
-        handleInputChange={handleInputChange}
+        initialData={stepData}
+        onChange={setStepData}
         errors={validationErrors}
         forceShowError={isSaveClicked}  
       />
