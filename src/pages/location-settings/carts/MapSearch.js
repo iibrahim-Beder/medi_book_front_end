@@ -198,7 +198,7 @@ const BlueMapPicker = ({
         style={{ marginBottom: 12 }}
       />
 
-      {/* زرارين بس: Save + Cancel */}
+      {/*  Buttons section    */}
       <div style={{ display: "flex", justifyContent: "space-between"}}>
         <button className="btn btn-light" onClick={onCancel}>
           {t("Cancel")}

@@ -27,14 +27,16 @@ import PaymentInsuranceStep from "./steps/Step8paymentMethods";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setExperiences
-} from "../../redux/Slices/experienceSlice";
+} from "../../redux/Slices/doctor-information/experienceSlice";
+import {
+  setProfessionalInfo
+} from "../../redux/Slices/doctor-information/professionalInfoSlice";
 export default function DoctorRegistration() {
 
   
   const experiencesFromRedux = useSelector((state) => state.experience);
-  const [experiencesState, setExperiencesState] = useState(experiencesFromRedux);
-  // const professionalInfoFromRedux = useSelector((state) => state.professionalInfo);
-  // const [professionalInfoState, setProfessionalInfoState] = useState(professionalInfoFromRedux);
+  const professionalInfoFromRedux = useSelector((state) => state.professionalInfo);
+  const [stepData, setStepData] = useState();
 
 
   const dispatch = useDispatch();
@@ -59,16 +61,25 @@ export default function DoctorRegistration() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentStep]);
+    if (currentStep === 4) {
+      setStepData(experiencesFromRedux);
+    }else if (currentStep === 3) {
+      setStepData(professionalInfoFromRedux);
+    }
+
+  }, [currentStep], []);
 
 useEffect(() => {
   const dataForStep = currentStep === 7
-    ? { ...formData, experiences: experiencesState }
+    ? { ...formData, experiences: stepData }
     : formData;
+    if (currentStep === 3) {
+     Object.assign(dataForStep, stepData);
+    }
 
   const errors = validateStepUtil(currentStep, dataForStep, t);
   setValidationErrors(errors);
-}, [currentStep, formData, t, experiencesState]);
+}, [currentStep, formData, t, stepData]);
 
   const isStepValid = Object.keys(validationErrors).length === 0;
   
@@ -87,7 +98,6 @@ useEffect(() => {
     
     if (type === 'checkbox') {
       // For checkbox inputs, we need to handle arrays of values
-      // تأكد من أن currentValues هي مصفوفة
       const currentValues = Array.isArray(formData[name]) ? formData[name] : [];
       
       if (checked) {
@@ -120,7 +130,11 @@ const [isSaveClicked, setIsSaveClicked] = useState(false);
     if (isStepValid) {
       setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS));
       if (currentStep === 7) {
-        dispatch(setExperiences(experiencesState));
+        dispatch(setExperiences(stepData));
+      }
+      if (currentStep === 3) {
+        dispatch(setProfessionalInfo(stepData));
+        console.log("Dispatched professional info:", stepData);
       }
            
 
@@ -144,7 +158,7 @@ setPopupErrors(t("popup.skipToStep7"));
   };
 
   const submitForm = () => {
-    // تحقق من الخطوة 9 (المراجعة النهائية)
+    // Final validation before submission
     const errors = validateStepUtil(9, formData, t);
     if (Object.keys(errors).length > 0) {
       setPopupErrors(Object.values(errors));
@@ -170,11 +184,11 @@ setPopupErrors(t("popup.skipToStep7"));
       case 1:
         return (
        <Step1PersonalInfo
-  formData={formData}
-  handleInputChange={handleInputChange}
-  errors={validationErrors}
-  forceShowError={isSaveClicked}  
-/>
+        formData={formData}
+        handleInputChange={handleInputChange}
+        errors={validationErrors}
+        forceShowError={isSaveClicked}  
+      />
         );
       case 2:
         return (
@@ -188,8 +202,8 @@ setPopupErrors(t("popup.skipToStep7"));
       case 3:
         return (
           <Step2ProfessionalInfo
-            formData={formData}
-            handleInputChange={handleInputChange}
+            initialData={stepData}
+            onChange={setStepData}
             errors={validationErrors}
             forceShowError={isSaveClicked}   
           />
@@ -281,8 +295,8 @@ setPopupErrors(t("popup.skipToStep7"));
         
         return (
           <Step4Experience
-             initialExperiences={experiencesState}
-             onChange={setExperiencesState}
+             initialExperiences={stepData}
+             onChange={setStepData}
              ComponentProp={<SectionTitle
                 icon={<CiLocationOn />}
                 title={t("Experience.title")}

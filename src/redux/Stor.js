@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import experienceReduser from "./Slices/experienceSlice";
+import experienceReduser from "./Slices/doctor-information/experienceSlice";
+import professionalInfoReduser from "./Slices/doctor-information/professionalInfoSlice";
 const persistConfig = {
   key: "root",
   storage,
@@ -30,6 +31,7 @@ export const store = configureStore({
   reducer: {
     theme: 22,
     experience: experienceReduser,
+    professionalInfo: professionalInfoReduser,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

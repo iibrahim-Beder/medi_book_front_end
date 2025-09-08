@@ -1,4 +1,3 @@
-// Field.jsx
 import React, { useState } from "react";
 
 const Field = ({
@@ -6,7 +5,7 @@ const Field = ({
   name,
   value,
   onChange,
-  onBlur, // ✅ إضافة دعم لـ onBlur
+  onBlur, 
   placeholder,
   icon,
   type = "text",
@@ -15,10 +14,10 @@ const Field = ({
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
-  console.log("Field render:", { name, value, error,  forceShowError, showError });
+  // console.log("Field render:", { name, value, error,  forceShowError, showError });
   const handleBlur = (e) => {
     setTouched(true);
-    if (onBlur) onBlur(e); // ✅ استدعاء onBlur إذا كان موجودًا
+    if (onBlur) onBlur(e);
   };
 
   return (

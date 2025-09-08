@@ -1,11 +1,13 @@
+// redux/Slices/professionalInfoSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   specialty: "",
-  subspecialty: "",
+  yearsOfExperience: "",
   licenseNumber: "",
+  bio: "",
   licenseFile: null,
-  languagesSpoken: "",
+  languagesSpoken: [],
   specializations: [],
 };
 
@@ -13,14 +15,28 @@ const professionalInfoSlice = createSlice({
   name: "professionalInfo",
   initialState,
   reducers: {
-    // Add new data (e.g. after first registration or reset)
-    addNewProfessionalInfo: (state, action) => {
+    // Update multiple fields at once (e.g., when loading data from an API)
+    setProfessionalInfo: (state, action) => {
+      console.log("Setting professional info:", action.payload);
       return { ...state, ...action.payload };
     },
 
-    // Update one or more fields
-    updateProfessionalInfo: (state, action) => {
-      return { ...state, ...action.payload };
+    // Update a single field
+    updateField: (state, action) => {
+      const { name, value } = action.payload;
+      state[name] = value;
+    },
+
+    // Array operations (languages)
+    addLanguage: (state, action) => {
+      state.languagesSpoken.push(action.payload);
+    },
+    editLanguage: (state, action) => {
+      const { index, value } = action.payload;
+      state.languagesSpoken[index] = value;
+    },
+    removeLanguage: (state, action) => {
+      state.languagesSpoken.splice(action.payload, 1);
     },
 
     // Array operations (specializations)
@@ -41,8 +57,11 @@ const professionalInfoSlice = createSlice({
 });
 
 export const {
-  addNewProfessionalInfo,
-  updateProfessionalInfo,
+  setProfessionalInfo,
+  updateField,
+  addLanguage,
+  editLanguage,
+  removeLanguage,
   addSpecialization,
   editSpecialization,
   removeSpecialization,

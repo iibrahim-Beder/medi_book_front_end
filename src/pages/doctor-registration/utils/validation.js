@@ -59,13 +59,29 @@ if (step === 2) {
   }
 }
 
-  if (step === 3) {
-    if (!formData.specialty) errors.specialty = i18n.t("validation.step3.specialty");
-    if (!formData.licenseNumber?.trim()) errors.licenseNumber = i18n.t("validation.step3.licenseNumber");
-    if (!formData.bio?.trim()) errors.bio = i18n.t("validation.step3.Bio");
-    if (!formData.licenseFile) errors.licenseFile = i18n.t("validation.step3.licenseFile");
-    if (!formData.yearsOfExperience) errors.yearsOfExperience = i18n.t("validation.step3.yearsOfExperience");
+if (step === 3) {
+  if (!formData.specialty) {
+    errors.specialty = i18n.t("validation.step3.specialty");
   }
+  if (!formData.licenseNumber?.trim()) {
+    errors.licenseNumber = i18n.t("validation.step3.licenseNumber");
+  }
+  // if (!formData.bio?.trim()) {
+  //   errors.bio = i18n.t("validation.step3.Bio");
+  // }
+  if (!formData.licenseFile) {
+    errors.licenseFile = i18n.t("validation.step3.licenseFile");
+  }
+  if (!formData.yearsOfExperience) {
+    errors.yearsOfExperience = i18n.t("validation.step3.yearsOfExperience");
+  } else if (isNaN(formData.yearsOfExperience) || formData.yearsOfExperience < 0) {
+    errors.yearsOfExperience = i18n.t("validation.step3.invalidYearsOfExperience");
+  }
+
+  // if (!formData.languages || formData.languages.length === 0) {
+  //   errors.languages = i18n.t("validation.step3.languages");
+  // }
+}
 
   if (step === 4) { 
     // Validate if locations exist
