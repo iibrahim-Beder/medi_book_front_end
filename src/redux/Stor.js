@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import experienceReduser from "./Slices/doctor-information/experienceSlice";
 import professionalInfoReduser from "./Slices/doctor-information/professionalInfoSlice";
 import personalInforeduser from "./Slices/doctor-information/personalInfoSlice";
+import qualificationsReduser from "./Slices/doctor-information/qualificationsSlice";
 const persistConfig = {
   key: "root",
   storage,
@@ -34,6 +35,7 @@ export const store = configureStore({
     experience: experienceReduser,
     professionalInfo: professionalInfoReduser,
     PersonalInfo: personalInforeduser,
+    qualifications: qualificationsReduser,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

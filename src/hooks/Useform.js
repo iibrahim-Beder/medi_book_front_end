@@ -42,12 +42,17 @@ export const useForm = () => {
       }
       return;
     }
+  setFormData(prev => {
     
-    setFormData(prev => ({
+    if (JSON.stringify(prev[name]) === JSON.stringify(value)) {
+      return prev; 
+    }
+    return {
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  }, [setFormData]);
+      [name]: value,
+    };
+  });
+}, [setFormData]);
 
   const updateExperiences = useCallback((index, field, value) => {
     setFormData(prev => {

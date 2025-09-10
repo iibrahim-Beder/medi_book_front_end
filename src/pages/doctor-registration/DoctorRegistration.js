@@ -28,12 +28,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {setExperiences} from "../../redux/Slices/doctor-information/experienceSlice";
 import {setProfessionalInfo} from "../../redux/Slices/doctor-information/professionalInfoSlice";
 import {setPersonalInfo} from "../../redux/Slices/doctor-information/personalInfoSlice";
+import {setQualifications} from "../../redux/Slices/doctor-information/qualificationsSlice";
+import {setLocations} from "../../redux/Slices/doctor-information/locationsSlice";
+
 export default function DoctorRegistration() {
 
   
   const experiencesFromRedux = useSelector((state) => state.experience);
   const professionalInfoFromRedux = useSelector((state) => state.professionalInfo);
   const personalInfoFromRedux = useSelector((state) => state.personalInfo);
+  // const qualificationsFromRedux = useSelector((state) => state.qualifications);
   const [stepData, setStepData] = useState();
 
 
@@ -67,7 +71,7 @@ export default function DoctorRegistration() {
       setStepData(professionalInfoFromRedux);
     }
 
-  }, [currentStep], []);
+  }, [currentStep]);
 
 useEffect(() => {
   const dataForStep = currentStep === 7
@@ -137,6 +141,12 @@ const [isSaveClicked, setIsSaveClicked] = useState(false);
         dispatch(setProfessionalInfo(stepData));
       } else if (currentStep === 1) {
         dispatch(setPersonalInfo(stepData));
+      }else if (currentStep === 2) {
+        dispatch(setQualifications( formData.qualifications));
+      }
+      else if (currentStep === 4) {
+        console.log("Dispatching locations on step 4:", formData.locations);
+        // dispatch(setLocations( formData.locations));
       }
            
 
@@ -204,7 +214,7 @@ setPopupErrors(t("popup.skipToStep7"));
       case 3:
         return (
           <Step2ProfessionalInfo
-            initialData={stepData}
+            initialData={stepData.locations}
             onChange={setStepData}
             errors={validationErrors}
             forceShowError={isSaveClicked}   
@@ -215,7 +225,7 @@ setPopupErrors(t("popup.skipToStep7"));
           <LocationField
             header={false}
             formData={formData}
-            handleInputChange={handleInputChange}
+            // handleInputChange={handleInputChange}
             errors={validationErrors}
             ComponentProp={
               <SectionTitle
