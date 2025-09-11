@@ -241,7 +241,6 @@ if (slot.startTime && slot.endTime) {
     });
   }
 }
-add
   if (step === 7) {
     if (!formData.experiences || formData.experiences.length === 0) {
       errors.experiences = i18n.t("validation.step7.experiences");

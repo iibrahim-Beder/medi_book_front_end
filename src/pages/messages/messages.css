@@ -1,0 +1,50 @@
+
+/* .disin{
+
+}
+
+ @media (max-width: 991px) {
+    .dc-offersmessages ul li .dc-dashboardscrollbar {
+        display: flex;
+
+    }
+} */
+ .dc-offersmessages ul li .dc-dashboardscrollbar{
+    height: auto !important;
+    overflow-y: auto;
+ }
+
+/* when Conversation open  */
+[isConversationOpen="true"] {
+    @media (max-width: 991px) {
+        .dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:last-child ,.dc-titlemessages{
+            display: block;
+        }
+       .patient-messages-list ,.messages-titil{
+        display: none;
+       }
+      .dc-titlemessages{display: block;}
+     .messages-titil ,.dc-offersmessages .dc-formsearch{display: none;}
+    }
+}
+/* ====== when Conversation open  ====*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+.dc-offersmessages ul li .dc-messages:before{
+    display: none;
+} 

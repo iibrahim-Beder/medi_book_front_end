@@ -4882,6 +4882,7 @@ a.dc-back:hover{color: #55acee;}
     padding: 0 10px;
 }
 .dc-searchgbtn {
+	height: 100%;
     top: 0;
     right: 0;
     color: #fff;
@@ -4892,8 +4893,11 @@ a.dc-back:hover{color: #55acee;}
     text-align: center;
     border-left: 1px solid #ddd;
     border-radius: 0 5px 5px 0;
-    background: #ff5851;
+    background: var(--themecolor);
+	font-size: large;
+	transition: all 0.5s;
 }
+.dc-searchgbtn:hover{color:#ffffff9c}
 .dc--messagebox .dc--dashboardboxcontent .dc--userprofile{padding: 0;}
 .dc--messagebox .dc--dashboardboxcontent .dc--applyfilters{
 	margin-top:30px;
@@ -5028,16 +5032,22 @@ a.dc-back:hover{color: #55acee;}
 	background: #f91942;
 }
 .dc-dotnotification{position: relative;padding-right:30px !important; }
+:root {
+  --messages-dotnotification: ;
+}
 .dc-dotnotification:before {
-    top: 50%;
+top: 50%;
+    text-align: center;
+    align-content: space-around;
     right: 20px;
-    width: 6px;
-    height: 6px;
-    content: '';
-    margin: -3px 0 0;
+    width: 20px;
+    height: 21px;
+    content: var(--messages-dotnotification);
+    margin: -5px -10 0;
     position: absolute;
     border-radius: 6px;
-    background: #f91942;
+    background: var(--themecolor);
+    color: white;
 }
 /*Messages Styles*/
 .dc-offersmessages .dc-ad:after{
@@ -5093,9 +5103,12 @@ a.dc-back:hover{color: #55acee;}
 .dc-memessage .dc-description p{float: right;}
 .dc-offerermessage .dc-description p {
 	border: 1px solid #f2f2f2;
-    border-radius: 0px 20px 20px 0px;
-    background: #fcfcfc;
+    border-radius: 20px 20px 20px 0px;
+    background: var(--themecolor);
+	color: white;
     padding: 20px;
+	padding-right: 10px;
+	padding-bottom: 10px;
 }
 .dc-memessage .dc-description p{
 	border: 1px solid #f2f2f2;
@@ -5161,7 +5174,7 @@ a.dc-back:hover{color: #55acee;}
 	border-radius: 4px;
 	display: inline-block;
 	vertical-align: middle;
-	background: #ff5851;
+	background: var(--themecolor);
 }
 .dc-btnsendmsg:focus,
 .dc-btnsendmsg:hover{color: #fff;}
