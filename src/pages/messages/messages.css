@@ -25,10 +25,12 @@
        }
       .dc-titlemessages{display: block;}
      .messages-titil ,.dc-offersmessages .dc-formsearch{display: none;}
+     .dc-dotnotification:before{margin: -5px 0px 0;}
     }
 }
 /* ====== when Conversation open  ====*/
 
+.dc-dotnotification:before{margin: -5px -10px 0;}
 
 
 

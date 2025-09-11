@@ -16,6 +16,20 @@ export default function ChatMessages() {
         link="https://themeforest.net"
         date="Jun 28, 2017 09:30"
       />
+       <ChatMessage
+        type="receiver"
+        img="images/messages/img-13.jpg"
+        text="Consectetur adipisicing elit sei do eiusmod "
+        date="January 12th, 2011"
+      />
+       <ChatMessage
+        type="receiver"
+        img="images/messages/img-13.jpg"
+        text="Consectetur adipisicing elit sei do eiusmod tempor incididunt labore et dolore."
+        date="January 12th, 2011"
+      />
+
+
     </div>
   );
 }

@@ -6,7 +6,7 @@ import './assets/css/font-awesome.min.css';
 import Sidebar from './pages/sidbar/Sidebar';
 import  { useState, useEffect } from "react";
 import DashboardMain from './pages/dashbord/DashboardMain';
-import Acco from './pages/account-settings-security/MainSecuritySettings';
+import Acco from './pages/profile-settings/ProfileSettings';
 import LocationMain from "./pages/location-settings/LocationMain";
 import SecuritySettings from "./pages/securty/MainSecuritySettings";
 import MainAppointtmentList2 from "./pages/appointmentList/MainAppointmentList";

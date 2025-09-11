@@ -2,17 +2,18 @@ import { FaBullhorn } from "react-icons/fa";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import PersonalDetails from "./Profil-cards/PersonalDetails";
-import ExperienceEducation from "./Profil-cards/Education";
-import ProfileAndSpecialties from "./Profil-cards/ProfileAndSpecialties";
-import Experience from "./Profil-cards/Experience";
+import PersonalDetails from "./Profile-card/PersonalDetails";
+import ExperienceEducation from "./Profile-card/Education";
+import ProfileAndSpecialties from "./Profile-card/ProfileAndSpecialties";
+import Experience from "./2-Experans & Edition/ExperienceList";
 
 export default function ProfileSettings() {
   const [activeTab, setActiveTab] = useState("DoctorBasicInfo");
   const { t } = useTranslation();
 
   return (
-    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-9">
+    
+    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
       <div className="dc-haslayout dc-dbsectionspace">
         <div className="dc-dashboardbox dc-dashboardtabsholder NewShado">
           <div className="dc-dashboardboxtitle">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import Field from "../../ui/FormFields/Field"; // Unified Field component
+import Field from "../../ui/form-fields/Field"; 
 
 // 1. Normal form for a single experience
 function SingleExperienceForm({ exp, index, errors, forceShowError, handleInputChange }) {
