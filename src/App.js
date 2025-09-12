@@ -14,6 +14,7 @@ import MakeSlostMain from "./pages/making-slots/MakeSlostMain";
 import { useTranslation } from "react-i18next";
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
+import PatientManagement from "./pages/patient-management/PatientManagement";
 // import DoctorPaymentDashboard from './pages/DoctorPaymentDashboard';
 
 
@@ -72,6 +73,7 @@ const { i18n } = useTranslation();
                 <Route path="security-settings" element={<SecuritySettings />} />
                 <Route path="manage-services" element={<MakeSlostMain />} />
                 <Route path="Messages" element={<MessagesPage />} />
+                <Route path="manage-team" element={<PatientManagement />} />
                 
               </Routes>
             </div>
