@@ -92,14 +92,6 @@ const PatientsTable = () => {
       <div className="p-3 PatientsTable">
         <div className="d-flex justify-content-between mb-3">
           <h3 className=""> <PiUsersThreeLight/> Patients List</h3>
-          <InputGroup style={{ width: "250px" }}>
-            <Form.Control
-              type="text"
-              placeholder="Search patient..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </InputGroup>
         </div>
 
         {/* Scrollable Table Wrapper */}

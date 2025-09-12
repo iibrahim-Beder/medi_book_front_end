@@ -3,14 +3,19 @@ import { ArrowUp, ArrowDown } from "lucide-react";
 const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) => {
   return (
     <div className="col-xl-3 col-sm-6 col-12">
-      <div className="card shadow-sm border-0 rounded-4 p-4 h-100">
+      <div className="card shadow-sm border-0 rounded-4 h-100 pb-0 "
+      style={{
+        paddingBottom:"0",
+        padding:"1.5rem"
+      }}
+      >
         <div
           style={{
             display: "flex",
             width: "100%",
-            flexWrap: "wrap",
+            flexWrap: "nowrap",
             justifyContent: "flex-start",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
             gap: "10px",
           }}
@@ -27,13 +32,13 @@ const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) =
           >
             <Icon size={30} />
           </div>
-          <h3 className="text-muted">{title}</h3>
+          <h4 className="text-muted">{title}</h4>
         </div>
         {/* Icon داخل دائرة */}
 
 
 
-      <div
+       <div
          style={{
             display: "flex",
             width: "100%",
