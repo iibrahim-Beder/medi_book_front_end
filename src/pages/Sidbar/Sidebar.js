@@ -1,5 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
+
+// import icons 
+import { RiFileList3Line } from "react-icons/ri";
+import { LiaTachometerAltSolid } from "react-icons/lia";
+import { BsList } from "react-icons/bs";
+import { CiSettings } from "react-icons/ci";
+import { CiLocationOn } from "react-icons/ci";
+import { PiShoppingCartLight } from "react-icons/pi";
+import { PiUsersThreeLight } from "react-icons/pi";
+import { LiaFacebookMessenger } from "react-icons/lia";
+import { LiaUserCogSolid } from "react-icons/lia";
+import { LiaUserShieldSolid } from "react-icons/lia";
+import { CiLogout } from "react-icons/ci";
+import { CiBadgeDollar } from "react-icons/ci";
 import { 
   FaTachometerAlt,
   FaListAlt,
@@ -85,6 +100,12 @@ const Sidebar = () => {
             <li>
               <Link to="/manage-team">
                 <FaUser className="icon" />
+                <span>{t("sidebar.manageTeam")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/pationt-information">
+                <RiFileList3Line className="icon" />
                 <span>{t("sidebar.manageTeam")}</span>
               </Link>
             </li>

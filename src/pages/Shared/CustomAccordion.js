@@ -1,0 +1,118 @@
+import React, { useState } from "react";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import "../MainCss.css";
+
+const CustomAccordion = ({
+  title,
+  addNewLabel,
+  data,
+  formFields,
+  onAdd,
+  onDelete,
+}) => {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const handleEditClick = (index) => {
+    // لو العنصر مفتوح اقفله، لو مقفول افتحه
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <div className="dc-userexperience">
+      {/* Header */}
+      <div className="dc-tabscontenttitle dc-addnew">
+        <h3>{title}</h3>
+        {onAdd && (
+          <a href="#" onClick={onAdd}>
+            {addNewLabel}
+          </a>
+        )}
+      </div>
+
+      {/* Accordion List */}
+      <ul className="dc-experienceaccordion accordion">
+        {data.map((item, index) => (
+          <li key={index}>
+            {/* Accordion Item Title */}
+            <div className="dc-accordioninnertitle">
+              <span>
+                {/* الأيقونة لو موجودة */}
+                {item.icon && <span style={{ marginRight: "8px" }}>{item.icon}</span>}
+                {item.title || item.type} <em>{item.date}</em>
+              </span>
+              <div className="dc-rightarea">
+                {/* Edit button */}
+                <a
+                  href="#"
+                  onClick={() => handleEditClick(index)}
+                  className="dc-addinfo dc-skillsaddinfo"
+                >
+                  <FaPencilAlt />
+                </a>
+                {/* Delete button */}
+                {onDelete && (
+                  <a
+                    href="#"
+                    onClick={() => onDelete(index)}
+                    className="dc-deleteinfo"
+                  >
+                    <FaTrash />
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Accordion Item Content */}
+            <div
+              className={`dc-collapseexp collapse ${
+                openIndex === index ? "show" : "hide"
+              }`}
+            >
+              <form className="dc-formtheme dc-userform">
+                <fieldset>
+                  {formFields.map((field, idx) => (
+                    <div
+                      key={idx}
+                      className={`form-group ${
+                        field.half ? "form-group-half" : ""
+                      }`}
+                    >
+                      {field.type === "textarea" ? (
+                        <textarea
+                          className="form-control"
+                          placeholder={field.placeholder}
+                          defaultValue={item[field.name] || ""}
+                        />
+                      ) : field.type === "select" ? (
+                        <select
+                          className="form-control"
+                          defaultValue={item[field.name] || ""}
+                        >
+                          <option value="">{field.placeholder}</option>
+                          {field.options?.map((opt, i) => (
+                            <option key={i} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type={field.type}
+                          className="form-control"
+                          placeholder={field.placeholder}
+                          defaultValue={item[field.name] || ""}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </fieldset>
+              </form>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default CustomAccordion;
