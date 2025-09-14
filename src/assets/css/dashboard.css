@@ -2749,7 +2749,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 .dc-tabstitle li a.active,
 .dc-tabstitle li:hover a{
 
-	background-color: var(--scbccolor);
+	background-color: var(--cardcolor);
 
 
 }
@@ -2788,7 +2788,7 @@ background-color: var(--scbccolor);}
 	padding: 30px;
 	/* background: #fff; */
 	border-left: 1px solid #eeeeee66;
-	    background-color: var(--scbccolor);
+	    background-color: var(--cardcolor);
 }
 .dc-personalskillshold{
 	float: left;
@@ -5512,7 +5512,7 @@ top: 50%;
 	 --bcticolor:#e4e4e41c;
   --text-secondary: #475569;
   --hovcolor:#fff;
-  --scbccolor:#eeeeee54;
+  --scbccolor:#eeeeee00;
 }
 [data-theme="dark"] {
   --scbccolor:#141f30;

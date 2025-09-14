@@ -250,7 +250,7 @@ li {
 
 .NewShado{
   box-shadow: 0 0 15px 0 var(--scshadocolor) !important;
-  background-color: var(--cardcolor) !important;
+  background-color: var(--scbccolor) !important;
 }
 .form-disabeld::after{
   display: none;

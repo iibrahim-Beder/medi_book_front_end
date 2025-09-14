@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import { PiCalendarLight } from "react-icons/pi";
 import "../../Patient-management.css";
 
 const AppointmentsTable = () => {
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [expandedField, setExpandedField] = useState(null);
+
   const appointmentsData = [
     {
       id: "#AP001",
@@ -12,8 +14,14 @@ const AppointmentsTable = () => {
       sessionType: "Clinic Visit",
       status: "Confirmed",
       procedures: "Basic procedures",
-      notes: "The patient responded well",
-      treatmentPlan: "Follow-up session after one week",
+      notes: [
+        { date: "15 Sep 2025", type: "Observation", text: "Patient responded well" },
+        { date: "15 Sep 2025", type: "Follow-up", text: "Check vitals again" }
+      ],
+      treatmentPlan: [
+        { step: 1, description: "Follow-up session after one week" },
+        { step: 2, description: "Take prescribed medications" }
+      ],
     },
     {
       id: "#AP002",
@@ -22,8 +30,12 @@ const AppointmentsTable = () => {
       sessionType: "Video Call",
       status: "Confirmed",
       procedures: "General examination",
-      notes: "Needs blood tests",
-      treatmentPlan: "Follow-up after results",
+      notes: [
+        { date: "16 Sep 2025", type: "Observation", text: "Needs blood tests" }
+      ],
+      treatmentPlan: [
+        { step: 1, description: "Follow-up after results" }
+      ],
     },
     {
       id: "#AP003",
@@ -32,8 +44,12 @@ const AppointmentsTable = () => {
       sessionType: "Routine Checkup",
       status: "Cancelled",
       procedures: "Not performed",
-      notes: "Patient cancelled the appointment",
-      treatmentPlan: "Reschedule",
+      notes: [
+        { date: "18 Sep 2025", type: "Cancellation", text: "Patient cancelled the appointment" }
+      ],
+      treatmentPlan: [
+        { step: 1, description: "Reschedule" }
+      ],
     },
     {
       id: "#AP004",
@@ -42,72 +58,62 @@ const AppointmentsTable = () => {
       sessionType: "Clinic Visit",
       status: "Postponed",
       procedures: "Initial consultation",
-      notes: "Doctor requested to delay",
-      treatmentPlan: "Reschedule after doctor availability",
+      notes: [
+        { date: "20 Sep 2025", type: "Delay", text: "Doctor requested to delay" }
+      ],
+      treatmentPlan: [
+        { step: 1, description: "Reschedule after doctor availability" }
+      ],
     },
   ];
 
-  return (
-    <div
-      className="shadow-sm mt-4"
-      style={{ border: "none", borderRadius: "12px" }}
-    >
-      <div className="p-3">
-        <div className="d-flex justify-content-between mb-3">
-          <h3>
-            <PiCalendarLight /> Appointments List
-          </h3>
-        </div>
+  const handleViewClick = (id, field) => {
+    if (expandedRow === id && expandedField === field) {
+      setExpandedRow(null);
+      setExpandedField(null);
+    } else {
+      setExpandedRow(id);
+      setExpandedField(field);
+    }
+  };
 
-        <div style={{ overflowX: "auto" }}>
-          <Table
-            className="align-middle mb-0 table-hover"
-            style={{ whiteSpace: "nowrap" }}
-          >
-            <thead className="table-light">
-              <tr>
-                <th className="border-0">Date</th>
-                <th className="border-0">Time</th>
-                <th className="border-0">Session Type</th>
-                <th className="border-0">Status</th>
-                <th className="border-0">Procedures</th>
-                <th className="border-0">Notes</th>
-                <th className="border-0">Treatment Plan</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointmentsData.map((appt) => (
-                <tr key={appt.id}>
+  return (
+    <div className="shadow-sm mt-4" style={{ border: "none", borderRadius: "12px" }}>
+      {/* Header */}
+      <div className="dc-tabscontenttitle dc-addnew">
+        <h3>Appointments</h3>
+        <a href="#">Add Appointment</a>
+      </div>
+
+      <div className="p-3">
+        <Table className="align-middle mb-0 table-hover" style={{ whiteSpace: "nowrap" }}>
+          <thead className="table-light">
+            <tr>
+              <th className="border-0">Date</th>
+              <th className="border-0">Time</th>
+              <th className="border-0">Session Type</th>
+              <th className="border-0">Status</th>
+              <th className="border-0">Procedures</th>
+              <th className="border-0">Notes</th>
+              <th className="border-0">Treatment Plan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointmentsData.map((appt) => (
+              <React.Fragment key={appt.id}>
+                <tr>
                   <td className="border-0">{appt.date}</td>
                   <td className="border-0">{appt.time}</td>
                   <td className="border-0">{appt.sessionType}</td>
                   <td className="border-0">{appt.status}</td>
+
+                  {/* Buttons */}
                   <td className="border-0">
                     <Button
                       size="sm"
-                      variant="outline-primary"
-                      style={{
-                        border: "none",
-                        background: "#f1f5f9",
-                        width: "60px",
-                        height: "30px",
-                        boxShadow: "none",
-                      }}
-                    >
-                      visit
-                    </Button>
-                  </td>
-                  <td className="border-0">
-                    <Button
-                      size="sm"
-                      variant="outline-primary"
-                      style={{
-                        border: "none",
-                        background: "#f1f5f9",
-                        width: "60px",
-                        height: "30px",
-                        boxShadow: "none",
-                      }}
+                      variant={expandedRow === appt.id && expandedField === "procedures" ? "primary" : "outline-primary"}
+                      onClick={() => handleViewClick(appt.id, "procedures")}
+                      style={{ border: "none", width: "70px", height: "30px", boxShadow: "none" }}
                     >
                       View
                     </Button>
@@ -115,26 +121,87 @@ const AppointmentsTable = () => {
                   <td className="border-0">
                     <Button
                       size="sm"
-                      variant="outline-primary"
-                      style={{
-                        border: "none",
-                        background: "#f1f5f9",
-                        width: "60px",
-                        height: "30px",
-                        boxShadow: "none",
-                      }}
+                      variant={expandedRow === appt.id && expandedField === "notes" ? "primary" : "outline-primary"}
+                      onClick={() => handleViewClick(appt.id, "notes")}
+                      style={{ border: "none", width: "70px", height: "30px", boxShadow: "none", fontWeight:"normal" }}
+                    >
+                      View
+                    </Button>
+                  </td>
+                  <td className="border-0">
+                    <Button
+                      size="sm"
+                      variant={expandedRow === appt.id && expandedField === "treatmentPlan" ? "primary" : "outline-primary"}
+                      onClick={() => handleViewClick(appt.id, "treatmentPlan")}
+                      style={{ border: "none", width: "70px", height: "30px", boxShadow: "none" }}
                     >
                       View
                     </Button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-      </div>
 
-      
+                {/* Expanded row */}
+                {expandedRow === appt.id && (
+                  <tr>
+                    <td colSpan="7" className="border-0 bg-light">
+                      <div className="p-3">
+                        {expandedField === "notes" && (
+                          <div>
+                             <div className="dc-tabscontenttitle dc-addnew"
+                             style={{backgroundColor:"white"}}
+                             >
+                                <h3>nots</h3>
+                               <a href="#">Visit all nots</a>
+                              </div>
+                            {/* <strong>Notes:</strong> */}
+                            <table className="table table-sm table-bordered mt-2">
+                              <thead>
+                                <tr>
+                                  <th>Date</th>
+                                  <th>Type</th>
+                                  <th>Text</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {appt.notes.map((note, index) => (
+                                  <tr key={index}>
+                                    <td>{note.date}</td>
+                                    <td>{note.type}</td>
+                                    <td>{note.text}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+
+                        {expandedField === "treatmentPlan" && (
+                          <div>
+                            <strong>Treatment Plan:</strong>
+                            <ul className="mt-2">
+                              {appt.treatmentPlan.map((step) => (
+                                <li key={step.step}>
+                                  <strong>Step {step.step}:</strong> {step.description}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {expandedField === "procedures" && (
+                          <div>
+                            <strong>Procedures:</strong> {appt.procedures}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     </div>
   );
 };

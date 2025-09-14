@@ -6,6 +6,7 @@ import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
 // import PatientAppointments from "./PatientTabs/PatientAppointments";
 import PatientNotes from "./PatientTabs/PatientNotes";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
+import AppointmentsTable2 from "./PatientTabs/AppointmentsTable2";
 // import PatientFiles from "./PatientTabs/PatientFiles";
 // import PatientTreatmentPlans from "./PatientTabs/PatientTreatmentPlans";
 // import PatientNotifications from "./PatientTabs/PatientNotifications";
@@ -21,8 +22,9 @@ export default function PatientProfilePageMain() {
     { key: "Appointments", label: "Appointments"},
     { key: "Notes", label: "Nots"},
     // { key: "Files", label: "📎 الملفات والمرفقات", icon: <FaPaperclip /> },
-    // { key: "TreatmentPlans", label: "💊 الخطط العلاجية", icon: <FaFileAlt /> },
-    // { key: "Notifications", label: "🔔 التنبيهات أو الإشعارات", icon: <FaBell /> },
+    { key: "TreatmentPlans", label: "Allergies", icon: <FaFileAlt /> },
+    { key: "Notifications", label:
+     "🔔 التنبيهات أو الإشعارات", icon: <FaBell /> },
     // { key: "Settings", label: "⚙️ الإعدادات الإدارية (للطبيب فقط)", icon: <FaCog /> },
     // { key: "Statistics", label: "📊 الإحصائيات", icon: <FaChartPie /> },
   ];
@@ -62,9 +64,9 @@ export default function PatientProfilePageMain() {
           {activeTab === "Notes" && <PatientNotes />}
               {/* {activeTab === "Files" && <PatientFiles />}
             {activeTab === "TreatmentPlans" && <PatientTreatmentPlans />}
-            {activeTab === "Notifications" && <PatientNotifications />}
             {activeTab === "Settings" && <PatientSettings />}
             {activeTab === "Statistics" && <PatientStatistics />} */}
+            {activeTab === "Notifications" && <AppointmentsTable2 />}
           </div>
         </div>
       </div>
