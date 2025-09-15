@@ -33,3 +33,7 @@ border-bottom: 1px solid #dee2e670 !important;
 .btn{
   font-weight: normal !important;
 }
+.dc-tabscontenttitle-delete-before::before{
+  display: none;
+  background-color: transparent !important;
+}

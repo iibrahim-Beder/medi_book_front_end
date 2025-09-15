@@ -90,7 +90,7 @@ const AppointmentsTable = () => {
       {/* Header */}
       <div className="dc-tabscontenttitle dc-addnew">
         <h3>Appointments</h3>
-        <a href="#">Add Appointment</a>
+        {/* <a href="#">Add Appointment</a> */}
       </div>
 
       <div className="p-3">
@@ -185,8 +185,9 @@ const AppointmentsTable = () => {
                     <td colSpan="7" className="border-0 bg-light">
                       <div className="p-3">
                         <CustomAccordion
-                          title={expandedField}
-                          addNewLabel={`Add ${expandedField}`}
+                        // backgroundColor="var(--cardcolor)"
+                          // title={expandedField}
+                          // addNewLabel={`Add ${expandedField}`}
                           data={appt[expandedField]}
                           formFields={[
                             {

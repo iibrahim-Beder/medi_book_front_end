@@ -3,6 +3,7 @@ import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import "../MainCss.css";
 
 const CustomAccordion = ({
+  backgroundColor="",
   title,
   addNewLabel,
   data,
@@ -63,7 +64,8 @@ const CustomAccordion = ({
             </div>
 
             {/* Accordion Item Content */}
-            <div
+            <div 
+              style={{backgroundColor:`${backgroundColor}`}}
               className={`dc-collapseexp collapse ${
                 openIndex === index ? "show" : "hide"
               }`}

@@ -12,6 +12,8 @@ import AppointmentsTable2 from "./PatientTabs/AppointmentsTable2";
 // import PatientNotifications from "./PatientTabs/PatientNotifications";
 // import PatientSettings from "./PatientTabs/PatientSettings";
 // import PatientStatistics from "./PatientTabs/PatientStatistics";
+import PatientStatistics from "./PatientTabs/MedicalHistoryTable";
+import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
@@ -23,22 +25,21 @@ export default function PatientProfilePageMain() {
     { key: "Notes", label: "Nots"},
     // { key: "Files", label: "📎 الملفات والمرفقات", icon: <FaPaperclip /> },
     { key: "TreatmentPlans", label: "Allergies", icon: <FaFileAlt /> },
-    { key: "Notifications", label:
-     "🔔 التنبيهات أو الإشعارات", icon: <FaBell /> },
-    // { key: "Settings", label: "⚙️ الإعدادات الإدارية (للطبيب فقط)", icon: <FaCog /> },
+    { key: "Notifications", label:"Notifications", icon: <FaBell /> },
+    { key: "MedicalHistory", label: "Medical History", icon: <FaCog /> },
     // { key: "Statistics", label: "📊 الإحصائيات", icon: <FaChartPie /> },
   ];
 
   return (
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace">
-        <div className="dc-dashboardbox dc-dashboardtabsholder NewShado">
+        <div className="dc-dashboardbox dc-dashboardtabsholder ">
           <div className="dc-dashboardboxtitle">
-            <h2>{t("patientProfile.title") || "ملف المريض"}</h2>
+            <h2>patient profil information </h2>
           </div>
 
           {/* Tabs Navigation */}
-          <div className="dc-dashboardtabs">
+          <div className="dc-dashboardtabs" style={{width:"20%"}}>
             <ul className="dc-tabstitle nav navbar-nav">
               {tabs.map((tab) => (
                 <li className="nav-item" key={tab.key}>
@@ -58,7 +59,7 @@ export default function PatientProfilePageMain() {
           </div>
 
           {/* Tabs Content */}
-          <div className="dc-tabscontent tab-content">
+          <div className="dc-tabscontent tab-content" style={{width:"80%"}}>
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />}
           {activeTab === "Notes" && <PatientNotes />}
@@ -67,6 +68,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "Settings" && <PatientSettings />}
             {activeTab === "Statistics" && <PatientStatistics />} */}
             {activeTab === "Notifications" && <AppointmentsTable2 />}
+            {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
           </div>
         </div>
       </div>

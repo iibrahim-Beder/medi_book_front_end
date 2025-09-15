@@ -1,4 +1,5 @@
 import React from "react";
+import { FaUser } from "react-icons/fa6";
 
 export default function PatientBasicInfo() {
   const patient = {
@@ -19,113 +20,124 @@ export default function PatientBasicInfo() {
     lastVisit: "Sep 2, 2025",
     nextVisit: "Sep 15, 2025",
   };
-
+  
   return (
-    <div className="dc-haslayout dc-dbsectionspace">
-      <div
-        className="dc-dashboardbox"
-        style={{
-          background: "none",
-          boxShadow: "none",
-          // border: "1px solid #ddd",
-          borderRadius: "8px",
-          padding: "20px",
-        }}
-      >
-        {/* 🧾 Basic Information */}
-
-        <div className="patient-section">
-            <div className="dc-user-header">
-          <div>
-            <figure className="dc-user-img">
-              <img src="images/feedback/user-img.jpg" alt="patient" />
-            </figure>
-          </div>
-          <div className="dc-title">
-            {/* <a href="">Patient Profile</a> */}
-            <h3>
-              {patient.name} <i className="fa fa-check-circle"></i>
-            </h3>
-            <span>{patient.city}</span>
-          </div>
-   
+    <div className="dc-dashboardbox" style={{boxShadow:"none", backgroundColor:"transparent" }}>
+      {/* Header */}
+      <div className="dc-user-header">
+        <div>
+          <figure className="dc-user-img">
+            <img src="images/feedback/user-img.jpg" alt="patient" />
+          </figure>
         </div>
-          <h3>🧾 Patient Basic Information</h3>
-          
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "10px 40px",
-            }}
-          >
-            <p><strong>Full Name:</strong> {patient.name}</p>
-            <p>
-              <strong>Date of Birth:</strong> {patient.birthDate}{" "}
-              (Age: {patient.age} years)
-            </p>
-            <p><strong>Gender:</strong> {patient.gender}</p>
-            <p><strong>Phone:</strong> {patient.phone}</p>
-            <p><strong>Email:</strong> {patient.email}</p>
-            <p><strong>City / Country:</strong> {patient.city}</p>
-            <p style={{ gridColumn: "span 2" }}>
-              <strong>Detailed Address:</strong> {patient.address}
-            </p>
+        <div className="dc-title">
+          <h3>
+            {patient.name} <i className="fa fa-check-circle"></i>
+          </h3>
+          <span>{patient.city}</span>
+        </div>
+      </div>
+
+      <div className="dc-user-details" style={{width:"96%"}}>
+        {/* ================= Basic Info Section ================= */}
+        {/* <div className="dc-tabscontenttitle dc-tabscontenttitle-delete-before dc-addnew " style={{ margin: "20px -20px" }}> */}
+          {/* <h3>Basic Information</h3> */}
+                  {/* <hr/> */}
+        {/* </div> */}
+        <div className="  ml-0">
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4>Full Name:</h4>
+              <span>{patient.name}</span>
+            </div>
+          </div>
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4>Date of Birth:</h4>
+              <span>
+                {patient.birthDate} (Age: {patient.age})
+              </span>
+            </div>
+          </div>
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4>Gender:</h4>
+              <span>{patient.gender}</span>
+            </div>
+          </div>
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4>Phone:</h4>
+              <span>{patient.phone}</span>
+            </div>
+          </div>
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4>Email:</h4>
+              <span>{patient.email}</span>
+            </div>
+          </div>
+          <div className="dc-user-info" style={{ gridColumn: "span 2" }}>
+            <div className="dc-title">
+              <h4>Address:</h4>
+              <span>{patient.address}</span>
+            </div>
           </div>
         </div>
 
-        <hr />
-
-        {/* 🏥 Health Status */}
-        <div className="patient-section">
-          <h3>🏥 General Health Status</h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "10px 40px",
-            }}
-          >
-            <div>
-              <p><strong>Chronic Diseases:</strong></p>
-              <ul>
+        {/* ================= Health Status Section ================= */}
+        <div className="dc-tabscontenttitle dc-tabscontenttitle-delete-before dc-addnew m-0" style={{ backgroundColor:"transparent",}}>
+          {/* <h3>General Health Status</h3> */}
+                  <hr/>
+        </div>
+        <div className="  ml-0">
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4 style={{font:"18px / 22px 'Open Sans', sans-serif ", margin:"0 0 9px"}}>Chronic Diseases:</h4>
+              <span style={{font:"14px / 20px 'Open Sans', sans-serif"}}>
                 {patient.chronic.map((d, i) => (
-                  <li key={i}>• {d}</li>
+                  <div style={{whiteSpace:"pre"}} className="mb-2"  key={i}>•   {d}</div>
                 ))}
-              </ul>
+              </span>
             </div>
-            <div>
-              <p><strong>⚠️ Allergies:</strong></p>
-              <ul>
-                <li>Drug: {patient.allergies.drug}</li>
-                <li>Food: {patient.allergies.food}</li>
-              </ul>
+          </div>
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4  style={{font:"18px / 22px 'Open Sans', sans-serif ", margin:"0 0 9px"}}>Allergies:</h4>
+              <span>
+                Drug: {patient.allergies.drug} | Food: {patient.allergies.food}
+              </span>
             </div>
-            <div style={{ gridColumn: "span 2" }}>
-              <p><strong>💊 Current Medications:</strong></p>
-              <ul>
+          </div>
+          <div className="dc-user-info" style={{ gridColumn: "span 2" }}>
+            <div className="dc-title">
+              <h4  style={{font:"18px / 22px 'Open Sans', sans-serif ", margin:"0 0 9px"}} >Medications:</h4>
+              <span style={{font:" 14px / 20px 'Open Sans', sans-serif"}}>
                 {patient.medicines.map((m, i) => (
-                  <li key={i}>• {m}</li>
+                  <div style={{whiteSpace:"pre"}} className="mb-2"  key={i}>•   {m}</div>
                 ))}
-              </ul>
+              </span>
             </div>
           </div>
         </div>
 
-        <hr />
-
-        {/* 📅 Visits */}
-        <div className="patient-section">
-          <h3>📅 Visits</h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "10px 40px",
-            }}
-          >
-            <p><strong>Last Visit:</strong> {patient.lastVisit}</p>
-            <p><strong>Next Appointment:</strong> {patient.nextVisit}</p>
+        {/* ================= Visits Section ================= */}
+        <div className="dc-tabscontenttitle dc-tabscontenttitle-delete-before dc-addnew m-0" style={{ backgroundColor:"transparent",}}>
+                  <hr/>
+          {/* <h3>Visits</h3> */}
+        </div>
+        <div className="  ml-0">
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4>Last Visit:</h4>
+              <span>{patient.lastVisit}</span>
+            </div>
+          </div>
+          <div className="dc-user-info">
+            <div className="dc-title">
+              <h4>Next Visit:</h4>
+              <span>{patient.nextVisit}</span>
+            </div>
           </div>
         </div>
       </div>

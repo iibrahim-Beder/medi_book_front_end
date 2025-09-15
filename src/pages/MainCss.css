@@ -46,18 +46,16 @@ top: 0;
   border-bottom: 2px solid var(--themecolor);
 }
 
-/* شكل السلكت */
 select {
   width: 100%;
   padding: 12px;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
-  appearance: none; /* إخفاء السهم الافتراضي */
+  appearance: none; 
   position: relative;
 }
 
-/* السهم المخصص */
 select:after {
   content: "\e874";
   font-family: 'Linearicons-Free';
@@ -70,7 +68,6 @@ select:after {
   pointer-events: none;
 }
 
-/* لضبط الحاوية للسهم */
 select {
   background-image: none;
 }
@@ -189,10 +186,13 @@ select {
 
 
 li {
-  list-style-type: none !important; /* يحذف العلامة تمامًا */
+  list-style-type: none !important; 
 }
 
-.dc-accordioninnertitle {margin-top: 10px;}
+.dc-accordioninnertitle {
+  
+  /* margin-top: 10px; */
+}
 
 
 

@@ -24,7 +24,7 @@ const BlueMapPicker = ({
   const mapRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ", // 🔑 API Key
+    googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ", //  API Key
     libraries: ["places"],
   });
 
