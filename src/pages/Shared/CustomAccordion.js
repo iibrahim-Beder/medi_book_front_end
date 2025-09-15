@@ -14,21 +14,20 @@ const CustomAccordion = ({
   const [openIndex, setOpenIndex] = useState(null);
 
   const handleEditClick = (index) => {
-    // لو العنصر مفتوح اقفله، لو مقفول افتحه
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
     <div className="dc-userexperience">
       {/* Header */}
-      <div className="dc-tabscontenttitle dc-addnew">
+     {title && <div className="dc-tabscontenttitle dc-addnew">
         <h3>{title}</h3>
         {onAdd && (
           <a href="#" onClick={onAdd}>
             {addNewLabel}
           </a>
         )}
-      </div>
+      </div>}
 
       {/* Accordion List */}
       <ul className="dc-experienceaccordion accordion">
@@ -37,7 +36,6 @@ const CustomAccordion = ({
             {/* Accordion Item Title */}
             <div className="dc-accordioninnertitle">
               <span>
-                {/* الأيقونة لو موجودة */}
                 {item.icon && <span style={{ marginRight: "8px" }}>{item.icon}</span>}
                 {item.title || item.type} <em>{item.date}</em>
               </span>

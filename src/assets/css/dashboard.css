@@ -35,7 +35,9 @@
 /* Boxshadow  Color*/
 :root {--shadowcolor:rgba(63,171,243,0.5);}
 body {
-	background: var(--badybkcolor);
+	/* background: var(--badybkcolor);
+	 */
+	     background: #fcfcfc;
 	color: var(--terthemecolor);
 	font:400 14px/26px 'Poppins', sans-serif;
 }
@@ -2755,7 +2757,8 @@ body.dc-userlogin .dc-loginarea{display: none;}
 .dc-tabstitle li a.active,
 .dc-tabstitle li:hover a{
     color: #3d4461;
-	background-color: var(--cardcolor);
+	/* background-color: var(--cardcolor); */
+	background-color: #f8f9fa;
 
 
 }
@@ -2781,21 +2784,25 @@ body.dc-userlogin .dc-loginarea{display: none;}
     content: '';
     width: 1px;
     opacity: 0;
-    background: #fff;
+    background: #f8f9fa;
     visibility: hidden;
     position: absolute;
 }
 .dc-tabstitle li a.active:after {
     opacity: 1;
     visibility: visible;
-background-color: var(--cardcolor);}
+background-color: #f8f9fa;
+
+}
 .dc-tabscontent{
 	float: left;
 	width: 70%;
 	padding: 30px;
 	/* background: #fff; */
 	border-left: 1px solid #eeeeee66;
-	    background-color: var(--cardcolor);
+	    /* background-color: var(--cardcolor); */
+		
+	     background-color: #f8f9fa; 
 		    border-left: 1px solid #f2f2f2;
 }
 .dc-personalskillshold{

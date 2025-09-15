@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Form, InputGroup } from "react-bootstrap";
 import "../../Patient-management.css";
 import CustomAccordion from "../../../shared/CustomAccordion";
 
 const AppointmentsTable = () => {
-  const [expandedRow, setExpandedRow] = useState(null); 
-  const [expandedField, setExpandedField] = useState(null); 
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [expandedField, setExpandedField] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // كلمة البحث
+  const [searchBy, setSearchBy] = useState("all"); // البحث بأي خانة
 
   const appointmentsData = [
     {
@@ -36,12 +38,8 @@ const AppointmentsTable = () => {
       procedures: [
         { type: "Consultation", date: "2025-09-14", content: "General examination." },
       ],
-      notes: [
-        { type: "Medical", date: "2025-09-14", content: "Needs blood tests." },
-      ],
-      treatmentPlan: [
-        { type: "Plan A", date: "2025-09-16", content: "Follow-up after results." },
-      ],
+      notes: [{ type: "Medical", date: "2025-09-14", content: "Needs blood tests." }],
+      treatmentPlan: [{ type: "Plan A", date: "2025-09-16", content: "Follow-up after results." }],
     },
     {
       id: "#AP003",
@@ -53,9 +51,7 @@ const AppointmentsTable = () => {
       notes: [
         { type: "Administrative", date: "2025-09-17", content: "Patient cancelled the appointment." },
       ],
-      treatmentPlan: [
-        { type: "Plan C", date: "2025-09-19", content: "Reschedule when available." },
-      ],
+      treatmentPlan: [{ type: "Plan C", date: "2025-09-19", content: "Reschedule when available." }],
     },
     {
       id: "#AP004",
@@ -85,139 +81,205 @@ const AppointmentsTable = () => {
     }
   };
 
+  // ✅ فلترة حسب SearchBy
+  const filteredAppointments = appointmentsData.filter((appt) => {
+    if (!searchTerm) return true;
+
+    if (searchBy === "all") {
+      return Object.values(appt)
+        .join(" ")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+    } else {
+      return appt[searchBy]?.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+  });
+
   return (
     <div className="shadow-sm mt-4" style={{ border: "none", borderRadius: "12px" }}>
-      {/* Header */}
-      <div className="dc-tabscontenttitle dc-addnew">
-        <h3>Appointments</h3>
-        {/* <a href="#">Add Appointment</a> */}
+      <div>
+        <h3 color="#333333">List Appointments</h3>
       </div>
 
       <div className="p-3">
-        <Table className="align-middle mb-0 table-hover" style={{ whiteSpace: "nowrap" }}>
-          <thead className="table-light">
-            <tr>
-              <th className="border-0">Date</th>
-              <th className="border-0">Time</th>
-              <th className="border-0">Session Type</th>
-              <th className="border-0">Status</th>
-              <th className="border-0">Procedures</th>
-              <th className="border-0">Notes</th>
-              <th className="border-0">Treatment Plan</th>
-            </tr>
-          </thead>
-          <tbody>
-            {appointmentsData.map((appt) => (
-              <React.Fragment key={appt.id}>
-                <tr>
-                  <td className="border-0">{appt.date}</td>
-                  <td className="border-0">{appt.time}</td>
-                  <td className="border-0">{appt.sessionType}</td>
-                  <td className="border-0">{appt.status}</td>
+        <div
+          style={{
+            padding: "30px",
+            border: "1px solid #f0f0f0",
+            marginTop: "40px",
+            backgroundColor: "#fff",
+            boxShadow: "0px 0px 8px 3px #dddddd26",
+            borderRadius: "6px",
+          }}
+        >
+          {/* ✅ Search with select */}
+          <InputGroup className="mb-3">
+            <Form.Control
+              style={{ borderRadius: "6px" }}
+              type="text"
+              placeholder={`Search by ${searchBy}...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Form.Select
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+              style={{ maxWidth: "300px", borderRadius: "6px" }}
+            >
+              <option value="all">All</option>
+              <option value="date">Date</option>
+              <option value="time">Time</option>
+              <option value="sessionType">Session Type</option>
+              <option value="status">Status</option>
+            </Form.Select>
+          </InputGroup>
 
-                  {/* Procedures */}
-                  <td className="border-0">
-                    <Button
-                      size="sm"
-                      variant={
-                        expandedRow === appt.id && expandedField === "procedures"
-                          ? "primary"
-                          : "outline-primary"
-                      }
-                      onClick={() => handleViewClick(appt.id, "procedures")}
-                      style={{
-                        border: "none",
-                        width: "70px",
-                        height: "30px",
-                        boxShadow: "none",
-                      }}
-                    >
-                      View
-                    </Button>
-                  </td>
-
-                  {/* Notes */}
-                  <td className="border-0">
-                    <Button
-                      size="sm"
-                      variant={
-                        expandedRow === appt.id && expandedField === "notes"
-                          ? "primary"
-                          : "outline-primary"
-                      }
-                      onClick={() => handleViewClick(appt.id, "notes")}
-                      style={{
-                        border: "none",
-                        width: "70px",
-                        height: "30px",
-                        boxShadow: "none",
-                      }}
-                    >
-                      View
-                    </Button>
-                  </td>
-
-                  {/* Treatment Plan */}
-                  <td className="border-0">
-                    <Button
-                      size="sm"
-                      variant={
-                        expandedRow === appt.id && expandedField === "treatmentPlan"
-                          ? "primary"
-                          : "outline-primary"
-                      }
-                      onClick={() => handleViewClick(appt.id, "treatmentPlan")}
-                      style={{
-                        border: "none",
-                        width: "70px",
-                        height: "30px",
-                        boxShadow: "none",
-                      }}
-                    >
-                      View
-                    </Button>
-                  </td>
-                </tr>
-
-                {/* الصف اللي فيه CustomAccordion */}
-                {expandedRow === appt.id && (
+          <Table className="align-middle mb-0 table-hover" style={{ whiteSpace: "nowrap" }}>
+            <thead className="table-light">
+              <tr>
+                <th className="border-0">Date</th>
+                <th className="border-0">Time</th>
+                <th className="border-0">Session Type</th>
+                <th className="border-0">Status</th>
+                <th className="border-0">Procedures</th>
+                <th className="border-0">Notes</th>
+                <th className="border-0">Treatment Plan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAppointments.map((appt) => (
+                <React.Fragment key={appt.id}>
                   <tr>
-                    <td colSpan="7" className="border-0 bg-light">
-                      <div className="p-3">
-                        <CustomAccordion
-                        // backgroundColor="var(--cardcolor)"
-                          // title={expandedField}
-                          // addNewLabel={`Add ${expandedField}`}
-                          data={appt[expandedField]}
-                          formFields={[
-                            {
-                              name: "type",
-                              type: "select",
-                              options: [
-                                "Medical",
-                                "Follow-up",
-                                "Behavioral",
-                                "Communication",
-                                "Administrative",
-                                "Urgent",
-                              ],
-                              placeholder: "Select Type",
-                              half: true,
-                            },
-                            { name: "date", type: "date", placeholder: "Date", half: true },
-                            { name: "content", type: "textarea", placeholder: "Content" },
-                          ]}
-                          onAdd={() => alert(`Add ${expandedField}`)}
-                          onDelete={(index) => alert(`Delete ${expandedField} ${index}`)}
-                        />
-                      </div>
+                    <td className="border-0">{appt.date}</td>
+                    <td className="border-0">{appt.time}</td>
+                    <td className="border-0">{appt.sessionType}</td>
+                    <td className="border-0">{appt.status}</td>
+
+                    {/* Procedures */}
+                    <td className="border-0">
+                      <Button
+                        style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                        size="sm"
+                        variant={
+                          expandedRow === appt.id && expandedField === "procedures"
+                            ? "primary"
+                            : "outline-primary"
+                        }
+                        onClick={() => handleViewClick(appt.id, "procedures")}
+                      >
+                        View
+                      </Button>
+                    </td>
+
+                    {/* Notes */}
+                    <td className="border-0">
+                      <Button
+                        style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                        size="sm"
+                        variant={
+                          expandedRow === appt.id && expandedField === "notes"
+                            ? "primary"
+                            : "outline-primary"
+                        }
+                        onClick={() => handleViewClick(appt.id, "notes")}
+                      >
+                        View
+                      </Button>
+                    </td>
+
+                    {/* Treatment Plan */}
+                    <td className="border-0">
+                      <Button
+                        style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                        size="sm"
+                        variant={
+                          expandedRow === appt.id && expandedField === "treatmentPlan"
+                            ? "primary"
+                            : "outline-primary"
+                        }
+                        onClick={() => handleViewClick(appt.id, "treatmentPlan")}
+                      >
+                        View
+                      </Button>
                     </td>
                   </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </Table>
+
+                  {/* الصف اللي فيه CustomAccordion */}
+                  {expandedRow === appt.id && (
+                    <tr>
+                      <td colSpan="7" className="border-0 bg-light">
+                        <div className="p-3">
+                          <CustomAccordion
+                            data={appt[expandedField]}
+                            formFields={[
+                              {
+                                name: "type",
+                                type: "select",
+                                options: [
+                                  "Medical",
+                                  "Follow-up",
+                                  "Behavioral",
+                                  "Communication",
+                                  "Administrative",
+                                  "Urgent",
+                                ],
+                                placeholder: "Select Type",
+                                half: true,
+                              },
+                              { name: "date", type: "date", placeholder: "Date", half: true },
+                              { name: "content", type: "textarea", placeholder: "Content" },
+                            ]}
+                            onAdd={() => alert(`Add ${expandedField}`)}
+                            onDelete={(index) => alert(`Delete ${expandedField} ${index}`)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </Table>
+
+          {/* ✅ Pagination Section */}
+          <div className="dt-layout-cell dt-layout-end mt-3">
+            <div className="dt-paging">
+              <nav aria-label="pagination">
+                <button
+                  className="dt-paging-button disabled first"
+                  type="button"
+                  aria-label="First"
+                  aria-disabled="true"
+                  tabIndex="-1"
+                >
+                  «
+                </button>
+                <button
+                  className="dt-paging-button disabled previous"
+                  type="button"
+                  aria-label="Previous"
+                  aria-disabled="true"
+                  tabIndex="-1"
+                >
+                  Previous
+                </button>
+                <button
+                  className="dt-paging-button current"
+                  type="button"
+                  aria-current="page"
+                >
+                  1
+                </button>
+                <button className="dt-paging-button next" type="button" aria-label="Next">
+                  Next
+                </button>
+                <button className="dt-paging-button last" type="button" aria-label="Last">
+                  »
+                </button>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

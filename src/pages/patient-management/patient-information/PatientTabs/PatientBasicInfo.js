@@ -22,7 +22,7 @@ export default function PatientBasicInfo() {
   };
   
   return (
-    <div className="dc-dashboardbox" style={{boxShadow:"none", backgroundColor:"transparent" }}>
+    <div className="dc-dashboardbox cardInfo" >
       {/* Header */}
       <div className="dc-user-header">
         <div>

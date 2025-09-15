@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-
 // import icons 
 import { RiFileList3Line } from "react-icons/ri";
 import { LiaTachometerAltSolid } from "react-icons/lia";
@@ -15,6 +14,7 @@ import { LiaUserCogSolid } from "react-icons/lia";
 import { LiaUserShieldSolid } from "react-icons/lia";
 import { CiLogout } from "react-icons/ci";
 import { CiBadgeDollar } from "react-icons/ci";
+
 import { 
   FaTachometerAlt,
   FaListAlt,
@@ -69,41 +69,41 @@ const Sidebar = () => {
           <ul>
             <li>
               <Link to="/dashboard">
-                <FaTachometerAlt className="icon" />
+                <LiaTachometerAltSolid className="icon" />
                 <span>{t("sidebar.insights")}</span>
               </Link>
             </li>
             <li className="dc-notificationicon">
               <Link to="/appointment-list">
-                <FaListAlt className="icon" />
+                <BsList className="icon" />
                 <span>{t("sidebar.appointmentList")}</span>
               </Link>
             </li>
             <li>
               <Link to="/appointment-setting">
-                <FaCog className="icon" />
+                <CiSettings className="icon" />
                 <span>{t("sidebar.appointmentSetting")}</span>
               </Link>
             </li>
             <li>
               <Link to="/appointment-location">
-                <FaMapMarkerAlt className="icon" />
+                <CiLocationOn className="icon" />
                 <span>{t("sidebar.appointmentLocation")}</span>
               </Link>
             </li>
             <li>
               <Link to="/manage-services">
-                <FaShoppingCart className="icon" />
+                <PiShoppingCartLight className="icon" />
                 <span>{t("sidebar.manageServices")}</span>
               </Link>
             </li>
             <li>
               <Link to="/manage-team">
-                <FaUser className="icon" />
+                <PiUsersThreeLight className="icon" />
                 <span>{t("sidebar.manageTeam")}</span>
               </Link>
             </li>
-            <li>
+             <li>
               <Link to="/pationt-information">
                 <RiFileList3Line className="icon" />
                 <span>{t("sidebar.manageTeam")}</span>
@@ -111,31 +111,31 @@ const Sidebar = () => {
             </li>
             <li>
               <Link to="Messages">
-                <FaEnvelope className="icon" />
+                <LiaFacebookMessenger className="icon" />
                 <span>{t("sidebar.messages")}</span>
               </Link>
             </li>
             <li>
               <Link to="/manage-articles">
-                <FaBookmark className="icon" />
+                <CiBadgeDollar className="icon" />
                 <span>{t("sidebar.manageArticles")}</span>
               </Link>
             </li>
             <li>
               <Link to="/account-settings">
-                <FaCog className="icon" />
+                <LiaUserCogSolid className="icon" />
                 <span>{t("sidebar.accountSettings")}</span>
               </Link>
             </li>
             <li>
               <Link to="/security-settings">
-                <FaShieldAlt className="icon" />
+                <LiaUserShieldSolid className="icon" />
                 <span>{t("sidebar.securitySettings")}</span>
               </Link>
             </li>
             <li>
               <Link to="/">
-                <FaSignOutAlt className="icon" />
+                <CiLogout className="icon" />
                 <span>{t("sidebar.logout")}</span>
               </Link>
             </li>
