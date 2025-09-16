@@ -123,43 +123,27 @@ const AppointmentsTable = () => {
   const currentData = filteredAppointments.slice(startIndex, startIndex + rowsPerPage);
 
   return (
-    <div
-      className=""
-      style={{ width:"100%" }}
-    >
-      <div style={{marginLeft:"17px"}}>
-        <h3 style={{
-          marginBottom:"5px", 
-          fontSize:"1.75rem",
-          fontWeight:"500"
-        }}>List Appointments</h3>
-        <h6>Ibrahem makhasi </h6> 
+    <div className="appointments-container">
+      <div className="appointments-header">
+        <h3 className="appointments-title">List Appointments</h3>
+        <h6 className="appointments-subtitle">Ibrahem makhasi</h6>
       </div>
 
       <div className="p-3">
-        <div
-          style={{
-            padding: "30px",
-            border: "1px solid #f0f0f0",
-            // marginTop: "40px",
-            backgroundColor: "#fff",
-            boxShadow: "0px 0px 8px 3px #dddddd26",
-            borderRadius: "6px",
-          }}
-        >
-          {/*  Search with select */}
+        <div className="appointments-card">
+          {/* Search */}
           <InputGroup className="mb-3">
             <Form.Control
-              style={{ borderRadius: "6px" }}
+              className="search-input"
               type="text"
               placeholder={`Search by ${searchBy}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Form.Select
+              className="search-select"
               value={searchBy}
               onChange={(e) => setSearchBy(e.target.value)}
-              style={{ maxWidth: "300px", borderRadius: "6px" }}
             >
               <option value="all">All</option>
               <option value="date">Date</option>
@@ -169,19 +153,17 @@ const AppointmentsTable = () => {
             </Form.Select>
           </InputGroup>
 
-          <Table
-            className="align-middle mb-0 table-hover"
-            style={{ whiteSpace: "nowrap" }}
-          >
-                <thead className="table-light">
+          {/* Table */}
+          <Table className="appointments-table align-middle mb-0 table-hover">
+            <thead>
               <tr>
-                <th className="border-0">Date</th>
-                <th className="border-0">Time</th>
-                <th className="border-0">Session Type</th>
-                <th className="border-0">Status</th>
-                <th className="border-0">Procedures</th>
-                <th className="border-0">Notes</th>
-                <th className="border-0">Treatment Plan</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Session Type</th>
+                <th>Status</th>
+                <th>Procedures</th>
+                <th>Notes</th>
+                <th>Treatment Plan</th>
               </tr>
             </thead>
             <tbody>
@@ -195,7 +177,7 @@ const AppointmentsTable = () => {
 
                     <td>
                       <Button
-                      style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                        className="view-btn"
                         size="sm"
                         variant={
                           expandedRow === appt.id &&
@@ -211,7 +193,7 @@ const AppointmentsTable = () => {
 
                     <td>
                       <Button
-                      style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                        className="view-btn"
                         size="sm"
                         variant={
                           expandedRow === appt.id && expandedField === "notes"
@@ -226,7 +208,7 @@ const AppointmentsTable = () => {
 
                     <td>
                       <Button
-                      style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                        className="view-btn"
                         size="sm"
                         variant={
                           expandedRow === appt.id &&
@@ -245,7 +227,7 @@ const AppointmentsTable = () => {
 
                   {expandedRow === appt.id && (
                     <tr>
-                      <td colSpan="7" className="border-0 bg-light">
+                      <td colSpan="7" className="border-0">
                         <div className="p-3">
                           <CustomAccordion
                             data={appt[expandedField]}
@@ -290,81 +272,14 @@ const AppointmentsTable = () => {
             </tbody>
           </Table>
 
-          {/*  Pagination & Info Section */}
+          {/* Info & Pagination */}
           <div className="d-flex justify-content-between align-items-center mt-3">
-            {/*  Info Bar */}
-            <div
-              className="dt-layout-cell dt-layout-start"
-              style={{ fontSize: "14px", color: "#555" }}
-            >
-              <div
-                className="dt-info"
-                aria-live="polite"
-                id="DataTables_Table_0_info"
-                role="status"
-              >
-                Showing {startIndex + 1} to{" "}
-                {Math.min(
-                  startIndex + rowsPerPage,
-                  filteredAppointments.length
-                )}{" "}
-                of {filteredAppointments.length} entries
-              </div>
+            <div className="dt-layout-cell dt-layout-start info-bar">
+              Showing {startIndex + 1} to{" "}
+              {Math.min(startIndex + rowsPerPage, filteredAppointments.length)}{" "}
+              of {filteredAppointments.length} entries
             </div>
 
-            {/*  Pagination */}
-            <div className="dt-layout-cell dt-layout-end">
-              <div className="dt-paging">
-                <nav aria-label="pagination">
-                  <button
-                    className="dt-paging-button first"
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(1)}
-                  >
-                    «
-                  </button>
-                  <button
-                    className="dt-paging-button previous"
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((prev) => prev - 1)}
-                  >
-                    Previous
-                  </button>
-
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button
-                      key={index}
-                      className={`dt-paging-button none ${
-                        currentPage === index + 1 ? "current" : ""
-                      }`}
-                      type="button"
-                      onClick={() => setCurrentPage(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-
-                  <button
-                    className="dt-paging-button next"
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((prev) => prev + 1)}
-                  >
-                    Next
-                  </button>
-                  <button
-                    className="dt-paging-button last"
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(totalPages)}
-                  >
-                    »
-                  </button>
-                </nav>
-              </div>
-            </div>
           </div>
         </div>
       </div>

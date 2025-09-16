@@ -42,7 +42,7 @@ const CustomAccordion = ({
               <div className="dc-rightarea">
                 {/* Edit button */}
                 <a
-                  href="#"
+                  href="#!"
                   onClick={() => handleEditClick(index)}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
@@ -51,7 +51,7 @@ const CustomAccordion = ({
                 {/* Delete button */}
                 {onDelete && (
                   <a
-                    href="#"
+                    href="#!"
                     onClick={() => onDelete(index)}
                     className="dc-deleteinfo"
                   >

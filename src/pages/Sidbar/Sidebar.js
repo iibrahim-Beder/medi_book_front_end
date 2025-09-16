@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+
 // import icons 
+import DashboardIcon from "../../assets/icons/DashboardIcon";
 import { RiFileList3Line } from "react-icons/ri";
 import { LiaTachometerAltSolid } from "react-icons/lia";
 import { BsList } from "react-icons/bs";
@@ -69,7 +71,8 @@ const Sidebar = () => {
           <ul>
             <li>
               <Link to="/dashboard">
-                <LiaTachometerAltSolid className="icon" />
+               {/* <MyIcon   fill="red" /> */}
+                <DashboardIcon width={25} height={25} className="icon" />
                 <span>{t("sidebar.insights")}</span>
               </Link>
             </li>
