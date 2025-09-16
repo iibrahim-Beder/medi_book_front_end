@@ -6,8 +6,10 @@ import CustomAccordion from "../../../shared/CustomAccordion";
 const AppointmentsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [expandedField, setExpandedField] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // كلمة البحث
-  const [searchBy, setSearchBy] = useState("all"); // البحث بأي خانة
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1); 
+  const rowsPerPage = 5; 
 
   const appointmentsData = [
     {
@@ -69,6 +71,26 @@ const AppointmentsTable = () => {
         { type: "Plan D", date: "2025-09-21", content: "Reschedule after doctor availability." },
       ],
     },
+    {
+      id: "#AP005",
+      date: "21 Sep 2025",
+      time: "10:00 AM",
+      sessionType: "Clinic Visit",
+      status: "Confirmed",
+      procedures: [],
+      notes: [],
+      treatmentPlan: [],
+    },
+    {
+      id: "#AP006",
+      date: "22 Sep 2025",
+      time: "02:00 PM",
+      sessionType: "Video Call",
+      status: "Confirmed",
+      procedures: [],
+      notes: [],
+      treatmentPlan: [],
+    },
   ];
 
   const handleViewClick = (id, field) => {
@@ -81,7 +103,7 @@ const AppointmentsTable = () => {
     }
   };
 
-  // ✅ فلترة حسب SearchBy
+  //  SearchBy
   const filteredAppointments = appointmentsData.filter((appt) => {
     if (!searchTerm) return true;
 
@@ -95,8 +117,16 @@ const AppointmentsTable = () => {
     }
   });
 
+  //  Pagination
+  const totalPages = Math.ceil(filteredAppointments.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const currentData = filteredAppointments.slice(startIndex, startIndex + rowsPerPage);
+
   return (
-    <div className="shadow-sm mt-4" style={{ border: "none", borderRadius: "12px" }}>
+    <div
+      className="shadow-sm mt-4"
+      style={{ border: "none", borderRadius: "12px" }}
+    >
       <div>
         <h3 color="#333333">List Appointments</h3>
       </div>
@@ -112,7 +142,7 @@ const AppointmentsTable = () => {
             borderRadius: "6px",
           }}
         >
-          {/* ✅ Search with select */}
+          {/*  Search with select */}
           <InputGroup className="mb-3">
             <Form.Control
               style={{ borderRadius: "6px" }}
@@ -134,8 +164,11 @@ const AppointmentsTable = () => {
             </Form.Select>
           </InputGroup>
 
-          <Table className="align-middle mb-0 table-hover" style={{ whiteSpace: "nowrap" }}>
-            <thead className="table-light">
+          <Table
+            className="align-middle mb-0 table-hover"
+            style={{ whiteSpace: "nowrap" }}
+          >
+                <thead className="table-light">
               <tr>
                 <th className="border-0">Date</th>
                 <th className="border-0">Time</th>
@@ -147,21 +180,21 @@ const AppointmentsTable = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredAppointments.map((appt) => (
+              {currentData.map((appt) => (
                 <React.Fragment key={appt.id}>
                   <tr>
-                    <td className="border-0">{appt.date}</td>
-                    <td className="border-0">{appt.time}</td>
-                    <td className="border-0">{appt.sessionType}</td>
-                    <td className="border-0">{appt.status}</td>
+                    <td>{appt.date}</td>
+                    <td>{appt.time}</td>
+                    <td>{appt.sessionType}</td>
+                    <td>{appt.status}</td>
 
-                    {/* Procedures */}
-                    <td className="border-0">
+                    <td>
                       <Button
-                        style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                      style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
                         size="sm"
                         variant={
-                          expandedRow === appt.id && expandedField === "procedures"
+                          expandedRow === appt.id &&
+                          expandedField === "procedures"
                             ? "primary"
                             : "outline-primary"
                         }
@@ -171,10 +204,9 @@ const AppointmentsTable = () => {
                       </Button>
                     </td>
 
-                    {/* Notes */}
-                    <td className="border-0">
+                    <td>
                       <Button
-                        style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                      style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
                         size="sm"
                         variant={
                           expandedRow === appt.id && expandedField === "notes"
@@ -187,24 +219,25 @@ const AppointmentsTable = () => {
                       </Button>
                     </td>
 
-                    {/* Treatment Plan */}
-                    <td className="border-0">
+                    <td>
                       <Button
-                        style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
+                      style={{ backgroundColor: "none", border: "none", boxShadow: "none" }}
                         size="sm"
                         variant={
-                          expandedRow === appt.id && expandedField === "treatmentPlan"
+                          expandedRow === appt.id &&
+                          expandedField === "treatmentPlan"
                             ? "primary"
                             : "outline-primary"
                         }
-                        onClick={() => handleViewClick(appt.id, "treatmentPlan")}
+                        onClick={() =>
+                          handleViewClick(appt.id, "treatmentPlan")
+                        }
                       >
                         View
                       </Button>
                     </td>
                   </tr>
 
-                  {/* الصف اللي فيه CustomAccordion */}
                   {expandedRow === appt.id && (
                     <tr>
                       <td colSpan="7" className="border-0 bg-light">
@@ -226,11 +259,22 @@ const AppointmentsTable = () => {
                                 placeholder: "Select Type",
                                 half: true,
                               },
-                              { name: "date", type: "date", placeholder: "Date", half: true },
-                              { name: "content", type: "textarea", placeholder: "Content" },
+                              {
+                                name: "date",
+                                type: "date",
+                                placeholder: "Date",
+                                half: true,
+                              },
+                              {
+                                name: "content",
+                                type: "textarea",
+                                placeholder: "Content",
+                              },
                             ]}
                             onAdd={() => alert(`Add ${expandedField}`)}
-                            onDelete={(index) => alert(`Delete ${expandedField} ${index}`)}
+                            onDelete={(index) =>
+                              alert(`Delete ${expandedField} ${index}`)
+                            }
                           />
                         </div>
                       </td>
@@ -241,42 +285,80 @@ const AppointmentsTable = () => {
             </tbody>
           </Table>
 
-          {/* ✅ Pagination Section */}
-          <div className="dt-layout-cell dt-layout-end mt-3">
-            <div className="dt-paging">
-              <nav aria-label="pagination">
-                <button
-                  className="dt-paging-button disabled first"
-                  type="button"
-                  aria-label="First"
-                  aria-disabled="true"
-                  tabIndex="-1"
-                >
-                  «
-                </button>
-                <button
-                  className="dt-paging-button disabled previous"
-                  type="button"
-                  aria-label="Previous"
-                  aria-disabled="true"
-                  tabIndex="-1"
-                >
-                  Previous
-                </button>
-                <button
-                  className="dt-paging-button current"
-                  type="button"
-                  aria-current="page"
-                >
-                  1
-                </button>
-                <button className="dt-paging-button next" type="button" aria-label="Next">
-                  Next
-                </button>
-                <button className="dt-paging-button last" type="button" aria-label="Last">
-                  »
-                </button>
-              </nav>
+          {/*  Pagination & Info Section */}
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            {/*  Info Bar */}
+            <div
+              className="dt-layout-cell dt-layout-start"
+              style={{ fontSize: "14px", color: "#555" }}
+            >
+              <div
+                className="dt-info"
+                aria-live="polite"
+                id="DataTables_Table_0_info"
+                role="status"
+              >
+                Showing {startIndex + 1} to{" "}
+                {Math.min(
+                  startIndex + rowsPerPage,
+                  filteredAppointments.length
+                )}{" "}
+                of {filteredAppointments.length} entries
+              </div>
+            </div>
+
+            {/*  Pagination */}
+            <div className="dt-layout-cell dt-layout-end">
+              <div className="dt-paging">
+                <nav aria-label="pagination">
+                  <button
+                    className="dt-paging-button first"
+                    type="button"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(1)}
+                  >
+                    «
+                  </button>
+                  <button
+                    className="dt-paging-button previous"
+                    type="button"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                  >
+                    Previous
+                  </button>
+
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index}
+                      className={`dt-paging-button none ${
+                        currentPage === index + 1 ? "current" : ""
+                      }`}
+                      type="button"
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    className="dt-paging-button next"
+                    type="button"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className="dt-paging-button last"
+                    type="button"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                  >
+                    »
+                  </button>
+                </nav>
+              </div>
             </div>
           </div>
         </div>

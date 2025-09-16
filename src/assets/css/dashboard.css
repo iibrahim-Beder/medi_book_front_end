@@ -2721,7 +2721,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
     border: 1px solid #ddd;
 }
 /* DASHBOARD TABS STYLE */
-.dc-dashboardtabsholder{background: #fcfcfc;}
+.dc-dashboardtabsholder{background: #fff;}
 .dc-dashboardtabs{
 	width: 30%;
 	float: left;
@@ -2748,6 +2748,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
     font: 400 16px / 20px 'Poppins', Arial, Helvetica, sans-serif;
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent; 
+	    box-shadow: 6px 0px 0px 0px #d9d9d912;
 }
 .dc-tabstitle li:first-child a{border-top: 0;}
 .dc-tabstitle li a.active{
@@ -2763,7 +2764,8 @@ body.dc-userlogin .dc-loginarea{display: none;}
 
 }
 .dc-tabstitle li a.active{
-	border-color: #f2f2f2;
+	box-shadow: none;
+	border-color: #e3e3e3;
     letter-spacing: 1px;
 }
 
@@ -2803,7 +2805,7 @@ background-color: #f8f9fa;
 	    /* background-color: var(--cardcolor); */
 		
 	     background-color: #f8f9fa; 
-		    border-left: 1px solid #f2f2f2;
+		    border-left: 1px solid #e3e3e3;
 }
 .dc-personalskillshold{
 	float: left;

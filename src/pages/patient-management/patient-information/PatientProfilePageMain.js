@@ -59,7 +59,7 @@ export default function PatientProfilePageMain() {
           </div>
 
           {/* Tabs Content */}
-          <div className="dc-tabscontent tab-content" style={{width:"80%"}}>
+          <div className="dc-tabscontent tab-content" style={{width:"80%", display:"flex", justifyContent:"center"}}>
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />}
           {activeTab === "Notes" && <PatientNotes />}

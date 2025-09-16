@@ -19,7 +19,6 @@ top: 0;
 }
 
 
-/* تصميم التبويبات */
 .dc-tabstitle {
   display: flex;
   border-bottom: 1px solid #eeeeee66;
@@ -532,11 +531,54 @@ background-color: transparent;
     box-shadow: rgb(221 221 221 / 25%) 0px 0px 8px 3px !important;
     /* border-radius: 6px !important; */
     width: 95% !important;
+    margin-top: 33px;
 }
 
 
 /* card Info end */
 
+
+
+
+
+  /* Pagination & Info Section  css start*/
+  .dt-paging-button.previous{
+    border: 1px solid #ddd;
+    border-right: none;
+    border-radius: 6px 0px 0 7px;
+   }
+   .dt-paging-button.next{
+     padding: 5px 15px;
+     font-size: 14px;
+     margin: 0 ;
+     border-radius: 0 5px 5px 0 ;
+     border: 1px solid #dee2e6 ;
+   border-left: 0 ;
+ }
+ .dt-paging-button{
+   border: 1px solid #ddd;
+   border-right: 0;
+   border-left: 0;
+   /* width: 30xp; */
+   padding: 5px;
+ }
+ .dt-paging-button.current{
+   display: inline;
+   background-color: var(--themecolor);
+   background: #00d0f1 !important;
+   border-color: #00d0f1 !important;
+   width: 40px;
+ }
+ .dt-paging-button.last,.dt-paging-button.first{
+   border: none;
+ }
+ .none{display: none;}
+ 
+/* Pagination & Info Section  css end*/
+
+  
+
+  
 
 
 
