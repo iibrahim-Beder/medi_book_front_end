@@ -124,11 +124,16 @@ const AppointmentsTable = () => {
 
   return (
     <div
-      className="shadow-sm mt-4"
-      style={{ border: "none", borderRadius: "12px" }}
+      className=""
+      style={{ width:"100%" }}
     >
-      <div>
-        <h3 color="#333333">List Appointments</h3>
+      <div style={{marginLeft:"17px"}}>
+        <h3 style={{
+          marginBottom:"5px", 
+          fontSize:"1.75rem",
+          fontWeight:"500"
+        }}>List Appointments</h3>
+        <h6>Ibrahem makhasi </h6> 
       </div>
 
       <div className="p-3">
@@ -136,7 +141,7 @@ const AppointmentsTable = () => {
           style={{
             padding: "30px",
             border: "1px solid #f0f0f0",
-            marginTop: "40px",
+            // marginTop: "40px",
             backgroundColor: "#fff",
             boxShadow: "0px 0px 8px 3px #dddddd26",
             borderRadius: "6px",

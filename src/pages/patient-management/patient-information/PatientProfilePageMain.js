@@ -34,9 +34,7 @@ export default function PatientProfilePageMain() {
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace">
         <div className="dc-dashboardbox dc-dashboardtabsholder ">
-          <div className="dc-dashboardboxtitle">
-            <h2>patient profil information </h2>
-          </div>
+         
 
           {/* Tabs Navigation */}
           <div className="dc-dashboardtabs" style={{width:"20%"}}>
