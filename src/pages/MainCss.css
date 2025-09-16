@@ -631,11 +631,14 @@ background-color: transparent;
 }
 
 .view-btn {
-  background: none !important;
+  background: none ;
   border: none !important;
   box-shadow: none !important;
 }
-
+.search-select.form-select{
+  border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 .info-bar {
   font-size: 14px;
   color: #555;

@@ -272,18 +272,86 @@ const AppointmentsTable = () => {
             </tbody>
           </Table>
 
-          {/* Info & Pagination */}
+        {/*  Pagination & Info Section */}
           <div className="d-flex justify-content-between align-items-center mt-3">
-            <div className="dt-layout-cell dt-layout-start info-bar">
-              Showing {startIndex + 1} to{" "}
-              {Math.min(startIndex + rowsPerPage, filteredAppointments.length)}{" "}
-              of {filteredAppointments.length} entries
+            {/*  Info Bar */}
+            <div
+              className="dt-layout-cell dt-layout-start"
+              style={{ fontSize: "14px", color: "#555" }}
+            >
+              <div
+                className="dt-info"
+                aria-live="polite"
+                id="DataTables_Table_0_info"
+                role="status"
+              >
+                Showing {startIndex + 1} to{" "}
+                {Math.min(
+                  startIndex + rowsPerPage,
+                  filteredAppointments.length
+                )}{" "}
+                of {filteredAppointments.length} entries
+              </div>
             </div>
+
+            {/*  Pagination */}
+            <div className="dt-layout-cell dt-layout-end">
+              <div className="dt-paging">
+                <nav aria-label="pagination">
+                  <button
+                    className="dt-paging-button first"
+                    type="button"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(1)}
+                  >
+                    «
+                  </button>
+                  <button
+                    className="dt-paging-button previous"
+                    type="button"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                  >
+                    Previous
+                  </button>
+
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index}
+                      className={`dt-paging-button none ${
+                        currentPage === index + 1 ? "current" : ""
+                      }`}
+                      type="button"
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    className="dt-paging-button next"
+                    type="button"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className="dt-paging-button last"
+                    type="button"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                  >
+                    »
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </div>
 
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
