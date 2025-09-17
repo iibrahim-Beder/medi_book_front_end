@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { FiEdit2 } from "react-icons/fi";
+import { IoTrashOutline } from "react-icons/io5";
+import { useEffect } from "react";
 import "../MainCss.css";
 
 const CustomAccordion = ({
@@ -12,11 +15,14 @@ const CustomAccordion = ({
   onDelete,
 }) => {
   const [openIndex, setOpenIndex] = useState(null);
+useEffect(() => {
+  setOpenIndex(null);
+}, [data]);
 
   const handleEditClick = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
+  
   return (
     <div className="dc-userexperience">
       {/* Header */}
@@ -46,7 +52,7 @@ const CustomAccordion = ({
                   onClick={() => handleEditClick(index)}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
-                  <FaPencilAlt />
+                  <FiEdit2 />
                 </a>
                 {/* Delete button */}
                 {onDelete && (
@@ -55,7 +61,7 @@ const CustomAccordion = ({
                     onClick={() => onDelete(index)}
                     className="dc-deleteinfo"
                   >
-                    <FaTrash />
+                    <IoTrashOutline />
                   </a>
                 )}
               </div>

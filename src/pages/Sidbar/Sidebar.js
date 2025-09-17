@@ -16,7 +16,7 @@ import { LiaUserCogSolid } from "react-icons/lia";
 import { LiaUserShieldSolid } from "react-icons/lia";
 import { CiLogout } from "react-icons/ci";
 import { CiBadgeDollar } from "react-icons/ci";
-
+import InfomationIcon from "../../assets/icons/InfomationIcon";
 import { 
   FaTachometerAlt,
   FaListAlt,
@@ -108,7 +108,7 @@ const Sidebar = () => {
             </li>
              <li>
               <Link to="/pationt-information">
-                <RiFileList3Line className="icon" />
+                <InfomationIcon width={25} height={25} className="icon" />
                 <span>{t("sidebar.manageTeam")}</span>
               </Link>
             </li>

@@ -126,7 +126,7 @@ const AppointmentsTable = () => {
     <div className="appointments-container">
       <div className="appointments-header">
         <h3 className="appointments-title">List Appointments</h3>
-        <h6 className="appointments-subtitle">Ibrahem makhasi</h6>
+        <h6 className="appointments-subtitle">Ahmed Mohamed Ali </h6>
       </div>
 
       <div className="p-3">
@@ -227,7 +227,7 @@ const AppointmentsTable = () => {
 
                   {expandedRow === appt.id && (
                     <tr>
-                      <td colSpan="7" className="border-0">
+                      <td colSpan="7" className="border-0 background-in-hover-none">
                         <div className="p-3">
                           <CustomAccordion
                             data={appt[expandedField]}
