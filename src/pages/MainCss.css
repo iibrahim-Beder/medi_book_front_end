@@ -650,7 +650,25 @@ background-color: transparent;
 .pagination-buttons button {
   margin-left: 3px;
 }
+/* 
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 70% !important;
+    
+    }
+} */
 
+
+
+/* .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.form-grid-full {
+  grid-column: span 2;
+} */
 
 /* patient tabs css end  */
 

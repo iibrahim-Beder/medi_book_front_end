@@ -16,7 +16,8 @@ const TextAreaField = ({
   const showError = error && (touched || forceShowError);
 
   return (
-    <div className={`form-group ${showError ? "has-error" : ""}`}>
+    <div className={`form-group ${showError ? "has-error" : ""}` }
+    style={{gridColumn:"span 2"}}>
       <label htmlFor={name}>
         <span>{label}</span>
       </label>
@@ -25,6 +26,8 @@ const TextAreaField = ({
           {icon}
         </span>
         <textarea
+        
+        style={{minHeight:"100px"}}
           id={name}
           name={name}
           rows={3}

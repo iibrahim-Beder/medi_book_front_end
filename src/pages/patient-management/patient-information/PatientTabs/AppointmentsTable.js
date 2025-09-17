@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { FaEye, FaPencilAlt } from "react-icons/fa";
+import DynamicEditModal from "../../../shared/DynamicEditModal"; // ← المسار حسب مكانه
 
 const MedicalHistoryTable = () => {
   const [historyData, setHistoryData] = useState([
@@ -46,12 +47,16 @@ const MedicalHistoryTable = () => {
     setShowModal(false);
   };
 
+  const fields = [
+    { name: "eventType", label: "Event Type", type: "text" },
+    { name: "date", label: "Date", type: "text" },
+    { name: "details", label: "Details", type: "textarea" ,fullWidth: true},
+    { name: "notes", label: "Notes", type: "textarea", fullWidth: true }, 
+
+  ];
+
   return (
-    <div
-      className="shadow-sm mt-4"
-      style={{ border: "none", borderRadius: "12px" }}
-    >
-      {/* Header */}
+    <div className="shadow-sm mt-4" style={{ borderRadius: "12px" }}>
       <div className="dc-tabscontenttitle dc-addnew">
         <h3>Medical History</h3>
         <a href="#">Add Record</a>
@@ -100,67 +105,16 @@ const MedicalHistoryTable = () => {
         </Table>
       </div>
 
-      {/* Edit Modal */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Medical Record</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {editRecord && (
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Event Type</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={editRecord.eventType}
-                  onChange={(e) =>
-                    setEditRecord({ ...editRecord, eventType: e.target.value })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Date</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={editRecord.date}
-                  onChange={(e) =>
-                    setEditRecord({ ...editRecord, date: e.target.value })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Details</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={editRecord.details}
-                  onChange={(e) =>
-                    setEditRecord({ ...editRecord, details: e.target.value })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Notes</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={3}
-                  value={editRecord.notes}
-                  onChange={(e) =>
-                    setEditRecord({ ...editRecord, notes: e.target.value })
-                  }
-                />
-              </Form.Group>
-            </Form>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="btn btn-light" variant="secondary" onClick={() => setShowModal(false)}>
-            Cancel
-          </Button>
-          <Button class="dc-btn"  onClick={handleSave}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {/* Reusable Modal */}
+      <DynamicEditModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onSave={handleSave}
+        record={editRecord}
+        setRecord={setEditRecord}
+        fields={fields}
+        title="Edit Medical Record"
+      />
     </div>
   );
 };

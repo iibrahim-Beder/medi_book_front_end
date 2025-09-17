@@ -550,7 +550,8 @@ address { font-style: italic; }
 	text-transform: capitalize;
 	color: var(--terthemecolor);
 	font:400 14px/46px 'Poppins', Arial, Helvetica, sans-serif;
-	border-color: var(--themecolor);
+	/* border-color: var(--themecolor); */
+	border-color: #3fabf3;
     max-height: 55px;
 }
 .dc-btn[type="submit"]{background: transparent;}
@@ -563,8 +564,9 @@ address { font-style: italic; }
 .dc-btnactive:focus {color:#fff;}
 .dc-btnactive,
 .dc-btn:hover{
-	border-color: var(--themecolor);
-	background-color:var(--themecolor);
+	/* border-color: var(--themecolor); */
+	/* background-color:var(--themecolor); */
+	background-color: #3fabf3;
 		-webkit-box-shadow: 0 9px 20px 0 var(--shadowcolor);
 	box-shadow: 0 9px 20px 0 var(--shadowcolor);
 }
