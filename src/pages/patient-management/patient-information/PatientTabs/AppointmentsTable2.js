@@ -123,50 +123,50 @@ const AppointmentsTable = () => {
   const currentData = filteredAppointments.slice(startIndex, startIndex + rowsPerPage);
 
   return (
-    <div className="appointments-container">
-      <div className="appointments-header">
-        <h3 className="appointments-title">List Appointments</h3>
-        <h6 className="appointments-subtitle">Ahmed Mohamed Ali </h6>
-      </div>
+     <div className="table-container">
+    <div className="table-header">
+      <h3 className="table-title">List Appointments</h3>
+      <h6 className="table-subtitle">Ahmed Mohamed Ali </h6>
+    </div>
 
-      <div className="p-3">
-        <div className="appointments-card">
-          {/* Search */}
-          <InputGroup className="mb-3">
-            <Form.Control
-              className="search-input"
-              type="text"
-              placeholder={`Search by ${searchBy}...`}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Form.Select
-              className="search-select"
-              value={searchBy}
-              onChange={(e) => setSearchBy(e.target.value)}
-            >
-              <option value="all">All</option>
-              <option value="date">Date</option>
-              <option value="time">Time</option>
-              <option value="sessionType">Session Type</option>
-              <option value="status">Status</option>
-            </Form.Select>
-          </InputGroup>
+    <div className="p-3">
+      <div className="table-card">
+        {/* Search */}
+        <InputGroup className="mb-3">
+          <Form.Control
+            className="search-input"
+            type="text"
+            placeholder={`Search by ${searchBy}...`}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Form.Select
+            className="search-select"
+            value={searchBy}
+            onChange={(e) => setSearchBy(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="date">Date</option>
+            <option value="time">Time</option>
+            <option value="sessionType">Session Type</option>
+            <option value="status">Status</option>
+          </Form.Select>
+        </InputGroup>
 
-          {/* Table */}
-          <Table className="appointments-table align-middle mb-0 table-hover">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Session Type</th>
-                <th>Status</th>
-                <th>Procedures</th>
-                <th>Notes</th>
-                <th>Treatment Plan</th>
-              </tr>
-            </thead>
-            <tbody>
+        {/* Table */}
+        <Table className="data-table align-middle mb-0 table-hover">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Session Type</th>
+              <th>Status</th>
+              <th>Procedures</th>
+              <th>Notes</th>
+              <th>Treatment Plan</th>
+            </tr>
+          </thead>
+          <tbody>
               {currentData.map((appt) => (
                 <React.Fragment key={appt.id}>
                   <tr>

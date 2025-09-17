@@ -24,9 +24,9 @@ export default function PatientProfilePageMain() {
     { key: "Appointments", label: "Appointments"},
     { key: "Notes", label: "Nots"},
     // { key: "Files", label: "📎 الملفات والمرفقات", icon: <FaPaperclip /> },
-    { key: "TreatmentPlans", label: "Allergies", icon: <FaFileAlt /> },
-    { key: "Notifications", label:"Notifications", icon: <FaBell /> },
-    { key: "MedicalHistory", label: "Medical History", icon: <FaCog /> },
+    { key: "TreatmentPlans", label: "Allergies" },
+    { key: "Notifications", label:"Notifications" },
+    { key: "MedicalHistory", label: "Medical History" },
     // { key: "Statistics", label: "📊 الإحصائيات", icon: <FaChartPie /> },
   ];
 
@@ -34,22 +34,21 @@ export default function PatientProfilePageMain() {
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace">
         <div className="dc-dashboardbox dc-dashboardtabsholder ">
-         
-
           {/* Tabs Navigation */}
-          <div className="dc-dashboardtabs" style={{width:"20%"}}>
+          <div className="dc-dashboardtabs" style={{ width: "20%" }}>
             <ul className="dc-tabstitle nav navbar-nav">
               {tabs.map((tab) => (
                 <li className="nav-item" key={tab.key}>
                   <a
                     href={`#${tab.key}`}
-         PatientNotes           className={`${activeTab === tab.key ? "active" : ""}`}
+                    PatientNotes
+                    className={`${activeTab === tab.key ? "active" : ""}`}
                     onClick={(e) => {
                       e.preventDefault();
                       setActiveTab(tab.key);
                     }}
                   >
-                     {tab.label}
+                    {tab.label}
                   </a>
                 </li>
               ))}
@@ -57,15 +56,18 @@ export default function PatientProfilePageMain() {
           </div>
 
           {/* Tabs Content */}
-          <div className="dc-tabscontent tab-content" style={{width:"80%", display:"flex", justifyContent:"center"}}>
+          <div
+            className="dc-tabscontent tab-content"
+            style={{ width: "80%", display: "flex", justifyContent: "center" }}
+          >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable2 />}
-          {activeTab === "Notes" && <PatientNotes />}
-              {/* {activeTab === "Files" && <PatientFiles />}
+            {activeTab === "Notes" && <PatientNotes />}
+            {/* {activeTab === "Files" && <PatientFiles />}
             {activeTab === "TreatmentPlans" && <PatientTreatmentPlans />}
             {activeTab === "Settings" && <PatientSettings />}
             {activeTab === "Statistics" && <PatientStatistics />} */}
-            {activeTab === "Notifications" && <AppointmentsTable2 />}
+            {activeTab === "Notifications" && <AppointmentsTable />}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
           </div>
         </div>

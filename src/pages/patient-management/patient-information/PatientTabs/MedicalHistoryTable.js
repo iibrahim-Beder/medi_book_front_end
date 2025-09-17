@@ -1,97 +1,224 @@
-import React from "react";
-import { Table, Button } from "react-bootstrap";
-import { FaEye, FaPencilAlt } from "react-icons/fa";
+import React, { useState } from "react";
+import { Table, Button, InputGroup, Form } from "react-bootstrap";
+import "../../Patient-management.css";
 
 const MedicalHistoryTable = () => {
-  const historyData = [
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
+
+  const medicalHistory = [
     {
-      id: "H001",
+      id: "MH001",
+      date: "2025-08-10",
       eventType: "Surgery",
-      date: "12 Jan 2023",
-      details: "Appendix removal",
-      notes: "Successful operation, no complications",
+      description: "Appendectomy performed successfully.",
+      notes: "No complications. Fast recovery expected.",
     },
     {
-      id: "H002",
-      eventType: "Hospitalization",
-      date: "03 Mar 2024",
-      details: "Admitted for pneumonia",
-      notes: "Required 5 days stay, antibiotics prescribed",
+      id: "MH002",
+      date: "2025-07-05",
+      eventType: "Lab Test",
+      description: "Blood test for routine check.",
+      notes: "Cholesterol slightly elevated.",
     },
     {
-      id: "H003",
-      eventType: "Checkup",
-      date: "25 Aug 2025",
-      details: "Routine annual check",
-      notes: "Blood pressure slightly high",
+      id: "MH003",
+      date: "2025-06-20",
+      eventType: "Clinic Visit",
+      description: "Follow-up for diabetes.",
+      notes: "Medication adjusted.",
+    },
+    {
+      id: "MH004",
+      date: "2025-05-15",
+      eventType: "Imaging",
+      description: "X-ray for chest pain.",
+      notes: "Normal results.",
+    },
+    {
+      id: "MH005",
+      date: "2025-04-10",
+      eventType: "Vaccination",
+      description: "Flu shot administered.",
+      notes: "No side effects.",
+    },
+    {
+      id: "MH006",
+      date: "2025-03-22",
+      eventType: "Emergency Visit",
+      description: "Shortness of breath.",
+      notes: "Treated and discharged.",
     },
   ];
 
-  const handleView = (record) => {
-    alert(`Viewing record:\n${JSON.stringify(record, null, 2)}`);
-  };
+  const handleView = (id) => alert(`View details of ${id}`);
+  const handleEdit = (id) => alert(`Edit entry ${id}`);
 
-  const handleEdit = (record) => {
-    alert(`Editing record:\n${JSON.stringify(record, null, 2)}`);
-  };
+  const filteredData = medicalHistory.filter((entry) => {
+    if (!searchTerm) return true;
+
+    const lowerTerm = searchTerm.toLowerCase();
+    if (searchBy === "all") {
+      return (
+        entry.id.toLowerCase().includes(lowerTerm) ||
+        entry.date.toLowerCase().includes(lowerTerm) ||
+        entry.eventType.toLowerCase().includes(lowerTerm) ||
+        entry.description.toLowerCase().includes(lowerTerm) ||
+        entry.notes.toLowerCase().includes(lowerTerm)
+      );
+    } else {
+      return entry[searchBy]?.toLowerCase().includes(lowerTerm);
+    }
+  });
+
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
   return (
-    <div
-      className="shadow-sm mt-4"
-      style={{ border: "none", borderRadius: "12px" }}
-    >
-      {/* Header */}
-      <div className="dc-tabscontenttitle dc-addnew">
-        <h3>Medical History</h3>
-        <a href="#">Add Record</a>
+    <div className="table-container">
+      <div className="table-header">
+        <h3 className="table-title">Medical History</h3>
+        <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
       </div>
 
       <div className="p-3">
-        <Table
-          className="align-middle mb-0 table-hover"
-          style={{ whiteSpace: "nowrap" }}
-        >
-          <thead className="table-light">
-            <tr>
-              <th className="border-0">ID</th>
-              <th className="border-0">Event Type</th>
-              <th className="border-0">Date</th>
-              <th className="border-0">Details</th>
-              <th className="border-0">Notes</th>
-              <th className="border-0 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {historyData.map((record) => (
-              <tr key={record.id}>
-                <td className="border-0">{record.id}</td>
-                <td className="border-0">{record.eventType}</td>
-                <td className="border-0">{record.date}</td>
-                <td className="border-0">{record.details}</td>
-                <td className="border-0">{record.notes}</td>
-                <td className="border-0 text-center">
-                  <Button
-                    size="sm"
-                    variant="outline-primary"
-                    className="me-2"
-                    onClick={() => handleView(record)}
-                    style={{ border: "none", boxShadow: "none" }}
-                  >
-                    <FaEye />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline-secondary"
-                    onClick={() => handleEdit(record)}
-                    style={{ border: "none", boxShadow: "none" }}
-                  >
-                    <FaPencilAlt />
-                  </Button>
-                </td>
+        <div className="table-card">
+          {/* Search */}
+          <InputGroup className="mb-3">
+            <Form.Control
+              className="search-input"
+              type="text"
+              placeholder={`Search by ${searchBy}...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Form.Select
+              className="search-select"
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="date">Date</option>
+              <option value="eventType">Event Type</option>
+              <option value="description">Description</option>
+              <option value="notes">Notes</option>
+            </Form.Select>
+          </InputGroup>
+
+          {/* Table */}
+          <div style={{overflow:"auto"}}> 
+
+          <Table className="data-table align-middle  table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Event Type</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {currentData.map((entry) => (
+                <tr key={entry.id}>
+                  <td>{entry.id}</td>
+                  <td>{entry.date}</td>
+                  <td>{entry.eventType}</td>
+                  <td>{entry.description}</td>
+                  <td>{entry.notes}</td>
+                  <td>
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleView(entry.id)}
+                    >
+                      👁️
+                    </Button>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => handleEdit(entry.id)}
+                    >
+                      ✏️
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+
+              {currentData.length === 0 && (
+                <tr>
+                  <td colSpan="6" className="text-center text-muted">
+                    No records found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+          </div>
+
+          {/* Pagination & Info */}
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            <div className="info-bar">
+              Showing {startIndex + 1} to{" "}
+              {Math.min(startIndex + rowsPerPage, filteredData.length)} of{" "}
+              {filteredData.length} entries
+            </div>
+
+            <div className="pagination-buttons">
+              <button
+                className="dt-paging-button first"
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(1)}
+              >
+                «
+              </button>
+              <button
+                className="dt-paging-button previous"
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+              >
+                Previous
+              </button>
+
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  className={`dt-paging-button none ${
+                    currentPage === index + 1 ? "current" : ""
+                  }`}
+                  type="button"
+                  onClick={() => setCurrentPage(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                className="dt-paging-button next"
+                type="button"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+              >
+                Next
+              </button>
+              <button
+                className="dt-paging-button last"
+                type="button"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(totalPages)}
+              >
+                »
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
