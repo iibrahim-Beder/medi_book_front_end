@@ -107,8 +107,12 @@ const DynamicEditModal = ({
           gap: "0.8rem",
         }}
       >
-        <button className="btn btn-light" >Cancel</button>
-        <button className="dc-btn">Save Changes</button>
+        <button  className="btn btn-light"    
+        onClick={onClose}
+         >Cancel</button>
+        <button  
+        onClick={onSave}
+        className="dc-btn">Save Changes</button>
       </Modal.Footer>
     </Modal>
   );

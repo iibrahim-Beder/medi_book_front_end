@@ -37,3 +37,37 @@ border-bottom: 1px solid #dee2e670 !important;
   display: none;
   background-color: transparent !important;
 }
+.btn-outline-primary,.btn-outline-secondary{
+  border: none !important;
+  box-shadow: none;
+  margin: 2px;
+  background-color: #0000ff08 !important;
+
+}
+.btn-outline-primary{
+ 
+    color: #007bff;
+    /* background-color: #0000ff08 !important; */
+    width: 40px;
+    border-color: #007bff;
+    height: 35px;
+    padding: 4px !important;
+    
+    
+}
+.btn-outline-secondary{
+    height: 35px;
+    width: 40px;
+  /* background-color: #0000000f !important; */
+    padding: 4px !important;
+
+}
+.btn-outline-secondary:hover{
+  background-color: #6c757d !important;
+}
+.btn-outline-primary:hover{
+      background-color: #007bff !important;
+}
+.table-hover tbody tr:hover{
+  background-color: rgba(207, 207, 207, 0.075) !important;
+}

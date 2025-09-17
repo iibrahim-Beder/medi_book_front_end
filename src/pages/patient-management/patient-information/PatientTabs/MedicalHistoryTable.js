@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { Table, Button, InputGroup, Form } from "react-bootstrap";
+import DynamicEditModal from "../../../shared/DynamicEditModal"; 
 import "../../Patient-management.css";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 
 const MedicalHistoryTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+
   const rowsPerPage = 5;
 
   const medicalHistory = [
@@ -53,8 +60,26 @@ const MedicalHistoryTable = () => {
     },
   ];
 
+  // تعريف الحقول اللي هتظهر في DynamicEditModal
+  const fields = [
+    { name: "id", label: "ID", type: "text", placeholder: "Enter ID" },
+    { name: "date", label: "Date", type: "date" },
+    { name: "eventType", label: "Event Type", type: "text", placeholder: "Enter event type" },
+    { name: "description", label: "Description", type: "textarea", placeholder: "Enter description" },
+    { name: "notes", label: "Notes", type: "textarea", placeholder: "Enter notes" },
+  ];
+
   const handleView = (id) => alert(`View details of ${id}`);
-  const handleEdit = (id) => alert(`Edit entry ${id}`);
+
+  const handleEdit = (entry) => {
+    setSelectedRecord(entry);   // حفظ البيانات الحالية في الاستيت
+    setShowModal(true);         // فتح المودال
+  };
+
+  const handleSave = () => {
+    console.log("Saved record:", selectedRecord);
+    setShowModal(false);
+  };
 
   const filteredData = medicalHistory.filter((entry) => {
     if (!searchTerm) return true;
@@ -110,55 +135,55 @@ const MedicalHistoryTable = () => {
 
           {/* Table */}
           <div style={{overflow:"auto"}}> 
-
-          <Table className="data-table align-middle  table-hover">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Event Type</th>
-                <th>Description</th>
-                <th>Notes</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentData.map((entry) => (
-                <tr key={entry.id}>
-                  <td>{entry.id}</td>
-                  <td>{entry.date}</td>
-                  <td>{entry.eventType}</td>
-                  <td>{entry.description}</td>
-                  <td>{entry.notes}</td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="me-2"
-                      onClick={() => handleView(entry.id)}
-                    >
-                      👁️
-                    </Button>
-                    <Button
-                      variant="outline-secondary"
-                      size="sm"
-                      onClick={() => handleEdit(entry.id)}
-                    >
-                      ✏️
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-
-              {currentData.length === 0 && (
+            <Table className="data-table align-middle  table-hover">
+              <thead>
                 <tr>
-                  <td colSpan="6" className="text-center text-muted">
-                    No records found.
-                  </td>
+                  <th>ID</th>
+                  <th>Date</th>
+                  <th>Event Type</th>
+                  <th>Description</th>
+                  <th>Notes</th>
+                  <th>Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {currentData.map((entry) => (
+                  <tr key={entry.id}>
+                    <td>{entry.id}</td>
+                    <td>{entry.date}</td>
+                    <td>{entry.eventType}</td>
+                    <td>{entry.description}</td>
+                    <td>{entry.notes}</td>
+                    <td>
+                      <Button
+                    
+                        variant="outline-primary"
+                        size="lg"
+                        className="me-2"
+                        onClick={() => handleView(entry.id)}
+                      >
+                      <MdOutlineRemoveRedEye/>
+                      </Button>
+                      <Button
+                        variant="outline-secondary"
+                        size="lg"
+                        onClick={() => handleEdit(entry)}
+                        >
+                        <FaRegEdit/>
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+
+                {currentData.length === 0 && (
+                  <tr>
+                    <td colSpan="6" className="text-center text-muted">
+                      No records found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
           </div>
 
           {/* Pagination & Info */}
@@ -220,6 +245,19 @@ const MedicalHistoryTable = () => {
           </div>
         </div>
       </div>
+
+      {/* مودال التعديل */}
+      {selectedRecord && (
+        <DynamicEditModal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          onSave={handleSave}
+          record={selectedRecord}
+          setRecord={setSelectedRecord}
+          fields={fields}
+          title="Edit Medical History"
+        />
+      )}
     </div>
   );
 };
