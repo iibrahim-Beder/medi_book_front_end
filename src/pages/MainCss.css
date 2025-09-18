@@ -447,7 +447,7 @@ button:focus {
 /* hr css end*/
 
 .background-in-hover-none:hover{
-   background-color: #fff;
+   background-color: var(--badybkcolor);
 }
 
 
@@ -734,6 +734,7 @@ background-color: transparent;
   font-size: 13px;
 }
 /*  */
+
 
 
 

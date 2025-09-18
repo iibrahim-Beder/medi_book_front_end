@@ -59,13 +59,14 @@ const PatientsFilters = ({
           <div className="col-12 col-lg-4 text-lg-start text-center">
             <div className="btn-group mt-2">
               <Button
+              className="PatientsFiltersBtn"
                 variant="outline-secondary"
                 onClick={onReset}
                 style={{boxShadow:"none"}}
               >
                 <BiReset /> Reset
               </Button>
-              <Button
+              <Button className="PatientsFiltersBtn"
                 variant="outline-secondary"
                 onClick={onExportCsv}
                 style={{boxShadow:"none"}}

@@ -3,8 +3,9 @@ import { ArrowUp, ArrowDown } from "lucide-react";
 const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) => {
   return (
     <div className="col-xl-3 col-sm-6 col-12">
-      <div className="card shadow-sm border-0 rounded-4 h-100 pb-0 "
+      <div className="card border-0 rounded-4 h-100 pb-0 "
       style={{
+        backgroundColor:"var(--cardcolor)",
         paddingBottom:"0",
         padding:"1.5rem"
       }}

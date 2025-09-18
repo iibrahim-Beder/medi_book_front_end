@@ -230,6 +230,7 @@ const AppointmentsTable = () => {
                       <td colSpan="7" className="border-0 background-in-hover-none">
                         <div className="p-3">
                           <CustomAccordion
+                          backgroundColor="var(--scbccolor)"
                             data={appt[expandedField]}
                             formFields={[
                               {

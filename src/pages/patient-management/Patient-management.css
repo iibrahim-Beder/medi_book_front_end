@@ -4,7 +4,7 @@ color: var(--themecolor);
 }
 .card{
   margin: 10px 0 ;
-  box-shadow: 0 6px 16px 2px #dddddd77;
+  box-shadow: 0 6px 16px 2px var(--scshadocolor);
   border-radius: 61px;
 
 }
@@ -13,10 +13,11 @@ border: none;
 border-bottom: 1px solid #dee2e670 !important;
 }
 
+
 .PatientsTable ,.PatientsFilters{
   border: none !important;
-  background: #fff;
-  box-shadow: 0px 0px 9px 2px rgba(199, 199, 199, 0.39);
+  background: var(--cardcolor) !important;
+  box-shadow: 0px 0px 9px 2px var(--shadocolor);
   border-radius:6px !important
 }
 .cont-img-name{
@@ -70,6 +71,10 @@ border-bottom: 1px solid #dee2e670 !important;
 .MedicalHistoryTable .btn-outline-primary:hover{
       background-color: #007bff !important;
 }
-.MedicalHistoryTable .table-hover tbody tr:hover{
+.table-hover tbody tr:hover{
   background-color: rgba(207, 207, 207, 0.075) !important;
+}
+.PatientsFiltersBtn.btn.btn-outline-secondary{
+  border: 1px solid #ddd !important;
+  margin-right: 0 !important;
 }

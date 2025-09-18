@@ -3100,6 +3100,7 @@ background-color: var(--scbccolor);
 }
 .dc-collapseexp.show{
 	border-top:1px solid #ddd;
+	
 }
 .dc-collapseexp fieldset > .form-group > span{
 	color: #767676;
@@ -5566,7 +5567,7 @@ top: 50%;
   --shado1color:#000000e6;
 .doctor-registration{background: var(--bkcolor);}
 .container{border-color: #334c99;}
-
+.text-muted{color :#ededede6 !important;}
 .form-title {color: #fff;}
 
 }
