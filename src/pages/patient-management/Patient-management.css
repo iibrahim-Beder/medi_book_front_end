@@ -26,8 +26,10 @@ border-bottom: 1px solid #dee2e670 !important;
 
   margin-right: 8px;
 }
+:root{--headcolor:#edf6fd82; }
 .table > thead:first-child > tr:first-child > th{
-      background: #edf6fd82;
+      background: var(--headcolor);
+      border-color: var(--lencolor) !important;
 }
 
 .btn{

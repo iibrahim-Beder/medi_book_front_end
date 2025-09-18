@@ -134,7 +134,7 @@ const MedicalHistoryTable = () => {
           </InputGroup>
 
           {/* Table */}
-          <div style={{overflow:"auto"}}> 
+          <div className="scrol" style={{overflow:"auto"}}> 
             <Table className="data-table align-middle  table-hover">
               <thead>
                 <tr>

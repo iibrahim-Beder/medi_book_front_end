@@ -27,7 +27,7 @@ export default function PatientProfilePageMain() {
     { key: "TreatmentPlans", label: "Allergies" },
     { key: "Notifications", label:"Notifications" },
     { key: "MedicalHistory", label: "Medical History" },
-    // { key: "Statistics", label: "📊 الإحصائيات", icon: <FaChartPie /> },
+    { key: "Statistics", label: "hosptil"},
   ];
 
   return (

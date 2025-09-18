@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
+
 const Autocomplete = () => {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -25,64 +26,38 @@ const Autocomplete = () => {
   }, []);
 
   return (
-    <div ref={dropdownRef} style={{ width: "250px", position: "relative" }}>
-      {/* input البحث */}
+    <div className="autocomplete" ref={dropdownRef}>
+      {/* input */}
       <input
         type="text"
+        className="autocomplete-input"
         placeholder="ابحث..."
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
           setIsOpen(true);
         }}
-        onFocus={() => setIsOpen(true)} // يفتح القائمة أول ما تدوس
-        style={{
-          width: "100%",
-          padding: "10px",
-          border: "1px solid #ccc",
-          borderRadius: "6px",
-        }}
+        onFocus={() => setIsOpen(true)}
       />
 
-      {/* قائمة الخيارات */}
+      {/* قائمة الاقتراحات */}
       {isOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: "45px",
-            width: "100%",
-            border: "1px solid #ddd",
-            borderRadius: "6px",
-            background: "#fff",
-            zIndex: 1000,
-            boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-            maxHeight: "200px",
-            overflowY: "auto",
-          }}
-        >
+        <div className="autocomplete-list">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option, index) => (
               <div
                 key={index}
+                className="autocomplete-item"
                 onClick={() => {
-                  setSearch(option); // يحط الاختيار في الـ input
-                  setIsOpen(false); // يقفل الليست
+                  setSearch(option);
+                  setIsOpen(false);
                 }}
-                style={{
-                  padding: "10px",
-                  cursor: "pointer",
-                  transition: "background 0.2s",
-                }}
-                onMouseEnter={(e) => (e.target.style.background = "#f7f7f7")}
-                onMouseLeave={(e) => (e.target.style.background = "#fff")}
               >
                 {option}
               </div>
             ))
           ) : (
-            <div style={{ padding: "10px", color: "#888" }}>
-              لا توجد نتائج
-            </div>
+            <div className="autocomplete-no-results">لا توجد نتائج</div>
           )}
         </div>
       )}

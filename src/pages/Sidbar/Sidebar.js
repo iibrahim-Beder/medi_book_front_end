@@ -41,7 +41,7 @@ const Sidebar = () => {
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
-
+let iconSize=20;
   return (
     <div id="dc-sidebarwrapper" className={`dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
       <div style={{position:"fixed"}} id="dc-btnmenutoggle" className="dc-btnmenutoggle" onClick={toggleSidebar}>
@@ -72,7 +72,7 @@ const Sidebar = () => {
             <li>
               <Link to="/dashboard">
                {/* <MyIcon   fill="red" /> */}
-                <DashboardIcon width={25} height={25} className="icon" />
+                <DashboardIcon width={iconSize} height={iconSize} className="icon" />
                 <span>{t("sidebar.insights")}</span>
               </Link>
             </li>
@@ -108,7 +108,7 @@ const Sidebar = () => {
             </li>
              <li>
               <Link to="/pationt-information">
-                <InfomationIcon width={25} height={25} className="icon" />
+                <InfomationIcon width={iconSize} height={iconSize} className="icon" />
                 <span>{t("sidebar.manageTeam")}</span>
               </Link>
             </li>
