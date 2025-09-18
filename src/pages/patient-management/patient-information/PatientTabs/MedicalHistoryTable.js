@@ -103,7 +103,7 @@ const MedicalHistoryTable = () => {
   const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
   return (
-    <div className="table-container">
+    <div className="table-container MedicalHistoryTable">
       <div className="table-header">
         <h3 className="table-title">Medical History</h3>
         <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import { FaEye, FaPencilAlt } from "react-icons/fa";
 import DynamicEditModal from "../../../shared/DynamicEditModal"; // ← المسار حسب مكانه
+import SearchableDropdown from "../../../shared/SearchableDropdown";
 
 const MedicalHistoryTable = () => {
   const [historyData, setHistoryData] = useState([
@@ -61,7 +62,7 @@ const MedicalHistoryTable = () => {
         <h3>Medical History</h3>
         <a href="#">Add Record</a>
       </div>
-
+            <SearchableDropdown/>
       <div className="p-3">
         <Table className="align-middle mb-0 table-hover" style={{ whiteSpace: "nowrap" }}>
           <thead className="table-light">
