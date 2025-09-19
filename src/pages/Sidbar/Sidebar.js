@@ -73,12 +73,7 @@ let iconSize=20;
           <ul>
             <li>
               <Link to="/dashboard">
-{/* <<<<<<< HEAD
-                <LiaTachometerAltSolid className="icon" />
-=======
-               {/* <MyIcon   fill="red" /> */}
-                {/* <DashboardIcon width={iconSize} height={iconSize} className="icon" /> */} 
-{/* >>>>>>> patient-management-ui */}
+                <DashboardIcon width={iconSize} height={iconSize} className="icon" /> 
                 <span>{t("sidebar.insights")}</span>
               </Link>
             </li>
