@@ -60,7 +60,7 @@ const NotificationDropdown = () => {
 
       <Dropdown.Menu
         className="dropdown-menu-end shadow"
-        style={{ minWidth: "350px" }}
+        style={{ minWidth: "350px",  backgroundColor:"var(--cardcolor)"  }}
       >
         <div className="topnav-dropdown-header p-2 border-bottom">
           <span className="fw-bold">Notifications</span>

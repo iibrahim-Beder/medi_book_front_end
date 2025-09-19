@@ -21,6 +21,7 @@
 /* Theme Color */
 /* Primary Color*/
 :root{  --cardcolor: #ffffff; }
+:root{  --len2color: #eee; }
 :root{--shadocolor:#247cff21; }
 :root{--badybkcolor:#fcfcfc; }
 :root{--scshadocolor: #ddd; }
@@ -73,6 +74,7 @@ h6 a { color: #55acee;}
 p a,
 p a:hover { text-decoration:underline; }
 p {
+color:var(--terthemecolor);
 	margin: 0 0 20px;
 	line-height: 1.6em;
 	letter-spacing: normal;
@@ -2511,7 +2513,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 .dc-sidebarwrapper .mCSB_scrollTools{width: 0;}
 .dc-navdashboard > ul > li {
 	position: relative;
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--len2color);
 }
 .dc-navdashboard > ul > li:last-child{border-bottom: 1px solid #eee;}
 .dc-navdashboard > ul > li:before{
@@ -5548,6 +5550,7 @@ top: 50%;
   --scbccolor:#f8f9fa;
 }
 [data-theme="dark"] {
+	--len2color:#858585;
 	--shado3color:#00000040;
 	--headcolor:#1e182e;
   --scbccolor:#141f30;
@@ -5570,7 +5573,9 @@ top: 50%;
 .container{border-color: #334c99;}
 .text-muted{color :#ededede6 !important;}
 .form-title {color: #fff;}
-
+.dc-navdashboard ul li a .icon{
+color: white;
+}
 }
 html[dir="rtl"]  {
 	.setting{display: flex;flex-direction: row-reverse;	} 
