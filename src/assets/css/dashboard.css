@@ -2841,7 +2841,8 @@ background-color: var(--scbccolor);
 	content: '';
 	height: 100%;
 	position: absolute;
-	background: var(--themecolor);
+	background: #3fabf3;
+	/* background: var(--themecolor); */
 }
 .dc-tabscontenttitle h3{
 	margin: 0;
