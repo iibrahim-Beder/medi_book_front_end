@@ -37,7 +37,11 @@ const BlueMapPicker = ({
 
   // load Google Maps API
   const { isLoaded } = useJsApiLoader({
+<<<<<<< HEAD
     googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ",
+=======
+    googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ", //  API Key
+>>>>>>> patient-management-ui
     libraries: ["places"],
   });
 

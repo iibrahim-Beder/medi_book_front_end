@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-// import icons 
 
+
+// import icons 
+import DashboardIcon from "../../assets/icons/DashboardIcon";
+import { RiFileList3Line } from "react-icons/ri";
 import { LiaTachometerAltSolid } from "react-icons/lia";
 import { BsList } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
@@ -15,6 +18,7 @@ import { LiaUserShieldSolid } from "react-icons/lia";
 import { CiLogout } from "react-icons/ci";
 import { CiBadgeDollar } from "react-icons/ci";
 
+import InfomationIcon from "../../assets/icons/InfomationIcon";
 import { 
   FaTachometerAlt,
   FaListAlt,
@@ -39,7 +43,7 @@ const Sidebar = () => {
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
-
+let iconSize=20;
   return (
     <div id="dc-sidebarwrapper" className={`dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
       <div style={{position:"fixed"}} id="dc-btnmenutoggle" className="dc-btnmenutoggle" onClick={toggleSidebar}>
@@ -69,7 +73,12 @@ const Sidebar = () => {
           <ul>
             <li>
               <Link to="/dashboard">
+{/* <<<<<<< HEAD
                 <LiaTachometerAltSolid className="icon" />
+=======
+               {/* <MyIcon   fill="red" /> */}
+                {/* <DashboardIcon width={iconSize} height={iconSize} className="icon" /> */} 
+{/* >>>>>>> patient-management-ui */}
                 <span>{t("sidebar.insights")}</span>
               </Link>
             </li>
@@ -100,6 +109,15 @@ const Sidebar = () => {
             <li>
               <Link to="/manage-team">
                 <PiUsersThreeLight className="icon" />
+{/* <<<<<<< HEAD
+=======
+                <span>{t("sidebar.manageTeam")}</span>
+              </Link>
+            </li>
+             <li>
+              <Link to="/pationt-information">
+                <InfomationIcon width={iconSize} height={iconSize} className="icon" />
+>>>>>>> patient-management-ui */}
                 <span>{t("sidebar.manageTeam")}</span>
               </Link>
             </li>

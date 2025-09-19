@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
 import PatientManagement from "./pages/patient-management/PatientManagement";
+import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 // import DoctorPaymentDashboard from './pages/DoctorPaymentDashboard';
 
 
@@ -74,6 +75,7 @@ const { i18n } = useTranslation();
                 <Route path="manage-services" element={<MakeSlostMain />} />
                 <Route path="Messages" element={<MessagesPage />} />
                 <Route path="manage-team" element={<PatientManagement />} />
+                <Route path="pationt-information" element={<PatientProfilePageMain />} />
                 
               </Routes>
             </div>

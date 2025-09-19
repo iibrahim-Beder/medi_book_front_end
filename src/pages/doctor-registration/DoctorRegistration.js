@@ -145,7 +145,7 @@ const [isSaveClicked, setIsSaveClicked] = useState(false);
         dispatch(setQualifications( formData.qualifications));
       }
       else if (currentStep === 4) {
-        console.log("Dispatching locations on step 4:", formData.locations);
+        // console.log("Dispatching locations on step 4:", formData.locations);
         // dispatch(setLocations( formData.locations));
       }
            
@@ -214,7 +214,7 @@ setPopupErrors(t("popup.skipToStep7"));
       case 3:
         return (
           <Step2ProfessionalInfo
-            initialData={stepData.locations}
+            initialData={stepData}
             onChange={setStepData}
             errors={validationErrors}
             forceShowError={isSaveClicked}   
@@ -224,7 +224,7 @@ setPopupErrors(t("popup.skipToStep7"));
         return (
           <LocationField
             header={false}
-            formData={formData}
+            formData={formData.locations}
             // handleInputChange={handleInputChange}
             errors={validationErrors}
             ComponentProp={
