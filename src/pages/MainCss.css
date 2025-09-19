@@ -671,6 +671,9 @@ background-color: transparent;
   font-size: 14px;
   }
 
+  .pagination{
+    display: flex;
+  }
 .pagination-buttons button {
   margin-left: 3px;
 }

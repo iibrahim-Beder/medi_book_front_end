@@ -44,7 +44,7 @@ const PatientStats = () => {
   ];
 
   return (
-    <Row className="g-3 mb-4">
+    <Row className="g-3 mb-4 patintStats">
       {stats.map((stat, idx) => (
         <StatCard key={idx} {...stat} />
       ))}

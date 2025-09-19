@@ -1535,6 +1535,7 @@ ul.sub-menu {
 body.dc-userlogin .dc-loginarea{display: none;}
 .dc-hide-form {display: none;}
 .modal-content{
+	background-color: var(--cardcolor);
 	border: 0;
 	border-radius: 4px;
 }
@@ -3938,7 +3939,7 @@ input[type="button"]:focus{outline: none;}
 	display: block;
 	font:18px/22px 'Open Sans', sans-serif
 }
-.dc-user-details .dc-user-info:nth-child(n+3){margin-top:33px; }
+.dc-user-details .dc-user-info:nth-child(n+2){margin-top:33px; }
 .dc-info-required{width: 100%;}
 .dc-info-required.dc-user-info .dc-title span{
 	width: 50%;
@@ -5516,22 +5517,37 @@ top: 50%;
 	box-shadow: none !important;
 }
 
-
 @media (max-width: 568px) {
- .when686m-t-40{
-    margin-top: 40px;
-  }
-  .contentdiv{
-    padding-top: 134px !important;
-  }
-  .dc-yeartag{
-	flex-direction: column !important;
-
-  }
-  
-}
-@media (max-width: 820) {
+	.when686m-t-40{
+		margin-top: 40px;
+	}
+	.contentdiv{
+		padding-top: 134px !important;
+	}
+	.dc-yeartag{
+		flex-direction: column !important;
+		
+	}
+	.PatientBasicInfo .dc-user-header{
+           padding:0;
+	}
 	
+}
+
+@media (max-width: 720px){
+.PatientBasicInfo .dc-user-info{
+	width: 100%;
+}
+.nav-table{
+	    flex-direction: column;
+    gap: 10px;
+}
+}
+@media (max-width: 820px) {
+	.PatientBasicInfo .dc-user-details{
+		padding: 30px 0 !important	;
+		
+	}
 	.dc-jobchartholder {
 		
 		padding-left: 5px !important	;
@@ -5611,13 +5627,6 @@ html[dir="rtl"]  {
 }
 
 
-@media (max-width: 1200px) {
-
-.divtoconvert ,.NewShado {
-	flex-direction: column !important;
-}
-}
-
 
 .input-icon{left: auto;
 right: 6px;}
@@ -5635,28 +5644,34 @@ right: 6px;}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 .edit-input  {
-background-color: transparent !important;
-border: none !important	;
+	background-color: transparent !important;
+	border: none !important	;
 }
 
 
 
 .edit-mode:has(.edit-input) {
-
-
-  height: 40px !important;
-
-
+	
+	
+	height: 40px !important;
+	
+	
 }
+
+
+@media (max-width: 1200px) {
+	
+	
+	.patintStats{
+		row-gap: 20px !important;
+	}
+	.divtoconvert ,.NewShado {
+		flex-direction: column !important;
+	}
+	}	
+
+
+
+
+	
