@@ -104,15 +104,13 @@ let iconSize=20;
             <li>
               <Link to="/manage-team">
                 <PiUsersThreeLight className="icon" />
-{/* <<<<<<< HEAD
-=======
                 <span>{t("sidebar.manageTeam")}</span>
               </Link>
             </li>
              <li>
               <Link to="/pationt-information">
                 <InfomationIcon width={iconSize} height={iconSize} className="icon" />
->>>>>>> patient-management-ui */}
+
                 <span>{t("sidebar.manageTeam")}</span>
               </Link>
             </li>
