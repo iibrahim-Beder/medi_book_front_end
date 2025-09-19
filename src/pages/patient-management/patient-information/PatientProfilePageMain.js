@@ -20,20 +20,21 @@ export default function PatientProfilePageMain() {
   const { t } = useTranslation();
 
   const tabs = [
-    { key: "BasicInfo", label: " Patient basic info"},
-    { key: "Appointments", label: "Appointments"},
-    { key: "Notes", label: "Nots"},
-    // { key: "Files", label: "📎 الملفات والمرفقات", icon: <FaPaperclip /> },
-    { key: "TreatmentPlans", label: "Allergies" },
-    { key: "Notifications", label:"Notifications" },
-    { key: "MedicalHistory", label: "Medical History" },
-    { key: "Statistics", label: "hosptil"},
+   { key: "BasicInfo", label: t("BasicInfo") },
+{ key: "Appointments", label: t("Appointments") },
+{ key: "Notes", label: t("Notes") },
+// { key: "Files", label: t("Files"), icon: <FaPaperclip /> },
+{ key: "TreatmentPlans", label: t("TreatmentPlans") },
+{ key: "Notifications", label: t("Notifications") },
+{ key: "MedicalHistory", label: t("MedicalHistory") },
+{ key: "Statistics", label: t("Statistics") },
+
   ];
 
   return (
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace">
-        <div className="dc-dashboardbox dc-dashboardtabsholder ">
+        <div className="dc-dashboardbox dc-dashboardtabsholder setting">
           {/* Tabs Navigation */}
           <div className="dc-dashboardtabs" style={{ width: "20%" }}>
             <ul className="dc-tabstitle nav navbar-nav">

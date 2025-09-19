@@ -737,5 +737,31 @@
     "title": "Shifts",
     "addNew": "Add New Shift"
   }
+  ,
+
+   "BasicInfo": "Patient basic info",
+  "Appointments": "Appointments",
+  "Notes": "Notes",
+  "Files": "Files and Attachments",
+  "TreatmentPlans": "Allergies",
+  "Notifications": "Notifications",
+  "MedicalHistory": "Medical History",
+  "Statistics": "Hospital"
+,  "patientsList": "Patients List",
+  "patientId": "Patient ID",
+  "name": "Name",
+  "age": "Age",
+  "address": "Address",
+  "phone": "Phone",
+  "lastVisit": "Last Visit",
+  "paid": "Paid",
+  "action": "Action",
+  "showing": "Showing",
+  "of": "of"
+  ,
+   "allPatients": "All Patients",
+  "activePatients": "Active Patients",
+  "treatmentCompleted": "Treatment Completed",
+  "stoppedTreatment": "Stopped Treatment" 
 
 }
