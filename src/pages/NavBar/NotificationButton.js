@@ -47,7 +47,7 @@ const NotificationDropdown = () => {
         style={{
           borderRadius: "50%",
           fontSize: "large",
-          color: "var(--terthemecolor)",
+          color: "#6B7280",
           background: "rgb(249, 249, 249)",
           boxShadow: "none",
           display: "flex",
@@ -63,7 +63,7 @@ const NotificationDropdown = () => {
         style={{ minWidth: "350px",  backgroundColor:"var(--cardcolor)"  }}
       >
         <div className="topnav-dropdown-header p-2 border-bottom">
-          <span className="fw-bold">Notifications</span>
+          <span className="fw-bold" style={{color:"var(--terthemecolor)"}}>Notifications</span>
         </div>
         <div
           className="noti-content"
