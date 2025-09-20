@@ -6,7 +6,7 @@ import "./DashboardInsights.scss";
 export default function DashboardInsights({ insights }) {
   return (
     <section className="dc-haslayout dc-jobpostedholder dc-dbsectionspace">
-      <div className="row">
+      <div className="row m-0 ">
         {insights.map((item, index) => (
           <div
             className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
