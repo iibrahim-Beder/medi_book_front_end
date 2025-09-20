@@ -187,14 +187,14 @@ const MedicalHistoryTable = () => {
           </div>
 
           {/* Pagination & Info */}
-          <div className="d-flex justify-content-between align-items-center mt-3">
+          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
             <div className="info-bar">
               Showing {startIndex + 1} to{" "}
               {Math.min(startIndex + rowsPerPage, filteredData.length)} of{" "}
               {filteredData.length} entries
             </div>
 
-            <div className="pagination-buttons">
+            <div className="pagination-buttons d-flex">
               <button
                 className="dt-paging-button first"
                 type="button"

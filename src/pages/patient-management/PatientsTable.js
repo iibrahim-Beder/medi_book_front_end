@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Table, Form, InputGroup, Button } from "react-bootstrap";
-import { PiEyeThin } from "react-icons/pi";
-import { PiUsersThreeLight } from "react-icons/pi";
+import { Table, Button } from "react-bootstrap";
+import { PiEyeThin, PiUsersThreeLight } from "react-icons/pi";
+import { useTranslation } from "react-i18next";
 import PatientsFilters from "./PatientsFilters";
 
 const PatientsTable = () => {
+  const { t } = useTranslation();
+
   const patientsData = [
     {
       patientId: "#PT001",
@@ -59,16 +61,16 @@ const PatientsTable = () => {
       p.patientId.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Pagination (simple preview, no full pagination now)
+  // Pagination
   const indexOfLast = currentPage * patientsPerPage;
   const indexOfFirst = indexOfLast - patientsPerPage;
   const currentPatients = filteredPatients.slice(indexOfFirst, indexOfLast);
 
-
-  //search
-    const [status, setStatus] = useState("");
+  // Search filters
+  const [status, setStatus] = useState("");
   const [gender, setGender] = useState("");
-    const handleExportCsv = () => {
+
+  const handleExportCsv = () => {
     console.log("Export CSV clicked ✅");
   };
 
@@ -77,39 +79,39 @@ const PatientsTable = () => {
     setStatus("");
     setGender("");
   };
+
   return (
     <div className="shadow-sm mt-4 " style={{ border: "none", borderRadius: "12px" }}>
       <PatientsFilters
-         search={search}
-         setSearch={setSearch}
-         status={status}
-         setStatus={setStatus}
-         gender={gender}
-         setGender={setGender}
-         onExportCsv={handleExportCsv}
-         onReset={handleReset}
-       />
+        search={search}
+        setSearch={setSearch}
+        status={status}
+        setStatus={setStatus}
+        gender={gender}
+        setGender={setGender}
+        onExportCsv={handleExportCsv}
+        onReset={handleReset}
+      />
       <div className="p-3 PatientsTable">
         <div className="d-flex justify-content-between mb-3">
-          <h3 className=""> <PiUsersThreeLight/> Patients List</h3>
+          <h3>
+            <PiUsersThreeLight /> {t("patientsList")}
+          </h3>
         </div>
 
         {/* Scrollable Table Wrapper */}
         <div style={{ overflowX: "auto" }}>
-          <Table
-            className="align-middle mb-0 table-hover"
-            style={{ whiteSpace: "nowrap" }}
-          >
+          <Table className="align-middle mb-0 table-hover" style={{ whiteSpace: "nowrap" }}>
             <thead className="table-light">
               <tr>
-                <th className="border-0">Patient ID</th>
-                <th className="border-0">Name</th>
-                <th className="border-0">Age</th>
-                <th className="border-0">Address</th>
-                <th className="border-0">Phone</th>
-                <th className="border-0">Last Visit</th>
-                <th className="border-0">Paid</th>
-                <th className="border-0">Action</th>
+                <th className="border-0">{t("patientId")}</th>
+                <th className="border-0">{t("name")}</th>
+                <th className="border-0">{t("age")}</th>
+                <th className="border-0">{t("address")}</th>
+                <th className="border-0">{t("phone")}</th>
+                <th className="border-0">{t("lastVisit")}</th>
+                <th className="border-0">{t("paid")}</th>
+                <th className="border-0">{t("action")}</th>
               </tr>
             </thead>
             <tbody>
@@ -158,9 +160,8 @@ const PatientsTable = () => {
         {/* Footer */}
         <div className="d-flex justify-content-between mt-3">
           <span>
-            Showing {indexOfFirst + 1} -{" "}
-            {Math.min(indexOfLast, filteredPatients.length)} of{" "}
-            {filteredPatients.length}
+            {t("showing")} {indexOfFirst + 1} - {Math.min(indexOfLast, filteredPatients.length)}{" "}
+            {t("of")} {filteredPatients.length}
           </span>
         </div>
       </div>

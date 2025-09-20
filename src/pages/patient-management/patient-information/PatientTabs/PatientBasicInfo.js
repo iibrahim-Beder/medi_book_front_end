@@ -22,7 +22,7 @@ export default function PatientBasicInfo() {
   };
   
   return (
-    <div className="dc-dashboardbox cardInfo" >
+    <div className="dc-dashboardbox cardInfo PatientBasicInfo" >
       {/* Header */}
       <div className="dc-user-header">
         <div>
@@ -74,7 +74,7 @@ export default function PatientBasicInfo() {
           <div className="dc-user-info">
             <div className="dc-title">
               <h4>Email:</h4>
-              <span>{patient.email}</span>
+              <span style={{"overflowWrap":"break-word"}} >{patient.email}</span>
             </div>
           </div>
           <div className="dc-user-info" style={{ gridColumn: "span 2" }}>

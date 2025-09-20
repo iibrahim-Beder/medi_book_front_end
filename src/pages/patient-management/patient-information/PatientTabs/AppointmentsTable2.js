@@ -274,7 +274,7 @@ const AppointmentsTable = () => {
           </Table>
 
         {/*  Pagination & Info Section */}
-          <div className="d-flex justify-content-between align-items-center mt-3">
+          <div className="d-flex justify-content-between align-items-center mt-3 nav-table" >
             {/*  Info Bar */}
             <div
               className="dt-layout-cell dt-layout-start"
@@ -296,9 +296,9 @@ const AppointmentsTable = () => {
             </div>
 
             {/*  Pagination */}
-            <div className="dt-layout-cell dt-layout-end">
+            <div className="dt-layout-cell dt-layout-end  ">
               <div className="dt-paging">
-                <nav aria-label="pagination">
+                <nav aria-label="pagination" className="d-flex"> 
                   <button
                     className="dt-paging-button first"
                     type="button"

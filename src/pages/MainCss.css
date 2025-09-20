@@ -249,7 +249,7 @@ li {
 
 .NewShado{
   box-shadow: 0 0 15px 0 var(--scshadocolor) !important;
-  background-color: var(--scbccolor) !important;
+  /* background-color: var(--scbccolor) !important; */
 }
 .form-disabeld::after{
   display: none;
@@ -671,6 +671,9 @@ background-color: transparent;
   font-size: 14px;
   }
 
+  .pagination{
+    display: flex;
+  }
 .pagination-buttons button {
   margin-left: 3px;
 }

@@ -733,4 +733,33 @@
     "title": "الورديات",
     "addNew": "أضف وردية جديدة"
   }
+
+  ,
+
+    "BasicInfo": "معلومات المريض الأساسية",
+  "Appointments": "المواعيد",
+  "Notes": "الملاحظات",
+  "Files": "الملفات والمرفقات",
+  "TreatmentPlans": "الحساسية",
+  "Notifications": "الإشعارات",
+  "MedicalHistory": "التاريخ الطبي",
+  "Statistics": "المستشفى"
+
+  ,
+   "patientsList": "قائمة المرضى",
+  "patientId": "رقم المريض",
+  "name": "الاسم",
+  "age": "العمر",
+  "address": "العنوان",
+  "phone": "الهاتف",
+  "lastVisit": "آخر زيارة",
+  "paid": "المدفوع",
+  "action": "الإجراء",
+  "showing": "عرض",
+  "of": "من"
+  ,
+    "allPatients": "جميع المرضى",
+  "activePatients": "المرضى النشطون",
+  "treatmentCompleted": "العلاجات المكتملة",
+  "stoppedTreatment": "العلاجات المتوقفة"
 }
