@@ -56,7 +56,7 @@ const PatientsFilters = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="col-12 col-lg-4 text-lg-start text-center">
+          <div className="col-12 col-lg-4 text-lg-start text-center p-0">
             <div className="btn-group mt-2">
               <Button
               className="PatientsFiltersBtn"

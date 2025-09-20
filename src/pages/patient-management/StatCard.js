@@ -25,7 +25,7 @@ const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) =
             className="d-flex align-items-center justify-content-center  mb-3 "
             style={{
               borderRadius:"10px",
-              backgroundColor: `${color}20`, // خلفية شفافة بنفس اللون
+              backgroundColor: `${color}20`, 
               color: color,
               width: "60px",
               height: "60px",
@@ -33,10 +33,9 @@ const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) =
           >
             <Icon size={30} />
           </div>
-          <h4 className="text-muted">{title}</h4>
+          <h4 className="text-muted" style={{textAlign:"center"}}>{title}</h4>
         </div>
-        {/* Icon داخل دائرة */}
-
+              
 
 
        <div

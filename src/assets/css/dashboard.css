@@ -5557,6 +5557,7 @@ top: 50%;
 
 
 @media (max-width: 992px) {
+	.PatientsFilters{padding: 10px !important;}
 	.dc-dotnotification:before{    margin: -5px 10px 0 ; }}
 
 :root{
