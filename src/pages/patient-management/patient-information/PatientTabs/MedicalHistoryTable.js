@@ -4,6 +4,7 @@ import DynamicEditModal from "../../../shared/DynamicEditModal";
 import "../../Patient-management.css";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
+import FilterDropdown from "./FilterDropdown";
 
 const MedicalHistoryTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,7 +61,64 @@ const MedicalHistoryTable = () => {
     },
   ];
 
-  // تعريف الحقول اللي هتظهر في DynamicEditModal
+  const appointmentTypes = [
+    { key: "all", label: "All Type" },
+    { key: "video", label: "Video Call" },
+    { key: "audio", label: "Audio Call" },
+    { key: "chat", label: "Chat" },
+    { key: "direct", label: "Direct Visit" },
+  ];
+
+  const visitTypes = [
+    { key: "all", label: "All Visit" },
+    { key: "general", label: "General" },
+    { key: "consultation", label: "Consultation" },
+    { key: "followUp", label: "Follow-up" },
+    { key: "direct", label: "Direct Visit" },
+  ];
+
+  const filters = [
+    {
+      name: "appointmentType",
+      label: "Appointment Type",
+      data: appointmentTypes,
+    },
+    {
+      name: "visitType",
+      label: "Visit Type",
+      data: visitTypes,
+    },
+    // You can add more filters here
+  ];
+
+  const defaultValues = {
+    appointmentType: {
+      all: true,
+      video: false,
+      audio: false,
+      chat: false,
+      direct: false,
+      isOpen: false,
+    },
+    visitType: {
+      all: true,
+      general: false,
+      consultation: false,
+      followUp: false,
+      direct: false,
+      isOpen: false,
+    },
+  };
+
+  const handleFilter = (filters) => {
+    console.log("Applied filters: ", filters);
+  };
+
+  const handleReset = () => {
+    console.log("Filters reset");
+  };
+
+  // Fields that will appear in DynamicEditModal
   const fields = [
     { name: "id", label: "ID", type: "text", placeholder: "Enter ID" },
     { name: "date", label: "Date", type: "date" },
@@ -72,8 +130,8 @@ const MedicalHistoryTable = () => {
   const handleView = (id) => alert(`View details of ${id}`);
 
   const handleEdit = (entry) => {
-    setSelectedRecord(entry);   // حفظ البيانات الحالية في الاستيت
-    setShowModal(true);         // فتح المودال
+    setSelectedRecord(entry);   // Save current record in state
+    setShowModal(true);         // Open modal
   };
 
   const handleSave = () => {
@@ -103,15 +161,44 @@ const MedicalHistoryTable = () => {
   const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
   return (
-    <div className="table-container MedicalHistoryTable">
+    <div className="table-container patientTable">
       <div className="table-header">
         <h3 className="table-title">Medical History</h3>
         <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
       </div>
 
+      <FilterDropdown
+        onFilter={(filters) => console.log("Applied filters:", filters)}
+        onReset={() => console.log("Filters reset")}
+        filters={[
+          {
+            name: 'category',
+            label: 'Category',
+            data: [
+              { key: 'cat1', label: 'Category 1' },
+              { key: 'cat2', label: 'Category 2' }
+            ]
+          },
+          {
+            name: 'price',
+            label: 'Price Range',
+            data: [
+              { key: 'low', label: 'Low' },
+              { key: 'high', label: 'High' }
+            ]
+          }
+        ]}
+        defaultValues={{
+          category: { cat1: false, cat2: false },
+          price: { low: false, high: false }
+        }}
+        customCheckbox={true} // Set false if you don't want to show the checkbox
+        customCheckboxLabel="Is Active" // Custom label for checkbox
+      />
+
       <div className="p-3">
         <div className="table-card">
-          {/* Search */}
+          {/* Search bar */}
           <InputGroup className="mb-3">
             <Form.Control
               className="search-input"
@@ -134,8 +221,8 @@ const MedicalHistoryTable = () => {
           </InputGroup>
 
           {/* Table */}
-          <div className="scrol" style={{overflow:"auto"}}> 
-            <Table className="data-table align-middle  table-hover">
+          <div className="scrol" style={{ overflow: "auto" }}> 
+            <Table className="data-table align-middle table-hover">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -156,20 +243,19 @@ const MedicalHistoryTable = () => {
                     <td>{entry.notes}</td>
                     <td>
                       <Button
-                    
                         variant="outline-primary"
                         size="lg"
                         className="me-2"
                         onClick={() => handleView(entry.id)}
                       >
-                      <MdOutlineRemoveRedEye/>
+                        <MdOutlineRemoveRedEye />
                       </Button>
                       <Button
                         variant="outline-secondary"
                         size="lg"
                         onClick={() => handleEdit(entry)}
-                        >
-                        <FaRegEdit/>
+                      >
+                        <FaRegEdit />
                       </Button>
                     </td>
                   </tr>
@@ -246,7 +332,7 @@ const MedicalHistoryTable = () => {
         </div>
       </div>
 
-      {/* مودال التعديل */}
+      {/* Edit Modal */}
       {selectedRecord && (
         <DynamicEditModal
           show={showModal}

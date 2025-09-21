@@ -73,13 +73,7 @@ const PatientsFilters = ({
               >
                 <BiDownload /> Export CSV
               </Button>
-              {/* <Button
-                variant="outline-secondary"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offFilters"
-              >
-               Advanced Filters
-              </Button> */}
+         
             </div>
           </div>
         </div>

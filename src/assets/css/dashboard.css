@@ -437,6 +437,7 @@ address { font-style: italic; }
 	width: 100%;
 	float: left;
 	position: relative;
+	margin: 2px	;
 }
 .dc-radio label,
 .dc-checkbox label {

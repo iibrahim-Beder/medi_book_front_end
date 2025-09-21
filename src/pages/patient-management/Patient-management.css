@@ -40,14 +40,14 @@ border-bottom: 1px solid #dee2e670 !important;
   display: none;
   background-color: transparent !important;
 }
-.MedicalHistoryTable .btn-outline-primary,.btn-outline-secondary{
+.patientTable .btn-outline-primary,.btn-outline-secondary{
   border: none !important;
   box-shadow: none;
   margin: 2px;
   background-color: #0000ff08 !important;
 
 }
-.MedicalHistoryTable .btn-outline-primary{
+.patientTable .btn-outline-primary{
  
     color: #007bff;
     /* background-color: #0000ff08 !important; */
@@ -58,17 +58,17 @@ border-bottom: 1px solid #dee2e670 !important;
     
     
 }
-.MedicalHistoryTable .btn-outline-secondary{
+.patientTable .btn-outline-secondary{
     height: 35px;
     width: 40px;
   /* background-color: #0000000f !important; */
     padding: 4px !important;
 
 }
-.MedicalHistoryTable .btn-outline-secondary:hover{
+.patientTable .btn-outline-secondary:hover{
   background-color: #6c757d !important;
 }
-.MedicalHistoryTable .btn-outline-primary:hover{
+.patientTable .btn-outline-primary:hover{
       background-color: #007bff !important;
 }
 .table-hover tbody tr:hover{

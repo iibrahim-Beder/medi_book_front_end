@@ -5,8 +5,8 @@ import { FaFileAlt, FaCalendarAlt, FaNotesMedical, FaPaperclip, FaBell, FaCog, F
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
 // import PatientAppointments from "./PatientTabs/PatientAppointments";
 import PatientNotes from "./PatientTabs/PatientNotes";
+import ConditionsFilterDropdown from "./PatientTabs/FilterDropdown";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
-import AppointmentsTable2 from "./PatientTabs/AppointmentsTable2";
 // import PatientFiles from "./PatientTabs/PatientFiles";
 // import PatientTreatmentPlans from "./PatientTabs/PatientTreatmentPlans";
 // import PatientNotifications from "./PatientTabs/PatientNotifications";
@@ -14,6 +14,7 @@ import AppointmentsTable2 from "./PatientTabs/AppointmentsTable2";
 // import PatientStatistics from "./PatientTabs/PatientStatistics";
 import PatientStatistics from "./PatientTabs/MedicalHistoryTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
+import ConditionsTable from "./PatientTabs/ConditionsTable";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
@@ -28,6 +29,7 @@ export default function PatientProfilePageMain() {
 { key: "Notifications", label: t("Notifications") },
 { key: "MedicalHistory", label: t("MedicalHistory") },
 { key: "Statistics", label: t("Statistics") },
+{ key: "ConditionsTable", label: t("Medical History") },
 
   ];
 
@@ -62,14 +64,15 @@ export default function PatientProfilePageMain() {
             style={{ width: "80%", display: "flex", justifyContent: "center" }}
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
-            {activeTab === "Appointments" && <AppointmentsTable2 />}
+            {activeTab === "Appointments" && <AppointmentsTable />}
             {activeTab === "Notes" && <PatientNotes />}
             {/* {activeTab === "Files" && <PatientFiles />}
             {activeTab === "TreatmentPlans" && <PatientTreatmentPlans />}
             {activeTab === "Settings" && <PatientSettings />}
             {activeTab === "Statistics" && <PatientStatistics />} */}
-            {activeTab === "Notifications" && <AppointmentsTable />}
+            {activeTab === "Notifications" && <ConditionsFilterDropdown />}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
+            {activeTab === "ConditionsTable" && <ConditionsTable />}
           </div>
         </div>
       </div>

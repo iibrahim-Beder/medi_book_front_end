@@ -708,7 +708,6 @@ background-color: transparent;
 .autocomplete {
   position: relative;
   width: 100%;
-  max-width: 300px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 

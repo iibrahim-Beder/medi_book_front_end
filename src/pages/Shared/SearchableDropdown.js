@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 
 
-const Autocomplete = () => {
+const Autocomplete = ({options= ["Apple", "Banana", "Orange", "Mango", "Grape"]}) => {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const options = ["Apple", "Banana", "Orange", "Mango", "Grape"];
+  // const  ;
 
   const filteredOptions = options.filter((option) =>
     option.toLowerCase().includes(search.toLowerCase())
@@ -31,7 +31,7 @@ const Autocomplete = () => {
       <input
         type="text"
         className="autocomplete-input"
-        placeholder="ابحث..."
+        placeholder=" Search..."
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
