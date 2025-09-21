@@ -16,7 +16,7 @@ import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
 import PatientManagement from "./pages/patient-management/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
-// import DoctorPaymentDashboard from './pages/DoctorPaymentDashboard';
+import Test from './not used/Test';
 
 
 function App() {
@@ -76,6 +76,7 @@ const { i18n } = useTranslation();
                 <Route path="Messages" element={<MessagesPage />} />
                 <Route path="manage-team" element={<PatientManagement />} />
                 <Route path="pationt-information" element={<PatientProfilePageMain />} />
+                <Route path="appointment-setting" element={<Test />} />
                 
               </Routes>
             </div>

@@ -1,8 +1,9 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
-import { BiReset } from "react-icons/bi";
+import { Button, InputGroup } from "react-bootstrap";
+import { BiReset, BiSearch } from "react-icons/bi";
 import Autocomplete from "../../../shared/SearchableDropdown";
 import FilterDropdown from "./FilterDropdown";
+import DateRangePicker from "./DateRangePicker";
 
 const ConditionsFilters = ({
   searchTerm, setSearchTerm,
@@ -37,10 +38,14 @@ const ConditionsFilters = ({
   return (
     <div className="PatientsFilters card shadow-sm mb-3 rounded-3 pl-4">
       <div className="card-body">
-        <div className="row g-2 align-items-center">
 
-          {/* Searchable Dropdown */}
-          <div className="col-12 col-lg-4 p-1">
+        {/* السطر الأول */}
+        <div className="row g-2 align-items-center mb-2">
+          {/* Search */}
+          <div className="col-12 col-lg-12ل p-1 d-flex">
+              <InputGroup.Text>
+                            <BiSearch />
+                          </InputGroup.Text>
             <Autocomplete
               options={conditions?.map((c) => c.nameEn) || []}
               value={searchTerm}
@@ -49,7 +54,12 @@ const ConditionsFilters = ({
             />
           </div>
 
-          {/* Filter Dropdowns */}
+        
+        </div>
+
+        {/* السطر الثاني */}
+        <div className="row g-2 align-items-center">
+          {/* Filter Dropdown */}
           <div className="col-12 col-lg-4 p-1">
             <FilterDropdown
               onFilter={(filtersToApply) => {
@@ -58,10 +68,12 @@ const ConditionsFilters = ({
                 setFilterType(filtersToApply.type);
               }}
               onReset={() => {
-                setSearchTerm(""); // reset search as well
+                setSearchTerm(""); 
                 setFilterActive("");
                 setFilterSeverity("");
                 setFilterType("");
+                setFilterDateFrom(null);
+                setFilterDateTo(null);
                 onReset();
               }}
               filters={filters}
@@ -75,38 +87,51 @@ const ConditionsFilters = ({
             />
           </div>
 
-          {/* Filter and Reset Buttons */}
+          {/* Date Range Picker */}
+          <div className="col-12 col-lg-4 p-1">
+            <DateRangePicker
+              startDate={filterDateFrom}
+              endDate={filterDateTo}
+              onChange={({ start, end }) => {
+                setFilterDateFrom(start);
+                setFilterDateTo(end);
+              }}
+            />
+          </div>
+            {/* Search & Reset Buttons */}
           <div className="col-12 col-lg-4 text-lg-start text-center p-1">
-            <div className="btn-group mt-2">
-              <Button
-                className="PatientsFiltersBtn"
-                variant="outline-secondary"
+            <div style={{display: "flex", justifyContent: " space-around"}}>
+              <button
+                className="dc-btn"
+                variant=""
                 onClick={() => {
-                  // Apply filters manually if needed
                   console.log("Filters applied:", {
-                    searchTerm, filterActive, filterSeverity, filterType
+                    searchTerm, filterActive, filterSeverity, filterType,
+                    filterDateFrom, filterDateTo
                   });
                 }}
               >
-                Filter
-              </Button>
-              <Button
-                className="PatientsFiltersBtn"
-                variant="outline-secondary"
+                Search
+              </button>
+              <button
+                className="btn btn-light"
+                variant=""
                 onClick={() => {
                   setSearchTerm("");
                   setFilterActive("");
                   setFilterSeverity("");
                   setFilterType("");
+                  setFilterDateFrom(null);
+                  setFilterDateTo(null);
                   onReset();
                 }}
               >
                 <BiReset /> Reset
-              </Button>
+              </button>
             </div>
           </div>
-
         </div>
+
       </div>
     </div>
   );
