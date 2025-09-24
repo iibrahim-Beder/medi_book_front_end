@@ -27,10 +27,11 @@ border-bottom: 1px solid #dee2e670 !important;
 
   margin-right: 8px;
 }
-:root{--headcolor:#edf6fd82; }
+:root{--headcolor:#f8f9fa; }
 .table > thead:first-child > tr:first-child > th{
       background: var(--headcolor);
-      border-color: var(--lencolor) !important;
+      /* border-color: var(--lencolor) !important; */
+      border-color: #e5e5e58a !important;
 }
 
 .btn{
@@ -77,4 +78,24 @@ border-bottom: 1px solid #dee2e670 !important;
 .PatientsFiltersBtn.btn.btn-outline-secondary{
   border: 1px solid #ddd !important;
   margin-right: 0 !important;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+  z-index: 2;
+  font-size: 16px;
+}
+
+.search-input {
+  padding-left: 35px; /* مساحة علشان الأيقونة */
 }

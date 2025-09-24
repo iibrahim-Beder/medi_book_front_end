@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { BiSearch } from "react-icons/bi";
 
 
 const Autocomplete = ({options= ["Apple", "Banana", "Orange", "Mango", "Grape"]}) => {
@@ -26,42 +27,44 @@ const Autocomplete = ({options= ["Apple", "Banana", "Orange", "Mango", "Grape"]}
   }, []);
 
   return (
-    <div className="autocomplete" ref={dropdownRef}>
-      {/* input */}
-      <input
-        type="text"
-        className="autocomplete-input"
-        placeholder=" Search..."
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setIsOpen(true);
-        }}
-        onFocus={() => setIsOpen(true)}
-      />
+   <div className="autocomplete" style={{maxHeight: "40px"}} ref={dropdownRef}>
+  <div className="autocomplete-wrapper">
+    <input
+      type="text"
+      className="autocomplete-input"
+      placeholder="Search..."
+      value={search}
+      onChange={(e) => {
+        setSearch(e.target.value);
+        setIsOpen(true);
+      }}
+      onFocus={() => setIsOpen(true)}
+    />
+    <span className="search-icon"><BiSearch  /></span>
+  </div>
 
-      {/* قائمة الاقتراحات */}
-      {isOpen && (
-        <div className="autocomplete-list">
-          {filteredOptions.length > 0 ? (
-            filteredOptions.map((option, index) => (
-              <div
-                key={index}
-                className="autocomplete-item"
-                onClick={() => {
-                  setSearch(option);
-                  setIsOpen(false);
-                }}
-              >
-                {option}
-              </div>
-            ))
-          ) : (
-            <div className="autocomplete-no-results">لا توجد نتائج</div>
-          )}
-        </div>
+  {isOpen && (
+    <div className="autocomplete-list">
+      {filteredOptions.length > 0 ? (
+        filteredOptions.map((option, index) => (
+          <div
+            key={index}
+            className="autocomplete-item"
+            onClick={() => {
+              setSearch(option);
+              setIsOpen(false);
+            }}
+          >
+            {option}
+          </div>
+        ))
+      ) : (
+        <div className="autocomplete-no-results">لا توجد نتائج</div>
       )}
     </div>
+  )}
+</div>
+
   );
 };
 

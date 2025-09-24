@@ -630,9 +630,10 @@ background-color: transparent;
 .table-card {
   overflow: auto;
   padding: 30px;
-  border: 1px solid var(--lencolor);
+  /* border: 1px solid var(--lencolor); */
+  border: 1px solid #f0f0f0;
   /* background-color: #fff; */
-  background-color: var(--badybkcolor);
+  background-color: var(--tablecolor);
   box-shadow: 0px 0px 8px 3px var(--shado3color);
   /* box-shadow: 0px 0px 8px 3px #dddddd26; */
   border-radius: 6px;

@@ -80,7 +80,9 @@ const ConditionsTable = () => {
         <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
       </div>
 
-      <ConditionsFilters 
+        <div className="table-card">
+        <div className="mb-20 p-3">
+        <ConditionsFilters 
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         filterActive={filterActive}
@@ -95,12 +97,12 @@ const ConditionsTable = () => {
         setFilterDateTo={setFilterDateTo}
         onReset={resetFilters}
         conditions={conditions}
-      />
-
+      /> </div>
       <div className="p-3">
-        <div className="table-card">
+     
           <div className="scrol patientTable" style={{ overflow: "auto" }}>
             <Table className="data-table align-middle table-hover">
+
               <thead>
                 <tr>
                   <th>Name</th>

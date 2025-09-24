@@ -51,18 +51,19 @@ const FilterDropdown = ({
   };
 
   return (
-    <div className={` ${isOpen ? "table-filter-show" : ""}`}>
+    <div className={` ${isOpen ? "table-filter-show" : ""} ` }>
       <button className="form-control Select1 filtecss"  type="button" onClick={() => setIsOpen(!isOpen)}>
         <CiFilter width={20}/> Add Filter 
       </button>
 
       {isOpen && (
-        <div className="filter-dropdown-menu dropdown-menu p-3 show" style={{zIndex:"4"}}>
+        <div className="filter-dropdown-menu dropdown-menu p-3 show" style={{zIndex:"4", minWidth:"250px"}}>
           <div className="filter-set-view">
             {/* Loop through filters dynamically */}
             {filters.map((filter, filterIndex) => (
               <div className="mb-3" key={filterIndex}>  
                 <button
+                 type="button"
                   className={`btn btn-outline-secondary w-100 text-start dropdown-btn ${openFilter === filter.name ? "open" : ""}`}
                   onClick={() => toggleFilter(filter.name)} // When clicking the filter
                 >

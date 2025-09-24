@@ -53,7 +53,7 @@
 		display: none;
 		padding: 13px 0;
 		background: #fff;
-		position: absolute;
+		/* position: absolute; */
 	}
 	.show-sform .dc-search-headerform,
 	.dc-removeform,
@@ -61,7 +61,7 @@
 	.dc-headerform{float: right;}
 	.dc-headerform-holder{
 		margin: 0;
-		float: right;
+		/* float: right; */
 	}
 }
 @media (max-width:1199px){
