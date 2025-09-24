@@ -123,50 +123,50 @@ const AppointmentsTable = () => {
   const currentData = filteredAppointments.slice(startIndex, startIndex + rowsPerPage);
 
   return (
-     <div className="table-container">
-    <div className="table-header">
-      <h3 className="table-title">List Appointments</h3>
-      <h6 className="table-subtitle">Ahmed Mohamed Ali </h6>
-    </div>
+    <div className="table-container">
+      <div className="table-header">
+        <h3 className="table-title">List Appointments</h3>
+        <h6 className="table-subtitle">Ahmed Mohamed Ali </h6>
+      </div>
 
-    <div className="p-3">
-      <div className="table-card">
-        {/* Search */}
-        <InputGroup className="mb-3">
-          <Form.Control
-            className="search-input"
-            type="text"
-            placeholder={`Search by ${searchBy}...`}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Form.Select
-            className="search-select"
-            value={searchBy}
-            onChange={(e) => setSearchBy(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="date">Date</option>
-            <option value="time">Time</option>
-            <option value="sessionType">Session Type</option>
-            <option value="status">Status</option>
-          </Form.Select>
-        </InputGroup>
+      <div className="p-3">
+        <div className="table-card">
+          {/* Search */}
+          <InputGroup className="mb-3">
+            <Form.Control
+              className="search-input"
+              type="text"
+              placeholder={`Search by ${searchBy}...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Form.Select
+              className="search-select"
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="date">Date</option>
+              <option value="time">Time</option>
+              <option value="sessionType">Session Type</option>
+              <option value="status">Status</option>
+            </Form.Select>
+          </InputGroup>
 
-        {/* Table */}
-        <Table className="data-table align-middle mb-0 table-hover">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Session Type</th>
-              <th>Status</th>
-              <th>Procedures</th>
-              <th>Notes</th>
-              <th>Treatment Plan</th>
-            </tr>
-          </thead>
-          <tbody>
+          {/* Table */}
+          <Table className="data-table align-middle mb-0 table-hover">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Session Type</th>
+                <th>Status</th>
+                <th>Procedures</th>
+                <th>Notes</th>
+                <th>Treatment Plan</th>
+              </tr>
+            </thead>
+            <tbody>
               {currentData.map((appt) => (
                 <React.Fragment key={appt.id}>
                   <tr>
@@ -186,8 +186,24 @@ const AppointmentsTable = () => {
                             : "outline-primary"
                         }
                         onClick={() => handleViewClick(appt.id, "procedures")}
+                        disabled={appt.procedures.length === 0}
                       >
-                        View
+                        Manage
+                        {appt.procedures.length > 0 && (
+                          <span
+                            className="num-item"
+                            style={{
+                              backgroundColor:
+                                expandedRow === appt.id &&
+                                expandedField === "procedures"
+                                  ? "#f8f9fa"
+                                  : "transparent",
+                            }}
+                          >
+                            {" "}
+                            {appt.procedures.length}
+                          </span>
+                        )}
                       </Button>
                     </td>
 
@@ -201,8 +217,24 @@ const AppointmentsTable = () => {
                             : "outline-primary"
                         }
                         onClick={() => handleViewClick(appt.id, "notes")}
+                        disabled={appt.notes.length === 0}
                       >
-                        View
+                        Manage
+                        {appt.notes.length > 0 && (
+                          <span
+                            className="num-item"
+                            style={{
+                              backgroundColor:
+                                expandedRow === appt.id &&
+                                expandedField === "notes"
+                                  ? "#f8f9fa"
+                                  : "transparent",
+                            }}
+                          >
+                            {" "}
+                            {appt.notes.length}
+                          </span>
+                        )}
                       </Button>
                     </td>
 
@@ -219,18 +251,36 @@ const AppointmentsTable = () => {
                         onClick={() =>
                           handleViewClick(appt.id, "treatmentPlan")
                         }
+                        disabled={appt.treatmentPlan.length === 0}
                       >
-                        View
+                        Manage
+                        {appt.treatmentPlan.length > 0 && (
+                          <span className="num-item"   style=
+                            {{
+                              backgroundColor:
+                                expandedRow === appt.id &&
+                                expandedField === "treatmentPlan"
+                                  ? "#f8f9fa"
+                                  : "transparent",
+                            }}>
+                            {" "}
+                            {appt.treatmentPlan.length}
+                          
+                          </span>
+                        )}
                       </Button>
                     </td>
                   </tr>
 
                   {expandedRow === appt.id && (
                     <tr>
-                      <td colSpan="7" className="border-0 background-in-hover-none">
+                      <td
+                        colSpan="7"
+                        className="border-0 background-in-hover-none"
+                      >
                         <div className="p-3">
                           <CustomAccordion
-                          backgroundColor="var(--scbccolor)"
+                            backgroundColor="var(--scbccolor)"
                             data={appt[expandedField]}
                             formFields={[
                               {
@@ -273,8 +323,8 @@ const AppointmentsTable = () => {
             </tbody>
           </Table>
 
-        {/*  Pagination & Info Section */}
-          <div className="d-flex justify-content-between align-items-center mt-3 nav-table" >
+          {/*  Pagination & Info Section */}
+          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
             {/*  Info Bar */}
             <div
               className="dt-layout-cell dt-layout-start"
@@ -298,7 +348,7 @@ const AppointmentsTable = () => {
             {/*  Pagination */}
             <div className="dt-layout-cell dt-layout-end  ">
               <div className="dt-paging">
-                <nav aria-label="pagination" className="d-flex"> 
+                <nav aria-label="pagination" className="d-flex">
                   <button
                     className="dt-paging-button first"
                     type="button"
@@ -349,10 +399,9 @@ const AppointmentsTable = () => {
               </div>
             </div>
           </div>
-
-          </div>
         </div>
       </div>
+    </div>
   );
 };
 

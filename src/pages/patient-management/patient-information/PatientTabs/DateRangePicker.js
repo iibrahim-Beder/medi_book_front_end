@@ -3,7 +3,7 @@ import { format, subDays, startOfDay, endOfDay, startOfMonth, endOfMonth, subMon
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
-import './new.css';
+import './DateRangePicker.css';
 
 const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
   const [startDate, setStartDate] = useState(
@@ -115,7 +115,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
             fontWeight: 500,
             backgroundColor: "#fff",
             boxSizing: "border-box",
-            fontFamily: "open sans",
+            // fontFamily: "open sans",
           }}
         />
         <CiCalendar

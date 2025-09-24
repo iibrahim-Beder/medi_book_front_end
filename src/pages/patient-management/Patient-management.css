@@ -97,5 +97,22 @@ border-bottom: 1px solid #dee2e670 !important;
 }
 
 .search-input {
-  padding-left: 35px; /* مساحة علشان الأيقونة */
+  padding-left: 35px; 
+}
+
+.view-btn:hover .num-item{
+  background:#f8f9fa !important;
+}
+
+.num-item{
+    padding: 1px 8px;
+    color: #012047;
+    font-weight: 500;
+    border-radius: 30px;
+    border: 1px solid #E6E8EE;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    margin-left: 4px;
 }

@@ -11,8 +11,8 @@ const ConditionsTable = () => {
   const [filterActive, setFilterActive] = useState("");
   const [filterSeverity, setFilterSeverity] = useState("");
   const [filterType, setFilterType] = useState("");
-  const [filterDateFrom, setFilterDateFrom] = useState("");
-  const [filterDateTo, setFilterDateTo] = useState("");
+  const [filterDateFrom, setFilterDateFrom] = useState(null); // تم التصحيح
+  const [filterDateTo, setFilterDateTo] = useState(null); // تم التصحيح
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
@@ -53,11 +53,27 @@ const ConditionsTable = () => {
       c.severity.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.notes.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .filter(c => filterActive ? String(c.isActive) === filterActive : true)
+    .filter(c => {
+      // تصحيح تصفية النشاط
+      if (filterActive === "") return true;
+      if (filterActive === "true") return c.isActive === true;
+      if (filterActive === "false") return c.isActive === false;
+      return true;
+    })
     .filter(c => filterSeverity ? c.severity === filterSeverity : true)
     .filter(c => filterType ? c.type === filterType : true)
-    .filter(c => filterDateFrom ? new Date(c.diagnosedDate) >= new Date(filterDateFrom) : true)
-    .filter(c => filterDateTo ? new Date(c.diagnosedDate) <= new Date(filterDateTo) : true);
+    .filter(c => {
+      // تصحيح تصفية التاريخ
+      if (!filterDateFrom && !filterDateTo) return true;
+      const diagnosedDate = new Date(c.diagnosedDate);
+      const fromDate = filterDateFrom ? new Date(filterDateFrom) : null;
+      const toDate = filterDateTo ? new Date(filterDateTo) : null;
+      
+      if (fromDate && toDate) return diagnosedDate >= fromDate && diagnosedDate <= toDate;
+      if (fromDate) return diagnosedDate >= fromDate;
+      if (toDate) return diagnosedDate <= toDate;
+      return true;
+    });
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -68,8 +84,8 @@ const ConditionsTable = () => {
     setFilterActive("");
     setFilterSeverity("");
     setFilterType("");
-    setFilterDateFrom("");
-    setFilterDateTo("");
+    setFilterDateFrom(null);
+    setFilterDateTo(null);
     setCurrentPage(1);
   };
 
@@ -80,29 +96,30 @@ const ConditionsTable = () => {
         <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
       </div>
 
-        <div className="table-card">
+      <div className="table-card">
         <div className="mb-20 p-3">
-        <ConditionsFilters 
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        filterActive={filterActive}
-        setFilterActive={setFilterActive}
-        filterSeverity={filterSeverity}
-        setFilterSeverity={setFilterSeverity}
-        filterType={filterType}
-        setFilterType={setFilterType}
-        filterDateFrom={filterDateFrom}
-        setFilterDateFrom={setFilterDateFrom}
-        filterDateTo={filterDateTo}
-        setFilterDateTo={setFilterDateTo}
-        onReset={resetFilters}
-        conditions={conditions}
-      /> </div>
-      <div className="p-3">
-     
+          <ConditionsFilters 
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            filterActive={filterActive}
+            setFilterActive={setFilterActive}
+            filterSeverity={filterSeverity}
+            setFilterSeverity={setFilterSeverity}
+            filterType={filterType}
+            setFilterType={setFilterType}
+            filterDateFrom={filterDateFrom}
+            setFilterDateFrom={setFilterDateFrom}
+            filterDateTo={filterDateTo}
+            setFilterDateTo={setFilterDateTo}
+            onReset={resetFilters}
+            onSearch={() => setCurrentPage(1)} 
+            conditions={conditions}
+          /> 
+        </div>
+        
+        <div className="p-3">
           <div className="scrol patientTable" style={{ overflow: "auto" }}>
             <Table className="data-table align-middle table-hover">
-
               <thead>
                 <tr>
                   <th>Name</th>

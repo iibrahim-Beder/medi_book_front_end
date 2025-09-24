@@ -1,24 +1,42 @@
 import React from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
-import { BiDownload, BiReset, BiSearch } from "react-icons/bi";
-import Autocomplete from "../../../shared/SearchableDropdown";
-import FilterDropdown from "./FilterDropdown";
-import DateRangePicker from "./DateRangePicker";
-import { FaSearch } from 'react-icons/fa';
-import MainSearch from "../../../../not used/Test";
+import { Button } from "react-bootstrap";
+import { BiReset } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
+import DateRangePicker from "./DateRangePicker";
+import FilterDropdown from "./FilterDropdown";
 
 const ConditionsFilters = ({
-  searchTerm, setSearchTerm,
-  filterActive, setFilterActive,
-  filterSeverity, setFilterSeverity,
-  filterType, setFilterType,
-  filterDateFrom, setFilterDateFrom,
-  filterDateTo, setFilterDateTo,
-  onReset, conditions
+  // قيم الفلاتر
+  searchTerm = "",
+  filterActive = "",
+  filterSeverity = "",
+  filterType = "",
+  filterDateFrom = null,
+  filterDateTo = null,
+  
+  // دوال تحديث الفلاتر
+  setSearchTerm,
+  setFilterActive,
+  setFilterSeverity,
+  setFilterType,
+  setFilterDateFrom,
+  setFilterDateTo,
+  
+  // دوال إضافية
+  onReset,
+  onSearch,
+  
+  // خيارات التخصيص
+  searchPlaceholder = "Search conditions...",
+  showSearchReset = true,
+  showDateRange = true,
+  showFilterDropdown = true,
+  customFilters = [],
+  conditions = []
 }) => {
-
-  const filters = [
+  
+  // الفلاتر الافتراضية
+  const defaultFilters = [
     {
       name: "severity",
       label: "Severity",
@@ -38,15 +56,35 @@ const ConditionsFilters = ({
     },
   ];
 
+  // استخدام الفلاتر المخصصة إذا تم توفيرها، وإلا استخدام الافتراضية
+  const filters = customFilters.length > 0 ? customFilters : defaultFilters;
+
+  const handleReset = () => {
+    setSearchTerm("");
+    setFilterActive("");
+    setFilterSeverity("");
+    setFilterType("");
+    setFilterDateFrom(null);
+    setFilterDateTo(null);
+    if (onReset) onReset();
+  };
+
+  const handleSearch = () => {
+    if (onSearch) onSearch();
+  };
+
   return (
     <div className="d-flex justify-content-between">
-    
-      <div className="">
+      {/* الجزء الأيسر: البحث وإعادة التعيين */}
+      <div className="d-flex align-items-center" style={{ flexDirection: "column" }}>
         <div style={{ position: "relative", width: "250px" }}>
           <input
             className="form-control small-search"
             type="text"
-            placeholder={"Search conditions..."}
+            placeholder={searchPlaceholder}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
           <CiSearch
             style={{
@@ -60,48 +98,70 @@ const ConditionsFilters = ({
           />
         </div>
 
-        {/*  Search & Reset */}
-        <div className="ml-3">
-          <div className="btn-group mt-2">
-            <Button
-              className="PatientsFiltersBtn"
-              variant="outline-secondary"
-              style={{ boxShadow: "none" }}
-            >
-              search
-            </Button>
-            <Button
-              className="PatientsFiltersBtn"
-              variant="outline-secondary"
-              style={{ boxShadow: "none" }}
-              onClick={() => {
-                setSearchTerm("");
-                setFilterActive("");
-                setFilterSeverity("");
-                setFilterType("");
-                setFilterDateFrom(null);
-                setFilterDateTo(null);
-                onReset();
-              }}
-            >
-              <BiReset /> Reset
-            </Button>
+        {/* أزرار البحث وإعادة التعيين */}
+        {showSearchReset && (
+          <div className="ml-4" style={{width:"100%"}} >
+            <div className="btn-group mt-2" > 
+              <Button
+                className="PatientsFiltersBtn"
+                variant="outline-secondary"
+                style={{ boxShadow: "none" }}
+                onClick={handleSearch}
+              >
+                Search
+              </Button>
+              <Button
+                className="PatientsFiltersBtn"
+                variant="outline-secondary"
+                style={{ boxShadow: "none" }}
+                onClick={handleReset}
+              >
+                <BiReset /> Reset
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Date Range Picker */}
+      {/* الجزء الأيمن: نطاق التاريخ والفلاتر */}
       <div style={{ display: "flex", gap: "12px" }}>
-        <DateRangePicker
-          startDate={filterDateFrom}
-          endDate={filterDateTo}
-          onChange={({ start, end }) => {
-            setFilterDateFrom(start);
-            setFilterDateTo(end);
-          }}
-        />
+        {showDateRange && (
+          <DateRangePicker
+            startDate={filterDateFrom}
+            endDate={filterDateTo}
+            onChange={({ start, end }) => {
+              setFilterDateFrom(start);
+              setFilterDateTo(end);
+            }}
+          />
+        )}
 
-        <FilterDropdown filters={filters} small={true} />
+        {showFilterDropdown && (
+          <FilterDropdown 
+            filters={filters} 
+            small={true} 
+            onFilter={(filters) => {
+              // معالجة الفلاتر المطبقة من FilterDropdown
+              if (filters.severity) {
+                const activeSeverities = Object.keys(filters.severity).filter(
+                  key => filters.severity[key]
+                );
+                setFilterSeverity(activeSeverities.length > 0 ? activeSeverities : "");
+              }
+              
+              if (filters.type) {
+                const activeTypes = Object.keys(filters.type).filter(
+                  key => filters.type[key]
+                );
+                setFilterType(activeTypes.length > 0 ? activeTypes : "");
+              }
+            }}
+            onReset={() => {
+              setFilterSeverity("");
+              setFilterType("");
+            }}
+          />
+        )}
       </div>
     </div>
   );
