@@ -8,7 +8,8 @@ const FilterDropdown = ({
   filters = [], // Filters passed as an array
   defaultValues = {}, // Default values for each filter
   customCheckbox = false, // Show custom checkbox or not
-  customCheckboxLabel = "Enable Custom Filter" // Label for the custom checkbox
+  customCheckboxLabel = "Enable Custom Filter" ,// Label for the custom checkbox
+  small = false, // Small size for the button
 }) => {
   const [selectedFilters, setSelectedFilters] = useState(defaultValues);
   const [isOpen, setIsOpen] = useState(false);
@@ -52,12 +53,13 @@ const FilterDropdown = ({
 
   return (
     <div className={` ${isOpen ? "table-filter-show" : ""} ` }>
-      <button className="form-control Select1 filtecss"  type="button" onClick={() => setIsOpen(!isOpen)}>
-        <CiFilter width={20}/> Add Filter 
+      <button className={`form-control Select1 filtecss ${small ? "small-filter" : ""}`}   type="button" onClick={() => setIsOpen(!isOpen)}>
+        <CiFilter color="#012047" width={20}/> 
+        <p className="mb-0 pr-1 pl-1" style={{ color: "#465D7C" }}>Filter By</p>
       </button>
 
       {isOpen && (
-        <div className="filter-dropdown-menu dropdown-menu p-3 show" style={{zIndex:"4", minWidth:"250px"}}>
+        <div className="filter-dropdown-menu dropdown-menu p-3 show" style={{zIndex:"4", minWidth:"350px"}}>
           <div className="filter-set-view">
             {/* Loop through filters dynamically */}
             {filters.map((filter, filterIndex) => (
@@ -110,10 +112,10 @@ const FilterDropdown = ({
 
             {/* Buttons */}
             <div className="d-flex justify-content-between">
-              <button className="btn btn-light" onClick={handleReset}>
+              <button type="button" className="btn btn-light" onClick={handleReset}>
                 Reset
               </button>
-              <button className="dc-btn" onClick={handleApplyFilter} style={{minWidth:"auto"}}>
+              <button type="button" className="dc-btn" onClick={handleApplyFilter} style={{minWidth:"auto"}}>
                 Filter Now
               </button>
             </div>

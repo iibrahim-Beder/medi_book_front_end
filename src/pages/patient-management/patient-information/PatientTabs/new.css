@@ -412,6 +412,9 @@
  }
 .DateRangePicker  table > tbody > tr > td,  table > thead:first-child > tr:first-child > th{
     border: none !important;
+    font-family: 'Arial';
+    font-size: 12px;
+    font-weight: 700;
 }
 .rdp-range_end .rdp-day_button , .rdp-range_start .rdp-day_button{
     background-color: #3fabf3 !important;
@@ -474,4 +477,5 @@ font-family: sans-serif !important;
 }
 .rdp-months{
     gap: 10px !important;
+    color: #465d7c;
 }

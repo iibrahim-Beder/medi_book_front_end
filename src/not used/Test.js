@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import FilterDropdown from '../pages/patient-management/patient-information/PatientTabs/FilterDropdown'; // تأكد من المسار الصحيح
-import { CiFilter } from "react-icons/ci";
-
-const SearchHeaderForm = () => {
+import FilterDropdown from '../pages/patient-management/patient-information/PatientTabs/FilterDropdown'; 
+const MainSearch = () => {
 
   const defaultValues = {
     location: {
@@ -29,21 +26,16 @@ const SearchHeaderForm = () => {
   ];
 
   const handleFilter = (filters) => {
-    // console.log("Filters applied:", filters);
+    console.log("Filters applied:", filters);
   };
 
   const handleReset = () => {
-    // console.log("Filters reset");
+    console.log("Filters reset");
   };
 
   return (
     <div className={"dc-headerform-holder show-sform' : "} >
       <div className="dc-search-headerform p-0 " style={{ width: "100%", display:"flex",flexDirection: "row-reverse", justifyContent: "flex-end" }}>
-        {/* <div className="closeform-holder">
-          <button type="button" className="dc-removeform" onClick={toggleForm}>
-            <i className="fa fa-close"></i>
-          </button>
-        </div> */}
         <form className="dc-formtheme dc-form-advancedsearch dc-headerform">
           <fieldset>
             <div className="form-group">
@@ -76,4 +68,4 @@ const SearchHeaderForm = () => {
   );
 };
 
-export default SearchHeaderForm;
+export default MainSearch;

@@ -5,7 +5,8 @@ import Autocomplete from "../../../shared/SearchableDropdown";
 import FilterDropdown from "./FilterDropdown";
 import DateRangePicker from "./DateRangePicker";
 import { FaSearch } from 'react-icons/fa';
-import SearchHeaderForm from "../../../../not used/Test";
+import MainSearch from "../../../../not used/Test";
+import { CiSearch } from "react-icons/ci";
 
 const ConditionsFilters = ({
   searchTerm, setSearchTerm,
@@ -38,102 +39,70 @@ const ConditionsFilters = ({
   ];
 
   return (
-    <div
-      // className="PatientsFilters card shadow-sm mb-3 rounded-3 P-4"
-      className=""
-      // style={{
-      //   border: "1px solid #ddd",
-      //   width: "96% ",
-      //   margin: "auto",
-      //   boxShadow: "2px 2px 20px 0px #ddd",
-      //   padding: "3px 6px",
-      // }}
-    >
-      {/* <div className="card-body"> */}
-        {/* first row */}
-     
-     
-     
-        <div
-         className=""
-    //      style={{display: "flex",
-    // flexWrap: "nowrap",
-    // flexDirection:" row",
-    // alignItems: "center",
-    // justifyContent:"space-between"}}
-
-         >
-
-        {/* <div  className="row"> */}
-      <div className="row">
-  {/* مكان البحث والفلاتر القديمة */}
-  <div className="col-12 col-lg-9 p-0">
-    <SearchHeaderForm />
-  </div>
-
-  {/* Date Range Picker */}
-  <div className="col-12 col-lg-3 p-1">
-    <DateRangePicker
-      startDate={filterDateFrom}
-      endDate={filterDateTo}
-      onChange={({ start, end }) => {
-        setFilterDateFrom(start);
-        setFilterDateTo(end);
-      }}
-    />
-  </div>
-
-  {/* أزرار Search & Reset */}
-  <div>
-    <div className="btn-group mt-2">
-      {/* <Button
-        className="PatientsFiltersBtn"
-        variant="outline-secondary"
-        style={{ boxShadow: "none" }}
-        onClick={() => {
-          console.log("Filters applied:", {
-            searchTerm,
-            filterActive,
-            filterSeverity,
-            filterType,
-            filterDateFrom,
-            filterDateTo,
-          });
-        }}
-      >
-        Search
-      </Button> */}
-      <Button
-        className="PatientsFiltersBtn"
-        variant="outline-secondary"
-        style={{ boxShadow: "none" }}
-        onClick={() => {
-          setSearchTerm("");
-          setFilterActive("");
-          setFilterSeverity("");
-          setFilterType("");
-          setFilterDateFrom(null);
-          setFilterDateTo(null);
-          onReset();
-        }}
-      >
-        <BiReset /> Reset
-      </Button>
-    </div>
-  </div>
-</div>
-
+    <div className="d-flex justify-content-between">
     
+      <div className="">
+        <div style={{ position: "relative", width: "250px" }}>
+          <input
+            className="form-control small-search"
+            type="text"
+            placeholder={"Search conditions..."}
+          />
+          <CiSearch
+            style={{
+              position: "absolute",
+              left: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "#000",
+              fontSize: "23px",
+            }}
+          />
         </div>
 
-        {/*second row*/}
-        {/* <div
-          className="row g-2 align-items-center"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-         
-        </div> */}
-      {/* </div> */}
+        {/*  Search & Reset */}
+        <div className="ml-3">
+          <div className="btn-group mt-2">
+            <Button
+              className="PatientsFiltersBtn"
+              variant="outline-secondary"
+              style={{ boxShadow: "none" }}
+            >
+              search
+            </Button>
+            <Button
+              className="PatientsFiltersBtn"
+              variant="outline-secondary"
+              style={{ boxShadow: "none" }}
+              onClick={() => {
+                setSearchTerm("");
+                setFilterActive("");
+                setFilterSeverity("");
+                setFilterType("");
+                setFilterDateFrom(null);
+                setFilterDateTo(null);
+                onReset();
+              }}
+            >
+              <BiReset /> Reset
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Date Range Picker */}
+      <div style={{ display: "flex", gap: "12px" }}>
+        <DateRangePicker
+          startDate={filterDateFrom}
+          endDate={filterDateTo}
+          onChange={({ start, end }) => {
+            setFilterDateFrom(start);
+            setFilterDateTo(end);
+          }}
+        />
+
+        <FilterDropdown filters={filters} small={true} />
+      </div>
     </div>
   );
 };

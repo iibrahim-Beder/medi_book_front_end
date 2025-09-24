@@ -15,6 +15,7 @@ import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import PatientStatistics from "./PatientTabs/MedicalHistoryTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
+import ConditionsFilters from "./PatientTabs/ConditionsFilters";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
@@ -70,7 +71,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "TreatmentPlans" && <PatientTreatmentPlans />}
             {activeTab === "Settings" && <PatientSettings />}
             {activeTab === "Statistics" && <PatientStatistics />} */}
-            {activeTab === "Notifications" && <ConditionsFilterDropdown />}
+            {activeTab === "Notifications" && <ConditionsFilters />}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
           </div>

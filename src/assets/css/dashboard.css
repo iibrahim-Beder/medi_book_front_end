@@ -237,6 +237,9 @@ table > tfoot > tr > td {
 	text-align: center;
 	vertical-align: top;
 }
+.table td, .table th{
+	text-align: inherit;
+}
 table thead tr th {
 	border-top: 1px solid #eee;
 	text-align: center;
@@ -5537,6 +5540,27 @@ top: 50%;
 	padding-left: 70px;
 	margin-right: 25px;
 }
+
+.small-filter {
+height: 32px !important;
+    border-radius: 5px !important;
+    padding: 5px !important;
+    margin-bottom: 20px;
+    max-width: 112px !important;
+    color: #465D7C !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+.small-search {
+
+	max-height: 38px !important;
+    border-radius: 4px !important;
+    padding: 6px 15px 6px 36px !important;
+    width: 210px;
+}
+
+
 
 @media (max-width: 568px) {
  .when686m-t-40{
