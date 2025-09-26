@@ -981,15 +981,24 @@ a:active{color: var(--themecolor);}
 /* For Mobile Nav use this code in Responsive.css desired Query */
 /*Theme Pagination Style */
 .dc-pagination {
-	width:100%;
-	float: left;
-	font:14px/24px 'Open Sans', sans-serif;
+width: 100%;
+    height: fit-content;
+    /* background: red; */
+    /* position: absolute; */
+    /* margin: -2px 0; */
+    padding: 4px;
+    /* display: flex
+; */
+    /* float: left; */
+    font: 14px / 24px 'Open Sans', sans-serif;
+	display: flex;
+	justify-content: center;
 }
 .dc-pagination ul {
 	margin:0;
 	padding:0;
 	float:left;
-	width: 100%;
+	width: 95%;
 	list-style:none;
 	text-align: center;
 	line-height: inherit;
@@ -1030,9 +1039,10 @@ a:active{color: var(--themecolor);}
 .dc-pagination ul li a.dc-nextpage,
 .dc-pagination ul li a i{line-height: 34px;}
 .dc-pagination ul li a:hover{
-	color: #fff;
-	border-color: var(--themecolor);
-	background: var(--themecolor);
+	color: #fff !important;
+	/* border-color: var(--themecolor);
+	background: var(--themecolor); */
+	background: #3fabf3;
 }
 /* Theme BreadCrumb Style */
 .dc-breadcrumbarea{

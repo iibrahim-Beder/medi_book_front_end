@@ -17,6 +17,11 @@ import MessagesPage from "./pages/messages/MessagesPage";
 import PatientManagement from "./pages/patient-management/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 import Test from './not used/Test';
+import Dropdown from "./pages/shared/DropdownWithSearch";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+
 
 
 function App() {
@@ -44,6 +49,8 @@ const { i18n } = useTranslation();
     }, 20);
     return () => clearTimeout(timer);
   }, []);
+
+
  const [showPopup, setShowPopup] = useState(false);
   return (
     <div className="dc-userlogin">
@@ -67,17 +74,18 @@ const { i18n } = useTranslation();
             <Sidebar />
             <div className="contentdiv">
               <Routes>
-                <Route path="dashboard" element={<DashboardMain />} />
-                <Route path="account-settings" element={<Acco />} />
+                {/* <Route path="dashboard" element={<DashboardMain />} /> */}
+                {/* <Route path="account-settings" element={<Acco />} />
                 <Route path="appointment-list" element={<MainAppointtmentList2 />} />
                 <Route path="appointment-location" element={<LocationMain />} />
                 <Route path="security-settings" element={<SecuritySettings />} />
                 <Route path="manage-services" element={<MakeSlostMain />} />
                 <Route path="Messages" element={<MessagesPage />} />
                 <Route path="manage-team" element={<PatientManagement />} />
+                <Route path="appointment-setting" element={<Test />} /> */}
+                {/* <Route path="manage-articles" element={<Dropdown/>} /> */}
                 <Route path="pationt-information" element={<PatientProfilePageMain />} />
-                <Route path="appointment-setting" element={<Test />} />
-                
+
               </Routes>
             </div>
           </div>

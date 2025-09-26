@@ -1,0 +1,66 @@
+/* Styles for the dropdown component */
+.css-ot336b-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline.css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline {
+
+ border: none ;
+  background-color: #dddddd2b;
+  /* color: #ddd; */
+  border-radius: 14px;
+}
+.css-ot336b-MuiInputBase-root-MuiOutlinedInput-root   input[type="text"]{
+color: #000;
+}
+.css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline{
+  border-radius: 10px !important;
+}
+.dropdown-container .css-18q250o-MuiSvgIcon-root ,.dropdown-container .css-z6hoph-MuiSvgIcon-root{
+color: #6d6d6d ;
+} 
+.dropdown-container .css-113d811-MuiFormLabel-root-MuiInputLabel-root{
+  color: #0000005c !important;
+}
+.dropdown-container input[type="text"]{
+  background-color: transparent !important;
+  color:#000 !important;
+}
+
+
+/* to edit the dropdown pagination */
+.dropdown-container .dc-pagination {
+border-top: 1px solid #eee;
+background-color: red !important;
+}
+
+.css-ot336b-MuiInputBase-root-MuiOutlinedInput-root{
+    width:95% !important;
+   margin:0 auto;
+}
+
+
+/*   to edit scrollbar styles    */
+.MuiList-root::-webkit-scrollbar {
+  width: 6px; 
+}
+
+/* background scrollbar */
+.MuiList-root::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* scrollbar thumb */
+.MuiList-root::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/*  Hover */
+.MuiList-root::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* disable scrollbar buttons */
+.MuiList-root::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0;
+  height: 0;
+  background: transparent;
+}

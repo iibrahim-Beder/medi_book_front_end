@@ -116,3 +116,28 @@ border-bottom: 1px solid #dee2e670 !important;
     font-size: 10px;
     margin-left: 4px;
 }
+
+
+
+/* searchable dropdown styles start */
+
+.css-19166iz-MuiAutocomplete-listbox{
+  padding-bottom: 0 !important;
+}
+.css-28116y-MuiAutocomplete-root .MuiOutlinedInput-root{
+  padding: 0 12px !important;
+  height: 40px !important;
+}
+.css-28116y-MuiAutocomplete-root .MuiOutlinedInput-root:focus-within{
+  padding: 0 12px !important;
+}
+.css-ot336b-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+  border-width:1px !important;
+}
+.css-19166iz-MuiAutocomplete-listbox{
+  min-height: 105px !important;
+}
+
+/* searchable dropdown styles end */
+
+

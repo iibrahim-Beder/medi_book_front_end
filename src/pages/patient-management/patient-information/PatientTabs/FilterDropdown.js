@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import './new.css';
 import { CiFilter } from "react-icons/ci";
+import DropdownWithSearch from "../../../shared/DropdownWithSearch";
 
 const FilterDropdown = ({ 
   onFilter, 
@@ -59,8 +60,9 @@ const FilterDropdown = ({
       </button>
 
       {isOpen && (
-        <div className="filter-dropdown-menu dropdown-menu p-3 show" style={{zIndex:"4", minWidth:"350px"}}>
+        <div className="filter-dropdown-menu dropdown-menu p-3 show" style={{zIndex:"4", minWidth:"350px", right: 0, top: "auto", left: "unset"}}>
           <div className="filter-set-view">
+          <DropdownWithSearch/>
             {/* Loop through filters dynamically */}
             {filters.map((filter, filterIndex) => (
               <div className="mb-3" key={filterIndex}>  

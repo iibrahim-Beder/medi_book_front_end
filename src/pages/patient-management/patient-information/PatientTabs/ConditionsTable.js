@@ -11,8 +11,8 @@ const ConditionsTable = () => {
   const [filterActive, setFilterActive] = useState("");
   const [filterSeverity, setFilterSeverity] = useState("");
   const [filterType, setFilterType] = useState("");
-  const [filterDateFrom, setFilterDateFrom] = useState(null); // تم التصحيح
-  const [filterDateTo, setFilterDateTo] = useState(null); // تم التصحيح
+  const [filterDateFrom, setFilterDateFrom] = useState(null); 
+  const [filterDateTo, setFilterDateTo] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
@@ -54,7 +54,6 @@ const ConditionsTable = () => {
       c.notes.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter(c => {
-      // تصحيح تصفية النشاط
       if (filterActive === "") return true;
       if (filterActive === "true") return c.isActive === true;
       if (filterActive === "false") return c.isActive === false;
@@ -63,7 +62,6 @@ const ConditionsTable = () => {
     .filter(c => filterSeverity ? c.severity === filterSeverity : true)
     .filter(c => filterType ? c.type === filterType : true)
     .filter(c => {
-      // تصحيح تصفية التاريخ
       if (!filterDateFrom && !filterDateTo) return true;
       const diagnosedDate = new Date(c.diagnosedDate);
       const fromDate = filterDateFrom ? new Date(filterDateFrom) : null;
