@@ -1,9 +1,9 @@
-// components/DynamicEditModal.jsx
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import Field from "../ui/form-fields/Field"; 
 import TextAreaField from "../ui/form-fields/TextAreaField";
 import { MdClose } from "react-icons/md";
+import DropdownWithSearch from "./DropdownWithSearch";
 
 const DynamicEditModal = ({
   show,
@@ -35,7 +35,6 @@ const DynamicEditModal = ({
           {title}
         </Modal.Title>
         
-        {/* زر الإغلاق الإضافي في أعلى اليمين */}
         <Button 
           // variant="close" 
           onClick={onClose} 
@@ -62,6 +61,7 @@ const DynamicEditModal = ({
       </Modal.Header>
 
       <Modal.Body style={{ padding: "0.5rem 1.5rem 1rem" }}>
+        <DropdownWithSearch/>
         {record && (
           <div className="form-grid" style={{ rowGap: "0.8rem" }}>
             {fields.map((field) => {

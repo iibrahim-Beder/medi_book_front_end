@@ -60,15 +60,15 @@ const FilterDropdown = ({
       </button>
 
       {isOpen && (
-        <div className="filter-dropdown-menu dropdown-menu p-3 show" style={{zIndex:"4", minWidth:"350px", right: 0, top: "auto", left: "unset"}}>
+        <div className="filter-dropdown-menu dropdown-menu show" style={{right: "0px", top: "auto", left: "unset", padding: "20px ", borderRadius: "5px", background: "#FFF", border: "1px solid #E6E8EE", boxShadow: "0px 4px 14px 0px rgba(226, 237, 255, 0.25)", position: "absolute", zIndex: 9}}>
           <div className="filter-set-view">
           <DropdownWithSearch/>
             {/* Loop through filters dynamically */}
             {filters.map((filter, filterIndex) => (
-              <div className="mb-3" key={filterIndex}>  
+              <div className="mb-3" key={filterIndex} style={{ borderTop: "1px solid #E6E8EE", paddingTop: "15px" }} >  
                 <button
                  type="button"
-                  className={`btn btn-outline-secondary w-100 text-start dropdown-btn ${openFilter === filter.name ? "open" : ""}`}
+                  className={`btn btn-outline-secondary w-100 text-start dropdown-btn filter-btn ${openFilter === filter.name ? "open" : ""}`}
                   onClick={() => toggleFilter(filter.name)} // When clicking the filter
                 >
                   {filter.label}
@@ -87,7 +87,9 @@ const FilterDropdown = ({
                     </span>
                   ))}
                 </div>
+                {/* <hr/> */}
               </div>
+              
             ))}
 
             {/* Add custom checkbox only if enabled */}
@@ -114,10 +116,10 @@ const FilterDropdown = ({
 
             {/* Buttons */}
             <div className="d-flex justify-content-between">
-              <button type="button" className="btn btn-light" onClick={handleReset}>
+              <button type="button" className="" onClick={handleReset}>
                 Reset
               </button>
-              <button type="button" className="dc-btn" onClick={handleApplyFilter} style={{minWidth:"auto"}}>
+              <button type="button"  className="btn" onClick={handleApplyFilter} style={{minWidth:"auto", padding: "7px 15px", backgroundColor: "rgb(63, 171, 243)", color: "white", border: "none", borderRadius: "5px", cursor: "pointer"}}>
                 Filter Now
               </button>
             </div>

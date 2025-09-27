@@ -6,7 +6,7 @@ import DateRangePicker from "./DateRangePicker";
 import FilterDropdown from "./FilterDropdown";
 
 const ConditionsFilters = ({
-  // قيم الفلاتر
+  // Filter values
   searchTerm = "",
   filterActive = "",
   filterSeverity = "",
@@ -14,7 +14,7 @@ const ConditionsFilters = ({
   filterDateFrom = null,
   filterDateTo = null,
   
-  // دوال تحديث الفلاتر
+  // Filter update functions
   setSearchTerm,
   setFilterActive,
   setFilterSeverity,
@@ -22,11 +22,11 @@ const ConditionsFilters = ({
   setFilterDateFrom,
   setFilterDateTo,
   
-  // دوال إضافية
+  // Additional functions
   onReset,
   onSearch,
   
-  // خيارات التخصيص
+  // Customization options
   searchPlaceholder = "Search conditions...",
   showSearchReset = true,
   showDateRange = true,
@@ -35,7 +35,7 @@ const ConditionsFilters = ({
   conditions = []
 }) => {
   
-  // الفلاتر الافتراضية
+  // Default filters
   const defaultFilters = [
     {
       name: "severity",
@@ -56,7 +56,7 @@ const ConditionsFilters = ({
     },
   ];
 
-  // استخدام الفلاتر المخصصة إذا تم توفيرها، وإلا استخدام الافتراضية
+  // Use custom filters if provided, otherwise default
   const filters = customFilters.length > 0 ? customFilters : defaultFilters;
 
   const handleReset = () => {
@@ -75,7 +75,7 @@ const ConditionsFilters = ({
 
   return (
     <div className="d-flex justify-content-between">
-      {/* الجزء الأيسر: البحث وإعادة التعيين */}
+      {/* Left side: search and reset */}
       <div className="d-flex align-items-center" style={{ flexDirection: "column" }}>
         <div style={{ position: "relative", width: "250px" }}>
           <input
@@ -98,7 +98,7 @@ const ConditionsFilters = ({
           />
         </div>
 
-        {/* أزرار البحث وإعادة التعيين */}
+        {/* Search and Reset buttons */}
         {showSearchReset && (
           <div className="ml-4" style={{width:"100%"}} >
             <div className="btn-group mt-2" > 
@@ -123,7 +123,7 @@ const ConditionsFilters = ({
         )}
       </div>
 
-      {/* الجزء الأيمن: نطاق التاريخ والفلاتر */}
+      {/* Right side: date range and filters */}
       <div style={{ display: "flex", gap: "12px" }}>
         {showDateRange && (
           <DateRangePicker
@@ -141,7 +141,7 @@ const ConditionsFilters = ({
             filters={filters} 
             small={true} 
             onFilter={(filters) => {
-              // معالجة الفلاتر المطبقة من FilterDropdown
+              // Handle applied filters from FilterDropdown
               if (filters.severity) {
                 const activeSeverities = Object.keys(filters.severity).filter(
                   key => filters.severity[key]

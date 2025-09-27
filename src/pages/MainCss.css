@@ -385,7 +385,7 @@ abbr[title] {
 
 button:focus {
   outline: none;
-  color: #fff;
+  color: #000;
 }
 
 
@@ -590,8 +590,9 @@ background-color: transparent;
  .dt-paging-button.current{
    display: inline;
    background-color: var(--themecolor);
-   background: #00d0f1 !important;
-   border-color: #00d0f1 !important;
+   background: #3fabf3 !important;
+   border-color: #3fabf3 !important;
+   color:#fff;
    width: 40px;
  }
  .dt-paging-button.last,.dt-paging-button.first{
@@ -759,6 +760,18 @@ background-color: transparent;
 }
 /*  */
 
+
+/* filter-btn style start */
+
+.filter-dropdown-menu .filter-btn{
+padding: 10px !important;
+color:#000 !important;
+box-shadow: none !important;
+font-weight: 500 !important ;
+font-family: "Inter", sans-serif !important;
+}
+
+/* filter-btn style end */
 
 
 

@@ -204,22 +204,22 @@
 /* arrow */
 .dropdown-btn .arrow {
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid #0000007f;
-  border-bottom: 2px solid #0000007f;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
   transform: rotate(45deg);
   transition: transform 0.3s ease;  
   margin-left: 10px;
 }
 .dropdown-btn{
     display: flex !important;
-    background-color: var(--headcolor) !important;
+    background-color:#F9F9F9 !important;
 }
 
-.dropdown-btn.open {
+/* .dropdown-btn.open {
     color: black !important;
-}
+} */
 .dropdown-btn:active{
     color: black !important;
 }

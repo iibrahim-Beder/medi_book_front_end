@@ -1,16 +1,25 @@
 /* Styles for the dropdown component */
 .css-ot336b-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline.css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline {
-
  border: none ;
-  background-color: #dddddd2b;
+  /* background-color: transparent; */
   /* color: #ddd; */
   border-radius: 14px;
+      height: 40px;
+    min-height: 38px;
+    border: 1px solid #E6E8EE;
+    border-radius: 5px;
+    padding-left: 34px;
+}
+.css-ot336b-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline.css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline {
+  border: 1px solid #E6E8EE !important ; 
 }
 .css-ot336b-MuiInputBase-root-MuiOutlinedInput-root   input[type="text"]{
 color: #000;
+height: auto !important;
+    padding-left: 0;
 }
 .css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline{
-  border-radius: 10px !important;
+  /* border-radius: 10px 10px 0 0 !important; */
 }
 .dropdown-container .css-18q250o-MuiSvgIcon-root ,.dropdown-container .css-z6hoph-MuiSvgIcon-root{
 color: #6d6d6d ;
@@ -21,13 +30,14 @@ color: #6d6d6d ;
 .dropdown-container input[type="text"]{
   background-color: transparent !important;
   color:#000 !important;
+      font-weight: 500;
+    font-family: 'Inter';
 }
 
 
 /* to edit the dropdown pagination */
 .dropdown-container .dc-pagination {
 border-top: 1px solid #eee;
-background-color: red !important;
 }
 
 .css-ot336b-MuiInputBase-root-MuiOutlinedInput-root{
@@ -64,3 +74,12 @@ background-color: red !important;
   height: 0;
   background: transparent;
 }
+.css-51we07-MuiPopper-root{
+  position: unset !important;
+    transform: none !important;
+    width: auto !important;
+}
+  .css-a99xrz-MuiPaper-root{
+    position: absolute !important;
+    z-index: 2 !important  ;
+  }
