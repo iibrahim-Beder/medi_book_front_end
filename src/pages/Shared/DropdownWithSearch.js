@@ -131,7 +131,7 @@ const DropdownWithSearch = ({
             { name: "preventOverflow", options: { padding: 8 } },
             { name: "flip", enabled: true },
           ]}
-          style={{ zIndex: 1300, width ,transform:"none", inset:"none", position:"unset" }}
+          style={{ zIndex: 1300, width   }}
         >
           <ClickAwayListener onClickAway={handleClose}>
             <Paper
@@ -142,6 +142,9 @@ const DropdownWithSearch = ({
                 flexDirection: "column",
                 boxShadow: "0px 11px 12px 0px #dbdbdb45",
                 border: "1px solid #ddd",
+                width:{width},
+                position: "absolute",
+                zIndex: 2,
               }}
             >
               <TextField
