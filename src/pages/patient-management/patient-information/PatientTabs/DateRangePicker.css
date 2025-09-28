@@ -272,6 +272,7 @@
 }
 .rdp-range_end .rdp-day_button{
     border-radius: 0 6px 6px 0 !important;
+    margin-left: -3px;
 }
 .rdp-range_start.rdp-range_end .rdp-day_button {
   border-radius: 6px !important;
