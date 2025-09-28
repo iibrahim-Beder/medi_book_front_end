@@ -1,75 +1,154 @@
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import DynamicEditModal from "../../../shared/DynamicEditModal";
+import MedicalHistoryModal from "./component/MedicalHistoryModal"; 
 import "../../Patient-management.css";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 import ConditionsFilters from "./component/ConditionsFilters";
 
-const ConditionsTable = () => {
+const MedicalHistoryTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterActive, setFilterActive] = useState("");
-  const [filterSeverity, setFilterSeverity] = useState("");
-  const [filterType, setFilterType] = useState("");
-  const [filterDateFrom, setFilterDateFrom] = useState(null); 
+  const [filterType, setFilterType] = useState("");       
+  const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [isAddMode, setIsAddMode] = useState(false);
 
   const rowsPerPage = 5;
 
-  const conditions = [
-    { id: 1, nameEn: "Diabetes", type: "Chronic", severity: "Moderate", isActive: true, diagnosedDate: "2023-05-15", notes: "Patient needs regular insulin monitoring." },
-    { id: 2, nameEn: "Flu", type: "NonChronic", severity: "Mild", isActive: false, diagnosedDate: "2024-01-20", notes: "Recovered fully." },
-    { id: 3, nameEn: "Hypertension", type: "Chronic", severity: "Severe", isActive: true, diagnosedDate: "2022-09-10", notes: "Under medication and monitoring." },
+  
+  const HistoryType = {
+    All: "All",
+    Surgery: "Surgery",
+    Accident: "Accident", 
+    Hospitalization: "Hospitalization",
+    FamilyHistory: "FamilyHistory",
+    Vaccination: "Vaccination",
+    Others: "Others"
+  };
+
+  const historyTypes = [
+    HistoryType.Surgery,
+    HistoryType.Accident,
+    HistoryType.Hospitalization,
+    HistoryType.FamilyHistory,
+    HistoryType.Vaccination,
+    HistoryType.Others
   ];
 
-  const fields = [
-    { name: "id", label: "ID", type: "text", placeholder: "Enter ID" },
-    { name: "nameEn", label: "Name", type: "text", placeholder: "Enter name" },
-    { name: "type", label: "Type", type: "text", placeholder: "Enter type" },
-    { name: "severity", label: "Severity", type: "text", placeholder: "Enter severity" },
-    { name: "isActive", label: "Is Active", type: "checkbox" },
-    { name: "diagnosedDate", label: "Diagnosed Date", type: "date" },
-    { name: "notes", label: "Notes", type: "textarea", placeholder: "Enter notes" },
+
+  const hereditaryDiseases = [
+    "Diabetes",
+    "Heart Disease", 
+    "Cancer",
+    "Hypertension",
+    "Asthma",
+    "Mental Health Disorders",
+    "Other"
   ];
 
-  const handleView = (id) => alert(`View details of ${id}`);
-  const handleEdit = (entry) => {
-    setSelectedRecord(entry);
+  // Mock Data 
+  const [medicalHistory, setMedicalHistory] = useState([
+    {
+      id: 1,
+      historyType: HistoryType.Surgery,
+      hereditaryDisease: "",
+      description: "Appendix removal",
+      dateOfEvent: "2022-03-15",
+      relatedPerson: null,
+      notes: "Successful surgery with no complications.",
+    },
+    {
+      id: 2,
+      historyType: HistoryType.Accident,
+      hereditaryDisease: "",
+      description: "Car accident with minor injuries",
+      dateOfEvent: "2021-11-02",
+      relatedPerson: null,
+      notes: "Recovered after 2 weeks.",
+    },
+    {
+      id: 3,
+      historyType: HistoryType.FamilyHistory,
+      hereditaryDisease: "Heart Disease", 
+      description: "Father had heart disease",
+      dateOfEvent: "2020-01-01",
+      relatedPerson: "Father",
+      notes: "Family-related record",
+    },
+    {
+      id: 4,
+      historyType: HistoryType.FamilyHistory,
+      hereditaryDisease: "Diabetes",
+      description: "Mother has diabetes",
+      dateOfEvent: "2019-05-10",
+      relatedPerson: "Mother",
+      notes: "Type 2 diabetes diagnosed at age 45",
+    },
+  ]);
+
+  // to reset the form in modal
+  const emptyRecord = {
+    historyType: "",
+    hereditaryDisease: "",
+    description: "",
+    dateOfEvent: "",
+    relatedPerson: "",
+    notes: ""
+  };
+
+  const handleAddNew = () => {
+    setSelectedRecord({...emptyRecord});
+    setIsAddMode(true);
     setShowModal(true);
   };
-  const handleSave = () => {
-    console.log("Saved record:", selectedRecord);
-    setShowModal(false);
+
+  const handleEdit = (entry) => {
+    setSelectedRecord({...entry});
+    setIsAddMode(false);
+    setShowModal(true);
   };
 
-  const filteredData = conditions
-    .filter(c =>
-      c.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.severity.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.notes.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleSave = () => {
+    if (isAddMode) {
+      const newRecord = {
+        ...selectedRecord,
+        id: Math.max(0, ...medicalHistory.map(item => item.id)) + 1
+      };
+      setMedicalHistory([...medicalHistory, newRecord]);
+    } else {
+      
+      const updatedHistory = medicalHistory.map(item =>
+        item.id === selectedRecord.id ? selectedRecord : item
+      );
+      setMedicalHistory(updatedHistory);
+    }
+    
+    console.log("Saved record:", selectedRecord);
+    setShowModal(false);
+    setSelectedRecord(null);
+  };
+
+  // filters the data based on search and filters
+  const filteredData = medicalHistory
+    .filter((c) =>
+      c.historyType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (c.description?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (c.hereditaryDisease?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (c.relatedPerson?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (c.notes?.toLowerCase().includes(searchTerm.toLowerCase()))
     )
-    .filter(c => {
-      if (filterActive === "") return true;
-      if (filterActive === "true") return c.isActive === true;
-      if (filterActive === "false") return c.isActive === false;
-      return true;
-    })
-    .filter(c => filterSeverity ? c.severity === filterSeverity : true)
-    .filter(c => filterType ? c.type === filterType : true)
-    .filter(c => {
+    .filter((c) => (filterType ? c.historyType === filterType : true))
+    .filter((c) => {
       if (!filterDateFrom && !filterDateTo) return true;
-      const diagnosedDate = new Date(c.diagnosedDate);
+      const eventDate = new Date(c.dateOfEvent);
       const fromDate = filterDateFrom ? new Date(filterDateFrom) : null;
       const toDate = filterDateTo ? new Date(filterDateTo) : null;
-      
-      if (fromDate && toDate) return diagnosedDate >= fromDate && diagnosedDate <= toDate;
-      if (fromDate) return diagnosedDate >= fromDate;
-      if (toDate) return diagnosedDate <= toDate;
+
+      if (fromDate && toDate) return eventDate >= fromDate && eventDate <= toDate;
+      if (fromDate) return eventDate >= fromDate;
+      if (toDate) return eventDate <= toDate;
       return true;
     });
 
@@ -79,38 +158,42 @@ const ConditionsTable = () => {
 
   const resetFilters = () => {
     setSearchTerm("");
-    setFilterActive("");
-    setFilterSeverity("");
     setFilterType("");
     setFilterDateFrom(null);
     setFilterDateTo(null);
     setCurrentPage(1);
   };
 
+  // to format date nicely
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   return (
     <div className="table-container">
       <div className="table-header">
-      <div>
-        <h3 className="table-title">Medical Conditions</h3>
-        <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+        <div>
+          <h3 className="table-title">Medical History</h3>
+          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+        </div>
+        <div>
+          <button className="add-btn" onClick={handleAddNew}>
+            Add Record
+          </button>
+        </div>
       </div>
-      <div>
-      <button className="add-btn" onClick={() => { setSelectedRecord(null); setShowModal(true); }}>
-        Add Condition
-      </button>
-      </div>
-      </div>
-
 
       <div className="table-card">
         <div className="mb-20 p-3">
-          <ConditionsFilters 
+          <ConditionsFilters
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
-            filterActive={filterActive}
-            setFilterActive={setFilterActive}
-            filterSeverity={filterSeverity}
-            setFilterSeverity={setFilterSeverity}
             filterType={filterType}
             setFilterType={setFilterType}
             filterDateFrom={filterDateFrom}
@@ -118,43 +201,63 @@ const ConditionsTable = () => {
             filterDateTo={filterDateTo}
             setFilterDateTo={setFilterDateTo}
             onReset={resetFilters}
-            onSearch={() => setCurrentPage(1)} 
-            conditions={conditions}
-          /> 
+            onSearch={() => setCurrentPage(1)}
+            conditions={medicalHistory}
+            historyTypes={historyTypes}
+            HistoryType={HistoryType}
+          />
         </div>
-        
+
         <div className="p-3">
           <div className="scrol patientTable" style={{ overflow: "auto" }}>
             <Table className="data-table align-middle table-hover">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Severity</th>
-                  <th>Active</th>
-                  <th>Diagnosed Date</th>
+                  <th>History Type</th>
+                  <th>Hereditary Disease</th>
+                  <th>Description</th>
+                  <th>Date of Event</th>
+                  <th>Related Person</th>
                   <th>Notes</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {currentData.length > 0 ? currentData.map(entry => (
-                  <tr key={entry.id}>
-                    <td>{entry.nameEn}</td>
-                    <td>{entry.type}</td>
-                    <td>{entry.severity}</td>
-                    <td>{entry.isActive ? "Active" : "Inactive"}</td>
-                    <td>{entry.diagnosedDate}</td>
-                    <td>{entry.notes}</td>
-                    <td>
-                      <Button  className="view-btn" variant="" size="sm" style={{color: "#007bff", backgroundColor: "transparent"}} onClick={() => handleEdit(entry)}>
-                        Manage
-                      </Button>
-                    </td>
-                  </tr>
-                )) : (
+                {currentData.length > 0 ? (
+                  currentData.map((entry) => (
+                    <tr key={entry.id}>
+                      <td>{entry.historyType}</td>
+                      <td>{entry.hereditaryDisease || "-"}</td>
+                      <td>{entry.description}</td>
+                      <td>{formatDate(entry.dateOfEvent)}</td>
+                      <td>{entry.relatedPerson || "-"}</td>
+                      <td>
+                        {entry.notes ? (
+                          <span title={entry.notes}>
+                            {entry.notes.length > 50 
+                              ? `${entry.notes.substring(0, 50)}...` 
+                              : entry.notes}
+                          </span>
+                        ) : "-"}
+                      </td>
+                      <td>
+                        <Button
+                          className="view-btn"
+                          variant=""
+                          size="sm"
+                          style={{ color: "#007bff", backgroundColor: "transparent" }}
+                          onClick={() => handleEdit(entry)}
+                        >
+                          Manage
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
                   <tr>
-                    <td colSpan="7" className="text-center text-muted">No records found.</td>
+                    <td colSpan="7" className="text-center text-muted">
+                      No medical history records found.
+                    </td>
                   </tr>
                 )}
               </tbody>
@@ -163,10 +266,10 @@ const ConditionsTable = () => {
 
           {/* Pagination */}
           <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div className="info-bar" color="#000" >
+            <div className="info-bar" color="#000">
               Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredData.length)} of {filteredData.length} entries
             </div>
-            <div className="dt-layout-cell dt-layout-end  ">
+            <div className="dt-layout-cell dt-layout-end">
               <div className="dt-paging">
                 <nav aria-label="pagination" className="d-flex">
                   <button
@@ -189,9 +292,7 @@ const ConditionsTable = () => {
                   {[...Array(totalPages)].map((_, index) => (
                     <button
                       key={index}
-                      className={`dt-paging-button none ${
-                        currentPage === index + 1 ? "current" : ""
-                      }`}
+                      className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
                       type="button"
                       onClick={() => setCurrentPage(index + 1)}
                     >
@@ -221,20 +322,21 @@ const ConditionsTable = () => {
           </div>
         </div>
       </div>
-
-      {selectedRecord && (
-        <DynamicEditModal
-          show={showModal}
-          onClose={() => setShowModal(false)}
-          onSave={handleSave}
-          record={selectedRecord}
-          setRecord={setSelectedRecord}
-          fields={fields}
-          title="Edit Condition"
-        />
-      )}
+    {/* the modal for add/edit */}
+      <MedicalHistoryModal
+        show={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedRecord(null);
+        }}
+        onSave={handleSave}
+        record={selectedRecord}
+        setRecord={setSelectedRecord}
+        hereditaryDiseases={hereditaryDiseases}
+        title={isAddMode ? "Add Medical History" : "Edit Medical History"}
+      />
     </div>
   );
 };
 
-export default ConditionsTable;
+export default MedicalHistoryTable;

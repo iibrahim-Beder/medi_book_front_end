@@ -18,16 +18,13 @@ import Popper from "@mui/material/Popper";
 
 const DropdownWithSearch = ({
   label = "Dropdown",
-  options = [
-    "Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6",
-    "Option 7", "Option 8", "Option 9", "Option 10", "Option 11", "Option 12",
-    "Option 13", "Option 14", "Option 15"
-  ],
+  options = [],
   itemsPerPage = 6,
   placeholder = "Select option",
   onSelect = () => {},
   onNext = () => {},
   onPrev = () => {},
+  disabled = false,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -100,13 +97,14 @@ useEffect(() => {
   };
 
   return (
-    <div className="dropdown-container">
+    <div className="dropdown-container" style={{ opacity: disabled ? 0.6 : 1 }}>
       <Box sx={{ width: "100%", margin: "10px 0 20px 0", fontFamily: "Inter, sans-serif" }}>
         <TextField
+          disabled={disabled}
           ref={selectRef}
           label={label}
           value={selectedOption || placeholder}
-          onClick={handleClick}
+          onClick={disabled ? undefined : handleClick}
           fullWidth
           InputProps={{
             readOnly: true,

@@ -12,7 +12,6 @@ const SelectField = ({
 }) => {
   const [touched, setTouched] = useState(false);
 
-  // ✅ الشرط統一: يظهر لو الحقل اتلمس أو لو Save اتعمل
   const showError = error && (touched || forceShowError);
 
   return (

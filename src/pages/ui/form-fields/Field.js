@@ -11,6 +11,7 @@ const Field = ({
   type = "text",
   error,
   forceShowError = false,
+  disabled = false,
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
@@ -21,13 +22,13 @@ const Field = ({
   };
 
   return (
-    <div className={`form-group ${showError ? "has-error" : ""}`}>
+    <div className={`form-group ${showError ? "has-error" : ""}`} style={{ opacity: disabled ? 0.6 : 1 }}>
       <label htmlFor={name}>{label}</label>
       <div className="input-with-icon">
         <span className={`input-icon ${showError ? "icon-error" : ""}`}>
           {icon}
         </span>
-        <input
+        <input disabled={disabled}
           id={name}
           name={name}
           type={type}
