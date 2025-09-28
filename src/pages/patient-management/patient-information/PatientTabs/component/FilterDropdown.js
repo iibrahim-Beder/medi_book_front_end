@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './new.css';
 import { CiFilter } from "react-icons/ci";
 import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
@@ -6,16 +6,17 @@ import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
 const FilterDropdown = ({ 
   onFilter, 
   onReset, 
-  filters = [], // Filters passed as an array
-  defaultValues = {}, // Default values for each filter
-  customCheckbox = false, // Show custom checkbox or not
-  customCheckboxLabel = "Enable Custom Filter" ,// Label for the custom checkbox
-  small = false, // Small size for the button
+  filters = [], 
+  defaultValues = {}, 
+  customCheckbox = false, 
+  customCheckboxLabel = "Enable Custom Filter",
+  small = false, 
 }) => {
   const [selectedFilters, setSelectedFilters] = useState(defaultValues);
   const [isOpen, setIsOpen] = useState(false);
   const [customCheckboxState, setCustomCheckboxState] = useState(false);
-  const [openFilter, setOpenFilter] = useState(null); // Track the currently opened filter
+  const [openFilter, setOpenFilter] = useState(null);
+  const dropdownRef = useRef(null); // 👈 هنا المرجع
 
   const handleFilterChange = (filterName, key) => {
     setSelectedFilters((prev) => ({
@@ -28,48 +29,84 @@ const FilterDropdown = ({
   };
 
   const handleCustomCheckboxChange = () => {
-    setCustomCheckboxState((prevState) => !prevState); // Toggle custom checkbox state
+    setCustomCheckboxState((prevState) => !prevState);
   };
 
   const handleReset = () => {
     setSelectedFilters(defaultValues);
-    setCustomCheckboxState(false); // Reset custom checkbox when pressing reset
-    setOpenFilter(null); // Reset opened filter on reset
+    setCustomCheckboxState(false);
+    setOpenFilter(null);
     if (onReset) onReset();
   };
 
   const handleApplyFilter = () => {
     const filtersToApply = {
       ...selectedFilters,
-      customCheckbox: customCheckboxState, // Add custom checkbox state to filters
+      customCheckbox: customCheckboxState,
     };
     if (onFilter) {
-      onFilter(filtersToApply); // Send applied filters
+      onFilter(filtersToApply);
     }
   };
 
   const toggleFilter = (filterName) => {
-    setOpenFilter((prev) => (prev === filterName ? null : filterName)); // Toggle current filter and close others
+    setOpenFilter((prev) => (prev === filterName ? null : filterName));
   };
 
+  // 👇 event listener يقفل لما تدوس برا
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+        setOpenFilter(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className={` ${isOpen ? "table-filter-show" : ""} ` }>
-      <button className={`form-control Select1 filtecss ${small ? "small-filter" : ""}`}   type="button" onClick={() => setIsOpen(!isOpen)}>
+    <div ref={dropdownRef} className={` ${isOpen ? "table-filter-show" : ""} ` }>
+      <button 
+        className={`form-control Select1 filtecss ${small ? "small-filter" : ""}`}   
+        type="button" 
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <CiFilter color="#012047" width={20}/> 
         <p className="mb-0 pr-1 pl-1" style={{ color: "#465D7C" }}>Filter By</p>
       </button>
 
       {isOpen && (
-        <div className="filter-dropdown-menu dropdown-menu show" style={{right: "0px", top: "auto", left: "unset", padding: "20px ", borderRadius: "5px", background: "#FFF", border: "1px solid #E6E8EE", boxShadow: "0px 4px 14px 0px rgba(226, 237, 255, 0.25)", position: "absolute", zIndex: 9}}>
+        <div 
+          className="filter-dropdown-menu dropdown-menu show" 
+          style={{
+            right: "0px", 
+            top: "auto", 
+            left: "unset", 
+            padding: "20px ", 
+            borderRadius: "5px", 
+            background: "#FFF", 
+            border: "1px solid #E6E8EE", 
+            boxShadow: "0px 4px 14px 0px rgba(226, 237, 255, 0.25)", 
+            position: "absolute", 
+            zIndex: 9
+          }}
+        >
           <div className="filter-set-view">
-          <DropdownWithSearch/>
-            {/* Loop through filters dynamically */}
+            <DropdownWithSearch/>
             {filters.map((filter, filterIndex) => (
-              <div className="mb-3" key={filterIndex} style={{ borderTop: "1px solid #E6E8EE", paddingTop: "15px" }} >  
+              <div 
+                className="mb-3" 
+                key={filterIndex} 
+                style={{ borderTop: "1px solid #E6E8EE", paddingTop: "15px" }} 
+              >  
                 <button
-                 type="button"
+                  type="button"
                   className={`btn btn-outline-secondary w-100 text-start dropdown-btn filter-btn ${openFilter === filter.name ? "open" : ""}`}
-                  onClick={() => toggleFilter(filter.name)} // When clicking the filter
+                  onClick={() => toggleFilter(filter.name)}
                 >
                   {filter.label}
                   <span className="arrow"></span>
@@ -87,12 +124,9 @@ const FilterDropdown = ({
                     </span>
                   ))}
                 </div>
-                {/* <hr/> */}
               </div>
-              
             ))}
 
-            {/* Add custom checkbox only if enabled */}
             {customCheckbox && (
               <div className="mb-3">
                 <ul className="list-unstyled">
@@ -114,12 +148,11 @@ const FilterDropdown = ({
               </div>
             )}
 
-            {/* Buttons */}
             <div className="d-flex justify-content-between">
-              <button type="button" className="" onClick={handleReset}>
+              <button type="button" onClick={handleReset}>
                 Reset
               </button>
-              <button type="button"  className="second-btn" onClick={handleApplyFilter}>
+              <button type="button" className="second-btn" onClick={handleApplyFilter}>
                 Filter Now
               </button>
             </div>
