@@ -39,12 +39,16 @@ const DropdownWithSearch = ({
   const selectRef = useRef(null);
   const searchInputRef = useRef(null);
 
-  //  adjust TextField
-   useEffect(() => {
-    if (selectRef.current) {
-      setWidth(selectRef.current.offsetWidth);
-    }
-  }, [selectRef.current]);
+useEffect(() => {
+  if (!selectRef.current) return;
+
+  const observer = new ResizeObserver(() => {
+    setWidth(selectRef.current.offsetWidth);
+  });
+  observer.observe(selectRef.current);
+
+  return () => observer.disconnect();
+}, []);
 
   //   search input focus on open dropdown
    useEffect(() => {
@@ -142,7 +146,7 @@ const DropdownWithSearch = ({
                 flexDirection: "column",
                 boxShadow: "0px 11px 12px 0px #dbdbdb45",
                 border: "1px solid #ddd",
-                width:{width},
+                width: width ,
                 position: "absolute",
                 zIndex: 2,
               }}
