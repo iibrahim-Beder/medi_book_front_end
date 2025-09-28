@@ -141,3 +141,18 @@ border-bottom: 1px solid #dee2e670 !important;
 /* searchable dropdown styles end */
 
 
+
+/* table-header css start */
+.table-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.table-header button{
+    color: #55acee;
+    line-height: 20px;
+  }
+
+
+/* table-header css end */
+

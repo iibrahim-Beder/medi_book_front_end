@@ -14,7 +14,7 @@ import MakeSlostMain from "./pages/making-slots/MakeSlostMain";
 import { useTranslation } from "react-i18next";
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
-import PatientManagement from "./pages/patient-management/PatientManagement";
+import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 import Test from './not used/Test';
 import Dropdown from "./pages/shared/DropdownWithSearch";

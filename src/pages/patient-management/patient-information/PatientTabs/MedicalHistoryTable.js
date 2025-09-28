@@ -4,7 +4,7 @@ import DynamicEditModal from "../../../shared/DynamicEditModal";
 import "../../Patient-management.css";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import FilterDropdown from "./FilterDropdown";
+import FilterDropdown from "./component/FilterDropdown";
 
 const MedicalHistoryTable = () => {
   const [searchTerm, setSearchTerm] = useState("");

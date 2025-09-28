@@ -4,7 +4,7 @@ import DynamicEditModal from "../../../shared/DynamicEditModal";
 import "../../Patient-management.css";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import ConditionsFilters from "./ConditionsFilters";
+import ConditionsFilters from "./component/ConditionsFilters";
 
 const ConditionsTable = () => {
   const [searchTerm, setSearchTerm] = useState("");

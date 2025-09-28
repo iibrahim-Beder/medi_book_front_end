@@ -5,7 +5,6 @@ import { FaFileAlt, FaCalendarAlt, FaNotesMedical, FaPaperclip, FaBell, FaCog, F
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
 // import PatientAppointments from "./PatientTabs/PatientAppointments";
 import PatientNotes from "./PatientTabs/PatientNotes";
-import ConditionsFilterDropdown from "./PatientTabs/FilterDropdown";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 // import PatientFiles from "./PatientTabs/PatientFiles";
 // import PatientTreatmentPlans from "./PatientTabs/PatientTreatmentPlans";
@@ -15,7 +14,6 @@ import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import PatientStatistics from "./PatientTabs/MedicalHistoryTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
-import ConditionsFilters from "./PatientTabs/ConditionsFilters";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
@@ -71,7 +69,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "TreatmentPlans" && <PatientTreatmentPlans />}
             {activeTab === "Settings" && <PatientSettings />}
             {activeTab === "Statistics" && <PatientStatistics />} */}
-            {activeTab === "Notifications" && <ConditionsFilters />}
+            {/* {activeTab === "Notifications" && <ConditionsFilters />} */}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
           </div>

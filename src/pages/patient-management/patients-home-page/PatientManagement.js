@@ -1,13 +1,13 @@
 import { Container } from "react-bootstrap";
 import { useState } from "react";
-import PatientStats from "./PatientStats";
-import PatientToolbar from "./PatientToolbar";
-import PatientsTable from "./PatientsTable";
+import PatientStats from "./components/PatientStats";
+// import PatientToolbar from "./PatientToolbar";
+import PatientsTable from "./components/PatientsTable";
 // import PatientsFilters from "./PatientsFilters"; new
 // import PatientFormModal from "./PatientFormModal";
 // import PatientViewModal from "./PatientViewModal";
-import { usePatients } from "./usePatients";
-import './Patient-management.css'
+import { usePatients } from "./components/usePatients";
+import '../Patient-management.css'
 const PatientManagement = () => {
   const { patients, addPatient, updatePatient, deletePatient } = usePatients();
 
