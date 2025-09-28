@@ -208,6 +208,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
     style={{
       display: "flex",
       justifyContent: "flex-end",
+      padding:"3px",
       paddingTop: "10px",
       borderTop: "1px solid #ddd",
       alignItems: "center",
@@ -219,15 +220,9 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
     </button>
     <button
       onClick={handleApplyCustomRange}
+      className='second-btn'
       disabled={!tempRange?.from || !tempRange?.to}
-      style={{
-        padding: "7px 15px",
-        backgroundColor: "#3fabf3",
-        color: "white",
-        border: "none",
-        borderRadius: "5px",
-        cursor: !tempRange?.from || !tempRange?.to ? "not-allowed" : "pointer",
-      }}
+      style={{ cursor: !tempRange?.from || !tempRange?.to ? "not-allowed" : "pointer", }}
     >
       Apply
     </button>

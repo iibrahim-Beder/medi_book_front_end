@@ -775,3 +775,16 @@ font-family: "Inter", sans-serif !important;
 
 
 
+
+
+/* second-btn style start */
+.second-btn {
+
+    padding: 7px 15px;
+    background-color: rgb(63, 171, 243);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* second-btn style start */

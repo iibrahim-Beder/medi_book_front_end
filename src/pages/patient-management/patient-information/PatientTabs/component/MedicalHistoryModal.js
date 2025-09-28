@@ -192,10 +192,10 @@ const MedicalHistoryModal = ({
           gap: "0.8rem",
         }}
       >
-        <button className="btn btn-light" onClick={onClose}>
+        <button className="" onClick={onClose}>
           Cancel
         </button>
-        <button className="dc-btn" onClick={onSave}>
+        <button className="second-btn" onClick={onSave}>
           Save Medical History
         </button>
       </Modal.Footer>

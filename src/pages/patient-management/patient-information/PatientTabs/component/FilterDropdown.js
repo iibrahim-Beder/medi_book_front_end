@@ -119,7 +119,7 @@ const FilterDropdown = ({
               <button type="button" className="" onClick={handleReset}>
                 Reset
               </button>
-              <button type="button"  className="btn" onClick={handleApplyFilter} style={{minWidth:"auto", padding: "7px 15px", backgroundColor: "rgb(63, 171, 243)", color: "white", border: "none", borderRadius: "5px", cursor: "pointer"}}>
+              <button type="button"  className="second-btn" onClick={handleApplyFilter}>
                 Filter Now
               </button>
             </div>
