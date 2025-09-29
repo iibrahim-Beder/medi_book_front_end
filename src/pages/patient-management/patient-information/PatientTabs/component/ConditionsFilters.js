@@ -100,7 +100,7 @@ const ConditionsFilters = ({
 
         {/* Search and Reset buttons */}
         {showSearchReset && (
-          <div className="ml-4" style={{width:"100%"}} >
+          <div className="" >
             <div className="btn-group mt-2" > 
               <Button
                 className="PatientsFiltersBtn"

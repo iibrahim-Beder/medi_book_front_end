@@ -83,7 +83,7 @@ const FilterDropdown = ({
         <div 
           className="filter-dropdown-menu dropdown-menu show" 
           style={{
-            right: "0px", 
+            right: "4%", 
             top: "auto", 
             left: "unset", 
             padding: "20px ", 
