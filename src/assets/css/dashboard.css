@@ -20,6 +20,13 @@
 }
 /* Theme Color */
 /* Primary Color*/
+@font-face {
+  font-family: 'Mada';
+  src: url('../fonts/mada/Mada-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 :root{  --tablecolor: #ffffff; }
 :root{  --cardcolor: #ffffff; }
 :root{  --len2color: #eee; }
@@ -123,7 +130,7 @@ input[type="search"],
 input[type="tel"],
 input[type="color"],
 .uneditable-input {
-	color: #999;
+	color: var(--terthemecolor);
 	outline: none;
 	height: 50px !important;
 	background:var(--cardcolor);
@@ -140,7 +147,7 @@ input[type="color"],
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'mada', sans-serif;
 	background-color: var(--cardcolor);
   html[dir="rtl"] & {
    direction: rtl;
@@ -183,7 +190,7 @@ input:focus,
 	margin:0 0 20px;
 }
 label {
-	color: var(--terthemecolor) !important;
+	color: var(--terthemecolor) ;
 	display: block;
 	font-weight: 400;
 	margin-bottom: 10px;
@@ -5659,6 +5666,9 @@ margin-right: 15px ;
 .dc-navdashboard ul li a .icon{
 color: white;
 }
+label {
+	color: var(--terthemecolor) !important;
+}
 }
 html[dir="rtl"]  {
 	.setting{display: flex;flex-direction: row-reverse;	} 
@@ -5729,8 +5739,3 @@ right: 6px;}
 		flex-direction: column !important;
 	}
 }	
-
-
-
-
-	

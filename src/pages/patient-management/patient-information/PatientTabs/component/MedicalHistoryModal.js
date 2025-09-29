@@ -38,7 +38,7 @@ const MedicalHistoryModal = ({
 
 // toggle hereditaryDisease and relatedPerson based on historyType
   useEffect(() => {
-    if (record?.historyType === "FamilyHistory") {
+    if (record?.historyType === "Family History") {
       setRecord(prev => ({
         ...prev,
         hereditaryDisease: prev.hereditaryDisease || "",
@@ -117,7 +117,7 @@ const MedicalHistoryModal = ({
             />
 
             {/* Hereditary Disease (if FamilyHistory) - DropdownWithSearch */}
-            <div style={{ gridColumn: "span 2", marginBottom: "1rem", opacity: record.historyType !== "FamilyHistory" ? 0.6 : 1 }}>
+            <div style={{ gridColumn: "span 2", marginBottom: "1rem", opacity: record.historyType !== "Family History" ? 0.6 : 1 }}>
               <label style={{ 
                 display: "block", 
                 marginBottom: "0.5rem", 
@@ -130,13 +130,13 @@ const MedicalHistoryModal = ({
                 label="Select Disease"
                 options={hereditaryDiseases}
                 placeholder={
-                  record.historyType === "FamilyHistory" 
+                  record.historyType === "Family History" 
                     ? "Select hereditary disease" 
                     : "Select Family History first"
                 }
                 onSelect={(value) => handleDropdownChange("hereditaryDisease", value)}
                 itemsPerPage={6}
-                disabled={record.historyType !== "FamilyHistory"}
+                disabled={record.historyType !== "Family History"}
               />
             </div>
 
@@ -149,11 +149,11 @@ const MedicalHistoryModal = ({
               value={record.relatedPerson || ""}
               onChange={handleChange}
               placeholder={
-                record.historyType === "FamilyHistory" 
+                record.historyType === "Family History" 
                   ? "e.g., Father, Mother, Brother..." 
                   : "Available for Family History only"
               }
-              disabled={record.historyType !== "FamilyHistory"}
+              disabled={record.historyType !== "Family History"}
               error={errors?.relatedPerson}
               forceShowError={forceShowError}
             />

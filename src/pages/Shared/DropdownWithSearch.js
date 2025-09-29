@@ -181,7 +181,7 @@ useEffect(() => {
                     </ListItem>
                   ))
                 ) : (
-                  <MenuItem disabled>No results</MenuItem>
+                  <MenuItem style={{margin:"auto"}} disabled>No results</MenuItem>
                 )}
               </List>
 

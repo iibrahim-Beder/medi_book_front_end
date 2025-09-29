@@ -247,10 +247,12 @@
         }
         
         .form-group label {
-          display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 600;
-          color: #374151;
+             display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            font-size: 16px;
+            color: #21251D;
+            font-family: 'Mada', sans-serif;
         }
         
         .form-control {
