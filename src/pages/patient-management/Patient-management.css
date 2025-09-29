@@ -156,3 +156,8 @@ border-bottom: 1px solid #dee2e670 !important;
 
 /* table-header css end */
 
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  
+}

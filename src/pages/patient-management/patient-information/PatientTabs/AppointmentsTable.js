@@ -125,8 +125,10 @@ const AppointmentsTable = () => {
   return (
     <div className="table-container">
       <div className="table-header">
+        <div>
         <h3 className="table-title">List Appointments</h3>
         <h6 className="table-subtitle">Ahmed Mohamed Ali </h6>
+        </div>
       </div>
 
       <div className="p-3">

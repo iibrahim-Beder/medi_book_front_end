@@ -16,7 +16,7 @@ const FilterDropdown = ({
   const [isOpen, setIsOpen] = useState(false);
   const [customCheckboxState, setCustomCheckboxState] = useState(false);
   const [openFilter, setOpenFilter] = useState(null);
-  const dropdownRef = useRef(null); // 👈 هنا المرجع
+  const dropdownRef = useRef(null); 
 
   const handleFilterChange = (filterName, key) => {
     setSelectedFilters((prev) => ({
@@ -53,7 +53,7 @@ const FilterDropdown = ({
     setOpenFilter((prev) => (prev === filterName ? null : filterName));
   };
 
-  // 👇 event listener يقفل لما تدوس برا
+  //  event listener to close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

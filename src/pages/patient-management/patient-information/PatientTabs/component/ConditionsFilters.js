@@ -74,10 +74,10 @@ const ConditionsFilters = ({
   };
 
   return (
-    <div className="d-flex justify-content-between">
+    <div className="filter-section">
       {/* Left side: search and reset */}
       <div className="d-flex align-items-center" style={{ flexDirection: "column" }}>
-        <div style={{ position: "relative", width: "250px" }}>
+        <div style={{ position: "relative"}}>
           <input
             className="form-control small-search"
             type="text"
@@ -124,7 +124,7 @@ const ConditionsFilters = ({
       </div>
 
       {/* Right side: date range and filters */}
-      <div style={{ display: "flex", gap: "12px" }}>
+      <div className="filter-and-date" style={{ display: "flex", gap: "12px" }}>
         {showDateRange && (
           <DateRangePicker
             startDate={filterDateFrom}
