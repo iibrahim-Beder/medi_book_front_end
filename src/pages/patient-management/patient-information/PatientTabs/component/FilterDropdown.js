@@ -149,7 +149,7 @@ const FilterDropdown = ({
             )}
 
             <div className="d-flex justify-content-between">
-              <button type="button" onClick={handleReset}>
+              <button className="simple-btn btn" type="button" onClick={handleReset}>
                 Reset
               </button>
               <button type="button" className="second-btn" onClick={handleApplyFilter}>

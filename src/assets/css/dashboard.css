@@ -5666,7 +5666,7 @@ margin-right: 15px ;
 .dc-navdashboard ul li a .icon{
 color: white;
 }
-label {
+label , .simple-btn {
 	color: var(--terthemecolor) !important;
 }
 }

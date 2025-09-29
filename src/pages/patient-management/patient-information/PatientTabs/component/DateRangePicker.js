@@ -215,7 +215,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
     }}
   >
     <p className="mb-0">{formatDateRange()}</p>
-    <button className="mr-3 ml-5" type="button">
+    <button className="mr-3 ml-5 simple-btn btn" type="button">
       Cancel
     </button>
     <button

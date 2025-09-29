@@ -777,7 +777,7 @@ font-family: "Inter", sans-serif !important;
 
 
 
-/* second-btn style start */
+/* my btns style start */
 .second-btn {
 
     padding: 7px 15px;
@@ -787,4 +787,9 @@ font-family: "Inter", sans-serif !important;
     border-radius: 5px;
     cursor: pointer;
 }
-/* second-btn style start */
+.simple-btn{
+box-shadow: none !important;   ;
+background-color: transparent !important;
+   color: #000 !important; ;
+}
+/* my btns style end */

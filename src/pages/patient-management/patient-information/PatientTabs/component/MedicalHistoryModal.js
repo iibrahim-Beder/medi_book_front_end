@@ -192,7 +192,7 @@ const MedicalHistoryModal = ({
           gap: "0.8rem",
         }}
       >
-        <button className="" onClick={onClose}>
+        <button className="btn simple-btn" onClick={onClose}>
           Cancel
         </button>
         <button className="second-btn" onClick={onSave}>
