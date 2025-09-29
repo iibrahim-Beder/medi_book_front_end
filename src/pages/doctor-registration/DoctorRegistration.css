@@ -159,7 +159,7 @@
 .input-with-icon select,
 .input-with-icon textarea {
   width: 100%; padding: 14px 48px 14px 24px; border: 1px solid var(--gray-light);
-  border-radius: var(--radius-sm); font-size: 16px; transition: var(--tr);
+  font-size: 16px; transition: var(--tr);
 }
 .input-with-icon textarea { padding-right: 48px; }
 .input-with-icon input:focus,

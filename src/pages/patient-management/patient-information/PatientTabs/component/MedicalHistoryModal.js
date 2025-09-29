@@ -5,6 +5,7 @@ import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 import { MdClose } from "react-icons/md";
 import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
 import SelectField from "../../../../ui/form-fields/SelectField";
+import { MdOutlineArrowDropDown } from "react-icons/md";
 
 const MedicalHistoryModal = ({
   show,

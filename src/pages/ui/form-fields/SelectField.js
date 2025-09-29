@@ -8,16 +8,16 @@ const SelectField = ({
   options,
   icon,
   error,
-  forceShowError = false, // ✅ جديد
+  forceShowError = false,
 }) => {
   const [touched, setTouched] = useState(false);
-
   const showError = error && (touched || forceShowError);
 
   return (
     <div className={`form-group ${showError ? "has-error" : ""}`}>
       <label htmlFor={name}>{label}</label>
-      <div className="input-with-icon">
+
+      <div className="input-with-icon select-wrapper">
         <span className={`input-icon ${showError ? "icon-error" : ""}`}>
           {icon}
         </span>
@@ -36,6 +36,7 @@ const SelectField = ({
           ))}
         </select>
       </div>
+
       {showError && <span className="error-text">{error}</span>}
     </div>
   );

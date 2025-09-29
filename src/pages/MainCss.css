@@ -793,3 +793,9 @@ background-color: transparent !important;
    color: #000 !important; ;
 }
 /* my btns style end */
+.select-wrapper select {
+  appearance: auto; 
+  padding-right: 200px;
+}
+
+
