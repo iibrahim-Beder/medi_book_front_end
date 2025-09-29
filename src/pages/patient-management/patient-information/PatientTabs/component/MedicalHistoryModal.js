@@ -95,7 +95,9 @@ const MedicalHistoryModal = ({
         {record && (
           <div className="form-grid" style={{ rowGap: "0.8rem" }}>
             {/* History Type Dropdown - normal Select */}
+            <div className="col-2-sm">
             <SelectField
+              
               label="History Type *"
               name="historyType"
               value={record.historyType || ""}
@@ -105,8 +107,10 @@ const MedicalHistoryModal = ({
               error={errors?.historyType}
               forceShowError={forceShowError}
             />
+            </div>
 
             {/* Date of Event */}
+            <div className="col-2-sm">
             <Field
               label="Date of Event"
               name="dateOfEvent"
@@ -116,6 +120,7 @@ const MedicalHistoryModal = ({
               error={errors?.dateOfEvent}
               forceShowError={forceShowError}
             />
+            </div>
 
             {/* Hereditary Disease (if FamilyHistory) - DropdownWithSearch */}
             <div style={{ gridColumn: "span 2", marginBottom: "1rem", opacity: record.historyType !== "Family History" ? 0.6 : 1 }}>
