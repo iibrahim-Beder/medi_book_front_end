@@ -5540,9 +5540,9 @@ top: 50%;
 .noneshadow{
 	box-shadow: none !important;
 }
-/* .PatientsFiltersBtn.btn.btn-outline-secondary{
+.PatientsFiltersBtn.btn.btn-outline-secondary{
 	background-color: #f6f6f6 !important;
-} */
+}
  .btn-outline-secondary{
 	color: unset;
  }
@@ -5769,5 +5769,3 @@ right: 6px;}
 	
 	
 }
-
-
