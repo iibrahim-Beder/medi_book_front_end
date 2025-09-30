@@ -113,7 +113,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
             color: "#012047",
             fontSize: "14px",
             fontWeight: 500,
-            backgroundColor: "#fff",
+            // backgroundColor: "#fff",
             boxSizing: "border-box",
             // fontFamily: "open sans",
           }}
@@ -141,7 +141,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
             left: showCustomRange ? "-203%" : "",
             position: "absolute",
             display: "flex",
-            background: "#fff",
+            background: "var(--cardcolor)",
             flexDirection: "column",
             padding: "4px",
             border: "1px solid #ddd",
@@ -186,7 +186,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
             </div>
 
             {showCustomRange && (
-              <div style={{ padding: '8px' }}>
+              <div style={{ padding: '8px', margin: '2px', backgroundColor:"#fff" }}>
                 <DayPicker
                   mode="range"
                   numberOfMonths={2}

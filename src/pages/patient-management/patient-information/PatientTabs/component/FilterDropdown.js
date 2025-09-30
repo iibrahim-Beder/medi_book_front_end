@@ -88,9 +88,9 @@ const FilterDropdown = ({
             left: "unset", 
             padding: "20px ", 
             borderRadius: "5px", 
-            background: "#FFF", 
+            background: "var(--cardcolor)", 
             border: "1px solid #E6E8EE", 
-            boxShadow: "0px 4px 14px 0px rgba(226, 237, 255, 0.25)", 
+            boxShadow: "var(--scshadocolor) 0px 4px 14px 0px", 
             position: "absolute", 
             zIndex: 9
           }}

@@ -550,7 +550,7 @@ background-color: transparent;
     padding: 30px;
     border: 1px solid var(--lencolor);
     /* margin-top: 40px; */
-    background-color:var(--badybkcolor) !important;
+    background-color:var(--cardcolor) !important;
     box-shadow: var(--shado3color) 0px 0px 8px 3px !important;
     /* border-radius: 6px !important; */
     width: 95% !important;
@@ -634,7 +634,7 @@ background-color: transparent;
   /* border: 1px solid var(--lencolor); */
   border: 1px solid #f0f0f0;
   /* background-color: #fff; */
-  background-color: var(--tablecolor);
+  background-color: var(--cardcolor);
   box-shadow: 0px 0px 8px 3px var(--shado3color);
   /* box-shadow: 0px 0px 8px 3px #dddddd26; */
   border-radius: 6px;

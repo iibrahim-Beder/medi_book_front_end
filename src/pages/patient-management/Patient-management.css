@@ -29,7 +29,7 @@ border-bottom: 1px solid #dee2e670 !important;
 }
 :root{--headcolor:#f8f9fa; }
 .table > thead:first-child > tr:first-child > th{
-      background: var(--headcolor);
+      background: var(--scbccolor);
       /* border-color: var(--lencolor) !important; */
       border-color: #e5e5e58a !important;
 }
@@ -160,4 +160,12 @@ border-bottom: 1px solid #dee2e670 !important;
   display: flex;
   justify-content: space-between;
   
+}
+
+.css-1wk5iqf-MuiPaper-root{
+  background-color: var(--cardcolor) !important;
+  border-color: var(--len2color) !important;
+}
+.css-rwsrtj-MuiListItem-root:hover {
+    background-color: #f0f0f033 !important;
 }

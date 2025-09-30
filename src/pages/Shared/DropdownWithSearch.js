@@ -18,7 +18,7 @@ import Popper from "@mui/material/Popper";
 
 const DropdownWithSearch = ({
   label = "Dropdown",
-  options = [],
+  options = ["amsklmksa", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"],
   itemsPerPage = 6,
   placeholder = "Select option",
   onSelect = () => {},

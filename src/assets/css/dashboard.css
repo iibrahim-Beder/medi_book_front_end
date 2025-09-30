@@ -499,7 +499,7 @@ address { font-style: italic; }
 	content: '';
 	width: 20px;
 	height: 20px;
-	background: #fff;
+	/* background: #fff; */
 	line-height: 18px;
 	border-radius: 4px;
 	border: 1px solid #bbb;
@@ -1035,7 +1035,7 @@ width: 100%;
 	height: 36px;
 	display:block;
 	font-size: 14px;
-	background:#fff;
+	/* background:#fff; */
 	text-align:center;
 	position:relative;
 	line-height: 36px;
@@ -5540,9 +5540,12 @@ top: 50%;
 .noneshadow{
 	box-shadow: none !important;
 }
-.PatientsFiltersBtn.btn.btn-outline-secondary{
+/* .PatientsFiltersBtn.btn.btn-outline-secondary{
 	background-color: #f6f6f6 !important;
-}
+} */
+ .btn-outline-secondary{
+	color: unset;
+ }
 .DateRangePickerMain{
     border: 1px solid #E6E8EE;
     min-height: 32px;
@@ -5686,11 +5689,27 @@ margin-right: 15px ;
 .container{border-color: #334c99;}
 .text-muted{color :#ededede6 !important;}
 .form-title {color: #fff;}
-.dc-navdashboard ul li a .icon{
+.dc-navdashboard ul li a .icon ,.dropdown-btn .arrow{
 color: white;
 }
-label , .simple-btn {
+.table-card,.css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline{
+	border-color: var(--lencolor);
+}
+label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 	color: var(--terthemecolor) !important;
+}
+.DateRangePickerMain ,.dropdown-container .css-113d811-MuiFormLabel-root-MuiInputLabel-root,.dropdown-container input[type="text"]{
+	color: var(--terthemecolor) !important;
+}
+.dropdown-btn {
+    background-color: var(--badybkcolor) !important;
+    color:  var(--terthemecolor) !important;
+}
+.css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline,.form-control.Select1.DateRangePickerMain, .PatientsFiltersBtn.btn.btn-outline-secondary{
+	border-color: var(--len2color) ;
+}
+.css-1wk5iqf-MuiPaper-root{
+	box-shadow: 0px 11px 12px 0px var(--scshadocolor);
 }
 }
 html[dir="rtl"]  {
