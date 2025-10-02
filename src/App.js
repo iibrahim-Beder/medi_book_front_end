@@ -14,6 +14,7 @@ import MakeSlostMain from "./pages/making-slots/MakeSlostMain";
 import { useTranslation } from "react-i18next";
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
+import AppointmentManagementMain from "./pages/appointment-management/AppointmentmanagementMain";
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 import Test from './not used/Test';
@@ -50,8 +51,6 @@ const { i18n } = useTranslation();
     return () => clearTimeout(timer);
   }, []);
 
-
- const [showPopup, setShowPopup] = useState(false);
   return (
     <div className="dc-userlogin">
       {loading && (
@@ -74,18 +73,19 @@ const { i18n } = useTranslation();
             <Sidebar />
             <div className="contentdiv">
               <Routes>
-                {/* <Route path="dashboard" element={<DashboardMain />} /> */}
-                {/* <Route path="account-settings" element={<Acco />} />
-                <Route path="appointment-location" element={<LocationMain />} />
+               <Route path="dashboard" element={<DashboardMain />} /> 
+              
+                {/* <Route path="appointment-location" element={<LocationMain />} />
                 <Route path="Messages" element={<MessagesPage />} />
                 <Route path="manage-team" element={<PatientManagement />} />
-                <Route path="appointment-setting" element={<Test />} /> */}
-                {/* <Route path="manage-articles" element={<Dropdown/>} /> */}
+                <Route path="appointment-setting" element={<Test />} />
+                <Route path="manage-articles" element={<Dropdown/>} />
                 <Route path="appointment-list" element={<MainAppointtmentList2 />} />
                 <Route path="manage-services" element={<MakeSlostMain />} />
                 <Route path="security-settings" element={<SecuritySettings />} />
                 <Route path="pationt-information" element={<PatientProfilePageMain />} />
-
+                    <Route path="account-settings" element={<Acco />} /> */}
+                    <Route path="appointment-management" element={<AppointmentManagementMain/>} />
               </Routes>
             </div>
           </div>

@@ -147,7 +147,7 @@ input[type="color"],
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	font-family: 'mada', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	background-color: var(--cardcolor);
   html[dir="rtl"] & {
    direction: rtl;
@@ -2890,7 +2890,7 @@ background-color: var(--scbccolor);
 .form-select-half .dc-select{width: 50%;}
 .form-select-half .dc-select:first-child select{border-radius: 4px 0 0 4px}
 .form-select-half .dc-select + .dc-select select{border-radius: 0 4px 4px 0;/*border-left: 0;*/}
-.dc-userform fieldset .form-group textarea.form-control{height: 200px;}
+.dc-userform fieldset .form-group textarea.form-control{height: 200px; min-height: 70px;}
 .dc-location .dc-userform{padding: 0 20px;}
 .dc-profilephotocontent{
 	float: left;
@@ -5579,6 +5579,14 @@ height: 32px !important;
     padding: 6px 15px 6px 36px !important;
     width: 210px;
 }
+.dc-tabscontenttitle.no-before::before , .dc-tabscontenttitle.no-before-line::before{
+content: none;
+}
+.dc-tabscontenttitle.no-before{
+width: 95%;
+margin-left: 35PX ;
+margin-bottom: 15px;
+}
 
 
 
@@ -5640,12 +5648,17 @@ margin-right: 15px ;
 }
 .col-2-sm{grid-column: span 2;}
  .filter-section{ flex-direction: column;align-items: center; gap: 20px;}
+	.list-date-option.custom{
+		left: -100% !important;
+	}
 
 }
 
 @media (max-width: 1200px) {
 	
-	
+	.list-date-option.custom{
+		left: -150% !important;
+	}
 	.patintStats{
 		row-gap: 20px !important;
 	}
@@ -5656,7 +5669,7 @@ margin-right: 15px ;
 
 	.PatientsFilters{padding: 10px !important;}
 	.dc-dotnotification:before{    margin: -5px 10px 0 ; }
-
+	
 
 
 :root{
@@ -5701,7 +5714,7 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 .DateRangePickerMain ,.dropdown-container .css-113d811-MuiFormLabel-root-MuiInputLabel-root,.dropdown-container input[type="text"]{
 	color: var(--terthemecolor) !important;
 }
-.dropdown-btn {
+.dropdown-btn ,.PatientsFiltersBtn.btn.btn-outline-secondary {
     background-color: var(--badybkcolor) !important;
     color:  var(--terthemecolor) !important;
 }

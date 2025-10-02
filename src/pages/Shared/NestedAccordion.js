@@ -1,22 +1,19 @@
 import React, { useState } from "react";
-import { FaLifeRing, FaPencilAlt, FaTrash } from "react-icons/fa";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
 import { useEffect } from "react";
 import "../MainCss.css";
+import TwoLevelAccordion from "./TwoLevelAccordion";
 
-const CustomAccordion = ({
-  titleBackgroundColor="",
+const NestedAccordion = ({
   backgroundColor="",
   title,
   addNewLabel,
   data,
   formFields,
   onAdd,
-  onDelete=true,
-  noHedarBefore=false,
-  accordioninnertitleSize ="",
-
+  onDelete,
 }) => {
   const [openIndex, setOpenIndex] = useState(null);
 useEffect(() => {
@@ -28,29 +25,32 @@ useEffect(() => {
   };
   
   return (
-    <div className="dc-userexperience">
+    <div className="dc-userexperience nested-accordion">
       {/* Header */}
-     {title && <div className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}style={{ backgroundColor:`${titleBackgroundColor} ` }} >
-        <h3>{title}</h3>
-        {onAdd && (
-          <a href="#" onClick={onAdd}>
-            {addNewLabel}
-          </a>
-        )}
-      </div>}
+      {title && (
+        <div className="dc-tabscontenttitle no-before-line dc-addnew">
+          <h3>{title}</h3>
+          {onAdd && (
+            <a href="#" onClick={onAdd}>
+              {addNewLabel}
+            </a>
+          )}
+        </div>
+      )}
 
       {/* Accordion List */}
       <ul className="dc-experienceaccordion accordion">
         {data.map((item, index) => (
           <li key={index}>
             {/* Accordion Item Title */}
-            <div className={`dc-accordioninnertitle ${accordioninnertitleSize}`} style={{ backgroundColor:`${titleBackgroundColor}`, borderColor:`${noHedarBefore ? "#eee" :"" }` }}>
+            <div className="dc-accordioninnertitle" style={{borderColor:"#eee"}}>
               <span>
-                {item.icon && <span style={{ marginRight: "8px" }}>{item.icon}</span>}
+                {item.icon && (
+                  <span style={{ marginRight: "8px" }}>{item.icon}</span>
+                )}
                 {item.title || item.type} <em>{item.date}</em>
               </span>
               <div className="dc-rightarea">
-                  {onDelete===false &&<>
                 {/* Edit button */}
                 <a
                   href="#!"
@@ -68,27 +68,34 @@ useEffect(() => {
                   >
                     <IoTrashOutline />
                   </a>
-                )}</>
-                   }
-
-                <button className="view-btn btn btn-outline-primary btn-sm edit" onClick={() => handleEditClick(index)} style={{ backgroundColor:`${openIndex === index ? "#3fabf3" : ""}`, color:`${openIndex === index ? "#fff" : "#55acee"}`}} >
-                  {openIndex === index ? "Close" : "Edit"}
-                </button>
-
-
-                
-
+                )}
               </div>
             </div>
 
             {/* Accordion Item Content */}
-            <div 
-              style={{backgroundColor:`${backgroundColor}`}}
+            <div
+              style={{
+                backgroundColor: backgroundColor,
+                border: "1px solid #eee",
+                borderTop:
+                  openIndex === data.length - 1 && openIndex === index
+                    ? "none"
+                    : "1px solid #eee",
+                borderBottom:
+                  openIndex !== null &&
+                  openIndex === index &&
+                  openIndex !== data.length - 1
+                    ? "none"
+                    : "1px solid #eee",
+              }}
               className={`dc-collapseexp collapse ${
                 openIndex === index ? "show" : "hide"
               }`}
             >
-              <form className="dc-formtheme dc-userform">
+              <form
+                className="dc-formtheme dc-userform "
+                style={{ marginBottom: "20px" }}
+              >
                 <fieldset>
                   {formFields.map((field, idx) => (
                     <div
@@ -127,6 +134,57 @@ useEffect(() => {
                   ))}
                 </fieldset>
               </form>
+              <TwoLevelAccordion
+                noHedarBefore={true}
+                backgroundColor="#fcfcfc"
+                title="Medical Prescriptions"
+                addNewLabel="Add Prescription"
+                // title="Recipes"
+                // addNewLabel="Add Recipe"
+                data={[
+                  {
+                    type: "Medical",
+                    icon: "",
+                    date: "2025-09-13",
+                    content: "Patient requires monitoring.",
+                  },
+                  {
+                    type: "Follow-up",
+                    icon: "",
+                    date: "2025-09-10",
+                    content: "Schedule follow-up in 2 weeks.",
+                  },
+                ]}
+                formFields={[
+                  {
+                    name: "type",
+                    type: "select",
+                    options: [
+                      "Medical",
+                      "Follow-up",
+                      "Behavioral",
+                      "Communication",
+                      "Administrative",
+                      "Urgent",
+                    ],
+                    placeholder: "Select Note Type",
+                    half: true,
+                  },
+                  {
+                    name: "date",
+                    type: "date",
+                    placeholder: "Date",
+                    half: true,
+                  },
+                  {
+                    name: "content",
+                    type: "textarea",
+                    placeholder: "Note Content",
+                  },
+                ]}
+                onAdd={() => alert("Add Note")}
+                onDelete={(index) => alert("Delete note " + index)}
+              />
             </div>
           </li>
         ))}
@@ -135,4 +193,4 @@ useEffect(() => {
   );
 };
 
-export default CustomAccordion;
+export default NestedAccordion;

@@ -4,16 +4,8 @@
   display: inline-block;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-.date-range-display {
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #fff;
-  min-width: 250px;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.list-date-option.custom{
+    left: -150% !important;
 }
 
 .date-range-display:hover {

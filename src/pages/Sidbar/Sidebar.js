@@ -84,9 +84,9 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/appointment-setting">
+              <Link to="/appointment-management">
                 <CiSettings className="icon" />
-                <span>{t("sidebar.appointmentSetting")}</span>
+                <span>{t("sidebar.appointmentManagement")}</span>
               </Link>
             </li>
             <li>

@@ -778,6 +778,10 @@ font-family: "Inter", sans-serif !important;
 
 
 /* my btns style start */
+.view-btn.edit:hover{
+  background-color: transparent;
+  color: #000;
+}
 .second-btn {
 
     padding: 7px 15px;
@@ -799,3 +803,19 @@ background-color: transparent !important;
 }
 
 
+
+
+
+
+.nested-accordion .form-control, .nested-accordion .dc-collapseexp.show{
+  border-color: #eee;
+}
+
+
+.dc-accordioninnertitle.medium{
+  height: 45px;
+  padding: 5px 30px;
+}
+.dc-accordioninnertitle.small{
+  height: 40px;
+    padding: 6px 30px;}

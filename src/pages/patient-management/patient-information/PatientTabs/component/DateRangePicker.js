@@ -133,7 +133,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
 
       {showDropdown && (
         <div
-          className={`list-date-option ${showCustomRange ? "" : "open"}`}
+          className={`list-date-option ${showCustomRange ? "custom" : "open"}`}
           style={{
             marginTop: "8px",
             zIndex: 1,
