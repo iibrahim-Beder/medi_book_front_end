@@ -13,6 +13,7 @@ const EditableList = ({
   errorMessage,
   onChange,
   fieldKey = "value", // The key to use for each item
+  btnClass="dc-btn"
 }) => {
   const { t } = useTranslation();
   const [items, setItems] = useState(initialItems);
@@ -106,7 +107,7 @@ const EditableList = ({
       <div className="dc-skillscontent-holder">
         <form className="dc-formtheme dc-skillsform" onSubmit={handleAdd}>
           <fieldset>
-            <div className="form-group">
+            <div className="form-group input">
               <div className="form-group-holder">
                 <input
                   type="text"
@@ -122,13 +123,19 @@ const EditableList = ({
               <button
                 style={{ maxWidth: "170px", padding: "0" }}
                 type="submit"
-                className="dc-btn"
+                className={btnClass}
               >
                 {addBtnText}
               </button>
             </div>
           </fieldset>
         </form>
+         {/* error message */}
+        {error && (
+          <p className="error-text" style={{  color: "red", margin:"10px" }}>
+            {error}
+          </p>
+        )}
 
         <div className="dc-myskills">
           <ul className="sortable list">
@@ -196,12 +203,7 @@ const EditableList = ({
           </ul>
         </div>
 
-        {/* error message */}
-        {error && (
-          <p className="error-text" style={{ color: "red" }}>
-            {error}
-          </p>
-        )}
+    
       </div>
     </div>
   );

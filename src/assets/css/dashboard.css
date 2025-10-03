@@ -5584,11 +5584,15 @@ content: none;
 }
 .dc-tabscontenttitle.no-before ,.dc-notes .dc-tabscontenttitle{
 	width: 95%;
-	margin-left: 35PX ;
+	margin-left: 20PX ;
 	margin-bottom: 15px;
 }
+/* .dc-notes .dc-tabscontenttitle{margin-left: 20PX ;} */
 .dc-notes .dc-formtheme{margin-left: 18px;}
-.dc-notes .dc-myskills li{margin: 0;}
+.dc-notes .dc-myskills li{margin: 0;} 
+.dc-notes .second-btn{width: 73px !important;padding: 7px 15px !important; margin-top: 4px;} 
+.dc-notes .dc-skillsform fieldset .form-group.input {padding-right: 90px;}
+.nested-accordion .second-btn{width: 100px;}
 
 @media (max-width: 568px) {
  .when686m-t-40{

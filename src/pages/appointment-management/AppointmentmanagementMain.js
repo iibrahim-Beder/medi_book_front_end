@@ -5,7 +5,7 @@ import Diagnoses from "./tabs/Diagnoses";
 import AppointmentInformation from "./tabs/AppointmentInformation";
 
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("AppointmentInformation");
+  const [activeTab, setActiveTab] = useState("Diagnoses");
   const { t } = useTranslation();
 
   const tabs = [

@@ -43,7 +43,7 @@ useEffect(() => {
         <div className="dc-tabscontenttitle no-before-line dc-addnew">
           <h3>{title}</h3>
           {onAdd && (
-            <a href="#" onClick={onAdd}>
+            <a href="!#" onClick={onAdd}>
               {addNewLabel}
             </a>
           )}
@@ -147,13 +147,14 @@ useEffect(() => {
                       )}
                     </div>
                   ))}
-                  <button type="submit" className="dc-btn" style={{ float: "inline-end",margin:" 11px 4px"}}>
+                  <button type="submit" className="second-btn" style={{ float: "inline-end",margin:" 11px 4px"}}>
                     Save
                   </button>
                 </fieldset>
               </form>
               <div className="dc-notes"> 
               <EditableList
+              btnClass="second-btn"
                 headerComponent={
                   <div className="dc-tabscontenttitle no-before-line dc-addnew">
                     <h3>Notes</h3>

@@ -141,6 +141,9 @@ useEffect(() => {
                       )}
                     </div>
                   ))}
+                      <button type="submit" className="second-btn" style={{ float: "inline-end",margin:" 11px 4px"}}>
+                    Save
+                  </button>
                 </fieldset>
               </form>
               <CustomAccordion
