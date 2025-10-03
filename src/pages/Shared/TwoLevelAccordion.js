@@ -84,7 +84,7 @@ useEffect(() => {
                   </a> */}
                 {/* )} */}
 
-                      <button className="view-btn btn btn-outline-primary btn-sm" onClick={() => handleEditClick(index)} style={{ backgroundColor:`${openIndex === index ? "#3fabf3" : ""}`, color:`${openIndex === index ? "#fff" : "#55acee"}`}} >
+                      <button className="view-btn btn btn-outline-primary btn-sm edit" onClick={() => handleEditClick(index)} style={{ backgroundColor:`${openIndex === index ? "#3fabf3" : ""}`, color:`${openIndex === index ? "#fff" : "#55acee"}`}} >
                   {openIndex === index ? "Close" : "Edit"}
                 </button>
               </div>

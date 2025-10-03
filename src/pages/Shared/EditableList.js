@@ -2,30 +2,31 @@ import React, { useState } from "react";
 import { FaPencilAlt, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 import { PiListThin } from "react-icons/pi";
 import { useTranslation } from "react-i18next";
+
 const EditableList = ({
   title = "Items",
   placeholder = "Enter item...",
   addBtnText = "Add",
   initialItems = [],
   minItems = 1,
-  headerComponent = null, 
-  errorMessage,           
+  headerComponent = null,
+  errorMessage,
   onChange,
+  fieldKey = "value", // The key to use for each item
 }) => {
-
   const { t } = useTranslation();
   const [items, setItems] = useState(initialItems);
   const [newItem, setNewItem] = useState("");
-  const [editingIndices, setEditingIndices] = useState([]);
+  const [editingIds, setEditingIds] = useState([]);
   const [editValues, setEditValues] = useState({});
   const [error, setError] = useState("");
 
   const getErrorMessage = () => {
     if (typeof errorMessage === "function") {
-      return errorMessage(minItems); 
+      return errorMessage(minItems);
     }
     if (typeof errorMessage === "string") {
-      return errorMessage; 
+      return errorMessage;
     }
     return t("validation.dynamic.minItems", { minItems });
   };
@@ -47,55 +48,60 @@ const EditableList = ({
       setError(t("validation.dynamic.required"));
       return;
     }
-    updateParent([...items, newItem.trim()]);
+    const newObj = {
+      id: Date.now(),
+      [fieldKey]: newItem.trim(),
+    };
+    updateParent([...items, newObj]);
     setNewItem("");
   };
 
-  const handleDelete = (index) => {
-    const updated = items.filter((_, i) => i !== index);
+  const handleDelete = (id) => {
+    const updated = items.filter((it) => it.id !== id);
     updateParent(updated);
-    setEditingIndices(editingIndices.filter((i) => i !== index));
+    setEditingIds(editingIds.filter((i) => i !== id));
     const updatedValues = { ...editValues };
-    delete updatedValues[index];
+    delete updatedValues[id];
     setEditValues(updatedValues);
   };
 
-  const handleEditClick = (index) => {
-    if (editingIndices.includes(index)) {
-      setEditingIndices(editingIndices.filter((i) => i !== index));
+  const handleEditClick = (id, item) => {
+    if (editingIds.includes(id)) {
+      setEditingIds(editingIds.filter((i) => i !== id));
     } else {
-      setEditingIndices([...editingIndices, index]);
-      setEditValues({ ...editValues, [index]: items[index] });
+      setEditingIds([...editingIds, id]);
+      setEditValues({ ...editValues, [id]: { ...item } });
     }
   };
 
-  const handleSave = (index) => {
-    const newValue = editValues[index]?.trim();
+  const handleSave = (id) => {
+    const newValue = editValues[id]?.[fieldKey]?.trim();
     if (!newValue) return;
-    const updated = [...items];
-    updated[index] = newValue;
+    const updated = items.map((it) =>
+      it.id === id ? { ...it, [fieldKey]: newValue } : it
+    );
     updateParent(updated);
-    setEditingIndices(editingIndices.filter((i) => i !== index));
+    setEditingIds(editingIds.filter((i) => i !== id));
   };
 
-  const handleCancel = (index) => {
-    setEditingIndices(editingIndices.filter((i) => i !== index));
+  const handleCancel = (id) => {
+    setEditingIds(editingIds.filter((i) => i !== id));
   };
 
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Enter") handleSave(index);
-    else if (e.key === "Escape") handleCancel(index);
+  const handleKeyDown = (e, id) => {
+    if (e.key === "Enter") handleSave(id);
+    else if (e.key === "Escape") handleCancel(id);
   };
 
   return (
     <div className="dc-skills dc-tabsinfo">
-   {headerComponent ? (
-  headerComponent
-) : (
-  <div className="dc-tabscontenttitle">
-    <h3>{title}</h3>
-  </div>
-)}
+      {headerComponent ? (
+        headerComponent
+      ) : (
+        <div className="dc-tabscontenttitle">
+          <h3>{title}</h3>
+        </div>
+      )}
 
       <div className="dc-skillscontent-holder">
         <form className="dc-formtheme dc-skillsform" onSubmit={handleAdd}>
@@ -112,8 +118,12 @@ const EditableList = ({
                 />
               </div>
             </div>
-               <div className="form-group dc-btnarea">
-              <button style={{maxWidth: "170px", padding:"0"}} type="submit" className="dc-btn">
+            <div className="form-group dc-btnarea">
+              <button
+                style={{ maxWidth: "170px", padding: "0" }}
+                type="submit"
+                className="dc-btn"
+              >
                 {addBtnText}
               </button>
             </div>
@@ -122,32 +132,38 @@ const EditableList = ({
 
         <div className="dc-myskills">
           <ul className="sortable list">
-            {items.map((item, idx) => (
-              <li key={idx}>
-                {editingIndices.includes(idx) ? (
+            {items.map((item) => (
+              <li key={item.id}>
+                {editingIds.includes(item.id) ? (
                   <div className="edit-mode">
                     <input
                       type="text"
                       className="edit-input"
-                      value={editValues[idx] || ""}
+                      value={editValues[item.id]?.[fieldKey] || ""}
                       onChange={(e) =>
-                        setEditValues({ ...editValues, [idx]: e.target.value })
+                        setEditValues({
+                          ...editValues,
+                          [item.id]: {
+                            ...editValues[item.id],
+                            [fieldKey]: e.target.value,
+                          },
+                        })
                       }
-                      onKeyDown={(e) => handleKeyDown(e, idx)}
+                      onKeyDown={(e) => handleKeyDown(e, item.id)}
                       autoFocus
                     />
                     <div className="edit-actions same">
                       <button
                         type="button"
                         className="save-btn"
-                        onClick={() => handleSave(idx)}
+                        onClick={() => handleSave(item.id)}
                       >
                         <FaCheck />
                       </button>
                       <button
                         type="button"
                         className="cancel-btn same"
-                        onClick={() => handleCancel(idx)}
+                        onClick={() => handleCancel(item.id)}
                       >
                         <FaTimes />
                       </button>
@@ -156,18 +172,19 @@ const EditableList = ({
                 ) : (
                   <div className="view-mode">
                     <span className="skill-dynamic-html">
-                      <PiListThin /> <span className="skill-val">{item}</span>
+                      <PiListThin />{" "}
+                      <span className="skill-val">{item[fieldKey]}</span>
                     </span>
                     <div className="dc-rightarea">
                       <a
                         className="dc-addinfo dc-skillsaddinfo"
-                        onClick={() => handleEditClick(idx)}
+                        onClick={() => handleEditClick(item.id, item)}
                       >
                         <FaPencilAlt />
                       </a>
                       <a
                         className="dc-deleteinfo"
-                        onClick={() => handleDelete(idx)}
+                        onClick={() => handleDelete(item.id)}
                       >
                         <FaTrash />
                       </a>
@@ -180,7 +197,11 @@ const EditableList = ({
         </div>
 
         {/* error message */}
-        {error && <p className="error-text" style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <p className="error-text" style={{ color: "red" }}>
+            {error}
+          </p>
+        )}
       </div>
     </div>
   );

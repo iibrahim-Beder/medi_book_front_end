@@ -5582,13 +5582,13 @@ height: 32px !important;
 .dc-tabscontenttitle.no-before::before , .dc-tabscontenttitle.no-before-line::before{
 content: none;
 }
-.dc-tabscontenttitle.no-before{
-width: 95%;
-margin-left: 35PX ;
-margin-bottom: 15px;
+.dc-tabscontenttitle.no-before ,.dc-notes .dc-tabscontenttitle{
+	width: 95%;
+	margin-left: 35PX ;
+	margin-bottom: 15px;
 }
-
-
+.dc-notes .dc-formtheme{margin-left: 18px;}
+.dc-notes .dc-myskills li{margin: 0;}
 
 @media (max-width: 568px) {
  .when686m-t-40{

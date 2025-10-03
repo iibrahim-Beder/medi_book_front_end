@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
 import { useEffect } from "react";
 import "../MainCss.css";
 import TwoLevelAccordion from "./TwoLevelAccordion";
+import EditableList from "./EditableList";
 
 const NestedAccordion = ({
   backgroundColor="",
@@ -23,7 +24,18 @@ useEffect(() => {
   const handleEditClick = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-  
+   const [Notes ,setNotes] = useState ([
+  {
+    "id": 1,
+    "note": "Patient requested to reschedule the appointment to 5:00 PM",
+    "createdAt": "2025-10-02T14:30:00"
+  },
+  {
+    "id": 2,
+    "note": "Patient is allergic to penicillin, please consider when prescribing",
+  }
+]);
+    
   return (
     <div className="dc-userexperience nested-accordion">
       {/* Header */}
@@ -43,7 +55,10 @@ useEffect(() => {
         {data.map((item, index) => (
           <li key={index}>
             {/* Accordion Item Title */}
-            <div className="dc-accordioninnertitle" style={{borderColor:"#eee"}}>
+            <div
+              className="dc-accordioninnertitle"
+              style={{ borderColor: "#eee" }}
+            >
               <span>
                 {item.icon && (
                   <span style={{ marginRight: "8px" }}>{item.icon}</span>
@@ -132,15 +147,34 @@ useEffect(() => {
                       )}
                     </div>
                   ))}
+                  <button type="submit" className="dc-btn" style={{ float: "inline-end",margin:" 11px 4px"}}>
+                    Save
+                  </button>
                 </fieldset>
               </form>
+              <div className="dc-notes"> 
+              <EditableList
+                headerComponent={
+                  <div className="dc-tabscontenttitle no-before-line dc-addnew">
+                    <h3>Notes</h3>
+                  </div>
+                }
+                title="Notes"
+                placeholder="Enter note..."
+                addBtnText="Add"
+                initialItems={[
+                  { id: 1, note: "Patient requested reschedule" },
+                  { id: 2, note: "Allergic to penicillin" },
+                ]}
+                fieldKey="note"
+                minItems={0}
+              />{" "}
+             </div>
               <TwoLevelAccordion
                 noHedarBefore={true}
                 backgroundColor="#fcfcfc"
                 title="Medical Prescriptions"
                 addNewLabel="Add Prescription"
-                // title="Recipes"
-                // addNewLabel="Add Recipe"
                 data={[
                   {
                     type: "Medical",

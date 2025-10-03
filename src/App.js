@@ -83,8 +83,8 @@ const { i18n } = useTranslation();
                 <Route path="appointment-list" element={<MainAppointtmentList2 />} />
                 <Route path="manage-services" element={<MakeSlostMain />} />
                 <Route path="security-settings" element={<SecuritySettings />} />
+                <Route path="account-settings" element={<Acco />} /> */}
                 <Route path="pationt-information" element={<PatientProfilePageMain />} />
-                    <Route path="account-settings" element={<Acco />} /> */}
                     <Route path="appointment-management" element={<AppointmentManagementMain/>} />
               </Routes>
             </div>
