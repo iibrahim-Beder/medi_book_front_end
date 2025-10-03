@@ -5680,7 +5680,7 @@ margin-right: 15px ;
 	 --bcticolor:#e4e4e41c;
   --text-secondary: #475569;
   --hovcolor:#fff;
-  --scbccolor:#f8f9fa;
+  --scbccolor:rgb(252, 252, 252);
 }
 [data-theme="dark"] {
 	--len2color:#858585;

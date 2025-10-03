@@ -7,7 +7,7 @@ const Diagnoses = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="dc-yourdetails dc-tabsinfo" style={{backgroundColor:"#FFFF", padding:"20px", borderRadius:"8px", height:"100%"}}> 
+    <div className="dc-yourdetails dc-tabsinfo" style={{backgroundColor:"#FFFF", padding:"20px", borderRadius:"8px", height:"100%" ,boxShadow: "0 0 7px #eee"}}> 
 
          <NestedAccordion 
          backgroundColor="#fff"
