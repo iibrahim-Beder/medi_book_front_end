@@ -134,20 +134,8 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
       {showDropdown && (
         <div
           className={`list-date-option ${showCustomRange ? "custom" : "open"}`}
-          style={{
-            marginTop: "8px",
-            zIndex: 1,
-            borderRadius: "4px",
-            left: showCustomRange ? "-203%" : "",
-            position: "absolute",
-            display: "flex",
-            background: "var(--cardcolor)",
-            flexDirection: "column",
-            padding: "4px",
-            border: "1px solid #ddd",
-          }}
         >
-          <div style={{ display: "flex" }}>
+          <div className="list-date-option-and-custom" style={{ display: "flex" }}>
             <div
               className="dropdown-date-options"
               style={{
@@ -205,6 +193,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
 
          {showCustomRange && (
   <div
+  className='date-range-footer'
     style={{
       display: "flex",
       justifyContent: "flex-end",
@@ -215,7 +204,8 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
     }}
   >
     <p className="mb-0">{formatDateRange()}</p>
-    <button className="mr-3 ml-5 simple-btn btn" type="button">
+    <div>  
+       <button className="mr-3 ml-5 simple-btn btn" type="button">
       Cancel
     </button>
     <button
@@ -225,7 +215,8 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
       style={{ cursor: !tempRange?.from || !tempRange?.to ? "not-allowed" : "pointer", }}
     >
       Apply
-    </button>
+    </button></div>
+ 
   </div>
 )}
 

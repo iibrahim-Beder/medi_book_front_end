@@ -629,7 +629,7 @@ background-color: transparent;
 }
 
 .table-card {
-  overflow: auto;
+  /* overflow: auto; */
   padding: 30px;
   /* border: 1px solid var(--lencolor); */
   border: 1px solid #f0f0f0;

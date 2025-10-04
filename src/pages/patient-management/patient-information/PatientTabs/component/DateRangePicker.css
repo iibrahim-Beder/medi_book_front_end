@@ -5,7 +5,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .list-date-option.custom{
-    left: -150% !important;
+    left: -200%;
 }
 
 .date-range-display:hover {
@@ -201,12 +201,7 @@
   margin-left: auto;
   margin-right: auto;
 }
-
-.list-date-option:before {
-  left: 430px;
-}
-
-.list-date-option:after {
+.list-date-option:after,.list-date-option:before {
   left: 430px;
 }
 .list-date-option.open:before {
@@ -215,6 +210,18 @@
 
 .list-date-option.open:after {
   left: -99px !important;
+}
+.list-date-option {
+      margin-top: 8px;
+    z-index: 1;
+    border-radius: 4px;
+    position: absolute;
+    display: flex;
+    background: var(--cardcolor);
+    flex-direction: column;
+    padding: 4px;
+    border: 1px solid rgb(221, 221, 221);
+    /* left: -203%; */
 }
 
 /* .daterangepicker.drop-up {
