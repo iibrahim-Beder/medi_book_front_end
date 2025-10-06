@@ -1,42 +1,67 @@
-import React, { useState } from "react";
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import React, { memo } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { useEffect } from "react";
 import "../MainCss.css";
 import CustomAccordion from "./CustomAccordion";
 
-const TwoLevelAccordion = ({
-  backgroundColor="",
+const TwoLevelAccordion = memo(({
+  backgroundColor = "",
   title,
   addNewLabel,
   data,
   formFields,
   onAdd,
   onDelete,
+  onUpdate,
+  onSave,
+  onAddRecipe,
+  onDeleteRecipe,
+  onUpdateRecipe,
+  onSaveRecipe,
   noHedarBefore = false,
 }) => {
-  const [openIndex, setOpenIndex] = useState(null);
-useEffect(() => {
-  setOpenIndex(null);
-}, [data]);
 
+  // Toggle expand/collapse for an accordion item
   const handleEditClick = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+    const item = data[index];
+    if (onUpdate) {
+      onUpdate(index, 'isExpanded', !item.isExpanded);
+    }
   };
-  
+
+  // Handle input/select/textarea value changes
+  const handleFieldChange = (index, field, value) => {
+    if (onUpdate) {
+      onUpdate(index, field, value);
+    }
+  };
+
+  // Save new or existing item
+  const handleSave = (index, e) => {
+    e.preventDefault();
+    const itemData = data[index];
+    onSave(index, itemData);
+  };
+
+  // Cancel action (delete if new, collapse if existing)
+  const handleCancel = (index) => {
+    if (data[index].isNew) {
+      onDelete(index);
+    } else {
+      if (onUpdate) {
+        onUpdate(index, 'isExpanded', false);
+      }
+    }
+  };
+
   return (
     <div className="dc-userexperience">
-      {/* Header */}
+      {/* Accordion Header */}
       {title && (
-        <div
-          className={`dc-tabscontenttitle dc-addnew ${
-            noHedarBefore ? "no-before" : ""
-          }`}
-        >
+        <div className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}>
           <h3>{title}</h3>
           {onAdd && (
-            <a href="#" onClick={onAdd}>
+            <a href="#" onClick={(e) => { e.preventDefault(); onAdd(); }}>
               {addNewLabel}
             </a>
           )}
@@ -46,15 +71,15 @@ useEffect(() => {
       {/* Accordion List */}
       <ul className="dc-experienceaccordion accordion">
         {data.map((item, index) => (
-          <li key={index}>
-            {/* Accordion Item Title */}
+          <li key={item.id || index}>
+            {/* Item Title */}
             <div
               className="dc-accordioninnertitle medium"
               style={{
                 borderColor: "#eee",
-                borderLeft:
-                  openIndex === index ? "2px solid var(--themecolor)" : "",
-                borderBottomLeftRadius: openIndex === index ? "0" : "",
+                borderLeft: item.isExpanded ? "2px solid var(--themecolor)" : 
+                           item.isNew ? "2px solid #ffa500" : "",
+                borderBottomLeftRadius: item.isExpanded ? "0" : "",
                 backgroundColor: "#fcfcfc",
               }}
             >
@@ -62,67 +87,63 @@ useEffect(() => {
                 {item.icon && (
                   <span style={{ marginRight: "8px" }}>{item.icon}</span>
                 )}
-                {item.title || item.type} <em>{item.date}</em>
+                {item.title || item.type || "New Prescription"} <em>{item.date}</em>
+                {item.isNew && <span style={{color: '#ffa500', marginLeft: '8px'}}>(New)</span>}
               </span>
               <div className="dc-rightarea">
-                {/* Edit button */}
-                {/* <a
+                <a
                   href="#!"
-                  onClick={() => handleEditClick(index)}
+                  onClick={(e) => { e.preventDefault(); handleEditClick(index); }}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
                   <FiEdit2 />
-                </a> */}
-                {/* Delete button */}
-                {/* {onDelete && (
+                </a>
+                {onDelete && (
                   <a
                     href="#!"
-                    onClick={() => onDelete(index)}
+                    onClick={(e) => { e.preventDefault(); onDelete(index); }}
                     className="dc-deleteinfo"
                   >
                     <IoTrashOutline />
-                  </a> */}
-                {/* )} */}
-
-                      <button className="view-btn btn btn-outline-primary btn-sm edit" onClick={() => handleEditClick(index)} style={{ backgroundColor:`${openIndex === index ? "#3fabf3" : ""}`, color:`${openIndex === index ? "#fff" : "#55acee"}`}} >
-                  {openIndex === index ? "Close" : "Edit"}
-                </button>
+                  </a>
+                )}
               </div>
             </div>
 
-            {/* Accordion Item Content */}
+            {/* Item Content */}
             <div
               style={{
                 borderColor: "#eee",
                 borderLeft: "2px solid var(--themecolor)",
                 backgroundColor: `${backgroundColor}`,
+                display: (item.isNew || item.isExpanded) ? 'block' : 'none'
               }}
-              className={`dc-collapseexp collapse ${
-                openIndex === index ? "show" : "hide"
-              }`}
+              className={`dc-collapseexp ${(item.isNew || item.isExpanded) ? "show" : "hide"}`}
             >
+              {/* Editable Form */}
               <form
                 className="dc-formtheme dc-userform"
                 style={{ marginBottom: "20px" }}
+                onSubmit={(e) => handleSave(index, e)}
               >
                 <fieldset>
                   {formFields.map((field, idx) => (
                     <div
                       key={idx}
-                      className={`form-group ${
-                        field.half ? "form-group-half" : ""
-                      }`}
+                      className={`form-group ${field.half ? "form-group-half" : ""}`}
                     >
                       {field.type === "textarea" ? (
                         <textarea
                           className="form-control"
                           placeholder={field.placeholder}
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       ) : field.type === "select" ? (
                         <select
                           className="form-control"
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         >
                           <option value="">{field.placeholder}</option>
                           {field.options?.map((opt, i) => (
@@ -136,73 +157,81 @@ useEffect(() => {
                           type={field.type}
                           className="form-control"
                           placeholder={field.placeholder}
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       )}
                     </div>
                   ))}
-                      <button type="submit" className="second-btn" style={{ float: "inline-end",margin:" 11px 4px"}}>
-                    Save
-                  </button>
+                  <div className="dc-btnarea" >
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-secondary" 
+                      onClick={() => handleCancel(index)}
+                      style={{ margin: "11px 4px" }}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="second-btn" 
+                      style={{ margin: "11px 4px" }}
+                    >
+                      {item.isNew ? 'Add' : 'Save'}
+                    </button>
+                  </div>
                 </fieldset>
               </form>
-              <CustomAccordion
-                accordioninnertitleSize="small"
-                noHedarBefore={true}
-                backgroundColor="#fff"
-                titleBackgroundColor="#fff"
-                title="Recipes"
-                addNewLabel="Add Recipe"
-                data={[
-                  {
-                    type: "Medical",
-                    icon: "",
-                    date: "2025-09-13",
-                    content: "Patient requires monitoring.",
-                  },
-                  {
-                    type: "Follow-up",
-                    icon: "",
-                    date: "2025-09-10",
-                    content: "Schedule follow-up in 2 weeks.",
-                  },
-                ]}
-                formFields={[
-                  {
-                    name: "type",
-                    type: "select",
-                    options: [
-                      "Medical",
-                      "Follow-up",
-                      "Behavioral",
-                      "Communication",
-                      "Administrative",
-                      "Urgent",
-                    ],
-                    placeholder: "Select Note Type",
-                    half: true,
-                  },
-                  {
-                    name: "date",
-                    type: "date",
-                    placeholder: "Date",
-                    half: true,
-                  },
-                  {
-                    name: "content",
-                    type: "textarea",
-                    placeholder: "Note Content",
-                  },
-                ]}
-                onAdd={() => alert("Add Note")}
-                onDelete={(index) => alert("Delete note " + index)}
-              />
+
+              {/* Nested Recipes Accordion */}
+              {(item.isNew || item.isExpanded) && (
+                <CustomAccordion
+                  accordioninnertitleSize="small"
+                  noHedarBefore={true}
+                  backgroundColor="#fff"
+                  titleBackgroundColor="#fff"
+                  title="Prescribed Medication"
+                  addNewLabel="Add Prescribed Medication"
+                  data={item.recipes || []}
+                  formFields={[
+                    {
+                      name: "type",
+                      type: "select",
+                      options: [
+                        "Medical",
+                        "Follow-up",
+                        "Behavioral",
+                        "Communication",
+                        "Administrative",
+                        "Urgent",
+                      ],
+                      placeholder: "Select Note Type",
+                      half: true,
+                    },
+                    {
+                      name: "date",
+                      type: "date",
+                      placeholder: "Date",
+                      half: true,
+                    },
+                    {
+                      name: "content",
+                      type: "textarea",
+                      placeholder: "Note Content",
+                    },
+                  ]}
+                  onAdd={() => onAddRecipe(index)}
+                  onDelete={(recipeIndex) => onDeleteRecipe(index, recipeIndex)}
+                  onUpdate={(recipeIndex, field, value) => onUpdateRecipe(index, recipeIndex, field, value)}
+                  onSave={(recipeIndex, recipeData) => onSaveRecipe(index, recipeIndex, recipeData)}
+                />
+              )}
             </div>
           </li>
         ))}
       </ul>
     </div>
   );
-};
+});
 
 export default TwoLevelAccordion;

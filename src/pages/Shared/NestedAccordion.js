@@ -1,49 +1,73 @@
-import React, { use, useState } from "react";
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import React, { memo } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { useEffect } from "react";
 import "../MainCss.css";
 import TwoLevelAccordion from "./TwoLevelAccordion";
 import EditableList from "./EditableList";
 
-const NestedAccordion = ({
-  backgroundColor="",
+const NestedAccordion = memo(({
+  backgroundColor = "",
   title,
   addNewLabel,
   data,
   formFields,
   onAdd,
   onDelete,
+  onUpdate,
+  onSave,
+  onToggleExpansion,
+  onAddNote,
+  onDeleteNote,
+  onAddPrescription,
+  onDeletePrescription,
+  onUpdatePrescription,
+  onSavePrescription,
+  onAddRecipe,
+  onDeleteRecipe,
+  onUpdateRecipe,
+  onSaveRecipe,
 }) => {
-  const [openIndex, setOpenIndex] = useState(null);
-useEffect(() => {
-  setOpenIndex(null);
-}, [data]);
 
+  // Toggle accordion expansion for editing
   const handleEditClick = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+    if (onToggleExpansion) {
+      onToggleExpansion(index);
+    }
   };
-   const [Notes ,setNotes] = useState ([
-  {
-    "id": 1,
-    "note": "Patient requested to reschedule the appointment to 5:00 PM",
-    "createdAt": "2025-10-02T14:30:00"
-  },
-  {
-    "id": 2,
-    "note": "Patient is allergic to penicillin, please consider when prescribing",
-  }
-]);
-    
+
+  // Update single field value
+  const handleFieldChange = (index, field, value) => {
+    if (onUpdate) {
+      onUpdate(index, field, value);
+    }
+  };
+
+  // Save item (new or existing)
+  const handleSave = (index, e) => {
+    e.preventDefault();
+    const itemData = data[index];
+    onSave(index, itemData);
+  };
+
+  // Cancel: remove if new, collapse if existing
+  const handleCancel = (index) => {
+    if (data[index].isNew) {
+      onDelete(index);
+    } else {
+      if (onToggleExpansion) {
+        onToggleExpansion(index);
+      }
+    }
+  };
+
   return (
     <div className="dc-userexperience nested-accordion">
-      {/* Header */}
+      {/* Section Header */}
       {title && (
         <div className="dc-tabscontenttitle no-before-line dc-addnew">
           <h3>{title}</h3>
           {onAdd && (
-            <a href="!#" onClick={onAdd}>
+            <a href="!#" onClick={(e) => { e.preventDefault(); onAdd(); }}>
               {addNewLabel}
             </a>
           )}
@@ -53,32 +77,36 @@ useEffect(() => {
       {/* Accordion List */}
       <ul className="dc-experienceaccordion accordion">
         {data.map((item, index) => (
-          <li key={index}>
-            {/* Accordion Item Title */}
+          <li key={item.id || index}>
+            {/* Accordion Item Header */}
             <div
               className="dc-accordioninnertitle"
-              style={{ borderColor: "#eee" }}
+              style={{ 
+                borderColor: "#eee",
+                borderLeft: item.isNew ? "2px solid #ffa500" : "" 
+              }}
             >
               <span>
                 {item.icon && (
                   <span style={{ marginRight: "8px" }}>{item.icon}</span>
                 )}
-                {item.title || item.type} <em>{item.date}</em>
+                {item.title || item.type || "New Diagnosis"} <em>{item.date}</em>
+                {item.isNew && <span style={{color: '#ffa500', marginLeft: '8px'}}>(New)</span>}
               </span>
               <div className="dc-rightarea">
-                {/* Edit button */}
+                {/* Edit Button */}
                 <a
                   href="#!"
-                  onClick={() => handleEditClick(index)}
+                  onClick={(e) => { e.preventDefault(); handleEditClick(index); }}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
                   <FiEdit2 />
                 </a>
-                {/* Delete button */}
+                {/* Delete Button */}
                 {onDelete && (
                   <a
                     href="#!"
-                    onClick={() => onDelete(index)}
+                    onClick={(e) => { e.preventDefault(); onDelete(index); }}
                     className="dc-deleteinfo"
                   >
                     <IoTrashOutline />
@@ -91,44 +119,35 @@ useEffect(() => {
             <div
               style={{
                 backgroundColor: backgroundColor,
-                border: "1px solid #eee",
-                borderTop:
-                  openIndex === data.length - 1 && openIndex === index
-                    ? "none"
-                    : "1px solid #eee",
-                borderBottom:
-                  openIndex !== null &&
-                  openIndex === index &&
-                  openIndex !== data.length - 1
-                    ? "none"
-                    : "1px solid #eee",
+                borderRight: "1px solid #eee",
+                borderLeft: "1px solid #eee",
               }}
-              className={`dc-collapseexp collapse ${
-                openIndex === index ? "show" : "hide"
-              }`}
+              className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >
+              {/* Editable Form */}
               <form
-                className="dc-formtheme dc-userform "
+                className="dc-formtheme dc-userform"
                 style={{ marginBottom: "20px" }}
+                onSubmit={(e) => handleSave(index, e)}
               >
                 <fieldset>
                   {formFields.map((field, idx) => (
                     <div
                       key={idx}
-                      className={`form-group ${
-                        field.half ? "form-group-half" : ""
-                      }`}
+                      className={`form-group ${field.half ? "form-group-half" : ""}`}
                     >
                       {field.type === "textarea" ? (
                         <textarea
                           className="form-control"
                           placeholder={field.placeholder}
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       ) : field.type === "select" ? (
                         <select
                           className="form-control"
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         >
                           <option value="">{field.placeholder}</option>
                           {field.options?.map((opt, i) => (
@@ -142,90 +161,126 @@ useEffect(() => {
                           type={field.type}
                           className="form-control"
                           placeholder={field.placeholder}
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       )}
                     </div>
                   ))}
-                  <button type="submit" className="second-btn" style={{ float: "inline-end",margin:" 11px 4px"}}>
-                    Save
-                  </button>
+                  {/* Buttons for existing item */}
+                  {!item.isNew && <div className="dc-btnarea">
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-secondary" 
+                      onClick={() => handleCancel(index)}
+                      style={{ margin: "11px 4px" }}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="second-btn" 
+                      style={{ margin: "11px 4px" }}
+                    >
+                      Save
+                    </button>
+                  </div>}
                 </fieldset>
               </form>
-              <div className="dc-notes"> 
-              <EditableList
-              btnClass="second-btn"
-                headerComponent={
-                  <div className="dc-tabscontenttitle no-before-line dc-addnew">
-                    <h3>Notes</h3>
+
+              {/* Nested Content (Notes + Prescriptions) */}
+              {(item.isNew || item.isExpanded) && (
+                <>
+                  {/* Notes Section */}
+                  <div className="dc-notes"> 
+                    <EditableList
+                      btnClass="second-btn"
+                      headerComponent={
+                        <div className="dc-tabscontenttitle no-before-line dc-addnew">
+                          <h3>Notes</h3>
+                        </div>
+                      }
+                      title="Notes"
+                      placeholder="Enter note..."
+                      addBtnText="Add"
+                      onAddItem={(note) => onAddNote(index, note)}
+                      onDeleteItem={(noteIndex) => onDeleteNote(index, noteIndex)}
+                      initialItems={item.notes || []}
+                      fieldKey="note"
+                      minItems={0}
+                    />
                   </div>
-                }
-                title="Notes"
-                placeholder="Enter note..."
-                addBtnText="Add"
-                initialItems={[
-                  { id: 1, note: "Patient requested reschedule" },
-                  { id: 2, note: "Allergic to penicillin" },
-                ]}
-                fieldKey="note"
-                minItems={0}
-              />{" "}
-             </div>
-              <TwoLevelAccordion
-                noHedarBefore={true}
-                backgroundColor="#fcfcfc"
-                title="Medical Prescriptions"
-                addNewLabel="Add Prescription"
-                data={[
-                  {
-                    type: "Medical",
-                    icon: "",
-                    date: "2025-09-13",
-                    content: "Patient requires monitoring.",
-                  },
-                  {
-                    type: "Follow-up",
-                    icon: "",
-                    date: "2025-09-10",
-                    content: "Schedule follow-up in 2 weeks.",
-                  },
-                ]}
-                formFields={[
-                  {
-                    name: "type",
-                    type: "select",
-                    options: [
-                      "Medical",
-                      "Follow-up",
-                      "Behavioral",
-                      "Communication",
-                      "Administrative",
-                      "Urgent",
-                    ],
-                    placeholder: "Select Note Type",
-                    half: true,
-                  },
-                  {
-                    name: "date",
-                    type: "date",
-                    placeholder: "Date",
-                    half: true,
-                  },
-                  {
-                    name: "content",
-                    type: "textarea",
-                    placeholder: "Note Content",
-                  },
-                ]}
-                onAdd={() => alert("Add Note")}
-                onDelete={(index) => alert("Delete note " + index)}
-              />
+
+                  {/* Prescriptions with nested recipes */}
+                  <TwoLevelAccordion
+                    noHedarBefore={true}
+                    backgroundColor="#fcfcfc"
+                    title="Prescription"
+                    addNewLabel="Add Prescription"
+                    data={item.prescriptions || []}
+                    formFields={[
+                      {
+                        name: "type",
+                        type: "select",
+                        options: [
+                          "Medical",
+                          "Follow-up",
+                          "Behavioral",
+                          "Communication",
+                          "Administrative",
+                          "Urgent",
+                        ],
+                        placeholder: "Select Note Type",
+                        half: true,
+                      },
+                      {
+                        name: "date",
+                        type: "date",
+                        placeholder: "Date",
+                        half: true,
+                      },
+                      {
+                        name: "content",
+                        type: "textarea",
+                        placeholder: "Note Content",
+                      },
+                    ]}
+                    onAdd={() => onAddPrescription(index)}
+                    onDelete={(prescriptionIndex) => onDeletePrescription(index, prescriptionIndex)}
+                    onUpdate={(prescriptionIndex, field, value) => onUpdatePrescription(index, prescriptionIndex, field, value)}
+                    onSave={(prescriptionIndex, prescriptionData) => onSavePrescription(index, prescriptionIndex, prescriptionData)}
+                    onAddRecipe={(prescriptionIndex) => onAddRecipe(index, prescriptionIndex)}
+                    onDeleteRecipe={(prescriptionIndex, recipeIndex) => onDeleteRecipe(index, prescriptionIndex, recipeIndex)}
+                    onUpdateRecipe={(prescriptionIndex, recipeIndex, field, value) => onUpdateRecipe(index, prescriptionIndex, recipeIndex, field, value)}
+                    onSaveRecipe={(prescriptionIndex, recipeIndex, recipeData) => onSaveRecipe(index, prescriptionIndex, recipeIndex, recipeData)}
+                  />
+                </>
+              )}
+              {/* Buttons for new item */}
+              {item.isNew && <div className="dc-btnarea">
+                <button 
+                  type="button" 
+                  className="dc-btn dc-cancel-btn" 
+                  onClick={() => handleCancel(index)}
+                  style={{ margin: "11px 4px" }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={(e) => handleSave(index, e)}
+                  type="submit" 
+                  className="dc-btn" 
+                  style={{ margin: "11px 4px" }}
+                >
+                  Add Diagnosis
+                </button>
+              </div>}
             </div>
           </li>
         ))}
       </ul>
     </div>
   );
-};
+});
 
 export default NestedAccordion;

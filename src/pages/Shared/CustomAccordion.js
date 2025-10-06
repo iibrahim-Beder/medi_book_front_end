@@ -1,112 +1,145 @@
-import React, { useState } from "react";
-import { FaLifeRing, FaPencilAlt, FaTrash } from "react-icons/fa";
+// CustomAccordion.js
+import React, { memo } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { useEffect } from "react";
 import "../MainCss.css";
 
-const CustomAccordion = ({
-  titleBackgroundColor="",
-  backgroundColor="",
+const CustomAccordion = memo(({
+  titleBackgroundColor = "",
+  backgroundColor = "",
   title,
   addNewLabel,
   data,
   formFields,
   onAdd,
-  onDelete=true,
-  noHedarBefore=false,
-  accordioninnertitleSize ="",
-
+  onDelete,
+  onUpdate,
+  onSave,
+  noHedarBefore = false,
+  accordioninnertitleSize = "",
 }) => {
-  const [openIndex, setOpenIndex] = useState(null);
-useEffect(() => {
-  setOpenIndex(null);
-}, [data]);
 
   const handleEditClick = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+    const item = data[index];
+    if (onUpdate) {
+      onUpdate(index, 'isExpanded', !item.isExpanded);
+    }
   };
-  
+
+  const handleFieldChange = (index, field, value) => {
+    if (onUpdate) {
+      onUpdate(index, field, value);
+    }
+  };
+
+  const handleSave = (index, e) => {
+    e.preventDefault();
+    const itemData = data[index];
+    
+    if (itemData.isNew) {
+      onSave(index, itemData);
+    } else {
+      onSave(index, itemData);
+    }
+  };
+
+  const handleCancel = (index) => {
+    if (data[index].isNew) {
+      onDelete(index);
+    } else {
+      if (onUpdate) {
+        onUpdate(index, 'isExpanded', false);
+      }
+    }
+  };
+
   return (
     <div className="dc-userexperience">
       {/* Header */}
-     {title && <div className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}style={{ backgroundColor:`${titleBackgroundColor} ` }} >
-        <h3>{title}</h3>
-        {onAdd && (
-          <a href="#" onClick={onAdd}>
-            {addNewLabel}
-          </a>
-        )}
-      </div>}
+      {title && (
+        <div 
+          className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}
+          style={{ backgroundColor: `${titleBackgroundColor}` }}
+        >
+          <h3>{title}</h3>
+          {onAdd && (
+            <a href="#" onClick={(e) => { e.preventDefault(); onAdd(); }}>
+              {addNewLabel}
+            </a>
+          )}
+        </div>
+      )}
 
       {/* Accordion List */}
       <ul className="dc-experienceaccordion accordion">
         {data.map((item, index) => (
-          <li key={index}>
+          <li key={item.id || index}>
             {/* Accordion Item Title */}
-            <div className={`dc-accordioninnertitle ${accordioninnertitleSize}`} style={{ backgroundColor:`${titleBackgroundColor}`, borderColor:`${noHedarBefore ? "#eee" :"" }` }}>
+            <div 
+              className={`dc-accordioninnertitle ${accordioninnertitleSize}`} 
+              style={{ 
+                backgroundColor: `${titleBackgroundColor}`, 
+                borderColor: `${noHedarBefore ? "#eee" : ""}`,
+                borderLeft: item.isNew ? "2px solid #ffa500" : ""
+              }}
+            >
               <span>
                 {item.icon && <span style={{ marginRight: "8px" }}>{item.icon}</span>}
-                {item.title || item.type} <em>{item.date}</em>
+                {item.title || item.type || "New Recipe"} <em>{item.date}</em>
+                {item.isNew && <span style={{color: '#ffa500', marginLeft: '8px'}}>(New)</span>}
               </span>
               <div className="dc-rightarea">
-                  {onDelete===false &&<>
-                {/* Edit button */}
                 <a
                   href="#!"
-                  onClick={() => handleEditClick(index)}
+                  onClick={(e) => { e.preventDefault(); handleEditClick(index); }}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
                   <FiEdit2 />
                 </a>
-                {/* Delete button */}
+                
                 {onDelete && (
                   <a
                     href="#!"
-                    onClick={() => onDelete(index)}
+                    onClick={(e) => { e.preventDefault(); onDelete(index); }}
                     className="dc-deleteinfo"
+                    style={{ marginLeft: "8px" }}
                   >
                     <IoTrashOutline />
                   </a>
-                )}</>
-                   }
-
-                <button className="view-btn btn btn-outline-primary btn-sm edit" onClick={() => handleEditClick(index)} style={{ backgroundColor:`${openIndex === index ? "#3fabf3" : ""}`, color:`${openIndex === index ? "#fff" : "#55acee"}`}} >
-                  {openIndex === index ? "Close" : "Edit"}
-                </button>
-
-
-                
-
+                )}
               </div>
             </div>
 
             {/* Accordion Item Content */}
             <div 
-              style={{backgroundColor:`${backgroundColor}`}}
-              className={`dc-collapseexp collapse ${
-                openIndex === index ? "show" : "hide"
-              }`}
+              style={{ 
+                backgroundColor: `${backgroundColor}`,
+                display: (item.isNew || item.isExpanded) ? 'block' : 'none'
+              }}
+              className={`dc-collapseexp ${(item.isNew || item.isExpanded) ? "show" : "hide"}`}
             >
-              <form className="dc-formtheme dc-userform">
+              <form 
+                className="dc-formtheme dc-userform"
+                onSubmit={(e) => handleSave(index, e)}
+              >
                 <fieldset>
                   {formFields.map((field, idx) => (
                     <div
                       key={idx}
-                      className={`form-group ${
-                        field.half ? "form-group-half" : ""
-                      }`}
+                      className={`form-group ${field.half ? "form-group-half" : ""}`}
                     >
                       {field.type === "textarea" ? (
                         <textarea
                           className="form-control"
                           placeholder={field.placeholder}
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       ) : field.type === "select" ? (
                         <select
                           className="form-control"
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         >
                           <option value="">{field.placeholder}</option>
                           {field.options?.map((opt, i) => (
@@ -120,11 +153,29 @@ useEffect(() => {
                           type={field.type}
                           className="form-control"
                           placeholder={field.placeholder}
-                          defaultValue={item[field.name] || ""}
+                          value={item[field.name] || ""}
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       )}
                     </div>
                   ))}
+                  <div className="dc-btnarea" >
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-secondary" 
+                      onClick={() => handleCancel(index)}
+                      style={{ margin: "11px 4px" }}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="second-btn" 
+                      style={{ margin: "11px 4px" }}
+                    >
+                      {item.isNew ? 'Add' : 'Save'}
+                    </button>
+                  </div>
                 </fieldset>
               </form>
             </div>
@@ -133,6 +184,6 @@ useEffect(() => {
       </ul>
     </div>
   );
-};
+});
 
 export default CustomAccordion;

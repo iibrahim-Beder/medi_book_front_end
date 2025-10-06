@@ -5592,11 +5592,9 @@ content: none;
 .dc-notes .dc-myskills li{margin: 0;} 
 .dc-notes .second-btn{width: 73px !important;padding: 7px 15px !important; margin-top: 4px;} 
 .dc-notes .dc-skillsform fieldset .form-group.input {padding-right: 90px;}
-.nested-accordion .second-btn{width: 100px;}
+.nested-accordion .second-btn{width: 85px; min-width: fit-content; padding: 5px 15px;}
 
-
-
-
+/* >>> */
 
 @media (max-width: 1200px) {
 	

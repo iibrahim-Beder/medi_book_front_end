@@ -796,13 +796,28 @@ box-shadow: none !important;   ;
 background-color: transparent !important;
    color: #000 !important; ;
 }
+.dc-btn.dc-cancel-btn{
+  margin: 11px 4px;
+  width: 100px;
+  max-width: 170px;
+  border-color: #ddd;
+  min-width: fit-content;
+}
+.dc-btn.dc-cancel-btn:hover{
+  box-shadow: 0 9px 20px 0 #ddd;
+  background-color: #ddd;
+}
+
+.dc-btnarea{
+  float: inline-end;
+}
 /* my btns style end */
 .select-wrapper select {
   appearance: auto; 
   padding-right: 200px;
 }
 
-
+.dc-casel
 
 
 
@@ -819,3 +834,9 @@ background-color: transparent !important;
 .dc-accordioninnertitle.small{
   height: 40px;
     padding: 6px 30px;}
+
+    .dc-collapseexp.hide{
+      padding: 0;
+    } 
+    .dc-experienceaccordion li:last-child .dc-accordioninnertitle ~ .show{border-top: 0 !important;}
+     .show ~.dc-experienceaccordion li:last-child .dc-accordioninnertitle {background-color: red !important;}
