@@ -5630,18 +5630,27 @@ margin-right: 15px ;
 /* <<< */
 	
 @media (max-width: 900px) {
+	.nested-accordion .dc-experienceaccordion{padding: 0 10px;}
      .two-level-accordion .dc-userexperience .dc-tabscontenttitle {
    			display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
 	 }
+	 .dc-accordioninnertitle.small ~ .dc-collapseexp .dc-userform fieldset .form-group.form-group-half
+{
+	width: 100%;
+}
+
 }
 /* <<< */
 
 	@media (max-width: 820px) {
 
-
+.dc-accordioninnertitle.small ~ .dc-collapseexp 
+{
+	padding: 30px 5px;
+}
 		.two-level-accordion
 	.PatientBasicInfo .dc-user-details{
 		padding: 30px 0 !important	;
@@ -5663,10 +5672,7 @@ margin-right: 0 !important;
 .list-date-option.custom {
             left: -30%;
         }
-.dc-accordioninnertitle.small ~ .dc-collapseexp .dc-userform fieldset .form-group.form-group-half
-{
-	width: 100%;
-}
+
 }
 /* <<< */
 @media (max-width: 720px){
@@ -5676,10 +5682,7 @@ margin-right: 0 !important;
 .nested-accordion .dc-accordioninnertitle.small ~ .dc-collapseexp .dc-userform {
 padding: 0 10px;
 }
-.dc-accordioninnertitle.small ~ .dc-collapseexp 
-{
-	padding: 30px 5px;
-}
+
 
 .PatientBasicInfo .dc-user-info 
 {
