@@ -836,7 +836,6 @@ background-color: transparent !important;
     padding: 6px 30px;}
 
     .dc-collapseexp.hide{
-      padding: 0;
+      padding: 0 !important;
     } 
-    .dc-experienceaccordion li:last-child .dc-accordioninnertitle ~ .show{border-top: 0 !important;}
-     .show ~.dc-experienceaccordion li:last-child .dc-accordioninnertitle {background-color: red !important;}
+    .dc-experienceaccordion li:last-child .dc-accordioninnertitle ~ .show{border-top: 0 !important;} 

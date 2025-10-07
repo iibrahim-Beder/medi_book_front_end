@@ -119,7 +119,7 @@ const CustomAccordion = memo(({
               style={{ 
                 backgroundColor: `${backgroundColor}`,
               }}
-              className={`dc-collapseexp ${(item.isNew || item.isExpanded) ? "show" : "hide"}`}
+              className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >
               <form 
                 className="dc-formtheme dc-userform"
@@ -162,7 +162,7 @@ const CustomAccordion = memo(({
                       )}
                     </div>
                   ))}
-                  <div className="dc-btnarea" >
+                  <div className="dc-btnarea d-flex" >
                     <button 
                       type="button" 
                       className="btn btn-outline-secondary" 

@@ -39,21 +39,27 @@ const Diagnoses = () => {
   ]);
 
   // Add a new diagnosis record
-  const handleAddDiagnosis = useCallback(() => {
-    const newDiagnosis = {
-      id: Date.now(), 
-      type: "",
-      icon: "",
-      date: new Date().toISOString().split('T')[0], 
-      content: "",
-      notes: [],
-      prescriptions: [],
-      isNew: true,
-      isExpanded: true
-    };
-    
-    setDiagnosesData(prev => [newDiagnosis, ...prev]);
-  }, []);
+ const handleAddDiagnosis = useCallback(() => {
+  const newDiagnosis = {
+    id: Date.now(),
+    type: "",
+    icon: "",
+    date: new Date().toISOString().split("T")[0],
+    content: "",
+    notes: [],
+    prescriptions: [],
+    isNew: true,
+    isExpanded: true,
+  };
+
+  setDiagnosesData(prev =>
+    [
+      newDiagnosis,
+      ...prev.map(item => ({ ...item, isExpanded: false })) // close all other items
+    ]
+  );
+}, []);
+
 
   // Save a diagnosis (marks as not new and collapses it)
   const handleSaveDiagnosis = useCallback((index, diagnosisData) => {
@@ -88,12 +94,11 @@ const handleToggleExpansion = useCallback((index) => {
   setDiagnosesData(prev =>
     prev.map((item, i) => ({
       ...item,
-      isExpanded: i === index ? !item.isExpanded : false, // افتح واحد فقط
+      isExpanded: i === index ? !item.isExpanded : false, 
     }))
   );
   console.log("Toggled expansion for diagnosis:", index);
 }, []);
-
 
   // === Notes Management ===
   const handleAddNote = useCallback((diagnosisIndex, note) => {
@@ -124,28 +129,38 @@ const handleToggleExpansion = useCallback((index) => {
   }, []);
 
   // === Prescriptions Management ===
-  const handleAddPrescription = useCallback((diagnosisIndex) => {
-    const newPrescription = {
-      id: Date.now(),
-      type: "",
-      icon: "",
-      date: new Date().toISOString().split('T')[0],
-      content: "",
-      recipes: [],
-      isNew: true,
-      isExpanded: true
-    };
+ const handleAddPrescription = useCallback((diagnosisIndex) => {
+  const newPrescription = {
+    id: Date.now(),
+    type: "",
+    icon: "",
+    date: new Date().toISOString().split("T")[0],
+    content: "",
+    recipes: [],
+    isNew: true,
+    isExpanded: true,
+  };
 
-    setDiagnosesData(prev => prev.map((diagnosis, i) => 
-      i === diagnosisIndex 
-        ? { 
-            ...diagnosis, 
-            prescriptions: [newPrescription, ...(diagnosis.prescriptions || [])]
+  setDiagnosesData(prev =>
+    prev.map((diagnosis, i) =>
+      i === diagnosisIndex
+        ? {
+            ...diagnosis,
+            prescriptions: [
+              newPrescription,
+              ...(diagnosis.prescriptions || []).map(p => ({
+                ...p,
+                isExpanded: false, // close all other prescriptions
+              })),
+            ],
           }
         : diagnosis
-    ));
-    console.log("Added prescription:", newPrescription);
-  }, []);
+    )
+  );
+
+  console.log("Added prescription:", newPrescription);
+}, []);
+
 
   const handleDeletePrescription = useCallback((diagnosisIndex, prescriptionIndex) => {
     setDiagnosesData(prev => prev.map((diagnosis, i) => 
@@ -195,34 +210,45 @@ const handleToggleExpansion = useCallback((index) => {
   }, []);
 
   // === Recipes Management ===
-  const handleAddRecipe = useCallback((diagnosisIndex, prescriptionIndex) => {
-    const newRecipe = {
-      id: Date.now(),
-      type: "",
-      icon: "",
-      date: new Date().toISOString().split('T')[0],
-      content: "",
-      isNew: true,
-      isExpanded: true
-    };
+ const handleAddRecipe = useCallback((diagnosisIndex, prescriptionIndex) => {
+  const newRecipe = {
+    id: Date.now(),
+    type: "",
+    icon: "",
+    date: new Date().toISOString().split("T")[0],
+    content: "",
+    isNew: true,
+    isExpanded: true,
+  };
 
-    setDiagnosesData(prev => prev.map((diagnosis, i) => 
-      i === diagnosisIndex 
-        ? { 
-            ...diagnosis, 
-            prescriptions: (diagnosis.prescriptions || []).map((prescription, j) => 
-              j === prescriptionIndex 
-                ? { 
-                    ...prescription, 
-                    recipes: [newRecipe, ...(prescription.recipes || [])]
-                  }
-                : prescription
-            )
+  setDiagnosesData((prev) =>
+    prev.map((diagnosis, i) =>
+      i === diagnosisIndex
+        ? {
+            ...diagnosis,
+            prescriptions: (diagnosis.prescriptions || []).map(
+              (prescription, j) =>
+                j === prescriptionIndex
+                  ? {
+                      ...prescription,
+                      recipes: [
+                        newRecipe,
+                        ...(prescription.recipes || []).map((r) => ({
+                          ...r,
+                          isExpanded: false, // close all other recipes
+                        })),
+                      ],
+                    }
+                  : prescription
+            ),
           }
         : diagnosis
-    ));
-    console.log("Added recipe:", newRecipe);
-  }, []);
+    )
+  );
+
+  console.log("Added recipe:", newRecipe);
+}, []);
+
 
   const handleDeleteRecipe = useCallback((diagnosisIndex, prescriptionIndex, recipeIndex) => {
     setDiagnosesData(prev => prev.map((diagnosis, i) => 
@@ -293,7 +319,7 @@ const handleToggleExpansion = useCallback((index) => {
 
   
    return (
-    <div className="dc-yourdetails dc-tabsinfo" style={{
+    <div className="dc-yourdetails dc-tabsinfo nested-accordion" style={{
       backgroundColor:"#FFFF", 
       padding:"20px", 
       borderRadius:"8px", 

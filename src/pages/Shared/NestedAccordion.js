@@ -83,7 +83,9 @@ const NestedAccordion = memo(({
               className="dc-accordioninnertitle"
               style={{ 
                 borderColor: "#eee",
-                borderLeft: item.isNew ? "2px solid #ffa500" : "" 
+                borderLeft: item.isNew ? "2px solid #ffa500" : "", 
+                borderBottomRightRadius:`${item.isExpanded ? "0" : ""}`,
+                borderBottomLeftRadius:`${item.isExpanded ? "0" : ""}`,
               }}
             >
               <span>
@@ -121,6 +123,7 @@ const NestedAccordion = memo(({
                 backgroundColor: backgroundColor,
                 borderRight: "1px solid #eee",
                 borderLeft: "1px solid #eee",
+                borderBottom: `${ index === data.length - 1 ? "1px solid #eee" : "" }`,
               }}
               className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >

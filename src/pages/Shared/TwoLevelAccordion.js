@@ -59,13 +59,13 @@ const TwoLevelAccordion = memo(({
   };
 
   return (
-    <div className="dc-userexperience">
+    <div className="dc-userexperience  two-level-accordion">
       {/* Accordion Header */}
       {title && (
         <div className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}>
           <h3>{title}</h3>
           {onAdd && (
-            <a href="#" onClick={(e) => { e.preventDefault(); onAdd(); }}>
+            <a href="#!" onClick={(e) => { e.preventDefault(); onAdd(); }}>
               {addNewLabel}
             </a>
           )}
@@ -117,10 +117,11 @@ const TwoLevelAccordion = memo(({
             {/* Item Content */}
             <div
               style={{
+                paddingRight:"15px",
                 borderLeft: "2px solid var(--themecolor)",
                 backgroundColor: `${backgroundColor}`,
               }}
-              className={`dc-collapseexp ${(item.isNew || item.isExpanded) ? "show" : "hide"}`}
+              className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >
               {/* Editable Form */}
               <form
