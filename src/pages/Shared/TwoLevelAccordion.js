@@ -113,10 +113,8 @@ const TwoLevelAccordion = memo(({
             {/* Item Content */}
             <div
               style={{
-                borderColor: "#eee",
                 borderLeft: "2px solid var(--themecolor)",
                 backgroundColor: `${backgroundColor}`,
-                display: (item.isNew || item.isExpanded) ? 'block' : 'none'
               }}
               className={`dc-collapseexp ${(item.isNew || item.isExpanded) ? "show" : "hide"}`}
             >

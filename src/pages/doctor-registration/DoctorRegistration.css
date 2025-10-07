@@ -257,26 +257,6 @@
   color: #c0392b;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .dc-collapseexp {
   max-height: 0;
   opacity: 0;
@@ -285,6 +265,6 @@
 }
 
 .dc-collapseexp.show {
-  max-height: max-content;
+  max-height: 10000vh;
   opacity: 1;
 }

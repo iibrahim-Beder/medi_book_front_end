@@ -114,7 +114,6 @@ const CustomAccordion = memo(({
             <div 
               style={{ 
                 backgroundColor: `${backgroundColor}`,
-                display: (item.isNew || item.isExpanded) ? 'block' : 'none'
               }}
               className={`dc-collapseexp ${(item.isNew || item.isExpanded) ? "show" : "hide"}`}
             >
