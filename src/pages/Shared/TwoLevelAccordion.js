@@ -81,8 +81,8 @@ const TwoLevelAccordion = memo(({
               className="dc-accordioninnertitle medium"
               style={{
                 borderColor: "#eee",
-                borderLeft: item.isExpanded ? "2px solid var(--themecolor)" : 
-                           item.isNew ? "2px solid #ffa500" : "",
+                borderLeft: item.isNew ? "2px solid #ffa500" :
+                         item.isExpanded ? "2px solid var(--themecolor)"  : "",
                 borderBottomLeftRadius: item.isExpanded ? "0" : "",
                 backgroundColor: "#fcfcfc",
               }}

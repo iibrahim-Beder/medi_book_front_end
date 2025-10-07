@@ -1,389 +1,205 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import InputAdornment from '@mui/material/InputAdornment';
-import { CiSearch } from 'react-icons/ci';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import React, { useState } from "react";
+import { Line, Pie } from "react-chartjs-2";
+import 'chart.js/auto';
 
-const filter = createFilterOptions();
+const sampleBookings = [
+  {
+    patient: "John Doe",
+    date: "2025-10-05",
+    time: "10:00 AM",
+    status: "Completed",
+    amount: 150,
+    paymentMethod: "Stripe",
+    branch: "Clinic A",
+    notes: "Follow-up needed",
+    diagnosis: "Flu",
+    medication: "Paracetamol"
+  },
+  {
+    patient: "Jane Smith",
+    date: "2025-10-06",
+    time: "02:00 PM",
+    status: "Cancelled",
+    amount: 0,
+    paymentMethod: "Cash",
+    branch: "Clinic B",
+    notes: "Patient no-show",
+    diagnosis: "",
+    medication: ""
+  },
+  {
+    patient: "Ali Hassan",
+    date: "2025-10-07",
+    time: "11:00 AM",
+    status: "Completed",
+    amount: 200,
+    paymentMethod: "Wallet",
+    branch: "Clinic A",
+    notes: "",
+    diagnosis: "Allergy",
+    medication: "Antihistamine"
+  },
+];
 
-export default function FreeSoloCreateOptionDialog() {
-  const [value, setValue] = React.useState(null);
-  const [open, toggleOpen] = React.useState(false);
-  const [page, setPage] = React.useState(0);
-  const itemsPerPage = 6;
+const FinancialDashboard = () => {
+  const [bookings, setBookings] = useState(sampleBookings);
+  const [modalData, setModalData] = useState(null);
 
-  const handleClose = () => {
-    setDialogValue({
-      title: '',
-      year: '',
-    });
-    toggleOpen(false);
+  // Summary Cards calculation
+  const totalBookings = bookings.length;
+  const completed = bookings.filter(b => b.status === "Completed").length;
+  const cancelled = bookings.filter(b => b.status === "Cancelled").length;
+  const totalRevenue = bookings.reduce((acc, b) => acc + b.amount, 0);
+
+  // Charts data
+  const revenueChartData = {
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    datasets: [
+      {
+        label: "Revenue ($)",
+        data: [3500, 4000, 3000, 4500],
+        borderColor: "#0d6efd",
+        backgroundColor: "rgba(13, 110, 253, 0.2)",
+        fill: true,
+        tension: 0.4,
+      },
+    ],
   };
 
-  const [dialogValue, setDialogValue] = React.useState({
-    title: '',
-    year: '',
-  });
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setValue({
-      title: dialogValue.title,
-      year: parseInt(dialogValue.year, 10),
-    });
-    handleClose();
+  const statusChartData = {
+    labels: ["Completed", "Cancelled"],
+    datasets: [
+      {
+        label: "Bookings Status",
+        data: [completed, cancelled],
+        backgroundColor: ["#198754", "#dc3545"]
+      }
+    ]
   };
-
-  // حساب عدد الصفحات
-  const totalPages = Math.ceil(top100Films.length / itemsPerPage);
-
-  // العناصر في الصفحة الحالية
-  const getCurrentPageItems = () => {
-    const startIndex = page * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return top100Films.slice(startIndex, endIndex);
-  };
-
-  const handleNextPage = (event) => {
-    event.stopPropagation();
-    if (page < totalPages - 1) {
-      setPage(page + 1);
-    }
-  };
-
-  const handlePrevPage = (event) => {
-    event.stopPropagation();
-    if (page > 0) {
-      setPage(page - 1);
-    }
-  };
-
-  const handleOpen = () => {
-    setPage(0);
-  };
-
-  // ✅ Custom Listbox مع pagination UL/LI
-  const CustomListbox = React.forwardRef((props, ref) => {
-    const { children, ...other } = props;
-    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
-    return (
-      <div ref={ref} {...other}>
-        <ul
-          style={{
-            maxHeight: 'fit-content',
-            overflow: 'hidden',
-            paddingBottom: "10px",
-            margin: 0,
-            listStyle: "none"
-          }}
-        >
-          {children}
-        </ul>
-
-        <nav className="dc-pagination" onClick={(e) => e.stopPropagation()}>
-          <ul>
-            <li
-              className="dc-prevpage"
-              onClick={handlePrevPage}
-              style={{ cursor: page === 0 ? "not-allowed" : "pointer", opacity: page === 0 ? 0.5 : 1 }}
-            >
-              <a style={{paddingTop:"4px"}}><NavigateBeforeIcon fontSize="small" /></a>
-            </li>
-
-            {pages.map((p, i) => {
-              if (i === 0 || i === totalPages - 1 || (i >= page - 1 && i <= page + 1)) {
-                return (
-                  <li
-                    key={p}
-                    onClick={() => setPage(p - 1)}
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: page + 1 === p ? "bold" : "normal",
-                    }}
-                  >
-                    <a>{p}</a>
-                  </li>
-                );
-              } else if (i === page - 2 || i === page + 2) {
-                return (
-                  <li key={`dots-${i}`}>
-                    <a>...</a>
-                  </li>
-                );
-              }
-              return null;
-            })}
-
-            <li
-              className="dc-nextpage"
-              onClick={handleNextPage}
-              style={{ cursor: page >= totalPages - 1 ? "not-allowed" : "pointer", opacity: page >= totalPages - 1 ? 0.5 : 1 }}
-            >
-              <a style={{paddingTop:"4px"}}><NavigateNextIcon fontSize="small" /></a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    );
-  });
 
   return (
-    <React.Fragment>
-      <Autocomplete
-        value={value}
-        onChange={(event, newValue) => {
-          if (typeof newValue === 'string') {
-            setTimeout(() => {
-              toggleOpen(true);
-              setDialogValue({
-                title: newValue,
-                year: '',
-              });
-            });
-          } else if (newValue && newValue.inputValue) {
-            toggleOpen(true);
-            setDialogValue({
-              title: newValue.inputValue,
-              year: '',
-            });
-          } else {
-            setValue(newValue);
-          }
-        }}
-        onOpen={handleOpen}
-        filterOptions={(options, params) => {
-          const filtered = filter(options, params);
+    <div className="container my-4">
+      <h1 className="mb-4">Financial Dashboard</h1>
 
-          if (params.inputValue !== '') {
-            filtered.push({
-              inputValue: params.inputValue,
-              title: `Add "${params.inputValue}"`,
-            });
-          }
+      {/* Summary Cards */}
+      <div className="row mb-4">
+        <div className="col-md-3 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h6 className="card-subtitle mb-2 text-muted">Total Bookings</h6>
+              <h4 className="card-title">{totalBookings}</h4>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-3 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h6 className="card-subtitle mb-2 text-muted">Completed</h6>
+              <h4 className="card-title text-success">{completed}</h4>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-3 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h6 className="card-subtitle mb-2 text-muted">Cancelled</h6>
+              <h4 className="card-title text-danger">{cancelled}</h4>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-3 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h6 className="card-subtitle mb-2 text-muted">Total Revenue</h6>
+              <h4 className="card-title text-primary">${totalRevenue}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          return filtered;
-        }}
-        id="free-solo-dialog-demo"
-        options={getCurrentPageItems()}
-        getOptionLabel={(option) => {
-          if (typeof option === 'string') {
-            return option;
-          }
-          if (option.inputValue) {
-            return option.inputValue;
-          }
-          return option.title;
-        }}
-        selectOnFocus
-        clearOnBlur
-        handleHomeEndKeys
-        renderOption={(props, option) => {
-          const { key, ...optionProps } = props;
-          return (
-            <li key={key} {...optionProps} style={{ padding: '8px 12px' }}>
-              {option.title}
-            </li>
-          );
-        }}
-        sx={{ width: 300 }}
-        freeSolo
-        ListboxComponent={CustomListbox}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            placeholder="Search"
-            label=""
-            InputProps={{
-              ...params.InputProps,
-              startAdornment: (
-                <InputAdornment position="start">
-                  <CiSearch style={{ fontSize: "20px", color: "#000" }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-        )}
-      />
-      <Dialog open={open} onClose={handleClose}>
-        <form onSubmit={handleSubmit}>
-          <DialogTitle>Add a new film</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Did you miss any film in our list? Please, add it!
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              value={dialogValue.title}
-              onChange={(event) =>
-                setDialogValue({
-                  ...dialogValue,
-                  title: event.target.value,
-                })
-              }
-              label="title"
-              type="text"
-              variant="standard"
-            />
-            <TextField
-              margin="dense"
-              id="name"
-              value={dialogValue.year}
-              onChange={(event) =>
-                setDialogValue({
-                  ...dialogValue,
-                  year: event.target.value,
-                })
-              }
-              label="year"
-              type="number"
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Add</Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </React.Fragment>
+      {/* Charts */}
+      <div className="row mb-4">
+        <div className="col-md-8 mb-3">
+          <div className="card shadow-sm p-3">
+            <h5 className="card-title mb-3">Revenue Trend</h5>
+            <Line data={revenueChartData} />
+          </div>
+        </div>
+        <div className="col-md-4 mb-3">
+          <div className="card shadow-sm p-3">
+            <h5 className="card-title mb-3">Bookings Status</h5>
+            <Pie data={statusChartData} />
+          </div>
+        </div>
+      </div>
+
+      {/* Bookings Table */}
+      <div className="card shadow-sm mb-4">
+        <div className="card-body">
+          <h5 className="card-title mb-4">Recent Bookings</h5>
+          <div className="table-responsive">
+            <table className="table table-hover">
+              <thead className="table-light">
+                <tr>
+                  <th>Patient</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                  <th>Branch</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((b, idx) => (
+                  <tr key={idx}>
+                    <td>{b.patient}</td>
+                    <td>{b.date}</td>
+                    <td>{b.time}</td>
+                    <td className={b.status === "Completed" ? "text-success" : "text-danger"}>{b.status}</td>
+                    <td>${b.amount}</td>
+                    <td>{b.branch}</td>
+                    <td>
+                      <button className="btn btn-sm btn-primary" onClick={() => setModalData(b)}>View</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal for Booking Details */}
+      {modalData && (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Booking Details</h5>
+                <button type="button" className="btn-close" onClick={() => setModalData(null)}></button>
+              </div>
+              <div className="modal-body">
+                <p><strong>Patient:</strong> {modalData.patient}</p>
+                <p><strong>Date & Time:</strong> {modalData.date} {modalData.time}</p>
+                <p><strong>Status:</strong> {modalData.status}</p>
+                <p><strong>Amount:</strong> ${modalData.amount}</p>
+                <p><strong>Payment:</strong> {modalData.paymentMethod}</p>
+                <p><strong>Branch:</strong> {modalData.branch}</p>
+                <p><strong>Diagnosis:</strong> {modalData.diagnosis || "-"}</p>
+                <p><strong>Medication:</strong> {modalData.medication || "-"}</p>
+                <p><strong>Notes:</strong> {modalData.notes || "-"}</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalData(null)}>Close</button>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop fade show"></div>
+        </div>
+      )}
+    </div>
   );
-}
+};
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-  { title: 'The Godfather: Part II', year: 1974 },
-  { title: 'The Dark Knight', year: 2008 },
-  { title: '12 Angry Men', year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: 'Pulp Fiction', year: 1994 },
-  {
-    title: 'The Lord of the Rings: The Return of the King',
-    year: 2003,
-  },
-  { title: 'The Good, the Bad and the Ugly', year: 1966 },
-  { title: 'Fight Club', year: 1999 },
-  {
-    title: 'The Lord of the Rings: The Fellowship of the Ring',
-    year: 2001,
-  },
-  {
-    title: 'Star Wars: Episode V - The Empire Strikes Back',
-    year: 1980,
-  },
-  { title: 'Forrest Gump', year: 1994 },
-  { title: 'Inception', year: 2010 },
-  {
-    title: 'The Lord of the Rings: The Two Towers',
-    year: 2002,
-  },
-  { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { title: 'Goodfellas', year: 1990 },
-  { title: 'The Matrix', year: 1999 },
-  { title: 'Seven Samurai', year: 1954 },
-  {
-    title: 'Star Wars: Episode IV - A New Hope',
-    year: 1977,
-  },
-  { title: 'City of God', year: 2002 },
-  { title: 'Se7en', year: 1995 },
-  { title: 'The Silence of the Lambs', year: 1991 },
-  { title: "It's a Wonderful Life", year: 1946 },
-  { title: 'Life Is Beautiful', year: 1997 },
-  { title: 'The Usual Suspects', year: 1995 },
-  { title: 'Léon: The Professional', year: 1994 },
-  { title: 'Spirited Away', year: 2001 },
-  { title: 'Saving Private Ryan', year: 1998 },
-  { title: 'Once Upon a Time in the West', year: 1968 },
-  { title: 'American History X', year: 1998 },
-  { title: 'Interstellar', year: 2014 },
-  { title: 'Casablanca', year: 1942 },
-  { title: 'City Lights', year: 1931 },
-  { title: 'Psycho', year: 1960 },
-  { title: 'The Green Mile', year: 1999 },
-  { title: 'The Intouchables', year: 2011 },
-  { title: 'Modern Times', year: 1936 },
-  { title: 'Raiders of the Lost Ark', year: 1981 },
-  { title: 'Rear Window', year: 1954 },
-  { title: 'The Pianist', year: 2002 },
-  { title: 'The Departed', year: 2006 },
-  { title: 'Terminator 2: Judgment Day', year: 1991 },
-  { title: 'Back to the Future', year: 1985 },
-  { title: 'Whiplash', year: 2014 },
-  { title: 'Gladiator', year: 2000 },
-  { title: 'Memento', year: 2000 },
-  { title: 'The Prestige', year: 2006 },
-  { title: 'The Lion King', year: 1994 },
-  { title: 'Apocalypse Now', year: 1979 },
-  { title: 'Alien', year: 1979 },
-  { title: 'Sunset Boulevard', year: 1950 },
-  {
-    title: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
-    year: 1964,
-  },
-  { title: 'The Great Dictator', year: 1940 },
-  { title: 'Cinema Paradiso', year: 1988 },
-  { title: 'The Lives of Others', year: 2006 },
-  { title: 'Grave of the Fireflies', year: 1988 },
-  { title: 'Paths of Glory', year: 1957 },
-  { title: 'Django Unchained', year: 2012 },
-  { title: 'The Shining', year: 1980 },
-  { title: 'WALL·E', year: 2008 },
-  { title: 'American Beauty', year: 1999 },
-  { title: 'The Dark Knight Rises', year: 2012 },
-  { title: 'Princess Mononoke', year: 1997 },
-  { title: 'Aliens', year: 1986 },
-  { title: 'Oldboy', year: 2003 },
-  { title: 'Once Upon a Time in America', year: 1984 },
-  { title: 'Witness for the Prosecution', year: 1957 },
-  { title: 'Das Boot', year: 1981 },
-  { title: 'Citizen Kane', year: 1941 },
-  { title: 'North by Northwest', year: 1959 },
-  { title: 'Vertigo', year: 1958 },
-  {
-    title: 'Star Wars: Episode VI - Return of the Jedi',
-    year: 1983,
-  },
-  { title: 'Reservoir Dogs', year: 1992 },
-  { title: 'Braveheart', year: 1995 },
-  { title: 'M', year: 1931 },
-  { title: 'Requiem for a Dream', year: 2000 },
-  { title: 'Amélie', year: 2001 },
-  { title: 'A Clockwork Orange', year: 1971 },
-  { title: 'Like Stars on Earth', year: 2007 },
-  { title: 'Taxi Driver', year: 1976 },
-  { title: 'Lawrence of Arabia', year: 1962 },
-  { title: 'Double Indemnity', year: 1944 },
-  {
-    title: 'Eternal Sunshine of the Spotless Mind',
-    year: 2004,
-  },
-  { title: 'Amadeus', year: 1984 },
-  { title: 'To Kill a Mockingbird', year: 1962 },
-  { title: 'Toy Story 3', year: 2010 },
-  { title: 'Logan', year: 2017 },
-  { title: 'Full Metal Jacket', year: 1987 },
-  { title: 'Dangal', year: 2016 },
-  { title: 'The Sting', year: 1973 },
-  { title: '2001: A Space Odyssey', year: 1968 },
-  { title: "Singin' in the Rain", year: 1952 },
-  { title: 'Toy Story', year: 1995 },
-  { title: 'Bicycle Thieves', year: 1948 },
-  { title: 'The Kid', year: 1921 },
-  { title: 'Inglourious Basterds', year: 2009 },
-  { title: 'Snatch', year: 2000 },
-  { title: '3 Idiots', year: 2009 },
-  { title: 'Monty Python and the Holy Grail', year: 1975 },
-];
+export default FinancialDashboard;

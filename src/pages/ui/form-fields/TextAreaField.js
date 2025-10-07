@@ -8,11 +8,10 @@ const TextAreaField = ({
   placeholder,
   icon,
   error, 
-  forceShowError = false, // ✅ جديد
+  forceShowError = false, 
 }) => {
   const [touched, setTouched] = useState(false);
 
-  // ✅ الشرط統一: يظهر لو الحقل اتلمس أو لو Save اتعمل
   const showError = error && (touched || forceShowError);
 
   return (
@@ -33,7 +32,7 @@ const TextAreaField = ({
           rows={3}
           value={value || ""}
           onChange={onChange}
-          onBlur={() => setTouched(true)} // ✅ يبان الخطأ بعد ما يسيب الحقل
+          onBlur={() => setTouched(true)}
           placeholder={placeholder}
           className={showError ? "input-error" : ""}
         />
