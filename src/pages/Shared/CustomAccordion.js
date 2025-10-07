@@ -19,12 +19,16 @@ const CustomAccordion = memo(({
   accordioninnertitleSize = "",
 }) => {
 
-  const handleEditClick = (index) => {
-    const item = data[index];
+ const handleEditClick = (index) => {
+  setTimeout(() => {
     if (onUpdate) {
-      onUpdate(index, 'isExpanded', !item.isExpanded);
+      data.forEach((_, i) => {
+        onUpdate(i, 'isExpanded', i === index ? !data[index].isExpanded : false);
+      });
     }
-  };
+  }, 0);
+};
+
 
   const handleFieldChange = (index, field, value) => {
     if (onUpdate) {

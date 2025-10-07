@@ -22,12 +22,16 @@ const TwoLevelAccordion = memo(({
 }) => {
 
   // Toggle expand/collapse for an accordion item
-  const handleEditClick = (index) => {
-    const item = data[index];
-    if (onUpdate) {
-      onUpdate(index, 'isExpanded', !item.isExpanded);
+ const handleEditClick = (index) => {
+  setTimeout(() => {
+    if (onUpdate) { 
+      data.forEach((_, i) => {
+        onUpdate(i, 'isExpanded', i === index ? !data[index].isExpanded : false);
+      });
     }
-  };
+  }, 0);
+};
+
 
   // Handle input/select/textarea value changes
   const handleFieldChange = (index, field, value) => {

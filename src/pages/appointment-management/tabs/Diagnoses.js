@@ -83,13 +83,17 @@ const Diagnoses = () => {
     console.log("Updated diagnosis:", { index, field, value }); 
   }, []);
 
-  // Toggle expansion of a diagnosis accordion
-  const handleToggleExpansion = useCallback((index) => {
-    setDiagnosesData(prev => prev.map((item, i) => 
-      i === index ? { ...item, isExpanded: !item.isExpanded } : item
-    ));
-    console.log("Toggled expansion for diagnosis:", index);
-  }, []);
+// Toggle expansion - allow only one open
+const handleToggleExpansion = useCallback((index) => {
+  setDiagnosesData(prev =>
+    prev.map((item, i) => ({
+      ...item,
+      isExpanded: i === index ? !item.isExpanded : false, // افتح واحد فقط
+    }))
+  );
+  console.log("Toggled expansion for diagnosis:", index);
+}, []);
+
 
   // === Notes Management ===
   const handleAddNote = useCallback((diagnosisIndex, note) => {
