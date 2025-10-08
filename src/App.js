@@ -64,7 +64,7 @@ const { i18n } = useTranslation();
 {!loading && (
  <Routes>
  
-      {/* <Route path="/" element={<DoctorRegistration />} /> */}
+      <Route path="/" element={<DoctorRegistration />} />
 
       <Route
         path="/*"
@@ -74,18 +74,18 @@ const { i18n } = useTranslation();
             <Sidebar />
             <div className="contentdiv">
               <Routes>
-                {/* <Route path="dashboard" element={<DashboardMain />} />       
+                <Route path="dashboard" element={<DashboardMain />} />       
                 <Route path="appointment-location" element={<LocationMain />} />
                 <Route path="Messages" element={<MessagesPage />} />
-                <Route path="manage-team" element={<PatientManagement />} /> */}
-                {/* <Route path="appointment-setting" element={<Test />} /> */}
-                {/* <Route path="appointment-list" element={<MainAppointtmentList2 />} /> */}
+                <Route path="manage-team" element={<PatientManagement />} />
+                <Route path="appointment-setting" element={<Test />} />
+                <Route path="appointment-list" element={<MainAppointtmentList2 />} />
                  <Route path="manage-articles" element={<FinancialDashboard/>} />
-                {/* <Route path="manage-services" element={<MakeSlostMain />} /> */}
-                {/* <Route path="security-settings" element={<SecuritySettings />} /> */}
-                {/* <Route path="account-settings" element={<Acco />} />  */}
-                {/* <Route path="pationt-information" element={<PatientProfilePageMain />} /> */}
-                {/* <Route path="appointment-management" element={<AppointmentManagementMain/>} />  */}
+                <Route path="manage-services" element={<MakeSlostMain />} />
+                <Route path="security-settings" element={<SecuritySettings />} />
+                <Route path="account-settings" element={<Acco />} /> 
+                <Route path="pationt-information" element={<PatientProfilePageMain />} />
+                <Route path="appointment-management" element={<AppointmentManagementMain/>} /> 
               </Routes>
             </div>
           </div>

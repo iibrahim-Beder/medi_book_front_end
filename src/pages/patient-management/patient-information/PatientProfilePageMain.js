@@ -11,7 +11,7 @@ import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 // import PatientNotifications from "./PatientTabs/PatientNotifications";
 // import PatientSettings from "./PatientTabs/PatientSettings";
 // import PatientStatistics from "./PatientTabs/PatientStatistics";
-import PatientStatistics from "./PatientTabs/MedicalHistoryTable";
+import AllergyTable from "./PatientTabs/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
 
@@ -23,12 +23,12 @@ export default function PatientProfilePageMain() {
    { key: "BasicInfo", label: t("BasicInfo") },
 { key: "Appointments", label: t("Appointments") },
 { key: "Notes", label: t("Notes") },
-// { key: "Files", label: t("Files"), icon: <FaPaperclip /> },
 { key: "TreatmentPlans", label: t("TreatmentPlans") },
 { key: "Notifications", label: t("Notifications") },
 { key: "MedicalHistory", label: t("MedicalHistory") },
 { key: "Statistics", label: t("Statistics") },
 { key: "ConditionsTable", label: t("Medical History") },
+{ key: "AllergyTable", label: t("Patient Allergy") },
 
   ];
 
@@ -69,7 +69,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "TreatmentPlans" && <PatientTreatmentPlans />}
             {activeTab === "Settings" && <PatientSettings />}
             {activeTab === "Statistics" && <PatientStatistics />} */}
-            {/* {activeTab === "Notifications" && <ConditionsFilters />} */}
+            {activeTab === "AllergyTable" && <AllergyTable/>}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
           </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import Field from "../ui/form-fields/Field"; 
 import TextAreaField from "../ui/form-fields/TextAreaField";
+import SelectField from "../ui/form-fields/SelectField";
 import { MdClose } from "react-icons/md";
 import DropdownWithSearch from "./DropdownWithSearch";
 
@@ -15,17 +16,59 @@ const DynamicEditModal = ({
   title = "Edit Record",
   errors = {},
   forceShowError = true,
+  // new props for dropdown
+  dropdownOptions = [],            // Array of options for dropdown
+  dropdownField = "allergenId",    // Field name where dropdown ID will be stored
+  dropdownLabel = "Allergen",      // Label displayed for dropdown
 }) => {
+
+  // Handle changes in basic input fields
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRecord({ ...record, [name]: value });
+    const { name, value, type } = e.target;
+    let val = value;
+
+    // Convert numeric input values to numbers
+    if (type === "number") val = value === "" ? "" : Number(value);
+
+    // Ensure boolean values are correctly parsed for "isActive"
+    if (name === "isActive") {
+      val = (value === true) || (value === "true");
+    }
+
+    setRecord({ ...record, [name]: val });
+  };
+
+  // Handle dropdown selection (custom dropdown with search)
+  const handleDropdownChange = (selectedId) => {
+    if (!selectedId) {
+      setRecord({ ...record, [dropdownField]: null, allergenLabel: "" });
+      return;
+    }
+
+    const selectedOption = dropdownOptions.find(opt => opt.id === selectedId);
+    
+    if (selectedOption) {
+      // Update record with both id and label from dropdown
+      setRecord({ 
+        ...record, 
+        [dropdownField]: selectedId, 
+        allergenLabel: selectedOption.label 
+      });
+    } else {
+      // Fallback: use selectedId as label if not found
+      setRecord({ 
+        ...record, 
+        [dropdownField]: selectedId, 
+        allergenLabel: String(selectedId) 
+      });
+    }
   };
 
   return (
     <Modal show={show} onHide={onClose} centered className="custom-edit-modal">
-     <Modal.Header style={{ 
-        position: "relative", 
-        borderBottom: "1px solid #dee2e6", 
+      <Modal.Header style={{
+        position: "relative",
+        borderBottom: "1px solid #dee2e6",
         padding: "1.5rem 1.5rem 1rem",
         display: "flex",
         alignItems: "center",
@@ -34,34 +77,47 @@ const DynamicEditModal = ({
         <Modal.Title style={{ fontWeight: "600", fontSize: "1.4rem", margin: 0 }}>
           {title}
         </Modal.Title>
-        
-        <Button 
-          // variant="close" 
-          onClick={onClose} 
+
+        {/* Close button (icon only, styled manually) */}
+        <Button
+          onClick={onClose}
           style={{
             zIndex: 1050,
             fontSize: "1.5rem",
             padding: "0.35rem 0.65rem",
             lineHeight: 1,
-            // backgroundColor: "#f8f9fa",
             borderRadius: "50%",
             opacity: 0.8,
             margin: 0,
-            backgroundColor:"transparent",
-            border:"none",
-            boxShadow:"none",
-            color:"black"
+            backgroundColor: "transparent",
+            border: "none",
+            boxShadow: "none",
+            color: "black"
           }}
           onMouseOver={(e) => e.target.style.opacity = "1"}
           onMouseOut={(e) => e.target.style.opacity = "0.8"}
         >
-          {/* <span aria-hidden="true">&times;</span> */}
-          <MdClose/>
+          <MdClose />
         </Button>
       </Modal.Header>
 
       <Modal.Body style={{ padding: "0.5rem 1.5rem 1rem" }}>
-        <DropdownWithSearch/>
+        {/* Dropdown for selecting allergen */}
+        {dropdownOptions && dropdownOptions.length > 0 && (
+          <div style={{ marginBottom: "0.8rem" }}>
+            <label style={{ display: "block", marginBottom: "0.25rem", fontWeight: 500 }}>
+              {dropdownLabel}
+            </label>
+            <DropdownWithSearch
+              options={dropdownOptions}
+              value={record?.[dropdownField] ?? null}
+              onChange={handleDropdownChange}
+              placeholder={`Search ${dropdownLabel}...`}
+            />
+          </div>
+        )}
+
+        {/* Dynamic fields rendering */}
         {record && (
           <div className="form-grid" style={{ rowGap: "0.8rem" }}>
             {fields.map((field) => {
@@ -71,9 +127,29 @@ const DynamicEditModal = ({
                     key={field.name}
                     label={field.label}
                     name={field.name}
-                    value={record[field.name] || ""}
+                    value={record[field.name] ?? ""}
                     onChange={handleChange}
                     placeholder={field.placeholder}
+                    error={errors?.[field.name]}
+                    forceShowError={forceShowError}
+                  />
+                );
+              }
+
+              if (field.type === "select") {
+                return (
+                  <SelectField
+                    key={field.name}
+                    label={field.label}
+                    name={field.name}
+                    value={record[field.name] ?? ""}
+                    onChange={handleChange}
+                    options={field.options.map(option => {
+                      return typeof option === 'string'
+                        ? { value: option, label: option }
+                        : option;
+                    })}
+                    icon={field.icon}
                     error={errors?.[field.name]}
                     forceShowError={forceShowError}
                   />
@@ -86,7 +162,7 @@ const DynamicEditModal = ({
                   label={field.label}
                   name={field.name}
                   type={field.type || "text"}
-                  value={record[field.name] || ""}
+                  value={record[field.name] ?? ""}
                   onChange={handleChange}
                   placeholder={field.placeholder}
                   icon={field.icon}
@@ -100,19 +176,9 @@ const DynamicEditModal = ({
         )}
       </Modal.Body>
 
-      <Modal.Footer
-        style={{
-          border: "none",
-          padding: "0.5rem 1.5rem 1.5rem",
-          gap: "0.8rem",
-        }}
-      >
-        <button  className="btn btn-light"    
-        onClick={onClose}
-         >Cancel</button>
-        <button  
-        onClick={onSave}
-        className="dc-btn">Save Changes</button>
+      <Modal.Footer style={{ border: "none", padding: "0.5rem 1.5rem 1.5rem", gap: "0.8rem" }}>
+        <button className="btn btn-light" onClick={onClose}>Cancel</button>
+        <button onClick={onSave} className="dc-btn">Save Changes</button>
       </Modal.Footer>
     </Modal>
   );
