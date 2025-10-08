@@ -5611,6 +5611,7 @@ content: none;
 
 	/* @ another  media   */
 	@media (max-width: 992px) {
+			.two-tabs .nav {padding-right: 400px !important;}
 	.dc-dotnotification:before{    margin: -5px 10px 0 ; }
 .contentdiv{
 margin-right: 15px ;
@@ -5630,6 +5631,7 @@ margin-right: 15px ;
 /* <<< */
 	
 @media (max-width: 900px) {
+				.two-tabs .nav {padding-right: 300px !important;}
 	.nested-accordion .dc-experienceaccordion{padding: 0 10px;}
      .two-level-accordion .dc-userexperience .dc-tabscontenttitle {
    			display: flex;
@@ -5646,7 +5648,7 @@ margin-right: 15px ;
 /* <<< */
 
 	@media (max-width: 820px) {
-
+			.two-tabs .nav {padding-right: 200px !important;}
 .dc-accordioninnertitle.small ~ .dc-collapseexp 
 {
 	padding: 30px 5px;
@@ -5676,6 +5678,7 @@ margin-right: 0 !important;
 }
 /* <<< */
 @media (max-width: 720px){
+.two-tabs .nav {padding-right: 110px !important;}
 .nested-accordion .dc-collapseexp.show{padding: 30px 10px;}
 .nested-accordion ul ul{margin-left: 10px;}
 
@@ -5703,9 +5706,11 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
-.dc-notes .dc-skillsform fieldset .form-group.input {
-    padding-right: 20px;
-}
+	.two-tabs-nav-container{padding-left: 4px !important;}
+	.two-tabs .nav {padding-right: 30px !important;}
+	.dc-notes .dc-skillsform fieldset .form-group.input {
+		padding-right: 20px;
+	}
 	ul ul{
 		margin-left: 10px;
 	}
@@ -5713,35 +5718,35 @@ padding: 0 10px;
 	margin-left: 10px;	
 }
 
- .when686m-t-40{
+.when686m-t-40{
     margin-top: 40px;
-  }
+}
   .contentdiv{
     padding-top: 134px !important;
 	padding-left: 55px !important;
-  }
-  .dc-yeartag{
+}
+.dc-yeartag{
 	flex-direction: column !important;
   }	
   .PatientBasicInfo .dc-user-header{
            padding:0;
-	}
-  .table-header{
-	flex-direction: column;
-    align-items: flex-start;
-  }
-  .filter-and-date{
-flex-direction: column;
-    align-items: center;
-  }
-  /* date range picker css start */
-  .list-date-option-and-custom{
-	  flex-direction: column;
-	}
-	.date-range-footer{
-	  flex-direction: column;
-	  gap: 10px;
-	}
+		}
+		.table-header{
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		.filter-and-date{
+			flex-direction: column;
+			align-items: center;
+		}
+		/* date range picker css start */
+		.list-date-option-and-custom{
+			flex-direction: column;
+		}
+		.date-range-footer{
+			flex-direction: column;
+			gap: 10px;
+		}
 	.date-range-footer div{
 		width: 100%;
 		display: flex;
@@ -5758,7 +5763,12 @@ flex-direction: column;
 		left: -22px;
     }
 	/* date range picker css end */
-}
+	@media (max-width: 400px) {
+		        .two-tabs .nav {
+            padding-right: 15px !important;
+            padding-left: 10px !important;
+        }
+	}}
 /* <<< */
 }	
 

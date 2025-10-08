@@ -14,7 +14,7 @@ export default function AllAllergy() {
 
   return (
     <div className="col-12 p-0 two-tabs " >
-       <div style={{paddingLeft:"25px", paddingTop:"20px", backgroundColor:"#ffff"}}>
+       <div className="two-tabs-nav-container" style={{paddingLeft:"25px", paddingTop:"20px", backgroundColor:"#ffff"}}>
         {/* Tabs Navigation */}
         <ul className="nav nav-tabs nav-fill" style={{width:"fit-content", paddingLeft:"40px", paddingRight:"520px", fontFamily: "Poppins, Arial, Helvetica, sans-serif", fontSize: "16px" ,fontWeight:" 400"}}>
           {tabs.map((tab) => (
