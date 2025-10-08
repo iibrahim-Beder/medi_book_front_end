@@ -185,7 +185,7 @@ const AllergyTable = () => {
 
   return (
     <div className="table-container">
-      <div className="table-header">
+      <div className="table-header " style={{marginBottom:"10px"}}>
         <div>
           <h3 className="table-title">Allergy List</h3>
           <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>

@@ -5598,7 +5598,7 @@ content: none;
 /* >>> */
 
 @media (max-width: 1200px) {
-	
+	.two-tabs .nav {padding-right: 500px !important;}
 	.list-date-option.custom{
 		left: -150% ;
 	}

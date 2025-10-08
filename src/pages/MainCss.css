@@ -839,3 +839,16 @@ background-color: transparent !important;
       padding: 0 !important;
     } 
     .dc-experienceaccordion li:last-child .dc-accordioninnertitle ~ .show{border-top: 0 !important;} 
+    
+  .two-tabs .nav {
+    flex-wrap: nowrap;
+  }
+ .two-tabs .nav-tabs .nav-link.active {
+  background-color: var(--scbccolor) ;
+   border-color: #dee2e6 #dee2e6 var(--scbccolor) ;
+   color: var(--terthemecolor) ;
+   letter-spacing: 1px;
+ }
+ .two-tabs .nav-tabs .nav-link{
+  color: #999;
+ }

@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaFileAlt, FaCalendarAlt, FaNotesMedical, FaPaperclip, FaBell, FaCog, FaChartPie, FaUser } from "react-icons/fa";
 
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
-// import PatientAppointments from "./PatientTabs/PatientAppointments";
 import PatientNotes from "./PatientTabs/PatientNotes";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
-// import PatientFiles from "./PatientTabs/PatientFiles";
-// import PatientTreatmentPlans from "./PatientTabs/PatientTreatmentPlans";
-// import PatientNotifications from "./PatientTabs/PatientNotifications";
-// import PatientSettings from "./PatientTabs/PatientSettings";
-// import PatientStatistics from "./PatientTabs/PatientStatistics";
 import AllergyTable from "./PatientTabs/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
+import AllAllergy from "./PatientTabs/AllAllergy";
 
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("BasicInfo");
+  const [activeTab, setActiveTab] = useState("AllAllergy");
   const { t } = useTranslation();
 
   const tabs = [
@@ -29,6 +23,7 @@ export default function PatientProfilePageMain() {
 { key: "Statistics", label: t("Statistics") },
 { key: "ConditionsTable", label: t("Medical History") },
 { key: "AllergyTable", label: t("Patient Allergy") },
+{ key: "AllAllergy", label: t("All Allergy") },
 
   ];
 
@@ -60,18 +55,15 @@ export default function PatientProfilePageMain() {
           {/* Tabs Content */}
           <div
             className="dc-tabscontent tab-content"
-            style={{ width: "80%", display: "flex", justifyContent: "center" }}
+            style={{ width: "80%", display: "flex", justifyContent: "center", padding:`${activeTab=== "AllAllergy" ? "0" : "" }` }}
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />}
             {activeTab === "Notes" && <PatientNotes />}
-            {/* {activeTab === "Files" && <PatientFiles />}
-            {activeTab === "TreatmentPlans" && <PatientTreatmentPlans />}
-            {activeTab === "Settings" && <PatientSettings />}
-            {activeTab === "Statistics" && <PatientStatistics />} */}
             {activeTab === "AllergyTable" && <AllergyTable/>}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
+            {activeTab === "AllAllergy" && <AllAllergy/>}
           </div>
         </div>
       </div>
