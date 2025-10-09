@@ -407,65 +407,65 @@ const handleToggleExpansion = useCallback((index) => {
 
   
    return (
-    <div className="dc-yourdetails dc-tabsinfo nested-accordion" style={{
-      backgroundColor:"#FFFF", 
-      padding:"20px", 
-      borderRadius:"8px", 
-      height:"100%",
-      boxShadow: "0 0 7px #eee"
-    }}> 
-    <NestedAccordion 
-  backgroundColor="#fff"
-  title="Diagnostic information"
-  addNewLabel="Add Diagnostic"
-  data={diagnosesData}
-  formFields={[
-    { 
-      name: "DiagnosisName", 
-      type: "text", 
-      placeholder: "Diagnosis Name",
-      half: true 
-    },
-    { 
-      name: "SymptomsDescription", 
-      type: "text", 
-      placeholder: "Symptoms Description",
-      half: true 
-    },
-    { 
-      name: "Description", 
-      type: "textarea", 
-      placeholder: "Diagnosis Description" 
-    },
-  ]}
-  onAdd={handleAddDiagnosis}
-  onDelete={handleDeleteDiagnosis}
-  onUpdate={handleUpdateDiagnosis}
-  onSave={handleSaveDiagnosis}
-  onToggleExpansion={handleToggleExpansion}
-  
-  // Notes functions
-  onAddNote={handleAddNote}
-  onDeleteNote={handleDeleteNote}
-  
-  // Conditions functions
-  onAddCondition={handleAddCondition}
-  onDeleteCondition={handleDeleteCondition}
-  onUpdateCondition={handleUpdateCondition}
-  onSaveCondition={handleSaveCondition}
-  
-  // Prescriptions functions
-  onAddPrescription={handleAddPrescription}
-  onDeletePrescription={handleDeletePrescription}
-  onUpdatePrescription={handleUpdatePrescription}
-  onSavePrescription={handleSavePrescription}
-  onAddRecipe={handleAddRecipe}
-  onDeleteRecipe={handleDeleteRecipe}
-  onUpdateRecipe={handleUpdateRecipe}
-  onSaveRecipe={handleSaveRecipe}
-/>
-    </div>
-  );
+     <div
+       className="dc-yourdetails dc-tabsinfo nested-accordion"
+       style={{
+         backgroundColor: "var(--cardcolor)",
+         padding: "20px",
+         borderRadius: "8px",
+         height: "100%",
+         boxShadow: "0 0 7px #eee",
+       }}
+     >
+       <NestedAccordion
+         backgroundColor="var(--cardcolor)"
+         title="Diagnostic information"
+         addNewLabel="Add Diagnostic"
+         data={diagnosesData}
+         formFields={[
+           {
+             name: "DiagnosisName",
+             type: "text",
+             placeholder: "Diagnosis Name",
+             half: true,
+           },
+           {
+             name: "SymptomsDescription",
+             type: "text",
+             placeholder: "Symptoms Description",
+             half: true,
+           },
+           {
+             name: "Description",
+             type: "textarea",
+             placeholder: "Diagnosis Description",
+           },
+         ]}
+         onAdd={handleAddDiagnosis}
+         onDelete={handleDeleteDiagnosis}
+         onUpdate={handleUpdateDiagnosis}
+         onSave={handleSaveDiagnosis}
+         onToggleExpansion={handleToggleExpansion}
+         // Notes functions
+         onAddNote={handleAddNote}
+         onDeleteNote={handleDeleteNote}
+         // Conditions functions
+         onAddCondition={handleAddCondition}
+         onDeleteCondition={handleDeleteCondition}
+         onUpdateCondition={handleUpdateCondition}
+         onSaveCondition={handleSaveCondition}
+         // Prescriptions functions
+         onAddPrescription={handleAddPrescription}
+         onDeletePrescription={handleDeletePrescription}
+         onUpdatePrescription={handleUpdatePrescription}
+         onSavePrescription={handleSavePrescription}
+         onAddRecipe={handleAddRecipe}
+         onDeleteRecipe={handleDeleteRecipe}
+         onUpdateRecipe={handleUpdateRecipe}
+         onSaveRecipe={handleSaveRecipe}
+       />
+     </div>
+   );
 };
 
 export default Diagnoses;

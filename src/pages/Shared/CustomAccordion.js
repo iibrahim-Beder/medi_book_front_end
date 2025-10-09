@@ -61,13 +61,21 @@ const CustomAccordion = memo(({
     <div className="dc-userexperience">
       {/* Header */}
       {title && (
-        <div 
-          className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}
+        <div
+          className={`dc-tabscontenttitle dc-addnew ${
+            noHedarBefore ? "no-before" : ""
+          }`}
           style={{ backgroundColor: `${titleBackgroundColor}` }}
         >
           <h3>{title}</h3>
           {onAdd && (
-            <a href="#" onClick={(e) => { e.preventDefault(); onAdd(); }}>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                onAdd();
+              }}
+            >
               {addNewLabel}
             </a>
           )}
@@ -79,32 +87,44 @@ const CustomAccordion = memo(({
         {data.map((item, index) => (
           <li key={item.id || index}>
             {/* Accordion Item Title */}
-            <div 
-              className={`dc-accordioninnertitle ${accordioninnertitleSize}`} 
-              style={{ 
-                backgroundColor: `${titleBackgroundColor}`, 
+            <div
+              className={`dc-accordioninnertitle ${accordioninnertitleSize}`}
+              style={{
+                backgroundColor: `${titleBackgroundColor}`,
                 borderColor: `${noHedarBefore ? "#eee" : ""}`,
-                borderLeft: item.isNew ? "2px solid #ffa500" : ""
+                borderLeft: item.isNew ? "2px solid #ffa500" : "",
               }}
             >
               <span>
-                {item.icon && <span style={{ marginRight: "8px" }}>{item.icon}</span>}
+                {item.icon && (
+                  <span style={{ marginRight: "8px" }}>{item.icon}</span>
+                )}
                 {item.title || item.type || "New Recipe"} <em>{item.date}</em>
-                {item.isNew && <span style={{color: '#ffa500', marginLeft: '8px'}}>(New)</span>}
+                {item.isNew && (
+                  <span style={{ color: "#ffa500", marginLeft: "8px" }}>
+                    (New)
+                  </span>
+                )}
               </span>
               <div className="dc-rightarea">
                 <a
                   href="#!"
-                  onClick={(e) => { e.preventDefault(); handleEditClick(index); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleEditClick(index);
+                  }}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
                   <FiEdit2 />
                 </a>
-                
+
                 {onDelete && (
                   <a
                     href="#!"
-                    onClick={(e) => { e.preventDefault(); onDelete(index); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onDelete(index);
+                    }}
                     className="dc-deleteinfo"
                     style={{ marginLeft: "8px" }}
                   >
@@ -115,13 +135,13 @@ const CustomAccordion = memo(({
             </div>
 
             {/* Accordion Item Content */}
-            <div 
-              style={{ 
+            <div
+              style={{
                 backgroundColor: `${backgroundColor}`,
               }}
               className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >
-              <form 
+              <form
                 className="dc-formtheme dc-userform"
                 onSubmit={(e) => handleSave(index, e)}
               >
@@ -129,20 +149,26 @@ const CustomAccordion = memo(({
                   {formFields.map((field, idx) => (
                     <div
                       key={idx}
-                      className={`form-group ${field.half ? "form-group-half" : ""}`}
+                      className={`form-group ${
+                        field.half ? "form-group-half" : ""
+                      }`}
                     >
                       {field.type === "textarea" ? (
                         <textarea
                           className="form-control"
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
                         />
                       ) : field.type === "select" ? (
                         <select
                           className="form-control"
                           value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
                         >
                           <option value="">{field.placeholder}</option>
                           {field.options?.map((opt, i) => (
@@ -157,26 +183,28 @@ const CustomAccordion = memo(({
                           className="form-control"
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
                         />
                       )}
                     </div>
                   ))}
-                  <div className="dc-btnarea d-flex" >
-                    <button 
-                      type="button" 
-                      className="btn btn-outline-secondary" 
+                  <div className="dc-btnarea d-flex">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
                       onClick={() => handleCancel(index)}
                       style={{ margin: "11px 4px" }}
                     >
                       Cancel
                     </button>
-                    <button 
-                      type="submit" 
-                      className="second-btn" 
+                    <button
+                      type="submit"
+                      className="second-btn"
                       style={{ margin: "11px 4px" }}
                     >
-                      {item.isNew ? 'Add' : 'Save'}
+                      {item.isNew ? "Add" : "Save"}
                     </button>
                   </div>
                 </fieldset>

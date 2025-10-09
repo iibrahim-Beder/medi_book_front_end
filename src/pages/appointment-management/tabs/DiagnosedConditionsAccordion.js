@@ -52,20 +52,31 @@ const DiagnosedConditionsAccordion = memo(({
   return (
     <div className="dc-userexperience">
       {/* Header */}
-      <div 
-        className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}
+      <div
+        className={`dc-tabscontenttitle dc-addnew ${
+          noHedarBefore ? "no-before" : ""
+        }`}
         style={{ backgroundColor: titleBackgroundColor }}
       >
         <h3>{title}</h3>
         {onAdd && (
-          <a href="#!" onClick={(e) => { e.preventDefault(); onAdd(); }}>
+          <a
+            href="#!"
+            onClick={(e) => {
+              e.preventDefault();
+              onAdd();
+            }}
+          >
             {addNewLabel}
           </a>
         )}
       </div>
 
       {/* Accordion List */}
-      <ul className="dc-experienceaccordion accordion">
+      <ul
+        className="dc-experienceaccordion accordion"
+        style={{ marginBottom: "20px" }}
+      >
         {data.map((item, index) => (
           <li key={item.id || index}>
             {/* Accordion Title */}
@@ -74,17 +85,25 @@ const DiagnosedConditionsAccordion = memo(({
               style={{
                 backgroundColor: titleBackgroundColor,
                 borderColor: noHedarBefore ? "#eee" : "",
-                borderLeft: item.isNew ? "2px solid #ffa500" : ""
+                borderLeft: item.isNew ? "2px solid #ffa500" : "",
               }}
             >
               <span>
-                {item.title || item.type || "New Condition"} <em>{item.date}</em>
-                {item.isNew && <span style={{color: '#ffa500', marginLeft: '8px'}}>(New)</span>}
+                {item.title || item.type || "New Condition"}{" "}
+                <em>{item.date}</em>
+                {item.isNew && (
+                  <span style={{ color: "#ffa500", marginLeft: "8px" }}>
+                    (New)
+                  </span>
+                )}
               </span>
               <div className="dc-rightarea">
                 <a
                   href="#!"
-                  onClick={(e) => { e.preventDefault(); handleEditClick(index); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleEditClick(index);
+                  }}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
                   <FiEdit2 />
@@ -92,7 +111,10 @@ const DiagnosedConditionsAccordion = memo(({
                 {onDelete && (
                   <a
                     href="#!"
-                    onClick={(e) => { e.preventDefault(); onDelete(index); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onDelete(index);
+                    }}
                     className="dc-deleteinfo"
                     style={{ marginLeft: "8px" }}
                   >
@@ -103,7 +125,7 @@ const DiagnosedConditionsAccordion = memo(({
             </div>
 
             {/* Accordion Content */}
-            <div 
+            <div
               style={{ backgroundColor: backgroundColor }}
               className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >
@@ -115,7 +137,9 @@ const DiagnosedConditionsAccordion = memo(({
                       label="Medical Condition"
                       options={item.medicalOptions || []}
                       value={item.MedicalCondition || ""}
-                      onChange={(val) => handleFieldChange(index, "MedicalCondition", val)}
+                      onChange={(val) =>
+                        handleFieldChange(index, "MedicalCondition", val)
+                      }
                     />
                   </div>
 
@@ -124,7 +148,9 @@ const DiagnosedConditionsAccordion = memo(({
                     label="Severity"
                     name="Severity"
                     value={item.Severity || ""}
-                    onChange={(e) => handleFieldChange(index, "Severity", e.target.value)}
+                    onChange={(e) =>
+                      handleFieldChange(index, "Severity", e.target.value)
+                    }
                     options={[
                       { value: "", label: "Select Severity" },
                       { value: "Mild", label: "Mild" },
@@ -138,7 +164,9 @@ const DiagnosedConditionsAccordion = memo(({
                     label="Notes"
                     name="Notes"
                     value={item.Notes || ""}
-                    onChange={(e) => handleFieldChange(index, "Notes", e.target.value)}
+                    onChange={(e) =>
+                      handleFieldChange(index, "Notes", e.target.value)
+                    }
                     placeholder="Enter additional notes"
                   />
 

@@ -6,6 +6,7 @@ import CustomAccordion from "./CustomAccordion";
 
 const TwoLevelAccordion = memo(({
   backgroundColor = "",
+  titleBackgroundColor = "",
   title,
   addNewLabel,
   data,
@@ -62,10 +63,20 @@ const TwoLevelAccordion = memo(({
     <div className="dc-userexperience  two-level-accordion">
       {/* Accordion Header */}
       {title && (
-        <div className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}>
+        <div
+          className={`dc-tabscontenttitle dc-addnew ${
+            noHedarBefore ? "no-before" : ""
+          }`}
+        >
           <h3>{title}</h3>
           {onAdd && (
-            <a href="#!" onClick={(e) => { e.preventDefault(); onAdd(); }}>
+            <a
+              href="#!"
+              onClick={(e) => {
+                e.preventDefault();
+                onAdd();
+              }}
+            >
               {addNewLabel}
             </a>
           )}
@@ -81,23 +92,34 @@ const TwoLevelAccordion = memo(({
               className="dc-accordioninnertitle medium"
               style={{
                 borderColor: "#eee",
-                borderLeft: item.isNew ? "2px solid #ffa500" :
-                         item.isExpanded ? "2px solid var(--themecolor)"  : "",
+                borderLeft: item.isNew
+                  ? "2px solid #ffa500"
+                  : item.isExpanded
+                  ? "2px solid var(--themecolor)"
+                  : "",
                 borderBottomLeftRadius: item.isExpanded ? "0" : "",
-                backgroundColor: "#fcfcfc",
+                backgroundColor: `${titleBackgroundColor}`,
               }}
             >
               <span>
                 {item.icon && (
                   <span style={{ marginRight: "8px" }}>{item.icon}</span>
                 )}
-                {item.title || item.type || "New Prescription"} <em>{item.date}</em>
-                {item.isNew && <span style={{color: '#ffa500', marginLeft: '8px'}}>(New)</span>}
+                {item.title || item.type || "New Prescription"}{" "}
+                <em>{item.date}</em>
+                {item.isNew && (
+                  <span style={{ color: "#ffa500", marginLeft: "8px" }}>
+                    (New)
+                  </span>
+                )}
               </span>
               <div className="dc-rightarea">
                 <a
                   href="#!"
-                  onClick={(e) => { e.preventDefault(); handleEditClick(index); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleEditClick(index);
+                  }}
                   className="dc-addinfo dc-skillsaddinfo"
                 >
                   <FiEdit2 />
@@ -105,7 +127,10 @@ const TwoLevelAccordion = memo(({
                 {onDelete && (
                   <a
                     href="#!"
-                    onClick={(e) => { e.preventDefault(); onDelete(index); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onDelete(index);
+                    }}
                     className="dc-deleteinfo"
                   >
                     <IoTrashOutline />
@@ -117,7 +142,7 @@ const TwoLevelAccordion = memo(({
             {/* Item Content */}
             <div
               style={{
-                paddingRight:"15px",
+                paddingRight: "15px",
                 borderLeft: "2px solid var(--themecolor)",
                 backgroundColor: `${backgroundColor}`,
               }}
@@ -133,20 +158,26 @@ const TwoLevelAccordion = memo(({
                   {formFields.map((field, idx) => (
                     <div
                       key={idx}
-                      className={`form-group ${field.half ? "form-group-half" : ""}`}
+                      className={`form-group ${
+                        field.half ? "form-group-half" : ""
+                      }`}
                     >
                       {field.type === "textarea" ? (
                         <textarea
                           className="form-control"
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
                         />
                       ) : field.type === "select" ? (
                         <select
                           className="form-control"
                           value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
                         >
                           <option value="">{field.placeholder}</option>
                           {field.options?.map((opt, i) => (
@@ -161,26 +192,28 @@ const TwoLevelAccordion = memo(({
                           className="form-control"
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
                         />
                       )}
                     </div>
                   ))}
-                  <div className="dc-btnarea" >
-                    <button 
-                      type="button" 
-                      className="btn btn-outline-secondary" 
+                  <div className="dc-btnarea">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
                       onClick={() => handleCancel(index)}
                       style={{ margin: "11px 4px" }}
                     >
                       Cancel
                     </button>
-                    <button 
-                      type="submit" 
-                      className="second-btn" 
+                    <button
+                      type="submit"
+                      className="second-btn"
                       style={{ margin: "11px 4px" }}
                     >
-                      {item.isNew ? 'Add' : 'Save'}
+                      {item.isNew ? "Add" : "Save"}
                     </button>
                   </div>
                 </fieldset>
@@ -191,8 +224,8 @@ const TwoLevelAccordion = memo(({
                 <CustomAccordion
                   accordioninnertitleSize="small"
                   noHedarBefore={true}
-                  backgroundColor="#fff"
-                  titleBackgroundColor="#fff"
+                  backgroundColor="var(--cardcolor)"
+                  titleBackgroundColor="var(--cardcolor)"
                   title="Prescribed Medication"
                   addNewLabel="Add Prescribed Medication"
                   data={item.recipes || []}
@@ -225,8 +258,12 @@ const TwoLevelAccordion = memo(({
                   ]}
                   onAdd={() => onAddRecipe(index)}
                   onDelete={(recipeIndex) => onDeleteRecipe(index, recipeIndex)}
-                  onUpdate={(recipeIndex, field, value) => onUpdateRecipe(index, recipeIndex, field, value)}
-                  onSave={(recipeIndex, recipeData) => onSaveRecipe(index, recipeIndex, recipeData)}
+                  onUpdate={(recipeIndex, field, value) =>
+                    onUpdateRecipe(index, recipeIndex, field, value)
+                  }
+                  onSave={(recipeIndex, recipeData) =>
+                    onSaveRecipe(index, recipeIndex, recipeData)
+                  }
                 />
               )}
             </div>
