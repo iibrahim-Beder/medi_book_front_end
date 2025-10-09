@@ -15,15 +15,20 @@ export default function PatientProfilePageMain() {
 
   const tabs = [
    { key: "BasicInfo", label: t("BasicInfo") },
-{ key: "Appointments", label: t("Appointments") },
-{ key: "Notes", label: t("Notes") },
-{ key: "TreatmentPlans", label: t("TreatmentPlans") },
-{ key: "Notifications", label: t("Notifications") },
-{ key: "MedicalHistory", label: t("MedicalHistory") },
-{ key: "Statistics", label: t("Statistics") },
-{ key: "ConditionsTable", label: t("Medical History") },
-{ key: "AllergyTable", label: t("Patient Allergy") },
-{ key: "AllAllergy", label: t("All Allergy") },
+   { key: "Notifications", label: t("Notifications") },
+   { key: "Appointments", label: t("Appointments") },
+   { key: "ConditionsTable", label: t("Medical History") },
+   { key: "AllAllergy", label: t("Allergies") },
+   { key: "Diseases", label: t("Diseases") },
+   { key: "Medications", label: t("Medications") },
+   { key: "Prescriptions", label: t("Prescriptions") },
+   { key: "Notes", label: t("Notes") },
+   { key: "Files", label: t("Files and Attachments") },
+   { key: "TreatmentPlans", label: t("TreatmentPlans") },
+   { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
+  //  { key: "MedicalHistory", label: t("MedicalHistory") },
+  //  { key: "Statistics", label: t("Statistics") },
+  //  { key: "AllergyTable", label: t("Patient Allergy") },
 
   ];
 

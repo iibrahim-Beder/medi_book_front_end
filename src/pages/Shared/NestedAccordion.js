@@ -4,6 +4,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import "../MainCss.css";
 import TwoLevelAccordion from "./TwoLevelAccordion";
 import EditableList from "./EditableList";
+import DiagnosedConditionsAccordion from "../appointment-management/tabs/DiagnosedConditionsAccordion";
 
 const NestedAccordion = memo(({
   backgroundColor = "",
@@ -26,6 +27,11 @@ const NestedAccordion = memo(({
   onDeleteRecipe,
   onUpdateRecipe,
   onSaveRecipe,
+  // Diagnosed Conditions
+    onAddCondition,
+  onDeleteCondition,
+  onUpdateCondition,
+  onSaveCondition,
 }) => {
 
   // Toggle accordion expansion for editing
@@ -60,7 +66,7 @@ const NestedAccordion = memo(({
     }
   };
 
-  return (
+ return (
     <div className="dc-userexperience nested-accordion">
       {/* Section Header */}
       {title && (
@@ -92,7 +98,7 @@ const NestedAccordion = memo(({
                 {item.icon && (
                   <span style={{ marginRight: "8px" }}>{item.icon}</span>
                 )}
-                {item.title || item.type || "New Diagnosis"} <em>{item.date}</em>
+                {item.DiagnosisName || item.type || "New Diagnosis"} <em>{item.date}</em>
                 {item.isNew && <span style={{color: '#ffa500', marginLeft: '8px'}}>(New)</span>}
               </span>
               <div className="dc-rightarea">
@@ -191,9 +197,22 @@ const NestedAccordion = memo(({
                 </fieldset>
               </form>
 
-              {/* Nested Content (Notes + Prescriptions) */}
+              {/* Nested Content (Diagnosed Conditions + Notes + Prescriptions) */}
               {(item.isNew || item.isExpanded) && (
-                <>
+  <>
+    {/* Diagnosed Conditions Section */}
+    <DiagnosedConditionsAccordion
+      noHedarBefore={true}
+      backgroundColor="#fcfcfc"
+      title="Diagnosed Conditions"
+      addNewLabel="Add Condition"
+      data={item.conditions || []}
+      onAdd={() => onAddCondition(index)}
+      onDelete={(conditionIndex) => onDeleteCondition(index, conditionIndex)}
+      onUpdate={(conditionIndex, field, value) => onUpdateCondition(index, conditionIndex, field, value)}
+      onSave={(conditionIndex, conditionData) => onSaveCondition(index, conditionIndex, conditionData)}
+    />
+
                   {/* Notes Section */}
                   <div className="dc-notes"> 
                     <EditableList

@@ -5,48 +5,135 @@ import NestedAccordion from "../../shared/NestedAccordion";
 
 const Diagnoses = () => {
   const { t } = useTranslation();
-  
-  const [diagnosesData, setDiagnosesData] = useState([
-    {
-      id: 1,
-      type: "Medication", 
-      icon: "",
-      date: "2025-09-13",
-      content: "Paracetamol 500mg twice daily after meals.",
-      notes: [
-        { id: 11, note: "Patient requested reschedule" },
-        { id: 12, note: "Allergic to penicillin" }
-      ],
-      prescriptions: [
-        {
-          id: 101,
-          type: "Medical",
-          icon: "",
-          date: "2025-09-13",
-          content: "Patient requires monitoring.",
-          recipes: [
-            {
-              id: 1001,
-              type: "Follow-up",
-              icon: "",
-              date: "2025-09-15",
-              content: "Blood test required"
+const [diagnosesData, setDiagnosesData] = useState([
+  {
+    id: 1,
+    DiagnosisName: "Chronic Migraine", 
+    SymptomsDescription: "Severe headaches with nausea and sensitivity to light",
+    Description: "Patient diagnosed with chronic migraine requiring medication management",
+    notes: [
+      { id: 11, note: "Patient requested reschedule" },
+      { id: 12, note: "Allergic to penicillin" }
+    ],
+    conditions: [
+      {
+        id: 201,
+        MedicalCondition: "Hypertension",
+        Severity: "Moderate",
+        Notes: "Requires regular monitoring",
+        isNew: false,
+        isExpanded: false
+      }
+    ],
+    prescriptions: [
+      {
+        id: 101,
+        type: "Medical",
+        icon: "",
+        date: "2025-09-13",
+        content: "Patient requires monitoring.",
+        recipes: [
+          {
+            id: 1001,
+            type: "Follow-up",
+            icon: "",
+            date: "2025-09-15",
+            content: "Blood test required"
+          }
+        ]
+      }
+    ]
+  }
+]);
+
+  // === Diagnosed Conditions Management ===
+  const handleAddCondition = useCallback((diagnosisIndex) => {
+    const newCondition = {
+      id: Date.now(),
+      MedicalCondition: "",
+      Severity: "",
+      Notes: "",
+      isNew: true,
+      isExpanded: true,
+    };
+
+    setDiagnosesData(prev =>
+      prev.map((diagnosis, i) =>
+        i === diagnosisIndex
+          ? {
+              ...diagnosis,
+              conditions: [
+                newCondition,
+                ...(diagnosis.conditions || []).map(c => ({
+                  ...c,
+                  isExpanded: false, // Set isExpanded to false for existing conditions
+                })),
+              ],
             }
-          ]
-        }
-      ]
-    }
-  ]);
+          : diagnosis
+      )
+    );
+
+    console.log("Added condition:", newCondition);
+  }, []);
+
+  const handleDeleteCondition = useCallback((diagnosisIndex, conditionIndex) => {
+    setDiagnosesData(prev => prev.map((diagnosis, i) => 
+      i === diagnosisIndex 
+        ? { 
+            ...diagnosis, 
+            conditions: (diagnosis.conditions || []).filter((_, j) => j !== conditionIndex)
+          }
+        : diagnosis
+    ));
+    console.log("Deleted condition:", conditionIndex);
+  }, []);
+
+  const handleUpdateCondition = useCallback((diagnosisIndex, conditionIndex, field, value) => {
+    setDiagnosesData(prev => prev.map((diagnosis, i) => 
+      i === diagnosisIndex 
+        ? { 
+            ...diagnosis, 
+            conditions: (diagnosis.conditions || []).map((condition, j) => 
+              j === conditionIndex ? { ...condition, [field]: value } : condition
+            )
+          }
+        : diagnosis
+    ));
+    console.log("Updated condition:", { diagnosisIndex, conditionIndex, field, value });
+  }, []);
+
+  const handleSaveCondition = useCallback((diagnosisIndex, conditionIndex, conditionData) => {
+    setDiagnosesData(prev => prev.map((diagnosis, i) => 
+      i === diagnosisIndex 
+        ? { 
+            ...diagnosis, 
+            conditions: (diagnosis.conditions || []).map((condition, j) => 
+              j === conditionIndex ? { 
+                ...conditionData, 
+                isNew: false, 
+                isExpanded: false
+              } : condition
+            )
+          }
+        : diagnosis
+    ));
+    console.log("Saved condition:", conditionData);
+  }, []);
 
   // Add a new diagnosis record
  const handleAddDiagnosis = useCallback(() => {
   const newDiagnosis = {
     id: Date.now(),
+    DiagnosisName: "",
+    SymptomsDescription: "",
+    Description: "",
     type: "",
     icon: "",
     date: new Date().toISOString().split("T")[0],
     content: "",
     notes: [],
+    conditions: [], 
     prescriptions: [],
     isNew: true,
     isExpanded: true,
@@ -62,19 +149,20 @@ const Diagnoses = () => {
 
 
   // Save a diagnosis (marks as not new and collapses it)
-  const handleSaveDiagnosis = useCallback((index, diagnosisData) => {
-    setDiagnosesData(prev => prev.map((item, i) => 
-      i === index ? { 
-        ...diagnosisData, 
-        isNew: false, 
-        isExpanded: false,
-        // Preserve nested notes and prescriptions
-        notes: item.notes || [],
-        prescriptions: item.prescriptions || []
-      } : item
-    ));
-    console.log("Saved diagnosis:", diagnosisData);
-  }, []);
+ const handleSaveDiagnosis = useCallback((index, diagnosisData) => {
+  setDiagnosesData(prev => prev.map((item, i) => 
+    i === index ? { 
+      ...diagnosisData, 
+      isNew: false, 
+      isExpanded: false,
+      // Preserve nested data
+      notes: item.notes || [],
+      conditions: item.conditions || [], 
+      prescriptions: item.prescriptions || []
+    } : item
+  ));
+  console.log("Saved diagnosis:", diagnosisData);
+}, []);
 
   // Delete a diagnosis by index
   const handleDeleteDiagnosis = useCallback((index) => {
@@ -326,45 +414,56 @@ const handleToggleExpansion = useCallback((index) => {
       height:"100%",
       boxShadow: "0 0 7px #eee"
     }}> 
-      <NestedAccordion 
-        backgroundColor="#fff"
-        title="Diagnostic information"
-        addNewLabel="Add Diagnostic"
-        data={diagnosesData}
-        formFields={[
-          {
-            name: "type",
-            type: "select",
-            options: [
-              "Medication",
-              "Follow-up",
-              "Behavioral",
-              "Communication",
-              "Administrative",
-              "Urgent",
-            ],
-            placeholder: "Select Prescription Type",
-            half: true,
-          },
-          { name: "date", type: "date", placeholder: "Date", half: true },
-          { name: "content", type: "textarea", placeholder: "Prescription Details" },
-        ]}
-        onAdd={handleAddDiagnosis}
-        onDelete={handleDeleteDiagnosis}
-        onUpdate={handleUpdateDiagnosis}
-        onSave={handleSaveDiagnosis}
-        onToggleExpansion={handleToggleExpansion}
-        onAddNote={handleAddNote}
-        onDeleteNote={handleDeleteNote}
-        onAddPrescription={handleAddPrescription}
-        onDeletePrescription={handleDeletePrescription}
-        onUpdatePrescription={handleUpdatePrescription}
-        onSavePrescription={handleSavePrescription}
-        onAddRecipe={handleAddRecipe}
-        onDeleteRecipe={handleDeleteRecipe}
-        onUpdateRecipe={handleUpdateRecipe}
-        onSaveRecipe={handleSaveRecipe}
-      />
+    <NestedAccordion 
+  backgroundColor="#fff"
+  title="Diagnostic information"
+  addNewLabel="Add Diagnostic"
+  data={diagnosesData}
+  formFields={[
+    { 
+      name: "DiagnosisName", 
+      type: "text", 
+      placeholder: "Diagnosis Name",
+      half: true 
+    },
+    { 
+      name: "SymptomsDescription", 
+      type: "text", 
+      placeholder: "Symptoms Description",
+      half: true 
+    },
+    { 
+      name: "Description", 
+      type: "textarea", 
+      placeholder: "Diagnosis Description" 
+    },
+  ]}
+  onAdd={handleAddDiagnosis}
+  onDelete={handleDeleteDiagnosis}
+  onUpdate={handleUpdateDiagnosis}
+  onSave={handleSaveDiagnosis}
+  onToggleExpansion={handleToggleExpansion}
+  
+  // Notes functions
+  onAddNote={handleAddNote}
+  onDeleteNote={handleDeleteNote}
+  
+  // Conditions functions
+  onAddCondition={handleAddCondition}
+  onDeleteCondition={handleDeleteCondition}
+  onUpdateCondition={handleUpdateCondition}
+  onSaveCondition={handleSaveCondition}
+  
+  // Prescriptions functions
+  onAddPrescription={handleAddPrescription}
+  onDeletePrescription={handleDeletePrescription}
+  onUpdatePrescription={handleUpdatePrescription}
+  onSavePrescription={handleSavePrescription}
+  onAddRecipe={handleAddRecipe}
+  onDeleteRecipe={handleDeleteRecipe}
+  onUpdateRecipe={handleUpdateRecipe}
+  onSaveRecipe={handleSaveRecipe}
+/>
     </div>
   );
 };
