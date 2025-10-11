@@ -1,16 +1,17 @@
-import React, { memo } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
 import "../MainCss.css";
 import CustomAccordion from "./CustomAccordion";
 
 const TwoLevelAccordion = memo(({
+  formFieldsRecipe = [], 
   backgroundColor = "",
   titleBackgroundColor = "",
   title,
   addNewLabel,
-  data,
-  formFields,
+  data = [],
+  formFields = [],
   onAdd,
   onDelete,
   onUpdate,
@@ -20,53 +21,80 @@ const TwoLevelAccordion = memo(({
   onUpdateRecipe,
   onSaveRecipe,
   noHedarBefore = false,
+  readOnly = false
 }) => {
+  // Local state for read-only mode
+  const [dataRead, setDataRead] = useState(data);
 
-  // Toggle expand/collapse for an accordion item
- const handleEditClick = (index) => {
-  setTimeout(() => {
-    if (onUpdate) { 
-      data.forEach((_, i) => {
-        onUpdate(i, 'isExpanded', i === index ? !data[index].isExpanded : false);
-      });
-    }
-  }, 0);
-};
+  // Keep local state in sync with parent data
+  useEffect(() => {
+    setDataRead(data || []);
+  }, [data]);
 
+  // Handle accordion expand/collapse
+  const handleEditClick = (index) => {
+    setTimeout(() => {
+      if (readOnly) {
+        // Update local state when in read-only mode
+        setDataRead(prev =>
+          prev.map((item, i) => ({
+            ...item,
+            isExpanded: i === index ? !item.isExpanded : false
+          }))
+        );
+        return;
+      }
 
-  // Handle input/select/textarea value changes
+      // Trigger parent update when editable
+      if (onUpdate) {
+        const currentData = data || [];
+        currentData.forEach((_, i) => {
+          onUpdate(i, "isExpanded", i === index ? !currentData[index]?.isExpanded : false);
+        });
+      }
+    }, 0);
+  };
+
+  // Handle input/select/textarea changes
   const handleFieldChange = (index, field, value) => {
     if (onUpdate) {
       onUpdate(index, field, value);
     }
   };
 
-  // Save new or existing item
+  // Save current item
   const handleSave = (index, e) => {
     e.preventDefault();
-    const itemData = data[index];
-    onSave(index, itemData);
+    const currentData = data || [];
+    const itemData = currentData[index];
+    if (onSave && itemData) {
+      onSave(index, itemData);
+    }
   };
 
-  // Cancel action (delete if new, collapse if existing)
+  // Cancel editing (remove new item or collapse existing one)
   const handleCancel = (index) => {
-    if (data[index].isNew) {
-      onDelete(index);
+    const currentData = data || [];
+    if (currentData[index]?.isNew) {
+      if (onDelete) {
+        onDelete(index);
+      }
     } else {
       if (onUpdate) {
-        onUpdate(index, 'isExpanded', false);
+        onUpdate(index, "isExpanded", false);
       }
     }
   };
 
+  // Choose data source depending on read-only mode
+  const accordionData = readOnly ? dataRead : data;
+
   return (
-    <div className="dc-userexperience  two-level-accordion">
+    <div className="dc-userexperience two-level-accordion">
       {/* Accordion Header */}
       {title && (
         <div
-          className={`dc-tabscontenttitle dc-addnew ${
-            noHedarBefore ? "no-before" : ""
-          }`}
+          className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}
         >
           <h3>{title}</h3>
           {onAdd && (
@@ -83,13 +111,13 @@ const TwoLevelAccordion = memo(({
         </div>
       )}
 
-      {/* Accordion List */}
+      {/* Accordion Items */}
       <ul className="dc-experienceaccordion accordion">
-        {data.map((item, index) => (
+        {(accordionData || []).map((item, index) => (
           <li key={item.id || index}>
-            {/* Item Title */}
+            {/* Item Header */}
             <div
-              className="dc-accordioninnertitle medium"
+              className={`dc-accordioninnertitle ${readOnly ? "" : "medium"} `}
               style={{
                 borderColor: "#eee",
                 borderLeft: item.isNew
@@ -98,14 +126,15 @@ const TwoLevelAccordion = memo(({
                   ? "2px solid var(--themecolor)"
                   : "",
                 borderBottomLeftRadius: item.isExpanded ? "0" : "",
-                backgroundColor: `${titleBackgroundColor}`,
+                backgroundColor: titleBackgroundColor,
               }}
             >
               <span>
                 {item.icon && (
                   <span style={{ marginRight: "8px" }}>{item.icon}</span>
                 )}
-                {item.title || item.type || "New Prescription"}{" "}
+                {/* Display medication name or default title */}
+                {item.medication || item.title || item.type || "New Prescription"}{" "}
                 <em>{item.date}</em>
                 {item.isNew && (
                   <span style={{ color: "#ffa500", marginLeft: "8px" }}>
@@ -144,7 +173,7 @@ const TwoLevelAccordion = memo(({
               style={{
                 paddingRight: "15px",
                 borderLeft: "2px solid var(--themecolor)",
-                backgroundColor: `${backgroundColor}`,
+                backgroundColor: backgroundColor,
               }}
               className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >
@@ -155,24 +184,25 @@ const TwoLevelAccordion = memo(({
                 onSubmit={(e) => handleSave(index, e)}
               >
                 <fieldset>
-                  {formFields.map((field, idx) => (
+                  {(formFields || []).map((field, idx) => (
                     <div
                       key={idx}
-                      className={`form-group ${
-                        field.half ? "form-group-half" : ""
-                      }`}
+                      className={`form-group ${field.half ? "form-group-half" : ""}`}
                     >
                       {field.type === "textarea" ? (
                         <textarea
+                          disabled={readOnly}
                           className="form-control"
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
                           onChange={(e) =>
                             handleFieldChange(index, field.name, e.target.value)
                           }
+                          rows={4}
                         />
                       ) : field.type === "select" ? (
                         <select
+                          disabled={readOnly}
                           className="form-control"
                           value={item[field.name] || ""}
                           onChange={(e) =>
@@ -186,8 +216,21 @@ const TwoLevelAccordion = memo(({
                             </option>
                           ))}
                         </select>
+                      ) : field.type === "number" ? (
+                        <input
+                          disabled={readOnly}
+                          type="number"
+                          className="form-control"
+                          placeholder={field.placeholder}
+                          value={item[field.name] || ""}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
+                          min="0"
+                        />
                       ) : (
                         <input
+                          disabled={readOnly}
                           type={field.type}
                           className="form-control"
                           placeholder={field.placeholder}
@@ -199,6 +242,7 @@ const TwoLevelAccordion = memo(({
                       )}
                     </div>
                   ))}
+                  { !readOnly &&
                   <div className="dc-btnarea">
                     <button
                       type="button"
@@ -215,47 +259,22 @@ const TwoLevelAccordion = memo(({
                     >
                       {item.isNew ? "Add" : "Save"}
                     </button>
-                  </div>
+                  </div>}
                 </fieldset>
               </form>
 
-              {/* Nested Recipes Accordion */}
-              {(item.isNew || item.isExpanded) && (
+              {/* Nested Accordion for Medication Details */}
+              {(item.isNew || item.isExpanded) && onAddRecipe && onDeleteRecipe && onUpdateRecipe && onSaveRecipe && (
                 <CustomAccordion
+                  readOnly={readOnly}
                   accordioninnertitleSize="small"
                   noHedarBefore={true}
                   backgroundColor="var(--cardcolor)"
                   titleBackgroundColor="var(--cardcolor)"
-                  title="Prescribed Medication"
-                  addNewLabel="Add Prescribed Medication"
+                  title="Medication Details"
+                  addNewLabel="Add Medication Detail"
                   data={item.recipes || []}
-                  formFields={[
-                    {
-                      name: "type",
-                      type: "select",
-                      options: [
-                        "Medical",
-                        "Follow-up",
-                        "Behavioral",
-                        "Communication",
-                        "Administrative",
-                        "Urgent",
-                      ],
-                      placeholder: "Select Note Type",
-                      half: true,
-                    },
-                    {
-                      name: "date",
-                      type: "date",
-                      placeholder: "Date",
-                      half: true,
-                    },
-                    {
-                      name: "content",
-                      type: "textarea",
-                      placeholder: "Note Content",
-                    },
-                  ]}
+                  formFields={formFieldsRecipe} 
                   onAdd={() => onAddRecipe(index)}
                   onDelete={(recipeIndex) => onDeleteRecipe(index, recipeIndex)}
                   onUpdate={(recipeIndex, field, value) =>

@@ -852,3 +852,29 @@ background-color: transparent !important;
  .two-tabs .nav-tabs .nav-link{
   color: #999;
  }
+ .form-control:disabled, .form-control[readonly],input:disabled {
+  font-size: 16px !important;
+            background-color: #f2f2f2 !important;
+            color: #666 !important ;
+            /* cursor: not-allowed; */
+}
+.table-active-content tr:hover,
+.table-active-content:hover ,
+.table-active-content td:hover,
+.table-hover tbody tr.table-active-content:hover
+{
+  background-color: transparent !important;
+}
+.table-hover tbody tr.table-active-content{border-top: 2px solid rgb(221, 221, 221);}
+.btn-primary.view-btn{
+  background-color: #3fabf3;
+}
+.table-active-content .dc-experienceaccordion .dc-accordioninnertitle.medium {
+  height: unset;
+}
+.table-active-content .dc-experienceaccordion {
+padding: 20px 60px;
+}
+.dropdown-with-search-in-accordion .dc-pagination ul li{ width: auto !important; }
+.dropdown-with-search-in-accordion  .MuiBox-root.css-1apcsdv{margin: 0  !important;}
+.dropdown-with-search-in-accordion{padding:2px 20px;}

@@ -120,7 +120,7 @@ const DropdownWithSearch = ({
     <div className="dropdown-container" style={{ opacity: disabled ? 0.6 : 1 }}>
       <Box
         sx={{
-          width: "100%",
+          // width: "100%",
           margin: "10px 0 20px 0",
           fontFamily: "Inter, sans-serif",
         }}

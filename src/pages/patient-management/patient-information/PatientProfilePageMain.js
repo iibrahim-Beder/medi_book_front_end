@@ -8,23 +8,31 @@ import AllergyTable from "./PatientTabs/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
 import AllAllergy from "./PatientTabs/AllAllergy";
+import DiseasesTable from "./PatientTabs/DiagnosisTable";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("AllAllergy");
   const { t } = useTranslation();
+  
+  let padding = activeTab === "AllAllergy" || activeTab === "two";
 
   const tabs = [
    { key: "BasicInfo", label: t("BasicInfo") },
    { key: "Notifications", label: t("Notifications") },
    { key: "Appointments", label: t("Appointments") },
+   { key: "Reviews", label: t("Reviews") },
    { key: "ConditionsTable", label: t("Medical History") },
-   { key: "AllAllergy", label: t("Allergies") },
-   { key: "Diseases", label: t("Diseases") },
+   { key: "MedicalConditionsTable", label: t("Medical Conditions") },
+   { key: "DiagnosedConditions", label: t("Diagnosed Conditions") },
+   { key: "AllAllergy", label: t("Allergies information") },
+  //  { key: "Diseases", label: t("Diseases") },
+   { key: "Diagnosis", label: t("Diagnosis") },
    { key: "Medications", label: t("Medications") },
+   { key: "PrescribedMedications", label: t("Prescribed medications") },
    { key: "Prescriptions", label: t("Prescriptions") },
    { key: "Notes", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
-   { key: "TreatmentPlans", label: t("TreatmentPlans") },
+  //  { key: "TreatmentPlans", label: t("TreatmentPlans") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
   //  { key: "MedicalHistory", label: t("MedicalHistory") },
   //  { key: "Statistics", label: t("Statistics") },
@@ -60,15 +68,16 @@ export default function PatientProfilePageMain() {
           {/* Tabs Content */}
           <div
             className="dc-tabscontent tab-content"
-            style={{ width: "80%", display: "flex", justifyContent: "center", padding:`${activeTab=== "AllAllergy" ? "0" : "" }` }}
+            style={{ width: "80%", display: "flex", justifyContent: "center", padding:`${padding? "0" : "" }` }}
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
-            {activeTab === "Appointments" && <AppointmentsTable />}
+            {activeTab === "Appointments" && <AppointmentsTable />} 
             {activeTab === "Notes" && <PatientNotes />}
             {activeTab === "AllergyTable" && <AllergyTable/>}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
             {activeTab === "AllAllergy" && <AllAllergy/>}
+            {activeTab === "Diagnosis" && <DiseasesTable/>}
           </div>
         </div>
       </div>
