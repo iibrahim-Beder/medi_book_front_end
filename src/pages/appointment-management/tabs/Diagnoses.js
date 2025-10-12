@@ -80,6 +80,7 @@ const Diagnoses = () => {
           : diagnosis
       )
     );
+    console.log(" diagnosesData: ", diagnosesData); 
   }, []);
 
   const handleDeleteCondition = useCallback((diagnosisIndex, conditionIndex) => {
@@ -121,6 +122,7 @@ const Diagnoses = () => {
           }
         : diagnosis
     ));
+    console.log("diagnosesData: ", diagnosesData);
   }, []);
 
   // Add a new diagnosis record
@@ -147,6 +149,7 @@ const Diagnoses = () => {
         ...prev.map(item => ({ ...item, isExpanded: false }))
       ]
     );
+    console.log("diagnosesData after add : ", diagnosesData);
   }, []);
 
   // Save a diagnosis
@@ -161,6 +164,7 @@ const Diagnoses = () => {
         prescriptions: item.prescriptions || []
       } : item
     ));
+    console.log("diagnosesData after save : ", diagnosesData);
   }, []);
 
   // Delete a diagnosis by index
@@ -490,7 +494,8 @@ const Diagnoses = () => {
       "Amlodipine",
       "Omeprazole"
     ],
-    label: "Medication"
+    label: "Medication",
+    half: true
   },
   { 
     name: "dosage", 

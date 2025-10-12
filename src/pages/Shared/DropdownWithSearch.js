@@ -51,14 +51,26 @@ const DropdownWithSearch = ({
     : placeholder;
 
   // Keep dropdown width in sync with input width
-  useEffect(() => {
-    if (!selectRef.current) return;
-    const observer = new ResizeObserver(() => {
+useEffect(() => {
+  if (!selectRef.current) return;
+
+  const updateWidth = () => {
+    if (selectRef.current) {
       setWidth(selectRef.current.offsetWidth);
-    });
-    observer.observe(selectRef.current);
-    return () => observer.disconnect();
-  }, []);
+    }
+  };
+
+  const observer = new ResizeObserver(updateWidth);
+  observer.observe(selectRef.current);
+
+  // Initial update
+  updateWidth();
+
+  return () => {
+    observer.disconnect();
+  };
+}, []);
+
 
   // Autofocus search input when dropdown opens
   useEffect(() => {

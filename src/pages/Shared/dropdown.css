@@ -29,7 +29,7 @@ color: #6d6d6d ;
 }
 .dropdown-container input[type="text"]{
   background-color: transparent !important;
-  color:#000 !important;
+  /* color:#000 !important; */
       font-weight: 500;
     font-family: 'Inter';
 }

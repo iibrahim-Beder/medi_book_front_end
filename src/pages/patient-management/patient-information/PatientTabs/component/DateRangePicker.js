@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { format, subDays, startOfDay, endOfDay, startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import { format, subDays, startOfDay, endOfDay, startOfMonth, endOfMonth, subMonths, parse, isValid } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
 import './DateRangePicker.css';
 
 const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
+  // State for main date range and UI control
   const [startDate, setStartDate] = useState(
     initialRange?.start || startOfDay(subDays(new Date(), 6))
   );
@@ -16,20 +17,34 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showCustomRange, setShowCustomRange] = useState(false);
   const [selectedOption, setSelectedOption] = useState('last7Days');
+  const [manualInput, setManualInput] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [inputError, setInputError] = useState('');
 
   const dropdownRef = useRef();
+  const inputRef = useRef();
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
         setShowCustomRange(false);
+        setIsEditing(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Update manual input when date range changes (only if not manually editing)
+  useEffect(() => {
+    if (!isEditing) {
+      setManualInput(formatDateRange());
+    }
+  }, [startDate, endDate, isEditing]);
+
+  // Handle quick date selections (Today, Last 7 days, etc.)
   const handleQuickSelect = (option) => {
     const today = new Date();
     let start, end;
@@ -72,9 +87,11 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
     setSelectedOption(option);
     setShowDropdown(false);
     setShowCustomRange(false);
+    setIsEditing(false);
     onChange?.({ start, end });
   };
 
+  // Apply custom range selected from calendar
   const handleApplyCustomRange = () => {
     if (tempRange.from && tempRange.to) {
       const start = startOfDay(tempRange.from);
@@ -84,53 +101,134 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
       setSelectedOption('custom');
       setShowDropdown(false);
       setShowCustomRange(false);
+      setIsEditing(false);
       onChange?.({ start, end });
     }
   };
 
+  // Format date range text for input display
   const formatDateRange = () => {
     if (!startDate || !endDate) return 'Select date range';
     return `${format(startDate, 'dd/MM/yyyy')} - ${format(endDate, 'dd/MM/yyyy')}`;
   };
 
+  // Handle typing inside manual date input
+  const handleManualInputChange = (e) => {
+    const value = e.target.value;
+    setManualInput(value);
+    setInputError('');
+  };
+
+  // Parse manually typed date range and validate
+  const handleManualInputSubmit = () => {
+    const datePattern = /^(\d{1,2})\/(\d{1,2})\/(\d{4})\s*-\s*(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+    const match = manualInput.match(datePattern);
+    
+    if (match) {
+      const [, startDay, startMonth, startYear, endDay, endMonth, endYear] = match;
+      
+      const startDateStr = `${startYear}-${startMonth.padStart(2, '0')}-${startDay.padStart(2, '0')}`;
+      const endDateStr = `${endYear}-${endMonth.padStart(2, '0')}-${endDay.padStart(2, '0')}`;
+      
+      const parsedStart = parse(startDateStr, 'yyyy-MM-dd', new Date());
+      const parsedEnd = parse(endDateStr, 'yyyy-MM-dd', new Date());
+      
+      // Check for valid date range before applying
+      if (isValid(parsedStart) && isValid(parsedEnd) && parsedStart <= parsedEnd) {
+        setStartDate(startOfDay(parsedStart));
+        setEndDate(endOfDay(parsedEnd));
+        setSelectedOption('custom');
+        setShowDropdown(false);
+        setIsEditing(false);
+        onChange?.({ start: startOfDay(parsedStart), end: endOfDay(parsedEnd) });
+      } else {
+        setInputError('Invalid date range');
+      }
+    } else {
+      setInputError('Please use format: DD/MM/YYYY - DD/MM/YYYY');
+    }
+  };
+
+  const handleInputFocus = () => {
+    setIsEditing(true);
+    setShowDropdown(false);
+  };
+
+  // Delay blur to allow button clicks before losing focus
+  const handleInputBlur = () => {
+    setTimeout(() => {
+      setIsEditing(false);
+    }, 200);
+  };
+
+  // Toggle dropdown or submit manual input
+  const handleIconClick = () => {
+    if (isEditing) {
+      handleManualInputSubmit();
+    } else {
+      setShowDropdown(!showDropdown);
+    }
+  };
+
   return (
     <div className="DateRangePicker" style={{ position: "relative", width }} ref={dropdownRef}>
       <div style={{ position: "relative", width: "100%" }}>
+        <CiCalendar
+          onClick={handleIconClick}
+          style={{
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            left: "8px",
+            color: "#012047",
+            cursor: "pointer",
+            zIndex: 10,
+          }}
+          size={20}
+        />
         <input
+          ref={inputRef}
           type="text"
           className="form-control Select1 DateRangePickerMain"
-          value={formatDateRange()}
-          readOnly
-          onClick={() => setShowDropdown(!showDropdown)}
+          value={isEditing ? manualInput : formatDateRange()}
+          onChange={handleManualInputChange}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleManualInputSubmit();
+            }
+          }}
           style={{
             padding: "10px 40px 10px 10px",
             cursor: "pointer",
             width: "230px",
             borderRadius: "5px",
             height: "32px",
-            border: "1px solid #E6E8EE",
+            border: inputError ? "1px solid #ff4d4f" : "1px solid #E6E8EE",
             minHeight: "32px",
             color: "#012047",
             fontSize: "14px",
             fontWeight: 500,
-            // backgroundColor: "#fff",
             boxSizing: "border-box",
-            // fontFamily: "open sans",
           }}
         />
-        <CiCalendar
-          style={{
+     
+        {inputError && (
+          <div style={{
             position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
-            pointerEvents: "none",
-            left: "8px",
-            color: "#012047",
-          }}
-          size={20}
-        />
+            top: "100%",
+            left: 0,
+            color: "#ff4d4f",
+            fontSize: "12px",
+            marginTop: "4px"
+          }}>
+            {inputError}
+          </div>
+        )}
       </div>
 
+      {/* Dropdown for quick options and custom date range picker */}
       {showDropdown && (
         <div
           className={`list-date-option ${showCustomRange ? "custom" : "open"}`}
@@ -173,6 +271,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
               ))}
             </div>
 
+            {/* Custom date range calendar */}
             {showCustomRange && (
               <div style={{ padding: '8px', margin: '2px', backgroundColor:"#fff" }}>
                 <DayPicker
@@ -181,7 +280,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
                   selected={tempRange}
                   onSelect={setTempRange}
                   formatters={{
-                    formatCaption: (month) => format(month, 'MMM yyyy'), // short month name
+                    formatCaption: (month) => format(month, 'MMM yyyy'),
                   }}
                   styles={{
                     caption_label: { textTransform: 'capitalize' },
@@ -191,35 +290,42 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
             )}
           </div>
 
-         {showCustomRange && (
-  <div
-  className='date-range-footer'
-    style={{
-      display: "flex",
-      justifyContent: "flex-end",
-      padding:"3px",
-      paddingTop: "10px",
-      borderTop: "1px solid #ddd",
-      alignItems: "center",
-    }}
-  >
-    <p className="mb-0">{formatDateRange()}</p>
-    <div>  
-       <button className="mr-3 ml-5 simple-btn btn" type="button">
-      Cancel
-    </button>
-    <button
-      onClick={handleApplyCustomRange}
-      className='second-btn'
-      disabled={!tempRange?.from || !tempRange?.to}
-      style={{ cursor: !tempRange?.from || !tempRange?.to ? "not-allowed" : "pointer", }}
-    >
-      Apply
-    </button></div>
- 
-  </div>
-)}
-
+          {/* Footer buttons for custom range */}
+          {showCustomRange && (
+            <div
+              className='date-range-footer'
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                padding:"3px",
+                paddingTop: "10px",
+                borderTop: "1px solid #ddd",
+                alignItems: "center",
+              }}
+            >
+              <p className="mb-0">{formatDateRange()}</p>
+              <div>  
+                <button 
+                  className="mr-3 ml-5 simple-btn btn" 
+                  type="button"
+                  onClick={() => {
+                    setShowCustomRange(false);
+                    setShowDropdown(false);
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleApplyCustomRange}
+                  className='second-btn'
+                  disabled={!tempRange?.from || !tempRange?.to}
+                  style={{ cursor: !tempRange?.from || !tempRange?.to ? "not-allowed" : "pointer" }}
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

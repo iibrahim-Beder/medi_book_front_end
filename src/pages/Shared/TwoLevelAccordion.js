@@ -264,14 +264,14 @@ const TwoLevelAccordion = memo(({
               </form>
 
               {/* Nested Accordion for Medication Details */}
-              {(item.isNew || item.isExpanded) && onAddRecipe && onDeleteRecipe && onUpdateRecipe && onSaveRecipe && (
+              {(item.isNew || item.isExpanded) && (
                 <CustomAccordion
                   readOnly={readOnly}
                   accordioninnertitleSize="small"
                   noHedarBefore={true}
                   backgroundColor="var(--cardcolor)"
                   titleBackgroundColor="var(--cardcolor)"
-                  title="Medication Details"
+                  title="Prescribed Medication"
                   addNewLabel="Add Medication Detail"
                   data={item.recipes || []}
                   formFields={formFieldsRecipe} 

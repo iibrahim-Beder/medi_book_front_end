@@ -119,7 +119,7 @@ import { t } from "i18next";
     const currentData = filteredDiseases.slice(startIndex, startIndex + rowsPerPage);
 
     // Utility: truncate long text
-    const truncateText = (text, maxLength = 900) => {
+    const truncateText = (text, maxLength = 70) => {
       if (text.length <= maxLength) return text;
       return text.substring(0, maxLength) + "...";
     };
@@ -412,10 +412,7 @@ import { t } from "i18next";
                                     { name: "status", placeholder: "Status", half: true },
                                     { name: "note", type: "textarea", placeholder: "Prescription note" },
                                   ]}
-                                  onAddRecipe={() => {}}
-                                  onDeleteRecipe={() => {}}
-                                  onUpdateRecipe={() => {}}
-                                  onSaveRecipe={() => {}}
+
                                   formFieldsRecipe={[
                                     { name: "medication", placeholder: "Medication" },
                                     { name: "dosage", placeholder: "dosage", half: true },

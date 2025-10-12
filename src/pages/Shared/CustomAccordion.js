@@ -120,7 +120,7 @@ const CustomAccordion = memo(({
                   <FiEdit2 />
                 </a>
 
-                {onDelete && (
+                {onDelete && !readOnly&& (
                   <a
                     href="#!"
                     onClick={(e) => {
