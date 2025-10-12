@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-// import DiagnosedConditions from "./DiagnosedConditions";
+import DiagnosedConditionsTable from "./DiagnosedConditionsTable";
 import AppointmentsTable from "./AppointmentsTable";
 
 export default function MedicalConditions() {
-  const [activeTab, setActiveTab] = useState("DiagnosedConditions");
+  const [activeTab, setActiveTab] = useState("DiagnosedConditionsTable");
   const { t } = useTranslation();
 
   const tabs = [
-    { key: "DiagnosedConditions", label: t("Diagnosed Conditions") },
+    { key: "DiagnosedConditionsTable", label: t("Diagnosed Conditions") },
     { key: "Appointments", label: t("Other Medical Conditions") },
   ];
 
@@ -37,9 +37,9 @@ export default function MedicalConditions() {
 
         {/* Tabs Content */}
         <div className="card-body" style={{backgroundColor:"var(--scbccolor)"}}>
-          {activeTab === "DiagnosedConditions" && (
+          {activeTab === "DiagnosedConditionsTable" && (
             <div className="table-responsive">
-              {/* <DiagnosedConditions /> */}
+              <DiagnosedConditionsTable />
             </div>
           )}
 
