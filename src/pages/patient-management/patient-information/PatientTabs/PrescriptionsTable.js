@@ -5,7 +5,7 @@ import CustomAccordion from "../../../shared/CustomAccordion";
 import { MdExpandMore } from "react-icons/md";
 import Field from "../../../ui/form-fields/Field";
 import ConditionsFilters from "./component/ConditionsFilters";
-import { t } from "i18next";
+import TextAreaField from "../../../ui/form-fields/TextAreaField";
 
 const PrescriptionsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);
@@ -14,12 +14,10 @@ const PrescriptionsTable = () => {
   const [searchBy, setSearchBy] = useState("all");
   const [currentPage, setCurrentPage] = useState(1); 
   
-  // Filters states
   const [filterType, setFilterType] = useState("");       
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
 
-  // Mock data representing prescriptions and related records
   const prescriptionsData = [
     {
       id: "#RX001",
@@ -34,7 +32,6 @@ const PrescriptionsTable = () => {
           dosage: "500mg",         
           duration: "30 days",
           instructions: "Take with meals to reduce gastrointestinal side effects",
-
         },
         { 
           id: "PM002",
@@ -90,13 +87,11 @@ const PrescriptionsTable = () => {
           dosage: "1000 IU", 
           duration: "60 days",
           instructions: "Take with fatty meal for better absorption",
-
         },
       ]
     }
   ];
 
-  // Handle expand/collapse for row fields
   const handleViewClick = (id, field) => {
     if (expandedRow === id && expandedField === field) {
       setExpandedRow(null);
@@ -107,7 +102,6 @@ const PrescriptionsTable = () => {
     }
   };
 
-  // Apply search & filters
   const filteredPrescriptions = prescriptionsData
     .filter((prescription) => {
       if (!searchTerm) return true; 
@@ -122,14 +116,11 @@ const PrescriptionsTable = () => {
     })
     .filter((prescription) => {
       if (filterType && prescription.title !== filterType) return false;
-      
-      // Filter by date range based on prescribed medicationName dates
       if (filterDateFrom || filterDateTo) {
         const hasMatchingDate = prescription.prescribedMedication.some(med => {
           const startDate = new Date(med.startDate);
           const fromDate = filterDateFrom ? new Date(filterDateFrom) : null;
           const toDate = filterDateTo ? new Date(filterDateTo) : null;
-
           if (fromDate && toDate) return startDate >= fromDate && startDate <= toDate;
           if (fromDate) return startDate >= fromDate;
           if (toDate) return startDate <= toDate;
@@ -153,26 +144,19 @@ const PrescriptionsTable = () => {
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentData = filteredPrescriptions.slice(startIndex, startIndex + rowsPerPage);
 
-  // Utility: truncate long text
   const truncateText = (text, maxLength = 70) => {
     if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
 
-  // Get status color
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
-      case 'active':
-        return '#28A745';
-      case 'completed':
-        return '#007BFF'; 
-      case 'cancelled':
-        return '#DC3545'; 
-      case 'expired':
-        return '#6C757D'; 
-      default:
-        return '#6C757D';
+      case 'active': return '#3fabf3';
+      case 'completed': return '#4BAE78';
+      case 'cancelled': return '#D66A6A';
+      case 'expired': return '#7A8B97';
+      default: return '#6C757D';
     }
   };
 
@@ -209,10 +193,10 @@ const PrescriptionsTable = () => {
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>Diagnosis Name</th>
                   <th>Prescription Title</th>
-                  <th>Status</th>
                   <th>Note</th>
+                  <th>Status</th>
+                  <th>Diagnosis Name</th>
                   <th>Medication</th>
                 </tr>
               </thead>
@@ -220,30 +204,14 @@ const PrescriptionsTable = () => {
                 {currentData.map((prescription) => (
                   <React.Fragment key={prescription.id}>
                     <tr>
-                      <td>{prescription.diagnosisName}</td>
-                      
-                      {/* Prescription Title */}
-                      <td>{prescription.title}</td>
-                      
-                      {/* Status with colored text */}
-                      <td>
-                        <span 
-                          style={{ 
-                            color: getStatusColor(prescription.status),
-                            fontWeight: '600',
-                            fontSize: '14px'
-                          }}
-                        >
-                          {prescription.status}
-                        </span>
-                      </td>
+                      <td  title={prescription.title}>{prescription.title}</td>
 
-                      {/* Note with expand/collapse */}
                       <td>
                         <div className="d-flex align-items-center">
                           <span
                             className="text-truncate"
                             style={{ maxWidth: "200px" }}
+                            title={prescription.note}
                           >
                             {truncateText(prescription.note, 70)}
                           </span>
@@ -275,7 +243,20 @@ const PrescriptionsTable = () => {
                         </div>
                       </td>
 
-                      {/* Prescribed Medication - Custom Accordion */}
+                      <td>
+                        <span 
+                          style={{ 
+                            color: getStatusColor(prescription.status),
+                            fontWeight: '600',
+                            fontSize: '14px'
+                          }}
+                        >
+                          {prescription.status}
+                        </span>
+                      </td>
+
+                      <td  title={prescription.diagnosisName}>{prescription.diagnosisName}</td>
+
                       <td>
                         <Button
                           className="view-btn"
@@ -310,17 +291,13 @@ const PrescriptionsTable = () => {
                       </td>
                     </tr>
 
-                    {/* Expanded row content (conditionally rendered based on field) */}
                     {expandedRow === prescription.id && (
                       <tr className="table-active-content" style={{backgroundColor:"transparent"}}>
-                        <td
-                          colSpan="5"
-                          className="border-0 background-in-hover-none"
-                        >
+                        <td colSpan="5" className="border-0 background-in-hover-none">
                           <div>
                             {expandedField === "note" && (
                               <div className="description-expanded-section">
-                                <Field
+                                <TextAreaField
                                   label="Prescription Note"
                                   value={prescription.note}
                                   disabled
@@ -353,36 +330,29 @@ const PrescriptionsTable = () => {
 
           {/* Pagination */}
           <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div
-              className="dt-layout-cell dt-layout-start"
-              style={{ fontSize: "14px", color: "#555" }}
-            >
-              <div className="dt-info">
-                Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredPrescriptions.length)} of {filteredPrescriptions.length} entries
-              </div>
+            <div style={{ fontSize: "14px", color: "#555" }}>
+              Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredPrescriptions.length)} of {filteredPrescriptions.length} entries
             </div>
 
-            <div className="dt-layout-cell dt-layout-end">
-              <div className="dt-paging">
-                <nav aria-label="pagination" className="d-flex">
-                  <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
-                  <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>Previous</button>
+            <div>
+              <nav aria-label="pagination" className="d-flex">
+                <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
+                <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>Previous</button>
 
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button
-                      key={index}
-                      className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
-                      type="button"
-                      onClick={() => setCurrentPage(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index}
+                    className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
+                    type="button"
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
 
-                  <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>Next</button>
-                  <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
-                </nav>
-              </div>
+                <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>Next</button>
+                <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
+              </nav>
             </div>
           </div>
         </div>

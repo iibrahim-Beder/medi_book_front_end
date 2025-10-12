@@ -7,15 +7,16 @@ import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
-import AllAllergy from "./PatientTabs/AllAllergy";
 import DiseasesTable from "./PatientTabs/DiagnosisTable";
 import PrescriptionsTable from "./PatientTabs/PrescriptionsTable";
+import AllPrescribedMedication from "./PatientTabs/AllPrescribedMedication";
+import MedicalConditions from "./PatientTabs/MedicalConditions";
 
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("AllAllergy");
+  const [activeTab, setActiveTab] = useState("Medications");
   const { t } = useTranslation();
   
-  let padding = activeTab === "AllAllergy" || activeTab === "two";
+  let padding = activeTab === "Medications" || activeTab === "MedicalConditions";
 
   const tabs = [
    { key: "BasicInfo", label: t("BasicInfo") },
@@ -23,21 +24,14 @@ export default function PatientProfilePageMain() {
    { key: "Appointments", label: t("Appointments") },
    { key: "Reviews", label: t("Reviews") },
    { key: "ConditionsTable", label: t("Medical History") },
-   { key: "MedicalConditionsTable", label: t("Medical Conditions") },
-   { key: "DiagnosedConditions", label: t("Diagnosed Conditions") },
-   { key: "AllAllergy", label: t("Allergies information") },
-  //  { key: "Diseases", label: t("Diseases") },
+   { key: "MedicalConditions", label: t("Medical Conditions") },
+   { key: "Allergy", label: t("Allergies") },
    { key: "Diagnosis", label: t("Diagnosis") },
    { key: "Medications", label: t("Medications") },
-   { key: "PrescribedMedications", label: t("Prescribed medications") },
    { key: "PrescriptionsTable", label: t("Prescriptions") },
    { key: "Notes", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
-  //  { key: "TreatmentPlans", label: t("TreatmentPlans") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
-  //  { key: "MedicalHistory", label: t("MedicalHistory") },
-  //  { key: "Statistics", label: t("Statistics") },
-  //  { key: "AllergyTable", label: t("Patient Allergy") },
 
   ];
 
@@ -77,9 +71,11 @@ export default function PatientProfilePageMain() {
             {activeTab === "AllergyTable" && <AllergyTable/>}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
-            {activeTab === "AllAllergy" && <AllAllergy/>}
+            {activeTab === "Allergy" && <AllergyTable/>}
             {activeTab === "Diagnosis" && <DiseasesTable/>}
             {activeTab === "PrescriptionsTable" && <PrescriptionsTable/>}
+            {activeTab === "Medications" && <AllPrescribedMedication/>}
+            {activeTab === "MedicalConditions" && <MedicalConditions/>}
           </div>
         </div>
       </div>

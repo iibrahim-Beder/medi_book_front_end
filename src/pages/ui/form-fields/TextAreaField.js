@@ -9,6 +9,7 @@ const TextAreaField = ({
   icon,
   error, 
   forceShowError = false, 
+  disabled = false,
 }) => {
   const [touched, setTouched] = useState(false);
 
@@ -25,7 +26,7 @@ const TextAreaField = ({
           {icon}
         </span>
         <textarea
-        
+         disabled={disabled}        
         style={{minHeight:"100px"}}
           id={name}
           name={name}

@@ -849,10 +849,10 @@ background-color: transparent !important;
    color: var(--terthemecolor) ;
    letter-spacing: 1px;
  }
- .two-tabs .nav-tabs .nav-link{
+ .two-tabs .nav-tabs .nav-link ,.table-container .form-group label{
   color: #999;
  }
- .form-control:disabled, .form-control[readonly],input:disabled {
+ .form-control:disabled, .form-control[readonly],input:disabled ,.input-with-icon textarea:disabled{
   font-size: 16px ;
             background-color: #f2f2f2 !important;
             color: #999 !important ;
@@ -878,6 +878,9 @@ padding: 20px 60px;
 .dropdown-with-search-in-accordion .dc-pagination ul li{ width: auto !important; }
 .dropdown-with-search-in-accordion  .MuiBox-root.css-1apcsdv{margin: 0  !important;}
 .dropdown-with-search-in-accordion{padding:2px 20px;}
-.table-container .form-control , .table-container .dc-accordioninnertitle span, .table-container input[type="text"]{
+.table-container .form-control , .table-container .dc-accordioninnertitle span, .table-container input[type="text"], .table-container .input-with-icon textarea:disabled{
   font-size: 13px;
 } 
+.nav.nav-tabs.nav-fill.padding-right{
+  padding-right: 20px !important;
+}
