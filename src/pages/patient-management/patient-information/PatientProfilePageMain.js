@@ -9,6 +9,7 @@ import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
 import AllAllergy from "./PatientTabs/AllAllergy";
 import DiseasesTable from "./PatientTabs/DiagnosisTable";
+import PrescriptionsTable from "./PatientTabs/PrescriptionsTable";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("AllAllergy");
@@ -29,7 +30,7 @@ export default function PatientProfilePageMain() {
    { key: "Diagnosis", label: t("Diagnosis") },
    { key: "Medications", label: t("Medications") },
    { key: "PrescribedMedications", label: t("Prescribed medications") },
-   { key: "Prescriptions", label: t("Prescriptions") },
+   { key: "PrescriptionsTable", label: t("Prescriptions") },
    { key: "Notes", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
   //  { key: "TreatmentPlans", label: t("TreatmentPlans") },
@@ -78,6 +79,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "ConditionsTable" && <ConditionsTable />}
             {activeTab === "AllAllergy" && <AllAllergy/>}
             {activeTab === "Diagnosis" && <DiseasesTable/>}
+            {activeTab === "PrescriptionsTable" && <PrescriptionsTable/>}
           </div>
         </div>
       </div>
