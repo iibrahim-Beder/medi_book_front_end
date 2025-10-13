@@ -11,6 +11,7 @@ import DiseasesTable from "./PatientTabs/DiagnosisTable";
 import PrescriptionsTable from "./PatientTabs/PrescriptionsTable";
 import MedicalConditions from "./PatientTabs/MedicalConditions";
 import Medications from "./PatientTabs/Medications";
+import PatientReviewsTable from "./PatientTabs/PatientReviewsTable";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("Medications");
@@ -76,6 +77,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "PrescriptionsTable" && <PrescriptionsTable/>}
             {activeTab === "Medications" && <Medications/>}
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
+            {activeTab === "Reviews" && <PatientReviewsTable/>}
           </div>
         </div>
       </div>

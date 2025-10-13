@@ -1,0 +1,352 @@
+import React, { useState } from "react";
+import { Table, Button } from "react-bootstrap";
+import "../../Patient-management.css";
+import { MdExpandMore, MdOutlineArrowForward } from "react-icons/md";
+import { t } from "i18next";
+import TextAreaField from "../../../ui/form-fields/TextAreaField";
+import StarRating from "../../../shared/StarRating"; 
+import ConditionsFilters from "./component/ConditionsFilters";
+
+const PatientReviewsTable = () => {
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState("all"); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  
+  // Filters states
+  const [filterServiceType, setFilterServiceType] = useState("");
+  const [filterRating, setFilterRating] = useState(null);
+  const [filterDateFrom, setFilterDateFrom] = useState(null);
+  const [filterDateTo, setFilterDateTo] = useState(null);
+
+  // Mock data representing patient reviews with corrected service types
+  const reviewsData = [
+    {
+      id: "#RV001",
+      serviceType: "Video Call",
+      rating: 5,
+      review: "Dr. Smith was very thorough and took the time to explain everything clearly. The wait time was minimal and the staff was friendly. Highly recommended!",
+      reviewDate: "2023-10-15",
+      bookingId: "#BK001"
+    },
+    {
+      id: "#RV002",
+      serviceType: "In-Person Visit",
+      rating: 4,
+      review: "Good overall experience. The dentist was professional and the cleaning was done carefully. The only downside was the slightly long waiting time.",
+      reviewDate: "2023-09-22",
+      bookingId: "#BK002"
+    },
+    {
+      id: "#RV003",
+      serviceType: "Voice Call",
+      rating: 5,
+      review: "Excellent therapy sessions! The therapist was knowledgeable and helped me recover quickly from my injury. The exercises were effective and well-explained.",
+      reviewDate: "2023-11-05",
+      bookingId: "#BK003"
+    },
+    {
+      id: "#RV004",
+      serviceType: "In-Person Visit",
+      rating: 3,
+      review: "The examination was comprehensive but I felt a bit rushed during the consultation. The optometrist answered my questions but didn't seem to have much time.",
+      reviewDate: "2023-08-18",
+      bookingId: "#BK004"
+    },
+    {
+      id: "#RV005",
+      serviceType: "Video Call",
+      rating: 5,
+      review: "Outstanding care from Dr. Johnson. He explained my heart condition in detail and provided a clear treatment plan. The follow-up was also excellent.",
+      reviewDate: "2023-12-01",
+      bookingId: "#BK005"
+    },
+    {
+      id: "#RV006",
+      serviceType: "In-Person Visit",
+      rating: 4,
+      review: "The dermatologist was very knowledgeable and prescribed an effective treatment for my skin condition. The clinic was clean and modern.",
+      reviewDate: "2023-07-14",
+      bookingId: "#BK006"
+    },
+    {
+      id: "#RV007",
+      serviceType: "Voice Call",
+      rating: 5,
+      review: "Dr. Wilson was amazing with my child! She made the visit comfortable and fun. My son actually looks forward to his checkups now.",
+      reviewDate: "2023-11-28",
+      bookingId: "#BK007"
+    },
+    {
+      id: "#RV008",
+      serviceType: "Video Call",
+      rating: 2,
+      review: "Disappointed with the consultation. The doctor seemed distracted and didn't properly address my concerns about my knee pain. Will seek a second opinion.",
+      reviewDate: "2023-06-10",
+      bookingId: "#BK008"
+    }
+  ];
+
+  // List of valid visit types for DropdownWithSearch and checkbox filter
+  const visitTypes = ["Video Call", "Voice Call", "In-Person Visit"];
+
+  // Handle expand/collapse for review text
+  const handleReviewClick = (id) => {
+    if (expandedRow === id) {
+      setExpandedRow(null);
+    } else {
+      setExpandedRow(id);
+    }
+  };
+
+  // Handle view booking action
+  const handleViewBooking = (bookingId) => {
+    console.log(`View booking: ${bookingId}`);
+  };
+
+  // Handle search (triggered by Search or Filter Now buttons)
+  const handleSearch = () => {
+    setCurrentPage(1); // Reset to first page on new search
+    // Filtering is handled in filteredReviews below
+  };
+
+  // Handle reset filters
+  const resetFilters = () => {
+    setSearchTerm("");
+    setFilterServiceType("");
+    setFilterRating(null);
+    setFilterDateFrom(null);
+    setFilterDateTo(null);
+    setCurrentPage(1);
+  };
+
+  // Apply search & filters
+  const filteredReviews = reviewsData
+    .filter((review) => {
+      if (!searchTerm) return true; 
+      if (searchBy === "all") {
+        return Object.values(review)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+      } else {
+        return review[searchBy]?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+      }
+    })
+    .filter((review) => {
+      if (filterServiceType && !filterServiceType.includes(review.serviceType)) return false;
+      if (filterRating && !filterRating.includes(review.rating.toString())) return false;
+      if (filterDateFrom && new Date(review.reviewDate) < new Date(filterDateFrom)) return false;
+      if (filterDateTo && new Date(review.reviewDate) > new Date(filterDateTo)) return false;
+      return true;
+    });
+
+  const rowsPerPage = 5; 
+  const totalPages = Math.ceil(filteredReviews.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const currentData = filteredReviews.slice(startIndex, startIndex + rowsPerPage);
+
+  // Utility: truncate long text
+  const truncateText = (text, maxLength = 70) => {
+    if (!text) return "";
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+
+  // Format date
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  return (
+    <div className="table-container">
+      <div className="table-header">
+        <div>
+          <h3 className="table-title">Patient Reviews</h3>
+          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+        </div>
+      </div>
+
+      <div className="p-3">
+        <div className="table-card">
+          {/* Filters Section */}
+          <div className="mb-3 p-3">
+            <ConditionsFilters
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              filterServiceType={filterServiceType}
+              setFilterServiceType={setFilterServiceType}
+              filterRating={filterRating}
+              setFilterRating={setFilterRating}
+              filterDateFrom={filterDateFrom}
+              setFilterDateFrom={setFilterDateFrom}
+              filterDateTo={filterDateTo}
+              setFilterDateTo={setFilterDateTo}
+              onReset={resetFilters}
+              onSearch={handleSearch}
+              conditions={visitTypes}
+              showSearchInput={true}
+              showDateRange={true}
+              showFilterDropdown={true}
+              customFilters={[
+                {
+                  name: "rating",
+                  label: "Rating",
+                  data: [
+                    { key: "1", label: "1 Star" },
+                    { key: "2", label: "2 Stars" },
+                    { key: "3", label: "3 Stars" },
+                    { key: "4", label: "4 Stars" },
+                    { key: "5", label: "5 Stars" },
+                  ]
+                },
+                {
+                  name: "serviceType",
+                  label: "Visit Type",
+                  data: [
+                    { key: "Video Call", label: "Video Call" },
+                    { key: "Voice Call", label: "Voice Call" },
+                    { key: "In-Person Visit", label: "In-Person Visit" },
+                  ]
+                }
+              ]}
+            />
+          </div>
+
+          {/* Data Table */}
+          <div style={{ overflow: "auto" }}>
+            <Table className="data-table align-middle mb-0 table-hover">
+              <thead>
+                <tr>
+                  <th>Appointment type</th>
+                  <th>Rating</th>
+                  <th>Review</th>
+                  <th>Review Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentData.map((review) => (
+                  <React.Fragment key={review.id}>
+                    <tr>
+                      <td title={review.serviceType}>
+                        {review.serviceType}
+                      </td>
+                      <td>
+                        <StarRating rating={review.rating} />
+                      </td>
+                      <td title={review.review}>
+                        <div className="d-flex align-items-center">
+                          <span
+                            className="text-truncate"
+                            style={{ maxWidth: "250px" }}
+                          >
+                            {truncateText(review.review, 80)}
+                          </span>
+                          <Button
+                            className="view-btn ms-2"
+                            size="sm"
+                            style={{
+                              backgroundColor: "transparent",
+                              color: "#278fff",
+                              padding: 0,
+                              fontSize: "19px",
+                              height: "20px",
+                            }}
+                            onClick={() => handleReviewClick(review.id)}
+                          >
+                            <MdExpandMore
+                              style={{
+                                transform:
+                                  expandedRow === review.id
+                                    ? "rotate(180deg)"
+                                    : "rotate(0deg)",
+                                transition: "transform 0.3s ease",
+                              }}
+                            />
+                          </Button>
+                        </div>
+                      </td>
+                      <td>{formatDate(review.reviewDate)}</td>
+                      <td>
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
+                          onClick={() => handleViewBooking(review.bookingId)}
+                          className="d-flex align-items-center view-btn ms-2"
+                        >
+                          View Booking <MdOutlineArrowForward className="ms-1" />
+                        </Button>
+                      </td>
+                    </tr>
+
+                    {/* Expanded row for Review */}
+                    {expandedRow === review.id && (
+                      <tr className="table-active-content" style={{backgroundColor:"transparent"}}>
+                        <td
+                          colSpan="5"
+                          className="border-0 background-in-hover-none"
+                        >
+                          <div className="description-expanded-section">
+                            <TextAreaField
+                              label="Review"
+                              value={review.review}
+                              disabled={true}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+
+          {/* Pagination */}
+          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
+            <div
+              className="dt-layout-cell dt-layout-start"
+              style={{ fontSize: "14px", color: "#555" }}
+            >
+              <div className="dt-info">
+                Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredReviews.length)} of {filteredReviews.length} entries
+              </div>
+            </div>
+
+            <div className="dt-layout-cell dt-layout-end">
+              <div className="dt-paging">
+                <nav aria-label="pagination" className="d-flex">
+                  <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
+                  <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>Previous</button>
+
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index}
+                      className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
+                      type="button"
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+
+                  <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>Next</button>
+                  <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PatientReviewsTable;

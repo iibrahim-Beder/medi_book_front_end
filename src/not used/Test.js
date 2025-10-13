@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { Line, Pie, Bar } from "react-chartjs-2";
 import 'chart.js/auto';
 import CustomAccordion from "../pages/shared/CustomAccordion";
+import StarRating from "../pages/shared/StarRating";
 
 const samplePayments = [
   { id: 5001, bookingId: 1, date: "2025-10-05", amount: 150, method: "Stripe", status: "Completed", txRef: "ch_1A2B3C" },
@@ -89,21 +90,18 @@ const ProfessionalDashboardTabs = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Patient Conditions</h2>
-      <CustomAccordion
-        title="Medical History"
-        addNewLabel="Add Condition"
-        titleBackgroundColor="#f5f5f5"
-        backgroundColor="#fafafa"
-        data={data}
-        formFields={formFields}
-        onAdd={handleAdd}
-        onDelete={handleDelete}
-        onUpdate={handleUpdate}
-        onSave={handleSave}
-      />
-    </div>
+    <table className="table">
+      <tbody>
+        <tr>
+          <td>John Doe</td>
+          <StarRating rating={1} /> {/* ⭐⭐⭐⭐☆ */}
+        </tr>
+        <tr>
+          <td>Jane Smith</td>
+          <StarRating rating={3} /> {/* ⭐⭐⭐☆☆ */}
+        </tr>
+      </tbody>
+    </table>
   );
 };
 

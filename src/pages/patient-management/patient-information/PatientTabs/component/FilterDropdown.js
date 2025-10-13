@@ -11,11 +11,22 @@ const FilterDropdown = ({
   customCheckbox = false, 
   customCheckboxLabel = "Enable Custom Filter",
   small = false, 
+  conditions = []
 }) => {
-  const [selectedFilters, setSelectedFilters] = useState(defaultValues);
+  // Initialize defaultValues for each filter to prevent undefined errors
+  const initialSelectedFilters = filters.reduce((acc, filter) => ({
+    ...acc,
+    [filter.name]: filter.data.reduce((dataAcc, item) => ({
+      ...dataAcc,
+      [item.key]: defaultValues[filter.name]?.[item.key] || false
+    }), {})
+  }), {});
+
+  const [selectedFilters, setSelectedFilters] = useState(initialSelectedFilters);
   const [isOpen, setIsOpen] = useState(false);
   const [customCheckboxState, setCustomCheckboxState] = useState(false);
   const [openFilter, setOpenFilter] = useState(null);
+  const [selectedCondition, setSelectedCondition] = useState("");
   const dropdownRef = useRef(null); 
 
   const handleFilterChange = (filterName, key) => {
@@ -33,9 +44,10 @@ const FilterDropdown = ({
   };
 
   const handleReset = () => {
-    setSelectedFilters(defaultValues);
+    setSelectedFilters(initialSelectedFilters);
     setCustomCheckboxState(false);
     setOpenFilter(null);
+    setSelectedCondition("");
     if (onReset) onReset();
   };
 
@@ -43,6 +55,7 @@ const FilterDropdown = ({
     const filtersToApply = {
       ...selectedFilters,
       customCheckbox: customCheckboxState,
+      condition: selectedCondition
     };
     if (onFilter) {
       onFilter(filtersToApply);
@@ -53,7 +66,7 @@ const FilterDropdown = ({
     setOpenFilter((prev) => (prev === filterName ? null : filterName));
   };
 
-  //  event listener to close dropdown when clicking outside
+  // Event listener to close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -92,11 +105,17 @@ const FilterDropdown = ({
             border: "1px solid #E6E8EE", 
             boxShadow: "var(--scshadocolor) 0px 4px 14px 0px", 
             position: "absolute", 
-            zIndex: 9
+            zIndex: 9,
+            maxWidth: "350px"
           }}
         >
           <div className="filter-set-view">
-            <DropdownWithSearch/>
+            <DropdownWithSearch
+              label="Condition"
+              options={conditions.map(condition => ({ id: condition, label: condition }))}
+              value={selectedCondition}
+              onChange={setSelectedCondition}
+            />
             {filters.map((filter, filterIndex) => (
               <div 
                 className="mb-3" 

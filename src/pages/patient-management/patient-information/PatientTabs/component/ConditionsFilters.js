@@ -8,17 +8,15 @@ import FilterDropdown from "./FilterDropdown";
 const ConditionsFilters = ({
   // Filter values
   searchTerm = "",
-  filterActive = "",
-  filterSeverity = "",
-  filterType = "",
+  filterServiceType = "",
+  filterRating = "",
   filterDateFrom = null,
   filterDateTo = null,
   
   // Filter update functions
   setSearchTerm,
-  setFilterActive,
-  setFilterSeverity,
-  setFilterType,
+  setFilterServiceType,
+  setFilterRating,
   setFilterDateFrom,
   setFilterDateTo,
   
@@ -27,43 +25,24 @@ const ConditionsFilters = ({
   onSearch,
   
   // Customization options
-  searchPlaceholder = "Search conditions...",
+  searchPlaceholder = "Search reviews...",
+  showSearchInput = true,
   showSearchReset = true,
   showDateRange = true,
   showFilterDropdown = true,
   customFilters = [],
   conditions = []
 }) => {
-  
-  // Default filters
-  const defaultFilters = [
-    {
-      name: "severity",
-      label: "Severity",
-      data: [
-        { key: "Mild", label: "Mild" },
-        { key: "Moderate", label: "Moderate" },
-        { key: "Severe", label: "Severe" },
-      ]
-    },
-    {
-      name: "type",
-      label: "Condition Type",
-      data: [
-        { key: "Chronic", label: "Chronic" },
-        { key: "NonChronic", label: "Non-Chronic" },
-      ]
-    },
-  ];
+  // Default filters (not used since customFilters are provided)
+  const defaultFilters = [];
 
   // Use custom filters if provided, otherwise default
   const filters = customFilters.length > 0 ? customFilters : defaultFilters;
 
   const handleReset = () => {
     setSearchTerm("");
-    setFilterActive("");
-    setFilterSeverity("");
-    setFilterType("");
+    setFilterServiceType("");
+    setFilterRating("");
     setFilterDateFrom(null);
     setFilterDateTo(null);
     if (onReset) onReset();
@@ -77,28 +56,28 @@ const ConditionsFilters = ({
     <div className="filter-section">
       {/* Left side: search and reset */}
       <div className="d-flex align-items-center" style={{ flexDirection: "column" }}>
-        <div style={{ position: "relative"}}>
-          <input
-            className="form-control small-search"
-            type="text"
-            placeholder={searchPlaceholder}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-          />
-          <CiSearch
-            style={{
-              position: "absolute",
-              left: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              color: "#000",
-              fontSize: "23px",
-            }}
-          />
-        </div>
+        {showSearchInput && (
+          <div style={{ position: "relative"}}>
+            <input
+              className="form-control small-search"
+              type="text"
+              placeholder={searchPlaceholder}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <CiSearch
+              style={{
+                position: "absolute",
+                left: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#000",
+                fontSize: "23px",
+              }}
+            />
+          </div>
+        )}
 
-        {/* Search and Reset buttons */}
         {showSearchReset && (
           <div className="" >
             <div className="btn-group mt-2" > 
@@ -140,25 +119,46 @@ const ConditionsFilters = ({
           <FilterDropdown 
             filters={filters} 
             small={true} 
-            onFilter={(filters) => {
-              // Handle applied filters from FilterDropdown
-              if (filters.severity) {
-                const activeSeverities = Object.keys(filters.severity).filter(
-                  key => filters.severity[key]
-                );
-                setFilterSeverity(activeSeverities.length > 0 ? activeSeverities : "");
-              }
-              
-              if (filters.type) {
-                const activeTypes = Object.keys(filters.type).filter(
-                  key => filters.type[key]
-                );
-                setFilterType(activeTypes.length > 0 ? activeTypes : "");
+            conditions={conditions}
+            defaultValues={{
+              rating: {
+                "1": false,
+                "2": false,
+                "3": false,
+                "4": false,
+                "5": false
+              },
+              serviceType: {
+                "Video Call": false,
+                "Voice Call": false,
+                "In-Person Visit": false
               }
             }}
+            onFilter={(filters) => {
+              // Handle applied filters from FilterDropdown
+              if (filters.rating) {
+                const activeRatings = Object.keys(filters.rating).filter(
+                  key => filters.rating[key]
+                );
+                setFilterRating(activeRatings.length > 0 ? activeRatings : "");
+              }
+              
+              if (filters.serviceType) {
+                const activeServiceTypes = Object.keys(filters.serviceType).filter(
+                  key => filters.serviceType[key]
+                );
+                setFilterServiceType(activeServiceTypes.length > 0 ? activeServiceTypes : "");
+              }
+
+              if (filters.condition) {
+                setFilterServiceType(filters.condition);
+              }
+
+              handleSearch();
+            }}
             onReset={() => {
-              setFilterSeverity("");
-              setFilterType("");
+              setFilterRating("");
+              setFilterServiceType("");
             }}
           />
         )}

@@ -37,7 +37,7 @@ export default function Medications() {
       <div className="card m-0 border-0" style={{boxShadow:"none"}}>
 
         {/* Tabs Content */}
-        <div className="card-body" style={{backgroundColor:"var(--scbccolor)"}}>
+        <div className="card-body" style={{backgroundColor:"var(- -scbccolor)"}}>
           {activeTab === "PrescribedMedicationTable" && (
             <div className="table-responsive">
               <PrescribedMedicationTable />
