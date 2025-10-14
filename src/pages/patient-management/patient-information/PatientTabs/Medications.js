@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import AppointmentsTable from "./AppointmentsTable";
-import DiagnosisTable from "./DiagnosisTable"
+import Othermedications from "./Othermedications";
 import PrescribedMedicationTable from "./PrescribedMedicationTable";
 
 export default function Medications() {
@@ -10,7 +9,7 @@ export default function Medications() {
 
   const tabs = [
     { key: "PrescribedMedicationTable", label: t("Prescribed medication") },
-    { key: "Appointments", label: t("Ather medications ") },
+    { key: "Othermedications", label: t("Other medications") },
   ];
 
   return (
@@ -44,9 +43,9 @@ export default function Medications() {
             </div>
           )}
 
-          {activeTab === "Appointments" && (
+          {activeTab === "Othermedications" && (
             <div className="table-responsive">
-              <AppointmentsTable />
+              <Othermedications />
             </div>
           )}
         </div>

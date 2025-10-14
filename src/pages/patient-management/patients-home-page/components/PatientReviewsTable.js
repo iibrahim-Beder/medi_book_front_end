@@ -5,7 +5,7 @@ import { MdExpandMore, MdOutlineArrowForward } from "react-icons/md";
 import { t } from "i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import StarRating from "../../../shared/StarRating"; 
-import ConditionsFilters from "./component/ConditionsFilters";
+import ConditionsFilters from "../../patient-information/PatientTabs/component/ConditionsFilters";
 
 const PatientReviewsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);

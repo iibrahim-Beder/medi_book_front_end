@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import DiagnosedConditionsTable from "./DiagnosedConditionsTable";
-import AppointmentsTable from "./AppointmentsTable";
+import OtherMedicalConditions from "./OtherMedicalConditions";
 
 export default function MedicalConditions() {
   const [activeTab, setActiveTab] = useState("DiagnosedConditionsTable");
@@ -9,7 +9,7 @@ export default function MedicalConditions() {
 
   const tabs = [
     { key: "DiagnosedConditionsTable", label: t("Diagnosed Conditions") },
-    { key: "Appointments", label: t("Other Medical Conditions") },
+    { key: "OtherMedicalConditions", label: t("Other Medical Conditions") },
   ];
 
   return (
@@ -43,9 +43,9 @@ export default function MedicalConditions() {
             </div>
           )}
 
-          {activeTab === "Appointments" && (
+          {activeTab === "OtherMedicalConditions" && (
             <div className="table-responsive">
-              <AppointmentsTable />
+              <OtherMedicalConditions />
             </div>
           )}
         </div>

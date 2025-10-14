@@ -1,108 +1,125 @@
-// ProfessionalDashboardTabs.jsx
-import React, { useMemo, useState } from "react";
-import { Line, Pie, Bar } from "react-chartjs-2";
-import 'chart.js/auto';
-import CustomAccordion from "../pages/shared/CustomAccordion";
+import React from "react";
+import { Card, Row, Col, Image, Badge, Button } from "react-bootstrap";
+import { FaStar } from "react-icons/fa";
+import { FaReply } from "react-icons/fa6";
 import StarRating from "../pages/shared/StarRating";
 
-const samplePayments = [
-  { id: 5001, bookingId: 1, date: "2025-10-05", amount: 150, method: "Stripe", status: "Completed", txRef: "ch_1A2B3C" },
-  { id: 5002, bookingId: 2, date: "2025-10-06", amount: 0, method: "Cash", status: "Refunded", txRef: null },
-  { id: 5003, bookingId: 3, date: "2025-10-07", amount: 200, method: "Wallet", status: "Completed", txRef: "wal_9Z8Y" }
+const reviewsData = [
+  {
+    id: "#RV001",
+    serviceType: "Video Call",
+    rating: 5,
+    review:
+      "Dr. Smith was very thorough and took the time to explain everything clearly. The wait time was minimal and the staff was friendly. Highly recommended!",
+    reviewDate: "2023-10-15",
+    bookingId: "#BK001",
+    patientName: "Adrian",
+    patientImg: "assets/img/doctors-dashboard/profile-01.jpg",
+  },
+  {
+    id: "#RV002",
+    serviceType: "In-Person Visit",
+    rating: 4,
+    review:
+      "Good overall experience. The dentist was professional and the cleaning was done carefully. The only downside was the slightly long waiting time.",
+    reviewDate: "2023-09-22",
+    bookingId: "#BK002",
+    patientName: "Kelly",
+    patientImg: "assets/img/doctors-dashboard/profile-02.jpg",
+  },
+  {
+    id: "#RV003",
+    serviceType: "Voice Call",
+    rating: 5,
+    review:
+      "Excellent therapy sessions! The therapist was knowledgeable and helped me recover quickly from my injury. The exercises were effective and well-explained.",
+    reviewDate: "2023-11-05",
+    bookingId: "#BK003",
+    patientName: "Samuel",
+    patientImg: "assets/img/doctors-dashboard/profile-03.jpg",
+  },
+  {
+    id: "#RV004",
+    serviceType: "In-Person Visit",
+    rating: 3,
+    review:
+      "The examination was comprehensive but I felt a bit rushed during the consultation. The optometrist answered my questions but didn't seem to have much time.",
+    reviewDate: "2023-08-18",
+    bookingId: "#BK004",
+    patientName: "Nora",
+    patientImg: "assets/img/doctors-dashboard/profile-04.jpg",
+  },
 ];
 
-const sampleBranches = [
-  { id: "Clinic A", address: "Building 1", hours: "Mon-Fri 09:00-17:00", upcomingBookings: 8 },
-  { id: "Clinic B", address: "Building 2", hours: "Mon-Sat 10:00-18:00", upcomingBookings: 3 }
-];
-
-const ProfessionalDashboardTabs = () => {
-   const [data, setData] = useState([
-    {
-      id: 1,
-      title: "Diabetes",
-      date: "2025-10-10",
-      type: "Condition",
-      isExpanded: false,
-      isNew: false,
-      description: "Patient has type 2 diabetes",
-      severity: "Moderate",
-      MedicalCondition: "Diabetes",
-      medicalOptions: ["Diabetes", "Asthma", "Hypertension"],
-    },
-    {
-      id: 2,
-      title: "Asthma",
-      date: "2025-09-05",
-      type: "Condition",
-      isExpanded: false,
-      isNew: false,
-      description: "Childhood asthma, uses inhaler",
-      severity: "Mild",
-      MedicalCondition: "Asthma",
-      medicalOptions: ["Diabetes", "Asthma", "Hypertension"],
-    },
-  ]);
-
-  const formFields = [
-    { name: "description", type: "textarea", placeholder: "Enter description" , half: true}  ,
-    { name: "severity", type: "select", placeholder: "Select severity", options: ["Mild", "Moderate", "Severe"] },
-    { name: "MedicalCondition", type: "dropdown" },
-  ];
-
-  // إضافة عنصر جديد
-  const handleAdd = () => {
-    setData([
-      ...data,
-      {
-        id: Date.now(),
-        title: "New Condition",
-        date: new Date().toISOString().split("T")[0],
-        type: "Condition",
-        isExpanded: true,
-        isNew: true,
-        description: "",
-        severity: "",
-        MedicalCondition: "",
-        medicalOptions: ["Diabetes", "Asthma", "Hypertension"],
-      },
-    ]);
+const PatientReviewsCards = () => {
+  const renderStars = (count) => {
+    const total = 5;
+    return Array.from({ length: total }, (_, i) => (
+      <FaStar
+        key={i}
+        color={i < count ? "#ffc107" : "#e4e5e9"}
+        size={16}
+        className="me-1"
+      />
+    ));
   };
 
-  // تحديث البيانات
-  const handleUpdate = (index, field, value) => {
-    const newData = [...data];
-    newData[index][field] = value;
-    setData(newData);
-  };
-
-  // حذف
-  const handleDelete = (index) => {
-    const newData = data.filter((_, i) => i !== index);
-    setData(newData);
-  };
-
-  // حفظ
-  const handleSave = (index, itemData) => {
-    const newData = [...data];
-    newData[index] = { ...itemData, isNew: false, isExpanded: false };
-    setData(newData);
+  const getServiceBadge = (type) => {
+    const variant =
+      type === "Video Call"
+        ? "info"
+        : type === "In-Person Visit"
+        ? "success"
+        : "warning";
+    return <Badge bg={variant}>{type}</Badge>;
   };
 
   return (
-    <table className="table">
-      <tbody>
-        <tr>
-          <td>John Doe</td>
-          <StarRating rating={1} /> {/* ⭐⭐⭐⭐☆ */}
-        </tr>
-        <tr>
-          <td>Jane Smith</td>
-          <StarRating rating={3} /> {/* ⭐⭐⭐☆☆ */}
-        </tr>
-      </tbody>
-    </table>
+    <div className="comments-list">
+      {reviewsData.map((review) => (
+        <Card key={review.id} className="mb-4 border-0 shadow-sm p-3 rounded-4">
+          <div className="comments">
+            {/* Header */}
+            <div className="d-flex justify-content-between align-items-start comment-head mb-2">
+              <div className="d-flex align-items-center">
+                <Image
+                  src={review.patientImg}
+                  roundedCircle
+                  width={50}
+                  height={50}
+                  className="me-3"
+                />
+                <div className="patient-info">
+                  <h6 className="mb-0 fw-semibold">{review.patientName}</h6>
+                  <small className="text-muted">{review.reviewDate}</small>
+                </div>
+              </div>
+              <div className="text-end">
+                <div className=""> <StarRating rating={review.rating} /></div>
+                {/* {getServiceBadge(review.serviceType)} */}
+              </div>
+            </div>
+
+            {/* Review Text */}
+            <div className="review-info">
+              <p className="mb-2 text-secondary">{review.review}</p>
+              <div className="comment-reply">
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="p-0 text-decoration-none text-primary d-inline-flex align-items-center"
+                  onClick={() => alert(`Go to booking ${review.bookingId}`)}
+                >
+                  <FaReply className="me-2" />
+                  Reply
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
   );
 };
 
-export default ProfessionalDashboardTabs;
+export default PatientReviewsCards;
