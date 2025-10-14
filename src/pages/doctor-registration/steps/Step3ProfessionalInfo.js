@@ -87,6 +87,16 @@ export default function Step2ProfessionalInfo({
           error={errors?.licenseNumber}
           forceShowError={forceShowError}
         />
+        <Field
+          label={t("professionalInfo.language.label")}
+          name="language"
+          value={formData.languages}
+          onChange={handleInputChange}
+          placeholder={t("professionalInfo.language.placeholder")}
+          icon={<GrLanguage />}
+          error={errors?.language}
+          forceShowError={forceShowError}
+        />
 
         {/* Bio */}
         <TextAreaField
@@ -100,7 +110,7 @@ export default function Step2ProfessionalInfo({
           forceShowError={forceShowError}
         />
 
-        {/* Languages List */}
+        {/* Languages List
         <FullWidth>
           <EditableList
             headerComponent={
@@ -118,7 +128,7 @@ export default function Step2ProfessionalInfo({
               setFormData((prev) => ({ ...prev, languages: items }))
             }
           />
-        </FullWidth>
+        </FullWidth> */}
 
         {/* License File Upload */}
         <FullWidth>

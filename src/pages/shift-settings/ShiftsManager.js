@@ -4,7 +4,7 @@ import '../MainCss.css'
 import { useTranslation } from "react-i18next";
 import ShiftForm from "./cards/ShiftForm";
 
-export default function ShiftsManager({ ComponentProp, header = true, onShiftsChange, formData ,regist=false}) {
+export default function   ShiftsManager({ ComponentProp, header = true, onShiftsChange, formData ,regist=false}) {
   const { t } = useTranslation();
 
   // Clinics data

@@ -54,7 +54,9 @@ export default function ShiftForm({
           <select
             className="form-control"
             value={shift.shiftType}
-            onChange={(e) => onInputChange(shift.id, "shiftType", e.target.value)}
+            onChange={(e) =>
+              onInputChange(shift.id, "shiftType", e.target.value)
+            }
           >
             <option value="">{t("selectShiftType")}</option>
             {shiftTypes.map((type) => (
@@ -69,43 +71,53 @@ export default function ShiftForm({
         {shift.shiftType === t("CustomShift") && (
           <>
             <div className="form-group form-group-half">
-              <label style={{marginBottom:"0px"}}>{t("startTime")}</label>
+              <label style={{ marginBottom: "0px" }}>{t("startTime")}</label>
               <input
                 type="time"
                 className="form-control"
                 value={shift.customFrom}
-                onChange={(e) => onInputChange(shift.id, "customFrom", e.target.value)}
+                onChange={(e) =>
+                  onInputChange(shift.id, "customFrom", e.target.value)
+                }
               />
             </div>
             <div className="form-group form-group-half">
-              <label style={{marginBottom:"0px"}}>{t("endTime")}</label>
+              <label style={{ marginBottom: "0px" }}>{t("endTime")}</label>
               <input
                 type="time"
                 className="form-control"
                 value={shift.customTo}
-                onChange={(e) => onInputChange(shift.id, "customTo", e.target.value)}
+                onChange={(e) =>
+                  onInputChange(shift.id, "customTo", e.target.value)
+                }
               />
             </div>
           </>
         )}
 
         {/* Breaks */}
+          <div className="mt-4 dc-tabscontenttitle no-before-line dc-addnew">
+            <h3>{t("breaks")}</h3>
+            <a href="!#" onClick={(e) => {
+              e.preventDefault();
+              onAddBreak(shift.id);
+            }}
+          >
+            {t("addBreak")}</a>
+          </div>
         <div className="form-group">
-          <label>{t("breaks")}</label>
+          {/* <label>{t("breaks")}</label> */}
           {shift.breaks.map((b, i) => (
             <BreakItem
               key={i}
               breakData={b}
-              onBreakChange={(field, value) => onBreakChange(shift.id, i, field, value)}
+              onBreakChange={(field, value) =>
+                onBreakChange(shift.id, i, field, value)
+              }
               onDeleteBreak={() => onDeleteBreak(shift.id, i)}
             />
           ))}
-          <button className="dc-addbrack" onClick={(e) => {
-            e.preventDefault();
-            onAddBreak(shift.id);
-          }}>
-            {t("addBreak")}
-          </button>
+
         </div>
       </fieldset>
     </form>

@@ -10,7 +10,7 @@ const CLINICS = [
 const APPOINTMENT_TYPES = ["Consultation", "Follow-up", "Check-up", "Emergency"];
 const CURRENCIES = ["EGP", "USD", "EUR", "GBP"];
 
-export default function MakeSlotsMain({ header, formData, onSlotsChange, errors }) {
+export default function MakeSlotsMain({ header =true, formData, onSlotsChange, errors }) {
   const { t } = useTranslation();
 const DAYS = [
     t("days.saturday"),
@@ -104,7 +104,7 @@ const DAYS = [
   return (
     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <div className="dc-haslayout dc-dbsectionspace">
-        <div className={`dc-dashboardbox dc-dashboardtabsholder ${header ? "NewShado" : "noneshadow"}`}
+        <div className={`dc-dashboardbox dc-dashboardtabsholder ${header ? "NewShado" : "table-card noneshadow"}`}
         >
           {header && (
             <div className="dc-dashboardboxtitle">

@@ -3,7 +3,7 @@ import { FaTrash } from "react-icons/fa";
 
 export default function BreakItem({ breakData, onBreakChange, onDeleteBreak }) {
   return (
-    <div className="breakdiv" style={{ display: "flex", gap: "5px", marginBottom: "5px" }}>
+    <div className="breakdiv">
       <div>
         {" "}
         <label style={{ marginBottom: "0px" }}>Start time</label>
@@ -16,7 +16,7 @@ export default function BreakItem({ breakData, onBreakChange, onDeleteBreak }) {
       <div>
         <label style={{ marginBottom: "0px" }}>Start time</label>
 
-        <input
+        <input 
           type="time"
           value={breakData.to}
           onChange={(e) => onBreakChange("to", e.target.value)}

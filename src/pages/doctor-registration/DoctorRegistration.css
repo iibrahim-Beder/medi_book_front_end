@@ -152,7 +152,7 @@
    transform: translateY(-50%);
   color: var(--gray);
   left: 5px;
-    bottom: -2px;
+    bottom: -4px;
     z-index: 1;
 }
 .input-with-icon input,
@@ -268,3 +268,32 @@
   max-height: 10000vh;
   opacity: 1;
 }
+.doctor-registration .form-group label{
+  margin-bottom: 0;
+  color: #465D7C;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+}
+.doctor-registration .input-with-icon input{
+  padding-left: 25px;
+  color:#012047;
+}
+
+.doctor-registration form p{
+  float: unset;
+  position: unset;
+  width: unset;
+}
+.breakdiv input{
+border: 1px solid #ccc;
+}
+.breakdiv{
+display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    width: 50%;
+    justify-content: center;
+}
+.breakdiv .dc-deleteinfo{padding: 2px; }
+.doctor-registration .noneshadow{box-shadow: 0px 0px 8px 3px rgb(221 221 221 / 16%) !important; padding: 0; }

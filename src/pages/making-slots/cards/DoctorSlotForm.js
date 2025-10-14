@@ -74,7 +74,7 @@ export default function DoctorSlotForm({
           </select>
         </div>
 
-        <div className="form-group">
+        <div className="form-group form-group-half">
           <label>{t("slotDurationMinutes")}</label>
           <input
             type="number"
@@ -86,7 +86,7 @@ export default function DoctorSlotForm({
           />
         </div>
 
-        <div className="form-group">
+        <div className="form-group form-group-half">
           <label>{t("daysInAdvance")}</label>
           <input
             type="number"
@@ -162,7 +162,7 @@ export default function DoctorSlotForm({
           </div>
         </div>
 
-        <div className="form-group form-group-half dc-btnarea">
+        <div className="mt-3"style={{float:"inline-end"}} >
           <button style={{ margin: "20px" }} type="submit" className="dc-btn">
             {t("saveChanges")}
           </button>

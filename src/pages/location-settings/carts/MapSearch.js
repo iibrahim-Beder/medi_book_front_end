@@ -196,7 +196,7 @@ const BlueMapPicker = ({
       </div>
 
       {/* google map container */}
-      <div style={{ height: 450, marginBottom: 12 }}>
+      <div className="table-card" style={{ height: 450, marginBottom: 12, padding:"20px"  }}>
         <GoogleMap
           center={position}
           zoom={13}
@@ -238,7 +238,7 @@ const BlueMapPicker = ({
         </button>
         <button
           type="submit"
-          className="dc-btn"
+          className="second-btn"
           style={{ minWidth: "100px" }}
           onClick={handleSave}
           disabled={!displayName.trim()}

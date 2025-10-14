@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { FaPencilAlt, FaTrash, FaUniversity, FaCalendarAlt, FaAward, FaFileUpload, FaCloudUploadAlt, FaUpload } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import SectionTitle from "../../shared/SectionTitle";
 import Field from "../../ui/form-fields/Field";
@@ -9,9 +9,12 @@ import MultiFileField from "../../ui/form-fields/MultiFileField";
 import FullWidth from "../../shared/FullWidth";
 import { getQualificationOptions } from "../../../constants/formOptions";
 import { PiCertificateThin } from "react-icons/pi";
+import { MdSchool } from "react-icons/md";
+import { IoIosRibbon } from "react-icons/io";
+import FileField from "../../ui/form-fields/FileField";
+
 
 // ============= 1. Single Qualification Form =============
-// This component renders a form for a single qualification entry
 function SingleQualificationForm({ q, index, errors, forceShowError, handleInputChange }) {
   const { t } = useTranslation();
 
@@ -26,6 +29,7 @@ function SingleQualificationForm({ q, index, errors, forceShowError, handleInput
             value={q.qualification}
             onChange={(e) => handleInputChange(q.id, "qualification", e.target.value)}
             options={getQualificationOptions(t)}
+            icon={<IoIosRibbon />}
             error={errors[`qualification_${index}`]}
             forceShowError={forceShowError}
           />
@@ -37,6 +41,7 @@ function SingleQualificationForm({ q, index, errors, forceShowError, handleInput
             value={q.university}
             onChange={(e) => handleInputChange(q.id, "university", e.target.value)}
             placeholder={t("qualificationsInfo.university.placeholder")}
+            icon={<FaUniversity />}
             error={errors[`university_${index}`]}
             forceShowError={forceShowError}
           />
@@ -51,6 +56,7 @@ function SingleQualificationForm({ q, index, errors, forceShowError, handleInput
             value={q.graduationYear}
             onChange={(e) => handleInputChange(q.id, "graduationYear", e.target.value)}
             placeholder={t("qualificationsInfo.graduationYear.placeholder")}
+            icon={<FaCalendarAlt />}
             error={errors[`graduationYear_${index}`]}
             forceShowError={forceShowError}
           />
@@ -62,6 +68,7 @@ function SingleQualificationForm({ q, index, errors, forceShowError, handleInput
             value={q.additionalCert}
             onChange={(e) => handleInputChange(q.id, "additionalCert", e.target.value)}
             placeholder={t("qualificationsInfo.additionalCert.placeholder")}
+            icon={<FaAward />}
             error={errors[`additionalCert_${index}`]}
             forceShowError={forceShowError}
           />
@@ -74,6 +81,7 @@ function SingleQualificationForm({ q, index, errors, forceShowError, handleInput
               value={q.certificates}
               onChange={(e) => handleInputChange(q.id, "certificates", e.target.value)}
               placeholder={t("qualificationsInfo.certificates.placeholder")}
+              icon={<MdSchool />}
               error={errors[`certificates_${index}`]}
               forceShowError={forceShowError}
             />
@@ -81,13 +89,16 @@ function SingleQualificationForm({ q, index, errors, forceShowError, handleInput
 
           {/* File upload for certificates */}
           <FullWidth>
-            <MultiFileField
+            <FileField
               label={t("qualificationsInfo.certFiles.label")}
               name={`certFiles_${index}`}
               accept=".pdf,.jpg,.jpeg,.png"
               onChange={(e) => handleInputChange(q.id, "certFiles", e.target.files)}
+              icon={<FaCloudUploadAlt />}
+              buttonIcon={<FaUpload />}
               error={errors[`certFiles_${index}`]}
               forceShowError={forceShowError}
+              hint={" Upload Certificates & Qualifications  "}
             />
           </FullWidth>
         </div>
@@ -96,8 +107,8 @@ function SingleQualificationForm({ q, index, errors, forceShowError, handleInput
   );
 }
 
+
 // ============= 2. Qualifications Accordion =============
-// This component shows multiple qualifications in an accordion style
 function QualificationsAccordion({ qualifications, toggleAccordion, handleInputChange, errors, forceShowError, setQualifications }) {
   const { t } = useTranslation();
 
@@ -105,7 +116,6 @@ function QualificationsAccordion({ qualifications, toggleAccordion, handleInputC
     <ul className="dc-experienceaccordion accordion">
       {qualifications.map((q, index) => (
         <li key={q.id}>
-          {/* Accordion header with qualification and university name */}
           <div className="dc-accordioninnertitle">
             <span
               onClick={() => toggleAccordion(q.id)}
@@ -118,7 +128,6 @@ function QualificationsAccordion({ qualifications, toggleAccordion, handleInputC
               <em> {q.university && `(${q.university})`} </em>
             </span>
 
-            {/* Actions: edit or delete qualification */}
             <div className="dc-rightarea">
               <a
                 className="dc-addinfo dc-skillsaddinfo"
@@ -143,7 +152,6 @@ function QualificationsAccordion({ qualifications, toggleAccordion, handleInputC
             </div>
           </div>
 
-          {/* Expanded accordion content */}
           {q.isOpen && (
             <div
               className="dc-collapseexp collapse show"
@@ -165,8 +173,8 @@ function QualificationsAccordion({ qualifications, toggleAccordion, handleInputC
   );
 }
 
+
 // ============= 3. Main Component =============
-// This is the main step component for qualifications management
 export default function Step2Qualifications({
   formData,
   handleInputChange,
@@ -175,7 +183,6 @@ export default function Step2Qualifications({
 }) {
   const { t } = useTranslation();
 
-  // Local state for qualifications list
   const [qualifications, setQualifications] = useState(
     formData.qualifications && formData.qualifications.length
       ? formData.qualifications
@@ -193,38 +200,33 @@ export default function Step2Qualifications({
         ]
   );
 
-  // Update local state if formData changes in the parent component
   useEffect(() => {
     if (formData.qualifications && formData.qualifications.length) {
       setQualifications(formData.qualifications);
     }
   }, [formData.qualifications]);
 
-  // Toggle open/close for a qualification accordion item
   const toggleAccordion = (id) => {
     setQualifications((prev) =>
       prev.map((q) => (q.id === id ? { ...q, isOpen: !q.isOpen } : q))
     );
   };
 
-  // Handle field change for a qualification
   const handleQualificationChange = (id, field, value) => {
-    const updatedQualifications = qualifications.map((q) => 
-      (q.id === id ? { ...q, [field]: value } : q)
+    const updatedQualifications = qualifications.map((q) =>
+      q.id === id ? { ...q, [field]: value } : q
     );
-    
+
     setQualifications(updatedQualifications);
-    
-    // Send changes to parent component
+
     handleInputChange({
       target: {
         name: "qualifications",
-        value: updatedQualifications
-      }
+        value: updatedQualifications,
+      },
     });
   };
 
-  // Add a new qualification entry
   const addNewQualification = () => {
     const newId = qualifications.length ? Math.max(...qualifications.map((q) => q.id)) + 1 : 1;
     const newQ = {
@@ -237,61 +239,52 @@ export default function Step2Qualifications({
       certFiles: [],
       isOpen: true,
     };
-    
+
     const updatedQualifications = [...qualifications, newQ];
     setQualifications(updatedQualifications);
-    
-    // Send changes to parent component
+
     handleInputChange({
       target: {
         name: "qualifications",
-        value: updatedQualifications
-      }
+        value: updatedQualifications,
+      },
     });
   };
 
-  // Delete a qualification entry
   const deleteQualification = (id) => {
     const updatedQualifications = qualifications.filter((item) => item.id !== id);
     setQualifications(updatedQualifications);
-    
-    // Send changes to parent component
+
     handleInputChange({
       target: {
         name: "qualifications",
-        value: updatedQualifications
-      }
+        value: updatedQualifications,
+      },
     });
   };
 
   return (
     <div className="dc-userexperience dc-tabsinfo">
-      {/* Section title and add new qualification link */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <SectionTitle icon={<PiCertificateThin />} title={t("qualificationsInfo.title")} />
-         
+
         <a
           href="#!"
           onClick={(e) => {
             e.preventDefault();
             addNewQualification();
           }}
-          className=""
         >
           {t("qualificationsInfo.addNew")}
         </a>
       </div>
 
-      {/* Show validation error if forceShowError is true */}
       {forceShowError && errors.qualifications && (
         <div className="alert alert-danger">{errors.qualifications}</div>
       )}
 
-      {/* Render qualification forms */}
       {qualifications.length === 0 ? (
-        <div className="alert alert-info">
-          {t("qualificationsInfo.noQualifications")}
-        </div>
+        <div className="alert alert-info">{t("qualificationsInfo.noQualifications")}</div>
       ) : qualifications.length === 1 ? (
         <SingleQualificationForm
           q={qualifications[0]}

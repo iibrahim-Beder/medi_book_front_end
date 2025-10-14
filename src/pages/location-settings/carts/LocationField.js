@@ -61,15 +61,6 @@ function LocationsAccordion({
                   onSave={(newLoc) => handleSave(newLoc, loc.id)}
                   handleCancel={() => handleCancel(loc.id)}
                 />
-                {/* <div className="mt-2">
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => handleCancel(loc.id)}
-                  >
-                    {t("common.cancel")}
-                  </button>
-                </div> */}
               </div>
             )}
           </li>
