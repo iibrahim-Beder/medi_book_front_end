@@ -40,10 +40,6 @@ export default function PatientBasicInfo() {
 
       <div className="dc-user-details" style={{width:"96%"}}>
         {/* ================= Basic Info Section ================= */}
-        {/* <div className="dc-tabscontenttitle dc-tabscontenttitle-delete-before dc-addnew " style={{ margin: "20px -20px" }}> */}
-          {/* <h3>Basic Information</h3> */}
-                  {/* <hr/> */}
-        {/* </div> */}
         <div className="  ml-0">
           <div className="dc-user-info">
             <div className="dc-title">
@@ -51,7 +47,7 @@ export default function PatientBasicInfo() {
               <span>{patient.name}</span>
             </div>
           </div>
-          <div className="dc-user-info">
+          <div className="dc-user-info mt-0">
             <div className="dc-title">
               <h4>Date of Birth:</h4>
               <span>
@@ -101,7 +97,7 @@ export default function PatientBasicInfo() {
               </span>
             </div>
           </div>
-          <div className="dc-user-info">
+          <div className="dc-user-info mt-0">
             <div className="dc-title">
               <h4  style={{font:"18px / 22px 'Open Sans', sans-serif ", margin:"0 0 9px"}}>Allergies:</h4>
               <span>
@@ -133,7 +129,7 @@ export default function PatientBasicInfo() {
               <span>{patient.lastVisit}</span>
             </div>
           </div>
-          <div className="dc-user-info">
+          <div className="dc-user-info mt-0">
             <div className="dc-title">
               <h4>Next Visit:</h4>
               <span>{patient.nextVisit}</span>
