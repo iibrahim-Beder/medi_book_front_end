@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
 
 const SelectField = ({
   label,
@@ -35,6 +36,8 @@ const SelectField = ({
             </option>
           ))}
         </select>
+     <FaChevronDown className="select-arrow" />
+
       </div>
 
       {showError && <span className="error-text">{error}</span>}

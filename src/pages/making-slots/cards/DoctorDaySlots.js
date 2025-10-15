@@ -17,7 +17,7 @@ export default function DoctorDaySlots({
     const { t } = useTranslation();
 
   return (
-    <div className="doctor-day-slots">
+    <div className="table-card doctor-day-slots">
       {/*    <div className="dc-tabscontenttitle dc-addnew">
         <h3>{day} slots</h3>
         <a href="#!"  
@@ -34,7 +34,7 @@ export default function DoctorDaySlots({
         </button>
       </div>
 
-      <ul className="dc-accordion">
+      <ul className="dc-experienceaccordion accordion">
         {slots.map(slot => (
           <DoctorDaySlotItem
             key={slot.id}

@@ -2,15 +2,22 @@ import React, { useState, useEffect } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import Field from "../../ui/form-fields/Field"; 
+import { FaBuilding, FaCalendarAlt, FaUserTie, FaRegFileAlt } from "react-icons/fa";
+import TextAreaField from "../../ui/form-fields/TextAreaField";
 
 // 1. Normal form for a single experience
+
 function SingleExperienceForm({ exp, index, errors, forceShowError, handleInputChange }) {
   const { t } = useTranslation();
+
   return (
     <form className="dc-formtheme dc-userform">
       <fieldset>
+        <div  className="form-row">
+        {/* Company Title */}
         <div className="form-group form-group-half">
           <Field
+            icon={<FaBuilding />}
             name={`experience_${index}_companyTitle`}
             label={t("userExperience.companyTitle")}
             value={exp.companyTitle}
@@ -22,9 +29,25 @@ function SingleExperienceForm({ exp, index, errors, forceShowError, handleInputC
             forceShowError={forceShowError}
           />
         </div>
-
+   {/* Job Title */}
+        <div className="form-group form-group-half">
+          <Field 
+            icon={<FaUserTie />}
+            name={`experience_${index}_jobTitle`}
+            label={t("userExperience.jobTitle")}
+            value={exp.jobTitle}
+            onChange={(e) =>
+              handleInputChange(exp.id, "jobTitle", e.target.value)
+            }
+            placeholder={t("userExperience.jobTitle")}
+            error={errors[`experience_${index}_jobTitle`]}
+            forceShowError={forceShowError}
+          />
+        </div></div>
+        {/* Start Date */}
         <div className="form-group form-group-half">
           <Field
+            icon={<FaCalendarAlt />}
             name={`experience_${index}_startDate`}
             label={t("userExperience.startingDate")}
             value={exp.startingDate}
@@ -37,8 +60,10 @@ function SingleExperienceForm({ exp, index, errors, forceShowError, handleInputC
           />
         </div>
 
+        {/* End Date */}
         <div className="form-group form-group-half">
           <Field
+            icon={<FaCalendarAlt />}
             name={`experience_${index}_endDate`}
             label={t("userExperience.endingDate")}
             value={exp.endingDate}
@@ -51,27 +76,19 @@ function SingleExperienceForm({ exp, index, errors, forceShowError, handleInputC
           />
         </div>
 
-        <div className="form-group form-group-half">
-          <Field 
-            name={`experience_${index}_jobTitle`}
-            label={t("userExperience.jobTitle")}
-            value={exp.jobTitle}
-            onChange={(e) =>
-              handleInputChange(exp.id, "jobTitle", e.target.value)
-            }
-            placeholder={t("userExperience.jobTitle")}
-            error={errors[`experience_${index}_jobTitle`]}
-            forceShowError={forceShowError}
-          />
-        </div>
+     
 
-        <div className="form-group">
-          <textarea
-            className={`form-control ${
-              errors[`experience_${index}_description`] && forceShowError
-                ? "input-error"
-                : ""
-            }`}
+        {/* Description */}
+        <div className="form-group position-relative textarea-gob">
+          <FaRegFileAlt className="input-icon" />
+          <TextAreaField
+            // className={`form-control pl-5 ${
+            //   errors[`experience_${index}_description`] && forceShowError
+            //     ? "input-error"
+            //     : ""
+            // }`}
+            name={`experience_${index}_description`}
+            label={t("userExperience.jobDescription")}
             placeholder={t("userExperience.jobDescription")}
             value={exp.description}
             onChange={(e) =>
@@ -92,6 +109,7 @@ function SingleExperienceForm({ exp, index, errors, forceShowError, handleInputC
     </form>
   );
 }
+
 
 // 2. Accordion for multiple experiences
 function ExperiencesAccordion({ experiences, toggleAccordion, handleInputChange, errors, forceShowError, setExperiences }) {

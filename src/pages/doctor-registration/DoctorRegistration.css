@@ -225,6 +225,7 @@
 /* Responsive */
 @media (max-width: 992px) {
   .form-grid { grid-template-columns: 1fr; }
+  .form-grid.profile-form  {display:block;}
   .progress-steps::before, .progress-bar { display: none; }
   .step { margin: 8px 12px; }
   .form-container { padding: 28px 18px; }
@@ -296,4 +297,7 @@ display: inline-flex;
     justify-content: center;
 }
 .breakdiv .dc-deleteinfo{padding: 2px; }
-.doctor-registration .noneshadow{box-shadow: 0px 0px 8px 3px rgb(221 221 221 / 16%) !important; padding: 0; }
+.doctor-registration .noneshadow{box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.10) !important; padding: 0; }
+.textarea-gob .input-icon {left: 15px;
+    top: 63px;}
+    .dc-dashboardbox.dc-dashboardtabsholder.table-card.noneshadow{display: grid;}

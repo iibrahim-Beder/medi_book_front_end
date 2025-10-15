@@ -51,7 +51,7 @@ export default function Step2ProfessionalInfo({
         title={t("professionalInfo.title")}
       />
 
-      <div className="form-grid">
+      <div className="form-grid profile-form ">
         {/* Specialty */}
         <SelectField
           label={t("professionalInfo.specialty.label")}

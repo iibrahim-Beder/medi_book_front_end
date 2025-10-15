@@ -140,7 +140,7 @@ export default function   ShiftsManager({ ComponentProp, header = true, onShifts
         )}
       </div>
 
-     <ul className="dc-shiftsaccordion accordion">
+     <ul className="dc-experienceaccordion accordion">
   {shifts.length === 1 && regist ? (
     // Single shift case → display as Form
     <ShiftForm

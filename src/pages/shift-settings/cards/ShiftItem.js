@@ -42,8 +42,8 @@ export default function ShiftItem({
           </a>
         </div>
       </div>
-      {shift.isOpen && (
-        <div className="dc-collapseexp collapse show">
+      {/* {shift.isOpen && ( */}
+        <div className={`dc-collapseexp ${shift.isOpen ? "show" : "hide"}`}>
           <ShiftForm
             shift={shift}
             clinics={clinics}
@@ -55,7 +55,7 @@ export default function ShiftItem({
             onDeleteBreak={onDeleteBreak}
           />
         </div>
-      )}
+      {/* )} */}
     </li>
   );
 }

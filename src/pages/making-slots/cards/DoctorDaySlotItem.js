@@ -53,9 +53,9 @@ export default function DoctorDaySlotItem({
           </a>
         </div>
       </div>
-      {slot.isOpen && (
-        <div className="dc-collapseexp collapse show">
-          <DoctorSlotForm
+     
+        <div className={`dc-collapseexp ${slot.isOpen? "show" : "hide"}`} style={{backgroundColor: "var(--cardcolor)" }} >
+          <DoctorSlotForm 
             doctorShift={slot}
             onSave={handleSave}
             appointmentTypes={appointmentTypes}
@@ -63,7 +63,7 @@ export default function DoctorDaySlotItem({
             clinics={clinics}
           />
         </div>
-      )}
+    
     </li>
   );
 }

@@ -131,7 +131,8 @@ const DAYS = [
             </ul>
           </div>
 
-          <div className="dc-tabscontent tab-content">
+          <div className="dc-tabscontent tab-content accordion-table">
+            
             <DoctorDaySlots
               day={activeTab}
               slots={slots[activeTab] || []}

@@ -2834,6 +2834,7 @@ background-color: var(--scbccolor);
 .dc-tabscontent{
 	float: left;
 	width: 70%;
+	height: 100%;
 	padding: 30px;
 	border-left: 1px solid #eeeeee66;
 	    background-color: var(--scbccolor);
@@ -5598,6 +5599,7 @@ content: none;
 /* >>> */
 
 @media (max-width: 1200px) {
+	.dc-dashboardbox.dc-dashboardtabsholder.table-card.noneshadow{display: unset;}
 	.two-tabs .nav {padding-right: 500px !important;}
 	.list-date-option.custom{
 		left: -150% ;

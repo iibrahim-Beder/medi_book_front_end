@@ -211,7 +211,7 @@ li {
 
 .DeletBtn{
      margin-top: 25px;
-    margin-left: 30px;
+    /* margin-left: 30px; */
     width: 30px;
     float: left;
     color: #fff;
@@ -812,6 +812,10 @@ background-color: transparent !important;
   float: inline-end;
 }
 /* my btns style end */
+.textarea .input-icon{
+ top: 44px;
+} 
+
 .select-wrapper select {
   appearance: auto; 
   padding-right: 200px;
@@ -914,3 +918,28 @@ padding: 20px 60px;
     color: #465D7C ;}
     .comments span{font-size: 15px;}
 /*  comment css end  */
+.accordion-table{ display: flex;padding-top: 60px;}
+.accordion-table .table-card{ height: fit-content; width: 100%;   }
+.accordion-table .table-card .dc-accordioninnertitle ,.accordion-table .table-card .dc-collapseexp  { background-color: var(--scbccolor) !important;  }
+.accordion-table .table-card .dc-collapseexp  {padding-bottom: 0; }
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  padding-right: 35px; /* مساحة للسهم */
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 12px; /* غيّرها علشان تحرك السهم شمال أو يمين */
+  transform: translateY(-50%);
+  color: #555; /* لون السهم */
+  pointer-events: none;
+  font-size: 14px;
+}
