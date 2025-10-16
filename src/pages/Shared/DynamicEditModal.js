@@ -139,6 +139,7 @@ const DynamicEditModal = ({
               if (field.type === "select") {
                 return (
                   <SelectField
+                    isAllWidth={field.AllWidth}               
                     key={field.name}
                     label={field.label}
                     name={field.name}

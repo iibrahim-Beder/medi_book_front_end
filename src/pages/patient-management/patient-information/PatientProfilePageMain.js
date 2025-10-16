@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
-import PatientNotes from "./PatientTabs/PatientNotes";
+import PatientNotesComponent from "./PatientTabs/PatientNotesComponent";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
@@ -30,7 +30,7 @@ export default function PatientProfilePageMain() {
    { key: "Diagnosis", label: t("Diagnosis") },
    { key: "Medications", label: t("Medications") },
    { key: "PrescriptionsTable", label: t("Prescriptions") },
-   { key: "Notes", label: t("Notes") },
+   { key: "PatientNotesComponent", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
 
@@ -38,7 +38,7 @@ export default function PatientProfilePageMain() {
 
   return (
     <div className="col-12">
-      <div className="dc-haslayout dc-dbsectionspace">
+      <div className="dc-haslayout dc-dbsectionspace accordion-table ">
         <div className="dc-dashboardbox dc-dashboardtabsholder setting">
           {/* Tabs Navigation */}
           <div className="dc-dashboardtabs" style={{ width: "20%" }}>
@@ -63,12 +63,12 @@ export default function PatientProfilePageMain() {
 
           {/* Tabs Content */}
           <div
-            className="dc-tabscontent tab-content"
-            style={{ width: "80%", display: "flex", justifyContent: "center", padding:`${padding? "0" : "" }` }}
+            className="dc-tabscontent tab-content "
+            style={{  width: "80%", justifyContent: "center", padding:`${padding? "0" : "" }` }}
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />} 
-            {activeTab === "Notes" && <PatientNotes />}
+            {activeTab === "PatientNotesComponent" && <PatientNotesComponent />}
             {activeTab === "AllergyTable" && <AllergyTable/>}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}

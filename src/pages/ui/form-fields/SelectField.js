@@ -10,12 +10,15 @@ const SelectField = ({
   icon,
   error,
   forceShowError = false,
+  isAllWidth = false
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = error && (touched || forceShowError);
 
   return (
-    <div className={`form-group ${showError ? "has-error" : ""}`}>
+    <div className={`form-group ${showError ? "has-error" : ""}`}
+    style={{ gridColumn: isAllWidth ? "span 2" : "" }}
+    >
       <label htmlFor={name}>{label}</label>
 
       <div className="input-with-icon select-wrapper">

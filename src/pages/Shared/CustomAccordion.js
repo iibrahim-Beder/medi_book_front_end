@@ -157,80 +157,94 @@ const CustomAccordion = memo(({
                 </div>
               ))}
 
-              <form
-                className="dc-formtheme dc-userform"
-                onSubmit={(e) => handleSave(index, e)}
-              >
-                <fieldset>
-                  {formFields && formFields.map((field, idx) => (
-                    field.name !== "medication" && ( 
-                      <div
-                        key={idx}
-                        className={`form-group ${field.half ? "form-group-half" : ""}`}
-                      >
-                        {field.type === "textarea" ? (
-                          <textarea
-                            disabled={readOnly}
-                            className="form-control"
-                            placeholder={field.placeholder}
-                            value={item[field.name] || ""}
-                            onChange={(e) =>
-                              handleFieldChange(index, field.name, e.target.value)
-                            }
-                          />
-                        ) : field.type === "select" ? (
-                          <select
-                            disabled={readOnly}
-                            className="form-control"
-                            value={item[field.name] || ""}
-                            onChange={(e) =>
-                              handleFieldChange(index, field.name, e.target.value)
-                            }
-                          >
-                            <option value="">{field.placeholder}</option>
-                            {field.options?.map((opt, i) => (
-                              <option key={i} value={opt}>
-                                {opt}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input
-                            disabled={readOnly}
-                            type={field.type}
-                            className="form-control"
-                            placeholder={field.placeholder}
-                            value={item[field.name] || ""}
-                            onChange={(e) =>
-                              handleFieldChange(index, field.name, e.target.value)
-                            }
-                          />
-                        )}
-                      </div>
-                    )
-                  ))}
+<form
+  className="dc-formtheme dc-userform"
+  onSubmit={(e) => handleSave(index, e)}
+>
+  <fieldset>
+    {formFields && formFields.map((field, idx) => (
+      field.name !== "medication" && ( 
+        <div
+          key={idx}
+          className={`form-group ${field.half ? "form-group-half" : ""}`}
+        >
+          <label className="form-label">{field.label}</label>
+          
+          {field.type === "textarea" ? (
+            <textarea
+              disabled={readOnly || field.readOnly} 
+              className="form-control"
+              placeholder={field.placeholder}
+              value={item[field.name] || ""}
+              onChange={(e) =>
+                handleFieldChange(index, field.name, e.target.value)
+              }
+              style={field.readOnly ? { 
+                backgroundColor: '#f8f9fa', 
+                cursor: 'not-allowed' 
+              } : {}}
+            />
+          ) : field.type === "select" ? (
+            <select
+              disabled={readOnly || field.readOnly} 
+              className="form-control"
+              value={item[field.name] || ""}
+              onChange={(e) =>
+                handleFieldChange(index, field.name, e.target.value)
+              }
+              style={field.readOnly ? { 
+                backgroundColor: '#f8f9fa', 
+                cursor: 'not-allowed' 
+              } : {}}
+            >
+              <option value="">{field.placeholder}</option>
+              {field.options?.map((opt, i) => (
+                <option key={i} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              disabled={readOnly || field.readOnly} 
+              type={field.type}
+              className="form-control"
+              placeholder={field.placeholder}
+              value={item[field.name] || ""}
+              onChange={(e) =>
+                handleFieldChange(index, field.name, e.target.value)
+              }
+              style={field.readOnly ? { 
+                backgroundColor: '#f8f9fa', 
+                cursor: 'not-allowed' 
+              } : {}}
+            />
+          )}
+        </div>
+      )
+    ))}
 
-                  {!readOnly && (
-                    <div className="dc-btnarea d-flex">
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={() => handleCancel(index)}
-                        style={{ margin: "11px 4px" }}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        className="second-btn"
-                        style={{ margin: "11px 4px" }}
-                      >
-                        {item.isNew ? "Add" : "Save"}
-                      </button>
-                    </div>
-                  )}
-                </fieldset>
-              </form>
+    {!readOnly && (
+      <div className="dc-btnarea d-flex">
+        <button
+          type="button"
+          className="btn btn-outline-secondary"
+          onClick={() => handleCancel(index)}
+          style={{ margin: "11px 4px" }}
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="second-btn"
+          style={{ margin: "11px 4px" }}
+        >
+          {item.isNew ? "Add" : "Save"}
+        </button>
+      </div>
+    )}
+  </fieldset>
+</form>
             </div>
           </li>
         ))}
