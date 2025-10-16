@@ -23,6 +23,7 @@ import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import FinancialDashboard from "./not used/Test";
+import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorFinancialDashboard";
 
 
 
@@ -78,9 +79,9 @@ const { i18n } = useTranslation();
                 <Route path="appointment-location" element={<LocationMain />} />
                 <Route path="Messages" element={<MessagesPage />} />
                 <Route path="manage-team" element={<PatientManagement />} />
-                <Route path="appointment-setting" element={<Test />} />
+                <Route path="how-v1" element={<Test />} />
                 <Route path="appointment-list" element={<MainAppointtmentList2 />} />
-                 <Route path="manage-articles" element={<FinancialDashboard/>} />
+                 <Route path="manage-articles" element={<DoctorFinancialDashboard/>} />
                 <Route path="manage-services" element={<MakeSlostMain />} />
                 <Route path="security-settings" element={<SecuritySettings />} />
                 <Route path="account-settings" element={<Acco />} /> 
