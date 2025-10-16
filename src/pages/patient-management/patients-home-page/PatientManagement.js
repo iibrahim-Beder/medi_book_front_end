@@ -8,6 +8,7 @@ import PatientsTable from "./components/PatientsTable";
 // import PatientViewModal from "./PatientViewModal";
 import { usePatients } from "./components/usePatients";
 import '../Patient-management.css'
+import PatientReviewsTable from "./components/PatientReviewsTable";
 const PatientManagement = () => {
   const { patients, addPatient, updatePatient, deletePatient } = usePatients();
 
@@ -43,32 +44,17 @@ const PatientManagement = () => {
 
   return (
     <Container fluid className="p-4">
-      {/* <h3 className="mb-4">إدارة المرضى</h3> */}
 <i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i>
       <PatientStats stats={stats} />
-
-      {/* <PatientToolbar search={search} setSearch={setSearch} onAdd={() => setFormModal(true)} /> */}
-     {/* <PatientsFilters/> */}
       <PatientsTable
         patients={filteredPatients}
         onView={(p) => { setSelectedPatient(p); setViewModal(true); }}
         onEdit={(p) => { setFormPatient(p); setFormModal(true); }}
         onDelete={deletePatient}
       />
+      <PatientReviewsTable />
 
-      {/* <PatientFormModal
-        show={formModal}
-        handleClose={() => setFormModal(false)}
-        patient={formPatient}
-        setPatient={setFormPatient}
-        onSave={handleSave}
-      />
-
-      <PatientViewModal
-        show={viewModal}
-        handleClose={() => setViewModal(false)}
-        patient={selectedPatient}
-      /> */}
+     
     </Container>
   );
 };

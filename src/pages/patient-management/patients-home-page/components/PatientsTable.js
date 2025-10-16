@@ -3,6 +3,8 @@ import { Table, Button } from "react-bootstrap";
 import { PiEyeThin, PiUsersThreeLight } from "react-icons/pi";
 import { useTranslation } from "react-i18next";
 import PatientsFilters from "./PatientsFilters";
+import { MdOutlineArrowForward } from "react-icons/md";
+import MainSearch from "../../../shared/MainSearch";
 
 const PatientsTable = () => {
   const { t } = useTranslation();
@@ -47,12 +49,33 @@ const PatientsTable = () => {
       lastVisit: "21 Sep 2023",
       paid: 150,
       avatar: "/images/user-login.jpg",
+      
+ },
+    {
+      patientId: "#PT005",
+      name: "John Doe",
+      age: 35,
+      address: "123 Main Street, New York, NY",
+      phone: "5551234567",
+      lastVisit: "15 Oct 2023",
+      paid: 300,
+      avatar: "/images/user-login.jpg",
+    },
+    {
+      patientId: "#PT006",
+      name: "Jane Smith",
+      age: 28,
+      address: "456 Oak Avenue, Los Angeles, CA",
+      phone: "5557654321",
+      lastVisit: "18 Oct 2023",
+      paid: 180,
+      avatar: "/images/user-login.jpg",
     },
   ];
 
   const [search, setSearch] = useState("");
-  const [currentPage] = useState(1);
-  const patientsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1); 
+  const patientsPerPage = 3;
 
   // Filter
   const filteredPatients = patientsData.filter(
@@ -61,10 +84,24 @@ const PatientsTable = () => {
       p.patientId.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Pagination
+  // Pagination calculations
   const indexOfLast = currentPage * patientsPerPage;
   const indexOfFirst = indexOfLast - patientsPerPage;
   const currentPatients = filteredPatients.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(filteredPatients.length / patientsPerPage);
+
+  // Pagination handlers
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   // Search filters
   const [status, setStatus] = useState("");
@@ -78,11 +115,15 @@ const PatientsTable = () => {
     setSearch("");
     setStatus("");
     setGender("");
+    setCurrentPage(1); 
   };
 
   return (
-    <div className="shadow-sm mt-4 " style={{ border: "none", borderRadius: "12px" }}>
-      <PatientsFilters
+    <div
+      className="shadow-sm mt-4 "
+      style={{ border: "none", borderRadius: "12px" }}
+    >
+      <MainSearch
         search={search}
         setSearch={setSearch}
         status={status}
@@ -101,7 +142,10 @@ const PatientsTable = () => {
 
         {/* Scrollable Table Wrapper */}
         <div style={{ overflowX: "auto" }}>
-          <Table className="align-middle mb-0 table-hover" style={{ whiteSpace: "nowrap" }}>
+          <Table
+            className="align-middle mb-0 table-hover"
+            style={{ whiteSpace: "nowrap" }}
+          >
             <thead className="table-light">
               <tr>
                 <th className="border-0">{t("patientId")}</th>
@@ -137,7 +181,7 @@ const PatientsTable = () => {
                     ${patient.paid}
                   </td>
                   <td className="border-0">
-                    <Button
+                    {/* <Button
                       size="sm"
                       variant="outline-primary"
                       style={{
@@ -149,6 +193,13 @@ const PatientsTable = () => {
                       }}
                     >
                       <PiEyeThin style={{ fontSize: "20px" }} />
+                    </Button> */}
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      className="d-flex align-items-center view-btn ms-2 pl-0"
+                    >
+                      View profile <MdOutlineArrowForward className="ms-1" />
                     </Button>
                   </td>
                 </tr>
@@ -157,12 +208,78 @@ const PatientsTable = () => {
           </Table>
         </div>
 
-        {/* Footer */}
-        <div className="d-flex justify-content-between mt-3">
-          <span>
-            {t("showing")} {indexOfFirst + 1} - {Math.min(indexOfLast, filteredPatients.length)}{" "}
-            {t("of")} {filteredPatients.length}
-          </span>
+        {/* Pagination controls */}
+        <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
+          <div
+            className="dt-layout-cell dt-layout-start"
+            style={{ fontSize: "14px", color: "#555" }}
+          >
+            <div className="dt-info">
+              Showing {indexOfFirst + 1} to{" "}
+              {Math.min(indexOfLast, filteredPatients.length)} of{" "}
+              {filteredPatients.length} entries
+            </div>
+          </div>
+
+          <div className="dt-layout-cell dt-layout-end">
+            <div className="dt-paging">
+              <nav aria-label="pagination" className="d-flex">
+                {/* Go to first page */}
+                <button
+                  className="dt-paging-button first"
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(1)}
+                >
+                  «
+                </button>
+
+                {/* Go to previous page */}
+                <button
+                  className="dt-paging-button previous"
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={handlePrevPage}
+                >
+                  Previous
+                </button>
+
+                {/* Page number buttons */}
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index + 1}
+                    className={`dt-paging-button none ${
+                      currentPage === index + 1 ? "current" : ""
+                    }`}
+                    type="button"
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+
+                {/* Go to next page */}
+                <button
+                  className="dt-paging-button next"
+                  type="button"
+                  disabled={currentPage === totalPages}
+                  onClick={handleNextPage}
+                >
+                  Next
+                </button>
+
+                {/* Go to last page */}
+                <button
+                  className="dt-paging-button last"
+                  type="button"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(totalPages)}
+                >
+                  »
+                </button>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>

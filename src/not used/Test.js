@@ -3,6 +3,7 @@ import { Card, Row, Col, Image, Badge, Button } from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
 import { FaReply } from "react-icons/fa6";
 import StarRating from "../pages/shared/StarRating";
+import MainSearch from "../pages/shared/MainSearch";
 
 const reviewsData = [
   {
@@ -76,48 +77,7 @@ const PatientReviewsCards = () => {
 
   return (
     <div className="comments-list">
-      {reviewsData.map((review) => (
-        <Card key={review.id} className="mb-4 border-0 shadow-sm p-3 rounded-4">
-          <div className="comments">
-            {/* Header */}
-            <div className="d-flex justify-content-between align-items-start comment-head mb-2">
-              <div className="d-flex align-items-center">
-                <Image
-                  src={review.patientImg}
-                  roundedCircle
-                  width={50}
-                  height={50}
-                  className="me-3"
-                />
-                <div className="patient-info">
-                  <h6 className="mb-0 fw-semibold">{review.patientName}</h6>
-                  <small className="text-muted">{review.reviewDate}</small>
-                </div>
-              </div>
-              <div className="text-end">
-                <div className=""> <StarRating rating={review.rating} /></div>
-                {/* {getServiceBadge(review.serviceType)} */}
-              </div>
-            </div>
-
-            {/* Review Text */}
-            <div className="review-info">
-              <p className="mb-2 text-secondary">{review.review}</p>
-              <div className="comment-reply">
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="p-0 text-decoration-none text-primary d-inline-flex align-items-center"
-                  onClick={() => alert(`Go to booking ${review.bookingId}`)}
-                >
-                  <FaReply className="me-2" />
-                  Reply
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Card>
-      ))}
+    <MainSearch/>
     </div>
   );
 };

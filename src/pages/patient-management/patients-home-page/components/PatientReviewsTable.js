@@ -147,7 +147,7 @@ const PatientReviewsTable = () => {
   const currentData = filteredReviews.slice(startIndex, startIndex + rowsPerPage);
 
   // Utility: truncate long text
-  const truncateText = (text, maxLength = 70) => {
+  const truncateText = (text, maxLength = 300) => {
     if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
@@ -166,15 +166,33 @@ const PatientReviewsTable = () => {
 
   return (
     <div className="table-container">
-      <div className="table-header">
+      {/* <div className="table-header">
         <div>
           <h3 className="table-title">Patient Reviews</h3>
           <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
         </div>
-      </div>
+      </div> */}
 
-      <div className="p-3">
+      <div className="pt-3">
         <div className="table-card">
+          <div className="table-header pb-3 mb-2"
+          style={{borderBottom:"1px solid #eee"}}
+          >
+            <div>
+              <h3 className="table-title"> Patients Reviews </h3>
+            </div>
+
+            {/* Overall rating summary section */}
+            <div className="review-content">
+              <div className="review-rate">
+                <h3>Overall Rating</h3>
+                <div className="star-over-rated">
+                  <span>4.0</span>
+                  <StarRating rating={4} />
+                </div>
+              </div>
+            </div>
+          </div>
           {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
@@ -204,7 +222,7 @@ const PatientReviewsTable = () => {
                     { key: "3", label: "3 Stars" },
                     { key: "4", label: "4 Stars" },
                     { key: "5", label: "5 Stars" },
-                  ]
+                  ],
                 },
                 {
                   name: "serviceType",
@@ -213,8 +231,8 @@ const PatientReviewsTable = () => {
                     { key: "Video Call", label: "Video Call" },
                     { key: "Voice Call", label: "Voice Call" },
                     { key: "In-Person Visit", label: "In-Person Visit" },
-                  ]
-                }
+                  ],
+                },
               ]}
             />
           </div>
@@ -235,9 +253,7 @@ const PatientReviewsTable = () => {
                 {currentData.map((review) => (
                   <React.Fragment key={review.id}>
                     <tr>
-                      <td title={review.serviceType}>
-                        {review.serviceType}
-                      </td>
+                      <td title={review.serviceType}>{review.serviceType}</td>
                       <td>
                         <StarRating rating={review.rating} />
                       </td>
@@ -245,9 +261,9 @@ const PatientReviewsTable = () => {
                         <div className="d-flex align-items-center">
                           <span
                             className="text-truncate"
-                            style={{ maxWidth: "250px" }}
+                            style={{ maxWidth: "550px" }}
                           >
-                            {truncateText(review.review, 80)}
+                            {truncateText(review.review, 400)}
                           </span>
                           <Button
                             className="view-btn ms-2"
@@ -281,14 +297,18 @@ const PatientReviewsTable = () => {
                           onClick={() => handleViewBooking(review.bookingId)}
                           className="d-flex align-items-center view-btn ms-2"
                         >
-                          View Booking <MdOutlineArrowForward className="ms-1" />
+                          View Booking{" "}
+                          <MdOutlineArrowForward className="ms-1" />
                         </Button>
                       </td>
                     </tr>
 
                     {/* Expanded row for Review */}
                     {expandedRow === review.id && (
-                      <tr className="table-active-content" style={{backgroundColor:"transparent"}}>
+                      <tr
+                        className="table-active-content"
+                        style={{ backgroundColor: "transparent" }}
+                      >
                         <td
                           colSpan="5"
                           className="border-0 background-in-hover-none"
@@ -316,20 +336,38 @@ const PatientReviewsTable = () => {
               style={{ fontSize: "14px", color: "#555" }}
             >
               <div className="dt-info">
-                Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredReviews.length)} of {filteredReviews.length} entries
+                Showing {startIndex + 1} to{" "}
+                {Math.min(startIndex + rowsPerPage, filteredReviews.length)} of{" "}
+                {filteredReviews.length} entries
               </div>
             </div>
 
             <div className="dt-layout-cell dt-layout-end">
               <div className="dt-paging">
                 <nav aria-label="pagination" className="d-flex">
-                  <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
-                  <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>Previous</button>
+                  <button
+                    className="dt-paging-button first"
+                    type="button"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(1)}
+                  >
+                    «
+                  </button>
+                  <button
+                    className="dt-paging-button previous"
+                    type="button"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                  >
+                    Previous
+                  </button>
 
                   {[...Array(totalPages)].map((_, index) => (
                     <button
                       key={index}
-                      className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
+                      className={`dt-paging-button none ${
+                        currentPage === index + 1 ? "current" : ""
+                      }`}
                       type="button"
                       onClick={() => setCurrentPage(index + 1)}
                     >
@@ -337,8 +375,22 @@ const PatientReviewsTable = () => {
                     </button>
                   ))}
 
-                  <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>Next</button>
-                  <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
+                  <button
+                    className="dt-paging-button next"
+                    type="button"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className="dt-paging-button last"
+                    type="button"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                  >
+                    »
+                  </button>
                 </nav>
               </div>
             </div>
