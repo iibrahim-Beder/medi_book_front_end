@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import PatientsFilters from "./PatientsFilters";
 import { MdOutlineArrowForward } from "react-icons/md";
 import MainSearch from "../../../shared/MainSearch";
+import DateRangePicker from "../../patient-information/PatientTabs/component/DateRangePicker";
+import FilterDropdown from "../../patient-information/PatientTabs/component/FilterDropdown";
 
 const PatientsTable = () => {
   const { t } = useTranslation();
@@ -119,26 +121,72 @@ const PatientsTable = () => {
   };
 
   return (
-    <div
-      className="shadow-sm mt-4 "
-      style={{ border: "none", borderRadius: "12px" }}
-    >
-      <MainSearch
-        search={search}
-        setSearch={setSearch}
-        status={status}
-        setStatus={setStatus}
-        gender={gender}
-        setGender={setGender}
-        onExportCsv={handleExportCsv}
-        onReset={handleReset}
-      />
-      <div className="p-3 PatientsTable">
-        <div className="d-flex justify-content-between mb-3">
-          <h3>
+    <div>
+         
+        <div className="d-flex justify-content-between ">
+          <h3 className="table-title"  >
             <PiUsersThreeLight /> {t("patientsList")}
           </h3>
         </div>
+      <div
+      className=""
+      style={{ border: "none", borderRadius: "12px" }}
+    >
+      
+     
+      <div className="table-card">
+        
+         <div 
+         className="d-flex justify-content-between mb-3" 
+         >
+         <MainSearch />
+             <div className=" review-filters ">
+             
+             <FilterDropdown small/>
+             <DateRangePicker/>
+
+            {/* <ConditionsFilters
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              filterServiceType={filterServiceType}
+              setFilterServiceType={setFilterServiceType}
+              filterRating={filterRating}
+              setFilterRating={setFilterRating}
+              filterDateFrom={filterDateFrom}
+              setFilterDateFrom={setFilterDateFrom}
+              filterDateTo={filterDateTo}
+              setFilterDateTo={setFilterDateTo}
+              onReset={resetFilters}
+              onSearch={handleSearch}
+              conditions={visitTypes}
+              showSearchInput={true}
+              showDateRange={true}
+              showFilterDropdown={true}
+              customFilters={[
+                {
+                  name: "rating",
+                  label: "Rating",
+                  data: [
+                    { key: "1", label: "1 Star" },
+                    { key: "2", label: "2 Stars" },
+                    { key: "3", label: "3 Stars" },
+                    { key: "4", label: "4 Stars" },
+                    { key: "5", label: "5 Stars" },
+                  ],
+                },
+                {
+                  name: "serviceType",
+                  label: "Visit Type",
+                  data: [
+                    { key: "Video Call", label: "Video Call" },
+                    { key: "Voice Call", label: "Voice Call" },
+                    { key: "In-Person Visit", label: "In-Person Visit" },
+                  ],
+                },
+              ]}
+            /> */}
+          </div>
+       </div>
 
         {/* Scrollable Table Wrapper */}
         <div style={{ overflowX: "auto" }}>
@@ -181,19 +229,6 @@ const PatientsTable = () => {
                     ${patient.paid}
                   </td>
                   <td className="border-0">
-                    {/* <Button
-                      size="sm"
-                      variant="outline-primary"
-                      style={{
-                        border: "none",
-                        background: "#f1f5f9",
-                        width: "35px",
-                        height: "30px",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <PiEyeThin style={{ fontSize: "20px" }} />
-                    </Button> */}
                     <Button
                       variant="outline-primary"
                       size="sm"
@@ -283,6 +318,8 @@ const PatientsTable = () => {
         </div>
       </div>
     </div>
+    </div>
+    
   );
 };
 

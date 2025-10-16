@@ -6,6 +6,8 @@ import { t } from "i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import StarRating from "../../../shared/StarRating"; 
 import ConditionsFilters from "../../patient-information/PatientTabs/component/ConditionsFilters";
+import FilterDropdown from "../../patient-information/PatientTabs/component/FilterDropdown";
+import DateRangePicker from "../../patient-information/PatientTabs/component/DateRangePicker";
 
 const PatientReviewsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);
@@ -172,15 +174,15 @@ const PatientReviewsTable = () => {
           <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
         </div>
       </div> */}
-
-      <div className="pt-3">
-        <div className="table-card">
-          <div className="table-header pb-3 mb-2"
-          style={{borderBottom:"1px solid #eee"}}
-          >
-            <div>
+           <div className="mt-4" >
               <h3 className="table-title"> Patients Reviews </h3>
             </div>
+      <div className="">
+        <div className="table-card">
+          <div className="table-header pb-3 mb-4"
+          style={{borderBottom:"1px solid #eee"}}
+          >
+            
 
             {/* Overall rating summary section */}
             <div className="review-content">
@@ -194,8 +196,12 @@ const PatientReviewsTable = () => {
             </div>
           </div>
           {/* Filters Section */}
-          <div className="mb-3 p-3">
-            <ConditionsFilters
+          <div className=" review-filters ">
+             
+             <FilterDropdown small/>
+             <DateRangePicker/>
+
+            {/* <ConditionsFilters
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               filterServiceType={filterServiceType}
@@ -234,7 +240,7 @@ const PatientReviewsTable = () => {
                   ],
                 },
               ]}
-            />
+            /> */}
           </div>
 
           {/* Data Table */}

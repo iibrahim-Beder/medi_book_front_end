@@ -891,7 +891,7 @@ padding: 20px 60px;
 
 /*  comment css start  */
 .comments-list {font-family: "Inter", sans-serif;}
-.comments-list .filters {display: flex; justify-content:flex-end;gap: 10px; }    
+.review-filters{display: flex; justify-content:flex-end;gap: 10px; }    
 .comments-list .table-card {    
   box-shadow: 0px 0px 8px 3px var(--shado3color) ;
   padding-bottom: 15px;
@@ -922,6 +922,8 @@ padding: 20px 60px;
 .accordion-table .table-card{ height: fit-content; width: 100%;   }
 .accordion-table .table-card .dc-accordioninnertitle ,.accordion-table .table-card .dc-collapseexp  { background-color: var(--scbccolor) !important;  }
 .accordion-table .table-card .dc-collapseexp  {padding-bottom: 0; }
+
+/*  select arrow start  */
 .select-wrapper {
   position: relative;
 }
@@ -931,15 +933,20 @@ padding: 20px 60px;
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 100%;
-  padding-right: 35px; /* مساحة للسهم */
+  padding-right: 35px; 
 }
 
 .select-arrow {
   position: absolute;
   top: 50%;
-  right: 12px; /* غيّرها علشان تحرك السهم شمال أو يمين */
+  right: 12px;
   transform: translateY(-50%);
-  color: #555; /* لون السهم */
+  color: #555;
   pointer-events: none;
   font-size: 14px;
 }
+/*  select arrow end */
+.main-search .filtecss p {width: fit-content; }
+.main-search .filtecss{justify-content: center !important; }
+.main-search .filtecss svg {font-size: large; }
+.main-search  .dc-headerform fieldset .form-group input {border-color: #E6E8EE; }

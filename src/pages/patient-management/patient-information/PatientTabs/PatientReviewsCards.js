@@ -103,7 +103,7 @@ const PatientReviewsCards = () => {
       </div>
 
       {/* Filters section */}
-      <div className="filters">
+      <div className="review-filters">
         <FilterDropdown small />
         <DateRangePicker />
       </div>

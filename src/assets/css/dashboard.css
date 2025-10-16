@@ -5599,7 +5599,7 @@ content: none;
 /* >>> */
 
 @media (max-width: 1200px) {
-	.dc-dashboardbox.dc-dashboardtabsholder.table-card.noneshadow,.accordion-table{display: unset;}
+	.dc-tabscontent{height: fit-content;}
 	.two-tabs .nav {padding-right: 500px !important;}
 	.list-date-option.custom{
 		left: -150% ;

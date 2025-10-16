@@ -14,7 +14,7 @@ import Medications from "./PatientTabs/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("Medications");
+  const [activeTab, setActiveTab] = useState("Reviews");
   const { t } = useTranslation();
   
   let padding = activeTab === "Medications" || activeTab === "MedicalConditions";
