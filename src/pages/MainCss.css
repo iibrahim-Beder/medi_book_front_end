@@ -954,3 +954,41 @@ padding: 20px 60px;
   white-space:nowrap;
 }
 .patintStats .table-card { max-height: 246px; }
+.comments-list .alert-icon svg {
+  font-size: 20PX;
+}
+ 
+.notification-card .alert-icon{
+      width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: #E6E8EE;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+.notification-card{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.icon-content{
+  display: flex;
+}
+.notifications-list .table-card {
+  padding: 20px;
+}
+.notification-card .icon-content span,
+.notification-card .icon-content span p{
+  font-family:"Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #465D7C;
+}
+.notification-card .icon-content span p{  font-size: 14px;
+  color: #465D7C;
+
+}

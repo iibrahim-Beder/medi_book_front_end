@@ -12,16 +12,17 @@ import PrescriptionsTable from "./PatientTabs/PrescriptionsTable";
 import MedicalConditions from "./PatientTabs/MedicalConditions";
 import Medications from "./PatientTabs/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
+import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
 
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("Reviews");
+  const [activeTab, setActiveTab] = useState("PatientNotificationsCards");
   const { t } = useTranslation();
   
   let padding = activeTab === "Medications" || activeTab === "MedicalConditions";
 
   const tabs = [
    { key: "BasicInfo", label: t("BasicInfo") },
-   { key: "Notifications", label: t("Notifications") },
+   { key: "PatientNotificationsCards", label: t("Notifications") },
    { key: "Appointments", label: t("Appointments") },
    { key: "Reviews", label: t("Reviews") },
    { key: "ConditionsTable", label: t("Medical History") },
@@ -78,6 +79,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "Medications" && <Medications/>}
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
+            {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
           </div>
         </div>
       </div>
