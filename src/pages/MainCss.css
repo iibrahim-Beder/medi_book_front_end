@@ -950,3 +950,7 @@ padding: 20px 60px;
 .main-search .filtecss{justify-content: center !important; }
 .main-search .filtecss svg {font-size: large; }
 .main-search  .dc-headerform fieldset .form-group input {border-color: #E6E8EE; }
+.patintStats h4 {
+  white-space:nowrap;
+}
+.patintStats .table-card { max-height: 246px; }

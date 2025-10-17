@@ -5,6 +5,7 @@ import DoctorFinanceTable from "./component/DoctorFinanceTable";
 import { FaMoneyBillWave, FaWallet } from "react-icons/fa";
 import StatCard from "../patient-management/patients-home-page/components/StatCard";
 import { useTranslation } from "react-i18next";
+import DateRangePicker from "../patient-management/patient-information/PatientTabs/component/DateRangePicker";
 
 const DoctorFinancialDashboard = () => {
     const { t } = useTranslation();
@@ -28,7 +29,7 @@ const DoctorFinancialDashboard = () => {
     datasets: [
       {
         label: "Bookings Status",
-        data: [15, 20],
+        data: [1000, 200],
         backgroundColor: ["#198754", "#dc3545"]
       }
     ]
@@ -48,16 +49,24 @@ const DoctorFinancialDashboard = () => {
   
     const stats = [
       {
-        title: t("total Earnings"), 
-        value: 12500,
+        title: t("All bookings"), 
+        value: 1200,
         percentage: 4.5,
         isPositive: true,
         icon: FaMoneyBillWave,
         color: "#3B82F6",
       },
       {
-        title: t("pending Payments"),
-        value: 2300,
+        title: t("Completed bookings"),
+        value: 1000,
+        percentage: 2.1,
+        isPositive: true,
+        icon: FaWallet,
+        color: "#F59E0B",
+      },
+      {
+        title: t("Cancelled bookings"),
+        value: 200,
         percentage: 2.1,
         isPositive: false,
         icon: FaWallet,
@@ -76,12 +85,6 @@ const DoctorFinancialDashboard = () => {
             <Line data={revenueChartData} />
           </div>
         </div>
-        {/* <div className="col-md-3 mb-3">
-          <div className="card shadow-sm p-3">
-            <h5 className="card-title mb-3">Bookings Status</h5>
-            <Pie data={statusChartData} />
-          </div>
-        </div> */}
         <div className="col-md-6 mb-3">
           <div className="table-card">
             <h5 className="card-title mb-3">Branch Revenue</h5>
@@ -89,12 +92,35 @@ const DoctorFinancialDashboard = () => {
           </div>
         </div>
       </div>
-        <DoctorFinanceTable/>
+        <div className="table-card mt-4 " > 
+          <div className="mb-3" style={{display:"flex", justifyContent:"space-between"}}>
+
+  <div className="table-header">
+        <div>
+          <h3 className="table-title">bookings stats</h3>
+        </div>
+      </div>
+            <div className="d-flex align-items-center" > 
+              <p className="m-0 mr-1">Filter by date :</p>  
+          <DateRangePicker/>
+          </div>
+          </div>
         <Row className="g-3 mb-4 patintStats">
       {stats.map((stat, idx) => (
         <StatCard key={idx} {...stat} />
       ))}
+        <div className="col-xl-3 col-sm-6 col-12"
+        //  style={{    width:" 338px", height:"230px", display: "flex"}}
+         >
+          <div className="table-card" style={{    display: "flex",flexDirection:"column",alignItems: "center"}}>
+            <h4 className="text-muted mb-0">Bookings Status</h4>
+            <Pie data={statusChartData} />
+          </div>
+        </div>
     </Row>
+
+        </div>
+        <DoctorFinanceTable/>
      
     </Container>
   );

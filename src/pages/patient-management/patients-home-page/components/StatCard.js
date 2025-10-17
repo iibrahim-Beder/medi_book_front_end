@@ -44,6 +44,19 @@ const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) =
         >
           {/* Value */}
           <h3 className="fw-bold mb-2">{value}</h3>
+           <div>
+          <span
+            className={`badge rounded-pill px-2 py-1 ${
+              isPositive
+                ? "bg-success-subtle text-success"
+                : "bg-danger-subtle text-danger"
+            }`}
+            >
+            {isPositive ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
+            <span className="ms-1">{percentage}%</span>
+          </span>
+          <small className="text-muted ms-2">since last month</small>
+          </div>
         </div>
       </div>
     </div>
