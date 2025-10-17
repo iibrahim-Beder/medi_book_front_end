@@ -5832,6 +5832,7 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 	box-shadow: 0px 11px 12px 0px var(--scshadocolor);
 }
 }
+/* RTL direction start */
 html[dir="rtl"]  {
 	.setting{display: flex;flex-direction: row-reverse;	} 
 	.dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{direction: ltr;}
@@ -5866,14 +5867,16 @@ html[dir="rtl"]  {
       right:auto !important;
     left: 10px;
 }
-
-
-
-.input-icon{left: auto;
-right: 6px;}
-
+.input-icon{left: auto;right: 6px;}
+body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p {
+	font-family: "Tajawal", "Cairo", sans-serif;
 }
 
+
+
+
+}
+/* direction end */
 
 .edit-input  {
 	background-color: transparent !important;
