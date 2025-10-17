@@ -278,7 +278,7 @@
 }
 .doctor-registration .input-with-icon input{
   padding-left: 25px;
-  color:#012047;
+  color:var(--text-tertiary);
 }
 
 .doctor-registration form p{

@@ -27,6 +27,16 @@
   font-style: normal;
   font-display: swap;
 }
+:root{ 
+--text-sub:#465D7C;
+--text-tertiary: #012047;     
+/* --text-muted: #B8C1D9;        placeholders */
+--text-inverse: #FFFFFF; 
+
+
+
+ }
+
 :root{  --tablecolor: #ffffff; }
 :root{  --cardcolor: #ffffff; }
 :root{  --len2color: #eee; }
@@ -5000,7 +5010,7 @@ a.dc-back:hover{color: #55acee;}
 	width: 100%;
 	height: 760px;
 }
-.dc-offersmessages .dc-formsearch{padding: 20px;background: #fff;}
+.dc-offersmessages .dc-formsearch{padding: 20px;background: var(--cardcolor);}
 .dc-offersmessages .dc-formsearch fieldset .form-group{margin: 0;}
 .dc-offersmessages .dc-ad{
 	margin: 0;
@@ -5011,7 +5021,7 @@ a.dc-back:hover{color: #55acee;}
 	position: relative;
 	border-top: 1px solid #f2f2f2;
 }
-.dc-offersmessages .dc-ad.dc-active{background: #fff;}
+.dc-offersmessages .dc-ad.dc-active{background: var(--badybkcolor);}
 .dc-offersmessages .dc-ad.dc-active:after{height: 100%;}
 .dc-offersmessages .dc-ad figure{
 	margin: 0;
@@ -5174,7 +5184,7 @@ top: 50%;
 .dc-memessage .dc-description p{
 	border: 1px solid #f2f2f2;
 	border-radius: 20px 20px 0px 20px;
-	background: #fcfcfc;
+	background: var(--badybkcolor);
 	padding: 20px;
 }
 .dc-offerermessage .dc-description p a,
@@ -5554,7 +5564,7 @@ top: 50%;
     max-height: 32px !important;
     border-radius: 5px !important;
     padding-left: 28px !important;
-    color: #012047 !important;
+    color: var(--text-tertiary) !important;
 }
 /* <<<<<<< HEAD */
 .contentdiv{
@@ -5786,6 +5796,8 @@ padding: 0 10px;
   --scbccolor:rgb(252, 252, 252);
 }
 [data-theme="dark"] {
+	--text-tertiary:#B8D0FF;
+	--text-sub:#B8C4E2;
 	--len2color:#858585;
 	--shado3color:#00000040;
 	--headcolor:#1e182e;
@@ -5809,6 +5821,7 @@ padding: 0 10px;
 .container{border-color: #334c99;}
 .text-muted{color :#ededede6 !important;}
 .form-title {color: #fff;}
+.dt-layout-cell.dt-layout-start{color: var(--terthemecolor) !important;}
 .dc-navdashboard ul li a .icon ,.dropdown-btn .arrow{
 color: white;
 }

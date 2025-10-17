@@ -407,7 +407,7 @@ const Diagnoses = () => {
         padding: "20px",
         borderRadius: "8px",
         height: "100%",
-        boxShadow: "0 0 7px #eee",
+        boxShadow: "0px 0px 7px var(--shado3color)",
       }}
     >
       <NestedAccordion

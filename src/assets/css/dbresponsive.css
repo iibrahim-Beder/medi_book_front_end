@@ -52,7 +52,7 @@
 		width: 100%;
 		display: none;
 		padding: 13px 0;
-		background: #fff;
+		/* background: #fff; */
 		/* position: absolute; */
 	}
 	.show-sform .dc-search-headerform,
