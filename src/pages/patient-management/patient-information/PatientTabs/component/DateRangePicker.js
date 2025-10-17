@@ -201,7 +201,6 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
           }}
           style={{
             padding: "10px 40px 10px 10px",
-            cursor: "pointer",
             width: "230px",
             borderRadius: "5px",
             height: "32px",
