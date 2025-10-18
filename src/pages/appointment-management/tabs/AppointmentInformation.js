@@ -26,7 +26,7 @@ const AppointmentInformation = () => {
 
           <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <div className="dc-haslayout dc-dbsectionspace dc-dbsectionspacetest">
-              <div className="dc-dashboardbox " style={{boxShadow: "0 0 7px #eee"}}>
+              <div className="dc-dashboardbox ">
                 <PationtCard
                   userName={"Ibrahem makhasi"}
                   userImg={"images/feedback/user-img.jpg"}

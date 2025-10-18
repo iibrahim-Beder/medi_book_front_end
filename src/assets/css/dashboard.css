@@ -497,7 +497,7 @@ address { font-style: italic; }
 }
 .dc-checkbox input[type=checkbox] + label span{
 	float: left;
-	color: #767676;
+	/* color: #767676; */
 	font-family: 'Open Sans', sans-serif;
 	font-size: 13px; 
 }
@@ -5610,7 +5610,6 @@ content: none;
 
 @media (max-width: 1200px) {
 	.dc-tabscontent{height: fit-content;}
-	.two-tabs .nav {padding-right: 500px !important;}
 	.list-date-option.custom{
 		left: -150% ;
 	}
@@ -5623,7 +5622,6 @@ content: none;
 
 	/* @ another  media   */
 	@media (max-width: 992px) {
-			.two-tabs .nav {padding-right: 400px !important;}
 	.dc-dotnotification:before{    margin: -5px 10px 0 ; }
 .contentdiv{
 margin-right: 15px ;
@@ -5643,7 +5641,6 @@ margin-right: 15px ;
 /* <<< */
 	
 @media (max-width: 900px) {
-				.two-tabs .nav {padding-right: 300px !important;}
 	.nested-accordion .dc-experienceaccordion{padding: 0 10px;}
      .two-level-accordion .dc-userexperience .dc-tabscontenttitle {
    			display: flex;
@@ -5660,7 +5657,6 @@ margin-right: 15px ;
 /* <<< */
 
 	@media (max-width: 820px) {
-			.two-tabs .nav {padding-right: 200px !important;}
 .dc-accordioninnertitle.small ~ .dc-collapseexp 
 {
 	padding: 30px 5px;
@@ -5690,7 +5686,6 @@ margin-right: 0 !important;
 }
 /* <<< */
 @media (max-width: 720px){
-.two-tabs .nav {padding-right: 110px !important;}
 .nested-accordion .dc-collapseexp.show{padding: 30px 10px;}
 .nested-accordion ul ul{margin-left: 10px;}
 
@@ -5719,7 +5714,6 @@ padding: 0 10px;
 /* <<< */
 @media (max-width: 568px) {
 	.two-tabs-nav-container{padding-left: 4px !important;}
-	.two-tabs .nav {padding-right: 30px !important;}
 	.dc-notes .dc-skillsform fieldset .form-group.input {
 		padding-right: 20px;
 	}

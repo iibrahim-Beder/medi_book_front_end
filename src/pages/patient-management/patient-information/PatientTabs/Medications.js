@@ -14,9 +14,11 @@ export default function Medications() {
 
   return (
     <div className="col-12 p-0 two-tabs " >
-       <div className="two-tabs-nav-container" style={{paddingLeft:"25px", paddingTop:"20px", backgroundColor:"#ffff"}}>
+       <div className="" style={{paddingLeft:"25px", paddingTop:"20px", backgroundColor:"var(--cardcolor)"}}>
         {/* Tabs Navigation */}
-        <ul className="nav nav-tabs nav-fill padding-right" style={{width:"fit-content", paddingLeft:"40px", paddingRight:"20px", fontFamily: "Poppins, Arial, Helvetica, sans-serif", fontSize: "16px" ,fontWeight:" 400"}}>
+        <ul className="nav nav-tabs nav-fill padding-right two-tabs-nav-container" 
+        // style={{width:"fit-content", paddingLeft:"40px", paddingRight:"20px", fontFamily: "Poppins, Arial, Helvetica, sans-serif", fontSize: "16px" ,fontWeight:" 400"}}
+        >
           {tabs.map((tab) => (
             <li className="nav-item" key={tab.key}>
               <a
@@ -33,10 +35,10 @@ export default function Medications() {
           ))}
         </ul>
         </div>
-      <div className="card m-0 border-0" style={{boxShadow:"none"}}>
+      <div className="card m-0 border-0" style={{boxShadow:"none" }}>
 
         {/* Tabs Content */}
-        <div className="card-body" style={{backgroundColor:"var(- -scbccolor)"}}>
+        <div className="card-body" style={{backgroundColor:"var(--scbccolor)"}}>
           {activeTab === "PrescribedMedicationTable" && (
             <div className="table-responsive">
               <PrescribedMedicationTable />

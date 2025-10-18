@@ -993,3 +993,14 @@ padding: 20px 60px;
   
 }
 .comments-list .card{ background-color: transparent; }
+
+/*  two tabs container start */
+.two-tabs-nav-container{
+    width: fit-content;
+    padding-left: 40px !important;
+    padding-right: 20px;
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+/*  two tabs container end */
