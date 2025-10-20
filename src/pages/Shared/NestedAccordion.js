@@ -5,8 +5,12 @@ import "../MainCss.css";
 import TwoLevelAccordion from "./TwoLevelAccordion";
 import EditableList from "./EditableList";
 import DiagnosedConditionsAccordion from "../appointment-management/tabs/DiagnosedConditionsAccordion";
+import TextAreaField from "../ui/form-fields/TextAreaField";
+import SelectField from "../ui/form-fields/SelectField";
+import Field from "../ui/form-fields/Field";
+import CustomAccordion from "./CustomAccordion";
 
-const NestedAccordion = memo(({
+const   NestedAccordion = memo(({
   backgroundColor = "",
   title,
   formFieldsPrescription,
@@ -173,8 +177,9 @@ const NestedAccordion = memo(({
                       }`}
                     >
                       {field.type === "textarea" ? (
-                        <textarea
-                          className="form-control"
+                        <TextAreaField
+                          name={field.name}
+                          label={field.label}
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
                           onChange={(e) =>
@@ -182,30 +187,31 @@ const NestedAccordion = memo(({
                           }
                         />
                       ) : field.type === "select" ? (
-                        <select
-                          className="form-control"
-                          value={item[field.name] || ""}
-                          onChange={(e) =>
-                            handleFieldChange(index, field.name, e.target.value)
-                          }
-                        >
-                          <option value="">{field.placeholder}</option>
-                          {field.options?.map((opt, i) => (
-                            <option key={i} value={opt}>
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        <input
-                          type={field.type}
-                          className="form-control"
+                        <SelectField
+                          name={field.name}
+                          label={field.label}
                           placeholder={field.placeholder}
+                          options={field.options}
                           value={item[field.name] || ""}
                           onChange={(e) =>
                             handleFieldChange(index, field.name, e.target.value)
                           }
                         />
+                      ) : (
+                        <Field
+                          label={field.label}
+                          name={field.name}
+                          value={item[field.name] || ""}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
+                          placeholder={field.placeholder}
+                          type={field.type}
+                          error={field.error}
+                          forceShowError={field.forceShowError}
+                          disabled={field.disabled}
+                        />
+                          
                       )}
                     </div>
                   ))}
@@ -240,12 +246,41 @@ const NestedAccordion = memo(({
                     onDeleteCondition &&
                     onUpdateCondition &&
                     onSaveCondition && (
-                      <DiagnosedConditionsAccordion
-                        noHedarBefore={true}
-                        backgroundColor="#fcfcfc"
-                        title="Diagnosed Conditions"
+                   
+                      <CustomAccordion
+                      noHedarBefore={true}
+                      title="Diagnosed Conditions"
                         addNewLabel="Add Condition"
                         data={item.conditions || []}
+                        formFields={[
+                          {
+                            name: "condition",
+                            label: "Condition",
+                            type: "dropdown",
+                            options: [
+                              "Asthma",
+                              "Diabetes",
+                              "Hypertension",
+                            ]},
+                            {
+                              name: "severity",
+                              label: "Severity",
+                              type: "select",
+                              options: [
+                                "Mild",
+                                "Moderate",
+                                "Severe",
+                              ]
+                            },
+                            {
+                              name: "Notes",
+                              label: "Notes",
+                              type: "textarea",
+                              placeholder: "Enter notes..."
+
+                            },
+                          ]
+                        }
                         onAdd={() => onAddCondition(index)}
                         onDelete={(conditionIndex) =>
                           onDeleteCondition(index, conditionIndex)
@@ -256,6 +291,7 @@ const NestedAccordion = memo(({
                         onSave={(conditionIndex, conditionData) =>
                           onSaveCondition(index, conditionIndex, conditionData)
                         }
+                   
                       />
                     )}
 
@@ -265,7 +301,7 @@ const NestedAccordion = memo(({
                       <EditableList
                         btnClass="second-btn"
                         headerComponent={
-                          <div className="dc-tabscontenttitle no-before-line dc-addnew">
+                          <div className=" mt-4 dc-tabscontenttitle no-before-line dc-addnew">
                             <h3>Notes</h3>
                           </div>
                         }

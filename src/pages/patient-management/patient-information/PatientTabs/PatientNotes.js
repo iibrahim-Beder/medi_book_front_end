@@ -46,7 +46,7 @@ export const formatDateForDisplay = (dateString) => {
   });
 };
 
-const PatientNotesComponent = () => {
+const PatientNotes = () => {
   const [notes, setNotes] = useState(mockNotesData);
   const [showModal, setShowModal] = useState(false);
   const [currentNote, setCurrentNote] = useState(null);
@@ -253,4 +253,4 @@ const PatientNotesComponent = () => {
   );
 };
 
-export default PatientNotesComponent;
+export default PatientNotes;

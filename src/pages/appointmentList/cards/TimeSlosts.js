@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import SelectField from "../../ui/form-fields/SelectField";
 
 const statusColors = {
-  completed: "#2ecc714a", // أخضر
-  cancelled: "rgb(231 76 60 / 46%)", // أحمر
-  empty: "rgb(108 117 125 / 58%)", // رمادي
-  pending: "#247cff7b", // أزرق فاتح
+  completed: "#2ecc714a", // green  
+  cancelled: "rgb(231 76 60 / 46%)", // red
+  empty: "rgb(108 117 125 / 58%)", // gray 
+  pending: "#247cff7b", // blue
 };
 
 const TimeSlosts = ({ slots = [], onRemoveSlot }) => {
@@ -18,16 +19,19 @@ const TimeSlosts = ({ slots = [], onRemoveSlot }) => {
 
   return (
     <div className="dc-spaces-holder" style={{ backgroundColor: "#fcfcfc" }}>
-      {/* فلتر الحالة */}
-      <div className="dc-select">
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="all">{t("slotsSelct.all")}</option>
-          <option value="completed">{t("slotsSelct.completed")}</option>
-          <option value="cancelled">{t("slotsSelct.cancelled")}</option>
-          <option value="empty">{t("slotsSelct.empty")}</option>
-          <option value="pending">{t("slotsSelct.pending")}</option>
-        </select>
-      </div>
+      {/* filter */}
+       <SelectField
+          name="filter"
+          options={[
+            { value: "all", label: t("slots.all") },
+            { value: "completed", label: t("slots.completed") },
+            { value: "cancelled", label: t("slots.cancelled") },
+            { value: "empty", label: t("slots.empty") },
+            { value: "pending", label: t("slots.pending") },
+          ]}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
 
       <ul className="dc-spaces-wrap">
         {filteredSlots.map((slot, index) => (

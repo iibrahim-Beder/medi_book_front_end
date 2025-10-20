@@ -1,7 +1,13 @@
-import Specializations from "../1-Profile-details/Specializations";
 import Profil from "../2-Experans & Edition/Profil";
-
+import EditableList from "../../shared/EditableList";
+import { useState } from "react";
+import { id } from "date-fns/locale/id";
 const  ProfileAndSpecialties = () => {
+  const [specializations, setSpecializations] = useState([
+  { id: 1,
+    specialty: "Dentist",}
+
+  ]);
   return (
 
 
@@ -9,7 +15,14 @@ const  ProfileAndSpecialties = () => {
   
 
        <Profil/> 
-       <Specializations/>
+       <EditableList
+       title={"Specialties"}
+       fieldKey={"specialty"}
+       initialItems={specializations}
+       onChange={setSpecializations}
+       minItems={1}
+       
+       />
     
 
     

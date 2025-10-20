@@ -9,16 +9,15 @@ const FileField = ({
   buttonIcon,
   hint,
   error,
-  forceShowError = false, // ✅ جديد
+  forceShowError = false, 
 }) => {
   const [touched, setTouched] = useState(false);
 
   const handleChange = (e) => {
-    setTouched(true); // ✅ أول ما يختار ملف
+    setTouched(true);
     onChange(e);
   };
 
-  // ✅統一 الشرط
   const showError = error && (touched || forceShowError);
 
   return (

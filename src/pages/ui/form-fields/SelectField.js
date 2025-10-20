@@ -33,11 +33,16 @@ const SelectField = ({
           onBlur={() => setTouched(true)}
           className={showError ? "input-error" : ""}
         >
-          {options.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
+        {options && options.map((option) => {
+  const value = typeof option === 'string' ? option : option.value;
+  const label = typeof option === 'string' ? option : option.label;
+  
+  return (
+    <option key={value} value={value}>
+      {label}
+    </option>
+  );
+})}
         </select>
      <FaChevronDown className="select-arrow" />
 

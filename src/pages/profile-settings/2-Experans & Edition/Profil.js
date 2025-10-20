@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import "../../MainCss.css";
+import Field from "../../ui/form-fields/Field";
 
 const Profil = () => {
   const { t } = useTranslation();
@@ -9,10 +10,11 @@ const Profil = () => {
       <div className="dc-tabscontenttitle">
         <h3>{t("profile.title")}</h3>
       </div>
-      <form className="dc-formtheme dc-userform">
+      <form className="dc-formth dc-userform">
         <fieldset>
           <div className="form-group form-group-half">
-            <input
+            <Field
+              label={t("profile.experience")}
               type="text"
               name="firstName"
               className="form-control"
@@ -20,7 +22,8 @@ const Profil = () => {
             />
           </div>
           <div className="form-group form-group-half">
-            <input
+            <Field
+              label={t("profile.bio")}
               type="text"
               name="lastName"
               className="form-control"
@@ -29,7 +32,8 @@ const Profil = () => {
           </div>
 
           <div className="form-group form-group-half">
-            <input
+            <Field
+              label={t("profile.languages")}
               type="text"
               name="heading"
               className="form-control"
@@ -37,7 +41,8 @@ const Profil = () => {
             />
           </div>
           <div className="form-group form-group-half">
-            <input
+            <Field
+              label={t("profile.speciality")}
               type="text"
               name="heading"
               className="form-control"

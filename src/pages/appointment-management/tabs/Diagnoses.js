@@ -421,17 +421,20 @@ const Diagnoses = () => {
             type: "text",
             placeholder: "Diagnosis Name",
             half: true,
+            label: "Diagnosis Name",
           },
           {
             name: "SymptomsDescription",
             type: "text",
             placeholder: "Symptoms Description",
             half: true,
+            label: "Symptoms Description",
           },
           {
             name: "Description",
             type: "textarea",
             placeholder: "Diagnosis Description",
+            label: "Diagnosis Description",
           },
         ]}
         onAdd={handleAddDiagnosis}
@@ -454,6 +457,7 @@ const Diagnoses = () => {
             type: "text", 
             placeholder: "Prescription Title", 
             half: true,
+            label: "Prescription Title",
           },
           { 
             name: "status",   
@@ -461,11 +465,13 @@ const Diagnoses = () => {
             options: ["Active", "Completed", "Cancelled", "Expired"],
             placeholder: "select Status", 
             half: true,
+            label: "Prescription Status",
           },
           { 
             name: "note", 
             type: "textarea", 
             placeholder: "Prescription note",
+            label: "Prescription Note",
           },
         ]}
         onAddPrescription={handleAddPrescription}

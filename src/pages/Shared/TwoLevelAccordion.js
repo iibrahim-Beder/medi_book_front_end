@@ -3,6 +3,9 @@ import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
 import "../MainCss.css";
 import CustomAccordion from "./CustomAccordion";
+import TextAreaField from "../ui/form-fields/TextAreaField";
+import SelectField from "../ui/form-fields/SelectField";
+import Field from "../ui/form-fields/Field";
 
 const TwoLevelAccordion = memo(({
   formFieldsRecipe = [], 
@@ -190,32 +193,31 @@ const TwoLevelAccordion = memo(({
                       className={`form-group ${field.half ? "form-group-half" : ""}`}
                     >
                       {field.type === "textarea" ? (
-                        <textarea
-                          disabled={readOnly}
-                          className="form-control"
+                        <TextAreaField
+                          label={field.label}
+                          name={field.name}
+                          value={item[field.name] || ""}
+                          onChange={(e) =>
+                            handleFieldChange(index, field.name, e.target.value)
+                          }
                           placeholder={field.placeholder}
-                          value={item[field.name] || ""}
-                          onChange={(e) =>
-                            handleFieldChange(index, field.name, e.target.value)
-                          }
-                          rows={4}
+                          icon={field.icon}
+                          disabled={readOnly}
                         />
+                        
                       ) : field.type === "select" ? (
-                        <select
+                        <SelectField
+                          label={field.label}
                           disabled={readOnly}
                           className="form-control"
                           value={item[field.name] || ""}
+                          name={field.name}
+                          options={field.options}
                           onChange={(e) =>
                             handleFieldChange(index, field.name, e.target.value)
                           }
-                        >
-                          <option value="">{field.placeholder}</option>
-                          {field.options?.map((opt, i) => (
-                            <option key={i} value={opt}>
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
+
+                        />
                       ) : field.type === "number" ? (
                         <input
                           disabled={readOnly}
@@ -229,7 +231,8 @@ const TwoLevelAccordion = memo(({
                           min="0"
                         />
                       ) : (
-                        <input
+                        <Field
+                          label={field.label}
                           disabled={readOnly}
                           type={field.type}
                           className="form-control"
