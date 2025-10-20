@@ -161,7 +161,7 @@
 	.dc-profilephotocontent .dc-attachfilevtwo li{width: 50%;}
 	.dc-wrapper.dc-closemenu .dc-main{padding-left:15px }
 	.dc-wrapper .dc-sidebarwrapper{width: 0;}
-	.dc-btnmenutoggle{left: 0;}
+    .collapsed	.dc-btnmenutoggle{left: 0;}
 	.dc-yeartag .dc-tag{
 		float: left;
 		width: 100%;

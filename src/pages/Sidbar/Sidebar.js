@@ -31,7 +31,8 @@ import {
   FaShieldAlt,  
   FaSignOutAlt,
   FaArrowLeft,
-  FaClone
+  FaClone,
+  FaBars
 } from 'react-icons/fa';
 import { useTranslation } from "react-i18next";
 import './Sidebar.scss';
@@ -47,7 +48,9 @@ let iconSize=20;
   return (
     <div id="dc-sidebarwrapper" className={`dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
       <div style={{position:"fixed"}} id="dc-btnmenutoggle" className="dc-btnmenutoggle" onClick={toggleSidebar}>
-        <FaArrowLeft className={`icon ${isCollapsed ? "rotate-180" : ""}`} />
+        {/* <FaArrowLeft className={`icon ${isCollapsed ? "rotate-180" : ""}`} /> */}
+         <FaArrowLeft className={`icon desktop ${isCollapsed ? "rotate-180" : ""}`} />
+        <FaBars className="icon mobile" />
       </div>
       <div id="dc-verticalscrollbar" className="dc-verticalscrollbar">
         {/* Profile Section */}

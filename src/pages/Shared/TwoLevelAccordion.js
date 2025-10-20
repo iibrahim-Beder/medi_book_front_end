@@ -174,7 +174,6 @@ const TwoLevelAccordion = memo(({
             {/* Item Content */}
             <div
               style={{
-                paddingRight: "15px",
                 borderLeft: "2px solid var(--themecolor)",
                 backgroundColor: backgroundColor,
               }}

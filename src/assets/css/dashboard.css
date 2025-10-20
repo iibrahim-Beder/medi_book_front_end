@@ -5675,10 +5675,6 @@ margin-right: 15px ;
 		
 		padding-left: 5px !important	;
 	}
-.contentdiv{
-margin-right: 0 !important;
-}
-
 /* date range picker css */
 .rdp-months{
 	flex-direction: column;
@@ -5718,6 +5714,30 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.nested-accordion .dc-accordioninnertitle.small ~ .dc-collapseexp .dc-userform{
+		padding: 0;
+	}
+	        .nested-accordion .dc-collapseexp.show {
+            padding: 30px 5px;
+        }
+		.nested-accordion .two-level-accordion textarea,.nested-accordion .two-level-accordion  .dropdown-with-search-in-accordion{ padding: 10px !important; }
+	.nested-accordion ul{
+		margin-left: 0 !important;
+	}
+	.nested-accordion{
+		padding: 20px 5px ;
+	}
+	.icon.desktop{
+  display: none;
+}
+
+.icon.mobile{
+  display: inline-block;
+}
+.dc-btnmenutoggle{ border-radius: 0; }
+	.dc-sidebarwrapper.collapsed{
+		width: 0 ;
+	}
 	.two-tabs-nav-container{padding-left: 4px !important;}
 	.dc-notes .dc-skillsform fieldset .form-group.input {
 		padding-right: 20px;
@@ -5734,7 +5754,7 @@ padding: 0 10px;
 }
   .contentdiv{
     padding-top: 134px !important;
-	padding-left: 55px !important;
+	padding-left: 15px !important;
 }
 .dc-yeartag{
 	flex-direction: column !important;

@@ -401,14 +401,7 @@ const Diagnoses = () => {
 
   return (
     <div
-      className="dc-yourdetails dc-tabsinfo nested-accordion"
-      style={{
-        backgroundColor: "var(--cardcolor)",
-        padding: "20px",
-        borderRadius: "8px",
-        height: "100%",
-        boxShadow: "0px 0px 7px var(--shado3color)",
-      }}
+      className="dc-yourdetails dc-tabsinfo nested-accordion table-card"
     >
       <NestedAccordion
         backgroundColor="var(--cardcolor)"

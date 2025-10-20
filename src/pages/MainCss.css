@@ -1018,3 +1018,12 @@ padding: 20px 60px;
 .custom-accordion  .dc-collapseexp.show{
   max-height: 170vh;
 }
+
+/* icon side css start */
+.icon.desktop{
+  display: inline-block;
+}
+.icon.mobile{
+  display: none;
+}
+/* icon side css end */

@@ -14,7 +14,7 @@ export default function PatientProfilePageMain() {
   ];
 
   return (
-    <div className="col-12">
+    <div className="">
       <div className="dc-haslayout dc-dbsectionspace">
         <div className="dc-dashboardbox dc-dashboardtabsholder setting">
           {/* Tabs Navigation */}
