@@ -18,7 +18,7 @@ const TimeSlosts = ({ slots = [], onRemoveSlot }) => {
   );
 
   return (
-    <div className="dc-spaces-holder" style={{ backgroundColor: "#fcfcfc" }}>
+    <div className="dc-spaces-holder">
       {/* filter */}
        <SelectField
           name="filter"

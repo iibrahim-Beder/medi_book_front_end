@@ -22,7 +22,7 @@ const Field = ({
   };
 
   return (
-    <div className={`form-group ${showError ? "has-error" : ""}`} style={{ opacity: disabled ? 0.6 : 1 }}>
+    <div className={`form-group ${showError ? "has-error" : ""}`}>
       <label htmlFor={name}>{label}</label>
       <div className="input-with-icon">
         <span className={`input-icon ${showError ? "icon-error" : ""}`}>

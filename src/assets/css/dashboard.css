@@ -3117,7 +3117,7 @@ background-color: var(--scbccolor);
 .dc-accordioninnertitle .dc-rightarea a + a  {margin-left: 10px;}
 .dc-accordioninnertitle span{
 	color: var(--terthemecolor);
-	font-size: 14px;
+	font-size: 14px !important;
 	line-height: 30px;
 	display: inline-block;
 	vertical-align: middle;
@@ -3134,7 +3134,7 @@ background-color: var(--scbccolor);
 	width: 100%;
 	padding: 30px;
     /* background: var(--bcticolor); */
-    background: #fcfcfc;
+    background: var(--cardcolor);
    
 }
 .dc-collapseexp.show{
@@ -5056,7 +5056,7 @@ a.dc-back:hover{color: #55acee;}
 	font-size: 13px;
 	line-height: 18px;
 }
-.dc-offersmessages .dc-ad:hover{background: #fff;}
+.dc-offersmessages .dc-ad:hover{background: #dddddd26;}
 .mCSB_scrollTools .mCSB_dragger
 .dc-offerers .mCSB_inside > .mCSB_container {margin-right: 12px;}
 .dc-offerer{
@@ -5608,7 +5608,11 @@ content: none;
 .nested-accordion .second-btn{width: 85px; min-width: fit-content; padding: 5px 15px;}
 
 /* >>> */
-
+.css-1arb1ui-MuiPaper-root {
+    background-color: var(--cardcolor) !important;
+    border-color: var(--len2color) !important;
+	color: var(--terthemecolor) !important;
+}
 @media (max-width: 1200px) {
 	.dc-tabscontent{height: fit-content;}
 	.list-date-option.custom{
@@ -5791,6 +5795,7 @@ padding: 0 10px;
   --scbccolor:rgb(252, 252, 252);
 }
 [data-theme="dark"] {
+	--gray:#8c98a5;
 	--text-tertiary:#B8D0FF;
 	--text-sub:#B8C4E2;
 	--len2color:#858585;
@@ -5812,6 +5817,21 @@ padding: 0 10px;
   --hovcolor:#00092963;
   --shado2color:#00000017;
   --shado1color:#000000e6;
+
+  .form-control:disabled,
+.form-control[readonly],
+input:disabled,
+.input-with-icon textarea:disabled {
+    font-size: 16px;
+    background-color: #0b1b35 !important; 
+    color: #7f8a9a !important; 
+    border: 1px solid #2c3e55 !important;
+    opacity: 0.85;
+}
+
+
+
+
 .doctor-registration{background: var(--bkcolor);}
 .container{border-color: #334c99;}
 .text-muted{color :#ededede6 !important;}

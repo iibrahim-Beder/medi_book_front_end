@@ -204,7 +204,7 @@ useEffect(() => {
                   startAdornment: (
                     <InputAdornment position="start">
                       <CiSearch
-                        style={{ color: "#012047", fontSize: "20px" }}
+                        style={{ color: "var(--gray)", fontSize: "20px" }}
                       />
                     </InputAdornment>
                   ),

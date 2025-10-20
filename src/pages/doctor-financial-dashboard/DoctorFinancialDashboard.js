@@ -73,22 +73,57 @@ const DoctorFinancialDashboard = () => {
         color: "#F59E0B",
       },
     ];
+
+
+  const responsive = {
+    responsive: true}
+  const options = {
+    responsive: true,
+ 
+    scales: {
+      x: {
+        grid: {
+          color: "transparent", // Hide x-axis grid
+        },
+        ticks: {
+          color: "#3fabf3",
+          font: {
+            size: 13,
+            weight: "500",
+          },
+        },
+      },
+      y: {
+        grid: {
+          color: "#ccc", 
+        },
+        ticks: {
+          color: "#3fabf3", 
+          stepSize: 200,
+          font: {
+            size: 12,
+          },
+        },
+      },
+    },
+  };
+
   return (
     <Container fluid className="p-4">
         <DoctorFinanceStats/>
         
       {/* Charts */}
       <div className="row mb-4">
-        <div className="col-md-6 mb-3">
+        <div className="col-xl-6 col-sm-12 col-12 mb-3">
           <div className="table-card">
             <h5 className="card-title mb-3">Revenue Trend</h5>
-            <Line data={revenueChartData} />
+            <Line data={revenueChartData} options={options} />
           </div>
         </div>
-        <div className="col-md-6 mb-3">
+        <div className="col-xl-6 col-sm-12 col-12 mb-3">
           <div className="table-card">
             <h5 className="card-title mb-3">Branch Revenue</h5>
-            <Bar data={branchRevenueChartData} />
+            <Bar data={branchRevenueChartData} options={options} />
           </div>
         </div>
       </div>
@@ -114,7 +149,7 @@ const DoctorFinancialDashboard = () => {
          >
           <div className="table-card" style={{    display: "flex",flexDirection:"column",alignItems: "center"}}>
             <h4 className="text-muted mb-0">Bookings Status</h4>
-            <Pie data={statusChartData} />
+            <Pie data={statusChartData} options={responsive} />
           </div>
         </div>
     </Row>
