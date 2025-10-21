@@ -46,7 +46,7 @@ export default function MainAppointtmentList2(){
     return (
       <section  className="dc-haslayout">
         <div className="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 p-0">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
             <div class="dc-haslayout dc-dbsectionspace dc-haslayout dc-dbsectionspace">
               <div className="dc-dashboardbox dc-apointments-wrap dc-apointments-wraptest ">
                 <CalendarComponent />

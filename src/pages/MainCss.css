@@ -374,18 +374,18 @@ abbr[title] {
 }
 
 .react-calendar__tile--now {
-  background: #64B5F6;
-  color: white;
+  /* background: #64B5F6; */
+  color: #64B5F6;
 }
 
 .react-calendar__tile--active {
-  background: #1abc9c !important;
+  background: #64B5F6 !important;
   color: #fff;
 }
 
 button:focus {
   outline: none;
-  color: #000;
+  color: #fff;
 }
 
 
