@@ -284,7 +284,7 @@ const CustomAccordion = memo(({
                         <div className="dc-btnarea d-flex">
                           <button
                             type="button"
-                            className="btn btn-outline-secondary"
+                            className="btn-simple"
                             onClick={() => handleCancel(index)}
                             style={{ margin: "11px 4px" }}
                           >

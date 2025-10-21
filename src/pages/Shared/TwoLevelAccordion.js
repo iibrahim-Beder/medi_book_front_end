@@ -248,7 +248,7 @@ const TwoLevelAccordion = memo(({
                   <div className="dc-btnarea">
                     <button
                       type="button"
-                      className="btn btn-outline-secondary"
+                      className="btn-simple"
                       onClick={() => handleCancel(index)}
                       style={{ margin: "11px 4px" }}
                     >

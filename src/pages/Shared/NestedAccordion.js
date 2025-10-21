@@ -4,7 +4,6 @@ import { IoTrashOutline } from "react-icons/io5";
 import "../MainCss.css";
 import TwoLevelAccordion from "./TwoLevelAccordion";
 import EditableList from "./EditableList";
-import DiagnosedConditionsAccordion from "../appointment-management/tabs/DiagnosedConditionsAccordion";
 import TextAreaField from "../ui/form-fields/TextAreaField";
 import SelectField from "../ui/form-fields/SelectField";
 import Field from "../ui/form-fields/Field";
@@ -220,7 +219,7 @@ const   NestedAccordion = memo(({
                     <div className="dc-btnarea">
                       <button
                         type="button"
-                        className="btn btn-outline-secondary"
+                        className="btn-simple"
                         onClick={() => handleCancel(index)}
                         style={{ margin: "11px 4px" }}
                       >
