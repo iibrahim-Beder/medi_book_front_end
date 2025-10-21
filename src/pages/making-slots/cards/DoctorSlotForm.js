@@ -145,7 +145,7 @@ export default function DoctorSlotForm({
 
         <div className="form-group">
           <label>{t("allowedAppointmentTypes")}</label>
-          <div className="dc-checkbox-holder d-flex">
+          <div className="dc-checkboxgroup">
             {appointmentTypes.map((type, index) => (
               <span key={type} className="dc-checkbox">
                 <input

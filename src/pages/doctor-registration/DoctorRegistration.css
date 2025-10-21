@@ -297,6 +297,7 @@ display: inline-flex;
     align-items: center;
     width: 50%;
     justify-content: center;
+    flex-direction: column;
 }
 .breakdiv .dc-deleteinfo{padding: 2px; }
 .doctor-registration .noneshadow{box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.10) !important; padding: 0; }
