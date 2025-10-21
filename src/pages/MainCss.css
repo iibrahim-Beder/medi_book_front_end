@@ -1015,10 +1015,6 @@ padding: 20px 60px;
 }
 /*  title with icon custom accordion end  */
 
-.custom-accordion  .dc-collapseexp.show{
-  max-height: 170vh;
-}
-
 /* icon side css start */
 .icon.desktop{
   display: inline-block;
@@ -1027,3 +1023,5 @@ padding: 20px 60px;
   display: none;
 }
 /* icon side css end */
+
+select {padding: 0 25px !important ; }
