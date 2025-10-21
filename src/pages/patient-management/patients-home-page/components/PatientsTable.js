@@ -137,7 +137,7 @@ const PatientsTable = () => {
       <div className="table-card">
         
          <div 
-         className="d-flex justify-content-between mb-3" 
+         className="filters-container-search" 
          >
          <MainSearch />
              <div className=" review-filters ">

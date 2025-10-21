@@ -182,7 +182,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
             left: "8px",
             color: "#012047",
             cursor: "pointer",
-            zIndex: 10,
+            zIndex: 2,
           }}
           size={20}
         />

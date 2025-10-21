@@ -128,16 +128,16 @@ const DoctorFinancialDashboard = () => {
         </div>
       </div>
         <div className="table-card mt-4 " > 
-          <div className="mb-3" style={{display:"flex", justifyContent:"space-between"}}>
+          <div className="filters-container-search">
 
   <div className="table-header">
         <div>
           <h3 className="table-title">bookings stats</h3>
         </div>
       </div>
-            <div className="d-flex align-items-center" > 
+            <div className="review-filters align-items-center " > 
               <p className="m-0 mr-1">Filter by date :</p>  
-          <DateRangePicker/>
+               <DateRangePicker/>
           </div>
           </div>
         <Row className="g-3 mb-4 patintStats">

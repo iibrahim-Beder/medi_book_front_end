@@ -148,7 +148,7 @@ const typeStyles = {
 
   return (
     <div className="comments-list notifications-list">
-      <div className="" style={{display:"flex", justifyContent:"space-between", alignItems:"flex-end" }}>
+      <div className=" filters-container-search ">
       {/* Header */}
       <div className="table-header">
         <div>
@@ -190,18 +190,6 @@ const typeStyles = {
                   /> </p>
               </div>
               </div>
-            {/*   <div className="review-info"> */}
-                {/* <div className="comment-footer">
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    className="d-flex align-items-center view-btn ms-2"
-                  >
-                    View Details <MdOutlineArrowForward className="ms-1" />
-                  </Button>
-               
-               </div> */}
-              {/*  </div> */}
             </div>
           </Card>
         );
