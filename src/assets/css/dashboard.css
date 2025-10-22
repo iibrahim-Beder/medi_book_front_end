@@ -2371,7 +2371,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	width: 30px;
 	color: #767676;
 	cursor: pointer;
-	font-size: 20px;
+	font-size: 25px;
 	margin-left: 0;
 	line-height: 30px;
 	position: absolute;
@@ -5717,6 +5717,13 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.dignoses-active {
+		padding: 30px 0 !important;
+	}   
+	.nested-accordion ul{padding: 0 !important;}
+ 
+
+
 .table-card .p-3{padding: 10px 0 ! important;}
 	.review-filters {
     gap: 0;
@@ -5758,9 +5765,7 @@ padding: 0 10px;
 	margin-left: 10px;	
 }
 
-.when686m-t-40{
-    margin-top: 40px;
-}
+
   .contentdiv{
     padding-top: 134px !important;
 	padding-left: 15px !important;
@@ -5911,7 +5916,7 @@ html[dir="rtl"]  {
 
 .dc-yeartag{display: flex; justify-content: space-between;}
 
-.contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; } 
+/* .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; }  */
 
 .divtoconvert{direction: ltr;width: 100%;display: flex;flex-direction: row-reverse; }
 .dc-tabstitle li a ,.dc-accountinfo li{display: flex; justify-content: flex-end; }
@@ -5929,7 +5934,12 @@ html[dir="rtl"]  {
 body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p {
 	font-family: "Tajawal", "Cairo", sans-serif;
 }
-
+@media (min-width: 568px) { .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; } }
+@media (max-width: 767px) {
+    .collapsed .dc-btnmenutoggle {
+        right: 0;
+    }
+}
 
 
 

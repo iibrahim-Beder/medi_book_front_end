@@ -33,7 +33,7 @@ export default function DashboardMain() {
   ];
 
   return (
-    <div className="when686m-t-40">
+    <div className="">
       {/* Alert Boxss start */}
       <div style={{ paddingRight: "11px" }} className="dc-haslayout dc-jobalertsdashboard">
         <div className="row">

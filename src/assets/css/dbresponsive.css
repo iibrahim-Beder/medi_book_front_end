@@ -67,6 +67,7 @@
 @media (max-width:1199px){
 	.dc-spaces-wrap li{width: 25%;}
 	.dc-dashboardtabs{width: 100% !important;}
+    .setting{display: unset !important;}
     .dc-dashboardtabs .dc-tabstitle{display: block;}
     .dc-dashboardtabsholder .dc-tabscontent{width: 100% !important; border-left: none;}
 	.dc-postedsilderitem .dc-consultation-title{

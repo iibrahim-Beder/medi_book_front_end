@@ -17,7 +17,7 @@ const SingleSlot = ({ time = "9:00 am", spaces = 0, status = "default", onClick 
 
         marginRight:"60px",
         height:"fit-content",
-        marginTop:"25%",
+        marginTop:"auto",
         border: `0.5px solid ${statusColors[status] || statusColors.default}`,
         backgroundColor: `${statusColors[status] || statusColors.default}20`,
       }}

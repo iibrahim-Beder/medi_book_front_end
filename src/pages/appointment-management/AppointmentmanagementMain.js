@@ -40,7 +40,7 @@ export default function PatientProfilePageMain() {
 
           {/* Tabs Content */}
           <div
-            className="dc-tabscontent tab-content"
+            className={`dc-tabscontent tab-content ${activeTab === "Diagnoses" ? "dignoses-active" : ""}`} 
             style={{ width: "80%", display: "flex", justifyContent: "center", paddingTop:"30px" }}
           >
             {activeTab === "Diagnoses" && <Diagnoses />}
