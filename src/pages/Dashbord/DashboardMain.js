@@ -35,7 +35,7 @@ export default function DashboardMain() {
   return (
     <div className="">
       {/* Alert Boxss start */}
-      <div style={{ paddingRight: "11px" }} className="dc-haslayout dc-jobalertsdashboard">
+      <div className="dc-haslayout dc-jobalertsdashboard">
         <div className="row">
           <AlertCard
             title={t("alerts.reminderTitle")}
