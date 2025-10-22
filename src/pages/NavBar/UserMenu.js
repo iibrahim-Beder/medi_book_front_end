@@ -2,7 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./styleNav.css";
 import { useTranslation } from "react-i18next";
-
+import { IoSunnyOutline } from "react-icons/io5";
+import { CiDark } from "react-icons/ci";
+import { useTheme } from "../../context/ThemeContext";
+import NotificationButton from "./NotificationButton";
 function UserMenu() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();
@@ -12,8 +15,30 @@ function UserMenu() {
       setMenuOpen(!menuOpen);
     }
   };
-
+  const { darkMode, toggleDarkMode } = useTheme();
   return (
+
+      <div style={{display:"flex",  alignItems:"center" }}>   
+       <button
+          style={{
+            /*border: "1px solid var(--themecolor)",*/ borderRadius: "50%",
+            margin:"0px 8px 0px 15px",
+            display: "flex",
+            fontSize: "large",
+            color: "var(--terthemecolor)",
+            background: "#F9F9F9",
+            border: "1px solid #ddd",
+          }}
+          onClick={toggleDarkMode}
+        >
+          {darkMode ? (
+            <CiDark color="var(--themecolor)" />
+          ) : (
+            <IoSunnyOutline color="var(--themecolor)" />
+          )}
+        </button>
+        <NotificationButton />
+
     <div
       className="dc-userlogedin"
       onMouseEnter={() => {
@@ -23,6 +48,7 @@ function UserMenu() {
         if (window.innerWidth >= 992) setMenuOpen(false);
       }}
     >
+  
       <figure className="dc-userimg">
         <img src="/images/user-login.jpg" alt="user" />
       </figure>
@@ -114,6 +140,7 @@ function UserMenu() {
           </li>
         </ul>
       </nav>
+    </div>
     </div>
   );
 }

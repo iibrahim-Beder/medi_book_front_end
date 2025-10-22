@@ -3,6 +3,10 @@
         padding: 0;
       margin-left: 0px !important; 
     }
+    .collapsed .dc-companysinfo{
+      margin-left: 100px !important; 
+      transition: all 0.3s ease;
+    }
 }
 
 
@@ -95,7 +99,6 @@
   &.collapsed {
     width: 50px;
 
-    .dc-companysinfo,
     span,
     .dc-title h2 {
       display: none;
@@ -114,7 +117,7 @@
   // left: 260px;    
   // z-index: 1100;  
   // background: #fff;
-  padding: 1px;
+  // padding: 1px;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -138,3 +141,8 @@
   }
 }
 
+.scrolled-sidebar.dc-sidebarwrapper{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.scrolled-sidebar .dc-btnmenutoggle{ top: 20px; }

@@ -4,15 +4,10 @@ import { FaBars, FaChevronDown, FaCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next"; 
 import UserMenu from "./UserMenu";
 import "./styleNav.css";
-import { IoSunnyOutline } from "react-icons/io5";
-import { CiDark } from "react-icons/ci";
-import { useTheme } from "../../context/ThemeContext";
-import NotificationButton from "./NotificationButton";
 function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t } = useTranslation();
-  const { darkMode, toggleDarkMode } = useTheme();
 
   const toggleDropdown = (menu) => {
     setOpenMenu(openMenu === menu ? null : menu);
@@ -26,7 +21,6 @@ function Navbar() {
     <header
       id="dc-header"
       className="dc-header dc-haslayout dc-header-dashboard"
-      style={{ position: "fixed" }}
     >
       <div className="dc-navigationarea">
         <div className="container-fluid">
@@ -189,10 +183,7 @@ function Navbar() {
                           </li>
                         </ul>
                       </li>
-                      <button style={{ /*border: "1px solid var(--themecolor)",*/ borderRadius: "50%", display: "flex", fontSize:"large", color: "var(--terthemecolor)", background:"#F9F9F9" ,border:"1px solid #ddd" }} onClick={toggleDarkMode}>
-                        {darkMode ? <CiDark color="var(--themecolor)" /> :  <IoSunnyOutline color="var(--themecolor)" />}
-                      </button>
-                         <NotificationButton/>
+                 
 
                     </ul>
                   </div>

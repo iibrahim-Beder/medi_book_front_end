@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -45,8 +45,24 @@ const Sidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 let iconSize=20;
+
+
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 75) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    
+    console.log("scrolled", + scrolled, "scrolled" + window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
-    <div id="dc-sidebarwrapper" className={`dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
+    <div id="dc-sidebarwrapper" className={` ${scrolled ? "scrolled-sidebar" : ""}  dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
       <div style={{position:"fixed"}} id="dc-btnmenutoggle" className="dc-btnmenutoggle" onClick={toggleSidebar}>
         {/* <FaArrowLeft className={`icon ${isCollapsed ? "rotate-180" : ""}`} /> */}
          <FaArrowLeft className={`icon desktop ${isCollapsed ? "rotate-180" : ""}`} />
