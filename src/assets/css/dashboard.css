@@ -5613,6 +5613,12 @@ content: none;
     border-color: var(--len2color) !important;
 	color: var(--terthemecolor) !important;
 }
+
+/*  */
+.contentdiv > div{
+	padding: 0 !important;
+	margin: 0 !important;
+}
 @media (max-width: 1200px) {
 	.dc-tabscontent{height: fit-content;}
 	.list-date-option.custom{
@@ -5717,7 +5723,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
-	.dignoses-active {
+	.dignoses-active ,.table-container-style {
 		padding: 30px 0 !important;
 	}   
 	.nested-accordion ul{padding: 0 !important;}

@@ -40,7 +40,7 @@ export default function AlertMessage({
   return (
     <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
       {/* <div className={`alert-neutral dc-jobalerts ${closing ? "hide" : ""}`}> */}
-      <div className={` table-card mb-2 ${closing ? "hide" : ""}`}>
+      <div className={` table-card  alert-neutral dc-jobalerts   mb-2 ${closing ? "hide" : ""}`}>
       
       
       

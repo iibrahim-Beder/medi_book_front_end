@@ -64,7 +64,7 @@ export default function PatientProfilePageMain() {
 
           {/* Tabs Content */}
           <div
-            className="dc-tabscontent tab-content "
+            className="dc-tabscontent tab-content table-container-style "
             style={{  width: "80%", justifyContent: "center", padding:`${padding? "0" : "" }` }}
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
