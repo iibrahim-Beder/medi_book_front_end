@@ -5717,6 +5717,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+.table-card .p-3{padding: 10px 0 ! important;}
 	.review-filters {
     gap: 0;
     flex-direction: column;

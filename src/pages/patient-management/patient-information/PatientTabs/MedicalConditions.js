@@ -9,7 +9,7 @@ export default function MedicalConditions() {
 
   const tabs = [
     { key: "DiagnosedConditionsTable", label: t("Diagnosed Conditions") },
-    { key: "OtherMedicalConditions", label: t("Other Medical Conditions") },
+    { key: "OtherMedicalConditions", label: t("Other Conditions") },
   ];
 
   return (
