@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
-import "../../Patient-management.css";
-import ConditionsFilters from "./component/ConditionsFilters";
+import "../../../../Patient-management.css";
+import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdClose } from "react-icons/md";
 import { t } from "i18next";
-import TextAreaField from "../../../ui/form-fields/TextAreaField";
-import  Field  from "../../../ui/form-fields/Field";
+import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
+import  Field  from "../../../../../ui/form-fields/Field";
 
 const DiagnosedConditionsMobileView = () => {
   const [selectedCondition, setSelectedCondition] = useState(null);
@@ -267,7 +267,7 @@ const DiagnosedConditionsMobileView = () => {
                         </div>
                         <small className="text-muted">Status</small>
                       </div>
-                      <div className="">
+                      <div className="col-4 pl-0 pr-1 ">
                         <div className="fw-bold text-secondary">
                           {formatDate(condition.diagnosedDate)}
                         </div>
@@ -369,7 +369,6 @@ const DiagnosedConditionsMobileView = () => {
         size="lg"
         centered
         scrollable
-        backdrop="static"
       >
         <Modal.Header className="border-bottom-0">
           <Modal.Title>{selectedCondition?.medicalConditionName}</Modal.Title>
@@ -387,7 +386,7 @@ const DiagnosedConditionsMobileView = () => {
 
           {/* <div className="row mb-3"> */}
          <Field label="Severity" value={selectedCondition?.severity} disabled/>
-          <Field label="Status" value={selectedCondition?.status} disabled/>
+          <Field label="Status" value={selectedCondition?.isActive} disabled/>
           {/* </div> */}
 
           <Field className="mb-3" label="Diagnosed Date" value={selectedCondition?.diagnosedDate} disabled/>

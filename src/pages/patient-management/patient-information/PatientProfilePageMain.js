@@ -9,7 +9,7 @@ import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
 import DiseasesTable from "./PatientTabs/dignosis/DiagnosisDesktopTable";
 import PrescriptionsTable from "./PatientTabs/prescriptions/PrescriptionsDesktopTable";
-import MedicalConditions from "./PatientTabs/MedicalConditions";
+import MedicalConditions from "./PatientTabs/medical-conditions/MedicalConditions";
 import Medications from "./PatientTabs/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";

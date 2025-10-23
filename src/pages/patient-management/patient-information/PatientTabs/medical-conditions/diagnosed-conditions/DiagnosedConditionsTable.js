@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import "../../Patient-management.css";
-import ConditionsFilters from "./component/ConditionsFilters";
+import "../../../../Patient-management.css";
+import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { t } from "i18next";
-import TextAreaField from "../../../ui/form-fields/TextAreaField";
+import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 
 const DiagnosedConditionsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);
