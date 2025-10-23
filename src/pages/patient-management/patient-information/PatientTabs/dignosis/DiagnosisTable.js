@@ -4,7 +4,7 @@ import DiagnosisDesktopTable from "./DiagnosisDesktopTable";
 import { useDevice } from "../../../../../context/useIsMobile";
 
 const DiagnosisTable = () => {
-  const isMobile = useDevice();
+  const {isMobile} = useDevice();
 
   return (
     <div>

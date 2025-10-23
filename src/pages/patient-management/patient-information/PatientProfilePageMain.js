@@ -8,15 +8,17 @@ import AllergyTable from "./PatientTabs/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
 import DiseasesTable from "./PatientTabs/dignosis/DiagnosisDesktopTable";
-import PrescriptionsTable from "./PatientTabs/PrescriptionsTable";
+import PrescriptionsTable from "./PatientTabs/prescriptions/PrescriptionsDesktopTable";
 import MedicalConditions from "./PatientTabs/MedicalConditions";
 import Medications from "./PatientTabs/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
 import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
+import PrescriptionsMobileView from "./PatientTabs/Test";
+import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("PatientNotificationsCards");
+  const [activeTab, setActiveTab] = useState("mobileTest");
   const { t } = useTranslation();
   
   let padding = activeTab === "Medications" || activeTab === "MedicalConditions";
@@ -77,12 +79,12 @@ export default function PatientProfilePageMain() {
             {activeTab === "ConditionsTable" && <ConditionsTable />}
             {activeTab === "Allergy" && <AllergyTable/>}
             {activeTab === "Diagnosis" && <DiagnosisTable/>}
-            {activeTab === "PrescriptionsTable" && <PrescriptionsTable/>}
+            {activeTab === "PrescriptionsTable" && <Prescriptions/>}
             {activeTab === "Medications" && <Medications/>}
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
-            {activeTab === "mobileTest" && <DiagnosisTable/>}
+            {activeTab === "mobileTest" && <PrescriptionsMobileView/>}
           </div>
         </div>
       </div>

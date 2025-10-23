@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import "../../Patient-management.css";
-import CustomAccordion from "../../../shared/CustomAccordion";
+import "../../../Patient-management.css";
+import CustomAccordion from "../../../../shared/CustomAccordion";
 import { MdExpandMore } from "react-icons/md";
-import Field from "../../../ui/form-fields/Field";
-import ConditionsFilters from "./component/ConditionsFilters";
-import TextAreaField from "../../../ui/form-fields/TextAreaField";
+import ConditionsFilters from "../component/ConditionsFilters";
+import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 
 const PrescriptionsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);
