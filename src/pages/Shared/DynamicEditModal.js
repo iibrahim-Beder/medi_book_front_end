@@ -79,26 +79,14 @@ const DynamicEditModal = ({
         </Modal.Title>
 
         {/* Close button (icon only, styled manually) */}
-        <Button
+        <button
           onClick={onClose}
-          style={{
-            zIndex: 1050,
-            fontSize: "1.5rem",
-            padding: "0.35rem 0.65rem",
-            lineHeight: 1,
-            borderRadius: "50%",
-            opacity: 0.8,
-            margin: 0,
-            backgroundColor: "transparent",
-            border: "none",
-            boxShadow: "none",
-            color: "black"
-          }}
+          className="btn-modal-close"
           onMouseOver={(e) => e.target.style.opacity = "1"}
           onMouseOut={(e) => e.target.style.opacity = "0.8"}
         >
           <MdClose />
-        </Button>
+        </button>
       </Modal.Header>
 
       <Modal.Body style={{ padding: "0.5rem 1.5rem 1rem" }}>

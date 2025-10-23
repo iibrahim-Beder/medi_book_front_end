@@ -1002,7 +1002,7 @@ select {padding: 0 25px !important ; }
   grid-template-columns: repeat(4, 1fr);
 }
 
-.filters-container-search{display: flex; justify-content: space-between;}لإلإلإ
+.filters-container-search{display: flex; justify-content: space-between;}
 .mobile-view .dc-tabscontenttitle {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -1029,6 +1029,16 @@ select {padding: 0 25px !important ; }
   padding-top: 0 !important;
   
 }
-
-
-
+.btn-modal-close{
+z-index: 5;
+font-size: 1.5rem;
+padding: 0.35rem 0.65rem;
+line-height: 1;
+border-radius: 50%;
+opacity: 0.8;
+margin: 0;
+background-color: transparent;
+border: none;
+box-shadow: none;
+color: black
+}
