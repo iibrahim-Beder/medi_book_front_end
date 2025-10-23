@@ -16,14 +16,12 @@ export const useForm = () => {
     setFormData(prev => {
       const currentArray = prev[name] || [];
       
-      if (checked) {
-        // إضافة القيمة إذا لم تكن موجودة
+      if (checked) {      
         return {
           ...prev,
           [name]: [...currentArray, value]
         };
       } else {
-        // إزالة القيمة إذا كانت موجودة
         return {
           ...prev,
           [name]: currentArray.filter(item => item !== value)

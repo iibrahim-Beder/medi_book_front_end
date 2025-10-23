@@ -845,7 +845,10 @@ background-color: transparent !important;
   height: unset;
 }
 .table-active-content .dc-experienceaccordion {
-padding: 20px 60px;
+  width: 65vw; 
+/* padding: 20px 60px; */
+padding-right: 0;
+float: right;   
 }
 .dropdown-with-search-in-accordion .dc-pagination ul li{ width: auto !important; }
 .dropdown-with-search-in-accordion  .MuiBox-root.css-1apcsdv{margin: 0  !important;}
@@ -878,8 +881,8 @@ padding: 20px 60px;
 .star-over-rated svg ,.star-over-rated span{margin-left: 2px;font-size:20px; }
 .star-over-rated span{ padding-right: 2px;}
 .review-rate h3 , .comments-list h6 {font-family: "Inter", sans-serif !important;}
- .comments-list h6 {font-size:16px;font-weight:500}
-.review-info p {   
+ .comments-list h6 ,.mobile-view-card h5 {font-size:16px;font-weight:500}
+.review-info p  ,.mobile-view-card p {   
    font-size: 15px;
     font-weight: 400;
     font-family: 'Inter';
@@ -999,4 +1002,33 @@ select {padding: 0 25px !important ; }
   grid-template-columns: repeat(4, 1fr);
 }
 
-.filters-container-search{display: flex; justify-content: space-between;}
+.filters-container-search{display: flex; justify-content: space-between;}لإلإلإ
+.mobile-view .dc-tabscontenttitle {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.mobile-view .card{ 
+  box-shadow: none !important;
+  
+}
+.mobile-view .dc-accordioninnertitle .dc-rightarea {
+  float: right !important; ; 
+  width: unset !important; ;
+  
+}
+.mobile-view .dc-accordioninnertitle  {
+  display: flex;
+  padding: 6px 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+.mobile-view .dc-accordioninnertitle .dc-rightarea  { margin: 0 !important;}
+.mobile-view  input[type="text"]  {height: 40px !important;}
+.mobile-view  .dc-collapseexp{
+  padding: 10px 10px ;
+  padding-top: 0 !important;
+  
+}
+
+
+

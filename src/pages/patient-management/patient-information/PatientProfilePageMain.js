@@ -7,12 +7,13 @@ import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
-import DiseasesTable from "./PatientTabs/DiagnosisTable";
+import DiseasesTable from "./PatientTabs/dignosis/DiagnosisDesktopTable";
 import PrescriptionsTable from "./PatientTabs/PrescriptionsTable";
 import MedicalConditions from "./PatientTabs/MedicalConditions";
 import Medications from "./PatientTabs/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
+import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("PatientNotificationsCards");
@@ -34,6 +35,7 @@ export default function PatientProfilePageMain() {
    { key: "PatientNotesComponent", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
+   { key: "mobileTest", label: t("mobile Test") },
 
   ];
 
@@ -74,12 +76,13 @@ export default function PatientProfilePageMain() {
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
             {activeTab === "Allergy" && <AllergyTable/>}
-            {activeTab === "Diagnosis" && <DiseasesTable/>}
+            {activeTab === "Diagnosis" && <DiagnosisTable/>}
             {activeTab === "PrescriptionsTable" && <PrescriptionsTable/>}
             {activeTab === "Medications" && <Medications/>}
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
+            {activeTab === "mobileTest" && <DiagnosisTable/>}
           </div>
         </div>
       </div>

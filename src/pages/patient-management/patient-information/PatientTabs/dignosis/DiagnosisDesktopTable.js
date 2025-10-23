@@ -1,11 +1,11 @@
   import React, { useState } from "react";
   import { Table, Button } from "react-bootstrap";
-  import "../../Patient-management.css";
-  import CustomAccordion from "../../../shared/CustomAccordion";
-  import TwoLevelAccordion from "../../../shared/TwoLevelAccordion";
+  import "../../../Patient-management.css";
+  import CustomAccordion from "../../../../shared/CustomAccordion";
+  import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
   import { MdExpandMore } from "react-icons/md";
-  import Field from "../../../ui/form-fields/Field";
-  import ConditionsFilters from "./component/ConditionsFilters";
+  import Field from "../../../../ui/form-fields/Field";
+  import ConditionsFilters from "../component/ConditionsFilters";
 import { t } from "i18next";
 
   const DiagnosisTable = () => {
