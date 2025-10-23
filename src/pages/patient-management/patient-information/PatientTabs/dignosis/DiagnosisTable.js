@@ -1,10 +1,10 @@
 import React from "react";
 import DiagnosisMobileView from "./DiagnosisMobileView";
 import DiagnosisDesktopTable from "./DiagnosisDesktopTable";
-import useIsMobile from "../../../../../hooks/useIsMobile";
+import { useDevice } from "../../../../../context/useIsMobile";
 
 const DiagnosisTable = () => {
-  const isMobile = useIsMobile();
+  const isMobile = useDevice();
 
   return (
     <div>

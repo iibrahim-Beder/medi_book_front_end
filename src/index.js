@@ -2,7 +2,8 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./redux/Stor";
 import { PersistGate } from "redux-persist/integration/react";
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from "./context/ThemeContext"; // الاستيراد الجديد
+import { ThemeProvider } from "./context/ThemeContext"; 
+import { DeviceProvider } from "./context/useIsMobile";
 
 import './index.css';
 import App from './App';
@@ -46,13 +47,13 @@ applyInitialTheme();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    {/* <PersistGate loading={null} persistor={persistor}> */}
-      <BrowserRouter>
-        <ThemeProvider>
-    <App />
-  </ThemeProvider>
-      </BrowserRouter>
-    {/* </PersistGate> */}
+    <BrowserRouter>
+      <ThemeProvider>
+        <DeviceProvider>
+          <App />
+        </DeviceProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   </Provider>
 );
 
