@@ -135,11 +135,6 @@
 .dc-sidebarwrapper.collapsed + .dc-btnmenutoggle {
   left: 80px; 
 }
-@media (max-width: 668px) {
- .dc-sidebarwrapper  {
-    margin-top: 68px;
-  }
-}
 
 .scrolled-sidebar.dc-sidebarwrapper{
   padding: 0 !important;

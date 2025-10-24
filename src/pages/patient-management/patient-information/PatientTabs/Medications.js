@@ -20,7 +20,6 @@ export default function Medications() {
        <div className="" style={{paddingLeft:"25px", paddingTop:"20px", backgroundColor:"var(--cardcolor)"}}>
         {/* Tabs Navigation */}
         <ul className="nav nav-tabs nav-fill padding-right two-tabs-nav-container" 
-        // style={{width:"fit-content", paddingLeft:"40px", paddingRight:"20px", fontFamily: "Poppins, Arial, Helvetica, sans-serif", fontSize: "16px" ,fontWeight:" 400"}}
         >
           {tabs.map((tab) => (
             <li className="nav-item" key={tab.key}>

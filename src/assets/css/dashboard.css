@@ -2373,9 +2373,12 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	cursor: pointer;
 	font-size: 25px;
 	margin-left: 0;
-	line-height: 30px;
 	position: absolute;
 	text-align: center;
+	display: flex;
+  align-items: center; 
+  justify-content: center;
+  padding: 6px;
 }
 .dc-fixednav .dc-btnmenutoggle{
 	top: 20px;
@@ -3112,7 +3115,9 @@ background-color: var(--scbccolor);
     font-size: 14px;
     line-height: 30px;
     border-radius: 4px;
-    text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .dc-accordioninnertitle .dc-rightarea a + a  {margin-left: 10px;}
 .dc-accordioninnertitle span{
@@ -5723,6 +5728,9 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	 .dc-sidebarwrapper  {
+    margin-top: 68px;
+  }
 	.form-group{grid-column: span 2;}
 	.dignoses-active ,.table-container-style {
 		padding: 30px 8px !important;

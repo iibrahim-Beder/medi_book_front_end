@@ -14,7 +14,7 @@ import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
 import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
 import AllergyMobileView from "./PatientTabs/AllergyMobileView";
-import MedicalHistoryMobileView from "./PatientTabs/Test";
+import MedicalHistoryMobileView from "./PatientTabs/MedicalHistoryMobileView";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("mobileTest");
