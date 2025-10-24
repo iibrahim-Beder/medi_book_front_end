@@ -20,6 +20,7 @@ import {
 import { LiaCheckDoubleSolid } from "react-icons/lia";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
+import Pagination from "../../../shared/Pagination";
 
 const notificationsData = [
   {
@@ -111,25 +112,12 @@ const notificationsData = [
 
 
 const PatientNotificationsCards = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const itemsPerPage = 7;
-  const totalPages = Math.ceil(notificationsData.length / itemsPerPage);
-
-  const handleNextPage = () => {
-    if (page < totalPages - 1) setPage(page + 1);
-  };
-
-  const handlePrevPage = () => {
-    if (page > 0) setPage(page - 1);
-  };
-
-  const paginatedNotifications = notificationsData.slice(
-    page * itemsPerPage,
-    page * itemsPerPage + itemsPerPage
-  );
-
-  const startIndex = page * itemsPerPage;
+  const startIndex = (page - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, notificationsData.length);
+  const paginatedNotifications = notificationsData.slice(startIndex, endIndex);
+
 
 const typeStyles = {
   appointment: { icon: <FaCalendarCheck style={{ color: "#007bff" }} /> },
@@ -194,73 +182,13 @@ const typeStyles = {
           </Card>
         );
       })}
-      {/* Pagination */}
-      <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-        <div
-          className="dt-layout-cell dt-layout-start"
-          style={{ fontSize: "14px", color: "#555" }}
-        >
-          <div className="dt-info">
-            Showing {startIndex + 1} to {endIndex} of{" "}
-            {notificationsData.length} entries
-          </div>
-        </div>
-
-        <div className="dt-layout-cell dt-layout-end">
-          <div className="dt-paging">
-            <nav aria-label="pagination" className="d-flex">
-              <button
-                className="dt-paging-button first"
-                type="button"
-                disabled={page === 0}
-                onClick={() => setPage(0)}
-              >
-                «
-              </button>
-
-              <button
-                className="dt-paging-button previous"
-                type="button"
-                disabled={page === 0}
-                onClick={handlePrevPage}
-              >
-                Previous
-              </button>
-
-              {[...Array(totalPages)].map((_, index) => (
-                <button
-                  key={index}
-                  className={`dt-paging-button none ${
-                    page === index ? "current" : ""
-                  }`}
-                  type="button"
-                  onClick={() => setPage(index)}
-                >
-                  {index + 1}
-                </button>
-              ))}
-
-              <button
-                className="dt-paging-button next"
-                type="button"
-                disabled={page === totalPages - 1}
-                onClick={handleNextPage}
-              >
-                Next
-              </button>
-
-              <button
-                className="dt-paging-button last"
-                type="button"
-                disabled={page === totalPages - 1}
-                onClick={() => setPage(totalPages - 1)}
-              >
-                »
-              </button>
-            </nav>
-          </div>
-        </div>
-      </div>
+    
+     <Pagination
+  currentPage={page}
+  totalItems={notificationsData.length} 
+  rowsPerPage={itemsPerPage}
+  onPageChange={setPage}
+/>
       </div> 
 
     </div>

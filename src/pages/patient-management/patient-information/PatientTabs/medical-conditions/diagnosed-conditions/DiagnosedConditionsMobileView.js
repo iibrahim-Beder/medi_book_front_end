@@ -6,6 +6,7 @@ import { MdClose } from "react-icons/md";
 import { t } from "i18next";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import  Field  from "../../../../../ui/form-fields/Field";
+import  Pagination  from "../../../../../shared/Pagination";
 
 const DiagnosedConditionsMobileView = () => {
   const [selectedCondition, setSelectedCondition] = useState(null);
@@ -121,18 +122,15 @@ const DiagnosedConditionsMobileView = () => {
     setCurrentPage(1);
   };
 
-  // دالة لفتح المودال مع البيانات
   const handleOpenModal = (condition) => {
     setSelectedCondition(condition);
     setShowModal(true);
   };
 
-  // دالة لإغلاق المودال
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  // دالة لما المودال يخلص الإغلاق
   const handleModalExited = () => {
     setSelectedCondition(null);
   };
@@ -307,58 +305,12 @@ const DiagnosedConditionsMobileView = () => {
         </div>
       </div>
 
-      {/* Pagination */}
-      {filteredConditions.length > 0 && (
-        <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-          <div style={{ fontSize: "14px", color: "#555" }}>
-            Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredConditions.length)} of {filteredConditions.length} entries
-          </div>
-
-          <nav className="d-flex flex-wrap justify-content-center">
-            <button
-              className="dt-paging-button first"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(1)}
-            >
-              «
-            </button>
-            <button
-              className="dt-paging-button previous"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              Previous
-            </button>
-
-            {getPageNumbers().map((pageNumber) => (
-              <button
-                key={pageNumber}
-                className={`dt-paging-button none ${
-                  currentPage === pageNumber ? "current" : ""
-                }`}
-                onClick={() => setCurrentPage(pageNumber)}
-              >
-                {pageNumber}
-              </button>
-            ))}
-
-            <button
-              className="dt-paging-button next"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Next
-            </button>
-            <button
-              className="dt-paging-button last"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(totalPages)}
-            >
-              »
-            </button>
-          </nav>
-        </div>
-      )}
+     <Pagination
+        currentPage={currentPage}
+        totalItems={filteredConditions.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={setCurrentPage}
+      />
 
       {/* Modal Details */}
       <Modal

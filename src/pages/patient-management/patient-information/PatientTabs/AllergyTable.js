@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import DynamicEditModal from "../../../shared/DynamicEditModal";
+import Pagination from "../../../shared/Pagination";
 import "../../Patient-management.css";
 import ConditionsFilters from "./component/ConditionsFilters";
 
@@ -270,25 +271,12 @@ const AllergyTable = () => {
             </Table>
           </div>
 
-          {/* Pagination controls */}
-          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div className="info-bar" color="#000">
-              Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredData.length)} of {filteredData.length} entries
-            </div>
-            <div className="dt-layout-cell dt-layout-end">
-              <div className="dt-paging">
-                <nav aria-label="pagination" className="d-flex">
-                  <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
-                  <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)}>Previous</button>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button key={index} className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`} type="button" onClick={() => setCurrentPage(index + 1)}>{index + 1}</button>
-                  ))}
-                  <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)}>Next</button>
-                  <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
-                </nav>
-              </div>
-            </div>
-          </div>
+        <Pagination
+        currentPage={currentPage}
+        totalItems={allergens.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={setCurrentPage}
+      />
         </div>
       </div>
 

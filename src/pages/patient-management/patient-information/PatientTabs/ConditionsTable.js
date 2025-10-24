@@ -3,6 +3,7 @@ import { Table, Button } from "react-bootstrap";
 import MedicalHistoryModal from "./component/MedicalHistoryModal"; 
 import "../../Patient-management.css";
 import ConditionsFilters from "./component/ConditionsFilters";
+import Pagination from "../../../shared/Pagination";
 
 const MedicalHistoryTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +16,7 @@ const MedicalHistoryTable = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
 
-  const rowsPerPage = 5;
+  const rowsPerPage = 4;
 
   
   const HistoryType = {
@@ -184,7 +185,7 @@ const MedicalHistoryTable = () => {
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            Add Record
+            Add Condition
           </button>
         </div>
       </div>
@@ -264,62 +265,13 @@ const MedicalHistoryTable = () => {
             </Table>
           </div>
 
-          {/* Pagination */}
-          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div className="info-bar" color="#000">
-              Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredData.length)} of {filteredData.length} entries
-            </div>
-            <div className="dt-layout-cell dt-layout-end">
-              <div className="dt-paging">
-                <nav aria-label="pagination" className="d-flex">
-                  <button
-                    className="dt-paging-button first"
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(1)}
-                  >
-                    «
-                  </button>
-                  <button
-                    className="dt-paging-button previous"
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((prev) => prev - 1)}
-                  >
-                    Previous
-                  </button>
+      <Pagination
+  currentPage={currentPage}
+  totalItems={filteredData.length}
+  rowsPerPage={rowsPerPage}
+  onPageChange={setCurrentPage}
+/>
 
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button
-                      key={index}
-                      className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
-                      type="button"
-                      onClick={() => setCurrentPage(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-
-                  <button
-                    className="dt-paging-button next"
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((prev) => prev + 1)}
-                  >
-                    Next
-                  </button>
-                  <button
-                    className="dt-paging-button last"
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(totalPages)}
-                  >
-                    »
-                  </button>
-                </nav>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     {/* the modal for add/edit */}

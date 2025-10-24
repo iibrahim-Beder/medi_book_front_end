@@ -1042,3 +1042,11 @@ border: none;
 box-shadow: none;
 color: black
 }
+.mobile-view-card .nav-table {
+  margin-top: 0 !important;
+  margin-bottom: 15px;
+  padding: 0 15px;
+}
+.mobile-view.table-card {
+padding: 10px;
+}

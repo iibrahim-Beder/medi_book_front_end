@@ -7,6 +7,7 @@
   import Field from "../../../../ui/form-fields/Field";
   import ConditionsFilters from "../component/ConditionsFilters";
 import { t } from "i18next";
+import Pagination from "../../../../shared/Pagination";
 
   const DiagnosisTable = () => {
     const [expandedRow, setExpandedRow] = useState(null);
@@ -191,7 +192,10 @@ import { t } from "i18next";
                                 height: "20px",
                               }}
                               onClick={() =>
-                                handleViewClick(disease.id, "symptomsDescription")
+                                handleViewClick(
+                                  disease.id,
+                                  "symptomsDescription"
+                                )
                               }
                             >
                               <MdExpandMore
@@ -214,7 +218,7 @@ import { t } from "i18next";
                             <span
                               className="text-truncate"
                               style={{ maxWidth: "250px" }}
-                            >                         
+                            >
                               {truncateText(disease.diagnosisDescription, 90)}
                             </span>
                             <Button
@@ -351,7 +355,10 @@ import { t } from "i18next";
 
                       {/* Expanded row content (conditionally rendered based on field) */}
                       {expandedRow === disease.id && (
-                        <tr className="table-active-content" style={{backgroundColor:"transparent"}}>
+                        <tr
+                          className="table-active-content"
+                          style={{ backgroundColor: "transparent" }}
+                        >
                           <td
                             colSpan="6"
                             className="border-0 background-in-hover-none"
@@ -369,7 +376,7 @@ import { t } from "i18next";
 
                               {expandedField === "diagnosisDescription" && (
                                 <div className="description-expanded-section">
-                                  <Field 
+                                  <Field
                                     label="Diagnosis Description"
                                     value={disease.diagnosisDescription}
                                     disabled
@@ -383,9 +390,21 @@ import { t } from "i18next";
                                   backgroundColor="var(--scbccolor)"
                                   data={disease.diagnosedConditions}
                                   formFields={[
-                                    { name: "MedicalCondition", placeholder: "Condition Type", half: true },
-                                    { name: "Severity", placeholder: "Severity", half: true },
-                                    { name: "note", type: "textarea", placeholder: "Note Content" },
+                                    {
+                                      name: "MedicalCondition",
+                                      placeholder: "Condition Type",
+                                      half: true,
+                                    },
+                                    {
+                                      name: "Severity",
+                                      placeholder: "Severity",
+                                      half: true,
+                                    },
+                                    {
+                                      name: "note",
+                                      type: "textarea",
+                                      placeholder: "Note Content",
+                                    },
                                   ]}
                                 />
                               )}
@@ -396,7 +415,11 @@ import { t } from "i18next";
                                   backgroundColor="var(--scbccolor)"
                                   data={disease.notes}
                                   formFields={[
-                                  { name: "content", type: "textarea", placeholder: "Note Content" },
+                                    {
+                                      name: "content",
+                                      type: "textarea",
+                                      placeholder: "Note Content",
+                                    },
                                   ]}
                                 />
                               )}
@@ -408,16 +431,45 @@ import { t } from "i18next";
                                   titleBackgroundColor="var(--scbccolor)"
                                   data={disease.prescription}
                                   formFields={[
-                                    { name: "title", type: "text", placeholder: "Prescription Title", half: true ,lable:"Prescription Title"},
-                                    { name: "status", placeholder: "Status", half: true },
-                                    { name: "note", type: "textarea", placeholder: "Prescription note" },
+                                    {
+                                      name: "title",
+                                      type: "text",
+                                      placeholder: "Prescription Title",
+                                      half: true,
+                                      lable: "Prescription Title",
+                                    },
+                                    {
+                                      name: "status",
+                                      placeholder: "Status",
+                                      half: true,
+                                    },
+                                    {
+                                      name: "note",
+                                      type: "textarea",
+                                      placeholder: "Prescription note",
+                                    },
                                   ]}
-
                                   formFieldsRecipe={[
-                                    { name: "medication", placeholder: "Medication" },
-                                    { name: "dosage", placeholder: "dosage", half: true },
-                                    { name: "durationInDays", type: "durationInDays", placeholder: "Date", half: true },
-                                    { name: "instructions", placeholder: "instructions", type: "textarea" },
+                                    {
+                                      name: "medication",
+                                      placeholder: "Medication",
+                                    },
+                                    {
+                                      name: "dosage",
+                                      placeholder: "dosage",
+                                      half: true,
+                                    },
+                                    {
+                                      name: "durationInDays",
+                                      type: "durationInDays",
+                                      placeholder: "Date",
+                                      half: true,
+                                    },
+                                    {
+                                      name: "instructions",
+                                      placeholder: "instructions",
+                                      type: "textarea",
+                                    },
                                   ]}
                                 />
                               )}
@@ -431,40 +483,12 @@ import { t } from "i18next";
               </Table>
             </div>
 
-            {/* Pagination */}
-            <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-              <div
-                className="dt-layout-cell dt-layout-start"
-                style={{ fontSize: "14px", color: "#555" }}
-              >
-                <div className="dt-info">
-                  Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredDiseases.length)} of {filteredDiseases.length} entries
-                </div>
-              </div>
-
-              <div className="dt-layout-cell dt-layout-end">
-                <div className="dt-paging">
-                  <nav aria-label="pagination" className="d-flex">
-                    <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
-                    <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>Previous</button>
-
-                    {[...Array(totalPages)].map((_, index) => (
-                      <button
-                        key={index}
-                        className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
-                        type="button"
-                        onClick={() => setCurrentPage(index + 1)}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
-
-                    <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>Next</button>
-                    <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
-                  </nav>
-                </div>
-              </div>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredDiseases.length}
+              rowsPerPage={rowsPerPage}
+              onPageChange={setCurrentPage}
+            />
           </div>
         </div>
       </div>

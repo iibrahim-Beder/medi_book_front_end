@@ -6,6 +6,7 @@ import ConditionsFilters from "../component/ConditionsFilters";
 import { MdClose } from "react-icons/md";
 import { t } from "i18next";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
+import Pagination from "../../../../shared/Pagination";
 
 const PrescriptionsMobileView = () => {
   const [selectedPrescription, setSelectedPrescription] = useState(null);
@@ -266,58 +267,12 @@ const PrescriptionsMobileView = () => {
           </div>
         </div>
       </div>
-
-      {/* Pagination */}
-      {totalItems > 0 && (
-        <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-          <div style={{ fontSize: "14px", color: "#555" }}>
-            Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of{" "}
-            {totalItems} entries
-          </div>
-
-          <nav className="d-flex flex-wrap justify-content-center">
-            <button
-              className="dt-paging-button first"
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(1)}
-            >
-              «
-            </button>
-            <button
-              className="dt-paging-button previous"
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
-              Previous
-            </button>
-            {getPageNumbers().map((num) => (
-              <button
-                key={num}
-                className={`dt-paging-button none ${
-                  currentPage === num ? "current" : ""
-                }`}
-                onClick={() => handlePageChange(num)}
-              >
-                {num}
-              </button>
-            ))}
-            <button
-              className="dt-paging-button next"
-              disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
-              Next
-            </button>
-            <button
-              className="dt-paging-button last"
-              disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(totalPages)}
-            >
-              »
-            </button>
-          </nav>
-        </div>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalItems={filteredPrescriptions.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={setCurrentPage}
+      />
 
       {/* Modal Details */}
       <Modal
@@ -331,10 +286,7 @@ const PrescriptionsMobileView = () => {
       >
         <Modal.Header className="border-bottom-0">
           <Modal.Title>{selectedPrescription?.title}</Modal.Title>
-          <button
-            className="btn-modal-close"
-            onClick={handleCloseModal}
-          >
+          <button className="btn-modal-close" onClick={handleCloseModal}>
             <MdClose />
           </button>
         </Modal.Header>
@@ -382,10 +334,7 @@ const PrescriptionsMobileView = () => {
         </Modal.Body>
 
         <Modal.Footer className="border-top-0">
-          <button
-            className="dc-btn dc-cancel-btn"
-            onClick={handleCloseModal}
-          >
+          <button className="dc-btn dc-cancel-btn" onClick={handleCloseModal}>
             Close
           </button>
         </Modal.Footer>

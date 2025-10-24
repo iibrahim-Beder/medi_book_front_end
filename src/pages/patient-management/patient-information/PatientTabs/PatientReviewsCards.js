@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Card, Row, Col, Image, Badge, Button } from "react-bootstrap";
-import { FaStar } from "react-icons/fa";
-import { FaReply } from "react-icons/fa6";
-import StarRating from "../../../shared/StarRating";
+import { Card, Button } from "react-bootstrap";
 import { MdOutlineArrowForward } from "react-icons/md";
+import StarRating from "../../../shared/StarRating";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
+import Pagination from "../../../shared/Pagination";
 
 const reviewsData = [
   {
@@ -56,47 +55,28 @@ const reviewsData = [
 
 const PatientReviewsCards = () => {
   // Pagination state
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const itemsPerPage = 3;
-  const totalPages = Math.ceil(reviewsData.length / itemsPerPage);
-
-  // Go to next page
-  const handleNextPage = () => {
-    if (page < totalPages - 1) setPage(page + 1);
-  };
-
-  // Go to previous page
-  const handlePrevPage = () => {
-    if (page > 0) setPage(page - 1);
-  };
-
   // Get reviews for the current page only
-  const paginatedReviews = reviewsData.slice(
-    page * itemsPerPage,
-    page * itemsPerPage + itemsPerPage
-  );
-
-  // Calculate visible range text (e.g., Showing 1–3 of 10)
-  const startIndex = page * itemsPerPage;
+  const startIndex = (page - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, reviewsData.length);
+  const paginatedReviews = reviewsData.slice(startIndex, endIndex);
 
   return (
     <div className="comments-list">
-      <div>
-        <div className="table-header">
-          <div>
-            <h3 className="table-title"> Patient Reviews </h3>
-            <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
-          </div>
+      <div className="table-header">
+        <div>
+          <h3 className="table-title">Patient Reviews</h3>
+          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+        </div>
 
-          {/* Overall rating summary section */}
-          <div className="review-content">
-            <div className="review-rate">
-              <h3>Overall Rating</h3>
-              <div className="star-over-rated">
-                <span>4.0</span>
-                <StarRating rating={4} />
-              </div>
+        {/* Overall rating summary section */}
+        <div className="review-content">
+          <div className="review-rate">
+            <h3>Overall Rating</h3>
+            <div className="star-over-rated">
+              <span>4.0</span>
+              <StarRating rating={4} />
             </div>
           </div>
         </div>
@@ -107,23 +87,19 @@ const PatientReviewsCards = () => {
         <FilterDropdown small />
         <DateRangePicker />
       </div>
-      
+
       {/* Render paginated review cards */}
       {paginatedReviews.map((review) => (
-        <Card key={review.id} className="mb-4 table-card ">
+        <Card key={review.id} className="mb-4 table-card">
           <div className="comments">
             {/* Review header with type, date, and rating */}
             <div className="d-flex justify-content-between align-items-start comment-head mb-2">
-              <div className="d-flex align-items-center">
-                <div className="patient-info">
-                  <h6 className="mb-0 fw-semibold">{review.serviceType}</h6>
-                  <span>{review.reviewDate}</span>
-                </div>
+              <div className="patient-info">
+                <h6 className="mb-0 fw-semibold">{review.serviceType}</h6>
+                <span>{review.reviewDate}</span>
               </div>
               <div className="text-end">
-                <div className="">
-                  <StarRating rating={review.rating} />
-                </div>
+                <StarRating rating={review.rating} />
               </div>
             </div>
 
@@ -143,76 +119,13 @@ const PatientReviewsCards = () => {
           </div>
         </Card>
       ))}
-      
-      {/* Pagination controls */}
-      <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-        <div
-          className="dt-layout-cell dt-layout-start"
-          style={{ fontSize: "14px", color: "#555" }}
-        >
-          <div className="dt-info">
-            Showing {startIndex + 1} to {endIndex} of {reviewsData.length} entries
-          </div>
-        </div>
 
-        <div className="dt-layout-cell dt-layout-end">
-          <div className="dt-paging">
-            <nav aria-label="pagination" className="d-flex">
-              {/* Go to first page */}
-              <button 
-                className="dt-paging-button first" 
-                type="button" 
-                disabled={page === 0} 
-                onClick={() => setPage(0)}
-              >
-                «
-              </button>
-
-              {/* Go to previous page */}
-              <button 
-                className="dt-paging-button previous" 
-                type="button" 
-                disabled={page === 0} 
-                onClick={handlePrevPage}
-              >
-                Previous
-              </button>
-
-              {/* Page number buttons */}
-              {[...Array(totalPages)].map((_, index) => (
-                <button
-                  key={index}
-                  className={`dt-paging-button none ${page === index ? "current" : ""}`}
-                  type="button"
-                  onClick={() => setPage(index)}
-                >
-                  {index + 1}
-                </button>
-              ))}
-
-              {/* Go to next page */}
-              <button 
-                className="dt-paging-button next" 
-                type="button" 
-                disabled={page === totalPages - 1} 
-                onClick={handleNextPage}
-              >
-                Next
-              </button>
-
-              {/* Go to last page */}
-              <button 
-                className="dt-paging-button last" 
-                type="button" 
-                disabled={page === totalPages - 1} 
-                onClick={() => setPage(totalPages - 1)}
-              >
-                »
-              </button>
-            </nav>
-          </div>
-        </div>
-      </div>
+      <Pagination
+        currentPage={page}
+        totalItems={reviewsData.length}
+        rowsPerPage={itemsPerPage}
+        onPageChange={setPage}
+      />
     </div>
   );
 };

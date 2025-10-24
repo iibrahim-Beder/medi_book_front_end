@@ -5724,7 +5724,7 @@ padding: 0 10px;
 /* <<< */
 @media (max-width: 568px) {
 	.dignoses-active ,.table-container-style {
-		padding: 30px 0 !important;
+		padding: 30px 8px !important;
 	}   
 	.cardInfo{ width: 100% !important; }
 	.nested-accordion ul{padding: 0 !important;}

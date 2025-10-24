@@ -84,7 +84,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
-            {activeTab === "mobileTest" && <PrescriptionsMobileView/>}
+            {/* {activeTab === "mobileTest" && <PrescriptionsMobileView/>} */}
           </div>
         </div>
       </div>

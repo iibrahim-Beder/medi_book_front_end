@@ -5,6 +5,7 @@ import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { t } from "i18next";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
+import Pagination from "../../../../../shared/Pagination";
 
 const DiagnosedConditionsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);
@@ -306,40 +307,12 @@ const conditionsData = [
             </Table>
           </div>
 
-          {/* Pagination */}
-          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div
-              className="dt-layout-cell dt-layout-start"
-              style={{ fontSize: "14px", color: "#555" }}
-            >
-              <div className="dt-info">
-                Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredConditions.length)} of {filteredConditions.length} entries
-              </div>
-            </div>
-
-            <div className="dt-layout-cell dt-layout-end">
-              <div className="dt-paging">
-                <nav aria-label="pagination" className="d-flex">
-                  <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
-                  <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>Previous</button>
-
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button
-                      key={index}
-                      className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
-                      type="button"
-                      onClick={() => setCurrentPage(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-
-                  <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>Next</button>
-                  <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
-                </nav>
-              </div>
-            </div>
-          </div>
+          <Pagination
+        currentPage={currentPage}
+        totalItems={filteredConditions.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={setCurrentPage}
+      />
         </div>
       </div>
     </div>

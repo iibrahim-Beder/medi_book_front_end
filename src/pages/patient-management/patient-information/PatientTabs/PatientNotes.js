@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CustomAccordion from "../../../shared/CustomAccordion";
 import DynamicEditModal from "../../../shared/DynamicEditModal";
-
+import { useDevice } from "../../../../context/useIsMobile";
 export const mockNotesData = [
   {
     id: 1,
@@ -50,7 +50,7 @@ const PatientNotes = () => {
   const [notes, setNotes] = useState(mockNotesData);
   const [showModal, setShowModal] = useState(false);
   const [currentNote, setCurrentNote] = useState(null);
-
+  const {isMobile} = useDevice();
   // Fields used inside the accordion
   const notesFormFields = [
     {
@@ -221,7 +221,7 @@ const PatientNotes = () => {
   return (
     <div className="Accordion-section d-flex">
       {/* Pass all fields including read-only ones */}
-      <div className="table-card">
+      <div className={`table-card ${isMobile ? 'mobile-view' : ''}`}  >
         <CustomAccordion
           title=" Patient Notes"
           addNewLabel="Add New Note"

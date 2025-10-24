@@ -5,6 +5,7 @@ import CustomAccordion from "../../../../shared/CustomAccordion";
 import { MdExpandMore } from "react-icons/md";
 import ConditionsFilters from "../component/ConditionsFilters";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
+import Pagination from "../../../../shared/Pagination";
 
 const PrescriptionsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);
@@ -20,6 +21,121 @@ const PrescriptionsTable = () => {
   const prescriptionsData = [
     {
       id: "#RX001",
+      diagnosisName: "Diabetes Mellitus Type 2",
+      title: "Diabetes Management",
+      status: "active",
+      note: "Patient requires regular monitoring",
+      prescribedMedication: [
+        { 
+          id: "PM001",
+          medicationName: "Metformin",
+          dosage: "500mg",         
+          duration: "30 days",
+          instructions: "Take with meals to reduce gastrointestinal side effects",
+        },
+        { 
+          id: "PM002",
+          medicationName: "Glucose Test Strips",
+          dosage: "As needed", 
+          duration: "90 days",
+          instructions: "Check blood sugar levels before each meal",
+        },
+      ]
+    },
+    {
+      id: "#RX0010",
+      diagnosisName: "Diabetes Mellitus Type 2",
+      title: "Diabetes Management",
+      status: "active",
+      note: "Patient requires regular monitoring",
+      prescribedMedication: [
+        { 
+          id: "PM001",
+          medicationName: "Metformin",
+          dosage: "500mg",         
+          duration: "30 days",
+          instructions: "Take with meals to reduce gastrointestinal side effects",
+        },
+        { 
+          id: "PM002",
+          medicationName: "Glucose Test Strips",
+          dosage: "As needed", 
+          duration: "90 days",
+          instructions: "Check blood sugar levels before each meal",
+        },
+      ]
+    },
+    {
+      id: "#RX0012",
+      diagnosisName: "Diabetes Mellitus Type 2",
+      title: "Diabetes Management",
+      status: "active",
+      note: "Patient requires regular monitoring",
+      prescribedMedication: [
+        { 
+          id: "PM001",
+          medicationName: "Metformin",
+          dosage: "500mg",         
+          duration: "30 days",
+          instructions: "Take with meals to reduce gastrointestinal side effects",
+        },
+        { 
+          id: "PM002",
+          medicationName: "Glucose Test Strips",
+          dosage: "As needed", 
+          duration: "90 days",
+          instructions: "Check blood sugar levels before each meal",
+        },
+      ]
+    },
+    {
+      id: "#RX0013",
+      diagnosisName: "Diabetes Mellitus Type 2",
+      title: "Diabetes Management",
+      status: "active",
+      note: "Patient requires regular monitoring",
+      prescribedMedication: [
+        { 
+          id: "PM001",
+          medicationName: "Metformin",
+          dosage: "500mg",         
+          duration: "30 days",
+          instructions: "Take with meals to reduce gastrointestinal side effects",
+        },
+        { 
+          id: "PM002",
+          medicationName: "Glucose Test Strips",
+          dosage: "As needed", 
+          duration: "90 days",
+          instructions: "Check blood sugar levels before each meal",
+        },
+      ]
+    },
+    {
+      id: "#RX0014",
+      diagnosisName: "Diabetes Mellitus Type 2",
+      title: "Diabetes Management",
+      status: "active",
+      note: "Patient requires regular monitoring",
+      prescribedMedication: [
+        { 
+          id: "PM001",
+          medicationName: "Metformin",
+          dosage: "500mg",         
+          duration: "30 days",
+          instructions: "Take with meals to reduce gastrointestinal side effects",
+        },
+        { 
+          id: "PM002",
+          medicationName: "Glucose Test Strips",
+          dosage: "As needed", 
+          duration: "90 days",
+          instructions: "Check blood sugar levels before each meal",
+        },
+      ]
+    },
+    {
+      id: "#RX0015",
       diagnosisName: "Diabetes Mellitus Type 2",
       title: "Diabetes Management",
       status: "active",
@@ -327,33 +443,12 @@ const PrescriptionsTable = () => {
             </Table>
           </div>
 
-          {/* Pagination */}
-          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div style={{ fontSize: "14px", color: "#555" }}>
-              Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredPrescriptions.length)} of {filteredPrescriptions.length} entries
-            </div>
-
-            <div>
-              <nav aria-label="pagination" className="d-flex">
-                <button className="dt-paging-button first" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>«</button>
-                <button className="dt-paging-button previous" type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>Previous</button>
-
-                {[...Array(totalPages)].map((_, index) => (
-                  <button
-                    key={index}
-                    className={`dt-paging-button none ${currentPage === index + 1 ? "current" : ""}`}
-                    type="button"
-                    onClick={() => setCurrentPage(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-
-                <button className="dt-paging-button next" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => prev + 1)}>Next</button>
-                <button className="dt-paging-button last" type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>»</button>
-              </nav>
-            </div>
-          </div>
+          <Pagination
+        currentPage={currentPage}
+        totalItems={filteredPrescriptions.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={setCurrentPage}
+      />
         </div>
       </div>
     </div>

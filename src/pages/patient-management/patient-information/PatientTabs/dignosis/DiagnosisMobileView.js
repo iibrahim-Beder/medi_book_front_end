@@ -6,6 +6,7 @@
   import ConditionsFilters from "../component/ConditionsFilters";
   import { t } from "i18next";
 import { MdClose } from "react-icons/md";
+import Pagination from "../../../../shared/Pagination";
 
   const DiagnosisMobileView = () => {
     const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
@@ -287,44 +288,60 @@ import { MdClose } from "react-icons/md";
             {/* Mobile Cards */}
             <div className="space-y-3">
               {currentItems.map((disease) => (
-                <Card key={disease.id} className="mobile-view-card" style={{boxShadow:"0 0 20px 0px #dddddd70 "}} >
-                  <Card.Body className="" style={{padding:"15px"}}>
+                <Card
+                  key={disease.id}
+                  className="mobile-view-card"
+                  style={{ boxShadow: "0 0 20px 0px #dddddd70 " }}
+                >
+                  <Card.Body className="" style={{ padding: "15px" }}>
                     <div className="">
-                      <h5 className="" >{disease.diagnosisName}</h5>                  </div>
-                    
+                      <h5 className="">{disease.diagnosisName}</h5>{" "}
+                    </div>
+
                     <div className="mb-3">
-                      <small className="text-muted d-block mb-1"> Symptoms :</small>
-                      <p className="mb-2">{truncateText(disease.symptomsDescription, 80)}</p>
+                      <small className="text-muted d-block mb-1">
+                        {" "}
+                        Symptoms :
+                      </small>
+                      <p className="mb-2">
+                        {truncateText(disease.symptomsDescription, 80)}
+                      </p>
                     </div>
 
                     <div className="row text-center mb-3">
                       <div className="col-4">
                         <div className="border-end">
-                          <div className="fw-bold text-primary">{disease.diagnosedConditions.length}</div>
+                          <div className="fw-bold text-primary">
+                            {disease.diagnosedConditions.length}
+                          </div>
                           <small className="text-muted"> Conditions </small>
                         </div>
                       </div>
                       <div className="col-4">
                         <div className="border-end">
-                          <div className="fw-bold text-primary">{disease.notes.length}</div>
+                          <div className="fw-bold text-primary">
+                            {disease.notes.length}
+                          </div>
                           <small className="text-muted"> Notes </small>
                         </div>
                       </div>
                       <div className="col-4">
-                        <div className="fw-bold text-primary">{disease.prescription.length}</div>
+                        <div className="fw-bold text-primary">
+                          {disease.prescription.length}
+                        </div>
                         <small className="text-muted"> Prescription </small>
                       </div>
                     </div>
 
                     <div>
-                      <Button 
+                      <Button
                         className="view-btn btn btn-outline-primary btn-sm"
-                        variant="outline-primary" 
+                        variant="outline-primary"
                         size="sm"
-                        style={{float:"inline-end"}}
+                        style={{ float: "inline-end" }}
                         onClick={() => setSelectedDiagnosis(disease)}
                       >
-                      View All Details
+                        View All Details
                       </Button>
                     </div>
                   </Card.Body>
@@ -342,77 +359,19 @@ import { MdClose } from "react-icons/md";
           </div>
         </div>
 
-        {/* Pagination */}
-        {totalItems > 0 && (
-          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div
-              className="dt-layout-cell dt-layout-start"
-              style={{ fontSize: "14px", color: "#555" }}
-            >
-              <div className="dt-info">
-                Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} entries
-              </div>
-            </div>
-
-            <div className="dt-layout-cell dt-layout-end">
-              <div className="dt-paging">
-                <nav aria-label="pagination" className="d-flex flex-wrap justify-content-center">
-                  <button 
-                    className="dt-paging-button first" 
-                    type="button" 
-                    disabled={currentPage === 1} 
-                    onClick={() => handlePageChange(1)}
-                  >
-                    «
-                  </button>
-                  <button 
-                    className="dt-paging-button previous" 
-                    type="button" 
-                    disabled={currentPage === 1} 
-                    onClick={() => handlePageChange(currentPage - 1)}
-                  >
-                    Previous
-                  </button>
-
-                  {getPageNumbers().map((pageNumber) => (
-                    <button
-                      key={pageNumber}
-                      className={`dt-paging-button none ${currentPage === pageNumber ? "current" : ""}`}
-                      type="button"
-                      onClick={() => handlePageChange(pageNumber)}
-                    >
-                      {pageNumber}
-                    </button>
-                  ))}
-
-                  <button 
-                    className="dt-paging-button next" 
-                    type="button" 
-                    disabled={currentPage === totalPages} 
-                    onClick={() => handlePageChange(currentPage + 1)}
-                  >
-                    Next
-                  </button>
-                  <button 
-                    className="dt-paging-button last" 
-                    type="button" 
-                    disabled={currentPage === totalPages} 
-                    onClick={() => handlePageChange(totalPages)}
-                  >
-                    »
-                  </button>
-                </nav>
-              </div>
-            </div>
-          </div>
-        )}
+        <Pagination
+          currentPage={currentPage}
+          totalItems={filteredDiseases.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={setCurrentPage}
+        />
 
         {selectedDiagnosis && (
-          <Modal 
+          <Modal
             className="mobile-view"
-            show={true} 
-            onHide={() => setSelectedDiagnosis(null)} 
-            size="lg" 
+            show={true}
+            onHide={() => setSelectedDiagnosis(null)}
+            size="lg"
             centered
             scrollable
           >
@@ -422,17 +381,17 @@ import { MdClose } from "react-icons/md";
                   <span>{selectedDiagnosis.diagnosisName}</span>
                 </div>
               </Modal.Title>
-                 {/* Close button (icon only, styled manually) */}
-        <button
-        className="btn-modal-close"
-          onClick={() => setSelectedDiagnosis(null)}
-          onMouseOver={(e) => e.target.style.opacity = "1"}
-          onMouseOut={(e) => e.target.style.opacity = "0.8"}
-        >
-          <MdClose />
-        </button>
+              {/* Close button (icon only, styled manually) */}
+              <button
+                className="btn-modal-close"
+                onClick={() => setSelectedDiagnosis(null)}
+                onMouseOver={(e) => (e.target.style.opacity = "1")}
+                onMouseOut={(e) => (e.target.style.opacity = "0.8")}
+              >
+                <MdClose />
+              </button>
             </Modal.Header>
-            
+
             <Modal.Body className="space-y-4 pt-0 ">
               {/* Symptoms Description */}
               <div className="mb-4">
@@ -461,9 +420,24 @@ import { MdClose } from "react-icons/md";
                   backgroundColor="var(--scbccolor)"
                   data={selectedDiagnosis.diagnosedConditions}
                   formFields={[
-                    { label: "Medical Condition", name: "MedicalCondition", placeholder: "Condition Type", half: true },
-                    {  label: "Severity", name: "Severity", placeholder: "Severity", half: true },
-                    { label: "Note",  name: "note", type: "textarea", placeholder: "Note Content" },
+                    {
+                      label: "Medical Condition",
+                      name: "MedicalCondition",
+                      placeholder: "Condition Type",
+                      half: true,
+                    },
+                    {
+                      label: "Severity",
+                      name: "Severity",
+                      placeholder: "Severity",
+                      half: true,
+                    },
+                    {
+                      label: "Note",
+                      name: "note",
+                      type: "textarea",
+                      placeholder: "Note Content",
+                    },
                   ]}
                 />
               </div>
@@ -477,7 +451,12 @@ import { MdClose } from "react-icons/md";
                   backgroundColor="var(--scbccolor)"
                   data={selectedDiagnosis.notes}
                   formFields={[
-                    { label: "Note Content", name: "content", type: "textarea", placeholder: "Note Content" },
+                    {
+                      label: "Note Content",
+                      name: "content",
+                      type: "textarea",
+                      placeholder: "Note Content",
+                    },
                   ]}
                 />
               </div>
@@ -491,26 +470,61 @@ import { MdClose } from "react-icons/md";
                   titleBackgroundColor="var(--scbccolor)"
                   data={selectedDiagnosis.prescription}
                   formFields={[
-                    { label: "Prescription Title", name: "title", type: "text", placeholder: "Prescription Title", half: true },
-                    {  label: "Status", name: "status", placeholder: "Status", half: true },
-                    {  label: "Note",   name: "note", type: "textarea", placeholder: "Prescription note" },
+                    {
+                      label: "Prescription Title",
+                      name: "title",
+                      type: "text",
+                      placeholder: "Prescription Title",
+                      half: true,
+                    },
+                    {
+                      label: "Status",
+                      name: "status",
+                      placeholder: "Status",
+                      half: true,
+                    },
+                    {
+                      label: "Note",
+                      name: "note",
+                      type: "textarea",
+                      placeholder: "Prescription note",
+                    },
                   ]}
                   formFieldsRecipe={[
                     { label: "Type", name: "type", placeholder: "Type" },
-                    {  label: "Dosage", name: "dosage", placeholder: "Dosage", half: true },
-                    { label: "Duration (Days)", name: "durationInDays", type: "number", placeholder: "Duration (Days)", half: true },
-                    { label: "Instructions",  name: "instructions", placeholder: "Instructions", type: "textarea" },
+                    {
+                      label: "Dosage",
+                      name: "dosage",
+                      placeholder: "Dosage",
+                      half: true,
+                    },
+                    {
+                      label: "Duration (Days)",
+                      name: "durationInDays",
+                      type: "number",
+                      placeholder: "Duration (Days)",
+                      half: true,
+                    },
+                    {
+                      label: "Instructions",
+                      name: "instructions",
+                      placeholder: "Instructions",
+                      type: "textarea",
+                    },
                   ]}
                 />
               </div>
             </Modal.Body>
-            
+
             <Modal.Footer className="border-top-0">
-              <button  className="dc-btn dc-cancel-btn" onClick={() => setSelectedDiagnosis(null)}>
+              <button
+                className="dc-btn dc-cancel-btn"
+                onClick={() => setSelectedDiagnosis(null)}
+              >
                 close
               </button>
             </Modal.Footer>
-          </Modal>        
+          </Modal>
         )}
       </div>
     );

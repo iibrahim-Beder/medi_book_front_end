@@ -8,7 +8,7 @@ import Field from "../ui/form-fields/Field";
 import SelectField from "../ui/form-fields/SelectField";
 import FileField from "../ui/form-fields/FileField";
 import SectionTitle from "../shared/SectionTitle";
-
+import { useDevice } from "../../context/useIsMobile";
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
@@ -35,7 +35,7 @@ const CustomAccordion = memo(({
   errors = {},
 }) => {
   const [dataRead, setDataRead] = useState(data);
-
+   const {isMobile} = useDevice();
   useEffect(() => {
     setDataRead(data || []);
   }, [data]);
@@ -165,7 +165,7 @@ const CustomAccordion = memo(({
           )}
           {onAdd && (
             <a
-              href="#"
+              href="#!"
               onClick={(e) => {
                 e.preventDefault();
                 onAdd();
@@ -206,7 +206,7 @@ const CustomAccordion = memo(({
                     {item.icon && (
                       <span style={{ marginRight: "8px" }}>{item.icon}</span>
                     )}
-                    {renderItemTitle(item)} <em>{item.date}</em>
+                    {renderItemTitle(item)} {  !isMobile &&  <em>{item.date}</em>}
                     {item.isNew && (
                       <span style={{ color: "#ffa500", marginLeft: "8px" }}>
                         (New)
