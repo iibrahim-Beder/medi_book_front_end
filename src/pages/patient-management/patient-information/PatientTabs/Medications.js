@@ -17,7 +17,7 @@ export default function Medications() {
 
   return (
     <div className="col-12 p-0 two-tabs " >
-       <div className="" style={{paddingLeft:"25px", paddingTop:"20px", backgroundColor:"var(--cardcolor)"}}>
+       <div className=" div-container-tabs">
         {/* Tabs Navigation */}
         <ul className="nav nav-tabs nav-fill padding-right two-tabs-nav-container" 
         >
@@ -40,7 +40,7 @@ export default function Medications() {
       <div className="card m-0 border-0" style={{boxShadow:"none" }}>
 
         {/* Tabs Content */}
-        <div className="card-body " style={{backgroundColor:"var(--scbccolor)", padding:isMobile ? "0" : "" }}>
+        <div className={`card-body ${ isMobile ? "p-0 pt-2 " : "" } `} style={{backgroundColor:"var(--scbccolor)"}}>
           {activeTab === "PrescribedMedicationTable" && (
             <div className="table-responsive">
              { isMobile ? < PrescribedMedicationMobileView /> : <PrescribedMedicationTable />}

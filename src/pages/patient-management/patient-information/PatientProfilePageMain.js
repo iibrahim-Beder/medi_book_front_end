@@ -36,7 +36,6 @@ export default function PatientProfilePageMain() {
    { key: "PatientNotesComponent", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
-   { key: "mobileTest", label: t("mobile Test") },
 
   ];
 
@@ -67,8 +66,8 @@ export default function PatientProfilePageMain() {
 
           {/* Tabs Content */}
           <div
-            className="dc-tabscontent tab-content table-container-style "
-            style={{  width: "80%", justifyContent: "center", padding:`${padding? "0" : "" }` }}
+            className={`dc-tabscontent tab-content table-container-style ${padding ? "tab-content-two-tabs" : ""} `}
+            style={{  width: "80%", justifyContent: "center", paddingTop:`${padding? "0" : "" }` }}
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />} 
@@ -81,7 +80,6 @@ export default function PatientProfilePageMain() {
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
-            {activeTab === "mobileTest" && < MedicalHistoryMobileView/> }
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ export default function MedicalConditions() {
 
   return (
     <div className="col-12 p-0 two-tabs " >
-       <div className="" style={{paddingLeft:"25px", paddingTop:"20px", backgroundColor:"var(--cardcolor)"}}>
+       <div className="div-container-tabs">
         {/* Tabs Navigation */}
         <ul className="nav nav-tabs nav-fill two-tabs-nav-container" 
         // style={{width:"fit-content", paddingLeft:"40px", paddingRight:"520px", fontFamily: "Poppins, Arial, Helvetica, sans-serif", fontSize: "16px" ,fontWeight:" 400"}}
@@ -39,7 +39,7 @@ export default function MedicalConditions() {
       <div className="card m-0 border-0" style={{boxShadow:"none"}}>
 
         {/* Tabs Content */}
-        <div className={`card-body ${isMobile ? "p-0" : "" } ` } style={{backgroundColor:"var(--scbccolor)"}}>
+        <div className={`card-body ${isMobile ? "p-0 pt-2" : "" } ` } style={{backgroundColor:"var(--scbccolor)"}}>
           {activeTab === "DiagnosedConditionsTable" && (
             <div className="table-responsive">
               <DiagnosedConditions />
