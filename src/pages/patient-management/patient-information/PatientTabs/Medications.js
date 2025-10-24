@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Othermedications from "./Othermedications";
 import PrescribedMedicationTable from "./PrescribedMedicationTable";
-
+import { useDevice } from "../../../../context/useIsMobile";
+import PrescribedMedicationMobileView from "./PrescribedMedicationMobileView";
+import OtherMedicationMobileView from "./OtherMedicationMobileView";
 export default function Medications() {
   const [activeTab, setActiveTab] = useState("PrescribedMedicationTable");
   const { t } = useTranslation();
+  const {isMobile} = useDevice();
 
   const tabs = [
     { key: "PrescribedMedicationTable", label: t("Prescribed medication") },
@@ -38,16 +41,16 @@ export default function Medications() {
       <div className="card m-0 border-0" style={{boxShadow:"none" }}>
 
         {/* Tabs Content */}
-        <div className="card-body" style={{backgroundColor:"var(--scbccolor)"}}>
+        <div className="card-body " style={{backgroundColor:"var(--scbccolor)", padding:isMobile ? "0" : "" }}>
           {activeTab === "PrescribedMedicationTable" && (
             <div className="table-responsive">
-              <PrescribedMedicationTable />
+             { isMobile ? < PrescribedMedicationMobileView /> : <PrescribedMedicationTable />}
             </div>
           )}
 
           {activeTab === "Othermedications" && (
             <div className="table-responsive">
-              <Othermedications />
+             { isMobile ? < OtherMedicationMobileView /> :  <Othermedications />}
             </div>
           )}
         </div>

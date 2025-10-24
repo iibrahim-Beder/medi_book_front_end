@@ -5,19 +5,16 @@ import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
 import PatientNotesComponent from "./PatientTabs/PatientNotes";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/AllergyTable";
-import MedicalHistoryTable from "./PatientTabs/MedicalHistoryTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
-import DiseasesTable from "./PatientTabs/dignosis/DiagnosisDesktopTable";
-import PrescriptionsTable from "./PatientTabs/prescriptions/PrescriptionsDesktopTable";
 import MedicalConditions from "./PatientTabs/medical-conditions/MedicalConditions";
 import Medications from "./PatientTabs/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
 import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
-import PrescriptionsMobileView from "./PatientTabs/Test";
 import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
 import AllergyMobileView from "./PatientTabs/AllergyMobileView";
+import MedicalHistoryMobileView from "./PatientTabs/Test";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("mobileTest");
@@ -76,8 +73,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />} 
             {activeTab === "PatientNotesComponent" && <PatientNotesComponent />}
-            {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
-            {activeTab === "ConditionsTable" && <ConditionsTable />}
+            {activeTab === "ConditionsTable" &&(isMobile ?<MedicalHistoryMobileView /> : <ConditionsTable />  )}
             {activeTab === "Allergy" && (isMobile ? <AllergyMobileView /> : <AllergyTable />)}
             {activeTab === "Diagnosis" && <DiagnosisTable/>}
             {activeTab === "PrescriptionsTable" && <Prescriptions/>}
@@ -85,7 +81,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
-            {activeTab === "mobileTest" && (isMobile ? <AllergyMobileView /> : <AllergyTable />)}
+            {activeTab === "mobileTest" && < MedicalHistoryMobileView/> }
           </div>
         </div>
       </div>

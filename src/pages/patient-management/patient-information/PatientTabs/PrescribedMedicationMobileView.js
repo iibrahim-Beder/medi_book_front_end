@@ -1,4 +1,4 @@
-// OtherMedicationMobileView.jsx
+// PrescribedMedicationMobileView.jsx
 import React, { useState } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
 import "../../Patient-management.css";
@@ -9,7 +9,7 @@ import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import Field from "../../../ui/form-fields/Field";
 import Pagination from "../../../shared/Pagination";
 
-const OtherMedicationMobileView = () => {
+const PrescribedMedicationMobileView = () => {
   const [selectedMedication, setSelectedMedication] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,6 +26,8 @@ const OtherMedicationMobileView = () => {
   const prescriptionsData = [
     {
       id: "#RX001",
+      diagnosisName: "Diabetes Mellitus Type 2",
+      prescribedName: "Diabetes Management Plan",
       medication: "Metformin",
       dosage: "500mg twice daily",
       duration: "30 days",
@@ -34,6 +36,8 @@ const OtherMedicationMobileView = () => {
     },
     {
       id: "#RX002",
+      diagnosisName: "Diabetes Mellitus Type 2", 
+      prescribedName: "Blood Sugar Monitoring",
       medication: "Glucose Test Strips",
       dosage: "As needed",
       duration: "90 days",
@@ -42,6 +46,8 @@ const OtherMedicationMobileView = () => {
     },
     {
       id: "#RX003",
+      diagnosisName: "Hypertension",
+      prescribedName: "Blood Pressure Control",
       medication: "Lisinopril",
       dosage: "10mg once daily", 
       duration: "90 days",
@@ -50,6 +56,8 @@ const OtherMedicationMobileView = () => {
     },
     {
       id: "#RX004",
+      diagnosisName: "Migraine",
+      prescribedName: "Headache Relief",
       medication: "Sumatriptan",
       dosage: "50mg as needed",
       duration: "30 days",
@@ -58,6 +66,8 @@ const OtherMedicationMobileView = () => {
     },
     {
       id: "#RX005",
+      diagnosisName: "Vitamin Deficiency",
+      prescribedName: "Supplement Therapy", 
       medication: "Vitamin D3",
       dosage: "1000 IU once daily",
       duration: "60 days",
@@ -66,6 +76,8 @@ const OtherMedicationMobileView = () => {
     },
     {
       id: "#RX006",
+      diagnosisName: "Asthma",
+      prescribedName: "Respiratory Management",
       medication: "Salbutamol Inhaler",
       dosage: "2 puffs every 4-6 hours",
       duration: "180 days", 
@@ -79,6 +91,8 @@ const OtherMedicationMobileView = () => {
     .filter((prescription) => {
       if (!searchTerm) return true;
       return prescription.medication?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             prescription.diagnosisName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             prescription.prescribedName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
              prescription.dosage?.toLowerCase().includes(searchTerm.toLowerCase());
     })
     .filter((prescription) => (filterType ? prescription.medication === filterType : true));
@@ -130,7 +144,7 @@ const OtherMedicationMobileView = () => {
     <div className="table-container mobile-view-card">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Other Medication List</h3>
+          <h3 className="table-title">Prescribed Medication List</h3>
           <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
         </div>
       </div>
@@ -157,29 +171,43 @@ const OtherMedicationMobileView = () => {
           {/* Mobile Cards */}
           <div className="space-y-3">
             {currentData.map((prescription) => (
-              <Card 
-                key={prescription.id} 
-                className="mobile-view-card" 
+              <Card
+                key={prescription.id}
+                className="mobile-view-card"
                 style={{ boxShadow: "0 0 20px 0px #dddddd70" }}
               >
                 <Card.Body style={{ padding: "15px" }}>
                   <h5>{prescription.medication}</h5>
 
+                  <div className="mb-2">
+                    <small className="text-muted d-block mb-1">
+                      Diagnosis Name:
+                    </small>
+                    <p>{prescription.diagnosisName}</p>
+                  </div>
+
+                  <div className="mb-2">
+                    <small className="text-muted d-block mb-1">
+                      Prescribed Name:
+                    </small>
+                    <p>{prescription.prescribedName}</p>
+                  </div>
+
                   <div className="row text-center mb-3">
-                    <div className="col-4 border-end">
+                    <div className="col-4 border-end pl-2 p-1">
                       <div className="fw-bold text-primary">
                         {prescription.dosage}
                       </div>
                       <small className="text-muted">Dosage</small>
                     </div>
-                    <div className="col-4 border-end">
+                    <div className="col-4 border-end p-1">
                       <div className="fw-bold text-primary">
                         {prescription.duration}
                       </div>
                       <small className="text-muted">Duration</small>
                     </div>
-                    <div className="col-4 pl-0 pr-1">
-                      <div 
+                    <div className="col-4 pl-0 p-1">
+                      <div
                         className="fw-bold"
                         style={{ color: getStatusColor(prescription.status) }}
                       >
@@ -190,7 +218,9 @@ const OtherMedicationMobileView = () => {
                   </div>
 
                   <div className="mb-2">
-                    <small className="text-muted d-block mb-1">Instructions:</small>
+                    <small className="text-muted d-block mb-1">
+                      Instructions:
+                    </small>
                     <p>{truncateText(prescription.instructions, 80)}</p>
                   </div>
 
@@ -212,7 +242,7 @@ const OtherMedicationMobileView = () => {
             {currentData.length === 0 && (
               <Card className="text-center py-5">
                 <Card.Body>
-                  <p className="text-muted">No Other Medications Found</p>
+                  <p className="text-muted">No Prescribed Medications Found</p>
                 </Card.Body>
               </Card>
             )}
@@ -239,28 +269,35 @@ const OtherMedicationMobileView = () => {
       >
         <Modal.Header className="border-bottom-0">
           <Modal.Title>{selectedMedication?.medication}</Modal.Title>
-          <button
-            className="btn-modal-close"
-            onClick={handleCloseModal}
-          >
+          <button className="btn-modal-close" onClick={handleCloseModal}>
             <MdClose />
           </button>
         </Modal.Header>
 
         <Modal.Body className="space-y-4 pt-0">
-          <div className="row">
-            <div className="col-6">
-              <Field label="Dosage" value={selectedMedication?.dosage} disabled/>
-            </div>
-            <div className="col-6">
-              <Field label="Duration" value={selectedMedication?.duration} disabled/>
-            </div>
-          </div>
+          <Field
+            label="Diagnosis Name"
+            value={selectedMedication?.diagnosisName}
+            disabled
+          />
 
-          <Field 
-            label="Status" 
-            value={selectedMedication?.status} 
-            disabled 
+          <Field
+            label="Prescribed Name"
+            value={selectedMedication?.prescribedName}
+            disabled
+          />
+
+          <Field label="Dosage" value={selectedMedication?.dosage} disabled />
+          <Field
+            label="Duration"
+            value={selectedMedication?.duration}
+            disabled
+          />
+
+          <Field
+            label="Status"
+            value={selectedMedication?.status}
+            disabled
             style={{ color: getStatusColor(selectedMedication?.status) }}
           />
 
@@ -272,10 +309,7 @@ const OtherMedicationMobileView = () => {
         </Modal.Body>
 
         <Modal.Footer className="border-top-0">
-          <button
-            className="dc-btn dc-cancel-btn"
-            onClick={handleCloseModal}
-          >
+          <button className="dc-btn dc-cancel-btn" onClick={handleCloseModal}>
             Close
           </button>
         </Modal.Footer>
@@ -284,4 +318,4 @@ const OtherMedicationMobileView = () => {
   );
 };
 
-export default OtherMedicationMobileView;
+export default PrescribedMedicationMobileView;
