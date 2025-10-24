@@ -201,18 +201,6 @@ const AllergyMobileView = () => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
-
-
-  // Get severity badge class
-  const getSeverityBadge = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case "severe": return "badge bg-danger";
-      case "moderate": return "badge bg-warning";
-      case "mild": return "badge bg-info";
-      default: return "badge bg-secondary";
-    }
-  };
-
   return (
     <div className="table-container mobile-view-card">
       <div className="table-header">

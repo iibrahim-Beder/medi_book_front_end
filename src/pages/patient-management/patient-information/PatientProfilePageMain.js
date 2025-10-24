@@ -16,11 +16,13 @@ import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
 import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
 import PrescriptionsMobileView from "./PatientTabs/Test";
 import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
+import { useDevice } from "../../../context/useIsMobile";
+import AllergyMobileView from "./PatientTabs/AllergyMobileView";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("mobileTest");
   const { t } = useTranslation();
-  
+  const {isMobile} = useDevice();
   let padding = activeTab === "Medications" || activeTab === "MedicalConditions";
 
   const tabs = [
@@ -74,17 +76,16 @@ export default function PatientProfilePageMain() {
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />} 
             {activeTab === "PatientNotesComponent" && <PatientNotesComponent />}
-            {activeTab === "AllergyTable" && <AllergyTable/>}
             {activeTab === "MedicalHistory" && <MedicalHistoryTable />}
             {activeTab === "ConditionsTable" && <ConditionsTable />}
-            {activeTab === "Allergy" && <AllergyTable/>}
+            {activeTab === "Allergy" && (isMobile ? <AllergyMobileView /> : <AllergyTable />)}
             {activeTab === "Diagnosis" && <DiagnosisTable/>}
             {activeTab === "PrescriptionsTable" && <Prescriptions/>}
             {activeTab === "Medications" && <Medications/>}
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
-            {/* {activeTab === "mobileTest" && <PrescriptionsMobileView/>} */}
+            {activeTab === "mobileTest" && (isMobile ? <AllergyMobileView /> : <AllergyTable />)}
           </div>
         </div>
       </div>

@@ -380,7 +380,7 @@ abbr[title] {
 
 button:focus {
   outline: none;
-  color: #fff;
+  /* color: #fff; */
 }
 
 

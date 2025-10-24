@@ -5723,6 +5723,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.form-group{grid-column: span 2;}
 	.dignoses-active ,.table-container-style {
 		padding: 30px 8px !important;
 	}   
