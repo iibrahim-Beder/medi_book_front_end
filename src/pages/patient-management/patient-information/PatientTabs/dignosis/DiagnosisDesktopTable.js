@@ -363,7 +363,7 @@ import Pagination from "../../../../shared/Pagination";
                             colSpan="6"
                             className="border-0 background-in-hover-none"
                           >
-                            <div>
+                            <div className="accordion-in-table">
                               {expandedField === "symptomsDescription" && (
                                 <div className="description-expanded-section">
                                   <Field

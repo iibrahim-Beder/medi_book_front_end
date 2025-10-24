@@ -5625,6 +5625,12 @@ content: none;
 	margin: 0 !important;
 }
 @media (max-width: 1200px) {
+	.accordion-in-table {
+  width: 71vw; 
+/* padding: 20px 60px; */
+padding-right: 0;
+float: right;   
+}
 	.dc-tabscontent{height: fit-content;}
 	.list-date-option.custom{
 		left: -150% ;

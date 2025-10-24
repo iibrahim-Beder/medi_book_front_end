@@ -844,8 +844,11 @@ background-color: transparent !important;
 .table-active-content .dc-experienceaccordion .dc-accordioninnertitle.medium {
   height: unset;
 }
-.table-active-content .dc-experienceaccordion {
-  width: 65vw; 
+.accordion-in-table .two-level-accordion > .dc-experienceaccordion  {
+  padding: 20px 12px; 
+}
+.accordion-in-table {
+  width: 61vw; 
 /* padding: 20px 60px; */
 padding-right: 0;
 float: right;   
