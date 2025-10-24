@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import "../../Patient-management.css";
-import ConditionsFilters from "./component/ConditionsFilters";
+// import "../../Patient-management.css";
+import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { t } from "i18next";
-import TextAreaField from "../../../ui/form-fields/TextAreaField";
+import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 
 const OtherMedicalConditions = () => {
   const [expandedRow, setExpandedRow] = useState(null);
@@ -168,7 +168,7 @@ const conditionsData = [
     <div className="table-container">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Other Medical Conditions List</h3>
+          <h3 className="table-title">Other Medical Conditions</h3>
           <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
         </div>
       </div>

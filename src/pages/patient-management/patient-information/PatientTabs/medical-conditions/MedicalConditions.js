@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import DiagnosedConditions from "./diagnosed-conditions/DiagnosedConditions";
-import OtherMedicalConditions from "../OtherMedicalConditions";
-
+import OtherMedicalConditions from "./other/OtherMedicalConditions";
+import { useDevice } from "../../../../../context/useIsMobile";
 export default function MedicalConditions() {
   const [activeTab, setActiveTab] = useState("DiagnosedConditionsTable");
   const { t } = useTranslation();
+  const {isMobile} = useDevice();
 
   const tabs = [
     { key: "DiagnosedConditionsTable", label: t("Diagnosed Conditions") },
@@ -38,7 +39,7 @@ export default function MedicalConditions() {
       <div className="card m-0 border-0" style={{boxShadow:"none"}}>
 
         {/* Tabs Content */}
-        <div className="card-body" style={{backgroundColor:"var(--scbccolor)"}}>
+        <div className={`card-body ${isMobile ? "p-0" : "" } ` } style={{backgroundColor:"var(--scbccolor)"}}>
           {activeTab === "DiagnosedConditionsTable" && (
             <div className="table-responsive">
               <DiagnosedConditions />
