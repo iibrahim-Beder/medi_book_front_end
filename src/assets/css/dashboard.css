@@ -5842,6 +5842,12 @@ padding: 0 10px;
     }
 	/* date range picker css end */
 	@media (max-width: 400px) {
+		.dc-tabscontenttitle{
+			flex-direction: column !important;
+			align-items: center ! important;
+
+
+		}
        /* dropdown notification css start */
 	    .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before {right: 59%;}
         .dropdown-menu-end.list-date-option.open:before{right: calc(59% - 1px) !important;}

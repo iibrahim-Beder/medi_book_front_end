@@ -143,8 +143,9 @@ export default function DoctorSlotForm({
           </select>
         </div>
 
+          <label className="mt-2">{t("allowedAppointmentTypes")}</label>
         <div className="form-group">
-          <label>{t("allowedAppointmentTypes")}</label>
+
           <div className="dc-checkboxgroup">
             {appointmentTypes.map((type, index) => (
               <span key={type} className="dc-checkbox">

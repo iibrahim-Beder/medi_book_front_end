@@ -167,7 +167,7 @@ const BlueMapPicker = ({
   if (!isLoaded) return <div>{t("LoadingMap")}...</div>;
 
   return (
-    <div style={{ maxWidth: 900, margin: "auto", padding: 12 }}>
+    <div>
       <div className="dc-tabscontenttitle">
         <h3>{t("LocateYourBusiness")}</h3>
       </div>
