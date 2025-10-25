@@ -585,8 +585,8 @@ background-color: transparent;
  .dt-paging-button.current{
    display: inline;
    background-color: var(--themecolor);
-   background: #3fabf3 !important;
-   border-color: #3fabf3 !important;
+   background: var(--bluecolor) !important;
+   border-color: var(--bluecolor) !important;
    color:#fff;
    width: 40px;
  }
@@ -839,7 +839,7 @@ background-color: transparent !important;
 }
 .table-hover tbody tr.table-active-content{border-top: 2px solid rgb(221, 221, 221);}
 .btn-primary.view-btn{
-  background-color: #3fabf3;
+  background-color: var(--bluecolor);
 }
 .table-active-content .dc-experienceaccordion .dc-accordioninnertitle.medium {
   height: unset;
@@ -1063,3 +1063,27 @@ padding: 10px;
 .div-container-tabs{
   padding-left:"25px"; padding-top:20px; background-color:var(--cardcolor);
 }
+
+/* navbar anmation start */
+.collapse.show{
+  display: unset;
+}
+.navbar-collapse.dc-navigation.collapse,.hide{
+  max-height: 0;
+  display: block !important;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  padding: 0;
+  border: none !important;
+} 
+.navbar-collapse.dc-navigation.collapse.show,.expand {
+  max-height: 500px;
+  transition: all 0.5s ease;
+}
+.menu-item-has-children.active .expand{
+    margin-bottom: 35px;
+    margin-top: -45px;
+}
+.dc-navigation ul li .sub-menu li a{padding-left: 10px !important;}
+.dc-navigationarea nav .navbar-nav{gap: 0;}
+/* navbar anmation end */

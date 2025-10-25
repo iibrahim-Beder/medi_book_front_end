@@ -51,10 +51,11 @@ nav .navbar-nav {
 .dropdown-icon {
     display: none;
     color: white;
-  font-size: 15px;
-  margin-left: 5px;
-  transition: transform 0.3s ease;
-  background-color:    var(--themecolor);
+    font-size: 20px;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+    background-color: var(--bluecolor);
+    padding: 3px;
 }
 
 .dropdown-icon.rotate {
