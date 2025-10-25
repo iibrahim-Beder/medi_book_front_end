@@ -37,6 +37,7 @@ function UserMenu() {
             <IoSunnyOutline color="var(--themecolor)" />
           )}
         </button>
+        
         <NotificationButton />
 
     <div

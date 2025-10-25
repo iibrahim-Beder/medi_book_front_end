@@ -61,7 +61,7 @@ const NotificationDropdown = () => {
 
       <Dropdown.Menu
         className="dropdown-menu-end shadow list-date-option open"
-        style={{ minWidth: "350px",  backgroundColor:"var(--cardcolor)", padding:"10px", border:"1px solid #ccc", marginTop:"10px"}}
+        style={{ minWidth: "350px",  backgroundColor:"var(--cardcolor)",  border:"1px solid #ccc", marginTop:"10px", maxHeight:"0",opacity:"0", overflow:"hidden",display:"block"}}
       >
         <div className="topnav-dropdown-header p-2 border-bottom">
           <span className="fw-bold" style={{color:"var(--terthemecolor)"}}>Notifications</span>
