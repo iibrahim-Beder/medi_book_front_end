@@ -23,3 +23,5 @@
 header.inner-header .header-nav .header-navbar-rht li.noti-nav > a.active-dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; position: absolute; right: -2px; top: -2px; }
  *, ::after, ::before { box-sizing: border-box; }
  .header .header-nav .header-navbar-rht .noti-nav .nav-link { font-size: 18px; color: #6B7280; }
+ .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before {right: 10px;left: unset !important;}
+ .dropdown-menu-end.list-date-option.open:before{right: 9px !important;}

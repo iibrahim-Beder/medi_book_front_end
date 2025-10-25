@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown, Badge } from "react-bootstrap";
 import { Bell } from "lucide-react";
+import "../patient-management/patient-information/PatientTabs/component/DateRangePicker.css";
 import "./NotificationButton.css"
 const NotificationDropdown = () => {
   const [notifications] = useState([
@@ -59,8 +60,8 @@ const NotificationDropdown = () => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu
-        className="dropdown-menu-end shadow"
-        style={{ minWidth: "350px",  backgroundColor:"var(--cardcolor)"  }}
+        className="dropdown-menu-end shadow list-date-option open"
+        style={{ minWidth: "350px",  backgroundColor:"var(--cardcolor)", padding:"10px", border:"1px solid #ccc", marginTop:"10px"}}
       >
         <div className="topnav-dropdown-header p-2 border-bottom">
           <span className="fw-bold" style={{color:"var(--terthemecolor)"}}>Notifications</span>
