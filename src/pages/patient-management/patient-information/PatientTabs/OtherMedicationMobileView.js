@@ -160,7 +160,6 @@ const OtherMedicationMobileView = () => {
               <Card 
                 key={prescription.id} 
                 className="mobile-view-card" 
-                style={{ boxShadow: "0 0 20px 0px #dddddd70" }}
               >
                 <Card.Body style={{ padding: "15px" }}>
                   <h5>{prescription.medication}</h5>

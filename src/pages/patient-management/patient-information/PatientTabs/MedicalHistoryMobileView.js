@@ -237,7 +237,6 @@ const MedicalHistoryMobileView = () => {
               <Card
                 key={history.id}
                 className="mobile-view-card"
-                style={{ boxShadow: "0 0 20px 0px #dddddd70" }}
               >
                 <Card.Body className="" style={{ padding: "15px" }}>
 

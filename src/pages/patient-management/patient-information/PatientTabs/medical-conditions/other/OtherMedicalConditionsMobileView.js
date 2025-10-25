@@ -228,7 +228,6 @@ const OtherMedicalConditionsMobileView = () => {
                 <Card
                   key={condition.id}
                   className="mobile-view-card"
-                  style={{ boxShadow: "0 0 20px 0px #dddddd70" }}
                 >
                   <Card.Body style={{ padding: "15px" }}>
                     <h5>{condition.medicalConditionName}</h5>

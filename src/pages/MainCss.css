@@ -382,27 +382,13 @@ button:focus {
   outline: none;
   /* color: #fff; */
 }
-
-
-
-
-
-
 /* CalendarComponent styely end */
-
-
-
-
 /* sloits css start*/
 .dc-spaces{
     text-align-last: center; 
     min-height: 38px !important;
 }
 /* sloits css end*/
-
-
-
-
 /* hr css end*/
 .CustHr{
   background-color:#dddddd8a;
@@ -1087,3 +1073,4 @@ padding: 10px;
 .dc-navigation ul li .sub-menu li a{padding-left: 10px !important;}
 .dc-navigationarea nav .navbar-nav{gap: 0;}
 /* navbar anmation end */
+.mobile-view-card .card {background-color: var(--cardcolor); box-shadow: 0px 0px 20px 0px var(--shadocolor);}
