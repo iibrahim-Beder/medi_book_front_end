@@ -1049,28 +1049,30 @@ padding: 10px;
 .div-container-tabs{
   padding-left:"25px"; padding-top:20px; background-color:var(--cardcolor);
 }
-
-/* navbar anmation start */
-.collapse.show{
-  display: unset;
+.patintStats{padding-top: 40px;}
+@media (max-width: 991px){
+  /* navbar anmation start */
+  .collapse.show{
+    display: unset;
+  }
+  .navbar-collapse.dc-navigation.collapse,.hide{
+    max-height: 0;
+    display: block !important;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    padding: 0;
+    border: none !important;
+  } 
+  .navbar-collapse.dc-navigation.collapse.show,.expand {
+    max-height: 500px;
+    transition: all 0.5s ease;
+  }
+  .menu-item-has-children.active .expand{
+      margin-bottom: 35px;
+      margin-top: -45px;
+  }
+  .dc-navigation ul li .sub-menu li a{padding-left: 10px !important;}
+  .dc-navigationarea nav .navbar-nav{gap: 0;}
+  /* navbar anmation end */
 }
-.navbar-collapse.dc-navigation.collapse,.hide{
-  max-height: 0;
-  display: block !important;
-  overflow: hidden;
-  transition: all 0.5s ease;
-  padding: 0;
-  border: none !important;
-} 
-.navbar-collapse.dc-navigation.collapse.show,.expand {
-  max-height: 500px;
-  transition: all 0.5s ease;
-}
-.menu-item-has-children.active .expand{
-    margin-bottom: 35px;
-    margin-top: -45px;
-}
-.dc-navigation ul li .sub-menu li a{padding-left: 10px !important;}
-.dc-navigationarea nav .navbar-nav{gap: 0;}
-/* navbar anmation end */
 .mobile-view-card .card {background-color: var(--cardcolor); box-shadow: 0px 0px 20px 0px var(--shadocolor);}

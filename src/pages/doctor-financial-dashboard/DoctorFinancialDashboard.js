@@ -75,8 +75,7 @@ const DoctorFinancialDashboard = () => {
     ];
 
 
-  const responsive = {
-    responsive: true}
+  const responsive = {responsive: true}
   const options = {
     responsive: true,
  
