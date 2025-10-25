@@ -5974,11 +5974,12 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 }
 @media (min-width: 568px) { .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; } }
 @media (max-width: 767px) {
-    .collapsed .dc-btnmenutoggle {
-        right: 0;
+	.collapsed .dc-btnmenutoggle {
+		right: 0;
     }
 }
 
+@media (max-width: 400px) {.react-calendar__month-view__weekdays__weekday{font-size: 10px;}}
 
 
 }
