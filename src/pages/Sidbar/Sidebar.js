@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -20,16 +20,6 @@ import { CiBadgeDollar } from "react-icons/ci";
 
 import InfomationIcon from "../../assets/icons/InfomationIcon";
 import { 
-  FaTachometerAlt,
-  FaListAlt,
-  FaCog,
-  FaMapMarkerAlt,
-  FaShoppingCart,
-  FaUser,
-  FaEnvelope,
-  FaBookmark,
-  FaShieldAlt,  
-  FaSignOutAlt,
   FaArrowLeft,
   FaClone,
   FaBars
@@ -46,8 +36,20 @@ const Sidebar = () => {
   };
 let iconSize=20;
 
-
+  const sidebarRef = useRef(null);
   const [scrolled, setScrolled] = useState(false);
+    useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setIsCollapsed(true);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 75) {
@@ -55,14 +57,13 @@ let iconSize=20;
       } else {
         setScrolled(false);
       }
-    };
-    
+    };   
     console.log("scrolled", + scrolled, "scrolled" + window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (
-    <div id="dc-sidebarwrapper" className={` ${scrolled ? "scrolled-sidebar" : ""}  dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
+    <div ref={sidebarRef} id="dc-sidebarwrapper" className={` ${scrolled ? "scrolled-sidebar" : ""}  dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
       <div style={{position:"fixed"}} id="dc-btnmenutoggle" className="dc-btnmenutoggle" onClick={toggleSidebar}>
         {/* <FaArrowLeft className={`icon ${isCollapsed ? "rotate-180" : ""}`} /> */}
          <FaArrowLeft className={`icon desktop ${isCollapsed ? "rotate-180" : ""}`} />
@@ -89,7 +90,7 @@ let iconSize=20;
 
         {/* Navigation */}
         <nav id="dc-navdashboard" className="dc-navdashboard">
-          <ul>
+          <ul onClick={()=>{setIsCollapsed(true)}} >
             <li>
               <Link to="/dashboard">
                 <DashboardIcon width={iconSize} height={iconSize} className="icon" /> 
