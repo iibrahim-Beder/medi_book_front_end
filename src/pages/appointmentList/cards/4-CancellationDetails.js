@@ -13,7 +13,7 @@ export default function CancellationDetails({ cancellation }) {
         </div>
       </div>
 
-      <div className="dc-user-info">
+      <div className="dc-user-info mt-0">
         <div className="dc-title">
           <h4>{t("cancellation.by")}:</h4>
           <span>{cancellation.cancelledBy}</span>

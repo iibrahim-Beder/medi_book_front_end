@@ -17,7 +17,7 @@ import AllergyMobileView from "./PatientTabs/AllergyMobileView";
 import MedicalHistoryMobileView from "./PatientTabs/MedicalHistoryMobileView";
 
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("mobileTest");
+  const [activeTab, setActiveTab] = useState("BasicInfo");
   const { t } = useTranslation();
   const {isMobile} = useDevice();
   let padding = activeTab === "Medications" || activeTab === "MedicalConditions";

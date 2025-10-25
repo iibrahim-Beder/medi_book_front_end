@@ -423,6 +423,8 @@
         grid-template-columns: 1fr;
     }
     .dc-user-grid .dc-user-info:nth-child(n+2){margin-top: 33px;}
+    .dc-user-grid .dc-user-info:nth-child(n+2).mt-0 {margin-top: 33px!important;}
+    .dc-user-info:nth-child(n+2).mt-0 {margin-top: 33px!important;}
     .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxtitle.dc-titlewithbtn{
         display: grid;
         grid-row-gap: 10px;

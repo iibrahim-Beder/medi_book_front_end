@@ -23,7 +23,7 @@ const TimeSlotInformationCard = ({ slot }) => {
         </div>
       </div>
 
-      <div className="dc-user-info">
+      <div className="dc-user-info mt-0">
         <div className="dc-title">
           <h4>{t("slot.bookingDate")}:</h4>
           <span>{slot.bookingDate}</span>
@@ -69,7 +69,7 @@ const TimeSlotInformationCard = ({ slot }) => {
         <div className="dc-title">
           <h4>{t("slot.price")}:</h4>
           <span className="mb-10">{slot.price}</span>
-          <hr className="CustHr" />
+          <hr className="CustHr " style={{marginTop:"35px"}} />
         </div>
       </div>
     </div>

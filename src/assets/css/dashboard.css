@@ -5797,7 +5797,7 @@ padding: 0 10px;
 	flex-direction: column !important;
   }	
   .PatientBasicInfo .dc-user-header{
-           padding:0;
+           padding:25px 0;
 		}
 		.table-header{
 			flex-direction: column;

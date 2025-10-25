@@ -13,7 +13,7 @@ export default function PatientDetails({ patient }) {
         </div>
       </div>
 
-      <div className="dc-user-info">
+      <div className="dc-user-info mt-0">
         <div className="dc-title">
           <h4>{t("patient.idNumber")}:</h4>
           <span>{patient.id}</span>

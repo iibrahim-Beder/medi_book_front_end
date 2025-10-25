@@ -20,13 +20,13 @@ const AppointmentInformation = () => {
   }
   return (
     
-    <div className="dc-yourdetails dc-tabsinfo" > 
+    <div className="dc-yourdetails dc-tabsinfo "style={{marginTop:"30px"}} > 
 
 
 
-          <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <div className="dc-haslayout dc-dbsectionspace dc-dbsectionspacetest">
-              <div className="dc-dashboardbox ">
+          {/* <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> */}
+            <div className="dc-haslayout dc-dbsectionspace dc-dbsectionspacetest">  
+              <div className="dc-dashboardbox pl-4 pr-4">
                 <PationtCard
                   userName={"Ibrahem makhasi"}
                   userImg={"images/feedback/user-img.jpg"}
@@ -55,7 +55,7 @@ const AppointmentInformation = () => {
                 </div>
               </div>{" "}
             </div>{" "}
-          </div>
+          {/* </div> */}
     </div>
   );
 };
