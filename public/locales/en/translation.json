@@ -17,7 +17,13 @@
     "accountSettings": "Account Settings",
     "securitySettings": "Security Settings",
     "logout": "Logout",
-    "allRightsReserved": "All Rights Reserved."
+    "allRightsReserved": "All Rights Reserved.",
+    "makeSlots  ": "Doctor Slots Generator",
+    "managePatients": "Manage Patients",
+    "pationtInformation": "Patient Information",
+    "manageFinancial": "Manage Financials"
+
+    
   }
   ,
   "accountSecurity": {
@@ -220,10 +226,6 @@
     "pending": "Pending",
     "spaces": "Spaces"
   }
-  ,
-   "Slots": {
-    "title": "Manage Your Appointment Slots"
-  }
    ,
    "slots": {
     "title": "Manage Your Appointment Slots",
@@ -355,14 +357,7 @@
       "shiftName": "Shift Name",
       "location": "Location",
       "price": "Price"
-}
-
-,
-   
-   "slots": "Slots"
-
-
-   , 
+}   , 
     "slot": {
     "status": "Status",
     "bookingDate": "Booking Date",
@@ -443,7 +438,7 @@
     "reviewConfirm": "Review & Confirm",
     "education": "Education",
     "PaymentInsurance": "Payment & Insurance",
-    "makeSlots": "Make Slots",
+    "makeSlots": "Generate Doctor Slots",
     "shift": "Shift"
   }
 

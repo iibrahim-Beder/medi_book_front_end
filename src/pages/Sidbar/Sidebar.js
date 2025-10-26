@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { PiClockUserThin } from "react-icons/pi";
 
 
 
@@ -116,22 +117,22 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/manage-services">
-                <PiShoppingCartLight className="icon" />
-                <span>{t("sidebar.manageServices")}</span>
+              <Link to="/Generate-Doctor-Slots">
+                <PiClockUserThin className="icon" />
+                <span>{t("sidebar.makeSlots")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/manage-team">
+              <Link to="/manage-patients">
                 <PiUsersThreeLight className="icon" />
-                <span>{t("sidebar.manageTeam")}</span>
+                <span>{t("sidebar.managePatients")}</span>
               </Link>
             </li>
              <li>
               <Link to="/pationt-information">
                 <InfomationIcon width={iconSize} height={iconSize} className="icon" />
 
-                <span>{t("sidebar.manageTeam")}</span>
+                <span>{t("sidebar.pationtInformation")}</span>
               </Link>
             </li>
             <li>
@@ -141,9 +142,9 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/manage-articles">
+              <Link to="/manage-financial">
                 <CiBadgeDollar className="icon" />
-                <span>{t("sidebar.manageArticles")}</span>
+                <span>{t("sidebar.manageFinancial")}</span>
               </Link>
             </li>
             <li>

@@ -12,7 +12,12 @@
     "accountSettings": "إعدادات الحساب",
     "securitySettings": "إعدادات الأمان",
     "logout": "تسجيل الخروج",
-    "allRightsReserved": "جميع الحقوق محفوظة."
+    "allRightsReserved": "جميع الحقوق محفوظة.",
+    "makeSlots":"جدولة المواعيد",
+    "managePatients":"ادارة المرضى",
+    "pationtInformation":"معلومات المريض ",
+    "manageFinancial":"ادارة الماليات",
+    "appointmentManagement":"ادارة المواعيد"
   }
   ,
   "accountSecurity": {
@@ -342,13 +347,13 @@
   "endTime": "وقت النهاية",
   "breaks": "فترات الراحة",
   "addBreak": "إضافة فترة راحة"
-  , "slots":"مواعيد",
+  ,
   "Make Slots":"توليد مواعيد"
-  , "slots": "مواعيد" 
   , "Add Slot": " اضافة مواعيد " 
 ,
   
 "slots": {
+  "all": "الكل",
     "status": "الحالة",
     "pending": "قيد الانتظار",
     "completed": "مكتمل",
@@ -377,10 +382,11 @@
     "price": "السعر"
   },
   "slotStatuses": {
-    "Completed": "مكتمل",
-    "Cancelled": "ملغي",
-    "Empty": "فارغ",
-    "Pending": "قيد الانتظار"
+    "all": "الكل",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "pending": "قيد الانتظار"
   }
 
 ,

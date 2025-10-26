@@ -5974,7 +5974,7 @@ label{float:inline-end;}
 .dc-navdashboard > ul > li > a{
 	    gap: 10px;
 }
-.dc-notificationicon > a:after{right: 120px;}
+.dc-notificationicon > a:after{right: 175px;}
 .popup-close {
       right:auto !important;
     left: 10px;

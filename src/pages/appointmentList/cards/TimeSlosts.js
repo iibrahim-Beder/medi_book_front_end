@@ -23,11 +23,11 @@ const TimeSlosts = ({ slots = [], onRemoveSlot }) => {
        <SelectField
           name="filter"
           options={[
-            { value: "all", label: t("slots.all") },
-            { value: "completed", label: t("slots.completed") },
-            { value: "cancelled", label: t("slots.cancelled") },
-            { value: "empty", label: t("slots.empty") },
-            { value: "pending", label: t("slots.pending") },
+            { value: "all", label: t("slotStatuses.all") },
+            { value: "completed", label: t("slotStatuses.completed") },
+            { value: "cancelled", label: t("slotStatuses.cancelled") },
+            { value: "empty", label: t("slotStatuses.empty") },
+            { value: "pending", label: t("slotStatuses.pending") },
           ]}
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
