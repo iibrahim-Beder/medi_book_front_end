@@ -165,7 +165,7 @@
     .collapsed	.dc-btnmenutoggle{left: 0;}
 	.dc-yeartag .dc-tag{
 		float: left;
-		width: 100%;
+		/* width: 100%; */
 		margin-top:10px; 
 	}
 	.dc-jobalerts .alert span{max-width: 100%;}

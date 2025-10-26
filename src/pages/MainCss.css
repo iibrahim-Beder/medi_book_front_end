@@ -1076,3 +1076,4 @@ padding: 10px;
   /* navbar anmation end */
 }
 .mobile-view-card .card {background-color: var(--cardcolor); box-shadow: 0px 0px 20px 0px var(--shadocolor);}
+.filter-section .dc-user-info .dc-title h4,.filter-section .form-control, .dc-select select,.btn-group{ direction: ltr !important; }

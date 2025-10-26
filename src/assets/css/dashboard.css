@@ -2734,7 +2734,10 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	padding: 30px;
 }
 /* Feedback Styling */
-.dc-yeartag{padding: 22px 30px 21px 30px;}
+.dc-yeartag{     display: flex;
+    justify-content: space-between;
+    align-items: flex-end; padding: 22px 30px 21px 30px;
+}
 .dc-yeartag h2{line-height: 23px;}
 .dc-yeartag h2{
 	line-height: 30px;
@@ -2742,6 +2745,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	vertical-align: middle;
 }
 .dc-yeartag .dc-tag{
+	display: flex;
 	float: right;
 	width: auto;
 }
@@ -5944,7 +5948,7 @@ html[dir="rtl"]  {
 	.setting{display: flex;flex-direction: row-reverse;	} 
 	.dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{direction: ltr;}
 .dc-haslayout{direction: ltr;}
-.dc-user-info .dc-title h4 ,.form-control ,.dc-select select{direction: rtl;}
+.dc-user-info .dc-title h4 ,.form-control ,.dc-select select{direction: rtl ! important;}
 .dc-sidebarwrapper.collapsed{direction: ltr;}
 .dc-sidebarwrapper ,.dc-tabscontenttitle:before,.dc-navdashboard > ul > li:before {right: 0;left: auto;} 
 .dc-btnmenutoggle {right: 26px;}
@@ -5955,10 +5959,11 @@ html[dir="rtl"]  {
     justify-content: space-between;}
 	.dc-collapseexp{direction: rtl;}
 	.dc-dashboardboxtitle h2 {float: inline-end;}
-	label{float: inline-start;}
+.doctor-registration label, .accordion label{float: inline-start;}
+label{float:inline-end;}
 .form-group-label .dc-labelgroup{    display: flex; align-items: center;  justify-content: space-between;}
 
-.dc-yeartag{display: flex; justify-content: space-between;}
+.dc-yeartag{display: flex;justify-content: space-between;flex-direction: row-reverse; align-items: center;}
 
 /* .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; }  */
 
