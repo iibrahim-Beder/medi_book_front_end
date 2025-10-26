@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import DynamicEditModal from "../../../shared/DynamicEditModal";
 import Pagination from "../../../shared/Pagination";
-import "../../Patient-management.css";
 import ConditionsFilters from "./component/ConditionsFilters";
+import { useTranslation } from "react-i18next";
+import "../../Patient-management.css";
 
 const AllergyTable = () => {
+  const { t } = useTranslation();
+
   // Filters state
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("");
@@ -70,28 +73,28 @@ const AllergyTable = () => {
   const fields = [
     { 
       name: "severity", 
-      label: "Severity", 
+      label: t('AllergyTable.severity'), 
       type: "select", 
       options: [
-        { value: "Mild", label: "Mild" },
-        { value: "Moderate", label: "Moderate" }, 
-        { value: "Severe", label: "Severe" }
+        { value: "Mild", label: t('AllergyTable.severity_options.Mild') },
+        { value: "Moderate", label: t('AllergyTable.severity_options.Moderate') }, 
+        { value: "Severe", label: t('AllergyTable.severity_options.Severe') }
       ], 
-      placeholder: "Select severity" 
+      placeholder: t('AllergyTable.select_severity') 
     },
     { 
       name: "isActive", 
-      label: "Active", 
+      label: t('AllergyTable.active'), 
       type: "select", 
       options: [
-        { value: true, label: "Active" },
-        { value: false, label: "Inactive" }
+        { value: true, label: t('AllergyTable.active_options.Active') },
+        { value: false, label: t('AllergyTable.active_options.Inactive') }
       ], 
-      placeholder: "Is it active?" 
+      placeholder: t('AllergyTable.select_active_status') 
     },
-    { name: "dateNoted", label: "Date Noted", type: "date", placeholder: "Select date" },
-    { name: "reaction", label: "Reaction", type: "text", placeholder: "Enter reaction" },
-    { name: "notes", label: "Notes", type: "textarea", placeholder: "Enter notes" },
+    { name: "dateNoted", label: t('AllergyTable.date_noted'), type: "date", placeholder: t('AllergyTable.select_date') },
+    { name: "reaction", label: t('AllergyTable.reaction'), type: "text", placeholder: t('AllergyTable.enter_reaction') },
+    { name: "notes", label: t('AllergyTable.notes'), type: "textarea", placeholder: t('AllergyTable.enter_notes') },
   ];
 
   // Open modal for adding a new record
@@ -186,14 +189,14 @@ const AllergyTable = () => {
 
   return (
     <div className="table-container">
-      <div className="table-header " style={{marginBottom:"10px"}}>
+      <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
-          <h3 className="table-title">Allergy List</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t('AllergyTable.table_title')}</h3>
+          <h6 className="table-subtitle">{t('AllergyTable.table_subtitle')}</h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            Add Allergen
+            {t('AllergyTable.add_allergen')}
           </button>
         </div>
       </div>
@@ -222,13 +225,13 @@ const AllergyTable = () => {
             <Table className="data-table align-middle table-hover">
               <thead>
                 <tr>
-                  <th>Allergen</th>
-                  <th>Severity</th>
-                  <th>Active</th>
-                  <th>Date Noted</th>
-                  <th>Reaction</th>
-                  <th>Notes</th>
-                  <th>Actions</th>
+                  <th>{t('AllergyTable.allergen')}</th>
+                  <th>{t('AllergyTable.severity')}</th>
+                  <th>{t('AllergyTable.active')}</th>
+                  <th>{t('AllergyTable.date_noted')}</th>
+                  <th>{t('AllergyTable.reaction')}</th>
+                  <th>{t('AllergyTable.notes')}</th>
+                  <th>{t('AllergyTable.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -236,8 +239,8 @@ const AllergyTable = () => {
                   currentData.map((entry) => (
                     <tr key={entry.allergenId ?? entry.allergenLabel}>
                       <td>{entry.allergenLabel ?? String(entry.allergenId)}</td>
-                      <td>{entry.severity}</td>
-                      <td>{entry.isActive ? "Active" : "Inactive"}</td>
+                      <td>{t(`AllergyTable.severity_options.${entry.severity}`)}</td>
+                      <td>{entry.isActive ? t('AllergyTable.active_options.Active') : t('AllergyTable.active_options.Inactive')}</td>
                       <td>{formatDate(entry.dateNoted)}</td>
                       <td>{entry.reaction}</td>
                       <td>
@@ -255,7 +258,7 @@ const AllergyTable = () => {
                           style={{ color: "#007bff", backgroundColor: "transparent" }}
                           onClick={() => handleEdit(entry)}
                         >
-                          Manage
+                          {t('AllergyTable.manage')}
                         </Button>
                       </td>
                     </tr>
@@ -263,7 +266,7 @@ const AllergyTable = () => {
                 ) : (
                   <tr>
                     <td colSpan="7" className="text-center text-muted">
-                      No allergen records found.
+                      {t('AllergyTable.no_records_found')}
                     </td>
                   </tr>
                 )}
@@ -271,12 +274,12 @@ const AllergyTable = () => {
             </Table>
           </div>
 
-        <Pagination
-        currentPage={currentPage}
-        totalItems={allergens.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={setCurrentPage}
-      />
+          <Pagination
+            currentPage={currentPage}
+            totalItems={allergens.length}
+            rowsPerPage={rowsPerPage}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
 
@@ -291,10 +294,10 @@ const AllergyTable = () => {
         record={selectedRecord}
         setRecord={setSelectedRecord}
         fields={fields}
-        title={isAddMode ? "Add Allergen" : "Edit Allergen"}
+        title={isAddMode ? t('AllergyTable.add_allergen') : t('AllergyTable.edit_allergen')}
         dropdownOptions={allergenOptions}
         dropdownField="allergenId"
-        dropdownLabel="Allergen"
+        dropdownLabel={t('AllergyTable.allergen')}
       />
     </div>
   );

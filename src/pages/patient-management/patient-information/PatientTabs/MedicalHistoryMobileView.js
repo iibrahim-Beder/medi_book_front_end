@@ -5,9 +5,12 @@ import MedicalHistoryModal from "./component/MedicalHistoryModal";
 import ConditionsFilters from "./component/ConditionsFilters";
 import Pagination from "../../../shared/Pagination";
 import { MdClose } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 import "../../Patient-management.css";
 
 const MedicalHistoryMobileView = () => {
+  const { t } = useTranslation();
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("");       
   const [filterDateFrom, setFilterDateFrom] = useState(null);
@@ -200,12 +203,12 @@ const MedicalHistoryMobileView = () => {
     <div className="table-container mobile-view-card">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Medical History</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t('MedicalHistoryMobileView.table_title')}</h3>
+          <h6 className="table-subtitle">{t('MedicalHistoryMobileView.table_subtitle')}</h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            Add Condition
+            {t('MedicalHistoryMobileView.add_condition')}
           </button>
         </div>
       </div>
@@ -239,29 +242,28 @@ const MedicalHistoryMobileView = () => {
                 className="mobile-view-card"
               >
                 <Card.Body className="" style={{ padding: "15px" }}>
-
                   {history.hereditaryDisease && (
                     <div className="mb-3">
-                      <small className="text-muted d-block mb-1">Hereditary Disease:</small>
-                      <p className="mb-1">{history.hereditaryDisease}</p>
+                      <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.hereditary_disease')}:</small>
+                      <p className="mb-1">{t(`MedicalHistoryMobileView.hereditary_diseases.${history.hereditaryDisease}`)}</p>
                     </div>
                   )}
 
                   <div className="mb-3">
-                    <small className="text-muted d-block mb-1">Description:</small>
+                    <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.description')}:</small>
                     <p className="mb-1">{truncateText(history.description, 60)}</p>
                   </div>
 
                   {history.relatedPerson && (
                     <div className="mb-3">
-                      <small className="text-muted d-block mb-1">Related Person:</small>
+                      <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.related_person')}:</small>
                       <p className="mb-1">{history.relatedPerson}</p>
                     </div>
                   )}
 
                   {history.notes && (
                     <div className="mb-3">
-                      <small className="text-muted d-block mb-1">Notes:</small>
+                      <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.notes')}:</small>
                       <p className="mb-1">{truncateText(history.notes, 80)}</p>
                     </div>
                   )}
@@ -272,14 +274,14 @@ const MedicalHistoryMobileView = () => {
                         <div className="fw-bold text-primary">
                           {formatDate(history.dateOfEvent)}
                         </div>
-                        <small className="text-muted">Date of Event</small>
+                        <small className="text-muted">{t('MedicalHistoryMobileView.date_of_event')}</small>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="fw-bold text-primary">
-                        {history.hereditaryDisease ? "Hereditary" : "Non-Hereditary"}
+                        {history.hereditaryDisease ? t('MedicalHistoryMobileView.hereditary') : t('MedicalHistoryMobileView.non_hereditary')}
                       </div>
-                      <small className="text-muted">Type</small>
+                      <small className="text-muted">{t('MedicalHistoryMobileView.type')}</small>
                     </div>
                   </div>
 
@@ -291,7 +293,7 @@ const MedicalHistoryMobileView = () => {
                       onClick={() => handleEdit(history)}
                       style={{ float: "inline-end" }}
                     >
-                      Manage
+                      {t('MedicalHistoryMobileView.manage')}
                     </Button>
                   </div>
                 </Card.Body>
@@ -301,7 +303,7 @@ const MedicalHistoryMobileView = () => {
             {currentData.length === 0 && (
               <Card className="text-center py-5">
                 <Card.Body>
-                  <p className="text-muted">No Medical History Records Found</p>
+                  <p className="text-muted">{t('MedicalHistoryMobileView.no_records_found')}</p>
                 </Card.Body>
               </Card>
             )}
@@ -327,7 +329,7 @@ const MedicalHistoryMobileView = () => {
         record={selectedRecord}
         setRecord={setSelectedRecord}
         hereditaryDiseases={hereditaryDiseases}
-        title={isAddMode ? "Add Medical History" : "Edit Medical History"}
+        title={isAddMode ? t('MedicalHistoryMobileView.add_medical_history') : t('MedicalHistoryMobileView.edit_medical_history')}
       />
     </div>
   );

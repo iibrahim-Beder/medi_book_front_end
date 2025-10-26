@@ -1,14 +1,17 @@
+// PrescriptionsMobileView.jsx
 import React, { useState } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
 import CustomAccordion from "../../../../shared/CustomAccordion";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { MdClose } from "react-icons/md";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../../shared/Pagination";
 
 const PrescriptionsMobileView = () => {
+  const { t } = useTranslation();
+
   const [selectedPrescription, setSelectedPrescription] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -139,7 +142,6 @@ const PrescriptionsMobileView = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-
   };
 
   const handleModalExited = () => {
@@ -178,8 +180,8 @@ const PrescriptionsMobileView = () => {
     <div className="table-container mobile-view-card">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Prescriptions list</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t('PrescriptionsMobileView.table_title')}</h3>
+          <h6 className="table-subtitle">{t('PrescriptionsMobileView.table_subtitle')}</h6>
         </div>
       </div>
 
@@ -213,13 +215,13 @@ const PrescriptionsMobileView = () => {
                   <h5>{p.title}</h5>
                   <div className="mb-2">
                     <small className="text-muted d-block mb-1">
-                      Diagnosis:
+                      {t('PrescriptionsMobileView.diagnosis')}
                     </small>
                     <p>{p.diagnosisName}</p>
                   </div>
 
                   <div className="mb-2">
-                    <small className="text-muted d-block mb-1">Note:</small>
+                    <small className="text-muted d-block mb-1">{t('PrescriptionsMobileView.note')}</small>
                     <p>{truncateText(p.note, 80)}</p>
                   </div>
 
@@ -229,15 +231,15 @@ const PrescriptionsMobileView = () => {
                         className="fw-bold"
                         style={{ color: getStatusColor(p.status) }}
                       >
-                        {p.status}
+                        {t(`PrescriptionsMobileView.status_options.${p.status}`)}
                       </div>
-                      <small className="text-muted"> Status </small>
+                      <small className="text-muted">{t('PrescriptionsMobileView.status')}</small>
                     </div>
                     <div className="">
                       <div className="fw-bold text-primary">
                         {p.prescribedMedication.length}
                       </div>
-                      <small className="text-muted"> Medications </small>
+                      <small className="text-muted">{t('PrescriptionsMobileView.medications')}</small>
                     </div>
                   </div>
 
@@ -249,7 +251,7 @@ const PrescriptionsMobileView = () => {
                       style={{ float: "inline-end" }}
                       onClick={() => handleOpenModal(p)}
                     >
-                      View All Details
+                      {t('PrescriptionsMobileView.view_all_details')}
                     </Button>
                   </div>
                 </Card.Body>
@@ -259,7 +261,7 @@ const PrescriptionsMobileView = () => {
             {currentItems.length === 0 && (
               <Card className="text-center py-5">
                 <Card.Body>
-                  <p className="text-muted">No Prescriptions Found</p>
+                  <p className="text-muted">{t('PrescriptionsMobileView.no_prescriptions_found')}</p>
                 </Card.Body>
               </Card>
             )}
@@ -292,41 +294,42 @@ const PrescriptionsMobileView = () => {
 
         <Modal.Body className="space-y-4 pt-0">
           <Field
-            label="Diagnosis Name"
+            label={t('PrescriptionsMobileView.diagnosis_name')}
             value={selectedPrescription?.diagnosisName || ""}
             disabled
           />
 
           <Field
-            label="Status"
-            value={selectedPrescription?.status || ""}
+            label={t('PrescriptionsMobileView.status')}
+            value={selectedPrescription?.status ? t(`PrescriptionsMobileView.status_options.${selectedPrescription.status}`) : ""}
             disabled
           />
 
           <TextAreaField
-            label="Prescription Note"
+            label={t('PrescriptionsMobileView.prescription_note')}
             value={selectedPrescription?.note || ""}
             disabled
           />
 
           <CustomAccordion
             titleBackgroundColor="var(--scbccolor)"
-            title="Medications"
+            title={t('PrescriptionsMobileView.medications')}
             readOnly={true}
             backgroundColor="var(--scbccolor)"
             data={selectedPrescription?.prescribedMedication || []}
             formFields={[
               {
-                label: "Medication Name",
+                label: t('PrescriptionsMobileView.medication_name'),
                 name: "medicationName",
-                placeholder: "Medication",
+                placeholder: t('PrescriptionsMobileView.medication'),
               },
-              { label: "Dosage", name: "dosage", half: true },
-              { label: "Duration", name: "duration", half: true },
+              { label: t('PrescriptionsMobileView.dosage'), name: "dosage", half: true },
+              { label: t('PrescriptionsMobileView.duration'), name: "duration", half: true },
               {
-                label: "Instructions",
+                label: t('PrescriptionsMobileView.instructions'),
                 name: "instructions",
                 type: "textarea",
+                placeholder: t('PrescriptionsMobileView.instructions'),
               },
             ]}
           />
@@ -334,7 +337,7 @@ const PrescriptionsMobileView = () => {
 
         <Modal.Footer className="border-top-0">
           <button className="dc-btn dc-cancel-btn" onClick={handleCloseModal}>
-            Close
+            {t('PrescriptionsMobileView.close')}
           </button>
         </Modal.Footer>
       </Modal>

@@ -4,8 +4,10 @@ import MedicalHistoryModal from "./component/MedicalHistoryModal";
 import "../../Patient-management.css";
 import ConditionsFilters from "./component/ConditionsFilters";
 import Pagination from "../../../shared/Pagination";
+import { useTranslation } from "react-i18next";
 
 const MedicalHistoryTable = () => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("");       
   const [filterDateFrom, setFilterDateFrom] = useState(null);
@@ -20,13 +22,13 @@ const MedicalHistoryTable = () => {
 
   
   const HistoryType = {
-    All: "All",
-    Surgery: "Surgery",
-    Accident: "Accident", 
-    Hospitalization: "Hospitalization",
-    FamilyHistory: "FamilyHistory",
-    Vaccination: "Vaccination",
-    Others: "Others"
+    All: t("All"),
+    Surgery: t("Surgery"),
+    Accident: t("Accident"), 
+    Hospitalization: t("Hospitalization"),
+    FamilyHistory: t("FamilyHistory"),
+    Vaccination: t("Vaccination"),
+    Others: t("Others")
   };
 
   const historyTypes = [
@@ -40,13 +42,13 @@ const MedicalHistoryTable = () => {
 
 
   const hereditaryDiseases = [
-    "Diabetes",
-    "Heart Disease", 
-    "Cancer",
-    "Hypertension",
-    "Asthma",
-    "Mental Health Disorders",
-    "Other"
+    t("Diabetes"),
+    t("Heart Disease"), 
+    t("Cancer"),
+    t("Hypertension"),
+    t("Asthma"),
+    t("Mental Health Disorders"),
+    t("Other")
   ];
 
   // Mock Data 
@@ -55,37 +57,37 @@ const MedicalHistoryTable = () => {
       id: 1,
       historyType: HistoryType.Surgery,
       hereditaryDisease: "",
-      description: "Appendix removal",
+      description: t("Appendix removal"),
       dateOfEvent: "2022-03-15",
       relatedPerson: null,
-      notes: "Successful surgery with no complications.",
+      notes: t("Successful surgery with no complications."),
     },
     {
       id: 2,
       historyType: HistoryType.Accident,
       hereditaryDisease: "",
-      description: "Car accident with minor injuries",
+      description: t("Car accident with minor injuries"),
       dateOfEvent: "2021-11-02",
       relatedPerson: null,
-      notes: "Recovered after 2 weeks.",
+      notes: t("Recovered after 2 weeks."),
     },
     {
       id: 3,
       historyType: HistoryType.FamilyHistory,
-      hereditaryDisease: "Heart Disease", 
-      description: "Father had heart disease",
+      hereditaryDisease: t("Heart Disease"), 
+      description: t("Father had heart disease"),
       dateOfEvent: "2020-01-01",
-      relatedPerson: "Father",
-      notes: "Family-related record",
+      relatedPerson: t("Father"),
+      notes: t("Family-related record"),
     },
     {
       id: 4,
       historyType: HistoryType.FamilyHistory,
-      hereditaryDisease: "Diabetes",
-      description: "Mother has diabetes",
+      hereditaryDisease: t("Diabetes"),
+      description: t("Mother has diabetes"),
       dateOfEvent: "2019-05-10",
-      relatedPerson: "Mother",
-      notes: "Type 2 diabetes diagnosed at age 45",
+      relatedPerson: t("Mother"),
+      notes: t("Type 2 diabetes diagnosed at age 45"),
     },
   ]);
 
@@ -126,7 +128,7 @@ const MedicalHistoryTable = () => {
       setMedicalHistory(updatedHistory);
     }
     
-    console.log("Saved record:", selectedRecord);
+    console.log(t("Saved record:"), selectedRecord);
     setShowModal(false);
     setSelectedRecord(null);
   };
@@ -180,12 +182,12 @@ const MedicalHistoryTable = () => {
     <div className="table-container">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Medical History</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t("Medical History")}</h3>
+          <h6 className="table-subtitle">{t("Ahmed Mohamed Ali")}</h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            Add Condition
+            {t("Add Condition")}
           </button>
         </div>
       </div>
@@ -214,13 +216,13 @@ const MedicalHistoryTable = () => {
             <Table className="data-table align-middle table-hover">
               <thead>
                 <tr>
-                  <th>History Type</th>
-                  <th>Hereditary Disease</th>
-                  <th>Description</th>
-                  <th>Date of Event</th>
-                  <th>Related Person</th>
-                  <th>Notes</th>
-                  <th>Actions</th>
+                  <th>{t("History Type")}</th>
+                  <th>{t("Hereditary Disease")}</th>
+                  <th>{t("Description")}</th>
+                  <th>{t("Date of Event")}</th>
+                  <th>{t("Related Person")}</th>
+                  <th>{t("Notes")}</th>
+                  <th>{t("Actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -249,7 +251,7 @@ const MedicalHistoryTable = () => {
                           style={{ color: "#007bff", backgroundColor: "transparent" }}
                           onClick={() => handleEdit(entry)}
                         >
-                          Manage
+                          {t("Manage")}
                         </Button>
                       </td>
                     </tr>
@@ -257,7 +259,7 @@ const MedicalHistoryTable = () => {
                 ) : (
                   <tr>
                     <td colSpan="7" className="text-center text-muted">
-                      No medical history records found.
+                      {t("No medical history records found.")}
                     </td>
                   </tr>
                 )}
@@ -285,7 +287,7 @@ const MedicalHistoryTable = () => {
         record={selectedRecord}
         setRecord={setSelectedRecord}
         hereditaryDiseases={hereditaryDiseases}
-        title={isAddMode ? "Add Medical History" : "Edit Medical History"}
+        title={isAddMode ? t("Add Medical History") : t("Edit Medical History")}
       />
     </div>
   );

@@ -8,19 +8,19 @@ const Diagnoses = () => {
   const [diagnosesData, setDiagnosesData] = useState([
     {
       id: 1,
-      DiagnosisName: "Chronic Migraine", 
-      SymptomsDescription: "Severe headaches with nausea and sensitivity to light",
-      Description: "Patient diagnosed with chronic migraine requiring medication management",
+      DiagnosisName: t("Chronic Migraine"),
+      SymptomsDescription: t("Severe headaches with nausea and sensitivity to light"),
+      Description: t("Patient diagnosed with chronic migraine requiring medication management"),
       notes: [
-        { id: 11, note: "Patient requested reschedule" },
-        { id: 12, note: "Allergic to penicillin" }
+        { id: 11, note: t("Patient requested reschedule") },
+        { id: 12, note: t("Allergic to penicillin") }
       ],
       conditions: [
         {
           id: 201,
-          MedicalCondition: "Hypertension",
-          Severity: "Moderate",
-          Notes: "Requires regular monitoring",
+          MedicalCondition: t("Hypertension"),
+          Severity: t("Moderate"),
+          Notes: t("Requires regular monitoring"),
           isNew: false,
           isExpanded: false
         }
@@ -28,24 +28,24 @@ const Diagnoses = () => {
       prescriptions: [
         {
           id: 101,
-          title: "Pain Management Prescription",
-          status: "Active",
-          note: "For chronic migraine treatment",
-          type: "Medical",
+          title: t("Pain Management Prescription"),
+          status: t("Active"),
+          note: t("For chronic migraine treatment"),
+          type: t("Medical"),
           icon: "",
           date: "2025-09-13",
-          content: "Patient requires monitoring.",
+          content: t("Patient requires monitoring."),
           recipes: [
             {
               id: 1001,
-              medication: "Ibuprofen",
-              dosage: "400mg",
+              medication: t("Ibuprofen"),
+              dosage: t("400mg"),
               durationInDays: 7,
-              instructions: "Take one tablet every 6 hours as needed for pain",
-              type: "Follow-up",
+              instructions: t("Take one tablet every 6 hours as needed for pain"),
+              type: t("Follow-up"),
               icon: "",
               date: "2025-09-15",
-              content: "Blood test required"
+              content: t("Blood test required")
             }
           ]
         }
@@ -80,8 +80,8 @@ const Diagnoses = () => {
           : diagnosis
       )
     );
-    console.log(" diagnosesData: ", diagnosesData); 
-  }, []);
+    console.log(t("diagnosesData: "), diagnosesData); 
+  }, [t, diagnosesData]);
 
   const handleDeleteCondition = useCallback((diagnosisIndex, conditionIndex) => {
     setDiagnosesData(prev => prev.map((diagnosis, i) => 
@@ -122,8 +122,8 @@ const Diagnoses = () => {
           }
         : diagnosis
     ));
-    console.log("diagnosesData: ", diagnosesData);
-  }, []);
+    console.log(t("diagnosesData: "), diagnosesData);
+  }, [t, diagnosesData]);
 
   // Add a new diagnosis record
   const handleAddDiagnosis = useCallback(() => {
@@ -149,8 +149,8 @@ const Diagnoses = () => {
         ...prev.map(item => ({ ...item, isExpanded: false }))
       ]
     );
-    console.log("diagnosesData after add : ", diagnosesData);
-  }, []);
+    console.log(t("diagnosesData after add : "), diagnosesData);
+  }, [t, diagnosesData]);
 
   // Save a diagnosis
   const handleSaveDiagnosis = useCallback((index, diagnosisData) => {
@@ -164,8 +164,8 @@ const Diagnoses = () => {
         prescriptions: item.prescriptions || []
       } : item
     ));
-    console.log("diagnosesData after save : ", diagnosesData);
-  }, []);
+    console.log(t("diagnosesData after save : "), diagnosesData);
+  }, [t, diagnosesData]);
 
   // Delete a diagnosis by index
   const handleDeleteDiagnosis = useCallback((index) => {
@@ -405,29 +405,29 @@ const Diagnoses = () => {
     >
       <NestedAccordion
         backgroundColor="var(--cardcolor)"
-        title="Diagnostic information"
-        addNewLabel="Add Diagnostic"
+        title={t("Diagnostic information")}
+        addNewLabel={t("Add Diagnostic")}
         data={diagnosesData}
         formFields={[
           {
             name: "DiagnosisName",
             type: "text",
-            placeholder: "Diagnosis Name",
+            placeholder: t("Diagnosis Name"),
             half: true,
-            label: "Diagnosis Name",
+            label: t("Diagnosis Name"),
           },
           {
             name: "SymptomsDescription",
             type: "text",
-            placeholder: "Symptoms Description",
+            placeholder: t("Symptoms Description"),
             half: true,
-            label: "Symptoms Description",
+            label: t("Symptoms Description"),
           },
           {
             name: "Description",
             type: "textarea",
-            placeholder: "Diagnosis Description",
-            label: "Diagnosis Description",
+            placeholder: t("Diagnosis Description"),
+            label: t("Diagnosis Description"),
           },
         ]}
         onAdd={handleAddDiagnosis}
@@ -448,23 +448,23 @@ const Diagnoses = () => {
           { 
             name: "title", 
             type: "text", 
-            placeholder: "Prescription Title", 
+            placeholder: t("Prescription Title"), 
             half: true,
-            label: "Prescription Title",
+            label: t("Prescription Title"),
           },
           { 
             name: "status",   
             type: "select",
-            options: ["Active", "Completed", "Cancelled", "Expired"],
-            placeholder: "select Status", 
+            options: [t("Active"), t("Completed"), t("Cancelled"), t("Expired")],
+            placeholder: t("select Status"), 
             half: true,
-            label: "Prescription Status",
+            label: t("Prescription Status"),
           },
           { 
             name: "note", 
             type: "textarea", 
-            placeholder: "Prescription note",
-            label: "Prescription Note",
+            placeholder: t("Prescription note"),
+            label: t("Prescription Note"),
           },
         ]}
         onAddPrescription={handleAddPrescription}
@@ -480,41 +480,41 @@ const Diagnoses = () => {
   { 
     name: "medication", 
     type: "dropdown",
-    placeholder: "Select Medication",
+    placeholder: t("Select Medication"),
     options: [ 
-      "Ibuprofen",
-      "Paracetamol", 
-      "Amoxicillin",
-      "Aspirin",
-      "Metformin",
-      "Atorvastatin",
-      "Lisinopril",
-      "Levothyroxine",
-      "Amlodipine",
-      "Omeprazole"
+      t("Ibuprofen"),
+      t("Paracetamol"), 
+      t("Amoxicillin"),
+      t("Aspirin"),
+      t("Metformin"),
+      t("Atorvastatin"),
+      t("Lisinopril"),
+      t("Levothyroxine"),
+      t("Amlodipine"),
+      t("Omeprazole")
     ],
-    label: "Medication",
+    label: t("Medication"),
     half: true
   },
   { 
     name: "dosage", 
     type: "text",
-    placeholder: "Dosage", 
+    placeholder: t("Dosage"), 
     half: true,
-    label: "Dosage"
+    label: t("Dosage")
   },
   { 
     name: "durationInDays", 
     type: "number",
-    placeholder: "Duration (Days)", 
+    placeholder: t("Duration (Days)"), 
     half: true,
-    label: "Duration (Days)"
+    label: t("Duration (Days)")
   },
   { 
     name: "instructions", 
     type: "textarea",
-    placeholder: "Instructions",
-    label: "Instructions"
+    placeholder: t("Instructions"),
+    label: t("Instructions")
   },
 ]}
       />

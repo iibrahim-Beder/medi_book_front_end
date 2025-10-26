@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
+import Pagination from "../../../shared/Pagination"
 import "../../Patient-management.css";
 import { MdExpandMore, MdOutlineArrowForward } from "react-icons/md";
 import { t } from "i18next";
@@ -168,26 +169,17 @@ const PatientReviewsTable = () => {
 
   return (
     <div className="table-container">
-      {/* <div className="table-header">
-        <div>
-          <h3 className="table-title">Patient Reviews</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
-        </div>
-      </div> */}
            <div className="mt-4" >
-              <h3 className="table-title"> Patients Reviews </h3>
+              <h3 className="table-title">{t("patientsReviews")}</h3>
             </div>
       <div className="">
         <div className="table-card">
           <div className="table-header pb-3 mb-4"
           style={{borderBottom:"1px solid #eee"}}
           >
-            
-
-            {/* Overall rating summary section */}
             <div className="review-content">
               <div className="review-rate">
-                <h3>Overall Rating</h3>
+                <h3>{t("overallRating")}</h3>
                 <div className="star-over-rated">
                   <span>4.0</span>
                   <StarRating rating={4} />
@@ -195,64 +187,20 @@ const PatientReviewsTable = () => {
               </div>
             </div>
           </div>
-          {/* Filters Section */}
-          <div className=" review-filters ">
-             
+          <div className="review-filters ">
              <FilterDropdown small/>
              <DateRangePicker/>
-
-            {/* <ConditionsFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filterServiceType={filterServiceType}
-              setFilterServiceType={setFilterServiceType}
-              filterRating={filterRating}
-              setFilterRating={setFilterRating}
-              filterDateFrom={filterDateFrom}
-              setFilterDateFrom={setFilterDateFrom}
-              filterDateTo={filterDateTo}
-              setFilterDateTo={setFilterDateTo}
-              onReset={resetFilters}
-              onSearch={handleSearch}
-              conditions={visitTypes}
-              showSearchInput={true}
-              showDateRange={true}
-              showFilterDropdown={true}
-              customFilters={[
-                {
-                  name: "rating",
-                  label: "Rating",
-                  data: [
-                    { key: "1", label: "1 Star" },
-                    { key: "2", label: "2 Stars" },
-                    { key: "3", label: "3 Stars" },
-                    { key: "4", label: "4 Stars" },
-                    { key: "5", label: "5 Stars" },
-                  ],
-                },
-                {
-                  name: "serviceType",
-                  label: "Visit Type",
-                  data: [
-                    { key: "Video Call", label: "Video Call" },
-                    { key: "Voice Call", label: "Voice Call" },
-                    { key: "In-Person Visit", label: "In-Person Visit" },
-                  ],
-                },
-              ]}
-            /> */}
           </div>
 
-          {/* Data Table */}
           <div style={{ overflow: "auto" }}>
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>Appointment type</th>
-                  <th>Rating</th>
-                  <th>Review</th>
-                  <th>Review Date</th>
-                  <th>Action</th>
+                  <th>{t("appointmentType")}</th>
+                  <th>{t("rating")}</th>
+                  <th>{t("review")}</th>
+                  <th>{t("reviewDate")}</th>
+                  <th>{t("action")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -303,13 +251,12 @@ const PatientReviewsTable = () => {
                           onClick={() => handleViewBooking(review.bookingId)}
                           className="d-flex align-items-center view-btn ms-2"
                         >
-                          View Booking{" "}
-                          <MdOutlineArrowForward className="ms-1" />
+                          {t("viewBooking")}{" "}
+                          <MdOutlineArrowForward className="ms-1 arrow-icon-view-table" />
                         </Button>
                       </td>
                     </tr>
 
-                    {/* Expanded row for Review */}
                     {expandedRow === review.id && (
                       <tr
                         className="table-active-content"
@@ -321,7 +268,7 @@ const PatientReviewsTable = () => {
                         >
                           <div className="description-expanded-section">
                             <TextAreaField
-                              label="Review"
+                              label={t("review")}
                               value={review.review}
                               disabled={true}
                             />
@@ -334,73 +281,12 @@ const PatientReviewsTable = () => {
               </tbody>
             </Table>
           </div>
-
-          {/* Pagination */}
-          <div className="d-flex justify-content-between align-items-center mt-3 nav-table">
-            <div
-              className="dt-layout-cell dt-layout-start"
-              style={{ fontSize: "14px", color: "#555" }}
-            >
-              <div className="dt-info">
-                Showing {startIndex + 1} to{" "}
-                {Math.min(startIndex + rowsPerPage, filteredReviews.length)} of{" "}
-                {filteredReviews.length} entries
-              </div>
-            </div>
-
-            <div className="dt-layout-cell dt-layout-end">
-              <div className="dt-paging">
-                <nav aria-label="pagination" className="d-flex">
-                  <button
-                    className="dt-paging-button first"
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(1)}
-                  >
-                    «
-                  </button>
-                  <button
-                    className="dt-paging-button previous"
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((prev) => prev - 1)}
-                  >
-                    Previous
-                  </button>
-
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button
-                      key={index}
-                      className={`dt-paging-button none ${
-                        currentPage === index + 1 ? "current" : ""
-                      }`}
-                      type="button"
-                      onClick={() => setCurrentPage(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-
-                  <button
-                    className="dt-paging-button next"
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((prev) => prev + 1)}
-                  >
-                    Next
-                  </button>
-                  <button
-                    className="dt-paging-button last"
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(totalPages)}
-                  >
-                    »
-                  </button>
-                </nav>
-              </div>
-            </div>
-          </div>
+       <Pagination
+  currentPage={currentPage}
+  totalItems={filteredReviews.length}
+  rowsPerPage={rowsPerPage}
+  onPageChange={setCurrentPage}
+/>
         </div>
       </div>
     </div>

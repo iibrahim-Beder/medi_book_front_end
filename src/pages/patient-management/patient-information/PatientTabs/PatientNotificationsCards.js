@@ -16,6 +16,7 @@ import {
   FaBell,
   FaSyncAlt,
 } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 import { LiaCheckDoubleSolid } from "react-icons/lia";
 import FilterDropdown from "./component/FilterDropdown";
@@ -118,6 +119,7 @@ const PatientNotificationsCards = () => {
   const endIndex = Math.min(startIndex + itemsPerPage, notificationsData.length);
   const paginatedNotifications = notificationsData.slice(startIndex, endIndex);
 
+  const { t } = useTranslation();
 
 const typeStyles = {
   appointment: { icon: <FaCalendarCheck style={{ color: "#007bff" }} /> },
@@ -140,7 +142,7 @@ const typeStyles = {
       {/* Header */}
       <div className="table-header">
         <div>
-          <h3 className="table-title">Patient Notifications</h3>
+          <h3 className="table-title">{ t("Patient Notifications")}</h3>
           <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
         </div>
       </div>

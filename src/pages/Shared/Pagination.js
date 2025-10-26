@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Pagination = ({
   currentPage,
@@ -6,6 +7,7 @@ const Pagination = ({
   rowsPerPage,
   onPageChange,
 }) => {
+  const { t } = useTranslation();
   const totalPages = Math.ceil(totalItems / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
 
@@ -13,9 +15,9 @@ const Pagination = ({
 
   return (
     <div className="d-flex justify-content-between align-items-center mt-3 nav-table"  >
-      <div style={{ fontSize: "14px", color: "#555" }}>
-        Showing {startIndex + 1} to{" "}
-        {Math.min(startIndex + rowsPerPage, totalItems)} of {totalItems} entries
+      <div style={{ fontSize: "14px"}}>
+        {t("showing")} {startIndex + 1} { t("to")}{" "}
+        {Math.min(startIndex + rowsPerPage, totalItems)} {t("of")} {totalItems} {t("entries")}
       </div>
 
       <nav className="d-flex flex-wrap justify-content-center">
@@ -32,7 +34,7 @@ const Pagination = ({
           disabled={currentPage === 1}
           onClick={() => onPageChange(currentPage - 1)}
         >
-          Previous
+            {t("previous")}
         </button>
 
         {[...Array(totalPages)].map((_, index) => (
@@ -52,7 +54,7 @@ const Pagination = ({
           disabled={currentPage === totalPages}
           onClick={() => onPageChange(currentPage + 1)}
         >
-          Next
+             {t("next")}
         </button>
 
         <button

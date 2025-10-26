@@ -1,20 +1,22 @@
+// PrescribedMedicationTable.jsx
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import "../../Patient-management.css";
 import ConditionsFilters from "./component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../shared/Pagination";
+import "../../Patient-management.css";
 
 const PrescribedMedicationTable = () => {
+  const { t } = useTranslation();
   const [expandedRow, setExpandedRow] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1); 
-  
+  const [currentPage, setCurrentPage] = useState(1);
+
   // Filters states
-  const [filterType, setFilterType] = useState("");       
+  const [filterType, setFilterType] = useState("");
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
 
@@ -27,28 +29,31 @@ const PrescribedMedicationTable = () => {
       medication: "Metformin",
       dosage: "500mg twice daily",
       duration: "30 days",
-      instructions: "Take one tablet with breakfast and one with dinner. Always take with food to minimize gastrointestinal side effects. If you experience significant stomach upset, consult your doctor. Monitor your blood sugar levels regularly and report any unusual readings.",
-      status: "active"
+      instructions:
+        "Take one tablet with breakfast and one with dinner. Always take with food to minimize gastrointestinal side effects. If you experience significant stomach upset, consult your doctor. Monitor your blood sugar levels regularly and report any unusual readings.",
+      status: "active",
     },
     {
       id: "#RX002",
-      diagnosisName: "Diabetes Mellitus Type 2", 
+      diagnosisName: "Diabetes Mellitus Type 2",
       prescribedName: "Blood Sugar Monitoring",
       medication: "Glucose Test Strips",
       dosage: "As needed",
       duration: "90 days",
-      instructions: "Check blood sugar levels: 1) First thing in the morning (fasting), 2) Before each main meal, 3) Two hours after meals, and 4) At bedtime. Record all readings in your logbook. Bring the logbook to your next appointment. Contact your doctor if fasting readings are consistently above 130 mg/dL or post-meal readings above 180 mg/dL.",
-      status: "active"
+      instructions:
+        "Check blood sugar levels: 1) First thing in the morning (fasting), 2) Before each main meal, 3) Two hours after meals, and 4) At bedtime. Record all readings in your logbook. Bring the logbook to your next appointment. Contact your doctor if fasting readings are consistently above 130 mg/dL or post-meal readings above 180 mg/dL.",
+      status: "active",
     },
     {
       id: "#RX003",
       diagnosisName: "Hypertension",
       prescribedName: "Blood Pressure Control",
       medication: "Lisinopril",
-      dosage: "10mg once daily", 
+      dosage: "10mg once daily",
       duration: "90 days",
-      instructions: "Take one tablet every morning at the same time, with or without food. Do not skip doses. Monitor your blood pressure twice daily - morning and evening. Report any persistent dry cough, dizziness, or swelling. Avoid sudden position changes to prevent dizziness. Regular blood tests will be needed to monitor kidney function.",
-      status: "completed"
+      instructions:
+        "Take one tablet every morning at the same time, with or without food. Do not skip doses. Monitor your blood pressure twice daily - morning and evening. Report any persistent dry cough, dizziness, or swelling. Avoid sudden position changes to prevent dizziness. Regular blood tests will be needed to monitor kidney function.",
+      status: "completed",
     },
     {
       id: "#RX004",
@@ -57,18 +62,20 @@ const PrescribedMedicationTable = () => {
       medication: "Sumatriptan",
       dosage: "50mg as needed",
       duration: "30 days",
-      instructions: "Take at the first sign of migraine headache. Swallow tablet whole with water. Maximum dose is 2 tablets in 24 hours. Do not take if you have heart disease, uncontrolled hypertension, or history of stroke. Wait at least 2 hours between doses. Avoid driving or operating machinery until you know how this medication affects you.",
-      status: "cancelled"
+      instructions:
+        "Take at the first sign of migraine headache. Swallow tablet whole with water. Maximum dose is 2 tablets in 24 hours. Do not take if you have heart disease, uncontrolled hypertension, or history of stroke. Wait at least 2 hours between doses. Avoid driving or operating machinery until you know how this medication affects you.",
+      status: "cancelled",
     },
     {
       id: "#RX005",
       diagnosisName: "Vitamin Deficiency",
-      prescribedName: "Supplement Therapy", 
+      prescribedName: "Supplement Therapy",
       medication: "Vitamin D3",
       dosage: "1000 IU once daily",
       duration: "60 days",
-      instructions: "Take one capsule daily with your largest meal that contains healthy fats (such as avocado, nuts, or olive oil) for optimal absorption. Best taken in the morning. Do not exceed the recommended dose. Store in a cool, dry place away from direct sunlight. Follow up with blood test after 8 weeks to check vitamin D levels.",
-      status: "expired"
+      instructions:
+        "Take one capsule daily with your largest meal that contains healthy fats (such as avocado, nuts, or olive oil) for optimal absorption. Best taken in the morning. Do not exceed the recommended dose. Store in a cool, dry place away from direct sunlight. Follow up with blood test after 8 weeks to check vitamin D levels.",
+      status: "expired",
     },
     {
       id: "#RX006",
@@ -76,10 +83,11 @@ const PrescribedMedicationTable = () => {
       prescribedName: "Respiratory Management",
       medication: "Salbutamol Inhaler",
       dosage: "2 puffs every 4-6 hours",
-      duration: "180 days", 
-      instructions: "Shake well before each use. Breathe out fully, place mouthpiece between lips, and inhale deeply while pressing down on canister. Hold breath for 10 seconds if possible. Wait one minute between puffs. Rinse mouth after use to prevent oral thrush. Use as needed for shortness of breath, wheezing, or chest tightness. Do not exceed 8 puffs in 24 hours. Seek emergency care if no improvement after 4 puffs.",
-      status: "active"
-    }
+      duration: "180 days",
+      instructions:
+        "Shake well before each use. Breathe out fully, place mouthpiece between lips, and inhale deeply while pressing down on canister. Hold breath for 10 seconds if possible. Wait one minute between puffs. Rinse mouth after use to prevent oral thrush. Use as needed for shortness of breath, wheezing, or chest tightness. Do not exceed 8 puffs in 24 hours. Seek emergency care if no improvement after 4 puffs.",
+      status: "active",
+    },
   ];
 
   // Handle expand/collapse for instructions
@@ -94,14 +102,16 @@ const PrescribedMedicationTable = () => {
   // Apply search & filters
   const filteredPrescriptions = prescriptionsData
     .filter((prescription) => {
-      if (!searchTerm) return true; 
+      if (!searchTerm) return true;
       if (searchBy === "all") {
         return Object.values(prescription)
           .join(" ")
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
       } else {
-        return prescription[searchBy]?.toLowerCase().includes(searchTerm.toLowerCase());
+        return (
+          prescription[searchBy]?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
       }
     })
     .filter((prescription) => {
@@ -117,7 +127,7 @@ const PrescribedMedicationTable = () => {
     setCurrentPage(1);
   };
 
-  const rowsPerPage = 5; 
+  const rowsPerPage = 5;
   const totalPages = Math.ceil(filteredPrescriptions.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentData = filteredPrescriptions.slice(startIndex, startIndex + rowsPerPage);
@@ -125,19 +135,18 @@ const PrescribedMedicationTable = () => {
   // Get status color
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
-      case 'active':
-        return '#3fabf3';  
-      case 'completed':
-        return '#4BAE78'; 
-      case 'cancelled':
-        return '#D66A6A';
-      case 'expired':
-        return '#7A8B97'; 
+      case "active":
+        return "#3fabf3";
+      case "completed":
+        return "#4BAE78";
+      case "cancelled":
+        return "#D66A6A";
+      case "expired":
+        return "#7A8B97";
       default:
-        return '#6C757D';
+        return "#6C757D";
     }
   };
-  
 
   // Utility: truncate long text
   const truncateText = (text, maxLength = 70) => {
@@ -150,8 +159,8 @@ const PrescribedMedicationTable = () => {
     <div className="table-container">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Prescribed medication list</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t("PrescribedMedicationTable.table_title")}</h3>
+          <h6 className="table-subtitle">{t("PrescribedMedicationTable.table_subtitle")}</h6>
         </div>
       </div>
 
@@ -178,33 +187,26 @@ const PrescribedMedicationTable = () => {
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>Medication</th>
-                  <th>Dosage</th>
-                  <th>Duration</th>
-                  <th>Instructions</th>
-                  <th>Status</th>
-                  <th>Diagnosis Name</th>
-                  <th>Prescribed Name</th>
+                  <th>{t("PrescribedMedicationTable.medication")}</th>
+                  <th>{t("PrescribedMedicationTable.dosage")}</th>
+                  <th>{t("PrescribedMedicationTable.duration")}</th>
+                  <th>{t("PrescribedMedicationTable.instructions")}</th>
+                  <th>{t("PrescribedMedicationTable.status")}</th>
+                  <th>{t("PrescribedMedicationTable.diagnosis_name")}</th>
+                  <th>{t("PrescribedMedicationTable.prescribed_name")}</th>
                 </tr>
               </thead>
               <tbody>
                 {currentData.map((prescription) => (
                   <React.Fragment key={prescription.id}>
                     <tr>
-                      <td title={prescription.medication}>
-                        {prescription.medication}
-                      </td>
+                      <td title={prescription.medication}>{prescription.medication}</td>
                       <td title={prescription.dosage}>{prescription.dosage}</td>
-                      <td title={prescription.duration}>
-                        {prescription.duration}
-                      </td>
+                      <td title={prescription.duration}>{prescription.duration}</td>
 
                       <td title={prescription.instructions}>
                         <div className="d-flex align-items-center">
-                          <span
-                            className="text-truncate"
-                            style={{ maxWidth: "250px" }}
-                          >
+                          <span className="text-truncate" style={{ maxWidth: "250px" }}>
                             {truncateText(prescription.instructions, 80)}
                           </span>
                           <Button
@@ -217,9 +219,7 @@ const PrescribedMedicationTable = () => {
                               fontSize: "19px",
                               height: "20px",
                             }}
-                            onClick={() =>
-                              handleInstructionsClick(prescription.id)
-                            }
+                            onClick={() => handleInstructionsClick(prescription.id)}
                           >
                             <MdExpandMore
                               style={{
@@ -242,15 +242,11 @@ const PrescribedMedicationTable = () => {
                             fontSize: "14px",
                           }}
                         >
-                          {prescription.status}
+                          {t(`PrescribedMedicationTable.status_options.${prescription.status}`)}
                         </span>
                       </td>
-                      <td title={prescription.diagnosisName}>
-                        {prescription.diagnosisName}
-                      </td>
-                      <td title={prescription.prescribedName}>
-                        {prescription.prescribedName}
-                      </td>
+                      <td title={prescription.diagnosisName}>{prescription.diagnosisName}</td>
+                      <td title={prescription.prescribedName}>{prescription.prescribedName}</td>
                     </tr>
 
                     {/* Expanded row for Instructions */}
@@ -265,7 +261,7 @@ const PrescribedMedicationTable = () => {
                         >
                           <div className="description-expanded-section">
                             <TextAreaField
-                              label="Instructions"
+                              label={t("PrescribedMedicationTable.instructions")}
                               value={prescription.instructions}
                               disabled={true}
                             />

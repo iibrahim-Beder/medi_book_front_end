@@ -31,7 +31,7 @@ export default function PatientProfilePageMain() {
    { key: "MedicalConditions", label: t("Medical Conditions") },
    { key: "Allergy", label: t("Allergies") },
    { key: "Diagnosis", label: t("Diagnosis") },
-   { key: "Medications", label: t("Medications") },
+   { key: "Medications", label: t("medications") },
    { key: "PrescriptionsTable", label: t("Prescriptions") },
    { key: "PatientNotesComponent", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },

@@ -758,5 +758,264 @@
   "activePatients": "Active Patients",
   "treatmentCompleted": "Treatment Completed",
   "stoppedTreatment": "Stopped Treatment" 
+,
 
+  "patientsReviews": "Patients Reviews",
+  "overallRating": "Overall Rating",
+  "appointmentType": "Appointment Type",
+  "rating": "Rating",
+  "review": "Review",
+  "reviewDate": "Review Date",
+  "action": "Action",
+  "viewBooking": "View Booking",
+  "showing": "Showing",
+  "to": "to",
+  "of": "of",
+  "entries": "entries",
+  "previous": "Previous",
+  "next": "Next"
+,
+"Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "DiagnosisMobileView": {
+    "table_title": "Diagnosis List",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis": "Diagnosis",
+    "note": "Note",
+    "status": "Status",
+    "view_all_details": "View All Details",
+    "no_diagnoses_found": "No Diagnoses Found",
+    "diagnosis_name": "Diagnosis Name",
+    "diagnosis_note": "Diagnosis Note",
+    "close": "Close",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "DiagnosisTable": {
+    "table_title": "Diagnosis list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis_name": "Diagnosis Name",
+    "note": "Note",
+    "status": "Status",
+    "view": "View",
+    "diagnosis_note": "Diagnosis Note",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "PrescriptionsMobileView": {
+    "table_title": "Prescriptions list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis": "Diagnosis",
+    "note": "Note",
+    "status": "Status",
+    "medications": "Medications",
+    "view_all_details": "View All Details",
+    "no_prescriptions_found": "No Prescriptions Found",
+    "diagnosis_name": "Diagnosis Name",
+    "prescription_note": "Prescription Note",
+    "close": "Close",
+    "medication_name": "Medication Name",
+    "medication": "Medication",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "instructions": "Instructions",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "PrescriptionsTable": {
+    "table_title": "Prescriptions list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "prescription_title": "Prescription Title",
+    "note": "Note",
+    "status": "Status",
+    "diagnosis_name": "Diagnosis Name",
+    "medication": "Medication",
+    "view": "View",
+    "prescription_note": "Prescription Note",
+    "medication_name": "Medication Name",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "instructions": "Instructions",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "Medications": {
+    "prescribed_medication": "Prescribed medication",
+    "other_medications": "Other medications"
+  },
+  "PrescribedMedicationMobileView": {
+    "table_title": "Prescribed Medication List",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis_name": "Diagnosis Name",
+    "prescribed_name": "Prescribed Name",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "status": "Status",
+    "instructions": "Instructions",
+    "view_all_details": "View All Details",
+    "no_medications_found": "No Prescribed Medications Found",
+    "close": "Close",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "PrescribedMedicationTable": {
+    "table_title": "Prescribed medication list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "medication": "Medication",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "instructions": "Instructions",
+    "status": "Status",
+    "diagnosis_name": "Diagnosis Name",
+    "prescribed_name": "Prescribed Name",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "OtherMedicationMobileView": {
+    "table_title": "Other Medication List",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "status": "Status",
+    "instructions": "Instructions",
+    "view_all_details": "View All Details",
+    "no_medications_found": "No Other Medications Found",
+    "close": "Close"
+  }
+  ,
+  "Othermedications": {
+    "table_title": "Other Medication list",
+    "medication": "Medication",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "instructions": "Instructions",
+    "status": "Status"
+  }
+  ,
+  "MedicalConditions": {
+    "tab_diagnosed_conditions": "Diagnosed Conditions",
+    "tab_other": "Other"
+  },
+  
+  "DiagnosedConditionsMobileView": {
+    "table_title": "Diagnosed Conditions List",
+    "diagnosis_name": "Diagnosis Name",
+    "severity": "Severity",
+    "status": "Status",
+    "diagnosed_date": "Diagnosed Date",
+    "notes": "Notes",
+    "view_all_details": "View All Details",
+    "no_conditions_found": "No Conditions Found",
+    "close": "Close",
+    "severity_options": {
+      "mild": "Mild",
+      "moderate": "Moderate",
+      "severe": "Severe"
+    }
+  },
+  "DiagnosedConditionsTable": {
+    "table_title": "Diagnosed Conditions List",
+    "medical_condition_name": "Medical Condition Name",
+    "severity": "Severity",
+    "diagnosis_name": "Diagnosis Name",
+    "diagnosed_date": "Diagnosed Date",
+    "status": "Status",
+    "notes": "Notes",
+    "severity_options": {
+      "mild": "Mild",
+      "moderate": "Moderate",
+      "severe": "Severe"
+    }
+  },
+ "OtherMedicalConditionsMobileView": {
+    "table_title": "Other Medical Conditions",
+    "medical_condition_name": "Medical Condition Name",
+    "severity": "Severity",
+    "status": "Status",
+    "diagnosed_date": "Diagnosed Date",
+    "notes": "Notes",
+    "view_all_details": "View All Details",
+    "no_conditions_found": "No Conditions Found",
+    "close": "Close",
+    "severity_options": {
+      "mild": "Mild",
+      "moderate": "Moderate",
+      "severe": "Severe"
+    }
+  }
+  ,
+  "Common": {
+    "table_subtitle": "أحمد محمد علي",
+    "status_options": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    }
+  }
+,
+"Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "PatientBasicInfo": {
+    "patient_image_alt": "Patient",
+    "full_name": "Full Name:",
+    "date_of_birth": "Date of Birth:",
+    "age": "Age",
+    "gender": "Gender:",
+    "phone": "Phone:",
+    "email": "Email:",
+    "address": "Address:",
+    "chronic_diseases": "Chronic Diseases:",
+    "allergies": "Allergies:",
+    "allergies_drug": "Drug",
+    "allergies_food": "Food",
+    "medications": "Medications:",
+    "last_visit": "Last Visit:",
+    "next_visit": "Next Visit:"
+  },
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "PatientReviewsCards": {
+    "table_title": "Patient Reviews",
+    "overall_rating": "Overall Rating",
+    "view_booking": "View Booking"
+  }
 }

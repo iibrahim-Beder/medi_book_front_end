@@ -1,6 +1,8 @@
+// PatientReviewsCards.jsx
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { MdOutlineArrowForward } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 import StarRating from "../../../shared/StarRating";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
@@ -54,6 +56,7 @@ const reviewsData = [
 ];
 
 const PatientReviewsCards = () => {
+  const { t } = useTranslation();
   // Pagination state
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;
@@ -66,14 +69,14 @@ const PatientReviewsCards = () => {
     <div className="comments-list">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Patient Reviews</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t("PatientReviewsCards.table_title")}</h3>
+          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
         </div>
 
         {/* Overall rating summary section */}
         <div className="review-content">
           <div className="review-rate">
-            <h3>Overall Rating</h3>
+            <h3>{t("PatientReviewsCards.overall_rating")}</h3>
             <div className="star-over-rated">
               <span>4.0</span>
               <StarRating rating={4} />
@@ -112,7 +115,7 @@ const PatientReviewsCards = () => {
                   size="sm"
                   className="d-flex align-items-center view-btn ms-2"
                 >
-                  View Booking <MdOutlineArrowForward className="ms-1" />
+                  {t("PatientReviewsCards.view_booking")} <MdOutlineArrowForward className="ms-1 arrow-icon-view-table" />
                 </Button>
               </div>
             </div>

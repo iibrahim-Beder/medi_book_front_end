@@ -5,9 +5,12 @@ import DynamicEditModal from "../../../shared/DynamicEditModal";
 import ConditionsFilters from "./component/ConditionsFilters";
 import Pagination from "../../../shared/Pagination";
 import { MdClose } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 import "../../Patient-management.css";
 
 const AllergyMobileView = () => {
+  const { t } = useTranslation();
+
   // Filters state
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("");
@@ -81,28 +84,28 @@ const AllergyMobileView = () => {
   const fields = [
     { 
       name: "severity", 
-      label: "Severity", 
+      label: t('AllergyMobileView.severity'), 
       type: "select", 
       options: [
-        { value: "Mild", label: "Mild" },
-        { value: "Moderate", label: "Moderate" }, 
-        { value: "Severe", label: "Severe" }
+        { value: "Mild", label: t('AllergyMobileView.severity_options.Mild') },
+        { value: "Moderate", label: t('AllergyMobileView.severity_options.Moderate') }, 
+        { value: "Severe", label: t('AllergyMobileView.severity_options.Severe') }
       ], 
-      placeholder: "Select severity" 
+      placeholder: t('AllergyMobileView.select_severity') 
     },
     { 
       name: "isActive", 
-      label: "Active", 
+      label: t('AllergyMobileView.active'), 
       type: "select", 
       options: [
-        { value: true, label: "Active" },
-        { value: false, label: "Inactive" }
+        { value: true, label: t('AllergyMobileView.active_options.Active') },
+        { value: false, label: t('AllergyMobileView.active_options.Inactive') }
       ], 
-      placeholder: "Is it active?" 
+      placeholder: t('AllergyMobileView.select_active_status') 
     },
-    { name: "dateNoted", label: "Date Noted", type: "date", placeholder: "Select date" },
-    { name: "reaction", label: "Reaction", type: "text", placeholder: "Enter reaction" },
-    { name: "notes", label: "Notes", type: "textarea", placeholder: "Enter notes" },
+    { name: "dateNoted", label: t('AllergyMobileView.date_noted'), type: "date", placeholder: t('AllergyMobileView.select_date') },
+    { name: "reaction", label: t('AllergyMobileView.reaction'), type: "text", placeholder: t('AllergyMobileView.enter_reaction') },
+    { name: "notes", label: t('AllergyMobileView.notes'), type: "textarea", placeholder: t('AllergyMobileView.enter_notes') },
   ];
 
   // Open modal for adding a new record
@@ -201,16 +204,17 @@ const AllergyMobileView = () => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
+
   return (
     <div className="table-container mobile-view-card">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Allergy List</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t('AllergyMobileView.table_title')}</h3>
+          <h6 className="table-subtitle">{t('AllergyMobileView.table_subtitle')}</h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            Add Allergen
+            {t('AllergyMobileView.add_allergen')}
           </button>
         </div>
       </div>
@@ -244,21 +248,19 @@ const AllergyMobileView = () => {
                 className="mobile-view-card"
               >
                 <Card.Body className="" style={{ padding: "15px" }}>
-
-
                   <div className="mb-3">
-                    <small className="text-muted d-block mb-1">Reaction:</small>
+                    <small className="text-muted d-block mb-1">{t('AllergyMobileView.reaction')}:</small>
                     <p className="mb-1">{truncateText(allergy.reaction, 60)}</p>
                   </div>
 
                   <div className="mb-3">
-                    <small className="text-muted d-block mb-1">Date Noted:</small>
+                    <small className="text-muted d-block mb-1">{t('AllergyMobileView.date_noted')}:</small>
                     <p className="mb-1">{formatDate(allergy.dateNoted)}</p>
                   </div>
 
                   {allergy.notes && (
                     <div className="mb-3">
-                      <small className="text-muted d-block mb-1">Notes:</small>
+                      <small className="text-muted d-block mb-1">{t('AllergyMobileView.notes')}:</small>
                       <p className="mb-1">{truncateText(allergy.notes, 80)}</p>
                     </div>
                   )}
@@ -267,22 +269,22 @@ const AllergyMobileView = () => {
                     <div className="col-4">
                       <div className="border-end">
                         <div className="fw-bold text-primary">
-                          {allergy.severity}
+                          {t(`AllergyMobileView.severity_options.${allergy.severity}`)}
                         </div>
-                        <small className="text-muted">Severity</small>
+                        <small className="text-muted">{t('AllergyMobileView.severity')}</small>
                       </div>
                     </div>
                     <div className="col-4">
                       <div className="fw-bold text-primary">
                         {formatDate(allergy.dateNoted)}
                       </div>
-                      <small className="text-muted">Date Noted</small>
+                      <small className="text-muted">{t('AllergyMobileView.date_noted')}</small>
                     </div>
                     <div className="col-4">
                       <div className="fw-bold text-primary">
-                        {allergy.isActive ? "Active" : "Inactive"}
+                        {allergy.isActive ? t('AllergyMobileView.active_options.Active') : t('AllergyMobileView.active_options.Inactive')}
                       </div>
-                      <small className="text-muted">is Active</small>
+                      <small className="text-muted">{t('AllergyMobileView.is_active')}</small>
                     </div>
                   </div>
 
@@ -294,7 +296,7 @@ const AllergyMobileView = () => {
                       onClick={() => handleEdit(allergy)}
                       style={{ float: "inline-end" }}
                     >
-                      Manage
+                      {t('AllergyMobileView.manage')}
                     </Button>
                   </div>
                 </Card.Body>
@@ -304,7 +306,7 @@ const AllergyMobileView = () => {
             {currentData.length === 0 && (
               <Card className="text-center py-5">
                 <Card.Body>
-                  <p className="text-muted">No Allergy Records Found</p>
+                  <p className="text-muted">{t('AllergyMobileView.no_records_found')}</p>
                 </Card.Body>
               </Card>
             )}
@@ -330,10 +332,10 @@ const AllergyMobileView = () => {
         record={selectedRecord}
         setRecord={setSelectedRecord}
         fields={fields}
-        title={isAddMode ? "Add Allergen" : "Edit Allergen"}
+        title={isAddMode ? t('AllergyMobileView.add_allergen') : t('AllergyMobileView.edit_allergen')}
         dropdownOptions={allergenOptions}
         dropdownField="allergenId"
-        dropdownLabel="Allergen"
+        dropdownLabel={t('AllergyMobileView.allergen')}
       />
     </div>
   );

@@ -5945,7 +5945,9 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 }
 /* RTL direction start */
 html[dir="rtl"]  {
-	.setting{display: flex;flex-direction: row-reverse;	} 
+.dc-accordioninnertitle,.comment-footer{direction: ltr;}
+
+	.setting,.comment-footer button{display: flex;flex-direction: row-reverse;	} 
 	.dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{direction: ltr;}
 .dc-haslayout{direction: ltr;}
 .dc-user-info .dc-title h4 ,.form-control ,.dc-select select{direction: rtl ! important;}
@@ -5953,14 +5955,13 @@ html[dir="rtl"]  {
 .dc-sidebarwrapper ,.dc-tabscontenttitle:before,.dc-navdashboard > ul > li:before {right: 0;left: auto;} 
 .dc-btnmenutoggle {right: 26px;}
 .dc-tabstitle li a:before {right: 0;left:auto;}
-.dc-tabscontenttitle {display: flex; flex-direction: row-reverse; justify-content: space-between;}
+.dc-tabscontenttitle {display: flex; flex-direction: row; justify-content: space-between;}
 .dc-accordioninnertitle ,.dc-updatall{display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;}
 	.dc-collapseexp{direction: rtl;}
 	.dc-dashboardboxtitle h2 {float: inline-end;}
-.doctor-registration label, .accordion label{float: inline-start;}
-label{float:inline-end;}
+ label, .accordion label{float: inline-start;}
 .form-group-label .dc-labelgroup{    display: flex; align-items: center;  justify-content: space-between;}
 
 .dc-yeartag{display: flex;justify-content: space-between;flex-direction: row-reverse; align-items: center;}
@@ -5981,9 +5982,22 @@ label{float:inline-end;}
     left: 10px;
 }
 .input-icon{left: auto;right: 6px;}
-body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p {
+body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p,button, input, optgroup, select, textarea {
 	font-family: "Tajawal", "Cairo", sans-serif;
 }
+.dc-dashboardtabsholder .dc-tabscontent{direction: rtl;}
+.dc-headerform{display: flex;}
+/* table start */
+.table td, .table th{text-align: right;}
+.cont-img-name{margin-right: 0; margin-left: 30px;}
+.cont-img-name img {margin-right: 0; margin-left: 10px;}
+.arrow-icon-view-table{transform:rotate(180deg);}
+.dt-paging-button.previous{border-radius: 0 6px 6px 0; border-right: solid 1px #ddd; border-left: none;}
+.dt-paging-button.next{border-radius: 6px 0 0 6px ; border-left: solid 1px #ddd; border-right: none;}
+/* table end */
+.notification-card .alert-icon{margin-right: 0; margin-left: 10px;}
+.dc-apointments-wraptest .select-arrow{top: 50%;} 
+.table-header h6 {float: right;}
 @media (min-width: 568px) { .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; } }
 @media (max-width: 767px) {
 	.collapsed .dc-btnmenutoggle {

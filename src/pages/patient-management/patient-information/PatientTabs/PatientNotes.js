@@ -2,11 +2,21 @@ import React, { useState } from "react";
 import CustomAccordion from "../../../shared/CustomAccordion";
 import DynamicEditModal from "../../../shared/DynamicEditModal";
 import { useDevice } from "../../../../context/useIsMobile";
-export const mockNotesData = [
+import { useTranslation } from "react-i18next";
+
+const PatientNotes = () => {
+  const { t } = useTranslation();
+
+
+
+
+
+  
+ const mockNotesData = [
   {
     id: 1,
-    noteType: "Communication",
-    content: "Patient reported feeling better after medication adjustment.",
+    noteType: t("Communication"),
+    content: t("Patient reported feeling better after medication adjustment."),
     createdAt: "2024-01-15T10:30:00Z",
     lastModifiedAt: "2024-01-15T10:30:00Z",
     isExpanded: false,
@@ -14,8 +24,8 @@ export const mockNotesData = [
   },
   {
     id: 2,
-    noteType: "Administrative",
-    content: "Follow-up appointment scheduled for next week.",
+    noteType: t("Administrative"),
+    content: t("Follow-up appointment scheduled for next week."),
     createdAt: "2024-01-14T14:20:00Z",
     lastModifiedAt: "2024-01-14T14:20:00Z",
     isExpanded: false,
@@ -23,8 +33,8 @@ export const mockNotesData = [
   },
   {
     id: 3,
-    noteType: "Reminder",
-    content: "Reminder to check lab results on Monday.",
+    noteType: t("Reminder"),
+    content: t("Reminder to check lab results on Monday."),
     createdAt: "2024-01-13T09:15:00Z", 
     lastModifiedAt: "2024-01-13T09:15:00Z",
     isExpanded: false,
@@ -32,11 +42,11 @@ export const mockNotesData = [
   }
 ];
 
-export const noteTypeOptions = ["Communication", "Administrative", "Reminder"];
+ const noteTypeOptions = [t("Communication"), t("Administrative"), t("Reminder")];
 
 // Helper function to format date for display
-export const formatDateForDisplay = (dateString) => {
-  if (!dateString) return 'N/A';
+ const formatDateForDisplay = (dateString) => {
+  if (!dateString) return t('N/A');
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short', 
@@ -46,8 +56,8 @@ export const formatDateForDisplay = (dateString) => {
   });
 };
 
-const PatientNotes = () => {
   const [notes, setNotes] = useState(mockNotesData);
+
   const [showModal, setShowModal] = useState(false);
   const [currentNote, setCurrentNote] = useState(null);
   const {isMobile} = useDevice();
@@ -55,34 +65,34 @@ const PatientNotes = () => {
   const notesFormFields = [
     {
       name: "noteType",
-      label: "Note Type",
+      label: t("Note Type"),
       type: "select",
-      placeholder: "Select note type",
+      placeholder: t("Select note type"),
       options: noteTypeOptions,
       half: false,
       readOnly: false 
     },
     {
       name: "content", 
-      label: "Content",
+      label: t("Content"),
       type: "textarea",
-      placeholder: "Enter note content...",
+      placeholder: t("Enter note content..."),
       half: false,
       readOnly: false 
     },
     {
       name: "createdAt",
-      label: "Created Date",
+      label: t("Created Date"),
       type: "text",
-      placeholder: "Created date",
+      placeholder: t("Created date"),
       half: true,
       readOnly: true 
     },
     {
       name: "lastModifiedAt",
-      label: "Last Modified",
+      label: t("Last Modified"),
       type: "text",
-      placeholder: "Last modified date", 
+      placeholder: t("Last modified date"), 
       half: true,
       readOnly: true 
     }
@@ -92,18 +102,18 @@ const PatientNotes = () => {
   const notestModalFields = [
     {
       name: "noteType",
-      label: "Note Type",
+      label: t("Note Type"),
       type: "select",
-      placeholder: "Select note type",
+      placeholder: t("Select note type"),
       options: noteTypeOptions,
       half: false,   
       AllWidth: true
     },
     {
       name: "content", 
-      label: "Content",
+      label: t("Content"),
       type: "textarea",
-      placeholder: "Enter note content...",
+      placeholder: t("Enter note content..."),
       half: false,
     }
   ];
@@ -112,7 +122,7 @@ const PatientNotes = () => {
   const handleAddNote = () => {
     const newNote = {
       id: Date.now(), // Temporary unique ID
-      noteType: "Communication",
+      noteType: t("Communication"),
       content: "",
       createdAt: new Date().toISOString(),
       lastModifiedAt: new Date().toISOString(),
@@ -223,8 +233,8 @@ const PatientNotes = () => {
       {/* Pass all fields including read-only ones */}
       <div className={`table-card ${isMobile ? 'mobile-view' : ''}`}  >
         <CustomAccordion
-          title=" Patient Notes"
-          addNewLabel="Add New Note"
+          title={t("Patient Notes")}
+          addNewLabel={t("Add New Note")}
           data={accordionData}  
           formFields={notesFormFields}
           onAdd={handleAddNote}
@@ -247,7 +257,7 @@ const PatientNotes = () => {
         record={currentNote}
         setRecord={setCurrentNote}
         fields={notestModalFields}
-        title={currentNote?.isNew ? "Add New Note" : "Edit Note"}
+        title={currentNote?.isNew ? t("Add New Note") : t("Edit Note")}
       />
     </div>
   );

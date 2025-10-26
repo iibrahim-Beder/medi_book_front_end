@@ -1,20 +1,24 @@
+// PrescriptionsTable.jsx
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import "../../../Patient-management.css";
 import CustomAccordion from "../../../../shared/CustomAccordion";
 import { MdExpandMore } from "react-icons/md";
 import ConditionsFilters from "../component/ConditionsFilters";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
+import { useTranslation } from "react-i18next";
 import Pagination from "../../../../shared/Pagination";
+import "../../../Patient-management.css";
 
 const PrescriptionsTable = () => {
+  const { t } = useTranslation();
+
   const [expandedRow, setExpandedRow] = useState(null);
   const [expandedField, setExpandedField] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1); 
-  
-  const [filterType, setFilterType] = useState("");       
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [filterType, setFilterType] = useState("");
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
 
@@ -26,21 +30,21 @@ const PrescriptionsTable = () => {
       status: "active",
       note: "Patient requires regular monitoring",
       prescribedMedication: [
-        { 
+        {
           id: "PM001",
           medicationName: "Metformin",
-          dosage: "500mg",         
+          dosage: "500mg",
           duration: "30 days",
           instructions: "Take with meals to reduce gastrointestinal side effects",
         },
-        { 
+        {
           id: "PM002",
           medicationName: "Glucose Test Strips",
-          dosage: "As needed", 
+          dosage: "As needed",
           duration: "90 days",
           instructions: "Check blood sugar levels before each meal",
         },
-      ]
+      ],
     },
     {
       id: "#RX0010",
@@ -49,21 +53,21 @@ const PrescriptionsTable = () => {
       status: "active",
       note: "Patient requires regular monitoring",
       prescribedMedication: [
-        { 
+        {
           id: "PM001",
           medicationName: "Metformin",
-          dosage: "500mg",         
+          dosage: "500mg",
           duration: "30 days",
           instructions: "Take with meals to reduce gastrointestinal side effects",
         },
-        { 
+        {
           id: "PM002",
           medicationName: "Glucose Test Strips",
-          dosage: "As needed", 
+          dosage: "As needed",
           duration: "90 days",
           instructions: "Check blood sugar levels before each meal",
         },
-      ]
+      ],
     },
     {
       id: "#RX0012",
@@ -72,21 +76,21 @@ const PrescriptionsTable = () => {
       status: "active",
       note: "Patient requires regular monitoring",
       prescribedMedication: [
-        { 
+        {
           id: "PM001",
           medicationName: "Metformin",
-          dosage: "500mg",         
+          dosage: "500mg",
           duration: "30 days",
           instructions: "Take with meals to reduce gastrointestinal side effects",
         },
-        { 
+        {
           id: "PM002",
           medicationName: "Glucose Test Strips",
-          dosage: "As needed", 
+          dosage: "As needed",
           duration: "90 days",
           instructions: "Check blood sugar levels before each meal",
         },
-      ]
+      ],
     },
     {
       id: "#RX0013",
@@ -95,21 +99,21 @@ const PrescriptionsTable = () => {
       status: "active",
       note: "Patient requires regular monitoring",
       prescribedMedication: [
-        { 
+        {
           id: "PM001",
           medicationName: "Metformin",
-          dosage: "500mg",         
+          dosage: "500mg",
           duration: "30 days",
           instructions: "Take with meals to reduce gastrointestinal side effects",
         },
-        { 
+        {
           id: "PM002",
           medicationName: "Glucose Test Strips",
-          dosage: "As needed", 
+          dosage: "As needed",
           duration: "90 days",
           instructions: "Check blood sugar levels before each meal",
         },
-      ]
+      ],
     },
     {
       id: "#RX0014",
@@ -118,21 +122,21 @@ const PrescriptionsTable = () => {
       status: "active",
       note: "Patient requires regular monitoring",
       prescribedMedication: [
-        { 
+        {
           id: "PM001",
           medicationName: "Metformin",
-          dosage: "500mg",         
+          dosage: "500mg",
           duration: "30 days",
           instructions: "Take with meals to reduce gastrointestinal side effects",
         },
-        { 
+        {
           id: "PM002",
           medicationName: "Glucose Test Strips",
-          dosage: "As needed", 
+          dosage: "As needed",
           duration: "90 days",
           instructions: "Check blood sugar levels before each meal",
         },
-      ]
+      ],
     },
     {
       id: "#RX0015",
@@ -141,21 +145,21 @@ const PrescriptionsTable = () => {
       status: "active",
       note: "Patient requires regular monitoring",
       prescribedMedication: [
-        { 
+        {
           id: "PM001",
           medicationName: "Metformin",
-          dosage: "500mg",         
+          dosage: "500mg",
           duration: "30 days",
           instructions: "Take with meals to reduce gastrointestinal side effects",
         },
-        { 
+        {
           id: "PM002",
           medicationName: "Glucose Test Strips",
-          dosage: "As needed", 
+          dosage: "As needed",
           duration: "90 days",
           instructions: "Check blood sugar levels before each meal",
         },
-      ]
+      ],
     },
     {
       id: "#RX002",
@@ -164,14 +168,14 @@ const PrescriptionsTable = () => {
       status: "completed",
       note: "Monitor blood pressure regularly",
       prescribedMedication: [
-        { 
+        {
           id: "PM003",
           medicationName: "Lisinopril",
-          dosage: "10mg", 
+          dosage: "10mg",
           duration: "90 days",
           instructions: "Take in the morning, monitor for cough side effect",
         },
-      ]
+      ],
     },
     {
       id: "#RX003",
@@ -180,14 +184,14 @@ const PrescriptionsTable = () => {
       status: "cancelled",
       note: "Patient reported side effects",
       prescribedMedication: [
-        { 
+        {
           id: "PM004",
           medicationName: "Sumatriptan",
-          dosage: "50mg", 
+          dosage: "50mg",
           duration: "30 days",
           instructions: "Take at onset of migraine, maximum 2 tablets per day",
         },
-      ]
+      ],
     },
     {
       id: "#RX004",
@@ -196,15 +200,15 @@ const PrescriptionsTable = () => {
       status: "expired",
       note: "Prescription expired, needs renewal",
       prescribedMedication: [
-        { 
+        {
           id: "PM005",
           medicationName: "Vitamin D3",
-          dosage: "1000 IU", 
+          dosage: "1000 IU",
           duration: "60 days",
           instructions: "Take with fatty meal for better absorption",
         },
-      ]
-    }
+      ],
+    },
   ];
 
   const handleViewClick = (id, field) => {
@@ -219,24 +223,27 @@ const PrescriptionsTable = () => {
 
   const filteredPrescriptions = prescriptionsData
     .filter((prescription) => {
-      if (!searchTerm) return true; 
+      if (!searchTerm) return true;
       if (searchBy === "all") {
         return Object.values(prescription)
           .join(" ")
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
       } else {
-        return prescription[searchBy]?.toLowerCase().includes(searchTerm.toLowerCase());
+        return (
+          prescription[searchBy]?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
       }
     })
     .filter((prescription) => {
       if (filterType && prescription.title !== filterType) return false;
       if (filterDateFrom || filterDateTo) {
-        const hasMatchingDate = prescription.prescribedMedication.some(med => {
+        const hasMatchingDate = prescription.prescribedMedication.some((med) => {
           const startDate = new Date(med.startDate);
           const fromDate = filterDateFrom ? new Date(filterDateFrom) : null;
           const toDate = filterDateTo ? new Date(filterDateTo) : null;
-          if (fromDate && toDate) return startDate >= fromDate && startDate <= toDate;
+          if (fromDate && toDate)
+            return startDate >= fromDate && startDate <= toDate;
           if (fromDate) return startDate >= fromDate;
           if (toDate) return startDate <= toDate;
           return true;
@@ -254,7 +261,7 @@ const PrescriptionsTable = () => {
     setCurrentPage(1);
   };
 
-  const rowsPerPage = 5; 
+  const rowsPerPage = 5;
   const totalPages = Math.ceil(filteredPrescriptions.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentData = filteredPrescriptions.slice(startIndex, startIndex + rowsPerPage);
@@ -267,11 +274,16 @@ const PrescriptionsTable = () => {
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
-      case 'active': return '#3fabf3';
-      case 'completed': return '#4BAE78';
-      case 'cancelled': return '#D66A6A';
-      case 'expired': return '#7A8B97';
-      default: return '#6C757D';
+      case "active":
+        return "#3fabf3";
+      case "completed":
+        return "#4BAE78";
+      case "cancelled":
+        return "#D66A6A";
+      case "expired":
+        return "#7A8B97";
+      default:
+        return "#6C757D";
     }
   };
 
@@ -279,8 +291,8 @@ const PrescriptionsTable = () => {
     <div className="table-container">
       <div className="table-header">
         <div>
-          <h3 className="table-title">Prescriptions list</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h3 className="table-title">{t("PrescriptionsTable.table_title")}</h3>
+          <h6 className="table-subtitle">{t("PrescriptionsTable.table_subtitle")}</h6>
         </div>
       </div>
 
@@ -308,18 +320,18 @@ const PrescriptionsTable = () => {
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>Prescription Title</th>
-                  <th>Note</th>
-                  <th>Status</th>
-                  <th>Diagnosis Name</th>
-                  <th>Medication</th>
+                  <th>{t("PrescriptionsTable.prescription_title")}</th>
+                  <th>{t("PrescriptionsTable.note")}</th>
+                  <th>{t("PrescriptionsTable.status")}</th>
+                  <th>{t("PrescriptionsTable.diagnosis_name")}</th>
+                  <th>{t("PrescriptionsTable.medication")}</th>
                 </tr>
               </thead>
               <tbody>
                 {currentData.map((prescription) => (
                   <React.Fragment key={prescription.id}>
                     <tr>
-                      <td  title={prescription.title}>{prescription.title}</td>
+                      <td title={prescription.title}>{prescription.title}</td>
 
                       <td>
                         <div className="d-flex align-items-center">
@@ -359,18 +371,20 @@ const PrescriptionsTable = () => {
                       </td>
 
                       <td>
-                        <span 
-                          style={{ 
+                        <span
+                          style={{
                             color: getStatusColor(prescription.status),
-                            fontWeight: '600',
-                            fontSize: '14px'
+                            fontWeight: "600",
+                            fontSize: "14px",
                           }}
                         >
-                          {prescription.status}
+                          {t(`PrescriptionsTable.status_options.${prescription.status}`)}
                         </span>
                       </td>
 
-                      <td  title={prescription.diagnosisName}>{prescription.diagnosisName}</td>
+                      <td title={prescription.diagnosisName}>
+                        {prescription.diagnosisName}
+                      </td>
 
                       <td>
                         <Button
@@ -387,7 +401,7 @@ const PrescriptionsTable = () => {
                           }
                           disabled={prescription.prescribedMedication.length === 0}
                         >
-                          View
+                          {t("PrescriptionsTable.view")}
                           {prescription.prescribedMedication.length > 0 && (
                             <span
                               className="num-item"
@@ -407,13 +421,19 @@ const PrescriptionsTable = () => {
                     </tr>
 
                     {expandedRow === prescription.id && (
-                      <tr className="table-active-content" style={{backgroundColor:"transparent"}}>
-                        <td colSpan="5" className="border-0 background-in-hover-none">
+                      <tr
+                        className="table-active-content"
+                        style={{ backgroundColor: "transparent" }}
+                      >
+                        <td
+                          colSpan="5"
+                          className="border-0 background-in-hover-none"
+                        >
                           <div>
                             {expandedField === "note" && (
                               <div className="description-expanded-section">
                                 <TextAreaField
-                                  label="Prescription Note"
+                                  label={t("PrescriptionsTable.prescription_note")}
                                   value={prescription.note}
                                   disabled
                                 />
@@ -426,10 +446,29 @@ const PrescriptionsTable = () => {
                                 backgroundColor="var(--scbccolor)"
                                 data={prescription.prescribedMedication}
                                 formFields={[
-                                  { name: "medicationName", placeholder: "Medication Name", label: "Medication" },
-                                  { name: "dosage", placeholder: "Dosage", half: true, label: "Dosage" },
-                                  { name: "duration", placeholder: "Duration", half: true, label: "Duration" },
-                                  { name: "instructions", type: "textarea", placeholder: "Instructions", label: "Instructions" },
+                                  {
+                                    name: "medicationName",
+                                    placeholder: t("PrescriptionsTable.medication_name"),
+                                    label: t("PrescriptionsTable.medication"),
+                                  },
+                                  {
+                                    name: "dosage",
+                                    placeholder: t("PrescriptionsTable.dosage"),
+                                    half: true,
+                                    label: t("PrescriptionsTable.dosage"),
+                                  },
+                                  {
+                                    name: "duration",
+                                    placeholder: t("PrescriptionsTable.duration"),
+                                    half: true,
+                                    label: t("PrescriptionsTable.duration"),
+                                  },
+                                  {
+                                    name: "instructions",
+                                    type: "textarea",
+                                    placeholder: t("PrescriptionsTable.instructions"),
+                                    label: t("PrescriptionsTable.instructions"),
+                                  },
                                 ]}
                               />
                             )}
@@ -444,11 +483,11 @@ const PrescriptionsTable = () => {
           </div>
 
           <Pagination
-        currentPage={currentPage}
-        totalItems={filteredPrescriptions.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={setCurrentPage}
-      />
+            currentPage={currentPage}
+            totalItems={filteredPrescriptions.length}
+            rowsPerPage={rowsPerPage}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>
