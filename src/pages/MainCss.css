@@ -362,6 +362,7 @@ abbr[title] {
   transition: all 0.2s ease-in-out;
   text-align: center;
   font-size: 0.833em;
+  color: var(--terthemecolor)
 }
 
 .react-calendar__tile:hover {
@@ -1009,7 +1010,7 @@ select {padding: 0 25px !important ; }
 }
 .mobile-view .dc-accordioninnertitle  {
   display: flex;
-  padding: 6px 30px;
+  padding: 6px 10px;
   justify-content: space-between;
   align-items: center;
 }
@@ -1065,6 +1066,7 @@ padding: 10px;
   .navbar-collapse.dc-navigation.collapse.show,.expand {
     max-height: 500px;
     transition: all 0.5s ease;
+    box-shadow: 0 9px 20px 0 var(--shadocolor);
   }
   .menu-item-has-children.active .expand{
       margin-bottom: 35px;
@@ -1074,6 +1076,6 @@ padding: 10px;
   .dc-navigationarea nav .navbar-nav{gap: 0;}
   /* navbar anmation end */
 }
-.mobile-view-card .card {background-color: var(--cardcolor); box-shadow: 0px 0px 20px 0px var(--shadocolor);}
+.mobile-view-card .card {background-color: var(--cardcolor); box-shadow: 0px 0px 20px 0px var(--shado2color);}
 .filter-section .dc-user-info .dc-title h4,.filter-section .form-control, .dc-select select,.btn-group{ direction: ltr !important; }
 .table-title{display: flex;}

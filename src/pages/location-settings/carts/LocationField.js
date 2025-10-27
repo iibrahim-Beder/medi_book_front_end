@@ -151,7 +151,7 @@ export default function Step4Locations({
 
   return (
     <div className="dc-userexperience dc-tabsinfo">
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="title-with-icon ">
         {ComponentProp}
         {header && (
           <div className="dc-tabscontenttitle dc-addnew">

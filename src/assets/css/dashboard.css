@@ -41,7 +41,7 @@
 :root{  --tablecolor: #ffffff; }
 :root{  --cardcolor: #ffffff; }
 :root{  --len2color: #eee; }
-:root{--shadocolor:#247cff21; }
+:root{--shadocolor:rgba(165,165,165,0.50); }
 :root{--badybkcolor:#fcfcfc; }
 :root{--scshadocolor: #ddd; }
 :root {--themecolor:#247CFF;}
@@ -78,12 +78,12 @@ body h6 {
 	text-transform:capitalize;
 	font-family: 'Poppins', Arial, Helvetica, sans-serif;
 }
-h1 { font-size: 50px;}
-h2 { font-size: 36px;}
-h3 { font-size: 24px;}
-h4 { font-size: 18px;}
-h5 { font-size: 16px;}
-h6 { font-size: 14px;}
+h1 { font-size: clamp(28px, 5vw, 50px); }
+h2 { font-size: clamp(24px, 4vw, 36px); }
+h3 { font-size: clamp(20px, 3vw, 24px); }
+h4 { font-size: clamp(16px, 2.5vw, 18px); }
+h5 { font-size: clamp(14px, 2vw, 16px); }
+h6 { font-size: clamp(12px, 1.5vw, 14px); }
 h1 a,
 h2 a,
 h3 a,
@@ -145,7 +145,7 @@ input[type="color"],
 	outline: none;
 	height: 50px !important;
 	background:var(--cardcolor);
-	font-size: 14px;
+    font-size: clamp(13px, 1vw, 15px);
 	-webkit-box-shadow: none;
 			box-shadow: none;
 	line-height: 18px;
@@ -188,7 +188,7 @@ textarea.form-control{
 input:focus,
 .select select:focus,
 .form-control:focus {
-	color: #999;
+	/* color: #999; */
 	border-color: #eee;
 	-webkit-box-shadow:none !important;
 			box-shadow:none !important;
@@ -954,6 +954,7 @@ li.dc-rss a { background:#ff6600; }
 	padding: 6px 10px;
 	border-radius: 4px;
 	background-color:var(--themecolor);
+	display: flex;
 }
 .navbar-toggler:focus {outline: none;}
 .navbar-toggle .icon-bar{background: #fff;}
@@ -2614,6 +2615,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	list-style: none;
 	line-height: 22px;
 	background-color: var(--cardcolor);
+	box-shadow: 0 9px 20px 0 var(--shadocolor);
 }
 .alert{
 	float: left;
@@ -4747,7 +4749,7 @@ a.dc-back:hover{color: #55acee;}
     float: left;
     width: 100%;
     padding: 30px;
-	    box-shadow: 0 0 15px 0 var(--shadocolor);
+	    /* box-shadow: 0 0 15px 0 var(--shadocolor); */
 }
 .dc-proposalsr {
     float: left;
@@ -5712,6 +5714,11 @@ margin-right: 15px ;
 }
 /* <<< */
 @media (max-width: 720px){
+	.doctor-registration .title-with-icon{
+		flex-direction: column;
+		gap: 10px;
+	}
+	.form-container{padding:28px 0;}
 .nested-accordion .dc-collapseexp.show{padding: 30px 10px;}
 .nested-accordion ul ul{margin-left: 10px;}
 
@@ -5739,6 +5746,15 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.doctor-registration{padding: 0;}
+	.section-title{
+		flex-direction: column;
+		gap: 10px;	
+	} 
+	.doctor-registration .container{margin: 30px 0;padding: 15px;}  
+	.doctor-registration .dc-collapseexp{padding: 0px;}  
+	.doctor-registration .btn-container{margin: 0 18px;}
+
 
 /* dropdown notification css */
  .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before {right: 53%;}
@@ -5846,6 +5862,9 @@ padding: 0 10px;
     }
 	/* date range picker css end */
 	@media (max-width: 400px) {
+		.btn-container div{ width: -webkit-fill-available;}
+		.btn-container .dc-btn{width:100%;min-width: fit-content;}
+		.title-with-icon .section-title{ align-items: center; } 
 		.dc-tabscontenttitle{
 			flex-direction: column !important;
 			align-items: center ! important;
@@ -5946,7 +5965,7 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 /* RTL direction start */
 html[dir="rtl"]  {
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
-
+.dc-myskills li .dc-rightarea a{line-height: 35px;}
 	.setting,.comment-footer button{display: flex;flex-direction: row-reverse;	} 
 	.dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{direction: ltr;}
 .dc-haslayout{direction: ltr;}
@@ -5982,7 +6001,7 @@ html[dir="rtl"]  {
     left: 10px;
 }
 .input-icon{left: auto;right: 6px;}
-body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p,button, input, optgroup, select, textarea {
+body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p,button, input, optgroup, select, textarea,.two-tabs-nav-container {
 	font-family: "Tajawal", "Cairo", sans-serif;
 }
 .dc-dashboardtabsholder .dc-tabscontent{direction: rtl;}

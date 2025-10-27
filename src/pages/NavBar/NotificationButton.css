@@ -32,3 +32,5 @@ header.inner-header .header-nav .header-navbar-rht li.noti-nav > a.active-dot::b
     opacity: 1 !important;
     padding: 10px;
 }
+.dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before{border-bottom-color: var(--cardcolor);}
+.dropdown-menu-end.list-date-option.open:before{border-bottom-color: #ccc;}

@@ -1018,4 +1018,180 @@
     "overall_rating": "Overall Rating",
     "view_booking": "View Booking"
   }
+  ,
+  "slotStatuses": {
+    "Pending":"Pending",
+    "all": "All",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "empty": "Empty",
+    "pending": "Pending"
+  }
+  ,
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }}
+    ,
+    "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "AllergyMobileView": {
+    "is_active": "Is Active",
+    "table_title": "Allergies",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "add_allergen": "Add Allergen",
+    "edit_allergen": "Edit Allergen",
+    "allergen": "Allergen",
+    "severity": "Severity",
+    "select_severity": "Select Severity",
+    "active": "Status",
+    "select_active_status": "Select Status",
+    "date_noted": "Date Noted",
+    "select_date": "Select Date",
+    "reaction": "Reaction",
+    "enter_reaction": "Enter Reaction",
+    "notes": "Notes",
+    "enter_notes": "Enter Notes",
+    "manage": "Manage",
+    "no_records_found": "No Records Found",
+    "severity_options": {
+      "Mild": "Mild",
+      "Moderate": "Moderate",
+      "Severe": "Severe"
+    },
+    "active_options": {
+      "Active": "Active",
+      "Inactive": "Inactive"
+    }
+    
+  }
+  ,
+  "AllergyTable": {
+    "table_title": "Allergies",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "add_allergen": "Add Allergen",
+    "edit_allergen": "Edit Allergen",
+    "allergen": "Allergen",
+    "severity": "Severity",
+    "select_severity": "Select Severity",
+    "active": "Status",
+    "select_active_status": "Select Status",
+    "date_noted": "Date Noted",
+    "select_date": "Select Date",
+    "reaction": "Reaction",
+    "enter_reaction": "Enter Reaction",
+    "notes": "Notes",
+    "enter_notes": "Enter Notes",
+    "actions": "Actions",
+    "manage": "Manage",
+    "no_records_found": "No Records Found",
+    "severity_options": {
+      "Mild": "Mild",
+      "Moderate": "Moderate",
+      "Severe": "Severe"
+    },
+    "active_options": {
+      "Active": "Active",
+      "Inactive": "Inactive"
+    }
+  },
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "DiagnosisMobileView": {
+    "table_title": "Diagnosis",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "symptoms": "Symptoms",
+    "conditions": "Conditions",
+    "notes": "Notes",
+    "prescription": "Prescription",
+    "view_all_details": "View All Details",
+    "no_diagnosis_found": "No Diagnosis Found",
+    "symptoms_description": "Symptoms Description",
+    "diagnosis_description": "Diagnosis Description",
+    "medical_condition": "Medical Condition",
+    "condition_type": "Condition Type",
+    "severity": "Severity",
+    "note": "Note",
+    "note_content": "Note Content",
+    "prescription_title": "Prescription Title",
+    "status": "Status",
+    "prescription_note": "Prescription Note",
+    "type": "Type",
+    "dosage": "Dosage",
+    "duration_days": "Duration (Days)",
+    "instructions": "Instructions",
+    "close": "Close"
+  } ,
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "DiagnosisTable": {
+    "table_title": "Diagnosis",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis_name": "Diagnosis Name",
+    "symptoms_description": "Symptoms Description",
+    "diagnosis_description": "Diagnosis Description",
+    "conditions": "Conditions",
+    "notes": "Notes",
+    "prescription": "Prescription",
+    "view": "View",
+    "medical_condition": "Medical Condition",
+    "condition_type": "Condition Type",
+    "severity": "Severity",
+    "note": "Note",
+    "note_content": "Note Content",
+    "prescription_title": "Prescription Title",
+    "status": "Status",
+    "prescription_note": "Prescription Note",
+    "medication": "Medication",
+    "dosage": "Dosage",
+    "duration_days": "Duration (Days)",
+    "instructions": "Instructions"
+  }
+  ,
+  "MedicalHistoryMobileView": {
+    "table_title": "Medical History",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "add_condition": "Add Condition",
+    "add_medical_history": "Add Medical History",
+    "edit_medical_history": "Edit Medical History",
+    "hereditary_disease": "Hereditary Disease",
+    "description": "Description",
+    "related_person": "Related Person",
+    "notes": "Notes",
+    "date_of_event": "Date of Event",
+    "type": "Type",
+    "hereditary": "Hereditary",
+    "non_hereditary": "Non-Hereditary",
+    "manage": "Manage",
+    "no_records_found": "No Records Found",
+    "hereditary_diseases": {
+      "Diabetes": "Diabetes",
+      "Heart Disease": "Heart Disease",
+      "Cancer": "Cancer",
+      "Hypertension": "Hypertension",
+      "Asthma": "Asthma",
+      "Mental Health Disorders": "Mental Health Disorders",
+      "Other": "Other"
+    }
+  }
 }
