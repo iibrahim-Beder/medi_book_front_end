@@ -6,7 +6,7 @@ import {
   FaInfoCircle,
   FaTimes,
 } from "react-icons/fa";
-import "../../MainCss.css";
+// import "../../MainCss.css";
 // component for popup message with icon, title, message, buttons, and close functionality
 export default function PopupMessage({
   type = "info", // success, warning, danger, info

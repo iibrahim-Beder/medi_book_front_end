@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import Diagnoses from "./tabs/Diagnoses";
+import { useDevice } from "../../context/useIsMobile";
+// import Diagnoses from "./tabs/Diagnoses";
 import AppointmentInformation from "./tabs/AppointmentInformation";
+import AddDiagnosisMobileView from "./tabs/AddDiagnosisMobileView";
 
 export default function PatientProfilePageMain() {
+  const { isMobile } = useDevice();
   const [activeTab, setActiveTab] = useState("Diagnoses");
   const { t } = useTranslation();
 
@@ -43,7 +45,8 @@ export default function PatientProfilePageMain() {
             className={`dc-tabscontent tab-content ${activeTab === "Diagnoses" ? "dignoses-active" : ""}`} 
             style={{ width: "80%", display: "flex", justifyContent: "center", paddingTop:"30px" }}
           >
-            {activeTab === "Diagnoses" && <Diagnoses />}
+            {/* {activeTab === "Diagnoses"  && (isMobile ?  <AddDiagnosisMobileView /> : <Diagnoses />)} */}
+            {activeTab === "Diagnoses"  &&<AddDiagnosisMobileView />}
             {activeTab === "AppointmentInformation" && <AppointmentInformation />}
           </div>
         </div>

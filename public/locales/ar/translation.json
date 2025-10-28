@@ -1310,7 +1310,18 @@
     "overall_rating": "التقييم العام",
     "view_booking": "عرض الحجز"
   }
+,
+  "Diagnoses" : "التشخيصات",
+  "Appointment information":"معلومات الحجز",
+"Add New Diagnosis":"اضافة تشخيص جديد",
+"Diagnosed Conditions" : "الحالات المشخصة",
+"Prescribed Medications" : "الادوية المقررة",
+  "Delete Diagnosis": "حذف التشخيص",
+  "Are you sure you want to delete diagnosis": "هل أنت متأكد من أنك تريد حذف التشخيص",
+  "This action cannot be undone.": "لا يمكن التراجع عن هذا الإجراء."  
+  
 
-  }
+
+}
 
 

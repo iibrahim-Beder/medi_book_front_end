@@ -15,7 +15,7 @@ const CustomAccordion = memo(({
   backgroundColor = "",
   title,
   titleIcon,
-  addNewLabel,
+  addNewLabel="add",
   data = [],
   formFields = [],
   onAdd,
@@ -284,7 +284,7 @@ const CustomAccordion = memo(({
                         <div className="dc-btnarea d-flex">
                           <button
                             type="button"
-                            className="btn-simple"
+                            className="simple-btn"
                             onClick={() => handleCancel(index)}
                             style={{ margin: "11px 4px" }}
                           >

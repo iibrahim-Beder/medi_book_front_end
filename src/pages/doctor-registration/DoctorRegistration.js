@@ -11,7 +11,7 @@ import { TOTAL_STEPS, getStepsMeta } from "../../constants/formOptions";
 import "./DoctorRegistration.css";
 import { useTranslation } from "react-i18next";
 import { validateStep as validateStepUtil } from "./utils/validation";
-import PopupMessage from "../dashbord/components/PopupMessage";
+import PopupMessage from "../shared/PopupMessage";
 import LocationField from "../location-settings/carts/LocationField";
 import SectionTitle from "../shared/SectionTitle";
 import { CiLocationOn } from "react-icons/ci";

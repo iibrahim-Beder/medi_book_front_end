@@ -101,7 +101,7 @@ select {
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.3s ease;
-  z-index: 999;
+  z-index: 1999;
 }
 
 .popup-card {
@@ -749,6 +749,7 @@ font-family: "Inter", sans-serif !important;
 box-shadow: none !important;   ;
 background-color: transparent !important;
    color: #000 !important; ;
+   font-size: 16px ;
 }
 .dc-btn.dc-cancel-btn{
   margin: 11px 4px;
@@ -844,7 +845,7 @@ float: right;
 }
 .dropdown-with-search-in-accordion .dc-pagination ul li{ width: auto !important; }
 .dropdown-with-search-in-accordion  .MuiBox-root.css-1apcsdv{margin: 0  !important;}
-.dropdown-with-search-in-accordion{padding:2px 20px;}
+.dropdown-with-search-in-accordion{padding:12px 10px;}
 .table-container .form-control , .table-container .dc-accordioninnertitle span, .table-container input[type="text"], .table-container .input-with-icon textarea:disabled{
   font-size: 13px;
 } 
@@ -1079,3 +1080,32 @@ padding: 10px;
 .mobile-view-card .card {background-color: var(--cardcolor); box-shadow: 0px 0px 20px 0px var(--shado2color);}
 .filter-section .dc-user-info .dc-title h4,.filter-section .form-control, .dc-select select,.btn-group{ direction: ltr !important; }
 .table-title{display: flex;}
+.expandable-content{
+  background-color:#fafafa;
+  padding: 10px;
+  border-radius: 5px;
+}
+/* .dc-btn.dc-delete-btn {
+    margin: 11px 4px;
+    width: 100px;
+    max-width: 170px;
+    border-color: #ff5851;
+    color: #ff5851;
+    min-width: fit-content;
+}
+.dc-btn.dc-delete-btn:hover {
+    box-shadow: 0 9px 20px 0 #ff5851;
+    background-color: #ff5851;
+} */
+ .btn-simple:focus{
+background-color: #ff4757;
+color: white;
+ }
+ 	.mobile-view .second-btn {
+		min-width: fit-content ;
+		width: 120px ;
+	} 
+
+  .popup-card svg{
+    margin-bottom: 10px;
+  } 

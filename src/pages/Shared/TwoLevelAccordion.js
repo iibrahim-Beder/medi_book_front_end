@@ -6,13 +6,13 @@ import CustomAccordion from "./CustomAccordion";
 import TextAreaField from "../ui/form-fields/TextAreaField";
 import SelectField from "../ui/form-fields/SelectField";
 import Field from "../ui/form-fields/Field";
-
+import { useTranslation } from "react-i18next";
 const TwoLevelAccordion = memo(({
   formFieldsRecipe = [], 
   backgroundColor = "",
   titleBackgroundColor = "",
   title,
-  addNewLabel,
+  addNewLabel="Add",
   data = [],
   formFields = [],
   onAdd,
@@ -28,6 +28,8 @@ const TwoLevelAccordion = memo(({
 }) => {
   // Local state for read-only mode
   const [dataRead, setDataRead] = useState(data);
+
+  const { t } = useTranslation();
 
   // Keep local state in sync with parent data
   useEffect(() => {
@@ -248,11 +250,11 @@ const TwoLevelAccordion = memo(({
                   <div className="dc-btnarea">
                     <button
                       type="button"
-                      className="btn-simple"
+                      // className="btn-simple"
                       onClick={() => handleCancel(index)}
                       style={{ margin: "11px 4px" }}
                     >
-                      Cancel
+                      {t("Cancel")}
                     </button>
                     <button
                       type="submit"

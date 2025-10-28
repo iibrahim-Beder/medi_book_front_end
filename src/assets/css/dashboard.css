@@ -5746,6 +5746,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	/* .modal-footer{gap: 0 !important;} */
 	.doctor-registration{padding: 0;}
 	.section-title{
 		flex-direction: column;
@@ -5765,7 +5766,7 @@ padding: 0 10px;
 
 
 	 .dc-sidebarwrapper  {
-    margin-top: 68px;
+    margin-top: 64px;
   }
 	.form-group{grid-column: span 2;}
 	.dignoses-active ,.table-container-style {
@@ -5866,6 +5867,7 @@ padding: 0 10px;
 		.btn-container .dc-btn{width:100%;min-width: fit-content;}
 		.title-with-icon .section-title{ align-items: center; } 
 		.dc-tabscontenttitle{
+			display: flex;
 			flex-direction: column !important;
 			align-items: center ! important;
 
@@ -5965,6 +5967,7 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 /* RTL direction start */
 html[dir="rtl"]  {
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
+.mobile-view-card {text-align: right;}
 .dc-myskills li .dc-rightarea a{line-height: 35px;}
 	.setting,.comment-footer button{display: flex;flex-direction: row-reverse;	} 
 	.dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{direction: ltr;}
