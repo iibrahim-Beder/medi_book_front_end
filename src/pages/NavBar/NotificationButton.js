@@ -61,10 +61,22 @@ const NotificationDropdown = () => {
 
       <Dropdown.Menu
         className="dropdown-menu-end shadow list-date-option open"
-        style={{ minWidth: "350px",  backgroundColor:"var(--cardcolor)",  border:"1px solid #ccc", marginTop:"10px", maxHeight:"0",opacity:"0", overflow:"hidden",display:"block"}}
+        style={{
+          minWidth: "350px",
+          backgroundColor: "var(--cardcolor)",
+          border: "1px solid #ccc",
+          marginTop: "10px",
+          maxHeight: "0",
+          opacity: "0",
+          overflow: "hidden",
+          display: "block",
+          transform: "translate(3px, 267.2222px)",
+        }}
       >
         <div className="topnav-dropdown-header p-2 border-bottom">
-          <span className="fw-bold" style={{color:"var(--terthemecolor)"}}>Notifications</span>
+          <span className="fw-bold" style={{ color: "var(--terthemecolor)" }}>
+            Notifications
+          </span>
         </div>
         <div
           className="noti-content"
@@ -76,7 +88,7 @@ const NotificationDropdown = () => {
                 <a
                   href="#"
                   className="d-flex align-items-start p-2 text-decoration-none text-dark"
-                style={{ gap: "10px" }}
+                  style={{ gap: "10px" }}
                 >
                   <span className="avatar me-2">
                     <img
