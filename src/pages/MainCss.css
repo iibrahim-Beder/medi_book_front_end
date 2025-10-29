@@ -1109,3 +1109,6 @@ color: white;
   .popup-card svg{
     margin-bottom: 10px;
   } 
+  .mobile-view ul ul {
+    margin-left: 0;
+  }

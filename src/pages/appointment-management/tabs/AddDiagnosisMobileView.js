@@ -12,11 +12,9 @@ import TextAreaField from "../../ui/form-fields/TextAreaField";
 
 const DiagnosisMobileViewWithCRUD = () => {
   const { t } = useTranslation();
-
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
-
   const [deletePopup, setDeletePopup] = useState({
     show: false,
     diagnosisId: null,
@@ -42,7 +40,6 @@ const DiagnosisMobileViewWithCRUD = () => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(5);
-
   const [diagnosesData, setDiagnosesData] = useState([
     {
       id: "#DZ001",
@@ -50,14 +47,14 @@ const DiagnosisMobileViewWithCRUD = () => {
       SymptomsDescription: "Increased thirst, frequent urination, fatigue, blurred vision",
       Description: "Chronic condition affecting the way the body processes blood sugar",
       notes: [
-        { 
-          id: 11, 
+        {
+          id: 11,
           note: "Patient started on Metformin 500mg twice daily",
           isNew: false,
           isExpanded: false
         },
-        { 
-          id: 12, 
+        {
+          id: 12,
           note: "Blood sugar levels improving with medication",
           isNew: false,
           isExpanded: false
@@ -74,7 +71,7 @@ const DiagnosisMobileViewWithCRUD = () => {
         },
         {
           id: 202,
-          MedicalCondition: "Hypertension", 
+          MedicalCondition: "Hypertension",
           Severity: "severe",
           Notes: "patient has high blood pressure",
           isNew: false,
@@ -119,7 +116,7 @@ const DiagnosisMobileViewWithCRUD = () => {
   ]);
 
   // === CRUD Functions ===
-  
+
   // Add new diagnosis
   const handleAddDiagnosis = useCallback(() => {
     const newDiagnosis = {
@@ -133,27 +130,27 @@ const DiagnosisMobileViewWithCRUD = () => {
       isNew: true,
       isExpanded: false,
     };
-
     setDiagnosesData(prev => [newDiagnosis, ...prev]);
     setEditingDiagnosis(newDiagnosis);
     setSelectedDiagnosis(newDiagnosis);
   }, []);
 
-  // Save diagnosis
+  // Save diagnosis (used internally)
   const handleSaveDiagnosis = useCallback((diagnosisData) => {
-    setDiagnosesData(prev => prev.map(item => 
-      item.id === diagnosisData.id ? { 
-        ...diagnosisData, 
-        isNew: false,
-        isExpanded: false
-      } : item
-    ));
+    const savedDiagnosis = {
+      ...diagnosisData,
+      isNew: false,        // Critical: becomes "old"
+      isExpanded: false
+    };
+
+    setDiagnosesData(prev =>
+      prev.map(item => (item.id === savedDiagnosis.id ? savedDiagnosis : item))
+    );
   }, []);
 
   // Update diagnosis field
   const handleUpdateDiagnosis = useCallback((field, value) => {
     if (!editingDiagnosis) return;
-    
     setEditingDiagnosis(prev => ({
       ...prev,
       [field]: value
@@ -163,7 +160,6 @@ const DiagnosisMobileViewWithCRUD = () => {
   // === Conditions Management ===
   const handleAddCondition = useCallback(() => {
     if (!editingDiagnosis) return;
-
     const newCondition = {
       id: Date.now(),
       MedicalCondition: "",
@@ -172,7 +168,6 @@ const DiagnosisMobileViewWithCRUD = () => {
       isNew: true,
       isExpanded: true,
     };
-
     setEditingDiagnosis(prev => ({
       ...prev,
       conditions: [newCondition, ...(prev.conditions || [])]
@@ -181,7 +176,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleDeleteCondition = useCallback((conditionIndex) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       conditions: (prev.conditions || []).filter((_, index) => index !== conditionIndex)
@@ -190,7 +184,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleUpdateCondition = useCallback((conditionIndex, field, value) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       conditions: (prev.conditions || []).map((condition, index) =>
@@ -201,7 +194,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleSaveCondition = useCallback((conditionIndex, conditionData) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       conditions: (prev.conditions || []).map((condition, index) =>
@@ -213,14 +205,12 @@ const DiagnosisMobileViewWithCRUD = () => {
   // === Notes Management ===
   const handleAddNote = useCallback(() => {
     if (!editingDiagnosis) return;
-
     const newNote = {
       id: Date.now(),
       note: "",
       isNew: true,
       isExpanded: true,
     };
-
     setEditingDiagnosis(prev => ({
       ...prev,
       notes: [newNote, ...(prev.notes || [])]
@@ -229,7 +219,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleDeleteNote = useCallback((noteIndex) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       notes: (prev.notes || []).filter((_, index) => index !== noteIndex)
@@ -238,7 +227,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleUpdateNote = useCallback((noteIndex, field, value) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       notes: (prev.notes || []).map((note, index) =>
@@ -249,7 +237,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleSaveNote = useCallback((noteIndex, noteData) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       notes: (prev.notes || []).map((note, index) =>
@@ -261,7 +248,6 @@ const DiagnosisMobileViewWithCRUD = () => {
   // === Prescriptions Management ===
   const handleAddPrescription = useCallback(() => {
     if (!editingDiagnosis) return;
-
     const newPrescription = {
       id: Date.now(),
       title: "",
@@ -273,7 +259,6 @@ const DiagnosisMobileViewWithCRUD = () => {
       isNew: true,
       isExpanded: true,
     };
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: [newPrescription, ...(prev.prescriptions || [])]
@@ -282,7 +267,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleDeletePrescription = useCallback((prescriptionIndex) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).filter((_, index) => index !== prescriptionIndex)
@@ -291,7 +275,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleUpdatePrescription = useCallback((prescriptionIndex, field, value) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).map((prescription, index) =>
@@ -302,7 +285,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleSavePrescription = useCallback((prescriptionIndex, prescriptionData) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).map((prescription, index) =>
@@ -314,7 +296,6 @@ const DiagnosisMobileViewWithCRUD = () => {
   // === Recipes Management ===
   const handleAddRecipe = useCallback((prescriptionIndex) => {
     if (!editingDiagnosis) return;
-
     const newRecipe = {
       id: Date.now(),
       medication: "",
@@ -325,7 +306,6 @@ const DiagnosisMobileViewWithCRUD = () => {
       isNew: true,
       isExpanded: true,
     };
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).map((prescription, index) =>
@@ -341,7 +321,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleDeleteRecipe = useCallback((prescriptionIndex, recipeIndex) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).map((prescription, index) =>
@@ -357,7 +336,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleUpdateRecipe = useCallback((prescriptionIndex, recipeIndex, field, value) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).map((prescription, index) =>
@@ -375,7 +353,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   const handleSaveRecipe = useCallback((prescriptionIndex, recipeIndex, recipeData) => {
     if (!editingDiagnosis) return;
-
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).map((prescription, index) =>
@@ -390,13 +367,12 @@ const DiagnosisMobileViewWithCRUD = () => {
       )
     }));
   }, [editingDiagnosis]);
-  
+
   const handleConfirmDelete = () => {
     if (deletePopup.diagnosisId) {
       setDiagnosesData(prev => prev.filter(item => item.id !== deletePopup.diagnosisId));
       setEditingDiagnosis(null);
       setSelectedDiagnosis(null);
-      
       handleCloseDeleteConfirm();
     }
   };
@@ -424,48 +400,67 @@ const DiagnosisMobileViewWithCRUD = () => {
   // Open modal in edit mode
   const handleEditDiagnosis = (diagnosis) => {
     setSelectedDiagnosis(diagnosis);
-    setEditingDiagnosis({...diagnosis});
+    setEditingDiagnosis({ ...diagnosis });
   };
 
   // Save and close modal
   const handleSaveAndClose = () => {
-    if (editingDiagnosis) {
-      if (editingDiagnosis.isNew && !editingDiagnosis.DiagnosisName && !editingDiagnosis.SymptomsDescription && !editingDiagnosis.Description) {
-        setDiagnosesData(prev => prev.filter(item => item.id !== editingDiagnosis.id));
-      } else {
-        handleSaveDiagnosis(editingDiagnosis);
-        setDiagnosesData(prev => prev.map(item => 
-          item.id === editingDiagnosis.id ? editingDiagnosis : item
-        ));
-      }
+    if (!editingDiagnosis) return;
+
+    const isEmptyNewDiagnosis =
+      editingDiagnosis.isNew &&
+      !editingDiagnosis.DiagnosisName?.trim() &&
+      !editingDiagnosis.SymptomsDescription?.trim() &&
+      !editingDiagnosis.Description?.trim();
+
+    if (isEmptyNewDiagnosis) {
+      // Remove empty new diagnosis
+      setDiagnosesData(prev => prev.filter(item => item.id !== editingDiagnosis.id));
+    } else {
+      // Save and convert to "old"
+      handleSaveDiagnosis(editingDiagnosis);
     }
+
     setSelectedDiagnosis(null);
     setEditingDiagnosis(null);
   };
 
+  // Cancel editing
   const handleCancelEdit = () => {
     if (editingDiagnosis?.isNew) {
-      if (!editingDiagnosis.DiagnosisName && !editingDiagnosis.SymptomsDescription && !editingDiagnosis.Description) {
+      const hasContent =
+        editingDiagnosis.DiagnosisName?.trim() ||
+        editingDiagnosis.SymptomsDescription?.trim() ||
+        editingDiagnosis.Description?.trim();
+
+      if (!hasContent) {
+        // Empty → delete
         setDiagnosesData(prev => prev.filter(item => item.id !== editingDiagnosis.id));
         setSelectedDiagnosis(null);
         setEditingDiagnosis(null);
       } else {
-        handleShowDeleteConfirm(editingDiagnosis.id, editingDiagnosis.DiagnosisName || "New Diagnosis");
+        // Has content → ask to delete or keep
+        handleShowDeleteConfirm(
+          editingDiagnosis.id,
+          editingDiagnosis.DiagnosisName || t('New Diagnosis')
+        );
+        // Do NOT close modal here
+        return;
       }
     } else {
-      const originalDiagnosis = diagnosesData.find(d => d.id === editingDiagnosis?.id);
-      if (originalDiagnosis) {
-        setEditingDiagnosis({...originalDiagnosis});
+      // Old diagnosis → revert to original
+      const original = diagnosesData.find(d => d.id === editingDiagnosis.id);
+      if (original) {
+        setEditingDiagnosis({ ...original });
       }
       setSelectedDiagnosis(null);
       setEditingDiagnosis(null);
     }
   };
 
-  // Handle cancel for nested items (conditions, notes, prescriptions)
+  // Handle cancel for nested items
   const handleCancelNestedItem = (itemType, itemIndex) => {
     if (!editingDiagnosis) return;
-
     if (editingDiagnosis[itemType]?.[itemIndex]?.isNew) {
       const updatedItems = editingDiagnosis[itemType].filter((_, index) => index !== itemIndex);
       setEditingDiagnosis(prev => ({
@@ -473,7 +468,7 @@ const DiagnosisMobileViewWithCRUD = () => {
         [itemType]: updatedItems
       }));
     } else {
-      const updatedItems = editingDiagnosis[itemType].map((item, index) => 
+      const updatedItems = editingDiagnosis[itemType].map((item, index) =>
         index === itemIndex ? { ...item, isExpanded: false } : item
       );
       setEditingDiagnosis(prev => ({
@@ -496,128 +491,111 @@ const DiagnosisMobileViewWithCRUD = () => {
           <h3 className="table-title">{t('DiagnosisMobileView.table_title')}</h3>
           <h6 className="table-subtitle">{t('DiagnosisMobileView.table_subtitle')}</h6>
         </div>
-        
-        <button
-          onClick={handleAddDiagnosis}
-          className="add-btn"
-        >
+        <button onClick={handleAddDiagnosis} className="add-btn">
           {t('Add New Diagnosis')}
         </button>
       </div>
 
       <div className="p-2">
-        <div className="">
-          {/* Mobile Cards */}
-          <div className="space-y-3">
-            {currentItems.map((disease) => (
-              <Card key={disease.id} className="mobile-view-card">
-                <Card.Body style={{ padding: "15px" }}>
-                  <div className="">
-                    <h5 className="">{disease.DiagnosisName}</h5>
+        <div className="space-y-3">
+          {currentItems.map((disease) => (
+            <Card key={disease.id} className="mobile-view-card">
+              <Card.Body style={{ padding: "15px" }}>
+                <div className="">
+                  <h5 className="">{disease.DiagnosisName}</h5>
+                </div>
+                <div className="mb-3">
+                  <small className="text-muted d-block mb-1">
+                    {t('DiagnosisMobileView.symptoms')} :
+                  </small>
+                  <div className="expandable-content">
+                    <p className="mb-0">
+                      {truncateText(disease.SymptomsDescription, 180)}
+                    </p>
                   </div>
-
-                  <div className="mb-3">
-                    <small className="text-muted d-block mb-1">
-                      {t('DiagnosisMobileView.symptoms')} :
-                    </small>
-                    <div className="expandable-content">
-                      <p className="mb-0">
-                        {truncateText(disease.SymptomsDescription, 180)}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mb-2">
-                    <small className="text-muted d-flex mb-1"
-                      onClick={() => toggleDescription(disease.id)}
-                      style={{cursor:"pointer"}}
-                    >
-                      {t('Diagnosis Description')} :
-                      
-                      {disease.Description && (
-                        <button
-                          className=""
-                          onClick={() => toggleDescription(disease.id)}
-                          style={{
-                            fontSize: '20px',
-                            color: '#278fff',
-                            padding:"3px 0 0"
-                          }}
-                        >
-                          <MdExpandMore
-                            onClick={() => toggleDescription(disease.id)}
-                            style={{
-                              transform: expandedDescriptions[disease.id] ? 'rotate(180deg)' : 'rotate(0deg)',
-                              transition: 'transform 0.3s ease',
-                            }}
-                          />
-                        </button>
-                      )}
-                    </small>
-                    
-                    <div className={`expandable-content ${expandedDescriptions[disease.id] ? '' : 'p-0'}`}>
-                      <p 
-                        style={{ 
-                          margin:"0",
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease'
-                        }}
-                        onClick={() => toggleDescription(disease.id)}
-                      >
-                        {expandedDescriptions[disease.id] 
-                          ? disease.Description 
-                          : ""
-                        }
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="row text-center mb-3">
-                    <div className="col-4">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {disease.conditions?.length || 0}
-                        </div>
-                        <small className="text-muted">{t('DiagnosisMobileView.conditions')}</small>
-                      </div>
-                    </div>
-                    <div className="col-4">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {disease.notes?.length || 0}
-                        </div>
-                        <small className="text-muted">{t('DiagnosisMobileView.notes')}</small>
-                      </div>
-                    </div>
-                    <div className="col-4">
-                      <div className="fw-bold text-primary">
-                        {disease.prescriptions?.length || 0}
-                      </div>
-                      <small className="text-muted">{t('DiagnosisMobileView.prescription')}</small>
-                    </div>
-                  </div>
-
-                  <Button
-                    className="view-btn btn btn-outline-primary btn-sm"
-                    style={{float:"inline-end"}}
-                    variant="outline-primary"
-                    size="sm"
-                    onClick={() => handleEditDiagnosis(disease)}
+                </div>
+                <div className="mb-2">
+                  <small
+                    className="text-muted d-flex mb-1"
+                    onClick={() => toggleDescription(disease.id)}
+                    style={{ cursor: "pointer" }}
                   >
-                    {t('Manage')}
-                  </Button>
-                </Card.Body>
-              </Card>
-            ))}
-
-            {currentItems.length === 0 && (
-              <Card className="text-center py-5">
-                <Card.Body>
-                  <p className="text-muted">{t('DiagnosisMobileView.no_diagnosis_found')}</p>
-                </Card.Body>
-              </Card>
-            )}
-          </div>
+                    {t('Diagnosis Description')} :
+                    {disease.Description && (
+                      <button
+                        className=""
+                        onClick={() => toggleDescription(disease.id)}
+                        style={{
+                          fontSize: '20px',
+                          color: '#278fff',
+                          padding: "3px 0 0"
+                        }}
+                      >
+                        <MdExpandMore
+                          style={{
+                            transform: expandedDescriptions[disease.id] ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.3s ease',
+                          }}
+                        />
+                      </button>
+                    )}
+                  </small>
+                  <div className={`expandable-content ${expandedDescriptions[disease.id] ? '' : 'p-0'}`}>
+                    <p
+                      style={{
+                        margin: "0",
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onClick={() => toggleDescription(disease.id)}
+                    >
+                      {expandedDescriptions[disease.id] ? disease.Description : ""}
+                    </p>
+                  </div>
+                </div>
+                <div className="row text-center mb-3">
+                  <div className="col-4">
+                    <div className="border-end">
+                      <div className="fw-bold text-primary">
+                        {disease.conditions?.length || 0}
+                      </div>
+                      <small className="text-muted">{t('DiagnosisMobileView.conditions')}</small>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="border-end">
+                      <div className="fw-bold text-primary">
+                        {disease.notes?.length || 0}
+                      </div>
+                      <small className="text-muted">{t('DiagnosisMobileView.notes')}</small>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="fw-bold text-primary">
+                      {disease.prescriptions?.length || 0}
+                    </div>
+                    <small className="text-muted">{t('DiagnosisMobileView.prescription')}</small>
+                  </div>
+                </div>
+                <Button
+                  className="view-btn btn btn-outline-primary btn-sm"
+                  style={{ float: "inline-end" }}
+                  variant="outline-primary"
+                  size="sm"
+                  onClick={() => handleEditDiagnosis(disease)}
+                >
+                  {t('Manage')}
+                </Button>
+              </Card.Body>
+            </Card>
+          ))}
+          {currentItems.length === 0 && (
+            <Card className="text-center py-5">
+              <Card.Body>
+                <p className="text-muted">{t('DiagnosisMobileView.no_diagnosis_found')}</p>
+              </Card.Body>
+            </Card>
+          )}
         </div>
       </div>
 
@@ -642,23 +620,19 @@ const DiagnosisMobileViewWithCRUD = () => {
             <Modal.Title className="w-100">
               <div className="d-flex justify-content-between align-items-center">
                 <span>
-                  {editingDiagnosis?.isNew 
-                    ? t('Add New Diagnosis') 
+                  {editingDiagnosis?.isNew
+                    ? t('Add New Diagnosis')
                     : t('Manage Diagnosis')
                   }
                 </span>
               </div>
             </Modal.Title>
-            <button
-              className="btn-modal-close"
-              onClick={handleCancelEdit}
-            >
+            <button className="btn-modal-close" onClick={handleCancelEdit}>
               <MdClose />
             </button>
           </Modal.Header>
-
           <Modal.Body className="space-y-4 pt-0">
-            {/* Basic Information - Editable */}
+            {/* Basic Information */}
             <div className="mb-4">
               <div className="row">
                 <div className="col-lg-6 col-sm-12">
@@ -686,10 +660,10 @@ const DiagnosisMobileViewWithCRUD = () => {
               />
             </div>
 
-            {/* Conditions - Editable with CustomAccordion */}
+            {/* Conditions */}
             <div className="mb-4">
               <CustomAccordion
-              addNewLabel={t('Add Condition')}
+                addNewLabel={t('Add Condition')}
                 titleBackgroundColor="var(--scbccolor)"
                 title={t('Diagnosed Conditions')}
                 readOnly={false}
@@ -726,10 +700,10 @@ const DiagnosisMobileViewWithCRUD = () => {
               />
             </div>
 
-            {/* Notes - Editable with CustomAccordion */}
+            {/* Notes */}
             <div className="mb-4">
               <CustomAccordion
-              addNewLabel={t('Add Note')}
+                addNewLabel={t('Add Note')}
                 titleBackgroundColor="var(--scbccolor)"
                 title={t('Notes')}
                 readOnly={false}
@@ -752,10 +726,10 @@ const DiagnosisMobileViewWithCRUD = () => {
               />
             </div>
 
-            {/* Prescription - Editable with TwoLevelAccordion */}
+            {/* Prescriptions */}
             <div className="mb-4">
               <TwoLevelAccordion
-              addNewLabel={t('Add Prescription')}
+                addNewLabel={t('Add Prescription')}
                 title={t('Prescriptions')}
                 readOnly={false}
                 backgroundColor="var(--scbccolor)"
@@ -795,21 +769,14 @@ const DiagnosisMobileViewWithCRUD = () => {
                   },
                 ]}
                 formFieldsRecipe={[
-                  { 
-                    label: t('Medication'), 
+                  {
+                    label: t('Medication'),
                     name: "medication",
                     type: "dropdown",
                     options: [
-                      "Ibuprofen",
-                      "Paracetamol", 
-                      "Amoxicillin",
-                      "Aspirin",
-                      "Metformin",
-                      "Atorvastatin",
-                      "Lisinopril",
-                      "Levothyroxine",
-                      "Amlodipine",
-                      "Omeprazole"
+                      "Ibuprofen", "Paracetamol", "Amoxicillin", "Aspirin",
+                      "Metformin", "Atorvastatin", "Lisinopril", "Levothyroxine",
+                      "Amlodipine", "Omeprazole"
                     ],
                     placeholder: t('Select medication'),
                     half: true
@@ -837,12 +804,8 @@ const DiagnosisMobileViewWithCRUD = () => {
               />
             </div>
           </Modal.Body>
-
-          <Modal.Footer className="border-top-0" style={{gap:"16px"}}> 
-            <button
-              className="simple-btn"
-              onClick={handleCancelEdit}
-            >
+          <Modal.Footer className="border-top-0" style={{ gap: "16px" }}>
+            <button className="simple-btn" onClick={handleCancelEdit}>
               {t('Cancel')}
             </button>
             {!editingDiagnosis?.isNew && (
@@ -853,11 +816,7 @@ const DiagnosisMobileViewWithCRUD = () => {
                 {t('Delete')}
               </button>
             )}
-            
-            <button
-              className="second-btn"
-              onClick={handleSaveAndClose}
-            >
+            <button className="second-btn" onClick={handleSaveAndClose}>
               {t('Save')}
             </button>
           </Modal.Footer>
@@ -866,7 +825,7 @@ const DiagnosisMobileViewWithCRUD = () => {
 
       {/* Delete Confirmation Popup */}
       {deletePopup.show && (
-        <PopupMessage 
+        <PopupMessage
           type="danger"
           title={t('Delete Diagnosis')}
           message={t('Are you sure you want to delete diagnosis') + ` "${deletePopup.diagnosisName}"? ` + t('This action cannot be undone.')}
