@@ -109,6 +109,7 @@ select {
   background: var(--cardcolor);
   border-radius: 10px;
   max-width: 400px;
+  min-width: 285px;
   padding: 20px;
   position: relative;
   animation: slideIn 0.3s ease;
@@ -1112,3 +1113,8 @@ color: white;
   .mobile-view ul ul {
     margin-left: 0;
   }
+.modal-dialog .popup-card {
+    position: sticky;
+    top: 30%;
+    bottom: 32%;
+}
