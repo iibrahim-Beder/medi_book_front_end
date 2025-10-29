@@ -532,6 +532,7 @@ const DiagnosisMobileViewWithCRUD = () => {
                         }}
                       >
                         <MdExpandMore
+                        onClick={()=>{toggleDescription(disease.id)}}
                           style={{
                             transform: expandedDescriptions[disease.id] ? 'rotate(180deg)' : 'rotate(0deg)',
                             transition: 'transform 0.3s ease',
@@ -848,4 +849,4 @@ const DiagnosisMobileViewWithCRUD = () => {
   );
 };
 
-export default DiagnosisMobileViewWithCRUD;
+export default DiagnosisMobileViewWithCRUD; 

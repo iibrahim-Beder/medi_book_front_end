@@ -2838,7 +2838,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
     right: -1px;
     height: 100%;
     content: '';
-    width: 1px;
+    width: 5px;
     opacity: 0;
     background: #f8f9fa;
     visibility: hidden;
@@ -5965,9 +5965,15 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 }
 }
 /* RTL direction start */
+
+
+
 html[dir="rtl"]  {
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
 .mobile-view-card {text-align: right;}
+.dc-tabscontent{border-right: 1px solid var(--lencolor); border-left: none;}
+.dc-tabstitle li a:after{left: -1px;right: auto;}
+.dc-tabstitle li a{box-shadow: -5px 0px 0px 0px var(--shado2color);}
 .dc-myskills li .dc-rightarea a{line-height: 35px;}
 	.setting,.comment-footer button{display: flex;flex-direction: row-reverse;	} 
 	.dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{direction: ltr;}
