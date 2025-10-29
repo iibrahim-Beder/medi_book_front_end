@@ -5970,6 +5970,7 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 
 html[dir="rtl"]  {
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
+.dc-accordioninnertitle span {text-align: right; direction: rtl;}
 .mobile-view-card {text-align: right;}
 .dc-tabscontent{border-right: 1px solid var(--lencolor); border-left: none;}
 .dc-tabstitle li a:after{left: -5px;right: auto;}

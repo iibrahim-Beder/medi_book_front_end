@@ -1,3 +1,4 @@
+// CustomAccordion.jsx
 import React, { memo, useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
@@ -9,13 +10,15 @@ import SelectField from "../ui/form-fields/SelectField";
 import FileField from "../ui/form-fields/FileField";
 import SectionTitle from "../shared/SectionTitle";
 import { useDevice } from "../../context/useIsMobile";
+import PopupMessage from "./PopupMessage";
+
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
   backgroundColor = "",
   title,
   titleIcon,
-  addNewLabel="add",
+  addNewLabel = "add",
   data = [],
   formFields = [],
   onAdd,
@@ -35,10 +38,30 @@ const CustomAccordion = memo(({
   errors = {},
 }) => {
   const [dataRead, setDataRead] = useState(data);
-   const {isMobile} = useDevice();
+  const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
+  const { isMobile } = useDevice();
+
   useEffect(() => {
     setDataRead(data || []);
   }, [data]);
+
+  // === Delete Confirmation ===
+  const handleShowDeleteConfirm = (index) => {
+    const item = dataRead[index];
+    const itemName = getItemTitle ? getItemTitle(item) : (item.title || item.type || "Item");
+    setDeletePopup({ show: true, index, itemName });
+  };
+
+  const handleCloseDeleteConfirm = () => {
+    setDeletePopup({ show: false, index: null, itemName: "" });
+  };
+
+  const handleConfirmDelete = () => {
+    if (deletePopup.index !== null && onDelete) {
+      onDelete(deletePopup.index);
+    }
+    handleCloseDeleteConfirm();
+  };
 
   const handleEditClick = (index) => {
     setTimeout(() => {
@@ -46,8 +69,8 @@ const CustomAccordion = memo(({
         setDataRead(prev =>
           prev.map((item, i) => ({
             ...item,
-            isExpanded: i === index 
-              ? !item.isExpanded 
+            isExpanded: i === index
+              ? !item.isExpanded
               : allowMultipleOpen ? item.isExpanded : false,
           }))
         );
@@ -109,27 +132,27 @@ const CustomAccordion = memo(({
     } else if (field.type === "select") {
       return <SelectField {...commonProps} options={field.options} onChange={(e) => onChange(index, field.name, e.target.value)} />;
     } else if (field.type === "file") {
-      return <FileField 
-        {...commonProps} 
-        accept={field.accept} 
-        buttonIcon={field.buttonIcon} 
+      return <FileField
+        {...commonProps}
+        accept={field.accept}
+        buttonIcon={field.buttonIcon}
         hint={field.hint}
-        onChange={(e) => onChange(index, field.name, e.target.files)} 
+        onChange={(e) => onChange(index, field.name, e.target.files)}
       />;
     } else {
-      return <Field 
-        {...commonProps} 
-        type={field.type || "text"} 
-        min={field.min} 
-        max={field.max} 
-        onChange={(e) => onChange(index, field.name, e.target.value)} 
+      return <Field
+        {...commonProps}
+        type={field.type || "text"}
+        min={field.min}
+        max={field.max}
+        onChange={(e) => onChange(index, field.name, e.target.value)}
       />;
     }
   };
 
   const renderFormFields = (index, item) => {
     return formFields.map((field, fIdx) => {
-      if (field.type === "dropdown") return null; // Handled outside the form
+      if (field.type === "dropdown") return null;
 
       const fieldComponent = getFieldComponent(field, index, handleFieldChange, item, errors, forceShowError, readOnly);
 
@@ -145,14 +168,19 @@ const CustomAccordion = memo(({
   };
 
   const renderItemTitle = (item) => {
-    if (getItemTitle) {
-      return getItemTitle(item);
-    }
-    return item.title || item.type || "New Recipe";
+    if (getItemTitle) return getItemTitle(item);
+    return item.title || item.type || "New Item";
+  };
+
+  // === Truncate long titles ===
+  const truncateTitle = (text, maxLength = 50) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
   return (
-    <div className="dc-userexperience  custom-accordion  ">
+    <div className="dc-userexperience custom-accordion">
+      {/* Title Section */}
       {title && (
         <div
           className={`${titleIcon ? "title-with-icon" : "dc-tabscontenttitle dc-addnew"} ${noHedarBefore ? "no-before" : ""}`}
@@ -177,10 +205,12 @@ const CustomAccordion = memo(({
         </div>
       )}
 
+      {/* Global Error */}
       {forceShowError && globalError && (
         <div className="alert alert-danger">{globalError}</div>
       )}
 
+      {/* No Data */}
       {dataRead.length === 0 && noDataMessage ? (
         <div className="alert alert-info">{noDataMessage}</div>
       ) : (
@@ -188,8 +218,10 @@ const CustomAccordion = memo(({
           {dataRead.map((item, index) => {
             const isSingle = oneAccordion && dataRead.length === 1;
             const collapseClass = isSingle ? "dc-collapseexp show" : `dc-collapseexp ${item.isExpanded ? "show" : "hide"}`;
+
             return (
               <li key={item.id || index}>
+                {/* Accordion Title - Fixed Overflow */}
                 <div
                   className={`dc-accordioninnertitle ${accordioninnertitleSize}`}
                   style={{
@@ -201,19 +233,36 @@ const CustomAccordion = memo(({
                 >
                   <span
                     onClick={() => !readOnly && handleEditClick(index)}
-                    style={{ cursor: "pointer" }}
+                    style={{
+                      cursor: "pointer",
+                      flex: 1,
+                      minWidth: 0, 
+                    }}
                   >
-                    {item.icon && (
-                      <span style={{ marginRight: "8px" }}>{item.icon}</span>
-                    )}
-                    {renderItemTitle(item)} {  !isMobile &&  <em>{item.date}</em>}
+                    {item.icon && <span style={{ marginRight: "8px" }}>{item.icon}</span>}
+                    <span
+                      style={{
+                        display: "inline-block",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "100%",
+                        verticalAlign: "middle",
+                      }}
+                      title={renderItemTitle(item)}
+                    >
+                      {truncateTitle(renderItemTitle(item), 60)}
+                    </span>
+                    {!isMobile && item.date && <em style={{ marginLeft: "8px", color: "#666" }}>{item.date}</em>}
                     {item.isNew && (
-                      <span style={{ color: "#ffa500", marginLeft: "8px" }}>
+                      <span style={{ color: "#ffa500", marginLeft: "8px", fontWeight: "bold" }}>
                         (New)
                       </span>
                     )}
                   </span>
-                  <div className="dc-rightarea">
+
+                  {/* Action Buttons */}
+                  <div className="dc-rightarea" onClick={(e) => e.stopPropagation()}>
                     <a
                       href="#!"
                       onClick={(e) => {
@@ -230,7 +279,8 @@ const CustomAccordion = memo(({
                         href="#!"
                         onClick={(e) => {
                           e.preventDefault();
-                          onDelete(index);
+                          e.stopPropagation(); 
+                          handleShowDeleteConfirm(index);
                         }}
                         className="dc-deleteinfo"
                         style={{ marginLeft: "8px" }}
@@ -241,21 +291,17 @@ const CustomAccordion = memo(({
                   </div>
                 </div>
 
+                {/* Accordion Body */}
                 <div style={{ backgroundColor }} className={collapseClass}>
                   {formFields.map(
                     (field, idx) =>
                       field.type === "dropdown" && (
-                        <div
-                          key={idx}
-                          className="dropdown-with-search-in-accordion"
-                        >
+                        <div key={idx} className="dropdown-with-search-in-accordion">
                           <DropdownWithSearch
                             label={field.label || "Medication"}
                             options={field.options || []}
                             value={item[field.name] || ""}
-                            onChange={(val) =>
-                              handleFieldChange(index, field.name, val)
-                            }
+                            onChange={(val) => handleFieldChange(index, field.name, val)}
                             placeholder={field.placeholder}
                           />
                         </div>
@@ -264,17 +310,11 @@ const CustomAccordion = memo(({
 
                   <form
                     className="dc-formtheme dc-userform"
-                    onSubmit={
-                      liveUpdate
-                        ? (e) => e.preventDefault()
-                        : (e) => handleSave(index, e)
-                    }
+                    onSubmit={liveUpdate ? (e) => e.preventDefault() : (e) => handleSave(index, e)}
                   >
                     <fieldset>
-                      <div className="form-group">
-                        {renderFormFields(index, item)}
-                      </div>
-                      { hint && (
+                      <div className="form-group">{renderFormFields(index, item)}</div>
+                      {hint && (
                         <div className="form-group">
                           <span>{hint}</span>
                         </div>
@@ -306,6 +346,28 @@ const CustomAccordion = memo(({
             );
           })}
         </ul>
+      )}
+
+      {/* Delete Confirmation Popup */}
+      {deletePopup.show && (
+        <PopupMessage
+          type="danger"
+          title="Delete Item"
+          message={`Are you sure you want to delete "${deletePopup.itemName}"? This action cannot be undone.`}
+          buttons={[
+            {
+              text: "Cancel",
+              onClick: handleCloseDeleteConfirm,
+              variant: "secondary"
+            },
+            {
+              text: "Delete",
+              onClick: handleConfirmDelete,
+              variant: "danger"
+            }
+          ]}
+          onClose={handleCloseDeleteConfirm}
+        />
       )}
     </div>
   );
