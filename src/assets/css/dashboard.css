@@ -5972,7 +5972,7 @@ html[dir="rtl"]  {
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
 .mobile-view-card {text-align: right;}
 .dc-tabscontent{border-right: 1px solid var(--lencolor); border-left: none;}
-.dc-tabstitle li a:after{left: -1px;right: auto;}
+.dc-tabstitle li a:after{left: -5px;right: auto;}
 .dc-tabstitle li a{box-shadow: -5px 0px 0px 0px var(--shado2color);}
 .dc-myskills li .dc-rightarea a{line-height: 35px;}
 	.setting,.comment-footer button{display: flex;flex-direction: row-reverse;	} 
