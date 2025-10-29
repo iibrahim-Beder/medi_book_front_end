@@ -1,4 +1,3 @@
-// CustomAccordion.jsx
 import React, { memo, useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
@@ -9,7 +8,6 @@ import Field from "../ui/form-fields/Field";
 import SelectField from "../ui/form-fields/SelectField";
 import FileField from "../ui/form-fields/FileField";
 import SectionTitle from "../shared/SectionTitle";
-import { useDevice } from "../../context/useIsMobile";
 import PopupMessage from "./PopupMessage";
 
 const CustomAccordion = memo(({
@@ -39,7 +37,6 @@ const CustomAccordion = memo(({
 }) => {
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
-  const { isMobile } = useDevice();
 
   useEffect(() => {
     setDataRead(data || []);
@@ -252,8 +249,8 @@ const CustomAccordion = memo(({
                       title={renderItemTitle(item)}
                     >
                       {truncateTitle(renderItemTitle(item), 60)}
+                    {item.date && <em style={{ marginLeft: "8px", color: "#666" }}>{item.date}</em>}
                     </span>
-                    {!isMobile && item.date && <em style={{ marginLeft: "8px", color: "#666" }}>{item.date}</em>}
                     {item.isNew && (
                       <span style={{ color: "#ffa500", marginLeft: "8px", fontWeight: "bold" }}>
                         (New)

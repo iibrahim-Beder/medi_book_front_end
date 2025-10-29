@@ -7,12 +7,14 @@ import TextAreaField from "../ui/form-fields/TextAreaField";
 import SelectField from "../ui/form-fields/SelectField";
 import Field from "../ui/form-fields/Field";
 import { useTranslation } from "react-i18next";
+import PopupMessage from "./PopupMessage"; 
+
 const TwoLevelAccordion = memo(({
-  formFieldsRecipe = [], 
+  formFieldsRecipe = [],
   backgroundColor = "",
   titleBackgroundColor = "",
   title,
-  addNewLabel="Add",
+  addNewLabel = "Add",
   data = [],
   formFields = [],
   onAdd,
@@ -26,21 +28,35 @@ const TwoLevelAccordion = memo(({
   noHedarBefore = false,
   readOnly = false
 }) => {
-  // Local state for read-only mode
   const [dataRead, setDataRead] = useState(data);
-
+  const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
   const { t } = useTranslation();
 
-  // Keep local state in sync with parent data
   useEffect(() => {
     setDataRead(data || []);
   }, [data]);
 
-  // Handle accordion expand/collapse
+  // === Delete Confirmation ===
+  const handleShowDeleteConfirm = (index) => {
+    const item = data[index] || dataRead[index];
+    const itemName = item.title || item.medication || item.type || "Prescription";
+    setDeletePopup({ show: true, index, itemName });
+  };
+
+  const handleCloseDeleteConfirm = () => {
+    setDeletePopup({ show: false, index: null, itemName: "" });
+  };
+
+  const handleConfirmDelete = () => {
+    if (deletePopup.index !== null && onDelete) {
+      onDelete(deletePopup.index);
+    }
+    handleCloseDeleteConfirm();
+  };
+
   const handleEditClick = (index) => {
     setTimeout(() => {
       if (readOnly) {
-        // Update local state when in read-only mode
         setDataRead(prev =>
           prev.map((item, i) => ({
             ...item,
@@ -50,7 +66,6 @@ const TwoLevelAccordion = memo(({
         return;
       }
 
-      // Trigger parent update when editable
       if (onUpdate) {
         const currentData = data || [];
         currentData.forEach((_, i) => {
@@ -60,14 +75,12 @@ const TwoLevelAccordion = memo(({
     }, 0);
   };
 
-  // Handle input/select/textarea changes
   const handleFieldChange = (index, field, value) => {
     if (onUpdate) {
       onUpdate(index, field, value);
     }
   };
 
-  // Save current item
   const handleSave = (index, e) => {
     e.preventDefault();
     const currentData = data || [];
@@ -77,29 +90,34 @@ const TwoLevelAccordion = memo(({
     }
   };
 
-  // Cancel editing (remove new item or collapse existing one)
   const handleCancel = (index) => {
     const currentData = data || [];
     if (currentData[index]?.isNew) {
-      if (onDelete) {
-        onDelete(index);
-      }
+      if (onDelete) onDelete(index);
     } else {
-      if (onUpdate) {
-        onUpdate(index, "isExpanded", false);
-      }
+      if (onUpdate) onUpdate(index, "isExpanded", false);
     }
   };
 
-  // Choose data source depending on read-only mode
   const accordionData = readOnly ? dataRead : data;
+
+  // === Truncate long titles ===
+  const truncateTitle = (text, maxLength = 50) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
+  const renderItemTitle = (item) => {
+    return item.title || item.medication || item.type || "New Prescription";
+  };
 
   return (
     <div className="dc-userexperience two-level-accordion">
-      {/* Accordion Header */}
+      {/* Header */}
       {title && (
         <div
           className={`dc-tabscontenttitle dc-addnew ${noHedarBefore ? "no-before" : ""}`}
+          style={{ backgroundColor: titleBackgroundColor }}
         >
           <h3>{title}</h3>
           {onAdd && (
@@ -116,13 +134,13 @@ const TwoLevelAccordion = memo(({
         </div>
       )}
 
-      {/* Accordion Items */}
+      {/* Items */}
       <ul className="dc-experienceaccordion accordion">
         {(accordionData || []).map((item, index) => (
           <li key={item.id || index}>
             {/* Item Header */}
             <div
-              className={`dc-accordioninnertitle ${readOnly ? "" : "medium"} `}
+              className={`dc-accordioninnertitle ${readOnly ? "" : "medium"}`}
               style={{
                 borderColor: "#eee",
                 borderLeft: item.isNew
@@ -134,20 +152,38 @@ const TwoLevelAccordion = memo(({
                 backgroundColor: titleBackgroundColor,
               }}
             >
-              <span>
-                {item.icon && (
-                  <span style={{ marginRight: "8px" }}>{item.icon}</span>
-                )}
-                {/* Display medication name or default title */}
-                {item.medication || item.title || item.type || "New Prescription"}{" "}
-                <em>{item.date}</em>
+              <span
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                {item.icon && <span>{item.icon}</span>}
+                <span
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                    display: "inline-block",
+                  }}
+                  title={renderItemTitle(item)} // Tooltip
+                >
+                  {truncateTitle(renderItemTitle(item), 60)}
+                {item.date && <em style={{ color: "#666", fontSize: "0.9em" }}>{item.date}</em>}
+                </span>
                 {item.isNew && (
-                  <span style={{ color: "#ffa500", marginLeft: "8px" }}>
+                <span style={{ color: "#ffa500", fontWeight: "bold", fontSize: "0.9em" }}>
                     (New)
                   </span>
                 )}
               </span>
-              <div className="dc-rightarea">
+
+              {/* Action Buttons */}
+              <div className="dc-rightarea" onClick={(e) => e.stopPropagation()}>
                 <a
                   href="#!"
                   onClick={(e) => {
@@ -158,14 +194,16 @@ const TwoLevelAccordion = memo(({
                 >
                   <FiEdit2 />
                 </a>
-                {onDelete && (
+                {onDelete && !readOnly && (
                   <a
                     href="#!"
                     onClick={(e) => {
                       e.preventDefault();
-                      onDelete(index);
+                      e.stopPropagation();
+                      handleShowDeleteConfirm(index);
                     }}
                     className="dc-deleteinfo"
+                    style={{ marginLeft: "8px" }}
                   >
                     <IoTrashOutline />
                   </a>
@@ -173,7 +211,7 @@ const TwoLevelAccordion = memo(({
               </div>
             </div>
 
-            {/* Item Content */}
+            {/* Item Body */}
             <div
               style={{
                 borderLeft: "2px solid var(--themecolor)",
@@ -181,7 +219,7 @@ const TwoLevelAccordion = memo(({
               }}
               className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
             >
-              {/* Editable Form */}
+              {/* Form */}
               <form
                 className="dc-formtheme dc-userform"
                 style={{ marginBottom: "20px" }}
@@ -198,26 +236,19 @@ const TwoLevelAccordion = memo(({
                           label={field.label}
                           name={field.name}
                           value={item[field.name] || ""}
-                          onChange={(e) =>
-                            handleFieldChange(index, field.name, e.target.value)
-                          }
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                           placeholder={field.placeholder}
                           icon={field.icon}
                           disabled={readOnly}
                         />
-                        
                       ) : field.type === "select" ? (
                         <SelectField
                           label={field.label}
                           disabled={readOnly}
-                          className="form-control"
                           value={item[field.name] || ""}
                           name={field.name}
                           options={field.options}
-                          onChange={(e) =>
-                            handleFieldChange(index, field.name, e.target.value)
-                          }
-
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       ) : field.type === "number" ? (
                         <input
@@ -226,9 +257,7 @@ const TwoLevelAccordion = memo(({
                           className="form-control"
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
-                          onChange={(e) =>
-                            handleFieldChange(index, field.name, e.target.value)
-                          }
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                           min="0"
                         />
                       ) : (
@@ -239,35 +268,35 @@ const TwoLevelAccordion = memo(({
                           className="form-control"
                           placeholder={field.placeholder}
                           value={item[field.name] || ""}
-                          onChange={(e) =>
-                            handleFieldChange(index, field.name, e.target.value)
-                          }
+                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                         />
                       )}
                     </div>
                   ))}
-                  { !readOnly &&
-                  <div className="dc-btnarea">
-                    <button
-                      type="button"
-                      // className="btn-simple"
-                      onClick={() => handleCancel(index)}
-                      style={{ margin: "11px 4px" }}
-                    >
-                      {t("Cancel")}
-                    </button>
-                    <button
-                      type="submit"
-                      className="second-btn"
-                      style={{ margin: "11px 4px" }}
-                    >
-                      {item.isNew ? "Add" : "Save"}
-                    </button>
-                  </div>}
+
+                  {!readOnly && (
+                    <div className="dc-btnarea d-flex">
+                      <button
+                        type="button"
+                        className="simple-btn"
+                        onClick={() => handleCancel(index)}
+                        style={{ margin: "11px 4px" }}
+                      >
+                        {t("Cancel")}
+                      </button>
+                      <button
+                        type="submit"
+                        className="second-btn"
+                        style={{ margin: "11px 4px" }}
+                      >
+                        {item.isNew ? t("Add") : t("Save")}
+                      </button>
+                    </div>
+                  )}
                 </fieldset>
               </form>
 
-              {/* Nested Accordion for Medication Details */}
+              {/* Nested Medications */}
               {(item.isNew || item.isExpanded) && (
                 <CustomAccordion
                   readOnly={readOnly}
@@ -275,10 +304,10 @@ const TwoLevelAccordion = memo(({
                   noHedarBefore={true}
                   backgroundColor="var(--cardcolor)"
                   titleBackgroundColor="var(--cardcolor)"
-                  title="Prescribed Medication"
-                  addNewLabel="Add Medication Detail"
+                  title={t("Prescribed Medication")}
+                  addNewLabel={t("Add Medication Detail")}
                   data={item.recipes || []}
-                  formFields={formFieldsRecipe} 
+                  formFields={formFieldsRecipe}
                   onAdd={() => onAddRecipe(index)}
                   onDelete={(recipeIndex) => onDeleteRecipe(index, recipeIndex)}
                   onUpdate={(recipeIndex, field, value) =>
@@ -293,6 +322,28 @@ const TwoLevelAccordion = memo(({
           </li>
         ))}
       </ul>
+
+      {/* Delete Confirmation Popup */}
+      {deletePopup.show && (
+        <PopupMessage
+          type="danger"
+          title={t("Delete Prescription")}
+          message={`${t("Are you sure you want to delete")} "${deletePopup.itemName}"? ${t("This action cannot be undone.")}`}
+          buttons={[
+            {
+              text: t("Cancel"),
+              onClick: handleCloseDeleteConfirm,
+              variant: "secondary"
+            },
+            {
+              text: t("Delete"),
+              onClick: handleConfirmDelete,
+              variant: "danger"
+            }
+          ]}
+          onClose={handleCloseDeleteConfirm}
+        />
+      )}
     </div>
   );
 });
