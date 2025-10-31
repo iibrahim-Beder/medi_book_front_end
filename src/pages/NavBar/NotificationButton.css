@@ -25,10 +25,11 @@ header.inner-header .header-nav .header-navbar-rht li.noti-nav > a.active-dot::b
  .header .header-nav .header-navbar-rht .noti-nav .nav-link { font-size: 18px; color: #6B7280; }
  .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before {right: 10px;left: unset !important;}
  .dropdown-menu-end.list-date-option.open:before{right: 9px !important;}
- .dropdown-menu.open {transform: translate(3px, 267.2222px) !important;}
+ .dropdown-menu.open { top: 200px !important; transform-box: content-box}
  .dropdown-menu.show {
+  top: 0px !important;
   overflow:visible !important;
-    transition: .5s all ease ,padding .7s ease ; 
+    transition: .5s all ease ,padding .6s ease ; 
     max-height: 1000px !important;
     opacity: 1 !important;
     padding: 10px;

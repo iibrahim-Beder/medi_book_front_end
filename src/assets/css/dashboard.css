@@ -5746,6 +5746,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.dc-accordioninnertitle{padding: 6px 10px !important;}
 	/* .modal-footer{gap: 0 !important;} */
 	.doctor-registration{padding: 0;}
 	.section-title{

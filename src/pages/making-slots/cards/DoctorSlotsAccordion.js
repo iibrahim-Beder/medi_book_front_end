@@ -1,24 +1,24 @@
 import React, { memo, useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import "../MainCss.css";
-import DropdownWithSearch from "./DropdownWithSearch";
-import TextAreaField from "../ui/form-fields/TextAreaField";
-import Field from "../ui/form-fields/Field";
-import SelectField from "../ui/form-fields/SelectField";
-import FileField from "../ui/form-fields/FileField";
-import SectionTitle from "../shared/SectionTitle";
-import PopupMessage from "./PopupMessage";
+// import "../MainCss.css";
+// import DropdownWithSearch from "./DropdownWithSearch";
+import TextAreaField from "../../ui/form-fields/TextAreaField";
+import Field from "../../ui/form-fields/Field";
+import SelectField from "../../ui/form-fields/SelectField";
+import FileField from "../../ui/form-fields/FileField";
+import SectionTitle from "../../shared/SectionTitle";
+import PopupMessage from "./../../shared/PopupMessage";
+import { useTranslation } from "react-i18next";
 
-const CustomAccordion = memo(({
-  oneAccordion = false,
-  titleBackgroundColor = "",
-  backgroundColor = "",
+const DoctorSlotsAccordion = memo(({
   title,
   titleIcon,
-  addNewLabel = "add",
+  addNewLabel = "Add Slot",
   data = [],
-  formFields = [],
+  clinics = [],
+  appointmentTypes = [],
+  currencies = [],
   onAdd,
   onDelete,
   onUpdate,
@@ -35,6 +35,7 @@ const CustomAccordion = memo(({
   hint,
   errors = {},
 }) => {
+  const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
 
@@ -42,10 +43,69 @@ const CustomAccordion = memo(({
     setDataRead(data || []);
   }, [data]);
 
+  // Form Fields definition for slots
+  const formFields = [
+    {
+      name: "clinic",
+      label: t("clinic"),
+      type: "select",
+      options: [{ value: "", label: t("selectClinic") }, ...clinics.map(c => ({ value: c.id, label: c.name }))],
+      required: true
+    },
+    {
+      name: "SlotDurationInMinutes",
+      label: t("slotDurationMinutes"),
+      type: "number",
+      min: 5,
+      step: 5,
+      half: true
+    },
+    {
+      name: "DaysInAdvance",
+      label: t("daysInAdvance"),
+      type: "number",
+      min: 1,
+      half: true
+    },
+    {
+      name: "startTime",
+      label: t("startTime"),
+      type: "time",
+      half: true
+    },
+    {
+      name: "endTime",
+      label: t("endTime"),
+      type: "time",
+      half: true
+    },
+    {
+      name: "Price",
+      label: t("price"),
+      type: "number",
+      min: 0,
+      half: true
+    },
+    {
+      name: "Currency",
+      label: t("currency"),
+      type: "select",
+      options: [{ value: "", label: t("selectCurrency") }, ...currencies.map(c => ({ value: c, label: c }))],
+      half: true
+    },
+    {
+      name: "AllowedAppointmentTypes",
+      label: t("allowedAppointmentTypes"),
+      type: "checkboxes",
+      options: appointmentTypes
+    }
+  ];
+
   // === Delete Confirmation ===
   const handleShowDeleteConfirm = (index) => {
     const item = dataRead[index];
-    const itemName = getItemTitle ? getItemTitle(item) : (item.title || item.type || "Item");
+    const clinicName = clinics.find(c => c.id.toString() === item.clinic?.toString())?.name || "Unknown Clinic";
+    const itemName = `${clinicName} - ${item.startTime} ${t("to")} ${item.endTime}`;
     setDeletePopup({ show: true, index, itemName });
   };
 
@@ -109,6 +169,45 @@ const CustomAccordion = memo(({
     }
   };
 
+  // Custom field renderer for checkboxes
+  const renderCheckboxes = (field, index, onChange, item, errors, forceShowError, readOnly) => {
+    const value = item[field.name] || [];
+    const errorKey = `${field.name}_${index}`;
+    const error = errors[errorKey];
+
+    return (<>
+        {field.label && <label>{field.label}</label>}
+      <div className="form-group">
+        <div className="dc-checkboxgroup">
+          {field.options.map((option, optIndex) => (
+            <span key={option} className="dc-checkbox">
+              <input
+                id={`${field.name}_${index}_${optIndex}`}
+                type="checkbox"
+                name={field.name}
+                value={option}
+                checked={value.includes(option)}
+                onChange={(e) => {
+                  const newValue = e.target.checked
+                    ? [...value, option]
+                    : value.filter(item => item !== option);
+                  onChange(index, field.name, newValue);
+                }}
+                disabled={readOnly}
+              />
+              <label htmlFor={`${field.name}_${index}_${optIndex}`}>
+                {t(`appointmentTypes.${option}`)}
+              </label>
+            </span>
+          ))}
+        </div>
+        {forceShowError && error && (
+          <div className="text-danger small">{error}</div>
+        )}
+      </div></>
+    );
+  };
+
   const getFieldComponent = (field, index, onChange, item, errors, forceShowError, readOnly) => {
     const value = item[field.name];
     const errorKey = `${field.name}_${index}`;
@@ -136,12 +235,15 @@ const CustomAccordion = memo(({
         hint={field.hint}
         onChange={(e) => onChange(index, field.name, e.target.files)}
       />;
+    } else if (field.type === "checkboxes") {
+      return renderCheckboxes(field, index, onChange, item, errors, forceShowError, readOnly);
     } else {
       return <Field
         {...commonProps}
         type={field.type || "text"}
         min={field.min}
         max={field.max}
+        step={field.step}
         onChange={(e) => onChange(index, field.name, e.target.value)}
       />;
     }
@@ -149,8 +251,6 @@ const CustomAccordion = memo(({
 
   const renderFormFields = (index, item) => {
     return formFields.map((field, fIdx) => {
-      if (field.type === "dropdown") return null;
-
       const fieldComponent = getFieldComponent(field, index, handleFieldChange, item, errors, forceShowError, readOnly);
 
       return (
@@ -161,12 +261,14 @@ const CustomAccordion = memo(({
           {fieldComponent}
         </div>
       );
-    }).filter(Boolean);
+    });
   };
 
   const renderItemTitle = (item) => {
     if (getItemTitle) return getItemTitle(item);
-    return item.title || item.type || "New Item";
+    
+    const clinicName = clinics.find(c => c.id.toString() === item.clinic?.toString())?.name || t("selectClinic");
+    return `${clinicName} - ${item.startTime || "00:00"} to ${item.endTime || "00:00"}`;
   };
 
   // === Truncate long titles ===
@@ -176,12 +278,11 @@ const CustomAccordion = memo(({
   };
 
   return (
-    <div className="dc-userexperience custom-accordion">
+    <div className="dc-userexperience custom-accordion w-100">
       {/* Title Section */}
       {title && (
         <div
           className={`${titleIcon ? "title-with-icon" : "dc-tabscontenttitle dc-addnew"} ${noHedarBefore ? "no-before" : ""}`}
-          style={{ backgroundColor: titleBackgroundColor }}
         >
           {titleIcon ? (
             <SectionTitle icon={titleIcon} title={title} />
@@ -213,18 +314,16 @@ const CustomAccordion = memo(({
       ) : (
         <ul className="dc-experienceaccordion accordion">
           {dataRead.map((item, index) => {
-            const isSingle = oneAccordion && dataRead.length === 1;
-            const collapseClass = isSingle ? "dc-collapseexp show" : `dc-collapseexp ${item.isExpanded ? "show" : "hide"}`;
+            const isSingle = false; // We don't need single accordion mode here
+            const collapseClass = `dc-collapseexp ${item.isExpanded ? "show" : "hide"}`;
 
             return (
               <li key={item.id || index}>
-                {/* Accordion Title - Fixed Overflow */}
+                {/* Accordion Title */}
                 <div
                   className={`dc-accordioninnertitle ${accordioninnertitleSize}`}
                   style={{
                     display: isSingle ? "none" : "",
-                    backgroundColor: titleBackgroundColor,
-                    borderColor: noHedarBefore ? "#eee" : "",
                     borderLeft: item.isNew ? "2px solid #ffa500" : "",
                   }}
                 >
@@ -236,7 +335,6 @@ const CustomAccordion = memo(({
                       minWidth: 0, 
                     }}
                   >
-                    {item.icon && <span style={{ marginRight: "8px" }}>{item.icon}</span>}
                     <span
                       style={{
                         display: "inline-block",
@@ -248,13 +346,12 @@ const CustomAccordion = memo(({
                       }}
                       title={renderItemTitle(item)}
                     >
-                    {item.isNew && (
-                      <span style={{ color: "#ffa500", marginLeft: "8px", fontWeight: "bold" }}>
-                        (New)
-                      </span>
-                    )}
+                      {item.isNew && (
+                        <span style={{ color: "#ffa500", marginRight: "8px", fontWeight: "bold" }}>
+                          ({t("new")})
+                        </span>
+                      )}
                       {truncateTitle(renderItemTitle(item), 60)}
-                    {item.date && <em style={{ marginLeft: "8px", color: "#666" }}>{item.date}</em>}
                     </span>
                   </span>
 
@@ -289,31 +386,19 @@ const CustomAccordion = memo(({
                 </div>
 
                 {/* Accordion Body */}
-                <div style={{ backgroundColor }} className={collapseClass}>
-                  {formFields.map(
-                    (field, idx) =>
-                      field.type === "dropdown" && (
-                        <div key={idx} className="dropdown-with-search-in-accordion">
-                          <DropdownWithSearch
-                            label={field.label || "Medication"}
-                            options={field.options || []}
-                            value={item[field.name] || ""}
-                            onChange={(val) => handleFieldChange(index, field.name, val)}
-                            placeholder={field.placeholder}
-                          />
-                        </div>
-                      )
-                  )}
-
+                <div className={collapseClass}>
                   <form
                     className="dc-formtheme dc-userform"
                     onSubmit={liveUpdate ? (e) => e.preventDefault() : (e) => handleSave(index, e)}
                   >
                     <fieldset>
-                      <div className="form-group">{renderFormFields(index, item)}</div>
+                      <div className="form-group">
+                        {renderFormFields(index, item)}
+                      </div>
+                      
                       {hint && (
                         <div className="form-group">
-                          <span>{hint}</span>
+                          <span className="text-muted">{hint}</span>
                         </div>
                       )}
 
@@ -325,14 +410,14 @@ const CustomAccordion = memo(({
                             onClick={() => handleCancel(index)}
                             style={{ margin: "11px 4px" }}
                           >
-                            Cancel
+                            {t("cancel")}
                           </button>
                           <button
                             type="submit"
                             className="second-btn"
                             style={{ margin: "11px 4px" }}
                           >
-                            {item.isNew ? "Add" : "Save"}
+                            {item.isNew ? t("add") : t("save")}
                           </button>
                         </div>
                       )}
@@ -349,16 +434,16 @@ const CustomAccordion = memo(({
       {deletePopup.show && (
         <PopupMessage
           type="danger"
-          title="Delete Item"
-          message={`Are you sure you want to delete "${deletePopup.itemName}"? This action cannot be undone.`}
+          title={t("delete Slot")}
+          message={t("confirmDeleteSlot", { slot: deletePopup.itemName })}
           buttons={[
             {
-              text: "Cancel",
+              text: t("cancel"),
               onClick: handleCloseDeleteConfirm,
               variant: "secondary"
             },
             {
-              text: "Delete",
+              text: t("Delete"),
               onClick: handleConfirmDelete,
               variant: "danger"
             }
@@ -370,4 +455,4 @@ const CustomAccordion = memo(({
   );
 });
 
-export default CustomAccordion;
+export default DoctorSlotsAccordion;

@@ -283,8 +283,8 @@
   "allowedAppointmentTypes": "أنواع المواعيد المسموح بها",
   "saveChanges": "حفظ التغييرات",
   "appointmentTypes": {
-        "FollowUp": "متابعة",
-  "CheckUp": "فحص دوري",
+        "Follow-up": "متابعة",
+  "Check-up": "فحص دوري",
     "Consultation": "استشارة",
     "FollowUp": "متابعة",
     "Emergency": "طوارئ"
@@ -368,7 +368,7 @@
     "price": "السعر"
   },
 
-  "slots": "مواعيد"
+  "Slots": "مواعيد"
 ,
 
  "slot": {
@@ -1319,9 +1319,11 @@
   "Delete Diagnosis": "حذف التشخيص",
   "Are you sure you want to delete diagnosis": "هل أنت متأكد من أنك تريد حذف التشخيص",
   "This action cannot be undone.": "لا يمكن التراجع عن هذا الإجراء."  
-  
-
-
+,"Are you sure you want to delete this slot ? " : "هل أنت متأكد من أنك تريد حذف هذا الحجز؟"  
+,"delete Slot" : "حذف الحجز"
+, "Follow-up": " متابعة",
+"Check-up": "فحص",
+ "confirmDeleteSlot": "هل أنت متأكد من أنك تريد حذف \"{{slot}}\"؟ هذا الإجراء لا يمكن التراجع عنه."
 }
 
 

@@ -257,18 +257,7 @@
     "by": "Cancelled By",
     "financialStatus": "Financial Status",
     "reason": "Cancellation Reason"
-  }
-,
- "days": {
-    "saturday": "Saturday",
-    "sunday": "Sunday",
-    "monday": "Monday",
-    "tuesday": "Tuesday",
-    "wednesday": "Wednesday",
-    "thursday": "Thursday",
-    "friday": "Friday"
-  }
-   ,
+  }  ,
    "locationInfo":{
     "title": "Location Information"
    }
@@ -1193,5 +1182,17 @@
       "Mental Health Disorders": "Mental Health Disorders",
       "Other": "Other"
     }
-  }
+  },
+    "confirmDeleteSlot": "Are you sure you want to delete \"{{slot}}\"? This action cannot be undone."
+,
+  "days": {
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday"
+  },
+   "Make Slots": "Make Slots"
 }

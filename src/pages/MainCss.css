@@ -738,13 +738,14 @@ font-family: "Inter", sans-serif !important;
   color: #000;
 }
 .second-btn {
-
-    padding: 7px 15px;
+    padding: 7px 28px;
     background-color: rgb(63, 171, 243);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    WIDTH: 100px;
+    min-width: fit-content;
 }
 .simple-btn{
 box-shadow: none !important;   ;
@@ -1117,4 +1118,7 @@ color: white;
     position: sticky;
     top: 30%;
     bottom: 32%;
+}
+.slots-accordion-title{
+  background-color: var(--cardcolor);
 }
