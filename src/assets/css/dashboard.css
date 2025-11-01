@@ -5975,6 +5975,7 @@ html[dir="rtl"]  {
   margin-left: unset;
   margin-right: 10px;
 }
+.menu-item-has-children a {flex-direction: row-reverse;} 
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
 .dc-accordioninnertitle span {text-align: right; direction: rtl;}
 .mobile-view-card {text-align: right;}
