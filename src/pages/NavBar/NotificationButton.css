@@ -37,3 +37,4 @@ header.inner-header .header-nav .header-navbar-rht li.noti-nav > a.active-dot::b
 }
 .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before{border-bottom-color: var(--cardcolor);}
 .dropdown-menu-end.list-date-option.open:before{border-bottom-color: #ccc;}
+.dropdown-menu-end.list-date-option.open:after{top:-5px}

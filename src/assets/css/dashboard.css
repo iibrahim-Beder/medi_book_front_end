@@ -6006,7 +6006,10 @@ html[dir="rtl"]  {
 /* .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; }  */
 
 .divtoconvert{direction: ltr;width: 100%;display: flex;flex-direction: row-reverse; }
-.dc-tabstitle li a ,.dc-accountinfo li{display: flex; flex-direction: row-reverse;gap: 10px; text-align: right; }
+.dc-tabstitle li a {display: flex; flex-direction: row-reverse;gap: 10px; text-align: right; }
+.dc-accountinfo li{display: flex; gap: 10px; }
+/* .dc-user-header{justify-items: end;}
+.dc-user-header .dc-spaces{margin-right:0;} */
 .alert-close{ right: auto; left: 16px;}
 .alert-neutral{align-items: flex-end;}
 .dc-navdashboard > ul > li > a{
@@ -6018,13 +6021,16 @@ html[dir="rtl"]  {
     left: 10px;
 }
 .input-icon{left: auto;right: 6px;}
-body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p,button, input, optgroup, select, textarea,.two-tabs-nav-container {
+body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p,button, input, optgroup, select, textarea,.two-tabs-nav-container 
+,.dc-accountinfo
+{
 	font-family: "Tajawal", "Cairo", sans-serif;
+	/* font-size: calc(100% + 0px) !important; */
 }
 .dc-dashboardtabsholder .dc-tabscontent{direction: rtl;}
 .dc-headerform{display: flex;}
 /* table start */
-.table td, .table th{text-align: right;}
+.table td, .table th,.dc-user-details{text-align: right;}
 .cont-img-name{margin-right: 0; margin-left: 30px;}
 .cont-img-name img {margin-right: 0; margin-left: 10px;}
 .arrow-icon-view-table{transform:rotate(180deg);}
