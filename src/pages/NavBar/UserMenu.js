@@ -14,6 +14,7 @@ function UserMenu() {
     if (window.innerWidth < 992) {
       setMenuOpen(!menuOpen);
     }
+    console.log( "menuOpen", menuOpen);
   };
   const { darkMode, toggleDarkMode } = useTheme();
   return (

@@ -144,7 +144,7 @@ box-shadow: 0 4px 13px 3px var(--shadocolor);
 }
 
 /* On hover over parent */
-.dc-userlogedin:hover .User-sub-menu {
+.dc-userlogedin:hover .User-sub-menu.show {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
