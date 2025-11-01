@@ -3111,6 +3111,7 @@ background-color: var(--scbccolor);
 	list-style-type: none;
 	border: 1px solid #ddd;
 	min-height:fit-content;
+	display: flex;
 }
  .dc-experienceaccordion li .dc-accordioninnertitle{border-bottom: 0;}
 .dc-experienceaccordion li:last-child .dc-accordioninnertitle{border-bottom: 1px solid #ddd;}
@@ -5970,6 +5971,10 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 
 
 html[dir="rtl"]  {
+	.dc-rightarea{
+  margin-left: unset;
+  margin-right: 10px;
+}
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
 .dc-accordioninnertitle span {text-align: right; direction: rtl;}
 .mobile-view-card {text-align: right;}

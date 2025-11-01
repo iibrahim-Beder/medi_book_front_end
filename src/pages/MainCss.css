@@ -1125,3 +1125,6 @@ color: white;
 .two-level-accordion.shifts ul ul {
   margin-left: 0 !important;
 }
+.dc-rightarea{
+  margin-left: 10px;
+}

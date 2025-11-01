@@ -356,7 +356,7 @@ const ShiftsAccordion = memo(({
         {dataRead.map((item, index) => (
           <li key={item.id || index}>
             <div
-              className="dc-accordioninnertitle d-flex "
+              className="dc-accordioninnertitle"
               style={{
                 borderColor: "#eee",
                 borderLeft: item.isNew
