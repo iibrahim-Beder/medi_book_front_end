@@ -342,7 +342,6 @@
   ,  "selectLocation": "اختر العيادة",
   "selectDay": "اختر اليوم",
   "selectShiftType": "اختر نوع الشفت",
-  "CustomShift": "شفت مخصص",
   "startTime": "وقت البداية",
   "endTime": "وقت النهاية",
   "breaks": "فترات الراحة",
@@ -1324,6 +1323,47 @@
 , "Follow-up": " متابعة",
 "Check-up": "فحص",
  "confirmDeleteSlot": "هل أنت متأكد من أنك تريد حذف \"{{slot}}\"؟ هذا الإجراء لا يمكن التراجع عنه."
+,
+ "shifts": {
+    "manage_shifts": "إدارة الشيفتات",
+    "add_shift": "إضافة شيفت",
+    "clinic": "العيادة",
+    "day": "اليوم",
+    "shift_type": "نوع الشيفت",
+    "start_time": "وقت البداية",
+    "end_time": "وقت النهاية",
+    "select_clinic": "اختر العيادة",
+    "select_day": "اختر اليوم",
+    "select_shift_type": "اختر نوع الشيفت"
+  },
+  "clinics": {
+    "main": "العيادة الرئيسية",
+    "branch": "فرع المدينة",
+    "children": "عيادة الأطفال"
+  },
+ 
+  "shiftTypes": {
+    "morning": "صباحي",
+    "evening": "مسائي",
+    "night": "ليلي",
+    "custom": "مخصص"
+  },
+  "breaks": {
+    "title": "فترات الراحة",
+    "add_break": "إضافة راحة",
+    "start_time": "وقت البداية",
+    "end_time": "وقت النهاية",
+    "start": "بداية",
+    "end": "نهاية",
+    "no_breaks": "لا توجد فترات راحة مضافة"
+  },
+  "status": {
+    "new": "جديد"
+  },
+  "popup": {
+    "delete_shift_title": "حذف الشيفت",
+    "delete_shift_confirm": "هل أنت متأكد من حذف \"{{name}}\"؟"
+  }
 }
 
 

@@ -1122,3 +1122,6 @@ color: white;
 .slots-accordion-title{
   background-color: var(--cardcolor);
 }
+.two-level-accordion.shifts ul ul {
+  margin-left: 0 !important;
+}

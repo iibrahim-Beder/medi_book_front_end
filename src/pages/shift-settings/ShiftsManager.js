@@ -1,59 +1,70 @@
 import React, { useState, useEffect } from "react";
-import ShiftItem from "./cards/ShiftItem";
-import '../MainCss.css'
 import { useTranslation } from "react-i18next";
-import ShiftForm from "./cards/ShiftForm";
+import ShiftsAccordion from "./cards/ShiftsAccordion";
 
-export default function   ShiftsManager({ ComponentProp, header = true, onShiftsChange, formData ,regist=false}) {
+export default function ShiftsManager({ ComponentProp, header = true, onShiftsChange, formData, regist = false }) {
   const { t } = useTranslation();
 
-  // Clinics data
   const [clinics] = useState([
-    { id: 1, name: t("Clinic1") },
-    { id: 2, name: t("Clinic2") },
+    { id: 1, name: t(" clinics kindergarten ") },
+    { id: 2, name: t(" clinics spase medical ") },
+    { id: 3, name: t(" clinics  xray  ") }
   ]);
 
-  // Days of the week
   const daysOfWeek = [
-    t("Saturday"), t("Sunday"), t("Monday"), t("Tuesday"), 
-    t("Wednesday"), t("Thursday"), t("Friday")
+    t("days.saturday"),
+    t("days.sunday"),
+    t("days.monday"),
+    t("days.tuesday"),
+    t("days.wednesday"),  
+    t("days.thursday"),
+    t("days.friday")
   ];
 
-  // Shift types
-  const shiftTypes = [t("Morning"), t("Evening"), t("Night"), t("CustomShift")];
+  const shiftTypes = [
+    t("shiftTypes.morning"),
+    t("shiftTypes.evening"),
+    t("shiftTypes.night"),
+    t("shiftTypes.custom")
+  ];
 
-  // Use shifts from formData if available, otherwise use default value
-  const [shifts, setShifts] = useState(formData?.shifts || [{
-    id: 1,
-    clinic: "",
-    day: "",
-    shiftType: "",
-    customFrom: "",
-    customTo: "",
-    breaks: [],
-    isOpen: true,
-  }]);
+  const [shifts, setShifts] = useState(formData?.shifts || [
+    {
+      id: 1,
+      clinic: "1",
+      day: t("days.saturday"),
+      shiftType: t("shiftTypes.morning"),
+      customFrom: "",
+      customTo: "",
+      breaks: [
+        { from: "12:00", to: "13:00", id: "break_1" }
+      ],
+      isExpanded: false,
+      isNew: false,
+    },
+    {
+      id: 2,
+      clinic: "2",
+      day: t("days.sunday"),
+      shiftType: t("shiftTypes.custom"),
+      customFrom: "14:00",
+      customTo: "18:00",
+      breaks: [],
+      isExpanded: false,
+      isNew: false,
+    }
+  ]);
 
-  // When shifts change, notify the parent component
   useEffect(() => {
     if (onShiftsChange) {
       onShiftsChange(shifts);
     }
   }, [shifts, onShiftsChange]);
 
-  // State handling functions
-  const toggleAccordion = (id) => {
+  const handleUpdateShift = (shiftId, field, value) => {
     setShifts(prev =>
       prev.map(shift =>
-        shift.id === id ? { ...shift, isOpen: !shift.isOpen } : shift
-      )
-    );
-  };
-
-  const handleInputChange = (id, field, value) => {
-    setShifts(prev =>
-      prev.map(shift =>
-        shift.id === id ? { ...shift, [field]: value } : shift
+        shift.id === shiftId ? { ...shift, [field]: value } : shift
       )
     );
   };
@@ -68,110 +79,44 @@ export default function   ShiftsManager({ ComponentProp, header = true, onShifts
       customFrom: "",
       customTo: "",
       breaks: [],
-      isOpen: true,
+      isExpanded: true,
+      isNew: true,
     };
     setShifts(prev => [...prev, newShift]);
   };
 
-  const deleteShift = (id) => {
-    setShifts(prev => prev.filter(shift => shift.id !== id));
-  };
-
-  const addBreak = (shiftId) => {
+  const handleSaveShift = (shiftId, shiftData, keepOpen = false) => {
     setShifts(prev =>
       prev.map(shift =>
-        shift.id === shiftId
-          ? { ...shift, breaks: [...shift.breaks, { from: "", to: "" }] }
-          : shift
+        shift.id === shiftId ? {
+          ...shiftData,
+          isNew: false,
+          isExpanded: keepOpen ? shiftData.isExpanded : false
+        } : shift
       )
     );
   };
 
-  const handleBreakChange = (shiftId, breakIndex, field, value) => {
-    setShifts(prev =>
-      prev.map(shift =>
-        shift.id === shiftId
-          ? {
-              ...shift,
-              breaks: shift.breaks.map((b, i) =>
-                i === breakIndex ? { ...b, [field]: value } : b
-              ),
-            }
-          : shift
-      )
-    );
-  };
-
-  const deleteBreak = (shiftId, breakIndex) => {
-    setShifts(prev =>
-      prev.map(shift =>
-        shift.id === shiftId
-          ? {
-              ...shift,
-              breaks: shift.breaks.filter((_, i) => i !== breakIndex),
-            }
-          : shift
-      )
-    );
+  const deleteShift = (shiftId) => {
+    setShifts(prev => prev.filter(shift => shift.id !== shiftId));
   };
 
   return (
     <div className="dc-shiftsmanager dc-tabsinfo">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        {ComponentProp}
-        {header && (
-          <div className="dc-tabscontenttitle dc-addnew">
-            <h3>{t("manageYourShifts")}</h3>
-            <a href="#!" onClick={(e) => {
-              e.preventDefault();
-              addNewShift();
-            }}>
-              {t("shifts.addNew")}
-            </a>
-          </div>
-        )}
-        {!header && (
-          <a href="#!" onClick={(e) => {
-            e.preventDefault();
-            addNewShift();
-          }}>
-            {t("shifts.addNew")}
-          </a>
-        )}
-      </div>
-
-     <ul className="dc-experienceaccordion accordion">
-  {shifts.length === 1 && regist ? (
-    // Single shift case → display as Form
-    <ShiftForm
-      shift={shifts[0]}
-      clinics={clinics}
-      daysOfWeek={daysOfWeek}
-      shiftTypes={shiftTypes}
-      onInputChange={handleInputChange}
-      onAddBreak={addBreak}
-      onBreakChange={handleBreakChange}
-      onDeleteBreak={deleteBreak}
-    />
-  ) : (
-    // Multiple shifts case → display as Items
-    shifts.map((shift) => (
-      <ShiftItem
-        key={shift.id}
-        shift={shift}
+      <ShiftsAccordion
+        shifts={shifts}
         clinics={clinics}
         daysOfWeek={daysOfWeek}
         shiftTypes={shiftTypes}
-        onToggle={toggleAccordion}
-        onInputChange={handleInputChange}
-        onDelete={deleteShift}
-        onAddBreak={addBreak}
-        onBreakChange={handleBreakChange}
-        onDeleteBreak={deleteBreak}
+        onAddShift={addNewShift}
+        onDeleteShift={deleteShift}
+        onUpdateShift={handleUpdateShift}
+        onSaveShift={handleSaveShift}
+        ComponentProp={ComponentProp}
+        header={header}
+        regist={regist}
+        allowMultipleOpen={false}
       />
-    ))
-  )}
-</ul>
     </div>
   );
 }

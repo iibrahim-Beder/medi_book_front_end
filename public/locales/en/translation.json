@@ -1195,4 +1195,59 @@
     "friday": "Friday"
   },
    "Make Slots": "Make Slots"
-}
+,
+"shifts": {
+    "manage_shifts": "Manage Shifts",
+    "add_shift": "Add Shift",
+    "clinic": "Clinic",
+    "day": "Day",
+    "shift_type": "Shift Type",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "select_clinic": "Select Clinic",
+    "select_day": "Select Day",
+    "select_shift_type": "Select Shift Type"
+  },
+  "clinics": {
+    "main": "Main Clinic",
+    "branch": "City Branch",
+    "children": "Pediatric Clinic"
+  },
+  "days": {
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday"
+  },
+  "shiftTypes": {
+    "morning": "Morning",
+    "evening": "Evening",
+    "night": "Night",
+    "custom": "Custom"
+  },
+  "breaks": {
+    "title": "Break Periods",
+    "add_break": "Add Break",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "start": "Start",
+    "end": "End",
+    "no_breaks": "No break periods added"
+  },
+  "status": {
+    "new": "New"
+  },
+  "actions": {
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "popup": {
+    "delete_shift_title": "Delete Shift",
+    "delete_shift_confirm": "Are you sure you want to delete \"{{name}}\"?"
+  }
+  }
