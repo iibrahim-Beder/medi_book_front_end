@@ -1361,8 +1361,16 @@
     "new": "جديد"
   },
   "popup": {
+        "delete_location_title": "حذف الموقع",
+            "delete_location_confirm": "هل أنت متأكد من حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
     "delete_shift_title": "حذف الشيفت",
     "delete_shift_confirm": "هل أنت متأكد من حذف \"{{name}}\"؟"
+  },
+"userLocation": {
+    "addYourLocation": "إضافة موقعك",
+    "addNew": "إضافة موقع جديد",
+    "newLocation": "موقع جديد",
+    "manageLocations": "إدارة المواقع"
   }
 }
 

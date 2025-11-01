@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const BlueMapPicker = ({
   initial = { lat: 30.0444, lng: 31.2357, displayName: "", officialName: "" },
   onSave,
-  onCancel,
+  handleCancel,
 }) => {
   const { t } = useTranslation();
 
@@ -37,8 +37,7 @@ const BlueMapPicker = ({
 
   // load Google Maps API
   const { isLoaded } = useJsApiLoader({
-
-    googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ", //  API Key
+    googleMapsApiKey: "AIzaSyBhkhbZdP9JlwOlJkmBkmUMll0jiNcKHXQ",
     libraries: ["places"],
   });
 
@@ -89,7 +88,6 @@ const BlueMapPicker = ({
       elementType: "geometry.fill",
       stylers: [{ color: "#a6cbe3" }, { visibility: "on" }],
     },
-    
   ];
 
   // get location name from latitude and longitude
@@ -143,7 +141,6 @@ const BlueMapPicker = ({
       officialName,
     };
     if (onSave) onSave(payload);
-    else alert(t("Saved") + ": " + JSON.stringify(payload, null, 2));
   };
 
   // when user selects a place from autocomplete search box
@@ -168,10 +165,6 @@ const BlueMapPicker = ({
 
   return (
     <div>
-      <div className="dc-tabscontenttitle">
-        <h3>{t("LocateYourBusiness")}</h3>
-      </div>
-
       {/* search input with autocomplete */}
       <Autocomplete
         onLoad={(autoC) => setAutocomplete(autoC)}
@@ -196,7 +189,7 @@ const BlueMapPicker = ({
       </div>
 
       {/* google map container */}
-      <div className="table-card" style={{ height: 450, marginBottom: 12, padding:"20px"  }}>
+      <div className="table-card" style={{ height: 450, marginBottom: 12, padding: "20px" }}>
         <GoogleMap
           center={position}
           zoom={13}
@@ -223,16 +216,13 @@ const BlueMapPicker = ({
         style={{ marginBottom: 12 }}
       />
 
-      {/*  Buttons section    */}
-      {/* <div style={{ display: "flex", justifyContent: "space-between"}}>
-        <button className="btn btn-light" onClick={onCancel}> */}
-
       {/* action buttons */}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className="dc-btnarea d-flex">
         <button
           type="button"
-          className="btn-simple"
-          onClick={onCancel}
+          style={{ margin: '0 5px' }}
+          className="simple-btn"
+          onClick={handleCancel}
         >
           {t("Cancel")}
         </button>

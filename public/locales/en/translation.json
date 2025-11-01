@@ -6,6 +6,7 @@
 
     
   "sidebar": {
+    "makeSlots": "Make Slots",
     "insights": "Insights",
     "appointmentList": "Appointment List",
     "appointmentManagement": "Appointment management",
@@ -1248,6 +1249,14 @@
   },
   "popup": {
     "delete_shift_title": "Delete Shift",
-    "delete_shift_confirm": "Are you sure you want to delete \"{{name}}\"?"
+    "delete_shift_confirm": "Are you sure you want to delete \"{{name}}\"?",
+      "delete_location_title": "Delete Location",
+    "delete_location_confirm": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
+  },
+   "userLocation": {
+    "addYourLocation": "Add Your Location",
+    "addNew": "Add New Location", 
+    "newLocation": "New Location",
+    "manageLocations": "Manage Locations"
   }
   }
