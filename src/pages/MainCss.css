@@ -843,7 +843,7 @@ padding: 0;
   width: 61vw; 
 /* padding: 20px 60px; */
 padding-right: 0;
-float: right;   
+float:inline-end;   
 }
 .dropdown-with-search-in-accordion .dc-pagination ul li{ width: auto !important; }
 .dropdown-with-search-in-accordion  .MuiBox-root.css-1apcsdv{margin: 0  !important;}
@@ -1138,4 +1138,7 @@ color: white;
 }
 .two-tabs .mobile-view-card .table-header{
   margin:auto 10px;
+}
+.description-expanded-section label, .description-expanded-section .accordion label,.table-active-content .accordion label{
+  float: none !important;
 }

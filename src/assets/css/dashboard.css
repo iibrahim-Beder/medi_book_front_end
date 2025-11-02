@@ -5971,10 +5971,7 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 
 
 html[dir="rtl"]  {
-	.dc-rightarea{
-  margin-left: unset;
-  margin-right: 10px;
-}
+.dc-rightarea{margin-left: unset;margin-right: 10px;}
 .menu-item-has-children a {flex-direction: row-reverse;} 
 .dc-accordioninnertitle,.comment-footer{direction: ltr;}
 .dc-accordioninnertitle span {text-align: right; direction: rtl;}
@@ -6025,7 +6022,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 ,.dc-accountinfo
 {
 	font-family: "Tajawal", "Cairo", sans-serif;
-	/* font-size: calc(100% + 0px) !important; */
+	font-size:calc( 100% + 4%) !important;
 }
 .dc-dashboardtabsholder .dc-tabscontent{direction: rtl;}
 .dc-headerform{display: flex;}
