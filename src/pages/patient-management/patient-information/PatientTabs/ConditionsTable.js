@@ -4,23 +4,25 @@ import MedicalHistoryModal from "./component/MedicalHistoryModal";
 import "../../Patient-management.css";
 import ConditionsFilters from "./component/ConditionsFilters";
 import Pagination from "../../../shared/Pagination";
+import PopupMessage from "../../../shared/PopupMessage"; 
 import { useTranslation } from "react-i18next";
 
 const MedicalHistoryTable = () => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("");       
+  const [filterType, setFilterType] = useState("");         
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [recordToDelete, setRecordToDelete] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
 
   const rowsPerPage = 4;
 
-  
   const HistoryType = {
     All: t("All"),
     Surgery: t("Surgery"),
@@ -39,7 +41,6 @@ const MedicalHistoryTable = () => {
     HistoryType.Vaccination,
     HistoryType.Others
   ];
-
 
   const hereditaryDiseases = [
     t("Diabetes"),
@@ -121,7 +122,6 @@ const MedicalHistoryTable = () => {
       };
       setMedicalHistory([...medicalHistory, newRecord]);
     } else {
-      
       const updatedHistory = medicalHistory.map(item =>
         item.id === selectedRecord.id ? selectedRecord : item
       );
@@ -131,6 +131,33 @@ const MedicalHistoryTable = () => {
     console.log(t("Saved record:"), selectedRecord);
     setShowModal(false);
     setSelectedRecord(null);
+  };
+
+  // Handle Delete from Modal
+  const handleDeleteInModal = () => {
+    if (selectedRecord) {
+      setRecordToDelete(selectedRecord);
+      setShowPopup(true);
+    }
+  };
+
+  // Confirm Delete
+  const handleConfirmDelete = () => {
+    if (recordToDelete) {
+      const updatedData = medicalHistory.filter(
+        item => item.id !== recordToDelete.id
+      );
+      setMedicalHistory(updatedData);
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowModal(false);
+    }
+  };
+
+  // Close Popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setRecordToDelete(null);
   };
 
   // filters the data based on search and filters
@@ -180,7 +207,7 @@ const MedicalHistoryTable = () => {
 
   return (
     <div className="table-container">
-      <div className="table-header">
+      <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("Medical History")}</h3>
           <h6 className="table-subtitle">{t("Ahmed Mohamed Ali")}</h6>
@@ -267,16 +294,16 @@ const MedicalHistoryTable = () => {
             </Table>
           </div>
 
-      <Pagination
-  currentPage={currentPage}
-  totalItems={filteredData.length}
-  rowsPerPage={rowsPerPage}
-  onPageChange={setCurrentPage}
-/>
-
+          <Pagination
+            currentPage={currentPage}
+            totalItems={filteredData.length}
+            rowsPerPage={rowsPerPage}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
-    {/* the modal for add/edit */}
+
+      {/* the modal for add/edit */}
       <MedicalHistoryModal
         show={showModal}
         onClose={() => {
@@ -284,11 +311,37 @@ const MedicalHistoryTable = () => {
           setSelectedRecord(null);
         }}
         onSave={handleSave}
+        onDelete={handleDeleteInModal}
         record={selectedRecord}
         setRecord={setSelectedRecord}
         hereditaryDiseases={hereditaryDiseases}
+        isEdit={isAddMode}
         title={isAddMode ? t("Add Medical History") : t("Edit Medical History")}
       />
+
+      {/* Popup for Delete Confirmation */}
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('MedicalHistory.confirm_delete_title')}
+          message={t('MedicalHistory.confirm_delete_message', { 
+            description: recordToDelete.description 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger" 
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

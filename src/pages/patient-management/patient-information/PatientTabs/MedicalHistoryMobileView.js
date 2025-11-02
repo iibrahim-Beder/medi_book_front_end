@@ -4,7 +4,8 @@ import { Card, Button, Modal } from "react-bootstrap";
 import MedicalHistoryModal from "./component/MedicalHistoryModal";
 import ConditionsFilters from "./component/ConditionsFilters";
 import Pagination from "../../../shared/Pagination";
-import { MdClose } from "react-icons/md";
+import PopupMessage from "../../../shared/PopupMessage";
+import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import "../../Patient-management.css";
 
@@ -18,9 +19,11 @@ const MedicalHistoryMobileView = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [recordToDelete, setRecordToDelete] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
-  const [selectedHistory, setSelectedHistory] = useState(null);
+  const [expandedNotes, setExpandedNotes] = useState({});
 
   const rowsPerPage = 5;
 
@@ -62,7 +65,7 @@ const MedicalHistoryMobileView = () => {
       description: "Appendix removal",
       dateOfEvent: "2022-03-15",
       relatedPerson: null,
-      notes: "Successful surgery with no complications.",
+      notes: "Successful surgery with no complications. Patient recovered well with minimal scarring. Follow-up appointments completed without issues.",
     },
     {
       id: 2,
@@ -71,7 +74,7 @@ const MedicalHistoryMobileView = () => {
       description: "Car accident with minor injuries",
       dateOfEvent: "2021-11-02",
       relatedPerson: null,
-      notes: "Recovered after 2 weeks.",
+      notes: "Recovered after 2 weeks with physical therapy. No long-term complications observed. Regular check-ups showed complete healing.",
     },
     {
       id: 3,
@@ -80,7 +83,7 @@ const MedicalHistoryMobileView = () => {
       description: "Father had heart disease",
       dateOfEvent: "2020-01-01",
       relatedPerson: "Father",
-      notes: "Family-related record",
+      notes: "Family-related record. Father diagnosed with coronary artery disease at age 55. Regular cardiac screening recommended for patient.",
     },
     {
       id: 4,
@@ -89,7 +92,7 @@ const MedicalHistoryMobileView = () => {
       description: "Mother has diabetes",
       dateOfEvent: "2019-05-10",
       relatedPerson: "Mother",
-      notes: "Type 2 diabetes diagnosed at age 45",
+      notes: "Type 2 diabetes diagnosed at age 45. Mother manages condition with medication and diet. Patient advised to maintain healthy lifestyle.",
     },
   ]);
 
@@ -132,6 +135,41 @@ const MedicalHistoryMobileView = () => {
     console.log("Saved record:", selectedRecord);
     setShowModal(false);
     setSelectedRecord(null);
+  };
+
+  // Handle Delete from Modal
+  const handleDeleteInModal = () => {
+    if (selectedRecord) {
+      setRecordToDelete(selectedRecord);
+      setShowPopup(true);
+    }
+  };
+
+  // Confirm Delete
+  const handleConfirmDelete = () => {
+    if (recordToDelete) {
+      const updatedData = medicalHistory.filter(
+        item => item.id !== recordToDelete.id
+      );
+      setMedicalHistory(updatedData);
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowModal(false);
+    }
+  };
+
+  // Close Popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setRecordToDelete(null);
+  };
+
+  // Toggle notes expansion
+  const toggleNotes = (historyId) => {
+    setExpandedNotes(prev => ({
+      ...prev,
+      [historyId]: !prev[historyId]
+    }));
   };
 
   // filters the data based on search and filters
@@ -186,22 +224,9 @@ const MedicalHistoryMobileView = () => {
     return text.substring(0, maxLength) + "...";
   };
 
-  // Get badge class based on history type
-  const getHistoryTypeBadge = (type) => {
-    switch (type) {
-      case HistoryType.Surgery: return "badge bg-danger";
-      case HistoryType.Accident: return "badge bg-warning";
-      case HistoryType.Hospitalization: return "badge bg-info";
-      case HistoryType.FamilyHistory: return "badge bg-success";
-      case HistoryType.Vaccination: return "badge bg-primary";
-      case HistoryType.Others: return "badge bg-secondary";
-      default: return "badge bg-secondary";
-    }
-  };
-
   return (
     <div className="table-container mobile-view-card">
-      <div className="table-header">
+      <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t('MedicalHistoryMobileView.table_title')}</h3>
           <h6 className="table-subtitle">{t('MedicalHistoryMobileView.table_subtitle')}</h6>
@@ -236,69 +261,127 @@ const MedicalHistoryMobileView = () => {
 
           {/* Mobile Cards */}
           <div className="space-y-3">
-            {currentData.map((history) => (
-              <Card
-                key={history.id}
-                className="mobile-view-card"
-              >
-                <Card.Body className="" style={{ padding: "15px" }}>
-                  {history.hereditaryDisease && (
-                    <div className="mb-3">
-                      <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.hereditary_disease')}:</small>
-                      <p className="mb-1">{t(`MedicalHistoryMobileView.hereditary_diseases.${history.hereditaryDisease}`)}</p>
+            {currentData.map((history) => {
+              const isNotesExpanded = expandedNotes[history.id];
+              
+              return (
+                <Card key={history.id} className="mobile-view-card">
+                  <Card.Body style={{ padding: "15px" }}>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 style={{ margin: 0 }}>{history.historyType}</h5>
                     </div>
-                  )}
 
-                  <div className="mb-3">
-                    <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.description')}:</small>
-                    <p className="mb-1">{truncateText(history.description, 60)}</p>
-                  </div>
+                    {history.hereditaryDisease && (
+                      <div className="mb-2">
+                        <small className="text-muted d-block mb-1">
+                          {t("MedicalHistoryMobileView.hereditary_disease")}:
+                        </small>
+                        <p className="mb-1">{history.hereditaryDisease}</p>
+                      </div>
+                    )}
 
-                  {history.relatedPerson && (
-                    <div className="mb-3">
-                      <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.related_person')}:</small>
-                      <p className="mb-1">{history.relatedPerson}</p>
+                    <div className="mb-2">
+                      <small className="text-muted d-block mb-1">
+                        {t("MedicalHistoryMobileView.description")}:
+                      </small>
+                      <p className="mb-1">{history.description}</p>
                     </div>
-                  )}
 
-                  {history.notes && (
-                    <div className="mb-3">
-                      <small className="text-muted d-block mb-1">{t('MedicalHistoryMobileView.notes')}:</small>
-                      <p className="mb-1">{truncateText(history.notes, 80)}</p>
-                    </div>
-                  )}
+                    {history.relatedPerson && (
+                      <div className="mb-2">
+                        <small className="text-muted d-block mb-1">
+                          {t("MedicalHistoryMobileView.related_person")}:
+                        </small>
+                        <p className="mb-1">{history.relatedPerson}</p>
+                      </div>
+                    )}
 
-                  <div className="row text-center mb-3">
-                    <div className="col-6">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {formatDate(history.dateOfEvent)}
+                    {/* Notes Section with Expand/Collapse */}
+                    {history.notes && (
+                      <div className="mb-2">
+                        <small
+                          className="text-muted d-flex mb-1"
+                          onClick={() => toggleNotes(history.id)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {t("MedicalHistoryMobileView.notes")} :
+                          <button
+                            className=""
+                            onClick={() => toggleNotes(history.id)}
+                            style={{
+                              fontSize: "20px",
+                              color: "#278fff",
+                              padding: "3px 0 0",
+                            }}
+                          >
+                            <MdExpandMore
+                              onClick={() => toggleNotes(history.id)}
+                              style={{
+                                transform: expandedNotes[history.id]
+                                  ? "rotate(180deg)"
+                                  : "rotate(0deg)",
+                                transition: "transform 0.3s ease",
+                              }}
+                            />
+                          </button>
+                        </small>
+                        <div
+                          className={`expandable-content ${
+                            expandedNotes[history.id] ? "" : "p-0"
+                          }`}
+                        >
+                          <p
+                            style={{
+                              margin: "0",
+                              cursor: "pointer",
+                              transition: "all 0.3s ease",
+                            }}
+                            onClick={() => toggleNotes(history.id)}
+                          >
+                            {expandedNotes[history.id] ? history.notes : ""}
+                          </p>
                         </div>
-                        <small className="text-muted">{t('MedicalHistoryMobileView.date_of_event')}</small>
                       </div>
-                    </div>
-                    <div className="col-6">
-                      <div className="fw-bold text-primary">
-                        {history.hereditaryDisease ? t('MedicalHistoryMobileView.hereditary') : t('MedicalHistoryMobileView.non_hereditary')}
-                      </div>
-                      <small className="text-muted">{t('MedicalHistoryMobileView.type')}</small>
-                    </div>
-                  </div>
+                    )}
 
-                  <div>
-                    <Button
-                      className="view-btn btn btn-outline-primary btn-sm"
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => handleEdit(history)}
-                      style={{ float: "inline-end" }}
-                    >
-                      {t('MedicalHistoryMobileView.manage')}
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
+                    <div className="row text-center mb-3">
+                      <div className="col-6">
+                        <div className="border-end">
+                          <div className="fw-bold text-primary">
+                            {formatDate(history.dateOfEvent)}
+                          </div>
+                          <small className="text-muted">
+                            {t("MedicalHistoryMobileView.date_of_event")}
+                          </small>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className="fw-bold text-primary">
+                          {history.hereditaryDisease
+                            ? t("MedicalHistoryMobileView.hereditary")
+                            : t("MedicalHistoryMobileView.non_hereditary")}
+                        </div>
+                        <small className="text-muted">
+                          {t("MedicalHistoryMobileView.type")}
+                        </small>
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div style={{ flex: 1 }}></div>
+                      <Button
+                        className="view-btn btn btn-outline-primary btn-sm"
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => handleEdit(history)}
+                      >
+                        {t("MedicalHistoryMobileView.manage")}
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              );
+            })}
 
             {currentData.length === 0 && (
               <Card className="text-center py-5">
@@ -326,13 +409,39 @@ const MedicalHistoryMobileView = () => {
           setSelectedRecord(null);
         }}
         onSave={handleSave}
+        onDelete={handleDeleteInModal}
         record={selectedRecord}
         setRecord={setSelectedRecord}
         hereditaryDiseases={hereditaryDiseases}
+        isEdit={isAddMode}
         title={isAddMode ? t('MedicalHistoryMobileView.add_medical_history') : t('MedicalHistoryMobileView.edit_medical_history')}
       />
+
+      {/* Popup for Delete Confirmation */}
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('MedicalHistory.confirm_delete_title')}
+          message={t('MedicalHistory.confirm_delete_message', { 
+            description: recordToDelete.description 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger" 
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };
 
-export default MedicalHistoryMobileView;
+export default MedicalHistoryMobileView;  

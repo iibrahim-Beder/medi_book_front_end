@@ -4,7 +4,7 @@ import { Button, Modal, Card } from "react-bootstrap";
 import CustomAccordion from "../../../../shared/CustomAccordion";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../../shared/Pagination";
@@ -19,6 +19,7 @@ const PrescriptionsMobileView = () => {
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedNotes, setExpandedNotes] = useState({});
   const [rowsPerPage] = useState(5);
 
   // Mock data (from your table)
@@ -28,7 +29,7 @@ const PrescriptionsMobileView = () => {
       diagnosisName: "Diabetes Mellitus Type 2",
       title: "Diabetes Management",
       status: "active",
-      note: "Patient requires regular monitoring",
+      note: "Patient requires regular monitoring of blood sugar levels and kidney function. Follow-up appointment scheduled in 3 months. Patient advised to maintain healthy diet and exercise routine.",
       prescribedMedication: [
         {
           id: "PM001",
@@ -51,7 +52,7 @@ const PrescriptionsMobileView = () => {
       diagnosisName: "Hypertension",
       title: "Blood Pressure Control",
       status: "completed",
-      note: "Monitor blood pressure regularly",
+      note: "Monitor blood pressure regularly. Patient responded well to treatment with no significant side effects. Blood pressure stabilized within target range.",
       prescribedMedication: [
         {
           id: "PM003",
@@ -67,7 +68,7 @@ const PrescriptionsMobileView = () => {
       diagnosisName: "Migraine",
       title: "Headache Management",
       status: "cancelled",
-      note: "Patient reported side effects",
+      note: "Patient reported side effects including dizziness and nausea. Alternative treatment options to be discussed in next appointment.",
       prescribedMedication: [
         {
           id: "PM004",
@@ -83,7 +84,7 @@ const PrescriptionsMobileView = () => {
       diagnosisName: "Vitamin Deficiency",
       title: "Supplement Plan",
       status: "expired",
-      note: "Prescription expired, needs renewal",
+      note: "Prescription expired, needs renewal. Patient showed improvement in vitamin D levels. Follow-up blood test required before renewal.",
       prescribedMedication: [
         {
           id: "PM005",
@@ -95,6 +96,14 @@ const PrescriptionsMobileView = () => {
       ],
     },
   ];
+
+  // Toggle notes expansion
+  const toggleNotes = (prescriptionId) => {
+    setExpandedNotes(prev => ({
+      ...prev,
+      [prescriptionId]: !prev[prescriptionId]
+    }));
+  };
 
   // Filters
   const filteredPrescriptions = prescriptionsData
@@ -148,16 +157,6 @@ const PrescriptionsMobileView = () => {
     setSelectedPrescription(null);
   };
 
-  const getPageNumbers = () => {
-    const pages = [];
-    const maxVisible = 5;
-    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-    let end = Math.min(totalPages, start + maxVisible - 1);
-    if (end - start + 1 < maxVisible) start = Math.max(1, end - maxVisible + 1);
-    for (let i = start; i <= end; i++) pages.push(i);
-    return pages;
-  };
-
   const truncateText = (text, max = 70) =>
     !text ? "" : text.length <= max ? text : text.substring(0, max) + "...";
 
@@ -206,57 +205,98 @@ const PrescriptionsMobileView = () => {
 
           {/* Mobile Cards */}
           <div className="space-y-3">
-            {currentItems.map((p) => (
-              <Card
-                key={p.id}
-                className="mobile-view-card"
-              >
-                <Card.Body style={{ padding: "15px" }}>
-                  <h5>{p.title}</h5>
-                  <div className="mb-2">
-                    <small className="text-muted d-block mb-1">
-                      {t('PrescriptionsMobileView.diagnosis')}
-                    </small>
-                    <p>{p.diagnosisName}</p>
-                  </div>
+            {currentItems.map((p) => {
+              const isNotesExpanded = expandedNotes[p.id];
+              
+              return (
+                <Card key={p.id} className="mobile-view-card">
+                  <Card.Body style={{ padding: "15px" }}>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 style={{ margin: 0 }}>{p.title}</h5>
+                    </div>
 
-                  <div className="mb-2">
-                    <small className="text-muted d-block mb-1">{t('PrescriptionsMobileView.note')}</small>
-                    <p>{truncateText(p.note, 80)}</p>
-                  </div>
+                    <div className="mb-2">
+                      <small className="text-muted d-block mb-1">
+                        {t('PrescriptionsMobileView.diagnosis')}
+                      </small>
+                      <p>{p.diagnosisName}</p>
+                    </div>
 
-                  <div className="row justify-content-around text-center mb-3">
-                    <div className="">
-                      <div
-                        className="fw-bold"
-                        style={{ color: getStatusColor(p.status) }}
+                    {/* Notes Section with Expand/Collapse */}
+                    <div className="mb-2">
+                      <small
+                        className="text-muted d-flex mb-1"
+                        onClick={() => toggleNotes(p.id)}
+                        style={{ cursor: "pointer" }}
                       >
-                        {t(`PrescriptionsMobileView.status_options.${p.status}`)}
+                        {t('PrescriptionsMobileView.note')} :
+                        {p.note && (
+                          <button
+                            className=""
+                            onClick={() => toggleNotes(p.id)}
+                            style={{
+                              fontSize: '20px',
+                              color: '#278fff',
+                              padding: "3px 0 0"
+                            }}
+                          >
+                            <MdExpandMore
+                            onClick={() => toggleNotes(p.id)}
+                              style={{
+                                transform: expandedNotes[p.id] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.3s ease',
+                              }}
+                            />
+                          </button>
+                        )}
+                      </small>
+                      <div className={`expandable-content ${expandedNotes[p.id] ? '' : 'p-0'}`}>
+                        <p
+                          style={{
+                            margin: "0",
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onClick={() => toggleNotes(p.id)}
+                        >
+                          {expandedNotes[p.id] ? p.note : ""}
+                        </p>
                       </div>
-                      <small className="text-muted">{t('PrescriptionsMobileView.status')}</small>
                     </div>
-                    <div className="">
-                      <div className="fw-bold text-primary">
-                        {p.prescribedMedication.length}
-                      </div>
-                      <small className="text-muted">{t('PrescriptionsMobileView.medications')}</small>
-                    </div>
-                  </div>
 
-                  <div>
-                    <Button
-                      className="view-btn btn btn-outline-primary btn-sm"
-                      variant="outline-primary"
-                      size="sm"
-                      style={{ float: "inline-end" }}
-                      onClick={() => handleOpenModal(p)}
-                    >
-                      {t('PrescriptionsMobileView.view_all_details')}
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
+                    <div className="row justify-content-around text-center mb-3">
+                      <div className="">
+                        <div
+                          className="fw-bold"
+                          style={{ color: getStatusColor(p.status) }}
+                        >
+                          {t(`PrescriptionsMobileView.status_options.${p.status}`)}
+                        </div>
+                        <small className="text-muted">{t('PrescriptionsMobileView.status')}</small>
+                      </div>
+                      <div className="">
+                        <div className="fw-bold text-primary">
+                          {p.prescribedMedication.length}
+                        </div>
+                        <small className="text-muted">{t('PrescriptionsMobileView.medications')}</small>
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div style={{ flex: 1 }}></div>
+                      <Button
+                        className="view-btn btn btn-outline-primary btn-sm"
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => handleOpenModal(p)}
+                      >
+                        {t('PrescriptionsMobileView.view_all_details')}
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              );
+            })}
 
             {currentItems.length === 0 && (
               <Card className="text-center py-5">
@@ -268,6 +308,7 @@ const PrescriptionsMobileView = () => {
           </div>
         </div>
       </div>
+
       <Pagination
         currentPage={currentPage}
         totalItems={filteredPrescriptions.length}

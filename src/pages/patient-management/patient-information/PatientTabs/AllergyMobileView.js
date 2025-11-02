@@ -4,9 +4,10 @@ import { Card, Button, Modal } from "react-bootstrap";
 import DynamicEditModal from "../../../shared/DynamicEditModal";
 import ConditionsFilters from "./component/ConditionsFilters";
 import Pagination from "../../../shared/Pagination";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import "../../Patient-management.css";
+import PopupMessage from "../../../shared/PopupMessage";
 
 const AllergyMobileView = () => {
   const { t } = useTranslation();
@@ -23,6 +24,11 @@ const AllergyMobileView = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
   const [selectedAllergy, setSelectedAllergy] = useState(null);
+  const [expandedNotes, setExpandedNotes] = useState({});
+
+  // Popup state
+  const [showPopup, setShowPopup] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
 
   const rowsPerPage = 5;
 
@@ -47,7 +53,7 @@ const AllergyMobileView = () => {
       isActive: true,
       dateNoted: "2025-10-08T00:00:00",
       reaction: "Difficulty breathing",
-      notes: "Patient must avoid penicillin completely"
+      notes: "Patient must avoid penicillin completely. Severe anaphylactic reaction observed during previous exposure. Emergency epinephrine prescribed.",
     },
     {
       allergenId: 13,
@@ -56,7 +62,7 @@ const AllergyMobileView = () => {
       isActive: false,
       dateNoted: "2024-05-10T00:00:00",
       reaction: "Skin rash",
-      notes: "Occurs after eating peanuts"
+      notes: "Occurs after eating peanuts. Mild urticaria and itching. Patient advised to avoid peanut products and carry antihistamines.",
     },
     {
       allergenId: 14,
@@ -65,7 +71,7 @@ const AllergyMobileView = () => {
       isActive: true,
       dateNoted: "2024-03-15T00:00:00",
       reaction: "Sneezing, runny nose",
-      notes: "More severe during spring season"
+      notes: "More severe during spring season. Patient recommended to use allergen-proof bedding and maintain low humidity at home.",
     },
   ]);
 
@@ -77,35 +83,56 @@ const AllergyMobileView = () => {
     isActive: true,
     dateNoted: "",
     reaction: "",
-    notes: ""
+    notes: "",
   };
 
   // Form field configuration for modal
   const fields = [
-    { 
-      name: "severity", 
-      label: t('AllergyMobileView.severity'), 
-      type: "select", 
+    {
+      name: "severity",
+      label: t("AllergyMobileView.severity"),
+      type: "select",
       options: [
-        { value: "Mild", label: t('AllergyMobileView.severity_options.Mild') },
-        { value: "Moderate", label: t('AllergyMobileView.severity_options.Moderate') }, 
-        { value: "Severe", label: t('AllergyMobileView.severity_options.Severe') }
-      ], 
-      placeholder: t('AllergyMobileView.select_severity') 
+        { value: "Mild", label: t("AllergyMobileView.severity_options.Mild") },
+        {
+          value: "Moderate",
+          label: t("AllergyMobileView.severity_options.Moderate"),
+        },
+        {
+          value: "Severe",
+          label: t("AllergyMobileView.severity_options.Severe"),
+        },
+      ],
+      placeholder: t("AllergyMobileView.select_severity"),
     },
-    { 
-      name: "isActive", 
-      label: t('AllergyMobileView.active'), 
-      type: "select", 
+    {
+      name: "isActive",
+      label: t("AllergyMobileView.active"),
+      type: "select",
       options: [
-        { value: true, label: t('AllergyMobileView.active_options.Active') },
-        { value: false, label: t('AllergyMobileView.active_options.Inactive') }
-      ], 
-      placeholder: t('AllergyMobileView.select_active_status') 
+        { value: true, label: t("AllergyMobileView.active_options.Active") },
+        { value: false, label: t("AllergyMobileView.active_options.Inactive") },
+      ],
+      placeholder: t("AllergyMobileView.select_active_status"),
     },
-    { name: "dateNoted", label: t('AllergyMobileView.date_noted'), type: "date", placeholder: t('AllergyMobileView.select_date') },
-    { name: "reaction", label: t('AllergyMobileView.reaction'), type: "text", placeholder: t('AllergyMobileView.enter_reaction') },
-    { name: "notes", label: t('AllergyMobileView.notes'), type: "textarea", placeholder: t('AllergyMobileView.enter_notes') },
+    {
+      name: "dateNoted",
+      label: t("AllergyMobileView.date_noted"),
+      type: "date",
+      placeholder: t("AllergyMobileView.select_date"),
+    },
+    {
+      name: "reaction",
+      label: t("AllergyMobileView.reaction"),
+      type: "text",
+      placeholder: t("AllergyMobileView.enter_reaction"),
+    },
+    {
+      name: "notes",
+      label: t("AllergyMobileView.notes"),
+      type: "textarea",
+      placeholder: t("AllergyMobileView.enter_notes"),
+    },
   ];
 
   // Open modal for adding a new record
@@ -120,7 +147,7 @@ const AllergyMobileView = () => {
     setSelectedRecord({
       ...entry,
       allergenId: entry.allergenId ?? null,
-      allergenLabel: entry.allergenLabel || ""
+      allergenLabel: entry.allergenLabel || "",
     });
     setIsAddMode(false);
     setShowModal(true);
@@ -133,22 +160,32 @@ const AllergyMobileView = () => {
       // Generate ID if missing
       let id = selectedRecord.allergenId;
       if (!id && selectedRecord.allergenLabel) {
-        const found = allergenOptions.find(o => o.label === selectedRecord.allergenLabel || String(o.id) === String(selectedRecord.allergenLabel));
-        id = found ? found.id : Math.max(0, ...allergens.map(a => a.allergenId)) + 1;
+        const found = allergenOptions.find(
+          (o) =>
+            o.label === selectedRecord.allergenLabel ||
+            String(o.id) === String(selectedRecord.allergenLabel)
+        );
+        id = found
+          ? found.id
+          : Math.max(0, ...allergens.map((a) => a.allergenId)) + 1;
       }
       const newRecord = {
         ...selectedRecord,
         allergenId: id,
-        allergenLabel: selectedRecord.allergenLabel || (allergenOptions.find(o => o.id === id)?.label ?? String(id))
+        allergenLabel:
+          selectedRecord.allergenLabel ||
+          (allergenOptions.find((o) => o.id === id)?.label ?? String(id)),
       };
       setAllergens([...allergens, newRecord]);
     } else {
       // Update existing record
-      const updated = allergens.map(item =>
-        item.allergenId === selectedRecord.allergenId ? {
-          ...selectedRecord,
-          allergenLabel: selectedRecord.allergenLabel ?? item.allergenLabel
-        } : item
+      const updated = allergens.map((item) =>
+        item.allergenId === selectedRecord.allergenId
+          ? {
+              ...selectedRecord,
+              allergenLabel: selectedRecord.allergenLabel ?? item.allergenLabel,
+            }
+          : item
       );
       setAllergens(updated);
     }
@@ -156,13 +193,22 @@ const AllergyMobileView = () => {
     setSelectedRecord(null);
   };
 
+  // Toggle notes expansion
+  const toggleNotes = (allergyId) => {
+    setExpandedNotes(prev => ({
+      ...prev,
+      [allergyId]: !prev[allergyId]
+    }));
+  };
+
   // Apply filters (search, type, date range)
   const filteredData = allergens
-    .filter((c) =>
-      c.severity.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (c.reaction?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (c.notes?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (c.allergenLabel?.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(
+      (c) =>
+        c.severity.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        c.reaction?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        c.notes?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        c.allergenLabel?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((c) => (filterType ? c.severity === filterType : true))
     .filter((c) => {
@@ -171,14 +217,44 @@ const AllergyMobileView = () => {
       const fromDate = filterDateFrom ? new Date(filterDateFrom) : null;
       const toDate = filterDateTo ? new Date(filterDateTo) : null;
 
-      if (fromDate && toDate) return eventDate >= fromDate && eventDate <= toDate;
+      if (fromDate && toDate)
+        return eventDate >= fromDate && eventDate <= toDate;
       if (fromDate) return eventDate >= fromDate;
       if (toDate) return eventDate <= toDate;
       return true;
     });
 
+  // Delete record confirmation
+  const handleDeleteClick = (entry) => {
+    setRecordToDelete(entry);
+    setShowPopup(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (recordToDelete) {
+      const updatedAllergens = allergens.filter(
+        item => item.allergenId !== recordToDelete.allergenId
+      );
+      setAllergens(updatedAllergens);
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowModal(false);
+    }
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setRecordToDelete(null);
+  };
+
+  const handleDeleteInModal = () => {
+    if (selectedRecord) {
+      setRecordToDelete(selectedRecord);
+      setShowPopup(true);
+    }
+  };
+
   // Pagination calculations
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
@@ -195,7 +271,11 @@ const AllergyMobileView = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   // Utility: truncate long text
@@ -209,12 +289,14 @@ const AllergyMobileView = () => {
     <div className="table-container mobile-view-card">
       <div className="table-header">
         <div>
-          <h3 className="table-title">{t('AllergyMobileView.table_title')}</h3>
-          <h6 className="table-subtitle">{t('AllergyMobileView.table_subtitle')}</h6>
+          <h3 className="table-title">{t("AllergyMobileView.table_title")}</h3>
+          <h6 className="table-subtitle">
+            {t("AllergyMobileView.table_subtitle")}
+          </h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            {t('AllergyMobileView.add_allergen')}
+            {t("AllergyMobileView.add_allergen")}
           </button>
         </div>
       </div>
@@ -236,77 +318,134 @@ const AllergyMobileView = () => {
               onSearch={() => setCurrentPage(1)}
               conditions={allergens}
               historyTypes={["Mild", "Moderate", "Severe"]}
-              HistoryType={{ All: "All", Mild: "Mild", Moderate: "Moderate", Severe: "Severe" }}
+              HistoryType={{
+                All: "All",
+                Mild: "Mild",
+                Moderate: "Moderate",
+                Severe: "Severe",
+              }}
             />
           </div>
 
           {/* Mobile Cards */}
           <div className="space-y-3">
-            {currentData.map((allergy) => (
-              <Card
-                key={allergy.allergenId ?? allergy.allergenLabel}
-                className="mobile-view-card"
-              >
-                <Card.Body className="" style={{ padding: "15px" }}>
-                  <div className="mb-3">
-                    <small className="text-muted d-block mb-1">{t('AllergyMobileView.reaction')}:</small>
-                    <p className="mb-1">{truncateText(allergy.reaction, 60)}</p>
-                  </div>
-
-                  <div className="mb-3">
-                    <small className="text-muted d-block mb-1">{t('AllergyMobileView.date_noted')}:</small>
-                    <p className="mb-1">{formatDate(allergy.dateNoted)}</p>
-                  </div>
-
-                  {allergy.notes && (
-                    <div className="mb-3">
-                      <small className="text-muted d-block mb-1">{t('AllergyMobileView.notes')}:</small>
-                      <p className="mb-1">{truncateText(allergy.notes, 80)}</p>
+            {currentData.map((allergy) => {
+              const isNotesExpanded = expandedNotes[allergy.allergenId];
+              
+              return (
+                <Card
+                  key={allergy.allergenId ?? allergy.allergenLabel}
+                  className="mobile-view-card"
+                >
+                  <Card.Body style={{ padding: "15px" }}>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 style={{ margin: 0 }}>{allergy.allergenLabel}</h5>
                     </div>
-                  )}
 
-                  <div className="row text-center mb-3">
-                    <div className="col-4">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {t(`AllergyMobileView.severity_options.${allergy.severity}`)}
+                    <div className="mb-2">
+                      <small className="text-muted d-block mb-1">
+                        {t("AllergyMobileView.reaction")}:
+                      </small>
+                      <p className="mb-1">{allergy.reaction}</p>
+                    </div>
+
+                    {/* Notes Section with Expand/Collapse */}
+                    {allergy.notes && (
+                      <div className="mb-2">
+                        <small
+                          className="text-muted d-flex mb-1"
+                          onClick={() => toggleNotes(allergy.allergenId)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {t('AllergyMobileView.notes')} :
+                          <button
+                            className=""
+                            onClick={() => toggleNotes(allergy.allergenId)}
+                            style={{
+                              fontSize: '20px',
+                              color: '#278fff',
+                              padding: "3px 0 0"
+                            }}
+                          >
+                            <MdExpandMore
+                            onClick={() => toggleNotes(allergy.allergenId)}
+                              style={{
+                                transform: expandedNotes[allergy.allergenId] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.3s ease',
+                              }}
+                            />
+                          </button>
+                        </small>
+                        <div className={`expandable-content ${expandedNotes[allergy.allergenId] ? '' : 'p-0'}`}>
+                          <p
+                            style={{
+                              margin: "0",
+                              cursor: 'pointer',
+                              transition: 'all 0.3s ease'
+                            }}
+                            onClick={() => toggleNotes(allergy.allergenId)}
+                          >
+                            {expandedNotes[allergy.allergenId] ? allergy.notes : ""}
+                          </p>
                         </div>
-                        <small className="text-muted">{t('AllergyMobileView.severity')}</small>
                       </div>
-                    </div>
-                    <div className="col-4">
-                      <div className="fw-bold text-primary">
-                        {formatDate(allergy.dateNoted)}
-                      </div>
-                      <small className="text-muted">{t('AllergyMobileView.date_noted')}</small>
-                    </div>
-                    <div className="col-4">
-                      <div className="fw-bold text-primary">
-                        {allergy.isActive ? t('AllergyMobileView.active_options.Active') : t('AllergyMobileView.active_options.Inactive')}
-                      </div>
-                      <small className="text-muted">{t('AllergyMobileView.is_active')}</small>
-                    </div>
-                  </div>
+                    )}
 
-                  <div>
-                    <Button
-                      className="view-btn btn btn-outline-primary btn-sm btn btn-outline-primary btn-sm"
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => handleEdit(allergy)}
-                      style={{ float: "inline-end" }}
-                    >
-                      {t('AllergyMobileView.manage')}
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
+                    <div className="row text-center mb-3">
+                      <div className="col-4">
+                        <div className="border-end">
+                          <div className="fw-bold text-primary">
+                            {t(
+                              `AllergyMobileView.severity_options.${allergy.severity}`
+                            )}
+                          </div>
+                          <small className="text-muted">
+                            {t("AllergyMobileView.severity")}
+                          </small>
+                        </div>
+                      </div>
+                      <div className="col-4">
+                        <div className="fw-bold text-primary">
+                          {formatDate(allergy.dateNoted)}
+                        </div>
+                        <small className="text-muted">
+                          {t("AllergyMobileView.date_noted")}
+                        </small>
+                      </div>
+                      <div className="col-4">
+                        <div className="fw-bold text-primary">
+                          {allergy.isActive
+                            ? t("AllergyMobileView.active_options.Active")
+                            : t("AllergyMobileView.active_options.Inactive")}
+                        </div>
+                        <small className="text-muted">
+                          {t("AllergyMobileView.is_active")}
+                        </small>
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div style={{ flex: 1 }}></div>
+                      <Button
+                        className="view-btn btn btn-outline-primary btn-sm"
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => handleEdit(allergy)}
+                      >
+                        {t("AllergyMobileView.manage")}
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              );
+            })}
 
             {currentData.length === 0 && (
               <Card className="text-center py-5">
                 <Card.Body>
-                  <p className="text-muted">{t('AllergyMobileView.no_records_found')}</p>
+                  <p className="text-muted">
+                    {t("AllergyMobileView.no_records_found")}
+                  </p>
                 </Card.Body>
               </Card>
             )}
@@ -323,6 +462,7 @@ const AllergyMobileView = () => {
 
       {/* Edit/Add Modal */}
       <DynamicEditModal
+        onDelete={handleDeleteInModal}
         show={showModal}
         onClose={() => {
           setShowModal(false);
@@ -332,11 +472,38 @@ const AllergyMobileView = () => {
         record={selectedRecord}
         setRecord={setSelectedRecord}
         fields={fields}
-        title={isAddMode ? t('AllergyMobileView.add_allergen') : t('AllergyMobileView.edit_allergen')}
+        title={
+          isAddMode
+            ? t("AllergyMobileView.add_allergen")
+            : t("AllergyMobileView.edit_allergen")
+        }
         dropdownOptions={allergenOptions}
         dropdownField="allergenId"
-        dropdownLabel={t('AllergyMobileView.allergen')}
+        dropdownLabel={t("AllergyMobileView.allergen")}
       />
+      
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('AllergyTable.confirm_delete_title')}
+          message={t('AllergyTable.confirm_delete_message', { 
+            allergen: recordToDelete.allergenLabel || recordToDelete.allergenId 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger" 
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

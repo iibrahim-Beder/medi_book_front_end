@@ -5,11 +5,13 @@ import TextAreaField from "../ui/form-fields/TextAreaField";
 import SelectField from "../ui/form-fields/SelectField";
 import { MdClose } from "react-icons/md";
 import DropdownWithSearch from "./DropdownWithSearch";
-
+import { useTranslation } from "react-i18next";
 const DynamicEditModal = ({
+  addMode,
   show,
   onClose,
   onSave,
+  onDelete,
   record,
   setRecord,
   fields,
@@ -22,6 +24,7 @@ const DynamicEditModal = ({
   dropdownLabel = "Allergen",      // Label displayed for dropdown
 }) => {
 
+  const { t } = useTranslation();
   // Handle changes in basic input fields
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -69,12 +72,12 @@ const DynamicEditModal = ({
       <Modal.Header style={{
         position: "relative",
         borderBottom: "1px solid #dee2e6",
-        padding: "1.5rem 1.5rem 1rem",
+        padding: "16px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between"
       }}>
-        <Modal.Title style={{ fontWeight: "600", fontSize: "1.4rem", margin: 0 }}>
+        <Modal.Title className="text-ellipsis" style={{ fontWeight: "600", fontSize: "17px", margin: 0 }}>
           {title}
         </Modal.Title>
 
@@ -178,8 +181,9 @@ const DynamicEditModal = ({
       </Modal.Body>
 
       <Modal.Footer style={{ border: "none", padding: "0.5rem 1.5rem 1.5rem", gap: "0.8rem" }}>
-        <button className="btn btn-light" onClick={onClose}>Cancel</button>
-        <button onClick={onSave} className="dc-btn">Save Changes</button>
+        <button className="simple-btn" onClick={onClose}>{t("Cancel")}</button>
+      { !addMode &&  <button onClick={onDelete} className="btn-simple">{t("Delete")}</button>}
+        <button onClick={onSave} className="second-btn">{t("Save")}</button>
       </Modal.Footer>
     </Modal>
   );

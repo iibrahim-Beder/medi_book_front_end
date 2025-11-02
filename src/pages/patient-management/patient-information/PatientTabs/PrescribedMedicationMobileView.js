@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
 import ConditionsFilters from "./component/ConditionsFilters";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import Field from "../../../ui/form-fields/Field";
@@ -15,6 +15,7 @@ const PrescribedMedicationMobileView = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedInstructions, setExpandedInstructions] = useState({});
 
   // Filters states
   const [filterType, setFilterType] = useState("");
@@ -92,6 +93,14 @@ const PrescribedMedicationMobileView = () => {
       status: "active",
     },
   ];
+
+  // Toggle instructions expansion
+  const toggleInstructions = (medicationId) => {
+    setExpandedInstructions(prev => ({
+      ...prev,
+      [medicationId]: !prev[medicationId]
+    }));
+  };
 
   // Apply search & filters
   const filteredPrescriptions = prescriptionsData
@@ -190,66 +199,107 @@ const PrescribedMedicationMobileView = () => {
 
           {/* Mobile Cards */}
           <div className="space-y-3">
-            {currentData.map((prescription) => (
-              <Card key={prescription.id} className="mobile-view-card">
-                <Card.Body style={{ padding: "15px" }}>
-                  <h5>{prescription.medication}</h5>
-
-                  <div className="mb-2">
-                    <small className="text-muted d-block mb-1">
-                      {t("PrescribedMedicationMobileView.diagnosis_name")}:
-                    </small>
-                    <p>{prescription.diagnosisName}</p>
-                  </div>
-
-                  <div className="mb-2">
-                    <small className="text-muted d-block mb-1">
-                      {t("PrescribedMedicationMobileView.prescribed_name")}:
-                    </small>
-                    <p>{prescription.prescribedName}</p>
-                  </div>
-
-                  <div className="row text-center mb-3">
-                    <div className="col-4 border-end pl-2 p-1">
-                      <div className="fw-bold text-primary">{prescription.dosage}</div>
-                      <small className="text-muted">{t("PrescribedMedicationMobileView.dosage")}</small>
+            {currentData.map((prescription) => {
+              const isInstructionsExpanded = expandedInstructions[prescription.id];
+              
+              return (
+                <Card key={prescription.id} className="mobile-view-card">
+                  <Card.Body style={{ padding: "15px" }}>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 style={{ margin: 0 }}>{prescription.medication}</h5>
                     </div>
-                    <div className="col-4 border-end p-1">
-                      <div className="fw-bold text-primary">{prescription.duration}</div>
-                      <small className="text-muted">{t("PrescribedMedicationMobileView.duration")}</small>
+
+                    <div className="mb-2">
+                      <small className="text-muted d-block mb-1">
+                        {t("PrescribedMedicationMobileView.diagnosis_name")}:
+                      </small>
+                      <p>{prescription.diagnosisName}</p>
                     </div>
-                    <div className="col-4 pl-0 p-1">
-                      <div
-                        className="fw-bold"
-                        style={{ color: getStatusColor(prescription.status) }}
-                      >
-                        {t(`PrescribedMedicationMobileView.status_options.${prescription.status}`)}
+
+                    <div className="mb-2">
+                      <small className="text-muted d-block mb-1">
+                        {t("PrescribedMedicationMobileView.prescribed_name")}:
+                      </small>
+                      <p>{prescription.prescribedName}</p>
+                    </div>
+
+                    <div className="row text-center mb-3">
+                      <div className="col-4 border-end pl-2 p-1">
+                        <div className="fw-bold text-primary">{prescription.dosage}</div>
+                        <small className="text-muted">{t("PrescribedMedicationMobileView.dosage")}</small>
                       </div>
-                      <small className="text-muted">{t("PrescribedMedicationMobileView.status")}</small>
+                      <div className="col-4 border-end p-1">
+                        <div className="fw-bold text-primary">{prescription.duration}</div>
+                        <small className="text-muted">{t("PrescribedMedicationMobileView.duration")}</small>
+                      </div>
+                      <div className="col-4 pl-0 p-1">
+                        <div
+                          className="fw-bold"
+                          style={{ color: getStatusColor(prescription.status) }}
+                        >
+                          {t(`PrescribedMedicationMobileView.status_options.${prescription.status}`)}
+                        </div>
+                        <small className="text-muted">{t("PrescribedMedicationMobileView.status")}</small>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mb-2">
-                    <small className="text-muted d-block mb-1">
-                      {t("PrescribedMedicationMobileView.instructions")}:
-                    </small>
-                    <p>{truncateText(prescription.instructions, 80)}</p>
-                  </div>
+                    {/* Instructions Section with Expand/Collapse */}
+                    <div className="mb-2">
+                      <small
+                        className="text-muted d-flex mb-1"
+                        onClick={() => toggleInstructions(prescription.id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {t('PrescribedMedicationMobileView.instructions')} :
+                        {prescription.instructions && (
+                          <button
+                            className=""
+                            onClick={() => toggleInstructions(prescription.id)}
+                            style={{
+                              fontSize: '20px',
+                              color: '#278fff',
+                              padding: "3px 0 0"
+                            }}
+                          >
+                            <MdExpandMore
+                            onClick={() => toggleInstructions(prescription.id)}
+                              style={{
+                                transform: expandedInstructions[prescription.id] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.3s ease',
+                              }}
+                            />
+                          </button>
+                        )}
+                      </small>
+                      <div className={`expandable-content ${expandedInstructions[prescription.id] ? '' : 'p-0'}`}>
+                        <p
+                          style={{
+                            margin: "0",
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onClick={() => toggleInstructions(prescription.id)}
+                        >
+                          {expandedInstructions[prescription.id] ? prescription.instructions : ""}
+                        </p>
+                      </div>
+                    </div>
 
-                  <div>
-                    <Button
-                      className="view-btn btn btn-outline-primary btn-sm"
-                      variant="outline-primary"
-                      size="sm"
-                      style={{ float: "inline-end" }}
-                      onClick={() => handleOpenModal(prescription)}
-                    >
-                      {t("PrescribedMedicationMobileView.view_all_details")}
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div style={{ flex: 1 }}></div>
+                      <Button
+                        className="view-btn btn btn-outline-primary btn-sm"
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => handleOpenModal(prescription)}
+                      >
+                        {t("PrescribedMedicationMobileView.view_all_details")}
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              );
+            })}
 
             {currentData.length === 0 && (
               <Card className="text-center py-5">

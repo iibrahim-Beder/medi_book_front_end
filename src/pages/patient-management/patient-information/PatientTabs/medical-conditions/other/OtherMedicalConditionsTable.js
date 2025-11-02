@@ -1,12 +1,14 @@
 // OtherMedicalConditions.jsx
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import "../../../../Patient-management.css"; // أعدت استيراد الملف لأنه كان معلّق في الكود الأصلي
+import "../../../../Patient-management.css";
 import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../../../shared/Pagination";
+import PopupMessage from "../../../../../shared/PopupMessage"; 
+import DynamicEditModal from "../../../../../shared/DynamicEditModal"; 
 
 const OtherMedicalConditions = () => {
   const { t } = useTranslation();
@@ -20,16 +22,21 @@ const OtherMedicalConditions = () => {
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
 
+  const [showModal, setShowModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [recordToDelete, setRecordToDelete] = useState(null);
+  const [isAddMode, setIsAddMode] = useState(false);
+
   // Mock data representing diagnosed conditions
-  const conditionsData = [
+  const [conditionsData, setConditionsData] = useState([
     {
       id: "#DC001",
       medicalConditionName: "Rheumatoid Arthritis",
       severity: "Severe",
       diagnosedDate: "2022-08-12",
       isActive: true,
-      notes:
-        "Patient presents with symmetric polyarthritis affecting small joints of hands and feet. Morning stiffness lasting over 2 hours. Elevated CRP and ESR levels. Rheumatoid factor positive. Started on Methotrexate and Prednisone taper. Requires regular monitoring of liver function and blood counts.",
+      notes: "Patient presents with symmetric polyarthritis affecting small joints of hands and feet..."
     },
     {
       id: "#DC002",
@@ -37,66 +44,125 @@ const OtherMedicalConditions = () => {
       severity: "Moderate",
       diagnosedDate: "2023-03-18",
       isActive: true,
-      notes:
-        "Estimated GFR 45 mL/min/1.73m². Secondary to long-standing hypertension. Proteinuria 450 mg/24h. Blood pressure well-controlled on ACE inhibitors. Advised renal protective diet: low sodium, moderate protein. Avoid NSAIDs and nephrotoxic agents. Regular monitoring of renal function every 3 months.",
+      notes: "Estimated GFR 45 mL/min/1.73m². Secondary to long-standing hypertension..."
     },
-    {
-      id: "#DC003",
-      medicalConditionName: "Generalized Anxiety Disorder",
-      severity: "Moderate",
-      diagnosedDate: "2021-11-05",
-      isActive: true,
-      notes:
-        "Patient reports persistent worry, restlessness, muscle tension, and sleep disturbance. Experiencing panic attacks 2-3 times monthly. Started on SSRI and referred for cognitive behavioral therapy. Good response to treatment with reduced anxiety symptoms. Continuing medication and therapy sessions.",
+    
+  ]);
+
+  // Template for new record
+  const emptyRecord = {
+    medicalConditionName: "",
+    severity: "",
+    diagnosedDate: "",
+    isActive: true,
+    notes: ""
+  };
+
+  // Form fields configuration for modal
+  const fields = [
+    { 
+      name: "medicalConditionName", 
+      label: t('OtherMedicalConditions.medical_condition_name'), 
+      type: "text", 
+      placeholder: t('OtherMedicalConditions.enter_condition_name') 
     },
-    {
-      id: "#DC004",
-      medicalConditionName: "Osteoporosis",
-      severity: "Mild",
-      diagnosedDate: "2020-09-22",
-      isActive: true,
-      notes:
-        "T-score -2.5 at lumbar spine. No previous fractures. Patient educated about fall prevention and importance of weight-bearing exercises. Started on calcium and vitamin D supplementation. Bisphosphonates initiated. Bone density scan scheduled in 2 years. Good adherence to treatment plan.",
+    { 
+      name: "severity", 
+      label: t('OtherMedicalConditions.severity'), 
+      type: "select", 
+      options: [
+        { value: "Mild", label: t('OtherMedicalConditions.severity_options.Mild') },
+        { value: "Moderate", label: t('OtherMedicalConditions.severity_options.Moderate') }, 
+        { value: "Severe", label: t('OtherMedicalConditions.severity_options.Severe') }
+      ], 
+      placeholder: t('OtherMedicalConditions.select_severity') 
     },
-    {
-      id: "#DC005",
-      medicalConditionName: "Psoriasis",
-      severity: "Moderate",
-      diagnosedDate: "2019-12-10",
-      isActive: false,
-      notes:
-        "Extensive plaques covering approximately 15% of body surface area, primarily on elbows, knees, and scalp. Previously treated with topical corticosteroids and phototherapy. Condition resolved with biologic therapy. Patient currently in remission with clear skin. Monitoring for potential recurrence.",
+    { 
+      name: "isActive", 
+      label: t('OtherMedicalConditions.status'), 
+      type: "select", 
+      options: [
+        { value: true, label: t('Common.status_options.active') },
+        { value: false, label: t('Common.status_options.inactive') }
+      ], 
+      placeholder: t('OtherMedicalConditions.select_status') 
     },
-    {
-      id: "#DC006",
-      medicalConditionName: "Hypothyroidism",
-      severity: "Mild",
-      diagnosedDate: "2018-06-30",
-      isActive: true,
-      notes:
-        "TSH elevated at 8.5 mIU/L, free T4 low normal. Positive anti-TPO antibodies. Started on Levothyroxine 50 mcg daily. Symptoms of fatigue and weight gain improved with treatment. TSH now stable at 2.1 mIU/L on current dose. Requires lifelong thyroid replacement therapy with annual TSH monitoring.",
-    },
-    {
-      id: "#DC007",
-      medicalConditionName: "Coronary Artery Disease",
-      severity: "Severe",
-      diagnosedDate: "2023-01-15",
-      isActive: true,
-      notes:
-        "Significant stenosis in LAD, RCA, and LCx arteries. Status post CABG x3. EF 45%. On optimal medical therapy including beta-blocker, statin, aspirin, and ACE inhibitor. No current angina symptoms. Strict lipid control with LDL target <70 mg/dL. Cardiac rehab completed.",
-    },
-    {
-      id: "#DC008",
-      medicalConditionName: "Chronic Obstructive Pulmonary Disease",
-      severity: "Moderate",
-      diagnosedDate: "2022-04-08",
-      isActive: true,
-      notes:
-        "FEV1/FVC 60%, FEV1 65% predicted. Former smoker, quit 5 years ago. Symptoms include dyspnea on exertion and chronic cough. On LAMA/LABA inhaler therapy. Pulmonary rehab referral provided. Annual influenza vaccination and pneumococcal vaccine up to date. No recent exacerbations.",
-    },
+    { name: "diagnosedDate", label: t('OtherMedicalConditions.diagnosed_date'), type: "date", placeholder: t('OtherMedicalConditions.select_date') },
+    { name: "notes", label: t('OtherMedicalConditions.notes'), type: "textarea", placeholder: t('OtherMedicalConditions.enter_notes') },
   ];
 
-  // Handle expand/collapse for notes
+  // Handle Add New
+  const handleAddNew = () => {
+    setSelectedRecord({ ...emptyRecord });
+    setIsAddMode(true);
+    setShowModal(true);
+  };
+
+  // Handle Edit
+  const handleEdit = (condition) => {
+    setSelectedRecord({ ...condition });
+    setIsAddMode(false);
+    setShowModal(true);
+  };
+
+  // Handle Save (Add/Update)
+  const handleSave = () => {
+    if (!selectedRecord) return;
+
+    if (isAddMode) {
+      // Generate new ID
+      const newId = `#DC${String(conditionsData.length + 1).padStart(3, '0')}`;
+      const newRecord = {
+        ...selectedRecord,
+        id: newId
+      };
+      setConditionsData([...conditionsData, newRecord]);
+    } else {
+      // Update existing record
+      const updatedData = conditionsData.map(item =>
+        item.id === selectedRecord.id ? selectedRecord : item
+      );
+      setConditionsData(updatedData);
+    }
+
+    setShowModal(false);
+    setSelectedRecord(null);
+  };
+
+  // Handle Delete Click
+  const handleDeleteClick = (condition) => {
+    setRecordToDelete(condition);
+    setShowPopup(true);
+  };
+
+  // Handle Delete from Modal
+  const handleDeleteInModal = () => {
+    if (selectedRecord) {
+      setRecordToDelete(selectedRecord);
+      // setShowModal(false);
+      setShowPopup(true);
+    }
+  };
+
+  // Confirm Delete
+  const handleConfirmDelete = () => {
+    if (recordToDelete) {
+      const updatedData = conditionsData.filter(
+        item => item.id !== recordToDelete.id
+      );
+      setConditionsData(updatedData);
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowModal(false);
+    }
+  };
+
+  // Close Popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setRecordToDelete(null);
+  };
+
   const handleNotesClick = (id) => {
     if (expandedRow === id) {
       setExpandedRow(null);
@@ -147,13 +213,13 @@ const OtherMedicalConditions = () => {
   const getSeverityColor = (severity) => {
     switch (severity?.toLowerCase()) {
       case "mild":
-        return "#4BAE78"; // Green
+        return "#4BAE78";
       case "moderate":
-        return "#FFA500"; // Orange
+        return "#FFA500";
       case "severe":
-        return "#D66A6A"; // Red
+        return "#D66A6A";
       default:
-        return "#6C757D"; // Gray
+        return "#6C757D";
     }
   };
 
@@ -185,10 +251,15 @@ const OtherMedicalConditions = () => {
 
   return (
     <div className="table-container">
-      <div className="table-header">
+      <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("OtherMedicalConditionsMobileView.table_title")}</h3>
           <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+        </div>
+        <div>
+          <button className="add-btn" onClick={handleAddNew}>
+            {t('OtherMedicalConditions.add_condition')}
+          </button>
         </div>
       </div>
 
@@ -221,6 +292,7 @@ const OtherMedicalConditions = () => {
                   <th>{t("OtherMedicalConditionsMobileView.diagnosed_date")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.status")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.notes")}</th>
+                  <th>{t("OtherMedicalConditions.actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -287,6 +359,29 @@ const OtherMedicalConditions = () => {
                             </Button>
                           </div>
                         </td>
+                        <td>
+                          <div style={{ display: "flex", gap: "8px" }}>
+                            <Button
+                                className="view-btn"
+                          variant=""
+                          size="sm"
+                          style={{ color: "#007bff", backgroundColor: "transparent" }}
+                              onClick={() => handleEdit(condition)}
+                            >
+                              {/* <MdEdit size={16} /> */}
+                              {t("Manage")}
+                            </Button>
+                            {/* <Button
+                              className="view-btn"
+                              variant=""
+                              size="sm"
+                              style={{ color: "#dc3545", backgroundColor: "transparent" }}
+                              onClick={() => handleDeleteClick(condition)}
+                            >
+                              {t("Delete")}
+                            </Button> */}
+                          </div>
+                        </td>
                       </tr>
 
                       {/* Expanded row for Notes */}
@@ -324,6 +419,46 @@ const OtherMedicalConditions = () => {
           />
         </div>
       </div>
+
+      {/* Modal for Add/Edit */}
+      <DynamicEditModal
+        show={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedRecord(null);
+        }}
+        onSave={handleSave}
+        onDelete={handleDeleteInModal}
+        record={selectedRecord}
+        setRecord={setSelectedRecord}
+        fields={fields}
+        addMode={isAddMode}
+        title={isAddMode ? t('OtherMedicalConditions.add_condition') : t('OtherMedicalConditions.edit_condition')}
+      />
+
+      {/* Popup for Delete Confirmation */}
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('OtherMedicalConditions.confirm_delete_title')}
+          message={t('OtherMedicalConditions.confirm_delete_message', { 
+            condition: recordToDelete.medicalConditionName 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger" 
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

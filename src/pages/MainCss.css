@@ -1128,3 +1128,14 @@ color: white;
 .dc-rightarea{
   margin-left: 10px;
 }
+.text-ellipsis{
+  display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    vertical-align: middle;
+}
+.two-tabs .mobile-view-card .table-header{
+  margin:auto 10px;
+}

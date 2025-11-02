@@ -1,18 +1,23 @@
 // OtherMedicalConditionsMobileView.jsx
 import React, { useState } from "react";
-import { Button, Modal, Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import "../../../../Patient-management.css";
 import ConditionsFilters from "../../component/ConditionsFilters";
-import { MdClose } from "react-icons/md";
+import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
-import Field from "../../../../../ui/form-fields/Field";
 import Pagination from "../../../../../shared/Pagination";
+import PopupMessage from "../../../../../shared/PopupMessage";
+import DynamicEditModal from "../../../../../shared/DynamicEditModal";
 
 const OtherMedicalConditionsMobileView = () => {
   const { t } = useTranslation();
   const [selectedCondition, setSelectedCondition] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
+  const [isAddMode, setIsAddMode] = useState(false);
+  const [expandedNotes, setExpandedNotes] = useState({});
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,15 +28,14 @@ const OtherMedicalConditionsMobileView = () => {
   const [filterDateTo, setFilterDateTo] = useState(null);
 
   // Mock data representing diagnosed conditions
-  const conditionsData = [
+  const [conditionsData, setConditionsData] = useState([
     {
       id: "#DC001",
       medicalConditionName: "Rheumatoid Arthritis",
       severity: "Severe",
       diagnosedDate: "2022-08-12",
       isActive: true,
-      notes:
-        "Patient presents with symmetric polyarthritis affecting small joints of hands and feet. Morning stiffness lasting over 2 hours. Elevated CRP and ESR levels. Rheumatoid factor positive. Started on Methotrexate and Prednisone taper. Requires regular monitoring of liver function and blood counts.",
+      notes: "Patient presents with symmetric polyarthritis affecting small joints of hands and feet. Morning stiffness lasting over 2 hours. Elevated CRP and ESR levels. Rheumatoid factor positive. Started on Methotrexate and Prednisone taper. Requires regular monitoring of liver function and blood counts."
     },
     {
       id: "#DC002",
@@ -39,64 +43,124 @@ const OtherMedicalConditionsMobileView = () => {
       severity: "Moderate",
       diagnosedDate: "2023-03-18",
       isActive: true,
-      notes:
-        "Estimated GFR 45 mL/min/1.73m². Secondary to long-standing hypertension. Proteinuria 450 mg/24h. Blood pressure well-controlled on ACE inhibitors. Advised renal protective diet: low sodium, moderate protein. Avoid NSAIDs and nephrotoxic agents. Regular monitoring of renal function every 3 months.",
+      notes: "Estimated GFR 45 mL/min/1.73m². Secondary to long-standing hypertension. Proteinuria 450 mg/24h. Blood pressure well-controlled on ACE inhibitors. Advised renal protective diet: low sodium, moderate protein. Avoid NSAIDs and nephrotoxic agents. Regular monitoring of renal function every 3 months."
     },
-    {
-      id: "#DC003",
-      medicalConditionName: "Generalized Anxiety Disorder",
-      severity: "Moderate",
-      diagnosedDate: "2021-11-05",
-      isActive: true,
-      notes:
-        "Patient reports persistent worry, restlessness, muscle tension, and sleep disturbance. Experiencing panic attacks 2-3 times monthly. Started on SSRI and referred for cognitive behavioral therapy. Good response to treatment with reduced anxiety symptoms. Continuing medication and therapy sessions.",
+  ]);
+
+  // Template for new record
+  const emptyRecord = {
+    medicalConditionName: "",
+    severity: "",
+    diagnosedDate: "",
+    isActive: true,
+    notes: ""
+  };
+
+  // Form fields configuration for modal
+  const fields = [
+    { 
+      name: "medicalConditionName", 
+      label: t('OtherMedicalConditions.medical_condition_name'), 
+      type: "text", 
+      placeholder: t('OtherMedicalConditions.enter_condition_name') 
     },
-    {
-      id: "#DC004",
-      medicalConditionName: "Osteoporosis",
-      severity: "Mild",
-      diagnosedDate: "2020-09-22",
-      isActive: true,
-      notes:
-        "T-score -2.5 at lumbar spine. No previous fractures. Patient educated about fall prevention and importance of weight-bearing exercises. Started on calcium and vitamin D supplementation. Bisphosphonates initiated. Bone density scan scheduled in 2 years. Good adherence to treatment plan.",
+    { 
+      name: "severity", 
+      label: t('OtherMedicalConditions.severity'), 
+      type: "select", 
+      options: [
+        { value: "Mild", label: t('OtherMedicalConditions.severity_options.Mild') },
+        { value: "Moderate", label: t('OtherMedicalConditions.severity_options.Moderate') }, 
+        { value: "Severe", label: t('OtherMedicalConditions.severity_options.Severe') }
+      ], 
+      placeholder: t('OtherMedicalConditions.select_severity') 
     },
-    {
-      id: "#DC005",
-      medicalConditionName: "Psoriasis",
-      severity: "Moderate",
-      diagnosedDate: "2019-12-10",
-      isActive: false,
-      notes:
-        "Extensive plaques covering approximately 15% of body surface area, primarily on elbows, knees, and scalp. Previously treated with topical corticosteroids and phototherapy. Condition resolved with biologic therapy. Patient currently in remission with clear skin. Monitoring for potential recurrence.",
+    { 
+      name: "isActive", 
+      label: t('OtherMedicalConditions.status'), 
+      type: "select", 
+      options: [
+        { value: true, label: t('Common.status_options.active') },
+        { value: false, label: t('Common.status_options.inactive') }
+      ], 
+      placeholder: t('OtherMedicalConditions.select_status') 
     },
-    {
-      id: "#DC006",
-      medicalConditionName: "Hypothyroidism",
-      severity: "Mild",
-      diagnosedDate: "2018-06-30",
-      isActive: true,
-      notes:
-        "TSH elevated at 8.5 mIU/L, free T4 low normal. Positive anti-TPO antibodies. Started on Levothyroxine 50 mcg daily. Symptoms of fatigue and weight gain improved with treatment. TSH now stable at 2.1 mIU/L on current dose. Requires lifelong thyroid replacement therapy with annual TSH monitoring.",
-    },
-    {
-      id: "#DC007",
-      medicalConditionName: "Coronary Artery Disease",
-      severity: "Severe",
-      diagnosedDate: "2023-01-15",
-      isActive: true,
-      notes:
-        "Significant stenosis in LAD, RCA, and LCx arteries. Status post CABG x3. EF 45%. On optimal medical therapy including beta-blocker, statin, aspirin, and ACE inhibitor. No current angina symptoms. Strict lipid control with LDL target <70 mg/dL. Cardiac rehab completed.",
-    },
-    {
-      id: "#DC008",
-      medicalConditionName: "Chronic Obstructive Pulmonary Disease",
-      severity: "Moderate",
-      diagnosedDate: "2022-04-08",
-      isActive: true,
-      notes:
-        "FEV1/FVC 60%, FEV1 65% predicted. Former smoker, quit 5 years ago. Symptoms include dyspnea on exertion and chronic cough. On LAMA/LABA inhaler therapy. Pulmonary rehab referral provided. Annual influenza vaccination and pneumococcal vaccine up to date. No recent exacerbations.",
-    },
+    { name: "diagnosedDate", label: t('OtherMedicalConditions.diagnosed_date'), type: "date", placeholder: t('OtherMedicalConditions.select_date') },
+    { name: "notes", label: t('OtherMedicalConditions.notes'), type: "textarea", placeholder: t('OtherMedicalConditions.enter_notes') },
   ];
+
+  // Handle Add New
+  const handleAddNew = () => {
+    setSelectedCondition({ ...emptyRecord });
+    setIsAddMode(true);
+    setShowEditModal(true);
+  };
+
+  // Handle Edit
+  const handleEdit = (condition) => {
+    setSelectedCondition({ ...condition });
+    setIsAddMode(false);
+    setShowEditModal(true);
+  };
+
+  // Handle Save (Add/Update)
+  const handleSave = () => {
+    if (!selectedCondition) return;
+
+    if (isAddMode) {
+      // Generate new ID
+      const newId = `#DC${String(conditionsData.length + 1).padStart(3, '0')}`;
+      const newRecord = {
+        ...selectedCondition,
+        id: newId
+      };
+      setConditionsData([...conditionsData, newRecord]);
+    } else {
+      // Update existing record
+      const updatedData = conditionsData.map(item =>
+        item.id === selectedCondition.id ? selectedCondition : item
+      );
+      setConditionsData(updatedData);
+    }
+
+    setShowEditModal(false);
+    setSelectedCondition(null);
+  };
+
+  // Handle Delete from Edit Modal
+  const handleDeleteInModal = () => {
+    if (selectedCondition) {
+      setRecordToDelete(selectedCondition);
+      setShowPopup(true);
+    }
+  };
+
+  // Confirm Delete
+  const handleConfirmDelete = () => {
+    if (recordToDelete) {
+      const updatedData = conditionsData.filter(
+        item => item.id !== recordToDelete.id
+      );
+      setConditionsData(updatedData);
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowEditModal(false);
+    }
+  };
+
+  // Close Popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setRecordToDelete(null);
+  };
+
+  // Toggle notes expansion
+  const toggleNotes = (conditionId) => {
+    setExpandedNotes(prev => ({
+      ...prev,
+      [conditionId]: !prev[conditionId]
+    }));
+  };
 
   // Apply search & filters
   const filteredConditions = conditionsData
@@ -128,21 +192,7 @@ const OtherMedicalConditionsMobileView = () => {
     setCurrentPage(1);
   };
 
-  const handleOpenModal = (condition) => {
-    setSelectedCondition(condition);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleModalExited = () => {
-    setSelectedCondition(null);
-  };
-
   const rowsPerPage = 5;
-  const totalPages = Math.ceil(filteredConditions.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentData = filteredConditions.slice(
     startIndex,
@@ -153,13 +203,13 @@ const OtherMedicalConditionsMobileView = () => {
   const getSeverityColor = (severity) => {
     switch (severity?.toLowerCase()) {
       case "mild":
-        return "#4BAE78"; // Green
+        return "#4BAE78";
       case "moderate":
-        return "#FFA500"; // Orange
+        return "#FFA500";
       case "severe":
-        return "#D66A6A"; // Red
+        return "#D66A6A";
       default:
-        return "#6C757D"; // Gray
+        return "#6C757D";
     }
   };
 
@@ -191,10 +241,15 @@ const OtherMedicalConditionsMobileView = () => {
 
   return (
     <div className="table-container mobile-view-card">
-      <div className="table-header">
+      <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("OtherMedicalConditionsMobileView.table_title")}</h3>
           <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+        </div>
+        <div>
+          <button className="add-btn" onClick={handleAddNew}>
+            {t('OtherMedicalConditions.add_condition')}
+          </button>
         </div>
       </div>
 
@@ -221,10 +276,15 @@ const OtherMedicalConditionsMobileView = () => {
           <div className="space-y-3">
             {currentData.map((condition) => {
               const statusInfo = getStatusInfo(condition.isActive);
+              const isNotesExpanded = expandedNotes[condition.id];
+              
               return (
                 <Card key={condition.id} className="mobile-view-card">
                   <Card.Body style={{ padding: "15px" }}>
-                    <h5>{condition.medicalConditionName}</h5>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 style={{ margin: 0 }}>{condition.medicalConditionName}</h5>
+                    </div>
+                    
                     <div className="row text-center mb-3">
                       <div className="col-4 border-end">
                         <div
@@ -254,11 +314,46 @@ const OtherMedicalConditionsMobileView = () => {
                       </div>
                     </div>
 
+                    {/* Notes Section */}
                     <div className="mb-2">
-                      <small className="text-muted d-block mb-1">
-                        {t("OtherMedicalConditionsMobileView.notes")}:
+                      <small
+                        className="text-muted d-flex mb-1"
+                        onClick={() => toggleNotes(condition.id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {t('OtherMedicalConditionsMobileView.notes')} :
+                        {condition.notes && (
+                          <button
+                            className=""
+                            onClick={() => toggleNotes(condition.id)}
+                            style={{
+                              fontSize: '20px',
+                              color: '#278fff',
+                              padding: "3px 0 0"
+                            }}
+                          >
+                            <MdExpandMore
+                            onClick={() => toggleNotes(condition.id)}
+                              style={{
+                                transform: expandedNotes[condition.id] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.3s ease',
+                              }}
+                            />
+                          </button>
+                        )}
                       </small>
-                      <p>{truncateText(condition.notes, 80)}</p>
+                      <div className={`expandable-content ${expandedNotes[condition.id] ? '' : 'p-0'}`}>
+                        <p
+                          style={{
+                            margin: "0",
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onClick={() => toggleNotes(condition.id)}
+                        >
+                          {expandedNotes[condition.id] ? condition.notes : ""}
+                        </p>
+                      </div>
                     </div>
 
                     <div>
@@ -267,9 +362,9 @@ const OtherMedicalConditionsMobileView = () => {
                         variant="outline-primary"
                         size="sm"
                         style={{ float: "inline-end" }}
-                        onClick={() => handleOpenModal(condition)}
+                        onClick={() => handleEdit(condition)}
                       >
-                        {t("OtherMedicalConditionsMobileView.view_all_details")}
+                        {t("Manage")}
                       </Button>
                     </div>
                   </Card.Body>
@@ -295,70 +390,45 @@ const OtherMedicalConditionsMobileView = () => {
         onPageChange={setCurrentPage}
       />
 
-      {/* Modal Details */}
-      <Modal
-        className="mobile-view"
-        show={showModal}
-        onHide={handleCloseModal}
-        onExited={handleModalExited}
-        size="lg"
-        centered
-        scrollable
-      >
-        <Modal.Header className="border-bottom-0">
-          <Modal.Title>{selectedCondition?.medicalConditionName}</Modal.Title>
-          <button className="btn-modal-close" onClick={handleCloseModal}>
-            <MdClose />
-          </button>
-        </Modal.Header>
+      {/* Modal for Add/Edit */}
+      <DynamicEditModal
+        show={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setSelectedCondition(null);
+        }}
+        onSave={handleSave}
+        onDelete={handleDeleteInModal}
+        record={selectedCondition}
+        setRecord={setSelectedCondition}
+        fields={fields}
+        addMode={isAddMode}
+        title={isAddMode ? t('OtherMedicalConditions.add_condition') : t('OtherMedicalConditions.edit_condition')}
+      />
 
-        <Modal.Body className="space-y-4 pt-0">
-          <Field
-            label={t("OtherMedicalConditionsMobileView.severity")}
-            value={
-              selectedCondition?.severity
-                ? t(`OtherMedicalConditionsMobileView.severity_options.${selectedCondition.severity.toLowerCase()}`)
-                : ""
+      {/* Popup for Delete Confirmation */}
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('OtherMedicalConditions.confirm_delete_title')}
+          message={t('OtherMedicalConditions.confirm_delete_message', { 
+            condition: recordToDelete.medicalConditionName 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger" 
             }
-            disabled
-            style={{ color: getSeverityColor(selectedCondition?.severity) }}
-          />
-
-          <Field
-            label={t("OtherMedicalConditionsMobileView.status")}
-            value={
-              selectedCondition?.isActive != null
-                ? t(
-                    `Common.status_options.${
-                      selectedCondition.isActive ? "active" : "inactive"
-                    }`
-                  )
-                : ""
-            }
-            disabled
-            style={{ color: getStatusInfo(selectedCondition?.isActive).color }}
-          />
-
-          <Field
-            className="mb-3"
-            label={t("OtherMedicalConditionsMobileView.diagnosed_date")}
-            value={formatDate(selectedCondition?.diagnosedDate)}
-            disabled
-          />
-
-          <TextAreaField
-            label={t("OtherMedicalConditionsMobileView.notes")}
-            value={selectedCondition?.notes || ""}
-            disabled
-          />
-        </Modal.Body>
-
-        <Modal.Footer className="border-top-0">
-          <button className="dc-btn dc-cancel-btn" onClick={handleCloseModal}>
-            {t("OtherMedicalConditionsMobileView.close")}
-          </button>
-        </Modal.Footer>
-      </Modal>
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

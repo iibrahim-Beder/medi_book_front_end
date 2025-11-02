@@ -6,8 +6,11 @@ import { MdClose } from "react-icons/md";
 import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
 import SelectField from "../../../../ui/form-fields/SelectField";
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import { t } from "i18next";
 
 const MedicalHistoryModal = ({
+  onDelete,
+  isEdit,
   show,
   onClose,
   onSave,
@@ -199,10 +202,13 @@ const MedicalHistoryModal = ({
         }}
       >
         <button className="btn simple-btn" onClick={onClose}>
-          Cancel
+          {t("Cancel")}
         </button>
+       { !isEdit && <button className="btn-simple" onClick={onDelete}>
+          {t("Delete")}
+        </button>}
         <button className="second-btn" onClick={onSave}>
-          Save Medical History
+          {t("Save")}
         </button>
       </Modal.Footer>
     </Modal>

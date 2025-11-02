@@ -6,7 +6,7 @@ import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdExpandMore } from "react-icons/md";
 import Pagination from "../../../../shared/Pagination";
 
 const DiagnosisMobileView = () => {
@@ -17,6 +17,7 @@ const DiagnosisMobileView = () => {
   const [filterType, setFilterType] = useState("");
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,8 +28,8 @@ const DiagnosisMobileView = () => {
     {
       id: "#DZ001",
       diagnosisName: "Diabetes Mellitus Type 2",
-      symptomsDescription: "Increased thirst, frequent urination, fatigue, blurred vision",
-      diagnosisDescription: "Chronic condition affecting the way the body processes blood sugar",
+      symptomsDescription: "Increased thirst, frequent urination, fatigue, blurred vision, unexplained weight loss, slow healing of cuts and wounds, tingling or numbness in hands or feet",
+      diagnosisDescription: "Chronic condition affecting the way the body processes blood sugar. Characterized by insulin resistance and relative insulin deficiency. Long-term complications include cardiovascular disease, stroke, chronic kidney disease, foot ulcers, and damage to the eyes.",
       diagnosedConditions: [
         { MedicalCondition: "Diabetic Retinopathy", Severity: "Moderate", note: "Requires regular monitoring" },
         { MedicalCondition: "Hypertension", Severity: "severe", note: "patient has high blood pressure" },
@@ -61,133 +62,15 @@ const DiagnosisMobileView = () => {
         }
       ],
     },
-    {
-      id: "#DZ002",
-      diagnosisName: "Hypertension",
-      symptomsDescription: "Headaches, shortness of breath, nosebleeds",
-      diagnosisDescription: "High blood pressure condition",
-      diagnosedConditions: [
-        { MedicalCondition: "Primary Hypertension", Severity: "Mild", note: "Lifestyle modifications recommended" },
-      ],
-      notes: [
-        { content: "Patient advised to reduce salt intake" },
-        { content: "Regular blood pressure monitoring required" },
-      ],
-      prescription: [
-        {
-          id: "RX003",
-          title: "Blood Pressure Management",
-          status: "active",
-          isExpanded: false,
-          note: "Monitor blood pressure weekly",
-          recipes: [
-            { type: "medication", durationInDays: 30, instructions: "Lisinopril 10mg daily", dosage: "1 tablet per day" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ003",
-      diagnosisName: "Asthma",
-      symptomsDescription: "Wheezing, coughing, chest tightness",
-      diagnosisDescription: "Chronic respiratory condition",
-      diagnosedConditions: [
-        { MedicalCondition: "Allergic Asthma", Severity: "Moderate", note: "Triggered by allergens" },
-      ],
-      notes: [
-        { content: "Patient uses inhaler as needed" },
-        { content: "Avoid known allergens" },
-      ],
-      prescription: [
-        {
-          id: "RX004",
-          title: "Respiratory Care",
-          status: "active",
-          isExpanded: false,
-          note: "Keep rescue inhaler available",
-          recipes: [
-            { type: "medication", durationInDays: 90, instructions: "Albuterol inhaler", dosage: "2 puffs as needed" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ004",
-      diagnosisName: "Migraine",
-      symptomsDescription: "Severe headaches, nausea, sensitivity to light",
-      diagnosisDescription: "Neurological condition characterized by recurrent headaches",
-      diagnosedConditions: [
-        { MedicalCondition: "Chronic Migraine", Severity: "Severe", note: "Frequency: 15+ days per month" },
-      ],
-      notes: [
-        { content: "Patient experiences aura before attacks" },
-        { content: "Triggers include stress and certain foods" },
-      ],
-      prescription: [
-        {
-          id: "RX005",
-          title: "Migraine Management",
-          status: "completed",
-          isExpanded: false,
-          note: "Preventive and abortive therapy",
-          recipes: [
-            { type: "medication", durationInDays: 30, instructions: "Sumatriptan 50mg", dosage: "1 tablet at onset" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ005",
-      diagnosisName: "Arthritis",
-      symptomsDescription: "Joint pain, stiffness, swelling",
-      diagnosisDescription: "Inflammation of one or more joints",
-      diagnosedConditions: [
-        { MedicalCondition: "Osteoarthritis", Severity: "Moderate", note: "Affects knees and hips" },
-      ],
-      notes: [
-        { content: "Patient benefits from physical therapy" },
-        { content: "Weight management recommended" },
-      ],
-      prescription: [
-        {
-          id: "RX006",
-          title: "Joint Pain Management",
-          status: "active",
-          isExpanded: false,
-          note: "Pain management and mobility improvement",
-          recipes: [
-            { type: "medication", durationInDays: 60, instructions: "Ibuprofen 400mg", dosage: "3 times daily as needed" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ006",
-      diagnosisName: "Anxiety Disorder",
-      symptomsDescription: "Excessive worry, restlessness, fatigue",
-      diagnosisDescription: "Mental health disorder characterized by feelings of worry and fear",
-      diagnosedConditions: [
-        { MedicalCondition: "Generalized Anxiety Disorder", Severity: "Moderate", note: "Cognitive behavioral therapy recommended" },
-      ],
-      notes: [
-        { content: "Patient practicing mindfulness techniques" },
-        { content: "Regular follow-up appointments scheduled" },
-      ],
-      prescription: [
-        {
-          id: "RX007",
-          title: "Anxiety Treatment",
-          status: "active",
-          isExpanded: false,
-          note: "Combination therapy approach",
-          recipes: [
-            { type: "medication", durationInDays: 30, instructions: "Sertraline 50mg daily", dosage: "1 tablet per day" },
-            { type: "therapy", durationInDays: 90, instructions: "Weekly counseling sessions", dosage: "1 hour per week" },
-          ]
-        }
-      ],
-    }
   ];
+
+  // Toggle symptoms description expansion
+  const toggleDescription = (diagnosisId) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [diagnosisId]: !prev[diagnosisId]
+    }));
+  };
 
   // Apply search & filters
   const filteredDiseases = diseasesData
@@ -240,26 +123,6 @@ const DiagnosisMobileView = () => {
     return text.substring(0, maxLength) + "...";
   };
 
-  // Generate page numbers for pagination
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    const maxVisiblePages = 5;
-    
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
-    // Adjust start page if we're near the end
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-    
-    return pageNumbers;
-  };
-
   return (
     <div className="table-container mobile-view-card">
       <div className="table-header">
@@ -290,17 +153,16 @@ const DiagnosisMobileView = () => {
 
           {/* Mobile Cards */}
           <div className="space-y-3">
-            {currentItems.map((disease) => (
-              <Card
-                key={disease.id}
-                className="mobile-view-card"
-              >
-                <Card.Body className="" style={{ padding: "15px" }}>
-                  <div className="">
-                    <h5 className="">{disease.diagnosisName}</h5>
-                  </div>
-
-                  <div className="mb-3">
+            {currentItems.map((disease) => {
+              const isDescriptionExpanded = expandedDescriptions[disease.id];
+              
+              return (
+                <Card key={disease.id} className="mobile-view-card">
+                  <Card.Body style={{ padding: "15px" }}>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 style={{ margin: 0 }}>{disease.diagnosisName}</h5>
+                    </div>
+                    <div className="mb-3">
                     <small className="text-muted d-block mb-1">
                       {t('DiagnosisMobileView.symptoms')}
                     </small>
@@ -309,45 +171,88 @@ const DiagnosisMobileView = () => {
                     </p>
                   </div>
 
-                  <div className="row text-center mb-3">
-                    <div className="col-4">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {disease.diagnosedConditions.length}
-                        </div>
-                        <small className="text-muted">{t('DiagnosisMobileView.conditions')}</small>
+                    {/* Symptoms Description with Expand/Collapse */}
+                    <div className="mb-2">
+                      <small
+                        className="text-muted d-flex mb-1"
+                        onClick={() => toggleDescription(disease.id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {t('DiagnosisMobileView.diagnosis_description')} :
+                        {disease.symptomsDescription && (
+                          <button
+                            className=""
+                            onClick={() => toggleDescription(disease.id)}
+                            style={{
+                              fontSize: '20px',
+                              color: '#278fff',
+                              padding: "3px 0 0"
+                            }}
+                          >
+                            <MdExpandMore
+                            onClick={() => toggleDescription(disease.id)}
+                              style={{
+                                transform: expandedDescriptions[disease.id] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.3s ease',
+                              }}
+                            />
+                          </button>
+                        )}
+                      </small>
+                      <div className={`expandable-content ${expandedDescriptions[disease.id] ? '' : 'p-0'}`}>
+                        <p
+                          style={{
+                            margin: "0",
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onClick={() => toggleDescription(disease.id)}
+                        >
+                          {expandedDescriptions[disease.id] ? disease.diagnosisDescription : ""}
+                        </p>
                       </div>
                     </div>
-                    <div className="col-4">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {disease.notes.length}
-                        </div>
-                        <small className="text-muted">{t('DiagnosisMobileView.notes')}</small>
-                      </div>
-                    </div>
-                    <div className="col-4">
-                      <div className="fw-bold text-primary">
-                        {disease.prescription.length}
-                      </div>
-                      <small className="text-muted">{t('DiagnosisMobileView.prescription')}</small>
-                    </div>
-                  </div>
 
-                  <div>
-                    <Button
-                      className="view-btn btn btn-outline-primary btn-sm"
-                      variant="outline-primary"
-                      size="sm"
-                      style={{ float: "inline-end" }}
-                      onClick={() => setSelectedDiagnosis(disease)}
-                    >
-                      {t('DiagnosisMobileView.view_all_details')}
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
+                    <div className="row text-center mb-3">
+                      <div className="col-4">
+                        <div className="border-end">
+                          <div className="fw-bold text-primary">
+                            {disease.diagnosedConditions.length}
+                          </div>
+                          <small className="text-muted">{t('DiagnosisMobileView.conditions')}</small>
+                        </div>
+                      </div>
+                      <div className="col-4">
+                        <div className="border-end">
+                          <div className="fw-bold text-primary">
+                            {disease.notes.length}
+                          </div>
+                          <small className="text-muted">{t('DiagnosisMobileView.notes')}</small>
+                        </div>
+                      </div>
+                      <div className="col-4">
+                        <div className="fw-bold text-primary">
+                          {disease.prescription.length}
+                        </div>
+                        <small className="text-muted">{t('DiagnosisMobileView.prescription')}</small>
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div style={{ flex: 1 }}></div>
+                      <Button
+                        className="view-btn btn btn-outline-primary btn-sm"
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => setSelectedDiagnosis(disease)}
+                      >
+                        {t('DiagnosisMobileView.view_all_details')}
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              );
+            })}
 
             {currentItems.length === 0 && (
               <Card className="text-center py-5">

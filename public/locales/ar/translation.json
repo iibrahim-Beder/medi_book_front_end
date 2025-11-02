@@ -1028,6 +1028,8 @@
   }
 ,
 "AllergyTable": {
+   "confirm_delete_title": " تاكيد الحذف",
+    "confirm_delete_message": " هل تريد حذف مادة مسببة للحساسية '{{allergen}}'? هذا الاجراء غير قابل للرجوع.",
     "table_title": "قائمة الحساسية",
     "table_subtitle": "أحمد محمد علي",
     "add_allergen": "إضافة مادة مسببة للحساسية",
@@ -1194,6 +1196,8 @@
   }
 },
   "OtherMedicationMobileView": {
+      "confirm_delete_title": "تاكيد الحذف",
+    "confirm_delete_message": "هل انت متاكد من حذف الدواء '{{medication}}'? هذا الاجراء لا يمكن التراجع عنه.",
     "table_title": "قائمة الأدوية الأخرى",
     "dosage": "الجرعة",
     "duration": "المدة",
@@ -1203,16 +1207,6 @@
     "no_medications_found": "لم يتم العثور على أدوية أخرى",
     "close": "إغلاق"
   },
-  "Othermedications": {
-    "table_title": "قائمة الأدوية الأخرى",
-    "medication": "الدواء",
-    "dosage": "الجرعة",
-    "duration": "المدة",
-    "instructions": "التعليمات",
-    "status": "الحالة"
-  
-  }
-  ,
   "MedicalConditions": {
     "tab_diagnosed_conditions": "الحالات المشخصة",
     "tab_other": "أخرى"
@@ -1371,6 +1365,71 @@
     "addNew": "إضافة موقع جديد",
     "newLocation": "موقع جديد",
     "manageLocations": "إدارة المواقع"
+  }
+,
+"OtherMedicalConditions": {
+  "add_condition": "إضافة حالة",
+  "edit_condition": "تعديل الحالة",
+  "manage": "إدارة",
+  "delete": "حذف",
+  "actions": "الإجراءات",
+  "confirm_delete_title": "تأكيد الحذف",
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{condition}}'؟ لا يمكن التراجع عن هذا الإجراء.",
+  "medical_condition_name": "اسم الحالة الطبية",
+  "enter_condition_name": "أدخل اسم الحالة",
+  "severity": "الحدة",
+  "select_severity": "اختر درجة الحدة",
+  "severity_options": {
+    "Mild": "خفيفة",
+    "Moderate": "متوسطة",
+    "Severe": "شديدة"
+  },
+  "status": "الحالة",
+  "select_status": "اختر الحالة",
+  "diagnosed_date": "تاريخ التشخيص",
+  "select_date": "اختر التاريخ",
+  "notes": "ملاحظات",
+  "enter_notes": "أدخل الملاحظات"
+},
+"OtherMedication": {
+  "add_medication": "إضافة دواء",
+  "edit_medication": "تعديل الدواء",
+  "confirm_delete_title": "تأكيد الحذف",
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{medication}}'؟ لا يمكن التراجع عن هذا الإجراء.",
+  "medication": "الدواء",
+  "enter_medication": "أدخل اسم الدواء",
+  "dosage": "الجرعة",
+  "enter_dosage": "أدخل الجرعة",
+  "duration": "المدة",
+  "enter_duration": "أدخل المدة",
+  "status": "الحالة",
+  "select_status": "اختر الحالة",
+  "instructions": "التعليمات",
+  "enter_instructions": "أدخل التعليمات"
+},
+"Othermedications": {
+    "table_title": "قائمة الأدوية الأخرى",
+  "add_medication": "إضافة دواء",
+  "edit_medication": "تعديل الدواء",
+  "manage": "إدارة",
+  "actions": "الإجراءات",
+  "confirm_delete_title": "تأكيد الحذف",
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{medication}}'؟ لا يمكن التراجع عن هذا الإجراء.",
+  "medication": "الدواء",
+  "enter_medication": "أدخل اسم الدواء",
+  "dosage": "الجرعة",
+  "enter_dosage": "أدخل الجرعة",
+  "duration": "المدة",
+  "enter_duration": "أدخل المدة",
+  "status": "الحالة",
+  "select_status": "اختر الحالة",
+  "instructions": "التعليمات",
+  "enter_instructions": "أدخل التعليمات"
+}
+,
+ "MedicalHistory": {
+    "confirm_delete_title": "تأكيد الحذف",
+    "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{description}}'؟ لا يمكن التراجع عن هذا الإجراء."
   }
 }
 

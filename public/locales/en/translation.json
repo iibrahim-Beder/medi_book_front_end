@@ -901,17 +901,7 @@
     "view_all_details": "View All Details",
     "no_medications_found": "No Other Medications Found",
     "close": "Close"
-  }
-  ,
-  "Othermedications": {
-    "table_title": "Other Medication list",
-    "medication": "Medication",
-    "dosage": "Dosage",
-    "duration": "Duration",
-    "instructions": "Instructions",
-    "status": "Status"
-  }
-  ,
+  },
   "MedicalConditions": {
     "tab_diagnosed_conditions": "Diagnosed Conditions",
     "tab_other": "Other"
@@ -1067,6 +1057,8 @@
   }
   ,
   "AllergyTable": {
+     "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete allergen '{{allergen}}'? This action cannot be undone.",
     "table_title": "Allergies",
     "table_subtitle": "Ahmed Mohamed Ali",
     "add_allergen": "Add Allergen",
@@ -1258,5 +1250,70 @@
     "addNew": "Add New Location", 
     "newLocation": "New Location",
     "manageLocations": "Manage Locations"
+  },
+   "OtherMedication": {
+    "add_medication": "Add Medication",
+    "edit_medication": "Edit Medication",
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete '{{medication}}'? This action cannot be undone.",
+    "medication": "Medication",
+    "enter_medication": "Enter medication name",
+    "dosage": "Dosage",
+    "enter_dosage": "Enter dosage",
+    "duration": "Duration",
+    "enter_duration": "Enter duration",
+    "status": "Status",
+    "select_status": "Select status",
+    "instructions": "Instructions",
+    "enter_instructions": "Enter instructions"
+    }
+  ,
+    "Othermedications": {
+    "add_medication": "Add Medication",
+    "edit_medication": "Edit Medication",
+    "manage": "Manage",
+    "actions": "Actions",
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete '{{medication}}'? This action cannot be undone.",
+    "medication": "Medication",
+    "enter_medication": "Enter medication name",
+    "dosage": "Dosage",
+    "enter_dosage": "Enter dosage",
+    "duration": "Duration",
+    "enter_duration": "Enter duration",
+    "status": "Status",
+    "select_status": "Select status",
+    "instructions": "Instructions",
+    "enter_instructions": "Enter instructions",
+        "table_title": "Other Medication list"
+  },
+  "OtherMedicalConditions": {
+  "add_condition": "Add Condition",
+  "edit_condition": "Edit Condition",
+  "manage": "Manage",
+  "delete": "Delete",
+  "actions": "Actions",
+  "confirm_delete_title": "Confirm Deletion",
+  "confirm_delete_message": "Are you sure you want to delete '{{condition}}'? This action cannot be undone.",
+  "medical_condition_name": "Medical Condition Name",
+  "enter_condition_name": "Enter condition name",
+  "severity": "Severity",
+  "select_severity": "Select severity",
+  "severity_options": {
+    "Mild": "Mild",
+    "Moderate": "Moderate",
+    "Severe": "Severe"
+  },
+  "status": "Status",
+  "select_status": "Select status",
+  "diagnosed_date": "Diagnosed Date",
+  "select_date": "Select date",
+  "notes": "Notes",
+  "enter_notes": "Enter notes"
+},
+ "MedicalHistory": {
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete '{{description}}'? This action cannot be undone."
   }
   }
+  

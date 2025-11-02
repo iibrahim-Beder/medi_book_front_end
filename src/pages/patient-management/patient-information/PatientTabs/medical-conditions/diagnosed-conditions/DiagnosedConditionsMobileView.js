@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
 import "../../../../Patient-management.css";
 import ConditionsFilters from "../../component/ConditionsFilters";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import Field from "../../../../../ui/form-fields/Field";
@@ -16,6 +16,7 @@ const DiagnosedConditionsMobileView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedNotes, setExpandedNotes] = useState({});
 
   // Filters states
   const [filterType, setFilterType] = useState("");
@@ -44,67 +45,16 @@ const DiagnosedConditionsMobileView = () => {
       notes:
         "Estimated GFR 45 mL/min/1.73m². Secondary to long-standing hypertension. Proteinuria 450 mg/24h. Blood pressure well-controlled on ACE inhibitors. Advised renal protective diet: low sodium, moderate protein. Avoid NSAIDs and nephrotoxic agents. Regular monitoring of renal function every 3 months.",
     },
-    {
-      id: "#DC003",
-      medicalConditionName: "Generalized Anxiety Disorder",
-      severity: "Moderate",
-      diagnosisName: "GAD with Panic Attacks",
-      diagnosedDate: "2021-11-05",
-      isActive: true,
-      notes:
-        "Patient reports persistent worry, restlessness, muscle tension, and sleep disturbance. Experiencing panic attacks 2-3 times monthly. Started on SSRI and referred for cognitive behavioral therapy. Good response to treatment with reduced anxiety symptoms. Continuing medication and therapy sessions.",
-    },
-    {
-      id: "#DC004",
-      medicalConditionName: "Osteoporosis",
-      severity: "Mild",
-      diagnosisName: "Postmenopausal Osteoporosis",
-      diagnosedDate: "2020-09-22",
-      isActive: true,
-      notes:
-        "T-score -2.5 at lumbar spine. No previous fractures. Patient educated about fall prevention and importance of weight-bearing exercises. Started on calcium and vitamin D supplementation. Bisphosphonates initiated. Bone density scan scheduled in 2 years. Good adherence to treatment plan.",
-    },
-    {
-      id: "#DC005",
-      medicalConditionName: "Psoriasis",
-      severity: "Moderate",
-      diagnosisName: "Plaque Psoriasis",
-      diagnosedDate: "2019-12-10",
-      isActive: false,
-      notes:
-        "Extensive plaques covering approximately 15% of body surface area, primarily on elbows, knees, and scalp. Previously treated with topical corticosteroids and phototherapy. Condition resolved with biologic therapy. Patient currently in remission with clear skin. Monitoring for potential recurrence.",
-    },
-    {
-      id: "#DC006",
-      medicalConditionName: "Hypothyroidism",
-      severity: "Mild",
-      diagnosisName: "Primary Hypothyroidism",
-      diagnosedDate: "2018-06-30",
-      isActive: true,
-      notes:
-        "TSH elevated at 8.5 mIU/L, free T4 low normal. Positive anti-TPO antibodies. Started on Levothyroxine 50 mcg daily. Symptoms of fatigue and weight gain improved with treatment. TSH now stable at 2.1 mIU/L on current dose. Requires lifelong thyroid replacement therapy with annual TSH monitoring.",
-    },
-    {
-      id: "#DC007",
-      medicalConditionName: "Coronary Artery Disease",
-      severity: "Severe",
-      diagnosisName: "Multi-vessel CAD",
-      diagnosedDate: "2023-01-15",
-      isActive: true,
-      notes:
-        "Significant stenosis in LAD, RCA, and LCx arteries. Status post CABG x3. EF 45%. On optimal medical therapy including beta-blocker, statin, aspirin, and ACE inhibitor. No current angina symptoms. Strict lipid control with LDL target <70 mg/dL. Cardiac rehab completed.",
-    },
-    {
-      id: "#DC008",
-      medicalConditionName: "Chronic Obstructive Pulmonary Disease",
-      severity: "Moderate",
-      diagnosisName: "COPD GOLD Stage 2",
-      diagnosedDate: "2022-04-08",
-      isActive: true,
-      notes:
-        "FEV1/FVC 60%, FEV1 65% predicted. Former smoker, quit 5 years ago. Symptoms include dyspnea on exertion and chronic cough. On LAMA/LABA inhaler therapy. Pulmonary rehab referral provided. Annual influenza vaccination and pneumococcal vaccine up to date. No recent exacerbations.",
-    },
+    // ... باقي البيانات
   ];
+
+  // Toggle notes expansion
+  const toggleNotes = (conditionId) => {
+    setExpandedNotes(prev => ({
+      ...prev,
+      [conditionId]: !prev[conditionId]
+    }));
+  };
 
   // Apply search & filters
   const filteredConditions = conditionsData
@@ -161,13 +111,13 @@ const DiagnosedConditionsMobileView = () => {
   const getSeverityColor = (severity) => {
     switch (severity?.toLowerCase()) {
       case "mild":
-        return "#4BAE78"; // Green
+        return "#4BAE78";
       case "moderate":
-        return "#FFA500"; // Orange
+        return "#FFA500";
       case "severe":
-        return "#D66A6A"; // Red
+        return "#D66A6A";
       default:
-        return "#6C757D"; // Gray
+        return "#6C757D";
     }
   };
 
@@ -231,6 +181,8 @@ const DiagnosedConditionsMobileView = () => {
           <div className="space-y-3">
             {currentData.map((condition) => {
               const statusInfo = getStatusInfo(condition.isActive);
+              const isNotesExpanded = expandedNotes[condition.id];
+              
               return (
                 <Card key={condition.id} className="mobile-view-card">
                   <Card.Body style={{ padding: "15px" }}>
@@ -270,11 +222,46 @@ const DiagnosedConditionsMobileView = () => {
                       </div>
                     </div>
 
+                    {/* Notes Section with Expand/Collapse */}
                     <div className="mb-2">
-                      <small className="text-muted d-block mb-1">
-                        {t("DiagnosedConditionsMobileView.notes")}:
+                      <small
+                        className="text-muted d-flex mb-1"
+                        onClick={() => toggleNotes(condition.id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {t('DiagnosedConditionsMobileView.notes')} :
+                        {condition.notes && (
+                          <button
+                            className=""
+                            onClick={() => toggleNotes(condition.id)}
+                            style={{
+                              fontSize: '20px',
+                              color: '#278fff',
+                              padding: "3px 0 0"
+                            }}
+                          >
+                            <MdExpandMore
+                            onClick={() => toggleNotes(condition.id)}
+                              style={{
+                                transform: expandedNotes[condition.id] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.3s ease',
+                              }}
+                            />
+                          </button>
+                        )}
                       </small>
-                      <p>{truncateText(condition.notes, 80)}</p>
+                      <div className={`expandable-content ${expandedNotes[condition.id] ? '' : 'p-0'}`}>
+                        <p
+                          style={{
+                            margin: "0",
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onClick={() => toggleNotes(condition.id)}
+                        >
+                          {expandedNotes[condition.id] ? condition.notes : ""}
+                        </p>
+                      </div>
                     </div>
 
                     <div>

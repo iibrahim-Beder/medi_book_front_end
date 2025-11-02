@@ -6,6 +6,8 @@ import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../shared/Pagination";
+import PopupMessage from "../../../shared/PopupMessage";
+import DynamicEditModal from "../../../shared/DynamicEditModal";
 import "../../Patient-management.css";
 
 const Othermedications = () => {
@@ -20,15 +22,20 @@ const Othermedications = () => {
   const [filterDateFrom, setFilterDateFrom] = useState(null);
   const [filterDateTo, setFilterDateTo] = useState(null);
 
+  const [showModal, setShowModal] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [recordToDelete, setRecordToDelete] = useState(null);
+  const [isAddMode, setIsAddMode] = useState(false);
+
   // Mock data representing prescriptions
-  const prescriptionsData = [
+  const [prescriptionsData, setPrescriptionsData] = useState([
     {
       id: "#RX001",
       medication: "Metformin",
       dosage: "500mg twice daily",
       duration: "30 days",
-      instructions:
-        "Take one tablet with breakfast and one with dinner. Always take with food to minimize gastrointestinal side effects. If you experience significant stomach upset, consult your doctor. Monitor your blood sugar levels regularly and report any unusual readings.",
+      instructions: "Take one tablet with breakfast and one with dinner. Always take with food to minimize gastrointestinal side effects. If you experience significant stomach upset, consult your doctor. Monitor your blood sugar levels regularly and report any unusual readings.",
       status: "active",
     },
     {
@@ -36,47 +43,124 @@ const Othermedications = () => {
       medication: "Glucose Test Strips",
       dosage: "As needed",
       duration: "90 days",
-      instructions:
-        "Check blood sugar levels: 1) First thing in the morning (fasting), 2) Before each main meal, 3) Two hours after meals, and 4) At bedtime. Record all readings in your logbook. Bring the logbook to your next appointment. Contact your doctor if fasting readings are consistently above 130 mg/dL or post-meal readings above 180 mg/dL.",
+      instructions: "Check blood sugar levels: 1) First thing in the morning (fasting), 2) Before each main meal, 3) Two hours after meals, and 4) At bedtime. Record all readings in your logbook. Bring the logbook to your next appointment. Contact your doctor if fasting readings are consistently above 130 mg/dL or post-meal readings above 180 mg/dL.",
       status: "active",
     },
-    {
-      id: "#RX003",
-      medication: "Lisinopril",
-      dosage: "10mg once daily",
-      duration: "90 days",
-      instructions:
-        "Take one tablet every morning at the same time, with or without food. Do not skip doses. Monitor your blood pressure twice daily - morning and evening. Report any persistent dry cough, dizziness, or swelling. Avoid sudden position changes to prevent dizziness. Regular blood tests will be needed to monitor kidney function.",
-      status: "completed",
+  ]);
+
+  // Template for new record
+  const emptyRecord = {
+    medication: "",
+    dosage: "",
+    duration: "",
+    instructions: "",
+    status: "active"
+  };
+
+  // Form fields configuration for modal
+  const fields = [
+    { 
+      name: "medication", 
+      label: t('Othermedications.medication'), 
+      type: "text", 
+      placeholder: t('Othermedications.enter_medication') 
     },
-    {
-      id: "#RX004",
-      medication: "Sumatriptan",
-      dosage: "50mg as needed",
-      duration: "30 days",
-      instructions:
-        "Take at the first sign of migraine headache. Swallow tablet whole with water. Maximum dose is 2 tablets in 24 hours. Do not take if you have heart disease, uncontrolled hypertension, or history of stroke. Wait at least 2 hours between doses. Avoid driving or operating machinery until you know how this medication affects you.",
-      status: "cancelled",
+    { 
+      name: "dosage", 
+      label: t('Othermedications.dosage'), 
+      type: "text", 
+      placeholder: t('Othermedications.enter_dosage') 
     },
-    {
-      id: "#RX005",
-      medication: "Vitamin D3",
-      dosage: "1000 IU once daily",
-      duration: "60 days",
-      instructions:
-        "Take one capsule daily with your largest meal that contains healthy fats (such as avocado, nuts, or olive oil) for optimal absorption. Best taken in the morning. Do not exceed the recommended dose. Store in a cool, dry place away from direct sunlight. Follow up with blood test after 8 weeks to check vitamin D levels.",
-      status: "expired",
+    { 
+      name: "duration", 
+      label: t('Othermedications.duration'), 
+      type: "text", 
+      placeholder: t('Othermedications.enter_duration') 
     },
-    {
-      id: "#RX006",
-      medication: "Salbutamol Inhaler",
-      dosage: "2 puffs every 4-6 hours",
-      duration: "180 days",
-      instructions:
-        "Shake well before each use. Breathe out fully, place mouthpiece between lips, and inhale deeply while pressing down on canister. Hold breath for 10 seconds if possible. Wait one minute between puffs. Rinse mouth after use to prevent oral thrush. Use as needed for shortness of breath, wheezing, or chest tightness. Do not exceed 8 puffs in 24 hours. Seek emergency care if no improvement after 4 puffs.",
-      status: "active",
+    { 
+      name: "status", 
+      label: t('Othermedications.status'), 
+      type: "select", 
+      options: [
+        { value: "active", label: t('Common.status_options.active') },
+        { value: "completed", label: t('Common.status_options.completed') },
+        { value: "cancelled", label: t('Common.status_options.cancelled') },
+        { value: "expired", label: t('Common.status_options.expired') }
+      ], 
+      placeholder: t('Othermedications.select_status') 
+    },
+    { 
+      name: "instructions", 
+      label: t('Othermedications.instructions'), 
+      type: "textarea", 
+      placeholder: t('Othermedications.enter_instructions') 
     },
   ];
+
+  // Handle Add New
+  const handleAddNew = () => {
+    setSelectedRecord({ ...emptyRecord });
+    setIsAddMode(true);
+    setShowModal(true);
+  };
+
+  // Handle Edit
+  const handleEdit = (prescription) => {
+    setSelectedRecord({ ...prescription });
+    setIsAddMode(false);
+    setShowModal(true);
+  };
+
+  // Handle Save (Add/Update)
+  const handleSave = () => {
+    if (!selectedRecord) return;
+
+    if (isAddMode) {
+      // Generate new ID
+      const newId = `#RX${String(prescriptionsData.length + 1).padStart(3, '0')}`;
+      const newRecord = {
+        ...selectedRecord,
+        id: newId
+      };
+      setPrescriptionsData([...prescriptionsData, newRecord]);
+    } else {
+      // Update existing record
+      const updatedData = prescriptionsData.map(item =>
+        item.id === selectedRecord.id ? selectedRecord : item
+      );
+      setPrescriptionsData(updatedData);
+    }
+
+    setShowModal(false);
+    setSelectedRecord(null);
+  };
+
+  // Handle Delete from Modal
+  const handleDeleteInModal = () => {
+    if (selectedRecord) {
+      setRecordToDelete(selectedRecord);
+      setShowPopup(true);
+    }
+  };
+
+  // Confirm Delete
+  const handleConfirmDelete = () => {
+    if (recordToDelete) {
+      const updatedData = prescriptionsData.filter(
+        item => item.id !== recordToDelete.id
+      );
+      setPrescriptionsData(updatedData);
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowModal(false);
+    }
+  };
+
+  // Close Popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setRecordToDelete(null);
+  };
 
   // Handle expand/collapse for instructions
   const handleInstructionsClick = (id) => {
@@ -148,10 +232,15 @@ const Othermedications = () => {
 
   return (
     <div className="table-container">
-      <div className="table-header">
+      <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("Othermedications.table_title")}</h3>
           <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+        </div>
+        <div>
+          <button className="add-btn" onClick={handleAddNew}>
+            {t('Othermedications.add_medication')}
+          </button>
         </div>
       </div>
 
@@ -184,6 +273,7 @@ const Othermedications = () => {
                   <th>{t("Othermedications.duration")}</th>
                   <th>{t("Othermedications.instructions")}</th>
                   <th>{t("Othermedications.status")}</th>
+                  <th>{t("Othermedications.actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -244,6 +334,19 @@ const Othermedications = () => {
                           {t(`Common.status_options.${prescription.status}`)}
                         </span>
                       </td>
+                      <td>
+                        <div style={{ display: "flex", gap: "8px" }}>
+                          <Button
+                            className="view-btn"
+                            variant=""
+                            size="sm"
+                            style={{ color: "#007bff", backgroundColor: "transparent" }}
+                            onClick={() => handleEdit(prescription)}
+                          >
+                            {t("Manage")}
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
 
                     {/* Expanded row for Instructions */}
@@ -280,6 +383,46 @@ const Othermedications = () => {
           />
         </div>
       </div>
+
+      {/* Modal for Add/Edit */}
+      <DynamicEditModal
+        show={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedRecord(null);
+        }}
+        onSave={handleSave}
+        onDelete={handleDeleteInModal}
+        record={selectedRecord}
+        setRecord={setSelectedRecord}
+        fields={fields}
+        addMode={isAddMode}
+        title={isAddMode ? t('Othermedications.add_medication') : t('Othermedications.edit_medication')}
+      />
+
+      {/* Popup for Delete Confirmation */}
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('Othermedications.confirm_delete_title')}
+          message={t('Othermedications.confirm_delete_message', { 
+            medication: recordToDelete.medication 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger" 
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

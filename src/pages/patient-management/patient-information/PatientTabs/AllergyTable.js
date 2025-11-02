@@ -6,6 +6,7 @@ import Pagination from "../../../shared/Pagination";
 import ConditionsFilters from "./component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
 import "../../Patient-management.css";
+import PopupMessage from "../../../shared/PopupMessage";
 
 const AllergyTable = () => {
   const { t } = useTranslation();
@@ -21,8 +22,14 @@ const AllergyTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
+  // 
+  const [showPopup, setShowPopup] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
+ 
+ 
+ const rowsPerPage = 5;
 
-  const rowsPerPage = 5;
+  
 
   // Dropdown options for allergens
   const allergenOptions = [
@@ -97,6 +104,41 @@ const AllergyTable = () => {
     { name: "notes", label: t('AllergyTable.notes'), type: "textarea", placeholder: t('AllergyTable.enter_notes') },
   ];
 
+  // Delete record confirmation
+  const handleDeleteClick = (entry) => {
+    setRecordToDelete(entry);
+    setShowPopup(true);
+  };
+   const handleConfirmDelete = () => {
+    if (recordToDelete) {
+      const updatedAllergens = allergens.filter(
+        item => item.allergenId !== recordToDelete.allergenId
+      );
+      setAllergens(updatedAllergens);
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowModal(false);
+    }
+  };
+
+  // إغلاق الـ popup
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setRecordToDelete(null);
+  };
+
+  // تعديل الـ modal ليدعم الحذف
+  const handleDeleteInModal = () => {
+    if (selectedRecord) {
+      setRecordToDelete(selectedRecord);
+      // setShowModal(false);
+      setShowPopup(true);
+    }
+  };
+ 
+
+
+
   // Open modal for adding a new record
   const handleAddNew = () => {
     setSelectedRecord({ ...emptyRecord });
@@ -167,7 +209,6 @@ const AllergyTable = () => {
     });
 
   // Pagination calculations
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const currentData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
@@ -260,6 +301,15 @@ const AllergyTable = () => {
                         >
                           {t('AllergyTable.manage')}
                         </Button>
+                         {/* <Button
+                          // className="delete-btn"
+                          variant=""
+                          size="sm"
+                          style={{ color: "#dc3545", backgroundColor: "transparent" }}
+                          onClick={() => handleDeleteClick(entry)}
+                        >
+                          {t('Delete')}
+                        </Button> */}
                       </td>
                     </tr>
                   ))
@@ -285,6 +335,8 @@ const AllergyTable = () => {
 
       {/* Modal for add/edit */}
       <DynamicEditModal
+      addMode={isAddMode}
+        onDelete={handleDeleteInModal} 
         show={showModal}
         onClose={() => {
           setShowModal(false);
@@ -299,6 +351,29 @@ const AllergyTable = () => {
         dropdownField="allergenId"
         dropdownLabel={t('AllergyTable.allergen')}
       />
+       {/* Popup تأكيد الحذف */}
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('AllergyTable.confirm_delete_title')}
+          message={t('AllergyTable.confirm_delete_message', { 
+            allergen: recordToDelete.allergenLabel || recordToDelete.allergenId 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger" 
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };
