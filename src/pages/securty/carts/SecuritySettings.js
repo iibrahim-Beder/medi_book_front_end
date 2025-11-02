@@ -1,5 +1,6 @@
 import { useTheme } from "../../../context/ThemeContext";
 import { useTranslation } from "react-i18next";
+import SelectField from "../../ui/form-fields/SelectField";
 
 export default function SecuritySettings() {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -90,26 +91,28 @@ export default function SecuritySettings() {
         <form className="dc-formtheme dc-userform">
           <fieldset>
             <div className="form-group form-group-half">
-              <span className="dc-select">
-                <select value={i18n.language} onChange={handleChange}>
-                  <option value="">{t("languageCurrency.selectLanguage")}</option>
-                  <option value="en">{t("languageCurrency.english")}</option>
-                  <option value="ar">{t("languageCurrency.arabic")}</option>
-                </select>
-              </span>
+              <SelectField
+                label={t("languageCurrency.selectLanguage")}
+                options={[
+                  { value: "en", label: t("languageCurrency.english") },
+                  { value: "ar", label: t("languageCurrency.arabic") },
+                ]}
+                value={i18n.language}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group form-group-half">
-              <span className="dc-select">
-                <select>
-                  <option value="">{t("languageCurrency.selectCurrency")}</option>
-                  <option value="">{t("languageCurrency.real")}</option>
-                  <option value="">{t("languageCurrency.usd")}</option>
-                  <option value="">{t("languageCurrency.yuan")}</option>
-                  <option value="">{t("languageCurrency.peso")}</option>
-                  <option value="">{t("languageCurrency.euro")}</option>
-                  <option value="">{t("languageCurrency.hkd")}</option>
-                </select>
-              </span>
+              <SelectField
+                label={t("languageCurrency.selectCurrency")}
+                options={[
+                  { value: "", label: t("languageCurrency.usd") },
+                  { value: "", label: t("languageCurrency.real") },
+                  { value: "", label: t("languageCurrency.yuan") },
+                  { value: "", label: t("languageCurrency.peso") },
+                  { value: "", label: t("languageCurrency.euro") },
+                  { value: "", label: t("languageCurrency.hkd") },
+                ]}
+              />
             </div>
           </fieldset>
         </form>
