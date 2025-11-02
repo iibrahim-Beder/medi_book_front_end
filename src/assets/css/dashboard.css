@@ -6027,7 +6027,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .dc-dashboardtabsholder .dc-tabscontent{direction: rtl;}
 .dc-headerform{display: flex;}
 /* table start */
-.table td, .table th,.dc-user-details{text-align: right;}
+.table td, .table th,.dc-user-details,.review-rate{text-align: right;}
 .cont-img-name{margin-right: 0; margin-left: 30px;}
 .cont-img-name img {margin-right: 0; margin-left: 10px;}
 .arrow-icon-view-table{transform:rotate(180deg);}
@@ -6037,6 +6037,9 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .notification-card .alert-icon{margin-right: 0; margin-left: 10px;}
 .dc-apointments-wraptest .select-arrow{top: 50%;} 
 .table-header h6 {float: right;}
+.notification-card p{flex-direction: row-reverse;}
+.DateRangePickerMain { padding: 10px !important;}
+.filter-dropdown-menu.dropdown-menu{left: 20px !important;right: unset !important;} 
 @media (min-width: 568px) { .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; } }
 @media (max-width: 767px) {
 	.collapsed .dc-btnmenutoggle {

@@ -875,7 +875,7 @@ float:inline-end;
 .star-over-rated {display: flex;justify-content: center;}
 .star-over-rated svg ,.star-over-rated span{margin-left: 2px;font-size:20px; }
 .star-over-rated span{ padding-right: 2px;}
-.review-rate h3 , .comments-list h6 {font-family: "Inter", sans-serif !important;}
+.review-rate h3 , .comments-list h6 {font-family: "Inter", sans-serif ;}
  .comments-list h6 ,.mobile-view-card h5 {font-size:16px;font-weight:500}
 .review-info p  ,.mobile-view-card p {   
    font-size: 15px;

@@ -1430,7 +1430,15 @@
  "MedicalHistory": {
     "confirm_delete_title": "تأكيد الحذف",
     "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{description}}'؟ لا يمكن التراجع عن هذا الإجراء."
-  }
+  },
+    "patient": {
+    "name": "اسم المريض",
+    "idNumber": "رقم الهوية",
+    "contact": "وسيلة الاتصال",
+    "notes": "ملاحظات",
+    "bookingType": "نوع الحجز"
+  },
+  "Filter By":"تصفية"
 }
 
 

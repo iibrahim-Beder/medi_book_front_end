@@ -26,7 +26,7 @@ header.inner-header .header-nav .header-navbar-rht li.noti-nav > a.active-dot::b
  .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before {right: 10px;left: unset !important;}
  .dropdown-menu-end.list-date-option.open:before{right: 9px !important;}
  .dropdown-menu.open { top: 200px !important; transform-box: content-box}
- .dropdown-menu.show {
+ .dropdown-notifications .dropdown-menu.show {
   top: 0px !important;
   overflow:visible !important;
     transition: .5s all ease ,padding .6s ease ; 
