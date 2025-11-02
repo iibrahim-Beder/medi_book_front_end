@@ -6040,6 +6040,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .notification-card p{flex-direction: row-reverse;}
 .DateRangePickerMain { padding: 10px !important;}
 .filter-dropdown-menu.dropdown-menu{left: 20px !important;right: unset !important;} 
+.dc-tabstitle li a.active{letter-spacing: 0; font-size: calc(100% + 3px) !important; transition: all 0.3s ease;}
 @media (min-width: 568px) { .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; } }
 @media (max-width: 767px) {
 	.collapsed .dc-btnmenutoggle {
