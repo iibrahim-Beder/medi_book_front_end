@@ -5,8 +5,8 @@ import { FaClinicMedical, FaCalendarDay, FaExchangeAlt, FaPlus } from "react-ico
 import { useTranslation } from "react-i18next";
 import Field from "../../ui/form-fields/Field";
 import SelectField from "../../ui/form-fields/SelectField";
-import CustomAccordion from "../../shared/CustomAccordion";
-import PopupMessage from "../../shared/PopupMessage";
+import CustomAccordion from "../../shareds/CustomAccordion";
+import PopupMessage from "../../shareds/PopupMessage";
 
 const ShiftsAccordion = memo(({
   shifts = [],

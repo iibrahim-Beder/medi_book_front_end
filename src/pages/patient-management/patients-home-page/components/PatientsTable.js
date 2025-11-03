@@ -4,7 +4,7 @@ import { PiEyeThin, PiUsersThreeLight } from "react-icons/pi";
 import { useTranslation } from "react-i18next";
 import PatientsFilters from "./PatientsFilters";
 import { MdOutlineArrowForward } from "react-icons/md";
-import MainSearch from "../../../shared/MainSearch";
+import MainSearch from "../../../shareds/MainSearch";
 import DateRangePicker from "../../patient-information/PatientTabs/component/DateRangePicker";
 import FilterDropdown from "../../patient-information/PatientTabs/component/FilterDropdown";
 

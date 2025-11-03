@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomAccordion from "../../shared/CustomAccordion"; // المسار حسب مكان الكمبوننت عندك
+import CustomAccordion from "../../shareds/CustomAccordion"; // المسار حسب مكان الكمبوننت عندك
 
 const DoctorExperienceComponent = () => {
   const [experienceData, setExperienceData] = useState([  

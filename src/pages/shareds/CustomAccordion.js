@@ -7,7 +7,7 @@ import TextAreaField from "../ui/form-fields/TextAreaField";
 import Field from "../ui/form-fields/Field";
 import SelectField from "../ui/form-fields/SelectField";
 import FileField from "../ui/form-fields/FileField";
-import SectionTitle from "../shared/SectionTitle";
+import SectionTitle from "./SectionTitle";
 import PopupMessage from "./PopupMessage";
 
 const CustomAccordion = memo(({

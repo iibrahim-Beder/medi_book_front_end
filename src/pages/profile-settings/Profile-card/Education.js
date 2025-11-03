@@ -1,5 +1,5 @@
 import React from "react";
-import CustomAccordion from "../../shared/CustomAccordion";
+import CustomAccordion from "../../shareds/CustomAccordion";
 
 const AcademicQualifications = () => {
   // Sample initial data

@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { MdOutlineArrowForward } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import StarRating from "../../../shared/StarRating";
+import StarRating from "../../../shareds/StarRating";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
-import Pagination from "../../../shared/Pagination";
+import Pagination from "../../../shareds/Pagination";
 
 const reviewsData = [
   {

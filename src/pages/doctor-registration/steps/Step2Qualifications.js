@@ -11,7 +11,7 @@ import { PiCertificateThin } from "react-icons/pi";
 import { MdSchool } from "react-icons/md";
 import { IoIosRibbon } from "react-icons/io";
 import { getQualificationOptions } from "../../../constants/formOptions";
-import CustomAccordion from "../../shared/CustomAccordion";
+import CustomAccordion from "../../shareds/CustomAccordion";
 
 export default function Step2Qualifications({
   formData,

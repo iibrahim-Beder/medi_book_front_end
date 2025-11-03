@@ -7,7 +7,7 @@ import {
   FaRegFileAlt,
 } from "react-icons/fa";
 import { MdWork } from "react-icons/md";
-import CustomAccordion from "../../shared/CustomAccordion";
+import CustomAccordion from "../../shareds/CustomAccordion";
 
 export default function Step4Experience({
   initialExperiences = [],

@@ -18,11 +18,9 @@ import AppointmentManagementMain from "./pages/appointment-management/Appointmen
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 import Test from './not used/Test';
-import Dropdown from "./pages/shared/DropdownWithSearch";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
-import FinancialDashboard from "./not used/Test";
 import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorFinancialDashboard";
 
 

@@ -6,7 +6,7 @@ import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
-import Pagination from "../../../../../shared/Pagination";
+import Pagination from "../../../../../shareds/Pagination";
 
 const DiagnosedConditionsTable = () => {
   const { t } = useTranslation();

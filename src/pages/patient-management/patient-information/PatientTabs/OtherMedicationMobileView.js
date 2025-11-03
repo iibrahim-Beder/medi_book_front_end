@@ -4,9 +4,9 @@ import { Button, Card } from "react-bootstrap";
 import ConditionsFilters from "./component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import Pagination from "../../../shared/Pagination";
-import PopupMessage from "../../../shared/PopupMessage";
-import DynamicEditModal from "../../../shared/DynamicEditModal";
+import Pagination from "../../../shareds/Pagination";
+import PopupMessage from "../../../shareds/PopupMessage";
+import DynamicEditModal from "../../../shareds/DynamicEditModal";
 import "../../Patient-management.css";
 
 const OtherMedicationMobileView = () => {

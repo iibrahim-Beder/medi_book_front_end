@@ -1,13 +1,13 @@
 // DiagnosisTable.jsx
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import CustomAccordion from "../../../../shared/CustomAccordion";
-import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
+import CustomAccordion from "../../../../shareds/CustomAccordion";
+import TwoLevelAccordion from "../../../../shareds/TwoLevelAccordion";
 import { MdExpandMore } from "react-icons/md";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
-import Pagination from "../../../../shared/Pagination";
+import Pagination from "../../../../shareds/Pagination";
 import "../../../Patient-management.css";
 
 const DiagnosisTable = () => {

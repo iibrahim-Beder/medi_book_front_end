@@ -1,5 +1,5 @@
 import Profil from "../2-Experans & Edition/Profil";
-import EditableList from "../../shared/EditableList";
+import EditableList from "../../shareds/EditableList";
 import { useState } from "react";
 import { id } from "date-fns/locale/id";
 const  ProfileAndSpecialties = () => {

@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { LiaCheckDoubleSolid } from "react-icons/lia";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
-import Pagination from "../../../shared/Pagination";
+import Pagination from "../../../shareds/Pagination";
 
 const notificationsData = [
   {

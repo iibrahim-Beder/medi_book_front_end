@@ -7,7 +7,7 @@ import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import Field from "../../../../../ui/form-fields/Field";
-import Pagination from "../../../../../shared/Pagination";
+import Pagination from "../../../../../shareds/Pagination";
 
 const DiagnosedConditionsMobileView = () => {
   const { t } = useTranslation();

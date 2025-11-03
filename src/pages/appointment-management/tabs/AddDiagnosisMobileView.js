@@ -1,13 +1,13 @@
 // DiagnosisMobileViewWithCRUD.jsx
 import React, { useState, useCallback } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
-import CustomAccordion from "../../shared/CustomAccordion";
-import TwoLevelAccordion from "../../shared/TwoLevelAccordion";
+import CustomAccordion from "../../shareds/CustomAccordion";
+import TwoLevelAccordion from "../../shareds/TwoLevelAccordion";
 import Field from "../../ui/form-fields/Field";
 import { useTranslation } from "react-i18next";
 import { MdClose, MdExpandMore } from "react-icons/md";
-import Pagination from "../../shared/Pagination";
-import PopupMessage from "../../shared/PopupMessage";
+import Pagination from "../../shareds/Pagination";
+import PopupMessage from "../../shareds/PopupMessage";
 import TextAreaField from "../../ui/form-fields/TextAreaField";
 
 const DiagnosisMobileViewWithCRUD = () => {

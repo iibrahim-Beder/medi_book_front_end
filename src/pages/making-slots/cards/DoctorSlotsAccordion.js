@@ -7,8 +7,8 @@ import TextAreaField from "../../ui/form-fields/TextAreaField";
 import Field from "../../ui/form-fields/Field";
 import SelectField from "../../ui/form-fields/SelectField";
 import FileField from "../../ui/form-fields/FileField";
-import SectionTitle from "../../shared/SectionTitle";
-import PopupMessage from "./../../shared/PopupMessage";
+import SectionTitle from "../../shareds/SectionTitle";
+import PopupMessage from "../../shareds/PopupMessage";
 import { useTranslation } from "react-i18next";
 
 const DoctorSlotsAccordion = memo(({
