@@ -1438,7 +1438,16 @@
     "notes": "ملاحظات",
     "bookingType": "نوع الحجز"
   },
-  "Filter By":"تصفية"
+  "Filter By":"تصفية",
+  "Today": "اليوم",
+  "Yesterday": "أمس",
+  "Last 7 Days": "آخر 7 أيام",
+  "Last 30 Days": "آخر 30 يومًا",
+  "This Month": "هذا الشهر",
+  "Last Month": "الشهر الماضي",
+  "Custom Range": "نطاق مخصص",    
+"Apply":"تطبيق"
+
 }
 
 

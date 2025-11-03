@@ -5637,11 +5637,11 @@ content: none;
   width: 71vw; 
 /* padding: 20px 60px; */
 padding-right: 0;
-float: right;   
+/* float: right;    */
 }
 	.dc-tabscontent{height: fit-content;}
 	.list-date-option.custom{
-		left: -150% ;
+		left: -166% ;
 	}
 	.patintStats{
 		row-gap: 20px !important;
@@ -5667,7 +5667,12 @@ margin-right: 15px ;
 	.list-date-option.custom{
 		left: -70% ;
 	}
-
+	
+@media (min-width: 820px) {
+html[dir="rtl"]  {
+	.list-date-option.custom{
+		left: -100% ;
+	}}}
 }
 /* <<< */
 	
@@ -5858,7 +5863,7 @@ padding: 0 10px;
 	}
 	.dropdown-date-options{
 		max-width: unset !important;
-		border-right: 0 !important;
+		border: 0 !important;
 	}
 	.list-date-option.custom {
 		left: -22px;
@@ -6041,6 +6046,54 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .DateRangePickerMain { padding: 10px !important;}
 .filter-dropdown-menu.dropdown-menu{left: 20px !important;right: unset !important;} 
 .dc-tabstitle li a.active{letter-spacing: 0; font-size: calc(100% + 3px) !important; transition: all 0.3s ease;}
+/* date range picker in rtl  start */
+ @media (min-width: 992px) {
+	 .list-date-option.custom{
+		 left: unset;
+		 right: -200%;
+	 }
+	 .list-date-option:after, .list-date-option:before{left: unset; right: 585px;}
+	 .list-date-option:after{right: 586px;}	
+	 .list-date-option.open:after ,.list-date-option.open:before {
+		 right: -99px !important;
+		 left: 0 !important;
+	 }
+ }
+ .rdp-nav{flex-direction: row-reverse;}
+@media (max-width: 1200px) {
+	/* .list-date-option.custom {
+		left: unset;
+        right:  -166%;
+    }
+
+    @media (max-width: 992px) {
+        .list-date-option.custom {
+			left: unset;
+			right: -70%;
+		}
+	  .list-date-option:before, .list-date-option:after {
+   		right: 280px;
+        }
+	}
+    @media (max-width: 820px) {
+        .list-date-option.custom {
+			left: unset;
+            right: -30%;
+        }
+    }
+
+
+    @media (max-width: 568px) {
+        .list-date-option.custom {
+			left: unset;
+            right: -22px;
+        }
+    } */
+}
+.dropdown-date-options{border-right: none; border-left: 1px solid rgb(221, 221, 221); padding-left: 2px ; padding-right: 0 ;}
+
+.rdp-month_grid{direction: ltr;}
+/* date range picker in rtl  end */
 @media (min-width: 568px) { .contentdiv{padding-right: 70px; margin-left: 40px;  padding-left: 0;  margin-right: 0px; } }
 @media (max-width: 767px) {
 	.collapsed .dc-btnmenutoggle {

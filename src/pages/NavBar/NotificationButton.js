@@ -60,7 +60,7 @@ const NotificationDropdown = () => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu
-        className="dropdown-menu-end shadow list-date-option open"
+        className="dropdown-menu-end notifications shadow list-date-option open"
         style={{
           minWidth: "350px",
           backgroundColor: "var(--cardcolor)",
