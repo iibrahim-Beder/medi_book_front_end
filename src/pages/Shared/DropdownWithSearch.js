@@ -161,7 +161,7 @@ useEffect(() => {
           }}
         />
 
-        <Popper
+        <Popper 
           open={open}
           anchorEl={anchorEl}
           placement="bottom-start"
@@ -180,11 +180,13 @@ useEffect(() => {
                 padding: "10px",
                 display: "flex",
                 flexDirection: "column",
-                boxShadow: "0px 11px 12px 0px #dbdbdb45",
+                boxShadow: "0px 11px 12px 0px var(--scshadocolor)",
                 border: "1px solid #ddd",
                 width: width,
                 position: "absolute",
                 zIndex: 2,
+                backgroundColor: "var(--cardcolor)",
+                color:"var(--terthemecolor)"
               }}
             >
               {/* Search field inside dropdown */}

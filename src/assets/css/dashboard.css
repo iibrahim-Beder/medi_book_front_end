@@ -5942,7 +5942,9 @@ input:disabled,
 
 
 
-
+.expandable-content {
+background-color: var(--bcticolor);	
+}
 .doctor-registration{background: var(--bkcolor);}
 .container{border-color: #334c99;}
 .text-muted{color :#ededede6 !important;}
@@ -5997,7 +5999,7 @@ html[dir="rtl"]  {
 .dc-accordioninnertitle ,.dc-updatall{display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;}
-	.dc-collapseexp{direction: rtl;}
+	.dc-collapseexp,.text-ellipsis{direction: rtl;}
 	.dc-dashboardboxtitle h2 {float: inline-end;}
  label, .accordion label{float: inline-start;}
 .form-group-label .dc-labelgroup{    display: flex; align-items: center;  justify-content: space-between;}
