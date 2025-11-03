@@ -1,0 +1,106 @@
+.alert-neutral {
+position: relative;
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 20px 24px;
+    font-family: "Arial", sans-serif;
+    color: #333;
+    display: flex
+;
+    flex-direction: column;
+    gap: 12px;
+    /* padding: 9px; */
+    margin: 0px !important;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.alert-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+    color: #4285f4;
+  cursor: pointer;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.alert-title {
+    font-family: Roboto Bold;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.alert-message {
+  font-size: 15px;
+    color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+      font-family: Roboto Regular;
+
+}
+
+.alert-actions {
+  margin-top: 8px;
+}
+
+.alert-button {
+  background-color: #4285f4;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 4px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #3367d6;
+  }
+}
+  .alert-icon {
+font-size: 28px;
+  }
+
+
+
+
+  button:focus{
+        outline: none !important;
+        // color: var(--themecolor);
+  }
+
+
+  .alert-neutral {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 20px 24px;
+  font-family: "Arial", sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0px !important;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 1;
+  transform: translateY(0);
+      box-shadow: 0 0 15px 0 var(--shadocolor);
+}
+
+.alert-neutral.hide { 
+  opacity: 0;
+  transform: translateY(50px);
+  pointer-events: none;
+}

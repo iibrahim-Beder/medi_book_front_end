@@ -1,0 +1,157 @@
+:root{
+        --themecolor: #3fabf3;
+}
+
+
+.after{
+right: 0;
+    top: 50% !important;
+    font-size: 10px !important;
+    content: '\e64b' !important;
+    margin-top: -10px !important;
+    line-height: 20px !important;
+    position: absolute !important ;
+} 
+
+/* Main menu */
+nav .navbar-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.menu-item-has-children {
+  position: relative;
+}
+
+.menu-item-has-children > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+
+.menu-item-has-children.active .sub-menu {
+  display: block;
+}
+
+
+
+.sub-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+
+
+
+.dropdown-icon {
+    display: none;
+    color: white;
+    font-size: 20px;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+    background-color: var(--bluecolor);
+    padding: 3px;
+}
+
+.dropdown-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.dc-header-dashboard .sub-menu li svg {
+    display: none ;
+}
+/* Show it only when the screen is small (like when the hamburger button appears) */
+@media (max-width: 991px) {
+  .dropdown-icon {
+    display: inline-block;
+  }.dc-header-dashboard .sub-menu li svg {
+     display: inline-block;
+    margin-right: 8px;
+  }
+}
+
+
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  min-width: 200px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 999;
+
+  opacity: 0;
+  transform: translateY(40px);
+  visibility: hidden;
+  
+  transition: all 300ms ease-in-out;
+  display: none;
+}
+
+/* When the menu is visible (class show) */
+.sub-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition-delay: 0s; /* Immediate display without delay */
+}
+
+/* On desktop */
+@media (min-width: 992px) {
+  .sub-menu {
+    display: block; /* Always visible */
+    visibility: hidden;
+  }
+
+  .menu-item-has-children:hover > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
+  }
+}
+
+
+
+
+.dc-usernav ul li a:hover ,.sub-menu li a:hover {
+  color: var(--themecolor) ;
+}
+
+
+/* Default state */
+.User-sub-menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(49px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  min-width: 200px;
+  padding: 10px;
+box-shadow: 0 4px 13px 3px var(--shadocolor);
+  list-style: none;
+  z-index: 999;
+}
+
+/* On hover over parent */
+.dc-userlogedin:hover .User-sub-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
+}
+
+
+.dc-navigation > ul > li:before {
+  background-color: #4dacff !important;
+}
