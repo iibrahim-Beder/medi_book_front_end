@@ -1,12 +1,12 @@
 // AllergenTable.jsx
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import DynamicEditModal from "../../../shareds/DynamicEditModal";
-import Pagination from "../../../shareds/Pagination";
+import DynamicEditModal from "../../../shared/DynamicEditModal";
+import Pagination from "../../../shared/Pagination";
 import ConditionsFilters from "./component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
 import "../../Patient-management.css";
-import PopupMessage from "../../../shareds/PopupMessage";
+import PopupMessage from "../../../shared/PopupMessage";
 
 const AllergyTable = () => {
   const { t } = useTranslation();

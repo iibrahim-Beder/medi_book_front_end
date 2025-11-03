@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import Field from "../../../../ui/form-fields/Field";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 import { MdClose } from "react-icons/md";
-import DropdownWithSearch from "../../../../shareds/DropdownWithSearch";
+import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
 import SelectField from "../../../../ui/form-fields/SelectField";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import { t } from "i18next";

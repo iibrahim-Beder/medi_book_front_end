@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SectionTitle from "../../shareds/SectionTitle";
+import SectionTitle from "../../shared/SectionTitle";
 import "./PaymentInsuranceStep.css";
 import {
   FaMoneyBillWave,

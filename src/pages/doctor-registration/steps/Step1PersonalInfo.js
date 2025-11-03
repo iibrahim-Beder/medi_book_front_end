@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SectionTitle from "../../shareds/SectionTitle";
+import SectionTitle from "../../shared/SectionTitle";
 import Field from "../../ui/form-fields/Field";
 import { FaEnvelope, FaPhone, FaIdCard, FaLock } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";

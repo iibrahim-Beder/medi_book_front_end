@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import Pagination from "../../../shareds/Pagination"
+import Pagination from "../../../shared/Pagination"
 import "../../Patient-management.css";
 import { MdExpandMore, MdOutlineArrowForward } from "react-icons/md";
 import { t } from "i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
-import StarRating from "../../../shareds/StarRating"; 
+import StarRating from "../../../shared/StarRating"; 
 import ConditionsFilters from "../../patient-information/PatientTabs/component/ConditionsFilters";
 import FilterDropdown from "../../patient-information/PatientTabs/component/FilterDropdown";
 import DateRangePicker from "../../patient-information/PatientTabs/component/DateRangePicker";

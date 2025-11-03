@@ -1,13 +1,13 @@
 // DiagnosisMobileView.jsx
 import React, { useState } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
-import CustomAccordion from "../../../../shareds/CustomAccordion";
-import TwoLevelAccordion from "../../../../shareds/TwoLevelAccordion";
+import CustomAccordion from "../../../../shared/CustomAccordion";
+import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
 import { MdClose, MdExpandMore } from "react-icons/md";
-import Pagination from "../../../../shareds/Pagination";
+import Pagination from "../../../../shared/Pagination";
 
 const DiagnosisMobileView = () => {
   const { t } = useTranslation();

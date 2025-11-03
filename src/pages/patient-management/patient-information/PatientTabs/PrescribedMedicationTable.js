@@ -5,7 +5,7 @@ import ConditionsFilters from "./component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
-import Pagination from "../../../shareds/Pagination";
+import Pagination from "../../../shared/Pagination";
 import "../../Patient-management.css";
 
 const PrescribedMedicationTable = () => {

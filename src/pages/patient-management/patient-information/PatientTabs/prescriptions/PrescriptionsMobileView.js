@@ -1,13 +1,13 @@
 // PrescriptionsMobileView.jsx
 import React, { useState } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
-import CustomAccordion from "../../../../shareds/CustomAccordion";
+import CustomAccordion from "../../../../shared/CustomAccordion";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
-import Pagination from "../../../../shareds/Pagination";
+import Pagination from "../../../../shared/Pagination";
 
 const PrescriptionsMobileView = () => {
   const { t } = useTranslation();

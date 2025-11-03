@@ -3,8 +3,8 @@ import { Table, Button } from "react-bootstrap";
 import MedicalHistoryModal from "./component/MedicalHistoryModal"; 
 import "../../Patient-management.css";
 import ConditionsFilters from "./component/ConditionsFilters";
-import Pagination from "../../../shareds/Pagination";
-import PopupMessage from "../../../shareds/PopupMessage"; 
+import Pagination from "../../../shared/Pagination";
+import PopupMessage from "../../../shared/PopupMessage"; 
 import { useTranslation } from "react-i18next";
 
 const MedicalHistoryTable = () => {

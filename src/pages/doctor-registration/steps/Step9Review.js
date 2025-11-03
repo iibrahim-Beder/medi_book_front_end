@@ -1,6 +1,6 @@
 import React from "react";
-import SectionTitle from "../../shareds/SectionTitle";
-import FullWidth from "../../shareds/FullWidth";
+import SectionTitle from "../../shared/SectionTitle";
+import FullWidth from "../../shared/FullWidth";
 import { t } from "i18next";
 import { GiConfirmed } from "react-icons/gi";
 

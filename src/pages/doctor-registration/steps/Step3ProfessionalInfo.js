@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import SectionTitle from "../../shareds/SectionTitle";
+import SectionTitle from "../../shared/SectionTitle";
 import SelectField from "../../ui/form-fields/SelectField";
 import Field from "../../ui/form-fields/Field";
 import TextAreaField from "../../ui/form-fields/TextAreaField";
 import FileField from "../../ui/form-fields/FileField";
-import FullWidth from "../../shareds/FullWidth";
+import FullWidth from "../../shared/FullWidth";
 import { getSpecialtyOptions } from "../../../constants/formOptions";
 import { GrLanguage } from "react-icons/gr";
 import { MdOutlineFolderSpecial } from "react-icons/md";
 import { FaStethoscope, FaClipboardCheck, FaCloudUploadAlt, FaUpload } from "react-icons/fa";
 import { t } from "i18next";
-import EditableList from "../../shareds/EditableList";
+import EditableList from "../../shared/EditableList";
 
 export default function Step2ProfessionalInfo({
   errors = {},

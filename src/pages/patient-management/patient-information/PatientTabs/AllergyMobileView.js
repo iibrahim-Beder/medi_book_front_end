@@ -1,13 +1,13 @@
 // AllergyMobileView.jsx
 import React, { useState } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
-import DynamicEditModal from "../../../shareds/DynamicEditModal";
+import DynamicEditModal from "../../../shared/DynamicEditModal";
 import ConditionsFilters from "./component/ConditionsFilters";
-import Pagination from "../../../shareds/Pagination";
+import Pagination from "../../../shared/Pagination";
 import { MdClose, MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import "../../Patient-management.css";
-import PopupMessage from "../../../shareds/PopupMessage";
+import PopupMessage from "../../../shared/PopupMessage";
 
 const AllergyMobileView = () => {
   const { t } = useTranslation();

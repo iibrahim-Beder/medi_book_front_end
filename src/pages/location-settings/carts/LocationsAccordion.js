@@ -4,7 +4,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import { FaPlus, FaMapMarkerAlt } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import BlueMapPicker from "./MapSearch";
-import PopupMessage from "../../shareds/PopupMessage";
+import PopupMessage from "../../shared/PopupMessage";
 
 const LocationsAccordion = memo(({
   titlebackgroundColor = "var(--cardcolor)",

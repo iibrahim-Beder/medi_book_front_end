@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CustomAccordion from "../../../shareds/CustomAccordion";
-import DynamicEditModal from "../../../shareds/DynamicEditModal";
+import CustomAccordion from "../../../shared/CustomAccordion";
+import DynamicEditModal from "../../../shared/DynamicEditModal";
 import { useDevice } from "../../../../context/useIsMobile";
 import { useTranslation } from "react-i18next";
 

@@ -1,12 +1,12 @@
 // PrescriptionsTable.jsx
 import React, { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import CustomAccordion from "../../../../shareds/CustomAccordion";
+import CustomAccordion from "../../../../shared/CustomAccordion";
 import { MdExpandMore } from "react-icons/md";
 import ConditionsFilters from "../component/ConditionsFilters";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 import { useTranslation } from "react-i18next";
-import Pagination from "../../../../shareds/Pagination";
+import Pagination from "../../../../shared/Pagination";
 import "../../../Patient-management.css";
 
 const PrescriptionsTable = () => {

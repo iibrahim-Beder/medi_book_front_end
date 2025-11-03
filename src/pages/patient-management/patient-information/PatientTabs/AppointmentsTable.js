@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Table, Button, Form, InputGroup } from "react-bootstrap";
 import "../../Patient-management.css";
-import CustomAccordion from "../../../shareds/CustomAccordion";
+import CustomAccordion from "../../../shared/CustomAccordion";
 
 const AppointmentsTable = () => {
   const [expandedRow, setExpandedRow] = useState(null);

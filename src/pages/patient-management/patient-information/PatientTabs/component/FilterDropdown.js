@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import './new.css';
 import { CiFilter } from "react-icons/ci";
-import DropdownWithSearch from "../../../../shareds/DropdownWithSearch";
+import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
 import { t } from "i18next";
 
 const FilterDropdown = ({ 
