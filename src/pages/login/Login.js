@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import logo from "../../assets/images/logo-login1.png";
 import Field from "../ui/form-fields/Field";
 import "./Login.css";
-
+import { Link } from "react-router-dom";
 export default function Login() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div style={{height:"100vh", display:"flex", justifyContent:"center"}} >
       <div className="d-flex align-items-center justify-content-center login-container ">
         <div class="col-md-7 col-lg-6 login-left  ">
           <img src={logo} class="img-fluid" alt="Doccure Login" />
@@ -130,12 +130,14 @@ export default function Login() {
 
                 {/* Submit Button */}
                 <div className="form-group mt-6" style={{ overflow: "hidden" }}>
+                  <Link to="/dashboard">
                   <button
                     className="btn-primary-gradient w-100 dc-btn"
                     type="submit"
                   >
                     {t("login.button")}
                   </button>
+                  </Link>
                 </div>
 
                 {/* Divider */}
@@ -156,7 +158,8 @@ export default function Login() {
                 <div className="account-signup">
                   <p>
                     {t("login.noAccount")}{" "}
-                    <a href="register.html">{t("login.signupNow")}</a>
+                    <Link to="/registration">   <a href="!#">{t("login.signupNow")}</a></Link>
+                 
                   </p>
                 </div>
 
