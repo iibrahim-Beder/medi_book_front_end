@@ -5752,6 +5752,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.login-container{margin: 15px 0;}
 	.dc-accordioninnertitle{padding: 6px 10px !important;}
 	/* .modal-footer{gap: 0 !important;} */
 	.doctor-registration{padding: 0;}
@@ -6026,7 +6027,7 @@ html[dir="rtl"]  {
 }
 .input-icon{left: auto;right: 6px;}
 body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.dc-nav,.dc-navdashboard ,.alert-message,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,.react-calendar__month-view__weekdays__weekday,.form-group label,.dc-btn,.dc-uploadinfo,.dc-updatall span,.dc-attachfilevtwo .dc-uploading em,.dc-checkbox input[type=checkbox] + label span,p,button, input, optgroup, select, textarea,.two-tabs-nav-container 
-,.dc-accountinfo
+,.dc-accountinfo,.login-right .account-signup p
 {
 	font-family: "Tajawal", "Cairo", sans-serif;
 	/* font-size:calc( 100% + 4%) !important; */
@@ -6034,7 +6035,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .dc-dashboardtabsholder .dc-tabscontent{direction: rtl;}
 .dc-headerform{display: flex;}
 /* table start */
-.table td, .table th,.dc-user-details,.review-rate{text-align: right;}
+.table td, .table th,.dc-user-details,.review-rate,.login-header{text-align: right;}
 .cont-img-name{margin-right: 0; margin-left: 30px;}
 .cont-img-name img {margin-right: 0; margin-left: 10px;}
 .arrow-icon-view-table{transform:rotate(180deg);}
@@ -6048,6 +6049,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .DateRangePickerMain { padding: 10px !important;}
 .filter-dropdown-menu.dropdown-menu{left: 20px !important;right: unset !important;} 
 .dc-tabstitle li a.active{letter-spacing: 0; font-size: calc(100% + 3px) !important; transition: all 0.3s ease;}
+.toggle-password-icon{right: unset; left: 15px;}
 /* date range picker in rtl  start */
  @media (min-width: 992px) {
 	 .list-date-option.custom{

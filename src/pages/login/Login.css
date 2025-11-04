@@ -33,6 +33,9 @@
     .login-right .social-login-btn .btn + .btn {
         margin-top: 16px;
     }
+    .login-header {
+    margin-bottom: 20px;
+}
     .login-header h3 {
         font-size: 18px;
         margin-bottom: 3px;
@@ -107,7 +110,7 @@
     font-family: "Inter", sans-serif;
     font-size: 14px;
 }
-.login-header .login-logo { color:var(--secthemecolor) }
+.login-header .login-logo { color:var(--secthemecolor) ;font-family: 'Poppins', Arial, Helvetica, sans-serif;}
 .account-signup p a,.account-signup p a:hover{
     font-weight: 500;
     color: #0E82FD;
