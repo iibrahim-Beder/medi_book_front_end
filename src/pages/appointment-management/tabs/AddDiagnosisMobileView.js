@@ -636,7 +636,7 @@ const DiagnosisMobileViewWithCRUD = () => {
             {/* Basic Information */}
             <div className="mb-4">
               <div className="row">
-                <div className="col-lg-6 col-sm-12">
+                <div className="col-lg-12 col-sm-12">
                   <Field
                     label={t('Diagnosis Name')}
                     value={editingDiagnosis?.DiagnosisName || ''}
@@ -644,8 +644,8 @@ const DiagnosisMobileViewWithCRUD = () => {
                     placeholder={t('Enter diagnosis name')}
                   />
                 </div>
-                <div className="col-lg-6 col-sm-12">
-                  <Field
+                <div className="col-lg-12 col-sm-12">
+                  <TextAreaField
                     label={t('Symptoms Description')}
                     value={editingDiagnosis?.SymptomsDescription || ''}
                     onChange={(e) => handleUpdateDiagnosis('SymptomsDescription', e.target.value)}
