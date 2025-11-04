@@ -1446,7 +1446,26 @@
   "This Month": "هذا الشهر",
   "Last Month": "الشهر الماضي",
   "Custom Range": "نطاق مخصص",    
-"Apply":"تطبيق"
+"Apply":"تطبيق",
+ "login": {
+    "title": "تسجيل الدخول",
+    "brand": "دوكيور",
+    "email": "البريد الإلكتروني",
+    "enterEmail": "ادخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "enterPassword": "ادخل كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "rememberMe": "تذكرني",
+    "loginWithOTP": "تسجيل الدخول برمز OTP",
+    "button": "تسجيل الدخول",
+    "or": "أو",
+    "google": "التسجيل باستخدام جوجل",
+    "noAccount": "ليس لديك حساب؟",
+    "signupNow": "سجل الآن",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "success": "تم تسجيل الدخول بنجاح"
+  }
 
 }
 

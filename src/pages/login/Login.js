@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import logo from "../assets/images/logo-login1.png";
-import Field from "../pages/ui/form-fields/Field";
-import "./test.css";
+import logo from "../../assets/images/logo-login1.png";
+import Field from "../ui/form-fields/Field";
+import "./Login.css";
 
 export default function Login() {
   const { t } = useTranslation();

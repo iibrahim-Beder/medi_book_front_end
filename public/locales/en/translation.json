@@ -1314,6 +1314,25 @@
  "MedicalHistory": {
     "confirm_delete_title": "Confirm Deletion",
     "confirm_delete_message": "Are you sure you want to delete '{{description}}'? This action cannot be undone."
+  },
+   "login": {
+    "title": "Login to",
+    "brand": "Doclisto",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me",
+    "loginWithOTP": "Login with OTP",
+    "button": "Login",
+    "or": "OR",
+    "google": "Sign in with Google",
+    "noAccount": "Don't have an account?",
+    "signupNow": "Sign up now",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "success": "Login successful"
   }
   }
   

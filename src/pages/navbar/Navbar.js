@@ -26,7 +26,7 @@ function Navbar() {
       <div className="dc-navigationarea">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-0">
               {/* Logo */}
               <strong className="dc-logo">
                 <Link to="/">

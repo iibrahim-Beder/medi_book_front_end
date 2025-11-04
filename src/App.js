@@ -22,6 +22,7 @@ import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorFinancialDashboard";
+import Login from "./pages/login/Login";
 
 
 
@@ -63,7 +64,9 @@ const { i18n } = useTranslation();
 {!loading && (
  <Routes>
  
-      <Route path="/" element={<DoctorRegistration />} />
+      <Route path="/registration" element={<DoctorRegistration />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/" element={<Login />} />
 
       <Route
         path="/*"

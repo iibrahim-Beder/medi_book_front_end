@@ -46,6 +46,7 @@ export default function DeleteAccount({ onDelete }) {
           <fieldset>
             <div className="form-group form-group-half">
               <Field
+                 label="password"
                 type="password"
                 name="password"
                 placeholder={t("deleteAccount.placeholders.password")}
@@ -57,6 +58,7 @@ export default function DeleteAccount({ onDelete }) {
             <div className="form-group form-group-half">
               <Field
                 type="password"
+                label="confirm Password"
                 name="confirmPassword"
                 placeholder={t("deleteAccount.placeholders.confirmPassword")}
                 value={password2}
