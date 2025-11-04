@@ -127,7 +127,6 @@
 }
 /* forget-password */
 .otp-box{
-    margin: 0 4%;
     margin-top: 32px;
 }
 .otp-box input {
@@ -150,3 +149,6 @@
 }
 
 .login-method-toggle button { color: var(--bluecolor); }
+.otp-box input:last-child {
+    margin-right: 0;
+}

@@ -2,7 +2,7 @@ import { ArrowUp, ArrowDown } from "lucide-react";
 
 const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) => {
   return (
-    <div className="col-xl-3 col-sm-6 col-12">
+    <div className="col-xl-3 col-sm-6 col-12 stats-card">
       <div className="table-card" style={{ border: "1px solid #E6E8EE" }}>
         <div
           style={{
@@ -55,7 +55,11 @@ const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) =
             {isPositive ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
             <span className="ms-1">{percentage}%</span>
           </span>
-          <small className="text-muted ms-2">since last month</small>
+          <small className={` ms-2  ${
+              isPositive
+                ? "bg-success-subtle text-success"
+                : "bg-danger-subtle text-danger"
+            }`}>since last month</small>
           </div>
         </div>
       </div>

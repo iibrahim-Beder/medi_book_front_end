@@ -5871,6 +5871,12 @@ padding: 0 10px;
     }
 	/* date range picker css end */
 	@media (max-width: 400px) {
+		/* .login-right{padding: 10px;} */
+		/* .login-right > div{padding: 0px !important;} */
+		.otp-box input{margin-right: 10px; width: 56px;}
+		.otp-info{flex-direction: column;gap: 10px;} 
+		.otp-info > div{width: 75vw;} 
+		/* .otp-box{margin: 10px 5px;} */
 		.btn-container div{ width: -webkit-fill-available;}
 		.btn-container .dc-btn{width:100%;min-width: fit-content;}
 		.title-with-icon .section-title{ align-items: center; } 
@@ -6035,7 +6041,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .dc-dashboardtabsholder .dc-tabscontent{direction: rtl;}
 .dc-headerform{display: flex;}
 /* table start */
-.table td, .table th,.dc-user-details,.review-rate,.login-header,.send-code-to{text-align: right;}
+.table td, .table th,.dc-user-details,.review-rate,.login-header,.send-code-to,.login-method-toggle{text-align: right;}
 .cont-img-name{margin-right: 0; margin-left: 30px;}
 .cont-img-name img {margin-right: 0; margin-left: 10px;}
 .arrow-icon-view-table{transform:rotate(180deg);}

@@ -161,14 +161,14 @@ export default function ForgotPassword() {
                       </p>
                     </div>
 
-                    {msg && (
+                    {/* {msg && (
                       <div
                         className={`alert alert-${msg.type}`}
                         style={{ marginTop: 15 }}
                       >
                         {msg.text}
                       </div>
-                    )}
+                    )} */}
                   </fieldset>
                 </form>
               </>
