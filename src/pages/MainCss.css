@@ -1147,4 +1147,5 @@ color: white;
 .filters-container-search{padding-bottom: 10px;}
 .description-expanded-section{width: 80vw;}
 
-.text-muted{font-size: 12px;}
+.card   .text-muted{font-size: 12px;}
+.patintStats .text-muted {color: var(--text-sub) !important;}

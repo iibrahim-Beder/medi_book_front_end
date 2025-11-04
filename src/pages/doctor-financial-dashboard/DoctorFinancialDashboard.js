@@ -6,6 +6,30 @@ import { FaMoneyBillWave, FaWallet } from "react-icons/fa";
 import StatCard from "../patient-management/patients-home-page/components/StatCard";
 import { useTranslation } from "react-i18next";
 import DateRangePicker from "../patient-management/patient-information/PatientTabs/component/DateRangePicker";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const DoctorFinancialDashboard = () => {
     const { t } = useTranslation();
