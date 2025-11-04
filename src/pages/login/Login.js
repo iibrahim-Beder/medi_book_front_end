@@ -1,26 +1,34 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiMail, FiLock, FiPhone } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import logo from "../../assets/images/logo-login1.png";
 import Field from "../ui/form-fields/Field";
 import "./Login.css";
 import { Link } from "react-router-dom";
+
 export default function Login() {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loginWithOTP, setLoginWithOTP] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginMethod, setLoginMethod] = useState("email"); // "email" or "phone"
   const [msg, setMsg] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setMsg(null);
 
-    if (!email) {
+    if (loginMethod === "email" && !email) {
       setMsg({ type: "error", text: t("login.emailRequired") });
+      return;
+    }
+
+    if (loginMethod === "phone" && !phone) {
+      setMsg({ type: "error", text: t("login.phoneRequired") });
       return;
     }
 
@@ -30,18 +38,30 @@ export default function Login() {
     }
 
     setMsg({ type: "success", text: t("login.success") });
-    console.log("Login attempt:", { email, password, rememberMe, loginWithOTP });
+    console.log("Login attempt:", { 
+      [loginMethod]: loginMethod === "email" ? email : phone, 
+      password, 
+      rememberMe, 
+      loginWithOTP 
+    });
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const toggleLoginMethod = () => {
+    setLoginMethod(loginMethod === "email" ? "phone" : "email");
+    // Clear the fields when switching methods
+    setEmail("");
+    setPhone("");
+  };
+
   return (
-    <div style={{height:"100vh", display:"flex", justifyContent:"center"}} >
-      <div className="d-flex align-items-center justify-content-center login-container ">
-        <div class="col-md-7 col-lg-6 login-left  ">
-          <img src={logo} class="img-fluid" alt="Doccure Login" />
+    <div style={{height:"100vh", display:"flex", justifyContent:"center"}}>
+      <div className="d-flex align-items-center justify-content-center login-container">
+        <div className="col-md-7 col-lg-6 login-left">
+          <img src={logo} className="img-fluid" alt="Doccure Login" />
         </div>
 
         {/* Login Form */}
@@ -54,48 +74,77 @@ export default function Login() {
               </h3>
             </div>
 
+            {/* Toggle Login Method Button */}
+            <div className="login-method-toggle">
+              {t("login.with")} 
+              <button 
+                type="button"
+                className="toggle-method-btn"
+                onClick={toggleLoginMethod}
+              >
+                {loginMethod === "email" 
+                  ? t("login.withPhone") 
+                  : t("login.withEmail")
+                }
+              </button>
+            </div>
+
             <form className="dc-formtheme dc-userform" onSubmit={handleSubmit}>
               <fieldset>
-                {/* Email Field */}
+                {/* Email/Phone Field */}
                 <div className="form-group">
-                  <Field
-                    label={t("login.email")}
-                    type="email"
-                    name="email"
-                    placeholder={t("login.enterEmail")}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    icon={<FiMail />}
-                  />
+                  {loginMethod === "email" ? (
+                    <Field
+                      label={t("login.email")}
+                      type="email"
+                      name="email"
+                      placeholder={t("login.enterEmail")}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      icon={<FiMail />}
+                    />
+                  ) : (
+                    <Field
+                      label={t("login.phone")}
+                      type="tel"
+                      name="phone"
+                      placeholder={t("login.enterPhone")}
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      icon={<FiPhone />}
+                    />
+                  )}
                 </div>
 
-                {/* Password Field */}
-                <div className="form-group">
-                  <div className="form-label-group">
-                    <label>{t("login.password")}</label>
-                    <a href="forgot-password.html" className="forgot-link">
-                      {t("login.forgotPassword")}
-                    </a>
+                {/* Password Field - Only show if not using OTP */}
+                {!loginWithOTP && (
+                  <div className="form-group">
+                    <div className="form-label-group">
+                      <label>{t("login.password")}</label>
+                      <Link to="/forgot-password" className="forgot-link">
+                        {t("login.forgotPassword")}
+                      </Link>
+                    </div>
+                    <div className="pass-group" style={{ position: "relative" }}>
+                      <Field
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder={t("login.enterPassword")}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        icon={<FiLock />}
+                      />
+                      <span
+                        className={`toggle-password-icon ${
+                          showPassword ? "feather-eye-off" : "feather-eye"
+                        }`}
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                      </span>
+                    </div>
                   </div>
-                  <div className="pass-group" style={{ position: "relative" }}>
-                    <Field
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      placeholder={t("login.enterPassword")}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      icon={<FiLock />}
-                    />
-                    <span
-                      className={`toggle-password-icon ${
-                        showPassword ? "feather-eye-off" : "feather-eye"
-                      }`}
-                      onClick={togglePasswordVisibility}
-                    >
-                      {showPassword ? <FiEyeOff /> : <FiEye />}
-                    </span>
-                  </div>
-                </div>
+                )}
 
                 {/* Checkboxes */}
                 <div className="form-group form-check-box">
@@ -130,14 +179,12 @@ export default function Login() {
 
                 {/* Submit Button */}
                 <div className="form-group mt-6" style={{ overflow: "hidden" }}>
-                  <Link to="/dashboard">
                   <button
                     className="btn-primary-gradient w-100 dc-btn"
                     type="submit"
                   >
                     {t("login.button")}
                   </button>
-                  </Link>
                 </div>
 
                 {/* Divider */}
@@ -158,20 +205,9 @@ export default function Login() {
                 <div className="account-signup">
                   <p>
                     {t("login.noAccount")}{" "}
-                    <Link to="/registration">   <a href="!#">{t("login.signupNow")}</a></Link>
-                 
+                    <Link to="/registration">{t("login.signupNow")}</Link>
                   </p>
                 </div>
-
-                {/* Messages */}
-                {msg && (
-                  <div
-                    className={`alert alert-${msg.type}`}
-                    style={{ marginTop: 15 }}
-                  >
-                    {msg.text}
-                  </div>
-                )}
               </fieldset>
             </form>
           </div>

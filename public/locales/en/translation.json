@@ -1332,7 +1332,34 @@
     "signupNow": "Sign up now",
     "emailRequired": "Email is required",
     "passwordRequired": "Password is required",
-    "success": "Login successful"
+    "success": "Login successful",
+    "withEmail": "Email",
+    "withPhone": "Phone Number",
+    "phone": "Phone Number",
+    "enterPhone": "Enter your phone number",
+    "phoneRequired": "Phone number is required"
+    ,"with":"sign in with"
+    
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "verifyTitle": "Verify Code",
+    "emailRequired": "Email is required",
+    "phoneRequired": "Phone number is required",
+    "sendCode": "Send Code",
+    "codeSent": "Verification code sent to your email/phone",
+    "codeResent": "Code resent",
+    "codeSentTo": "Code sent to",
+    "didntReceive": "Didn't receive the code?",
+    "resendCode": "Resend",
+    "secs": "Seconds",
+    "verify": "Verify",
+    "otpRequired": "Please enter the complete code",
+    "passwordReset": "Password reset successfully",
+    "rememberPassword": "Remembered your password?",
+    "backToLogin": "Back to Login"
+
   }
+
   }
   

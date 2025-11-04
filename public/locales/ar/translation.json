@@ -1464,9 +1464,32 @@
     "signupNow": "سجل الآن",
     "emailRequired": "البريد الإلكتروني مطلوب",
     "passwordRequired": "كلمة المرور مطلوبة",
-    "success": "تم تسجيل الدخول بنجاح"
+    "success": "تم تسجيل الدخول بنجاح",
+     "withEmail": "بالبريد الإلكتروني",
+    "withPhone": "برقم الهاتف",
+    "phone": "رقم الهاتف",
+    "enterPhone": "أدخل رقم هاتفك",
+    "phoneRequired": "رقم الهاتف مطلوب"
+    , "with":"تسجيل الدخول"
+  },
+ "forgotPassword": {
+    "title": "نسيت كلمة المرور",
+    "verifyTitle": "التحقق من الرمز",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "phoneRequired": "رقم الهاتف مطلوب",
+    "sendCode": "إرسال الرمز",
+    "codeSent": "تم إرسال رمز التحقق إلى بريدك الإلكتروني/هاتفك",
+    "codeResent": "تم إعادة إرسال الرمز",
+    "codeSentTo": "تم إرسال الرمز إلى",
+    "didntReceive": "لم تستلم الرمز؟",
+    "resendCode": "إعادة الإرسال",
+    "secs": "ثانية",
+    "verify": "تحقق",
+    "otpRequired": "الرجاء إدخال الرمز بالكامل",
+    "passwordReset": "تم إعادة تعيين كلمة المرور بنجاح",
+    "rememberPassword": "تذكرت كلمة المرور؟",
+    "backToLogin": "العودة لتسجيل الدخول"
   }
-
 }
 
 

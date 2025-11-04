@@ -23,6 +23,7 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorFinancialDashboard";
 import Login from "./pages/login/Login";
+import ForgotPassword from "./pages/login/ForgotPassword";
 
 
 
@@ -67,6 +68,7 @@ const { i18n } = useTranslation();
       <Route path="/registration" element={<DoctorRegistration />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
 
       <Route
         path="/*"

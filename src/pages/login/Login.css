@@ -41,7 +41,7 @@
         margin-bottom: 3px;
     }
     .login-right {
-        background-color: #FFF;
+        background-color: var(--cardcolor);
         border: 1px solid #E6E8EE;
         border-radius: 10px;
         padding: 24px;
@@ -69,10 +69,10 @@
 
 .span-or {
   position: relative;
-  background-color: #FFF;
+  background-color: var(--cardcolor);
   padding: 0 10px;
   z-index: 2;
-  color: #465D7C;
+  color: var(--terthemecolor);
   font-weight: 500;
 }
 
@@ -102,14 +102,15 @@
 {
     margin: 0;
     font-size: 15px;
-    color: #465D7C;
+    color: var(--terthemecolor);
     font-family: "Inter", sans-serif;
 }
-.login-right .dc-checkbox {
+.login-right .dc-checkbox span {
     color: var(--text-sub);
-    font-family: "Inter", sans-serif;
-    font-size: 14px;
+    font-family: "Inter", sans-serif !important;
+    font-size: 14px !important;
 }
+
 .login-header .login-logo { color:var(--secthemecolor) ;font-family: 'Poppins', Arial, Helvetica, sans-serif;}
 .account-signup p a,.account-signup p a:hover{
     font-weight: 500;
@@ -124,3 +125,24 @@
 .login-container{
     margin: 15px 40px;
 }
+/* forget-password */
+.otp-box input {
+    width: 70px;
+    height: 70px;
+    background: #FFF;
+    border: 1px solid #E6E8EE;
+    border-radius: 10px;
+    text-align: center;
+    margin-right: 24px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #012047;
+    outline: none;
+}
+.login-method-toggle{
+    font-size: 16px;
+    color: var(--text-sub);
+     font-weight: 500;
+}
+
+.login-method-toggle button { color: var(--bluecolor); }
