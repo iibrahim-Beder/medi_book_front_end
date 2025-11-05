@@ -5,6 +5,7 @@ import experienceReduser from "./Slices/doctor-information/experienceSlice";
 import professionalInfoReduser from "./Slices/doctor-information/professionalInfoSlice";
 import personalInforeduser from "./Slices/doctor-information/personalInfoSlice";
 import qualificationsReduser from "./Slices/doctor-information/qualificationsSlice";
+import patientReducer from "./Slices/patient/patientSlice";
 const persistConfig = {
   key: "root",
   storage,
@@ -36,6 +37,7 @@ export const store = configureStore({
     professionalInfo: professionalInfoReduser,
     PersonalInfo: personalInforeduser,
     qualifications: qualificationsReduser,
+       patient: patientReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

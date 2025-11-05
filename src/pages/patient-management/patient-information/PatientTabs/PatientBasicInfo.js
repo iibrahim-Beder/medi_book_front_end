@@ -1,28 +1,65 @@
-// PatientBasicInfo.jsx
-import React from "react";
-import { FaUser } from "react-icons/fa6";
-import { useTranslation } from "react-i18next";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { FaUser } from 'react-icons/fa6';
+import { 
+  fetchPatientData, 
+  selectPatientData, 
+  selectPatientLoading, 
+  selectPatientError 
+} from '../../../../redux/Slices/patient/patientSlice';
+
+// Patient ID - ممكن يتعدل ليكون dynamic
+const PATIENT_ID = 4;
 
 export default function PatientBasicInfo() {
   const { t } = useTranslation();
-  const patient = {
-    name: "Ahmed Mohamed Ali",
-    birthDate: "1989-06-21",
-    age: 36,
-    gender: "Male",
-    phone: "0500000000",
-    email: "ahmad@example.com",
-    city: "Riyadh, Saudi Arabia",
-    address: "Al-Narjis District, Street 123, Building 5",
-    chronic: ["Type II Diabetes", "Hypertension", "Osteoporosis"],
-    allergies: {
-      drug: "Penicillin",
-      food: "None",
-    },
-    medicines: ["Metformin 500mg", "Amlodipine 10mg"],
-    lastVisit: "Sep 2, 2025",
-    nextVisit: "Sep 15, 2025",
-  };
+  const dispatch = useDispatch();
+  
+  const patient = useSelector(selectPatientData);
+  const loading = useSelector(selectPatientLoading);
+  const error = useSelector(selectPatientError);
+
+  useEffect(() => {
+    dispatch(fetchPatientData(PATIENT_ID));
+  }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="dc-dashboardbox cardInfo PatientBasicInfo">
+        <div className="dc-user-header">
+          <div className="dc-title">
+            <h3>جاري تحميل البيانات...</h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dc-dashboardbox cardInfo PatientBasicInfo">
+        <div className="dc-user-header">
+          <div className="dc-title">
+            <h3 style={{ color: 'red' }}> error : </h3>
+            <span>{typeof error === 'string' ? error : 'Unknown error '}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!patient) {
+    return (
+      <div className="dc-dashboardbox cardInfo PatientBasicInfo">
+        <div className="dc-user-header">
+          <div className="dc-title">
+            <h3> not found : </h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dc-dashboardbox cardInfo PatientBasicInfo">
@@ -30,12 +67,19 @@ export default function PatientBasicInfo() {
       <div className="dc-user-header">
         <div>
           <figure className="dc-user-img">
-            <img src="images/feedback/user-img.jpg" alt={t("PatientBasicInfo.patient_image_alt")} />
+            <img 
+              src={patient.image} 
+              alt={t("PatientBasicInfo.patient_image_alt")} 
+              onError={(e) => {
+                e.target.src = 'images/feedback/user-img.jpg';
+              }}
+            />
           </figure>
         </div>
         <div className="dc-title">
           <h3>
-            {patient.name} <i className="fa fa-check-circle"></i>
+            {patient.name} 
+            {patient.verified && <i className="fa fa-check-circle" style={{ color: '#4CAF50' }}></i>}
           </h3>
           <span>{patient.city}</span>
         </div>
@@ -98,11 +142,17 @@ export default function PatientBasicInfo() {
                 {t("PatientBasicInfo.chronic_diseases")}
               </h4>
               <span style={{ font: "14px / 20px 'Open Sans', sans-serif" }}>
-                {patient.chronic.map((d, i) => (
-                  <div style={{ whiteSpace: "pre" }} className="mb-2" key={i}>
-                    • {d}
+                {patient.chronic && patient.chronic.length > 0 ? (
+                  patient.chronic.map((d, i) => (
+                    <div style={{ whiteSpace: "pre" }} className="mb-2" key={i}>
+                      • {d}
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ whiteSpace: "pre" }} className="mb-2">
+                    • No chronic diseases
                   </div>
-                ))}
+                )}
               </span>
             </div>
           </div>
@@ -123,11 +173,17 @@ export default function PatientBasicInfo() {
                 {t("PatientBasicInfo.medications")}
               </h4>
               <span style={{ font: "14px / 20px 'Open Sans', sans-serif" }}>
-                {patient.medicines.map((m, i) => (
-                  <div style={{ whiteSpace: "pre" }} className="mb-2" key={i}>
-                    • {m}
+                {patient.medicines && patient.medicines.length > 0 ? (
+                  patient.medicines.map((m, i) => (
+                    <div style={{ whiteSpace: "pre" }} className="mb-2" key={i}>
+                      • {m}
+                    </div>
+                  ))
+                ) : (
+                  <div style={{ whiteSpace: "pre" }} className="mb-2">
+                    • No medications
                   </div>
-                ))}
+                )}
               </span>
             </div>
           </div>
