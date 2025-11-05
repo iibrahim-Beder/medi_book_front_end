@@ -232,7 +232,7 @@ const PatientsTable = () => {
                     <Button
                       variant="outline-primary"
                       size="sm"
-                      className="d-flex align-items-center view-btn ms-2 pl-0"
+                      className="d-flex align-items-center view-btn ms-2"
                     >
                    {  t("View profile") }<MdOutlineArrowForward className="ms-1 arrow-icon-view-table" />
                     </Button>
