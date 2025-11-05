@@ -1148,5 +1148,10 @@ color: white;
 .description-expanded-section{width: 80vw;}
 
 .card   .text-muted{font-size: 12px;}
-.patintStats .text-muted {color: var(--text-sub) !important;}
+.patintStats .stats-card-title {
+  color:var(--terthemecolor);    
+  font-weight: 400;
+  line-height: 18px;
+  font-size: 18px;
+  }
 .two-level-accordion.shifts  .form-group-half  .form-group-half {width: 100%;}

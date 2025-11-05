@@ -20,14 +20,14 @@ const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) =
             style={{
               borderRadius: "10px",
               backgroundColor: "#F9F9F9",
-              color: "#465D7C",
+              color: "var(--terthemecolor)",
               width: "60px",
               height: "60px",
             }}
           >
             <Icon size={30} />
           </div>
-          <h4 className="text-muted" style={{ textAlign: "center" }}>
+          <h4 className=" stats-card-title " style={{ textAlign: "center" }}>
             {title}
           </h4>
         </div>
