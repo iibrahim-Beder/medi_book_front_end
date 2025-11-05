@@ -254,7 +254,7 @@ const ShiftsAccordion = memo(({
         return (
           <div key={field.name} className={`form-group ${field.isHalf ? 'form-group-half' : ''}`}>
             <SelectField
-              {...commonProps}
+              {...commonProps}  
               options={field.options}
               onChange={handleSelectChange(index, field.name)}
             />

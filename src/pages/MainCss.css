@@ -1149,3 +1149,4 @@ color: white;
 
 .card   .text-muted{font-size: 12px;}
 .patintStats .text-muted {color: var(--text-sub) !important;}
+.two-level-accordion.shifts  .form-group-half  .form-group-half {width: 100%;}
