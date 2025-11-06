@@ -1,8 +1,7 @@
-export const transformPatientData = (apiData) => {
+export  const transformPatientData = (apiData) => {
   if (!apiData || !apiData.data) return null;
 
   const patient = apiData.data;
-  
   
   const calculateAge = (dateString) => {
     if (!dateString || dateString === '0001-01-01T00:00:00') return 0;
@@ -18,7 +17,6 @@ export const transformPatientData = (apiData) => {
     return age;
   };
 
-  
   const formatDate = (dateString) => {
     if (!dateString || dateString === '0001-01-01T00:00:00') return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -29,7 +27,7 @@ export const transformPatientData = (apiData) => {
   };
 
   return {
-
+    // Basic Info
     name: `${patient.firstName} ${patient.lastName}`,
     birthDate: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : 'N/A',
     age: calculateAge(patient.dateOfBirth),
@@ -39,22 +37,25 @@ export const transformPatientData = (apiData) => {
     city: patient.cityName || 'Riyadh, Saudi Arabia',
     address: patient.address || 'N/A',
     
-
+    // Medical Data
     chronic: patient.chronicDiseasesNames || [],
     allergies: {
       drug: patient.allergiesNames && patient.allergiesNames.length > 0 
         ? patient.allergiesNames.join(', ') 
         : 'None',
-      food: 'None' 
+      food: 'None'
     },
     medicines: patient.medicinesNames || [],
     
- 
+    // Visits
     lastVisit: formatDate(patient.lastVisit),
-    nextVisit: 'Sep 15, 2025',
+    nextVisit: 'Sep 15, 2025', // Default value
     
-
+    // UI Data
     image: patient.imagePath || 'images/feedback/user-img.jpg',
-    verified: true
+    verified: true,
+    
+    // Original API data for reference
+    originalData: apiData
   };
 };
