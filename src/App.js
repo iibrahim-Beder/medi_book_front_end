@@ -24,6 +24,7 @@ import "@fontsource/inter/600.css";
 import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorFinancialDashboard";
 import Login from "./pages/login/Login";
 import ForgotPassword from "./pages/login/ForgotPassword";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 

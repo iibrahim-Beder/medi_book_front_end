@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // إنشاء instance من axios مع إعدادات CORS
 const apiClient = axios.create({
-  baseURL: 'https://0e76c0c03210.ngrok-free.app/Api/v1',
+  baseURL: 'https://ebf32fecda0c.ngrok-free.app/Api/v1',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

@@ -1047,7 +1047,7 @@ color: black
 .mobile-view.table-card {
 padding: 10px;
 }
-.PatientBasicInfo .dc-user-details{padding: 30px 0;}
+.PatientBasicInfo .dc-user-details{padding: 30px 10px;}
 .table-container-style.tab-content-two-tabs{
   padding: 0 !important;
 }

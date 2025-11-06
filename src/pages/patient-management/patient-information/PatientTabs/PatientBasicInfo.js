@@ -1,49 +1,129 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaUser } from 'react-icons/fa6';
-import { 
-  fetchPatientData, 
-  selectPatientData, 
-  selectPatientLoading, 
-  selectPatientError 
-} from '../../../../redux/Slices/patient/patientSlice';
+import { useGetPatientBasicInfoQuery } from '../../../../api/patientApi';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-// Patient ID - ممكن يتعدل ليكون dynamic
 const PATIENT_ID = 4;
 
 export default function PatientBasicInfo() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  
-  const patient = useSelector(selectPatientData);
-  const loading = useSelector(selectPatientLoading);
-  const error = useSelector(selectPatientError);
+    const [longLoading, setLongLoading] = useState(false);
+
+  const { 
+    data: patient, 
+    isLoading, 
+    isError, 
+    error, 
+    refetch 
+  } = useGetPatientBasicInfoQuery(PATIENT_ID, {
+    // Optional:  setting this to true will refetch the query when the query key changes
+    refetchOnMountOrArgChange: true,
+    // pollingInterval: 30000, // refetch every 30 seconds
+  });
+
 
   useEffect(() => {
-    dispatch(fetchPatientData(PATIENT_ID));
-  }, [dispatch]);
+    if (isLoading) {
+      const timer = setTimeout(() => setLongLoading(true), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setLongLoading(false);
+    }
+  }, [isLoading]);
 
-  if (loading) {
+ 
+  if (isLoading ) {
     return (
-      <div className="dc-dashboardbox cardInfo PatientBasicInfo">
-        <div className="dc-user-header">
-          <div className="dc-title">
-            <h3>جاري تحميل البيانات...</h3>
+      <div className="dc-dashboardbox cardInfo PatientBasicInfo" style={{ padding: '1.5rem' }}>
+    <SkeletonTheme baseColor="#e3e3e3" highlightColor="#f7f7f7">
+      {/* <div className="dc-dashboardbox cardInfo PatientBasicInfo" style={{ padding: '1.5rem' }}> */}
+        <div className="dc-user-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Skeleton  width={120} height={120}  />
+
+          <div style={{ flex: 1 }}>
+            <Skeleton height={20} width="50%" />
+            <Skeleton height={15} width="30%" />
           </div>
         </div>
+
+        <div className="dc-user-details" style={{ paddingTop: '1.5rem' }}>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} style={{ marginBottom: '1.2rem' , display: 'flex', justifyContent: 'space-between'}}>
+              <div style={{width: '50%'}}>
+              <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
+              <Skeleton height={18} width={ i === 2 ? "80%" : "50%"}/>
+              </div>
+              <div style={{width: '50%'}} >
+              <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
+              <Skeleton height={18} width={ i === 3 ? "70%" : "50%"} />
+              </div>
+            
+            </div>
+          ))}
+
+          <hr style={{ margin: '1.5rem 0', opacity: 0.4 }} />
+
+             {[...Array(2)].map((_, i) => (
+            <div key={i} style={{ marginBottom: '1.2rem' , display: 'flex', justifyContent: 'space-between'}}>
+              <div style={{width: '50%'}}>
+              <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
+              <Skeleton height={18} width={ i === 1 ? "80%" : "50%"}/>
+              </div>
+              <div style={{width: '50%'}} >
+              <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
+              <Skeleton height={18} width={ i === 0 ? "70%" : "50%"} />
+              </div>
+            
+            </div>
+          ))}
+          <hr style={{ margin: '1.5rem 0', opacity: 0.4 }} />
+
+          <div style={{  display: 'flex', justifyContent: 'space-between'}}>
+      <div style={{width: '50%'}}>
+              <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
+              <Skeleton height={18} width= "80%" />
+              </div>
+              <div style={{width: '50%'}} >
+              <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
+              <Skeleton height={18} width="50%" />
+              </div></div>
+
+          {longLoading && (
+            <div style={{ textAlign: 'center', marginTop: '2rem', color: '#555', fontSize: '14px' }}>
+              ⏳ Downloading takes longer than usual...
+            </div>
+          )}
+        </div>
+      {/* </div> */}
+    </SkeletonTheme>
       </div>
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="dc-dashboardbox cardInfo PatientBasicInfo">
         <div className="dc-user-header">
           <div className="dc-title">
-            <h3 style={{ color: 'red' }}> error : </h3>
-            <span>{typeof error === 'string' ? error : 'Unknown error '}</span>
+            <h3 style={{ color: 'red' }}>❌ Error loading data</h3>
+            <span>{error?.data?.message || 'An error occurred while connecting to the server.'}</span>
           </div>
+        </div>
+        <div className="dc-user-details" style={{ textAlign: 'center', padding: '2rem' }}>
+          <button
+            onClick={refetch}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#1976d2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            🔄 Retry
+          </button>
         </div>
       </div>
     );
@@ -54,13 +134,12 @@ export default function PatientBasicInfo() {
       <div className="dc-dashboardbox cardInfo PatientBasicInfo">
         <div className="dc-user-header">
           <div className="dc-title">
-            <h3> not found : </h3>
+            <h3>📭 No patient data available</h3>
           </div>
         </div>
       </div>
     );
   }
-
   return (
     <div className="dc-dashboardbox cardInfo PatientBasicInfo">
       {/* Header */}
@@ -210,6 +289,25 @@ export default function PatientBasicInfo() {
             </div>
           </div>
         </div>
+
+        {/* Refresh Button */}
+        {/* <div className="dc-tabscontenttitle dc-tabscontenttitle-delete-before dc-addnew m-0">
+          <hr />
+        </div>
+        <div className="ml-0" style={{ textAlign: 'center', padding: '1rem' }}>
+          <button 
+            onClick={refetch}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#f5f5f5',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+          </button>
+        </div> */}
       </div>
     </div>
   );
