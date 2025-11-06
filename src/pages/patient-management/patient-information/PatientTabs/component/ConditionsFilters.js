@@ -18,7 +18,7 @@ const ConditionsFilters = ({
   setFilterDateTo,
   onReset,
   onSearch,
-  searchPlaceholder = "Search allergens...",
+  searchPlaceholder = "Search ...",
   showSearchInput = true,
   showSearchReset = true,
   showDateRange = true,

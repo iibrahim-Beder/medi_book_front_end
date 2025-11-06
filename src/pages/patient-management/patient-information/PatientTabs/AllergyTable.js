@@ -10,7 +10,15 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useLazyGetPatientAllergiesQuery } from "../../../../api/patientAllergiesApi";
 import HighlightText from "../../../shared/HighlightText";
-
+const allergenOptions = [
+  { id: 12, label: "12 - Penicillin" },
+  { id: 13, label: "13 - Peanuts" },
+  { id: 14, label: "14 - Dust mites" },
+  { id: 15, label: "15 - Shellfish" },
+  { id: 16, label: "16 - Latex" },
+  { id: 17, label: "17 - Aspirin" },
+  { id: 18, label: "18 - Insect stings" },
+];
 const AllergyTable = () => {
   const { t } = useTranslation();
   const PATIENT_ID = 4;
@@ -172,6 +180,7 @@ const handleSearch = (filters) => {
       <div className="table-card">
         <div className="mb-20 p-3">
           <ConditionsFilters
+          searchPlaceholder = "Search allergens..."
             searchTerm={currentFilters.searchValue}
             setSearchTerm={(value) => setCurrentFilters(prev => ({ ...prev, searchValue: value }))}
             filterStatus={currentFilters.isActive}
@@ -317,49 +326,48 @@ const handleSearch = (filters) => {
         </div>
       </div>
 
-      {/* Modal for add/edit */}
-      <DynamicEditModal
-        addMode={isAddMode}
-        onDelete={handleDeleteInModal} 
-        show={showModal}
-        onClose={() => {
-          setShowModal(false);
-          setSelectedRecord(null);
-        }}
-        onSave={handleSave}
-        record={selectedRecord}
-        setRecord={setSelectedRecord}
-        fields={[
-          { 
-            name: "severity", 
-            label: t('AllergyTable.severity'), 
-            type: "select", 
-            options: [
-              { value: "Mild", label: t('AllergyTable.severity_options.Mild') },
-              { value: "Moderate", label: t('AllergyTable.severity_options.Moderate') }, 
-              { value: "Severe", label: t('AllergyTable.severity_options.Severe') }
-            ], 
-            placeholder: t('AllergyTable.select_severity') 
-          },
-          { 
-            name: "isActive", 
-            label: t('AllergyTable.active'), 
-            type: "select", 
-            options: [
-              { value: true, label: t('AllergyTable.active_options.Active') },
-              { value: false, label: t('AllergyTable.active_options.Inactive') }
-            ], 
-            placeholder: t('AllergyTable.select_active_status') 
-          },
-          { name: "dateNoted", label: t('AllergyTable.date_noted'), type: "date", placeholder: t('AllergyTable.select_date') },
-          { name: "reaction", label: t('AllergyTable.reaction'), type: "text", placeholder: t('AllergyTable.enter_reaction') },
-          { name: "notes", label: t('AllergyTable.notes'), type: "textarea", placeholder: t('AllergyTable.enter_notes') },
-        ]}
-        title={isAddMode ? t('AllergyTable.add_allergen') : t('AllergyTable.edit_allergen')}
-        dropdownOptions={[]}
-        dropdownField="allergenId"
-        dropdownLabel={t('AllergyTable.allergen')}
-      />
+    <DynamicEditModal
+  addMode={isAddMode}
+  onDelete={handleDeleteInModal} 
+  show={showModal}
+  onClose={() => {
+    setShowModal(false);
+    setSelectedRecord(null);
+  }}
+  onSave={handleSave}
+  record={selectedRecord}
+  setRecord={setSelectedRecord}
+  fields={[
+    { 
+      name: "severity", 
+      label: t('AllergyTable.severity'), 
+      type: "select", 
+      options: [
+        { value: "Mild", label: t('AllergyTable.severity_options.Mild') },
+        { value: "Moderate", label: t('AllergyTable.severity_options.Moderate') }, 
+        { value: "Severe", label: t('AllergyTable.severity_options.Severe') }
+      ], 
+      placeholder: t('AllergyTable.select_severity') 
+    },
+    { 
+      name: "isActive", 
+      label: t('AllergyTable.active'), 
+      type: "select", 
+      options: [
+        { value: true, label: t('AllergyTable.active_options.Active') },
+        { value: false, label: t('AllergyTable.active_options.Inactive') }
+      ], 
+      placeholder: t('AllergyTable.select_active_status') 
+    },
+    { name: "dateNoted", label: t('AllergyTable.date_noted'), type: "date", placeholder: t('AllergyTable.select_date') },
+    { name: "reaction", label: t('AllergyTable.reaction'), type: "text", placeholder: t('AllergyTable.enter_reaction') },
+    { name: "notes", label: t('AllergyTable.notes'), type: "textarea", placeholder: t('AllergyTable.enter_notes') },
+  ]}
+  title={isAddMode ? t('AllergyTable.add_allergen') : t('AllergyTable.edit_allergen')}
+  dropdownOptions={allergenOptions}
+  dropdownField="allergenId"
+  dropdownLabel={t('AllergyTable.allergen')}
+/>
 
       {/* Delete confirmation popup */}
       {showPopup && recordToDelete && (
