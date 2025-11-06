@@ -1057,6 +1057,9 @@
   }
   ,
   "AllergyTable": {
+    "no_results_for_search": "No results found for '{{search}}'",
+    "loading_error": "Error loading allergies data",
+    "retry": "Try again",
      "confirm_delete_title": "Confirm Deletion",
     "confirm_delete_message": "Are you sure you want to delete allergen '{{allergen}}'? This action cannot be undone.",
     "table_title": "Allergies",

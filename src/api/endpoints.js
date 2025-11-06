@@ -17,4 +17,10 @@ export const ENDPOINTS = {
     LIST: '/Appointment/GetAll',
     CREATE: '/Appointment/Create',
   },
+ ALLERGY: {
+    GET_PATIENT_ALLERGIES: '/PatientAllergies/GetPatientAllergies',
+    ADD_PATIENT_ALLERGY: '/PatientAllergies/AddPatientAllergy',
+    UPDATE_PATIENT_ALLERGY: '/PatientAllergies/UpdatePatientAllergy',
+    DELETE_PATIENT_ALLERGY: '/PatientAllergies/DeletePatientAllergy',
+  },
 };

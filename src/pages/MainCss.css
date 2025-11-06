@@ -1155,3 +1155,36 @@ color: white;
   font-size: 18px;
   }
 .two-level-accordion.shifts  .form-group-half  .form-group-half {width: 100%;}
+/* Highlight styles */
+.text-highlight {
+  background-color: #fff3cd;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* Loading states */
+.skeleton-loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Filter active state */
+.filter-active {
+  background-color: #e7f3ff !important;
+  border-color: #007bff !important;
+  color: #007bff !important;
+}

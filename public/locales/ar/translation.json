@@ -1028,6 +1028,9 @@
   }
 ,
 "AllergyTable": {
+    "no_results_for_search": "لا توجد نتائج للبحث '{{search}}'",
+    "loading_error": "خطأ في تحميل بيانات الحساسيات", 
+    "retry": "إعادة المحاولة",
    "confirm_delete_title": " تاكيد الحذف",
     "confirm_delete_message": " هل تريد حذف مادة مسببة للحساسية '{{allergen}}'? هذا الاجراء غير قابل للرجوع.",
     "table_title": "قائمة الحساسية",
