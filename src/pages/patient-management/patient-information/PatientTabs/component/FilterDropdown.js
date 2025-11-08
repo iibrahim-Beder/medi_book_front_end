@@ -5,7 +5,7 @@ import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
 import { t } from "i18next";
 
 const FilterDropdown = ({ 
-  DropdownWithSearch,
+  isDropdownWithSearch =false,
   onFilter, 
   onReset, 
   filters = [], 
@@ -112,7 +112,7 @@ const FilterDropdown = ({
           }}
         >
           <div className="filter-set-view">
-           {DropdownWithSearch && <DropdownWithSearch
+           {isDropdownWithSearch && <DropdownWithSearch
               label="Condition"
               options={conditions.map(condition => ({ id: condition, label: condition }))}
               value={selectedCondition}

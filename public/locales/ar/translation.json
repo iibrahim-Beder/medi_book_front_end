@@ -1026,7 +1026,9 @@
       "Inactive": "غير نشط"
     }
   }
-,
+  ,
+  "last_updated":"اخر تحديث",
+  "created_at": "تاريخ الانشاء",
 "AllergyTable": {
     "no_results_for_search": "لا توجد نتائج للبحث '{{search}}'",
     "loading_error": "خطأ في تحميل بيانات الحساسيات", 
@@ -1246,6 +1248,9 @@
   },
 
  "OtherMedicalConditionsMobileView": {
+  "category": "الفئة",
+  "condition_type": "نوع الحالة",
+  
     "table_title": "الحالات الطبية الأخرى",
     "medical_condition_name": "اسم الحالة الطبية",
     "severity": "الشدة",
@@ -1259,6 +1264,11 @@
       "mild": "خفيف",
       "moderate": "متوسط",
       "severe": "شديد"
+    }
+    ,"condition_type_options":{
+      "chronic": "مزمنة",
+      "acute": "سريعة",
+      "External": "خارجية"
     }
   }
   ,
@@ -1395,6 +1405,7 @@
   "enter_notes": "أدخل الملاحظات"
 },
 "OtherMedication": {
+  "category": "التصنيف",
   "add_medication": "إضافة دواء",
   "edit_medication": "تعديل الدواء",
   "confirm_delete_title": "تأكيد الحذف",

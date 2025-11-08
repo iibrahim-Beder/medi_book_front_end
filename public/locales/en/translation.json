@@ -938,6 +938,8 @@
     }
   },
  "OtherMedicalConditionsMobileView": {
+  "category": "Category",
+  "condition_type": "Condition Type",
     "table_title": "Other Medical Conditions",
     "medical_condition_name": "Medical Condition Name",
     "severity": "Severity",
@@ -951,6 +953,11 @@
       "mild": "Mild",
       "moderate": "Moderate",
       "severe": "Severe"
+    }
+        ,"condition_type_options":{
+      "chronic": "chronic",
+      "acute": "acute",
+      "External":"External"
     }
   }
   ,
@@ -1054,9 +1061,13 @@
       "Inactive": "Inactive"
     }
     
-  }
+  },
+   "last_updated":"Last Updated",
+     "created_at": "Created At"
   ,
   "AllergyTable": {
+    "last_updated":"Last Updated",
+     "created_at": "Created At",
     "no_results_for_search": "No results found for '{{search}}'",
     "loading_error": "Error loading allergies data",
     "retry": "Try again",
@@ -1291,6 +1302,7 @@
         "table_title": "Other Medication list"
   },
   "OtherMedicalConditions": {
+    "category": "Category",
   "add_condition": "Add Condition",
   "edit_condition": "Edit Condition",
   "manage": "Manage",
@@ -1307,6 +1319,13 @@
     "Moderate": "Moderate",
     "Severe": "Severe"
   },
+   "condition_type_options": {
+      "External": "External",
+      "Internal": "Internal",
+      "Chronic": "Chronic",
+      "Acute": "Acute"
+    },
+    "condition_type": "Condition Type",
   "status": "Status",
   "select_status": "Select status",
   "diagnosed_date": "Diagnosed Date",
@@ -1362,7 +1381,8 @@
     "rememberPassword": "Remembered your password?",
     "backToLogin": "Back to Login"
 
-  }
+  },
+    "actions": "Actions"
 
   }
   

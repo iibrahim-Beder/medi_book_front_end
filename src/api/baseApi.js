@@ -20,6 +20,6 @@ const baseQuery = fetchBaseQuery({
 export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery,
-  tagTypes: ['Patient', 'Doctor', 'Appointment'], // Tags for cache invalidation
+  tagTypes: ['Patient', 'Doctor', 'Appointment','PatientMedicalConditions'], // Tags for cache invalidation
   endpoints: () => ({}), // Endpoints will be injected
 });

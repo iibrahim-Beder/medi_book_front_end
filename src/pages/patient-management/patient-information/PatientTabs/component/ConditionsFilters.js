@@ -7,13 +7,9 @@ import FilterDropdown from "./FilterDropdown";
 
 const ConditionsFilters = ({
   searchTerm = "",
-  filterStatus = "All",
-  filterSeverity = "",
   filterDateFrom = null,
   filterDateTo = null,
   setSearchTerm,
-  setFilterStatus,
-  setFilterSeverity,
   setFilterDateFrom,
   setFilterDateTo,
   onReset,
@@ -23,71 +19,42 @@ const ConditionsFilters = ({
   showSearchReset = true,
   showDateRange = true,
   showFilterDropdown = true,
-  statusOptions = ["All", "Active", "Inactive"],
-  severityOptions = ["Mild", "Moderate", "Severe"],
+  filterConfigs = [],
   conditions = []
 }) => {
-  const customFilters = [
-    {
-      name: "status",
-      label: "Status",
-      data: statusOptions.map(option => ({ key: option, label: option }))
-    },
-    {
-      name: "severity",
-      label: "Severity",
-      data: severityOptions.map(option => ({ key: option, label: option }))
-    }
-  ];
 
+  // Reset handler
   const handleReset = () => {
     setSearchTerm("");
-    setFilterStatus("All");
-    setFilterSeverity("");
     setFilterDateFrom(null);
     setFilterDateTo(null);
     if (onReset) onReset();
   };
 
+  // Search handler
   const handleSearch = () => {
     if (onSearch) onSearch();
   };
 
-  // Handle dropdown filter changes
+  // Handle filter change
   const handleFilterChange = (appliedFilters) => {
-    let newStatus = "All";
-    let newSeverity = "";
+    const result = {};
+    filterConfigs.forEach(filter => {
+      if (appliedFilters[filter.name]) {
+        const selected = Object.keys(appliedFilters[filter.name]).find(
+          key => appliedFilters[filter.name][key]
+        );
+        result[filter.name] = selected || "";
+      }
+    });
 
-    if (appliedFilters.status) {
-      const activeStatus = Object.keys(appliedFilters.status).find(
-        key => appliedFilters.status[key]
-      );
-      newStatus = activeStatus || "All";
-    }
-
-    if (appliedFilters.severity) {
-      const activeSeverities = Object.keys(appliedFilters.severity).filter(
-        key => appliedFilters.severity[key]
-      );
-      newSeverity = activeSeverities.length > 0 ? activeSeverities[0] : "";
-    }
-
-    setFilterStatus(newStatus);
-    setFilterSeverity(newSeverity);
-
-    const filtersToApply = {
-      searchValue: searchTerm || "",
-      isActive: newStatus,
-      severity: newSeverity,
-      dateNoted: filterDateFrom ? new Date(filterDateFrom).toISOString() : ""
-    };
-
-    if (onSearch) onSearch(filtersToApply);
+    if (onSearch) onSearch(result);
   };
 
   return (
-    <div className="filter-section">
-      {/* Left side: search & reset */}
+    <div className="filter-section d-flex justify-content-between align-items-center flex-wrap">
+
+      {/* Left side: search and buttons */}
       <div className="d-flex align-items-center" style={{ flexDirection: "column" }}>
         {showSearchInput && (
           <div style={{ position: "relative" }}>
@@ -98,9 +65,7 @@ const ConditionsFilters = ({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearch(); // trigger search on Enter
-                }
+                if (e.key === "Enter") handleSearch();
               }}
             />
             <CiSearch
@@ -117,77 +82,50 @@ const ConditionsFilters = ({
         )}
 
         {showSearchReset && (
-          <div>
-            <div className="btn-group mt-2">
-              <Button
-                className="PatientsFiltersBtn"
-                variant="outline-secondary"
-                style={{ boxShadow: "none" }}
-                onClick={handleSearch} // search button
-              >
-                Search
-              </Button>
-              <Button
-                className="PatientsFiltersBtn"
-                variant="outline-secondary"
-                style={{ boxShadow: "none" }}
-                onClick={handleReset} // reset all filters
-              >
-                <BiReset /> Reset
-              </Button>
-            </div>
+          <div className="btn-group mt-2">
+            <Button
+              className="PatientsFiltersBtn"
+              variant="outline-secondary"
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+            <Button
+              className="PatientsFiltersBtn"
+              variant="outline-secondary"
+              onClick={handleReset}
+            >
+              <BiReset /> Reset
+            </Button>
           </div>
         )}
       </div>
 
-      {/* Right side: date range & filter dropdown */}
-      <div className="filter-and-date" style={{ display: "flex", gap: "12px" }}>
+      {/* Right side: date range & dropdown */}
+      <div className="filter-and-date d-flex "style={{gap:"12px"}}>
         {showDateRange && (
           <DateRangePicker
             startDate={filterDateFrom}
             endDate={filterDateTo}
             onChange={({ start, end }) => {
-              setFilterDateFrom(start);
-              setFilterDateTo(end);
-              // search not triggered automatically here
-            }}
+    setFilterDateFrom(start);
+    setFilterDateTo(end);
+    handleSearch({ 
+      ...conditions, 
+      diagnosisDateFrom: start, 
+      diagnosisDateTo: end 
+    });
+  }}
           />
         )}
 
         {showFilterDropdown && (
           <FilterDropdown
-            filters={customFilters}
+            filters={filterConfigs}
             small={true}
             conditions={conditions}
-            defaultValues={{
-              status: {
-                All: filterStatus === "All",
-                Active: filterStatus === "Active",
-                Inactive: filterStatus === "Inactive",
-              },
-              severity: {
-                Mild: filterSeverity === "Mild",
-                Moderate: filterSeverity === "Moderate",
-                Severe: filterSeverity === "Severe",
-              },
-            }}
             onFilter={handleFilterChange}
-            onReset={() => {
-              // reset dropdown filters only
-              setFilterStatus("All");
-              setFilterSeverity("");
-
-              const filtersToApply = {
-                searchValue: searchTerm || "",
-                isActive: "All",
-                severity: "",
-                dateNoted: filterDateFrom
-                  ? new Date(filterDateFrom).toISOString()
-                  : "",
-              };
-
-              if (onSearch) onSearch(filtersToApply);
-            }}
+            onReset={onReset}
           />
         )}
       </div>
