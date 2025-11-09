@@ -636,7 +636,7 @@ const DiagnosisMobileViewWithCRUD = () => {
             {/* Basic Information */}
             <div className="mb-4">
               <div className="row">
-                <div className="col-lg-12 col-sm-12">
+                <div className="col-lg-12 col-sm-12 small-field">
                   <Field
                     label={t('Diagnosis Name')}
                     value={editingDiagnosis?.DiagnosisName || ''}

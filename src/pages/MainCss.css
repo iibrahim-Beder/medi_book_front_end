@@ -1020,7 +1020,7 @@ select {padding: 0 25px !important ; }
   align-items: center;
 }
 .mobile-view .dc-accordioninnertitle .dc-rightarea  { margin: 0 !important;}
-.mobile-view  input[type="text"]  {height: 40px !important;}
+.small-field  input[type="text"]  {height: 40px !important;}
 .mobile-view  .dc-collapseexp{
   padding: 10px 10px ;
   padding-top: 0 !important;
