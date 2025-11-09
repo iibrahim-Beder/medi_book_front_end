@@ -8,8 +8,6 @@ import DateRangePicker from "./component/DateRangePicker";
 import Pagination from "../../../shared/Pagination";
 import { useGetPatientReviewsQuery } from "../../../../api/patientReviewsApi";
 import Skeleton from "react-loading-skeleton";
-import { PropagateLoader } from "react-spinners";
-import { FaExclamationTriangle } from "react-icons/fa";
 import ErrorLoading from "../../../shared/ErrorLoading";
 
 const ShimmerCard = () => (

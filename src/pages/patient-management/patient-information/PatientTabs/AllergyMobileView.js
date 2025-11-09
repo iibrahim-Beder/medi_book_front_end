@@ -191,7 +191,7 @@ const AllergyMobileView = () => {
           </div>
           <div className="mb-2">
             <Skeleton width={80} height={15} />
-            <Skeleton width={250} height={15} />
+            <Skeleton width={230} height={15} />
             <Skeleton width={200} height={15} />
           </div>
           <div className="row text-center mb-3">
