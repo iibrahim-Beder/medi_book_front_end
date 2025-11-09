@@ -27,7 +27,7 @@ const MainSearch = ({
         }}
       >
         <form className="dc-formtheme dc-form-advancedsearch dc-headerform">
-          <fieldset style={{ position: "relative", maxWidth: "375px" }}>
+          <fieldset style={{ position: "relative", maxWidth: "407px" }}>
             <div className="form-group" style={{ width: "100%" }}>
               <input
                 type="text"
