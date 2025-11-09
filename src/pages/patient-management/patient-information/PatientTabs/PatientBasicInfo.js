@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { FaUser } from 'react-icons/fa6';
 import { useGetPatientBasicInfoQuery } from '../../../../api/patientApi';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import ErrorLoading from '../../../shared/ErrorLoading';
 
 const PATIENT_ID = 4;
 
@@ -104,27 +105,7 @@ export default function PatientBasicInfo() {
   if (isError) {
     return (
       <div className="dc-dashboardbox cardInfo PatientBasicInfo">
-        <div className="dc-user-header">
-          <div className="dc-title">
-            <h3 style={{ color: 'red' }}>❌ Error loading data</h3>
-            <span>{error?.data?.message || 'An error occurred while connecting to the server.'}</span>
-          </div>
-        </div>
-        <div className="dc-user-details" style={{ textAlign: 'center', padding: '2rem' }}>
-          <button
-            onClick={refetch}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#1976d2',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-            }}
-          >
-            🔄 Retry
-          </button>
-        </div>
+            <ErrorLoading isError={isError} refetch={refetch} />
       </div>
     );
   }

@@ -8,55 +8,65 @@ import DateRangePicker from "./component/DateRangePicker";
 import Pagination from "../../../shared/Pagination";
 import { useGetPatientReviewsQuery } from "../../../../api/patientReviewsApi";
 import Skeleton from "react-loading-skeleton";
+import { PropagateLoader } from "react-spinners";
+import { FaExclamationTriangle } from "react-icons/fa";
+import ErrorLoading from "../../../shared/ErrorLoading";
 
-const ShimmerCard = () => {
-  return (
-    <div className="mb-4 table-card card">
-      <div className="d-flex justify-content-between mb-2">
-        <Skeleton width={120} height={20} />
-        <Skeleton width={80} height={20} />
-      </div>
-      <Skeleton count={3} height={14} style={{ marginBottom: "6px" }} />
-      <div className="d-flex justify-content-end mt-2">
-        <Skeleton width={100} height={30} />
-      </div>
+const ShimmerCard = () => (
+  <div className="mb-4 table-card card">
+    <div className="d-flex justify-content-between mb-2">
+      <Skeleton width={120} height={20} />
+      <Skeleton width={80} height={20} />
     </div>
-  );
-};
+    <Skeleton count={3} height={14} style={{ marginBottom: "6px" }} />
+    <div className="d-flex justify-content-end mt-2">
+      <Skeleton width={100} height={30} />
+    </div>
+  </div>
+);
 
 const PatientReviewsCards = ({ patientId = 4 }) => {
   const { t } = useTranslation();
 
-  // Filters
+  //  State for filters
   const [dateRange, setDateRange] = useState({ start: null, end: null });
   const [starFilters, setStarFilters] = useState({});
+  const [appointmentType, setAppointmentType] = useState(undefined);
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;
 
-  // Reset page to 1 when filters change
+  //  Reset page when filters change
   useEffect(() => {
     setPage(1);
-  }, [dateRange, starFilters]);
+  }, [dateRange, starFilters, appointmentType]);
 
-  // Build filter object (stable via useMemo)
+  //  Build filters
   const filter = useMemo(() => {
-    const selected = Object.keys(starFilters).filter((k) => starFilters[k]).map(Number);
-    const minRating = selected.length ? Math.min(...selected) : undefined;
-    const maxRating = selected.length ? Math.max(...selected) : undefined;
+    const selectedRatings = Object.keys(starFilters)
+      .filter((k) => starFilters[k])
+      .map(Number);
+
+    const minRating = selectedRatings.length
+      ? Math.min(...selectedRatings)
+      : undefined;
+    const maxRating = selectedRatings.length
+      ? Math.max(...selectedRatings)
+      : undefined;
 
     return {
-      minRating: minRating !== undefined ? minRating : undefined,
-      maxRating: maxRating !== undefined ? maxRating : undefined,
-      fromDate: dateRange.start ? dateRange.start.toISOString() : undefined,
-      toDate: dateRange.end ? dateRange.end.toISOString() : undefined,
+      minRating,
+      maxRating,
+      appointmentType,
+      fromDate: dateRange.start?.toISOString(),
+      toDate: dateRange.end?.toISOString(),
     };
-  }, [starFilters, dateRange]);
+  }, [starFilters, dateRange, appointmentType]);
 
   // API call
   const {
     data: reviewsResponse,
-    isLoading,    // true only on first mount / initial load
-    isFetching,   // true whenever a request is in-flight (including after filters/page change)
+    isLoading,
+    isFetching,
     isError,
     refetch,
   } = useGetPatientReviewsQuery({
@@ -65,17 +75,15 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
     pageNumber: page,
     pageSize: itemsPerPage,
   });
- console.log(reviewsResponse);
+
   const reviews = reviewsResponse?.data || [];
-  console.log("reviewsResponse" , reviewsResponse);
   const averageRating = reviewsResponse?.averageRating ?? 0;
   const totalCount = reviewsResponse?.totalCount ?? 0;
-
-  // show shimmer inside the reviews area when fetching (initial or subsequent)
-  const showShimmer = isFetching || isLoading ;
+  const showShimmer = isFetching || isLoading;
 
   return (
     <div className="comments-list">
+      {/* Header */}
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("PatientReviewsCards.table_title")}</h3>
@@ -92,47 +100,65 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="review-filters d-flex gap-3 align-items-center">
-        <FilterDropdown
-          small
-          filters={[
-            {
-              name: "rating",
-              label: t("Rating"),
-              data: [
-                { key: "5", label: "5 Stars" },
-                { key: "4", label: "4 Stars" },
-                { key: "3", label: "3 Stars" },
-                { key: "2", label: "2 Stars" },
-                { key: "1", label: "1 Star" },
-              ],
-            },
-          ]}
-          onFilter={(filters) => setStarFilters(filters.rating || {})}
-          onReset={() => setStarFilters({})}
-        />
+      {/*  Filters */}
+      <div className="review-filters d-flex gap-3 align-items-center flex-wrap">
+
+      <FilterDropdown
+    small
+    filters={[
+      {
+        name: "rating",
+        label: t("Select Rating max, min"),
+        data: [
+          { key: "5", label: "5 Stars" },
+          { key: "4", label: "4 Stars" },
+          { key: "3", label: "3 Stars" },
+          { key: "2", label: "2 Stars" },
+          { key: "1", label: "1 Star" },
+        ],
+      },
+      {
+        name: "type",
+        label: t("Appointment Type"),
+        data: [
+          { key: "Consultation", label: t("Consultation") },
+          { key: "FollowUp", label: t("Follow Up") },
+          { key: "Emergency", label: t("Emergency") },
+          { key: "Routine", label: t("Routine") },
+        ],
+      },
+    ]}
+    onFilter={(filters) => {
+      //  Extract Rating Filters
+      const ratingFilters = filters.rating || {};
+      const selectedRatings = Object.keys(ratingFilters)
+        .filter((k) => ratingFilters[k])
+        .map(Number);
+      setStarFilters(ratingFilters);
+
+      // Extract Appointment Type
+      const typeFilters = filters.type || {};
+      const selectedType = Object.keys(typeFilters).find(
+        (key) => typeFilters[key]
+      );
+      setAppointmentType(selectedType || undefined);
+    }}
+     onReset={() => {
+      setStarFilters({});
+      setAppointmentType(undefined);
+    }}
+  />
+
+        {/* Date Filter */}
         <DateRangePicker onChange={setDateRange} />
       </div>
 
-      {/* Reviews area */}
-      {/* If there's an error — show error bar in the reviews area */}
       {isError ? (
-        <div className="text-center text-danger mt-4">
-          {t("Error loading reviews")}
-          <Button onClick={refetch} variant="outline-primary" className="ms-2">
-            {t("Retry")}
-          </Button>
-        </div>
+        <ErrorLoading isError={isError} refetch={refetch} />
       ) : (
         <>
-          {/* Show shimmer cards only where the cards are supposed to be */}
           {showShimmer ? (
-            <div>
-              {[...Array(itemsPerPage)].map((_, i) => (
-                <ShimmerCard key={i} />
-              ))}
-            </div>
+            [...Array(itemsPerPage)].map((_, i) => <ShimmerCard key={i} />)
           ) : reviews.length === 0 ? (
             <p className="text-center text-muted mt-4">{t("No reviews found")}</p>
           ) : (
@@ -168,6 +194,7 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
         </>
       )}
 
+      {/* Pagination */}
       <Pagination
         currentPage={page}
         totalItems={totalCount}

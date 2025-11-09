@@ -10,6 +10,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useLazyGetPatientAllergiesQuery } from "../../../../api/patientAllergiesApi";
 import HighlightText from "../../../shared/HighlightText";
+import ErrorLoading from "../../../shared/ErrorLoading";
 const allergenOptions = [
   { id: 12, label: "12 - Penicillin" },
   { id: 13, label: "13 - Peanuts" },
@@ -273,15 +274,9 @@ const handleSearch = (filters) => {
                   ))
                 ) : error ? (
                   <tr>
-                    <td colSpan="7" className="text-center text-danger">
-                      ❌ {t("AllergyTable.loading_error")}
-                      <Button
-                        variant="link"
-                        onClick={fetchAllergies}
-                        className="p-0 ml-2"
-                      >
-                        {t("AllergyTable.retry")}
-                      </Button>
+                    <td colSpan="9" className="text-center text-danger">
+                           <ErrorLoading isError={error} refetch={fetchAllergies} />
+                   
                     </td>
                   </tr>
                 ) : allergiesData?.data && allergiesData.data.length > 0 ? (
