@@ -938,6 +938,7 @@
     }
   },
  "OtherMedicalConditionsMobileView": {
+  "conditionType" : "Condition Type",
   "category": "Category",
   "condition_type": "Condition Type",
     "table_title": "Other Medical Conditions",

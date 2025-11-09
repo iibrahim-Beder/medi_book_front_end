@@ -1248,6 +1248,7 @@
   },
 
  "OtherMedicalConditionsMobileView": {
+ " conditionType": "نوع الحالة",
   "category": "الفئة",
   "condition_type": "نوع الحالة",
   
