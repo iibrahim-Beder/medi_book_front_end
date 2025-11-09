@@ -330,6 +330,7 @@ const AllergyMobileView = () => {
                               }}
                             >
                               <MdExpandMore
+                                onClick={() => toggleNotes(entry.id)}
                                 style={{
                                   transform: isNotesExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                                   transition: 'transform 0.3s ease',

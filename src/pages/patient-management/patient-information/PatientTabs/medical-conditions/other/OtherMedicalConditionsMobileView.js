@@ -378,11 +378,16 @@ const conditions = apiData?.data || [];
                       <HighlightText
                         text={condition.medicalConditionName}
                         searchTerm={apiData?.searchTerm}
-                        matchedFields={condition.highlightInfo?.matchedFields || []}
+                        matchedFields={
+                          condition.highlightInfo?.matchedFields || []
+                        }
                         fieldName="MedicalConditionName"
                       />
                     </h5>
-                    <small style={{whiteSpace:"nowrap"}} > {formatDate( condition.diagnosedDate)} </small>
+                    <small style={{ whiteSpace: "nowrap" }}>
+                      {" "}
+                      {formatDate(condition.diagnosedDate)}{" "}
+                    </small>
                   </div>
 
                   <div className="row text-center mb-3">
@@ -395,19 +400,28 @@ const conditions = apiData?.data || [];
                           `OtherMedicalConditionsMobileView.severity_options.${condition.severity.toLowerCase()}`
                         )}
                       </div>
-                      <small className="text-muted">{t("OtherMedicalConditionsMobileView.severity")}</small>
+                      <small className="text-muted">
+                        {t("OtherMedicalConditionsMobileView.severity")}
+                      </small>
                     </div>
                     <div className="col-4 border-end">
-                      <div className="fw-bold" style={{ color: statusInfo.color }}>
+                      <div
+                        className="fw-bold"
+                        style={{ color: statusInfo.color }}
+                      >
                         {statusInfo.text}
                       </div>
-                      <small className="text-muted">{t("OtherMedicalConditionsMobileView.status")}</small>
+                      <small className="text-muted">
+                        {t("OtherMedicalConditionsMobileView.status")}
+                      </small>
                     </div>
                     <div className="col-4 pl-0 pr-1">
                       <div className="fw-bold text-secondary">
-                        { condition.conditionType }
+                        {condition.conditionType}
                       </div>
-                      <small className="text-muted">{t("OtherMedicalConditionsMobileView.conditionType")}</small>
+                      <small className="text-muted">
+                        {t("OtherMedicalConditionsMobileView.conditionType")}
+                      </small>
                     </div>
                   </div>
 
@@ -430,8 +444,11 @@ const conditions = apiData?.data || [];
                           }}
                         >
                           <MdExpandMore
+                            onClick={() => toggleNotes(condition.id)}
                             style={{
-                              transform: isNotesExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                              transform: isNotesExpanded
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)",
                               transition: "transform 0.3s ease",
                             }}
                           />
@@ -439,15 +456,34 @@ const conditions = apiData?.data || [];
                       )}
                     </small>
 
-                    {isNotesExpanded && condition.note && (
-                      <div className="mt-1">
-                        <TextAreaField
-                          label=""
-                          value={condition.note}
-                          disabled={true}
-                        />
-                      </div>
-                    )}
+                    <div
+                      className={`expandable-content ${
+                        isNotesExpanded ? "" : "p-0"
+                      }`}
+                    >
+                      <p
+                        onClick={() => toggleNotes(condition.id)}
+                        className="mt-1"
+                        style={{
+                          margin: "0",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                        }}
+                      >
+                        {isNotesExpanded ? (
+                          <HighlightText
+                            text={condition.note}
+                            searchTerm={apiData.searchTerm}
+                            matchedFields={
+                              condition.highlightInfo?.matchedFields || []
+                            }
+                            fieldName={"notes"}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </p>
+                    </div>
                   </div>
 
                   <div>
