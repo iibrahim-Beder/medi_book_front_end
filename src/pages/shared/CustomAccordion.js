@@ -9,7 +9,7 @@ import SelectField from "../ui/form-fields/SelectField";
 import FileField from "../ui/form-fields/FileField";
 import SectionTitle from "./SectionTitle";
 import PopupMessage from "./PopupMessage";
-
+import { useTranslation } from "react-i18next";
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
@@ -35,6 +35,7 @@ const CustomAccordion = memo(({
   hint,
   errors = {},
 }) => {
+  const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
 
@@ -325,14 +326,14 @@ const CustomAccordion = memo(({
                             onClick={() => handleCancel(index)}
                             style={{ margin: "11px 4px" }}
                           >
-                            Cancel
+                            {t("Cancel")}
                           </button>
                           <button
                             type="submit"
                             className="second-btn"
                             style={{ margin: "11px 4px" }}
                           >
-                            {item.isNew ? "Add" : "Save"}
+                            {item.isNew ? t("Add"): t("Save")}
                           </button>
                         </div>
                       )}

@@ -1179,7 +1179,7 @@ color: white;
 
 .small-filter{margin-bottom: 0 !important;}
 .pagination-container button:hover{
-  border-color: var(--bluecolor);
+  border-color: var(--bluecolor)!important; ;
   /* transition: all ease 0.4s;  */
 
 }

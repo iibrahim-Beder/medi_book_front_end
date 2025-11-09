@@ -1505,6 +1505,16 @@
     "rememberPassword": "تذكرت كلمة المرور؟",
     "backToLogin": "العودة لتسجيل الدخول"
   }
+,
+"Severity":"الشدة",
+"Medical Condition":"المرض",
+"Status":"الحالة",
+"Diagnosed Date":"تاريخ التشخيص",
+"Note Content":"ملاحظات",
+"Note":"ملاحظات",
+"View All Details":"عرض جميع التفاصيل",
+"No Conditions Found":"لم يتم العثور على حالات",
+"Close":"اغلاق"
 }
 
 
