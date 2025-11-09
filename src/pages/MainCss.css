@@ -1183,3 +1183,15 @@ color: white;
   /* transition: all ease 0.4s;  */
 
 }
+.notification-card-container{
+  border-bottom: 1px solid #eee;
+  border-radius: 0;
+  padding: 8px;
+  /* background-color: var(--badybkcolor); */
+  /* border-radius: 5px; */
+}
+.notification-card-container:hover{
+  background-color: var(--badybkcolor);;
+  /* background-color: #fafafa; */
+
+}

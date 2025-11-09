@@ -161,7 +161,7 @@ const typeStyles = {
         const { icon } = typeStyles[note.type] || typeStyles.info;
 
         return (
-          <Card key={note.id} className="mb-2 border-0 noneshadow ">
+          <div key={note.id} className="mb-2 notification-card-container ">
           
           
             <div className="notification-card">
@@ -171,17 +171,19 @@ const typeStyles = {
               </div>
               <div>  
                 <span className="mb-3">{note.message}</span>
-                <p className="mb-0 d-flex " style={{gap:'4px', alignItems:"flex-end"}}>{note.date}    <LiaCheckDoubleSolid
-                    style={{
-                      color: note.status === "read" ? "#0b81ff" : "#c2c9d6",
-                      fontSize: "large",
-                      // float:"inline-end"
-                    }}
-                  /> </p>
+                  <p className="mb-0 d-flex " style={{gap:'4px', alignItems:"flex-end"}}>{note.date}    
+                    {/* <LiaCheckDoubleSolid
+                      style={{
+                        color: note.status === "read" ? "#0b81ff" : "#c2c9d6",
+                        fontSize: "large",
+                        // float:"inline-end"
+                      }}
+                    />  */}
+                    </p>
               </div>
               </div>
             </div>
-          </Card>
+          </div>
         );
       })}
     

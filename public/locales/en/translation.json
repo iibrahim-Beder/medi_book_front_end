@@ -904,7 +904,7 @@
   },
   "MedicalConditions": {
     "tab_diagnosed_conditions": "Diagnosed Conditions",
-    "tab_other": "Other"
+    "tab_other": "Other Conditions"
   },
   
   "DiagnosedConditionsMobileView": {
