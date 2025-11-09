@@ -152,7 +152,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
 
   const handleInputFocus = () => {
     setIsEditing(true);
-    setShowDropdown(false);
+    setShowDropdown(true);
   };
 
   // Delay blur to allow button clicks before losing focus
