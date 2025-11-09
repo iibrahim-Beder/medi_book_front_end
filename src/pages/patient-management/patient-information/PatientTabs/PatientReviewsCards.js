@@ -176,6 +176,7 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
                     <p className="mb-3">{review.comment}</p>
                     <div className="comment-footer">
                       <Button
+                      style={{float:"inline-end"}}
                         variant="outline-primary"
                         size="sm"
                         className="d-flex align-items-center view-btn ms-2"

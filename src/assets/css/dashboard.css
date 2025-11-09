@@ -5872,6 +5872,7 @@ padding: 0 10px;
     }
 	/* date range picker css end */
 	@media (max-width: 400px) {
+		.filter-dropdown-menu{max-width: 310px}
 		/* .login-right{padding: 10px;} */
 		/* .login-right > div{padding: 0px !important;} */
 		.otp-box input{margin-right: 10px; width: 56px;}

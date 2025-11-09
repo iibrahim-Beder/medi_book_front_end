@@ -157,7 +157,7 @@ const PatientReviewsTable = () => {
             filters={[
               {
                 name: "rating",
-                label: t("Select Rating"),
+                label: t("Select Rating max, min"),
                 data: [
                   { key: "5", label: "5 Stars" },
                   { key: "4", label: "4 Stars" },
