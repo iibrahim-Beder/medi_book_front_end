@@ -14,7 +14,7 @@ const Pagination = ({
   if (totalItems === 0) return null;
 
   return (
-    <div className="d-flex justify-content-between align-items-center mt-3 nav-table"  >
+    <div className="d-flex justify-content-between align-items-center mt-3 nav-table pagination-container "  >
       <div style={{ fontSize: "14px"}}>
         {t("showing")} {startIndex + 1} { t("to")}{" "}
         {Math.min(startIndex + rowsPerPage, totalItems)} {t("of")} {totalItems} {t("entries")}

@@ -1089,18 +1089,6 @@ padding: 10px;
   padding: 10px;
   border-radius: 5px;
 }
-/* .dc-btn.dc-delete-btn {
-    margin: 11px 4px;
-    width: 100px;
-    max-width: 170px;
-    border-color: #ff5851;
-    color: #ff5851;
-    min-width: fit-content;
-}
-.dc-btn.dc-delete-btn:hover {
-    box-shadow: 0 9px 20px 0 #ff5851;
-    background-color: #ff5851;
-} */
  .btn-simple:focus{
 background-color: #ff4757;
 color: white;
@@ -1190,3 +1178,8 @@ color: white;
 }
 
 .small-filter{margin-bottom: 0 !important;}
+.pagination-container button:hover{
+  border-color: var(--bluecolor);
+  /* transition: all ease 0.4s;  */
+
+}
