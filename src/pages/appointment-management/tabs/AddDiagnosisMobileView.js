@@ -675,6 +675,7 @@ const DiagnosisMobileViewWithCRUD = () => {
                 onUpdate={handleUpdateCondition}
                 onSave={handleSaveCondition}
                 onCancel={handleCancelNestedItem}
+                getItemTitle={(condition) => condition.MedicalCondition}
                 itemType="conditions"
                 formFields={[
                   {
@@ -710,6 +711,7 @@ const DiagnosisMobileViewWithCRUD = () => {
                 readOnly={false}
                 backgroundColor="var(--scbccolor)"
                 data={editingDiagnosis?.notes || []}
+                getItemTitle={(note) => note.note}
                 onAdd={handleAddNote}
                 onDelete={handleDeleteNote}
                 onUpdate={handleUpdateNote}

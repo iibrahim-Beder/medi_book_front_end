@@ -5,13 +5,7 @@ import { useDevice } from "../../../../context/useIsMobile";
 import { useTranslation } from "react-i18next";
 
 const PatientNotes = () => {
-  const { t } = useTranslation();
-
-
-
-
-
-  
+  const { t } = useTranslation();  
  const mockNotesData = [
   {
     id: 1,

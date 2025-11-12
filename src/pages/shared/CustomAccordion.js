@@ -255,7 +255,7 @@ const CustomAccordion = memo(({
                       </span>
                     )}
                       {truncateTitle(renderItemTitle(item), 60)}
-                    {item.date && <em style={{ marginLeft: "8px", color: "#666" }}>{item.date}</em>}
+                    {item.date && <em style={{ marginLeft: "8px", color: "#666", margin: "0 11px"}}>{item.date}</em>}
                     </span>
                   </span>
 
