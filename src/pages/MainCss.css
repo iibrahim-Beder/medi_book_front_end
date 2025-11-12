@@ -1195,3 +1195,7 @@ color: white;
   /* background-color: #fafafa; */
 
 }
+
+.PatientsFiltersBtn.btn.btn-outline-secondary:hover{
+color: var(--terthemecolor);
+}

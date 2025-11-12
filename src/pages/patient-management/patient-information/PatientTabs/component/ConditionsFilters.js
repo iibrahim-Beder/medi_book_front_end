@@ -4,6 +4,7 @@ import { BiReset } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import DateRangePicker from "./DateRangePicker";
 import FilterDropdown from "./FilterDropdown";
+import { t } from "i18next";
 
 const ConditionsFilters = ({
   searchTerm = "",
@@ -14,7 +15,7 @@ const ConditionsFilters = ({
   setFilterDateTo,
   onReset,
   onSearch,
-  searchPlaceholder = "Search ...",
+  searchPlaceholder ,
   showSearchInput = true,
   showSearchReset = true,
   showDateRange = true,
@@ -22,6 +23,7 @@ const ConditionsFilters = ({
   filterConfigs = [],
   conditions = []
 }) => {
+    const placeholder = searchPlaceholder || t("Search ...");
 
   // Reset handler
   const handleReset = () => {
@@ -61,7 +63,7 @@ const ConditionsFilters = ({
             <input
               className="form-control small-search"
               type="text"
-              placeholder={searchPlaceholder}
+              placeholder={placeholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => {
@@ -88,14 +90,14 @@ const ConditionsFilters = ({
               variant="outline-secondary"
               onClick={handleSearch}
             >
-              Search
+              {t("Search")}
             </Button>
             <Button
               className="PatientsFiltersBtn"
               variant="outline-secondary"
               onClick={handleReset}
             >
-              <BiReset /> Reset
+              <BiReset /> {t("Reset")}
             </Button>
           </div>
         )}
