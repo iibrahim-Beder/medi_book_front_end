@@ -440,7 +440,7 @@ const ShiftsAccordion = memo(({
                   <div className="form-group-wrap">
                     {renderFormFields(index, item)}
                   </div>
-                 
+                 <div className="break-accrordion">
                   <CustomAccordion
                     accordioninnertitleSize="small"
                     noHedarBefore={true}
@@ -471,7 +471,7 @@ const ShiftsAccordion = memo(({
                     getItemTitle={(breakItem) => `${breakItem.from || t("breaks.start")} - ${breakItem.to || t("breaks.end")}`}
                     noDataMessage={t("breaks.no_breaks")}
                     liveUpdate={true}
-                  />
+                  /></div>
                   <div className="dc-btnarea d-flex " style={{marginTop:"20px"}}>
                     <button
                       type="button"
