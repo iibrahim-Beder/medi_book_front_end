@@ -14,7 +14,7 @@ import {
 import HighlightText from "../../../../../shared/HighlightText";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import Skeleton from "react-loading-skeleton";
-
+import ErrorLoading from "../../../../../shared/ErrorLoading";
 const PATIENT_ID = 4;          
 const PAGE_SIZE = 5;        
 
@@ -505,7 +505,7 @@ const conditions = apiData?.data || [];
      
 
           {/* No results */}
-          {noResults && (
+          {noResults &&!error&& (
             <Card className="text-center py-5">
               <Card.Body>
                 <p className="text-muted">
@@ -516,12 +516,17 @@ const conditions = apiData?.data || [];
               </Card.Body>
             </Card>
           )}
+          {error && (
+         <ErrorLoading isError={error} refetch={fetchData}  />
+          )
+
+          }
 
           {/* Empty state (no filters) */}
           {!isLoading &&
             !isFetching &&
             conditions.length === 0 &&
-            !appliedFilters.searchValue && (
+            !appliedFilters.searchValue && !error && (
               <Card className="text-center py-5">
                 <Card.Body>
                   <p className="text-muted">{t("OtherMedicalConditions.no_records_found")}</p>

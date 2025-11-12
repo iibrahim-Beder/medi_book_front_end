@@ -877,7 +877,7 @@ padding-right: 0;
 .star-over-rated span{ padding-right: 2px;}
 .review-rate h3 , .comments-list h6 {font-family: "Inter", sans-serif ;}
  .comments-list h6 ,.mobile-view-card h5 {font-size:16px;font-weight:500}
-.review-info p  ,.mobile-view-card p {   
+.review-info p  ,.mobile-view-card p ,.error-loading p{   
    font-size: 15px;
     font-weight: 400;
     font-family: 'Inter';

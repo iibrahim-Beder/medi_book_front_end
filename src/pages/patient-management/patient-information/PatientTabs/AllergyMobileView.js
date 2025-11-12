@@ -12,7 +12,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useLazyGetPatientAllergiesQuery } from "../../../../api/patientAllergiesApi";
 import HighlightText from "../../../shared/HighlightText";
-
+import ErrorLoding from "../../../shared/ErrorLoading"
 const AllergyMobileView = () => {
   const { t } = useTranslation();
   const PATIENT_ID = 4;
@@ -264,16 +264,10 @@ const AllergyMobileView = () => {
             ) : error ? (
               <Card className="text-center py-5">
                 <Card.Body>
-                  <p className="text-danger">
-                    ❌ {t('AllergyTable.loading_error')}
-                    <Button 
-                      variant="link" 
-                      onClick={fetchAllergies}
-                      className="p-0 ml-2"
-                    >
-                      {t('AllergyTable.retry')}
-                    </Button>
-                  </p>
+                    <ErrorLoding 
+                    isError={error}
+                      refetch={fetchAllergies}
+                    />
                 </Card.Body>
               </Card>
             ) : allergiesData?.data && allergiesData.data.length > 0 ? (

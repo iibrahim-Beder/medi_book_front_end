@@ -12,6 +12,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useLazyGetExternalPatientMedicalConditionsQuery } from "../../../../../../api/patientOtherMedicalConditionsApi";
 import HighlightText from "../../../../../shared/HighlightText";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
+import ErrorLoading from "../../../../../shared/ErrorLoading";
 
 
 const OtherMedicalConditions = () => {
@@ -394,14 +395,10 @@ const OtherMedicalConditions = () => {
                 ) : error ? (
                   <tr>
                     <td colSpan="8" className="text-center text-danger">
-                      ❌ {t('OtherMedicalConditions.loading_error')}
-                      <Button 
-                        variant="link" 
-                        onClick={fetchMedicalConditions}
-                        className="p-0 ml-2"
-                      >
-                        {t('OtherMedicalConditions.retry')}
-                      </Button>
+                      <ErrorLoading
+                        isError={error}
+                        refetch={fetchMedicalConditions}
+                      />
                     </td>
                   </tr>
                 ) : medicalConditionsData?.data && medicalConditionsData.data.length > 0 ? (

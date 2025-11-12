@@ -1517,8 +1517,10 @@
 "Close":"اغلاق",
 "Search":"بحث",
 "Reset":"إعادة ضبط",
-"Search ...":"بحث ..."
-
+"Search ...":"بحث ...",
+"Error loading reviews" :"خطأ في تحميل البيانات",
+"Retry":"إعادة المحاولة",
+"Check the internet connection":" تحقق من اتصال الانترنت"
 }
 
 

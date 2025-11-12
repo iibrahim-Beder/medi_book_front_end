@@ -6063,7 +6063,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .dc-nav,.dc-proposalsrcontent .dc-title span,.dc-accountinfo,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
 ,.dc-accordioninnertitle span,.dc-username h4
 {font-size: 16px;}
-.dc-tabstitle li a,.comments-list h6, .mobile-view-card h5,.review-info p, .mobile-view-card p,.dc-tabscontenttitle h3
+.dc-tabstitle li a,.comments-list h6, .mobile-view-card h5,.review-info p, .mobile-view-card p,.dc-tabscontenttitle h3,h5
 	{font-size: 18px;}
 	
 .card .text-muted,.dc-username span
