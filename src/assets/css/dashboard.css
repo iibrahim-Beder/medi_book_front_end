@@ -3131,7 +3131,7 @@ background-color: var(--scbccolor);
 .dc-accordioninnertitle .dc-rightarea a + a  {margin-left: 10px;}
 .dc-accordioninnertitle span{
 	color: var(--terthemecolor);
-	font-size: 14px !important;
+	font-size: 14px;
 	line-height: 30px;
 	display: inline-block;
 	vertical-align: middle;
@@ -6056,8 +6056,25 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 .notification-card p{flex-direction: row-reverse;}
 .DateRangePickerMain { padding: 10px !important;}
 .filter-dropdown-menu.dropdown-menu{left: 20px !important;right: unset !important;} 
-.dc-tabstitle li a.active{letter-spacing: 0; font-size: calc(100% + 3px) !important; transition: all 0.3s ease;}
+.dc-tabstitle li a.active{letter-spacing: 0; font-size: 19px !important; transition: all 0.3s ease;}
 .toggle-password-icon{right: unset; left: 15px;}
+
+/* font-size in rtl +1 or 2  */
+.dc-nav,.dc-proposalsrcontent .dc-title span,.dc-accountinfo,textarea, select, .dc-select select, .form-control, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
+,.dc-accordioninnertitle span,.dc-username h4
+{font-size: 16px;}
+.dc-tabstitle li a,.comments-list h6, .mobile-view-card h5,.review-info p, .mobile-view-card p,.dc-tabscontenttitle h3
+	{font-size: 18px;}
+	
+.card .text-muted,.dc-username span
+	{font-size: 14px;}
+	
+.dc-dashboardboxtitle .dc-tag.dc-widgettag a,.dc-user-info .dc-title h4,body,.dc-navigation ul li .sub-menu li a
+	{font-size: 15px;}
+
+
+
+
 /* date range picker in rtl  start */
  @media (min-width: 992px) {
 	 .list-date-option.custom{
@@ -6072,36 +6089,7 @@ body h1, body h2, body h3, body h4, body h5, body h6,body ,.dc-tabstitle li a,.d
 	 }
  }
  .rdp-nav{flex-direction: row-reverse;}
-@media (max-width: 1200px) {
-	/* .list-date-option.custom {
-		left: unset;
-        right:  -166%;
-    }
 
-    @media (max-width: 992px) {
-        .list-date-option.custom {
-			left: unset;
-			right: -70%;
-		}
-	  .list-date-option:before, .list-date-option:after {
-   		right: 280px;
-        }
-	}
-    @media (max-width: 820px) {
-        .list-date-option.custom {
-			left: unset;
-            right: -30%;
-        }
-    }
-
-
-    @media (max-width: 568px) {
-        .list-date-option.custom {
-			left: unset;
-            right: -22px;
-        }
-    } */
-}
 .dropdown-date-options{border-right: none; border-left: 1px solid rgb(221, 221, 221); padding-left: 2px ; padding-right: 0 ;}
 
 .rdp-month_grid{direction: ltr;}
