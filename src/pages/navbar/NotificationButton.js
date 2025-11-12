@@ -103,7 +103,7 @@ const NotificationDropdown = () => {
                       {n.name}{" "}
                       <span className="text-muted small">{n.time}</span>
                     </h6>
-                    <p className="mb-0 small">
+                    <p className="mb-0 small text-ellipsis" style={{direction:"inherit",maxWidth: "230px"}}>
                       {n.message}{" "}
                       {n.doctor && <span className="fw-bold">{n.doctor}</span>}
                     </p>
