@@ -6,14 +6,11 @@ import { PiClockUserThin } from "react-icons/pi";
 
 // import icons 
 import DashboardIcon from "../../assets/icons/DashboardIcon";
-import { RiFileList3Line } from "react-icons/ri";
-import { LiaTachometerAltSolid } from "react-icons/lia";
 import { BsList } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
-import { PiShoppingCartLight } from "react-icons/pi";
+import { HiOutlineChatBubbleOvalLeft } from "react-icons/hi2";
 import { PiUsersThreeLight } from "react-icons/pi";
-import { LiaFacebookMessenger } from "react-icons/lia";
 import { LiaUserCogSolid } from "react-icons/lia";
 import { LiaUserShieldSolid } from "react-icons/lia";
 import { CiLogout } from "react-icons/ci";
@@ -137,7 +134,7 @@ let iconSize=20;
             </li>
             <li>
               <Link to="Messages">
-                <LiaFacebookMessenger className="icon" />
+                <HiOutlineChatBubbleOvalLeft className="icon" />
                 <span>{t("sidebar.messages")}</span>
               </Link>
             </li>
