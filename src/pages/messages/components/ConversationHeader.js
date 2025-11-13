@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { VscArrowLeft } from "react-icons/vsc";
 
 export default function ConversationHeader() {
@@ -19,7 +20,7 @@ export default function ConversationHeader() {
           </div>
         </div>
         <a href="javascript:void(0);" className="dc-viewprofile">
-          View Profile
+          {t("View Profile")}
         </a>
       </div>
     </div>

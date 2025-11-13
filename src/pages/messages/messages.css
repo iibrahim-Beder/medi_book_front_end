@@ -14,6 +14,7 @@
     overflow-y: auto;
  }
 
+ .messages-page{padding-top: 0 !important;}
 /* when Conversation open  */
 [isConversationOpen="true"] {
     @media (max-width: 991px) {
@@ -31,22 +32,22 @@
 /* ====== when Conversation open  ====*/
 
 .dc-dotnotification:before{margin: -5px -10px 0;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
 .dc-offersmessages ul li .dc-messages:before{
     display: none;
-} 
+}
+.dc-chat-item-content{
+    padding: 10px;
+    border-radius: 3px;
+}
+.dc-chat-item-content.dc-active,.dc-chat-item-content.dc-active:hover{
+    background: #f0f2f5;
+}
+
+.dc-chat-item-content:hover{
+    background: #f0f2f56b;
+}
+@media (max-width: 568px) {
+     .dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:last-child,       .messages-page  .dc-dashboardboxcontent,.messages-page .dc-collapseexp {
+        padding: 0 10px !important;
+    }
+}
