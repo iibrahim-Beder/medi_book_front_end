@@ -1,94 +1,110 @@
 // PrescribedMedicationTable.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
 import ConditionsFilters from "./component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../shared/Pagination";
+import { useLazyGetPrescribedMedicationQuery } from "../../../../api/prescribedMedicationApi";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import HighlightText from "../../../shared/HighlightText";
 import "../../Patient-management.css";
-
+import {formatDate}  from "../../../shared/FormatDate";
 const PrescribedMedicationTable = () => {
   const { t } = useTranslation();
+  const PATIENT_ID = 4;
+
   const [expandedRow, setExpandedRow] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchBy, setSearchBy] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1);
-
+  
   // Filters states
-  const [filterType, setFilterType] = useState("");
-  const [filterDateFrom, setFilterDateFrom] = useState(null);
-  const [filterDateTo, setFilterDateTo] = useState(null);
+  const formatDateForAPI = (date) => {
+    if (!date) return undefined;
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // YYYY-MM-DD
+  };
 
-  // Mock data representing prescriptions
-  const prescriptionsData = [
-    {
-      id: "#RX001",
-      diagnosisName: "Diabetes Mellitus Type 2",
-      prescribedName: "Diabetes Management Plan",
-      medication: "Metformin",
-      dosage: "500mg twice daily",
-      duration: "30 days",
-      instructions:
-        "Take one tablet with breakfast and one with dinner. Always take with food to minimize gastrointestinal side effects. If you experience significant stomach upset, consult your doctor. Monitor your blood sugar levels regularly and report any unusual readings.",
-      status: "active",
-    },
-    {
-      id: "#RX002",
-      diagnosisName: "Diabetes Mellitus Type 2",
-      prescribedName: "Blood Sugar Monitoring",
-      medication: "Glucose Test Strips",
-      dosage: "As needed",
-      duration: "90 days",
-      instructions:
-        "Check blood sugar levels: 1) First thing in the morning (fasting), 2) Before each main meal, 3) Two hours after meals, and 4) At bedtime. Record all readings in your logbook. Bring the logbook to your next appointment. Contact your doctor if fasting readings are consistently above 130 mg/dL or post-meal readings above 180 mg/dL.",
-      status: "active",
-    },
-    {
-      id: "#RX003",
-      diagnosisName: "Hypertension",
-      prescribedName: "Blood Pressure Control",
-      medication: "Lisinopril",
-      dosage: "10mg once daily",
-      duration: "90 days",
-      instructions:
-        "Take one tablet every morning at the same time, with or without food. Do not skip doses. Monitor your blood pressure twice daily - morning and evening. Report any persistent dry cough, dizziness, or swelling. Avoid sudden position changes to prevent dizziness. Regular blood tests will be needed to monitor kidney function.",
-      status: "completed",
-    },
-    {
-      id: "#RX004",
-      diagnosisName: "Migraine",
-      prescribedName: "Headache Relief",
-      medication: "Sumatriptan",
-      dosage: "50mg as needed",
-      duration: "30 days",
-      instructions:
-        "Take at the first sign of migraine headache. Swallow tablet whole with water. Maximum dose is 2 tablets in 24 hours. Do not take if you have heart disease, uncontrolled hypertension, or history of stroke. Wait at least 2 hours between doses. Avoid driving or operating machinery until you know how this medication affects you.",
-      status: "cancelled",
-    },
-    {
-      id: "#RX005",
-      diagnosisName: "Vitamin Deficiency",
-      prescribedName: "Supplement Therapy",
-      medication: "Vitamin D3",
-      dosage: "1000 IU once daily",
-      duration: "60 days",
-      instructions:
-        "Take one capsule daily with your largest meal that contains healthy fats (such as avocado, nuts, or olive oil) for optimal absorption. Best taken in the morning. Do not exceed the recommended dose. Store in a cool, dry place away from direct sunlight. Follow up with blood test after 8 weeks to check vitamin D levels.",
-      status: "expired",
-    },
-    {
-      id: "#RX006",
-      diagnosisName: "Asthma",
-      prescribedName: "Respiratory Management",
-      medication: "Salbutamol Inhaler",
-      dosage: "2 puffs every 4-6 hours",
-      duration: "180 days",
-      instructions:
-        "Shake well before each use. Breathe out fully, place mouthpiece between lips, and inhale deeply while pressing down on canister. Hold breath for 10 seconds if possible. Wait one minute between puffs. Rinse mouth after use to prevent oral thrush. Use as needed for shortness of breath, wheezing, or chest tightness. Do not exceed 8 puffs in 24 hours. Seek emergency care if no improvement after 4 puffs.",
-      status: "active",
-    },
-  ];
+  const [currentFilters, setCurrentFilters] = useState({
+    searchValue: "",
+    medicationId: "",
+    medicationCategoryId: "",
+    fromDate: null,
+    toDate: null
+  });
+
+  const [appliedFilters, setAppliedFilters] = useState({
+    searchValue: "",
+    medicationId: "",
+    medicationCategoryId: "",
+    fromDate: null,
+    toDate: null
+  });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  // RTK Query for prescribed medication
+  const [triggerGetPrescribedMedication, { 
+    data: prescribedMedicationData, 
+    isLoading, 
+    isFetching, 
+    error 
+  }] = useLazyGetPrescribedMedicationQuery();
+
+  console.log("Prescribed Medication Data:", prescribedMedicationData);
+
+  useEffect(() => {
+    setAppliedFilters(currentFilters);
+    fetchPrescribedMedication();
+  }, [currentPage, appliedFilters, currentFilters.fromDate, currentFilters.toDate]);
+
+  const fetchPrescribedMedication = () => {
+    const apiFilters = {
+      ...appliedFilters,
+      fromDate: formatDateForAPI(appliedFilters.fromDate),
+      toDate: formatDateForAPI(appliedFilters.toDate),
+    };
+
+    console.log('API Filters for Medication:', apiFilters);
+    
+    // Remove undefined and empty values
+    Object.keys(apiFilters).forEach(key => {
+      if (apiFilters[key] === undefined || apiFilters[key] === "") {
+        delete apiFilters[key];
+      }
+    });
+
+    triggerGetPrescribedMedication({
+      patientId: PATIENT_ID,
+      filter: apiFilters,
+      pageNumber: currentPage,
+      pageSize: pageSize
+    });
+  };
+
+  const handleSearch = (filters) => {
+    setCurrentPage(1);
+    if (filters && typeof filters === "object") {
+      setAppliedFilters(filters);
+      setCurrentFilters(filters);
+    } else {
+      setAppliedFilters(currentFilters);
+    }
+  };
+
+  const handleResetFilters = () => {
+    const resetFilters = {
+      searchValue: "",
+      medicationId: "",
+      medicationCategoryId: "",
+      fromDate: null,
+      toDate: null
+    };
+    setCurrentFilters(resetFilters);
+    setAppliedFilters(resetFilters);
+    setCurrentPage(1);
+  };
 
   // Handle expand/collapse for instructions
   const handleInstructionsClick = (id) => {
@@ -99,61 +115,46 @@ const PrescribedMedicationTable = () => {
     }
   };
 
-  // Apply search & filters
-  const filteredPrescriptions = prescriptionsData
-    .filter((prescription) => {
-      if (!searchTerm) return true;
-      if (searchBy === "all") {
-        return Object.values(prescription)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      } else {
-        return (
-          prescription[searchBy]?.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-    })
-    .filter((prescription) => {
-      if (filterType && prescription.medication !== filterType) return false;
-      return true;
-    });
-
-  const resetFilters = () => {
-    setSearchTerm("");
-    setFilterType("");
-    setFilterDateFrom(null);
-    setFilterDateTo(null);
-    setCurrentPage(1);
-  };
-
-  const rowsPerPage = 5;
-  const totalPages = Math.ceil(filteredPrescriptions.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentData = filteredPrescriptions.slice(startIndex, startIndex + rowsPerPage);
-
-  // Get status color
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case "active":
-        return "#3fabf3";
-      case "completed":
-        return "#4BAE78";
-      case "cancelled":
-        return "#D66A6A";
-      case "expired":
-        return "#7A8B97";
-      default:
-        return "#6C757D";
-    }
-  };
-
   // Utility: truncate long text
   const truncateText = (text, maxLength = 70) => {
     if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
+
+  // Get matched fields for highlighting
+  const getMatchedFields = (highlightInfo) => {
+    if (!highlightInfo || !highlightInfo.matchedFields) return [];
+    return highlightInfo.matchedFields.map(field => field.fieldName);
+  };
+  // Skeleton loading component for table rows
+  const TableSkeleton = () => {
+    return (
+      <>
+        {[...Array(5)].map((_, index) => (
+          <tr key={index}>
+            <td><Skeleton width={120} height={20} /></td>
+            <td><Skeleton width={80} height={20} /></td>
+            <td><Skeleton width={60} height={20} /></td>
+            <td>
+              <div className="d-flex align-items-center">
+                <Skeleton width={200} height={20} />
+                <Skeleton width={20} height={20} className="ms-2" />
+              </div>
+            </td>
+            <td><Skeleton width={150} height={20} /></td>
+            <td><Skeleton width={120} height={20} /></td>
+            <td><Skeleton width={100} height={20} /></td>
+          </tr>
+        ))}
+      </>
+    );
+  };
+
+  const currentData = prescribedMedicationData?.data || [];
+  const totalItems = prescribedMedicationData?.totalCount || 0;
+  const totalPages = prescribedMedicationData?.totalPages || 1;
+  const searchTerm = appliedFilters.searchValue;
 
   return (
     <div className="table-container">
@@ -169,19 +170,21 @@ const PrescribedMedicationTable = () => {
           {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filterType={filterType}
-              setFilterType={setFilterType}
-              filterDateFrom={filterDateFrom}
-              setFilterDateFrom={setFilterDateFrom}
-              filterDateTo={filterDateTo}
-              setFilterDateTo={setFilterDateTo}
-              onReset={resetFilters}
-              onSearch={() => setCurrentPage(1)}
-              conditions={prescriptionsData}
+              searchTerm={currentFilters.searchValue}
+              setSearchTerm={(value) => setCurrentFilters(prev => ({ ...prev, searchValue: value }))}
+              filterDateFrom={currentFilters.fromDate}
+              setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, fromDate: date }))}
+              filterDateTo={currentFilters.toDate}
+              setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, toDate: date }))}
+              onReset={handleResetFilters}
+              onSearch={handleSearch}
+              conditions={currentData}
+              showStatusFilter={false}
+              showSeverityFilter={false}
+              showConditionTypeFilter={false}
             />
           </div>
+
           {/* Data Table */}
           <div style={{ overflow: "auto" }}>
             <Table className="data-table align-middle mb-0 table-hover">
@@ -191,95 +194,143 @@ const PrescribedMedicationTable = () => {
                   <th>{t("PrescribedMedicationTable.dosage")}</th>
                   <th>{t("PrescribedMedicationTable.duration")}</th>
                   <th>{t("PrescribedMedicationTable.instructions")}</th>
-                  <th>{t("PrescribedMedicationTable.status")}</th>
                   <th>{t("PrescribedMedicationTable.diagnosis_name")}</th>
                   <th>{t("PrescribedMedicationTable.prescribed_name")}</th>
+                  <th>{t("PrescribedMedicationTable.category")}</th>
+                  <th>{t("created_at")}</th>
                 </tr>
               </thead>
               <tbody>
-                {currentData.map((prescription) => (
-                  <React.Fragment key={prescription.id}>
-                    <tr>
-                      <td title={prescription.medication}>{prescription.medication}</td>
-                      <td title={prescription.dosage}>{prescription.dosage}</td>
-                      <td title={prescription.duration}>{prescription.duration}</td>
+                {/* Show skeleton when loading for the first time */}
+                {isLoading || isFetching  ? (
+                  <TableSkeleton />
+                ) : (
+                  /* Show actual data when loaded */
+                  currentData.map((medication) => (
+                    <React.Fragment key={medication.id}>
+                      <tr>
+                        <td title={medication.medicationName}>
+                          <HighlightText
+                            text={medication.medicationName}
+                            searchTerm={searchTerm}
+                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                            fieldName="MedicationName"
+                          />
+                        </td>
+                        <td title={medication.dosage}>
+                          <HighlightText
+                            text={medication.dosage}
+                            searchTerm={searchTerm}
+                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                            fieldName="Dosage"
+                          />
+                        </td>
+                        <td title={`${medication.durationInDays} days`}>
+                          {medication.durationInDays} {t('PrescribedMedicationTable.days')}
+                        </td>
 
-                      <td title={prescription.instructions}>
-                        <div className="d-flex align-items-center">
-                          <span className="text-truncate" style={{ maxWidth: "250px" }}>
-                            {truncateText(prescription.instructions, 80)}
-                          </span>
-                          <Button
-                            className="view-btn ms-2"
-                            size="sm"
-                            style={{
-                              backgroundColor: "transparent",
-                              color: "#278fff",
-                              padding: 0,
-                              fontSize: "19px",
-                              height: "20px",
-                            }}
-                            onClick={() => handleInstructionsClick(prescription.id)}
-                          >
-                            <MdExpandMore
+                        <td title={medication.instructions}>
+                          <div className="d-flex align-items-center">
+                            <span className="text-truncate" style={{ maxWidth: "250px" }}>
+                              <HighlightText
+                                text={truncateText(medication.instructions, 80)}
+                                searchTerm={searchTerm}
+                                matchedFields={getMatchedFields(medication.highlightInfo)}
+                                fieldName="Instructions"
+                              />
+                            </span>
+                            <Button
+                              className="view-btn ms-2"
+                              size="sm"
                               style={{
-                                transform:
-                                  expandedRow === prescription.id
-                                    ? "rotate(180deg)"
-                                    : "rotate(0deg)",
-                                transition: "transform 0.3s ease",
+                                backgroundColor: "transparent",
+                                color: "#278fff",
+                                padding: 0,
+                                fontSize: "19px",
+                                height: "20px",
                               }}
-                            />
-                          </Button>
-                        </div>
-                      </td>
-
-                      <td>
-                        <span
-                          style={{
-                            color: getStatusColor(prescription.status),
-                            fontWeight: "600",
-                            fontSize: "14px",
-                          }}
-                        >
-                          {t(`PrescribedMedicationTable.status_options.${prescription.status}`)}
-                        </span>
-                      </td>
-                      <td title={prescription.diagnosisName}>{prescription.diagnosisName}</td>
-                      <td title={prescription.prescribedName}>{prescription.prescribedName}</td>
-                    </tr>
-
-                    {/* Expanded row for Instructions */}
-                    {expandedRow === prescription.id && (
-                      <tr
-                        className="table-active-content"
-                        style={{ backgroundColor: "transparent" }}
-                      >
-                        <td
-                          colSpan="7"
-                          className="border-0 background-in-hover-none"
-                        >
-                          <div className="description-expanded-section">
-                            <TextAreaField
-                              label={t("PrescribedMedicationTable.instructions")}
-                              value={prescription.instructions}
-                              disabled={true}
-                            />
+                              onClick={() => handleInstructionsClick(medication.id)}
+                            >
+                              <MdExpandMore
+                                style={{
+                                  transform:
+                                    expandedRow === medication.id
+                                      ? "rotate(180deg)"
+                                      : "rotate(0deg)",
+                                  transition: "transform 0.3s ease",
+                                }}
+                              />
+                            </Button>
                           </div>
                         </td>
+
+                        <td title={medication.diagnosisName}>
+                          <HighlightText
+                            text={medication.diagnosisName}
+                            searchTerm={searchTerm}
+                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                            fieldName="DiagnosisName"
+                          />
+                        </td>
+                        <td title={medication.prescriptionName}>
+                          <HighlightText
+                            text={medication.prescriptionName}
+                            searchTerm={searchTerm}
+                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                            fieldName="PrescriptionName"
+                          />
+                        </td>
+                        <td title={medication.medicationCategoryName}>
+                          {medication.medicationCategoryName}
+                        </td>
+                        <td title={medication.createdAt}>
+                          {formatDate(medication.createdAt)}
+                        </td>
                       </tr>
-                    )}
-                  </React.Fragment>
-                ))}
+
+                      {/* Expanded row for Instructions */}
+                      {expandedRow === medication.id && (
+                        <tr
+                          className="table-active-content"
+                          style={{ backgroundColor: "transparent" }}
+                        >
+                          <td
+                            colSpan="7"
+                            className="border-0 background-in-hover-none"
+                          >
+                            <div className="description-expanded-section">
+                              <TextAreaField
+                                label={t("PrescribedMedicationTable.instructions")}
+                                value={medication.instructions}
+                                disabled={true}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))
+                )}
               </tbody>
             </Table>
+
+            {currentData.length === 0 && !isLoading && !isFetching && (
+              <div className="text-center p-4">
+                <p className="text-muted">{t('Common.no_data_available')}</p>
+              </div>
+            )}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            totalItems={filteredPrescriptions.length}
-            rowsPerPage={rowsPerPage}
-            onPageChange={setCurrentPage}
-          />
+
+          {/* Pagination */}
+          {!isLoading && (
+            <Pagination
+              currentPage={currentPage}
+              totalItems={totalItems}
+              rowsPerPage={pageSize}
+              onPageChange={setCurrentPage}
+              totalPages={totalPages}
+            />
+          )}
         </div>
       </div>
     </div>

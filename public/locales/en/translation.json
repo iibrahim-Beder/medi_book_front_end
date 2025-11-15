@@ -876,6 +876,7 @@
     }
   },
   "PrescribedMedicationTable": {
+    "category": "Category",
     "table_title": "Prescribed medication list",
     "table_subtitle": "Ahmed Mohamed Ali",
     "medication": "Medication",

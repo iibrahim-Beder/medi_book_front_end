@@ -45,13 +45,13 @@ export default function Medications() {
           style={{ backgroundColor: "var(--scbccolor)" }}
         >
           {activeTab === "PrescribedMedicationTable" && (
-            <div className="table-responsive">
+            <div className="">
               {isMobile ? <PrescribedMedicationMobileView /> : <PrescribedMedicationTable />}
             </div>
           )}
 
           {activeTab === "Othermedications" && (
-            <div className="table-responsive">
+            <div className="">
               {isMobile ? <OtherMedicationMobileView /> : <Othermedications />}
             </div>
           )}

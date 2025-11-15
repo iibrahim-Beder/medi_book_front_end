@@ -1184,6 +1184,7 @@
     }
   },
   "PrescribedMedicationTable": {
+    "category": "القسم",
   "table_title": "قائمة الأدوية الموصوفة",
   "table_subtitle": "أحمد محمد علي",
   "medication": "الدواء",
