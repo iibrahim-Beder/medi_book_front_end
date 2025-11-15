@@ -1,13 +1,9 @@
-import React, { useState } from "react";
-import { Card, Button } from "react-bootstrap";
-import { MdOutlineArrowForward } from "react-icons/md";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   FaCheckCircle,
   FaExclamationTriangle,
   FaInfoCircle,
   FaTimesCircle,
-} from "react-icons/fa";
-import {
   FaCalendarCheck,
   FaCalendarTimes,
   FaFlask,
@@ -16,185 +12,281 @@ import {
   FaBell,
   FaSyncAlt,
 } from "react-icons/fa";
-import { useTranslation } from "react-i18next";
-
 import { LiaCheckDoubleSolid } from "react-icons/lia";
+import { useTranslation } from "react-i18next";
+import Skeleton from "react-loading-skeleton";
+import ErrorLoading from "../../../shared/ErrorLoading";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
 import Pagination from "../../../shared/Pagination";
+import {
+  useGetPatientDoctorNotificationsQuery,
+  useMarkNotificationAsReadMutation,
+  useMarkAllNotificationsAsReadMutation,
+} from "../../../../api/patientNotificationsApi";
 
-const notificationsData = [
-  {
-    id: "#NT001",
-    type: "appointment",
-    title: "Appointment Confirmed",
-    message:
-      "Your appointment with Dr. Ahmed has been confirmed for 20 Oct, 3:00 PM.",
-    date: "16 Oct 2025",
-    status: "unread",
-  },
-  {
-    id: "#NT002",
-    type: "lab",
-    title: "Lab Result Ready",
-    message:
-      "Your new blood test results are available to view in your patient dashboard.",
-    date: "15 Oct 2025",
-    status: "read",
-  },
-  {
-    id: "#NT003",
-    type: "invoice",
-    title: "Payment Received",
-    message:
-      "Your payment for invoice #INV-045 has been successfully processed.",
-    date: "14 Oct 2025",
-    status: "read",
-  },
-  {
-    id: "#NT004",
-    type: "cancel",
-    title: "Appointment Canceled",
-    message:
-      "Your appointment with Dr. Eman on 13 Oct has been canceled by the clinic.",
-    date: "13 Oct 2025",
-    status: "unread",
-  },
-  {
-    id: "#NT005",
-    type: "message",
-    title: "New Message from Clinic",
-    message:
-      "Dr. Mariam sent you a new message regarding your recent checkup.",
-    date: "12 Oct 2025",
-    status: "unread",
-  },
-  {
-    id: "#NT006",
-    type: "reminder",
-    title: "Medication Reminder",
-    message: "Don't forget to take your blood pressure medicine at 9:00 PM.",
-    date: "11 Oct 2025",
-    status: "read",
-  },
-  {
-    id: "#NT007",
-    type: "update",
-    title: "Profile Updated",
-    message: "Your contact information was successfully updated.",
-    date: "10 Oct 2025",
-    status: "read",
-  },
-  {
-    id: "#NT007",
-    type: "update",
-    title: "Profile Updated",
-    message: "Your contact information was successfully updated.",
-    date: "10 Oct 2025",
-    status: "read",
-  },
-  {
-    id: "#NT007",
-    type: "update",
-    title: "Profile Updated",
-    message: "Your contact information was successfully updated.",
-    date: "10 Oct 2025",
-    status: "read",
-  },
-  {
-    id: "#NT007",
-    type: "update",
-    title: "Profile Updated",
-    message: "Your contact information was successfully updated.",
-    date: "10 Oct 2025",
-    status: "read",
-  },
-];
-
-
-const PatientNotificationsCards = () => {
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 7;
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, notificationsData.length);
-  const paginatedNotifications = notificationsData.slice(startIndex, endIndex);
-
+const PatientNotificationsCards = ({ patientId=4 }) => {
   const { t } = useTranslation();
 
-const typeStyles = {
-  appointment: { icon: <FaCalendarCheck style={{ color: "#007bff" }} /> },
-  cancel: { icon: <FaCalendarTimes style={{ color: "#dc3545" }} /> },
-  lab: { icon: <FaFlask style={{ color: "#6f42c1" }} /> },
-  invoice: { icon: <FaMoneyBillWave style={{ color: "#28a745" }} /> },
-  message: { icon: <FaEnvelopeOpenText style={{ color: "#17a2b8" }} /> },
-  reminder: { icon: <FaBell style={{ color: "#fd7e14" }} /> },
-  update: { icon: <FaSyncAlt style={{ color: "#6c757d" }} /> },
-  success: { icon: <FaCheckCircle style={{ color: "#28a745" }} /> },
-  warning: { icon: <FaExclamationTriangle style={{ color: "#ffc107" }} /> },
-  danger: { icon: <FaTimesCircle style={{ color: "#dc3545" }} /> },
-  info: { icon: <FaInfoCircle style={{ color: "var(--themecolor)" }} /> },
-};
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState(undefined);
+  const [filterIsRead, setFilterIsRead] = useState(undefined);
+  const [filterEntityType, setFilterEntityType] = useState(undefined);
+  const [dateRange, setDateRange] = useState({ start: null, end: null });
 
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 7;
+
+  // Transform filters to API format
+  const filter = useMemo(() => {
+    return {
+      searchText: searchTerm || undefined,
+      type: filterType,
+      isRead: filterIsRead,
+      relatedEntityType: filterEntityType,
+      fromDate: dateRange.start?.toISOString().split("T")[0],
+      toDate: dateRange.end?.toISOString().split("T")[0],
+    };
+  }, [searchTerm, filterType, filterIsRead, filterEntityType, dateRange]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter]);
+
+  // API Query
+  const {
+    data: response,
+    isLoading,
+    isFetching,
+    isError,
+    refetch,
+  } = useGetPatientDoctorNotificationsQuery({
+    patientId,
+    filter,
+    pageNumber: currentPage,
+    pageSize,
+  });
+
+  const [markAsRead] = useMarkNotificationAsReadMutation();
+  const [markAllAsRead] = useMarkAllNotificationsAsReadMutation();
+
+  const notifications = response?.data || [];
+  const totalCount = response?.totalCount || 0;
+  const totalPages = response?.totalPages || 0;
+
+  // Handle mark as read
+  const handleMarkAsRead = async (notificationId) => {
+    try {
+      await markAsRead({ notificationId, patientId }).unwrap();
+    } catch (err) {
+      console.error("Failed to mark as read", err);
+    }
+  };
+
+  // Handle mark all as read
+  const handleMarkAllAsRead = async () => {
+    try {
+      await markAllAsRead(patientId).unwrap();
+    } catch (err) {
+      console.error("Failed to mark all as read", err);
+    }
+  };
+
+  // Reset filters
+  const resetFilters = () => {
+    setSearchTerm("");
+    setFilterType(undefined);
+    setFilterIsRead(undefined);
+    setFilterEntityType(undefined);
+    setDateRange({ start: null, end: null });
+    setCurrentPage(1);
+  };
+
+  // Icon mapping based on notificationType + relatedEntityType
+  const getNotificationIcon = (item) => {
+    const entityIcons = {
+      Appointment: <FaCalendarCheck style={{ color: "#007bff" }} />,
+      Message: <FaEnvelopeOpenText style={{ color: "#17a2b8" }} />,
+      Payment: <FaMoneyBillWave style={{ color: "#28a745" }} />,
+      Medical: <FaFlask style={{ color: "#6f42c1" }} />,
+      System: <FaSyncAlt style={{ color: "#6c757d" }} />,
+    };
+
+    const typeIcons = {
+      Info: <FaInfoCircle style={{ color: "var(--themecolor)" }} />,
+      Warning: <FaExclamationTriangle style={{ color: "#xffc107" }} />,
+      Alert: <FaTimesCircle style={{ color: "#dc3545" }} />,
+      Reminder: <FaBell style={{ color: "#fd7e14" }} />,
+    };
+
+    // Priority: entity type > notification type
+    return entityIcons[item.relatedEntityType] || typeIcons[item.notificationType] || <FaInfoCircle style={{ color: "var(--themecolor)" }} />;
+  };
+
+  // Format date
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // Shimmer Card
+  const ShimmerCard = () => (
+    <div className="notification-card-container mb-2">
+      <div className="notification-card">
+        <div className="icon-content w-100">
+          <div className="alert-icon">
+            <Skeleton circle width={40} height={40} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <Skeleton height={20} width="20%" />
+            <Skeleton height={16} width="80%" style={{ marginTop: 8 }} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="comments-list notifications-list">
-      <div className=" filters-container-search ">
-      {/* Header */}
-      <div className="table-header">
-        <div>
-          <h3 className="table-title">{ t("Patient Notifications")}</h3>
-          <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+      <div className="filters-container-search">
+        {/* Header */}
+        <div className="table-header">
+          <div>
+            <h3 className="table-title">{t("Patient Notifications")}</h3>
+            <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          </div>
+          {/* {totalCount > 0 && !isLoading && (
+            <button
+              onClick={handleMarkAllAsRead}
+              className="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+              disabled={isFetching}
+            >
+              <LiaCheckDoubleSolid />
+              {t("Mark All as Read")}
+            </button>
+          )} */}
+        </div>
+
+        {/* Filters */}
+        <div className="review-filters d-flex gap-3 align-items-center flex-wrap mb-3">
+          <FilterDropdown
+            small
+            filters={[
+              {
+                name: "type",
+                label: t("Notification Type"),
+                data: [
+                  { key: "Info", label: t("Info") },
+                  { key: "Warning", label: t("Warning") },
+                  { key: "Alert", label: t("Alert") },
+                  { key: "Reminder", label: t("Reminder") },
+                ],
+              },
+              {
+                name: "entityType",
+                label: t("Related To"),
+                data: [
+                  { key: "Appointment", label: t("Appointment") },
+                  { key: "Message", label: t("Message") },
+                  { key: "Payment", label: t("Payment") },
+                  { key: "Medical", label: t("Medical") },
+                  { key: "System", label: t("System") },
+                ],
+              },
+              {
+                name: "isRead",
+                label: t("Status"),
+                data: [
+                  { key: "true", label: t("Read") },
+                  { key: "false", label: t("Unread") },
+                ],
+              },
+            ]}
+            onFilter={(filters) => {
+              const typeFilter = filters.type || {};
+              const selectedType = Object.keys(typeFilter).find((k) => typeFilter[k]);
+              setFilterType(selectedType || undefined);
+
+              const entityFilter = filters.entityType || {};
+              const selectedEntity = Object.keys(entityFilter).find((k) => entityFilter[k]);
+              setFilterEntityType(selectedEntity || undefined);
+
+              const readFilter = filters.isRead || {};
+              const selectedRead = Object.keys(readFilter).find((k) => readFilter[k]);
+              setFilterIsRead(selectedRead === "true" ? true : selectedRead === "false" ? false : undefined);
+            }}
+            onReset={resetFilters}
+          />
+          <DateRangePicker onChange={setDateRange} />
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="review-filters">
-        <FilterDropdown small />
-        <DateRangePicker />
-      </div>
-</div>
-      {/* Notifications list */}
-      <div className="table-card ">
-      
-      
-      {paginatedNotifications.map((note) => {
-        const { icon } = typeStyles[note.type] || typeStyles.info;
-
-        return (
-          <div key={note.id} className="mb-2 notification-card-container ">
-          
-          
-            <div className="notification-card">
-            <div className="icon-content">
-              <div className="alert-icon">
-                {icon}
-              </div>
-              <div>  
-                <span className="mb-3">{note.message}</span>
-                  <p className="mb-0 d-flex " style={{gap:'4px', alignItems:"flex-end"}}>{note.date}    
-                    {/* <LiaCheckDoubleSolid
-                      style={{
-                        color: note.status === "read" ? "#0b81ff" : "#c2c9d6",
-                        fontSize: "large",
-                        // float:"inline-end"
-                      }}
-                    />  */}
-                    </p>
-              </div>
-              </div>
-            </div>
+      {/* Notifications List */}
+      <div className="table-card">
+        {isLoading || isFetching || isError? (
+          Array.from({ length: 5 }).map((_, i) => <ShimmerCard key={i} />)
+        ) : isError ? (
+          <ErrorLoading onRetry={refetch} />
+        ) : notifications.length === 0 ? (
+          <div className="text-center py-5 text-muted">
+            {t("No notifications found")}
           </div>
-        );
-      })}
-    
-     <Pagination
-  currentPage={page}
-  totalItems={notificationsData.length} 
-  rowsPerPage={itemsPerPage}
-  onPageChange={setPage}
-/>
-      </div> 
+        ) : (
+          notifications.map((note) => {
+            const icon = getNotificationIcon(note);
 
+            return (
+              <div
+                key={note.id}
+                className={`mb-2 notification-card-container ${!note.isRead ? "unread" : ""}`}
+                onClick={() => !note.isRead && handleMarkAsRead(note.id)}
+                style={{ cursor: note.isRead ? "default" : "pointer" }}
+              >
+                <div className="notification-card">
+                  <div className="icon-content w-100 ">
+                    <div className="alert-icon">{icon}</div>
+                    <div style={{ flex: 1 }}>
+                      <div className="d-flex justify-content-between">
+                      <h6 className=" mb-0 notification-title ">{note.title}</h6>
+                        <p  className="mb-0 text-muted small">{formatDate(note.createdAt)}</p>
+                      </div>
+                      <span className="mb-2" style={{fontSize:"14px"}} >{note.message}</span>
+                      <div 
+                      // className="d-flex align-items-center justify-content-between"
+                      >
+                        {/* <LiaCheckDoubleSolid
+                          style={{
+                            color: note.isRead ? "#0b81ff" : "#c2c9d6",
+                            fontSize: "1.2rem",
+                          }}
+                        /> */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
+
+        {/* Pagination */}
+        {!isLoading && totalCount > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={totalCount}
+            rowsPerPage={pageSize}
+            onPageChange={setCurrentPage}
+          />
+        )}
+      </div>
     </div>
   );
 };

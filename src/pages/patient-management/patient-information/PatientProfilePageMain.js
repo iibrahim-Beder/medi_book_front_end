@@ -15,6 +15,7 @@ import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
 import AllergyMobileView from "./PatientTabs/AllergyMobileView";
 import MedicalHistoryMobileView from "./PatientTabs/MedicalHistoryMobileView";
+import TestP from "./PatientTabs/TestP";
 
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
@@ -36,6 +37,7 @@ export default function PatientProfilePageMain() {
    { key: "DoctorPatientNotes", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
+   { key: "Test", label: t("Test") },
 
   ];
 
@@ -80,6 +82,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
+            {activeTab === "Test" && <TestP/>}
           </div>
         </div>
       </div>

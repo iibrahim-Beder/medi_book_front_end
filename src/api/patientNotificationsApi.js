@@ -1,140 +1,181 @@
-// services/patientNotificationsApi.js
+// doctorNotificationsApi.js
 import { baseApi } from './baseApi';
 
-const transformNotificationTypeToUI = (type) => {
-  const typeMap = {
-    1: 'Appointment Booked',
-    2: 'Cancelled by Doctor', 
-    3: 'Cancelled by You',
-    4: 'Appointment Rescheduled',
-    5: '24h Reminder',
-    6: '1h Reminder',
-    7: 'Payment Successful'
+// Transform related entity type
+const transformEntityTypeToAPI = (entityType) => {
+  const entityTypeMap = {
+    'System': 0,
+    'Appointment': 1,
+    'Message': 2,
+    'Payment': 3,
+    'Medical': 4
   };
-  return typeMap[type] ?? 'Notification';
+  return entityTypeMap[entityType] ?? null;
 };
 
-const transformNotificationsData = (response) => {
+const transformEntityTypeToUI = (entityType) => {
+  const entityTypeMap = {
+    0: 'System',
+    1: 'Appointment',
+    2: 'Message', 
+    3: 'Payment',
+    4: 'Medical'
+  };
+  return entityTypeMap[entityType] ?? 'System';
+};
+
+// Transform notification type
+const transformNotificationTypeToAPI = (notificationType) => {
+  const notificationTypeMap = {
+    'Info': 1,
+    'Warning': 2,
+    'Alert': 3,
+    'Reminder': 4
+  };
+  return notificationTypeMap[notificationType] ?? null;
+};
+
+const transformNotificationTypeToUI = (notificationType) => {
+  const notificationTypeMap = {
+    1: 'Info',
+    2: 'Warning', 
+    3: 'Alert',
+    4: 'Reminder'
+  };
+  return notificationTypeMap[notificationType] ?? 'Info';
+};
+
+const transformDoctorNotificationsData = (response, searchText = "") => {
   if (!response || !response.succeeded) {
     return {
       data: [],
-      succeeded: false,
-      message: response?.message || 'Failed to fetch notifications'
+      currentPage: 1,
+      totalPages: 0,
+      totalCount: 0,
+      searchText: searchText,
+      succeeded: false
     };
   }
 
   if (!response.data) return {
     ...response,
-    data: []
+    data: [],
+    searchText: searchText
   };
 
   const transformedData = response.data.map(item => ({
     id: item.id,
-    type: item.type,
-    typeLabel: transformNotificationTypeToUI(item.type),
+    notificationId: item.id,
     title: item.title,
     message: item.message,
     isRead: item.isRead,
-    readAt: item.readAt,
+    relatedEntityId: item.relatedEntityId,
+    relatedEntityType: transformEntityTypeToUI(item.relatedEntityType),
+    relatedEntityTypeValue: item.relatedEntityType,
+    notificationType: transformNotificationTypeToUI(item.type),
+    notificationTypeValue: item.type,
     createdAt: item.createdAt,
-    svgUrl: item.svgUrl,
-    // Add time ago for display
-    timeAgo: getTimeAgo(item.createdAt)
+    highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.id)
   }));
 
   return {
     ...response,
-    data: transformedData
+    data: transformedData,
+    searchText: searchText
   };
 };
 
-// Helper function to calculate time ago
-const getTimeAgo = (dateString) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now - date) / 1000);
-  
-  if (diffInSeconds < 60) return 'Just now';
-  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} days ago`;
-  return `${Math.floor(diffInSeconds / 2592000)} months ago`;
-};
-
-export const patientNotificationsApi = baseApi.injectEndpoints({
+export const doctorNotificationsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getPatientNotifications: builder.query({
-      query: (patientId) => {
+    getPatientDoctorNotifications: builder.query({
+      query: ({ 
+        patientId, 
+        filter = {}, 
+        orderBy, 
+        pageNumber = 1, 
+        pageSize = 10 
+      }) => {
         const params = {
-          PatientId: patientId
+          PatientId: patientId,
+          ...(filter.isRead !== undefined && { 'filter.IsRead': filter.isRead }),
+          ...(filter.type && { 'filter.Type': transformNotificationTypeToAPI(filter.type) }),
+          ...(filter.relatedEntityType && { 'filter.RelatedEntityType': transformEntityTypeToAPI(filter.relatedEntityType) }),
+          ...(filter.fromDate && { 'filter.FromDate': filter.fromDate }),
+          ...(filter.toDate && { 'filter.ToDate': filter.toDate }),
+          ...(orderBy?.orderBy && { 'orderBy.OrderBy': orderBy.orderBy }),
+          ...(orderBy?.isAscending !== undefined && { 'orderBy.IsAscending': orderBy.isAscending }),
+          ...(pageNumber && { 'PageNumber': pageNumber }),
+          ...(pageSize && { 'PageSize': pageSize })
         };
 
-        console.log('Notifications API Request Params:', params);
+        console.log('Doctor Notifications API Request Params:', params);
 
         return {
-          url: '/Notifications/GetPatientNotifications',
+          url: '/DoctorNotification/GetPatientDoctorNotification',
           params,
           timeout: 10000
         };
       },
       transformResponse: (response, meta, args) => {
-        console.log('Notifications API Response:', response);
-        return transformNotificationsData(response);
+        console.log('Doctor Notifications API Response:', response);
+        return transformDoctorNotificationsData(response, args.filter?.searchText);
       },
       transformErrorResponse: (response, meta, args) => {
-        console.error('Notifications API Error:', response);
-        return transformNotificationsData({
-          succeeded: false,
-          error: response.data,
-          status: response.status
-        });
+        console.error('Doctor Notifications API Error:', response);
+        return transformDoctorNotificationsData(
+          { 
+            succeeded: false, 
+            error: response.data,
+            status: response.status 
+          }, 
+          args.filter?.searchText
+        );
       },
-      providesTags: (result, error, patientId) => [
-        { type: 'Notifications', id: patientId }
+      providesTags: (result, error, { patientId }) => [
+        { type: 'DoctorNotifications', id: patientId }
       ],
     }),
 
     // Mark notification as read
     markNotificationAsRead: builder.mutation({
-      query: ({ notificationId, patientId }) => ({
-        url: `/Notifications/MarkAsRead/${notificationId}`,
-        method: 'PUT',
-        body: { patientId }
+      query: (notificationId) => ({
+        url: `/DoctorNotification/MarkAsRead/${notificationId}`,
+        method: 'PUT'
       }),
       invalidatesTags: (result, error, { patientId }) => [
-        { type: 'Notifications', id: patientId }
+        { type: 'DoctorNotifications', id: patientId }
       ],
     }),
 
     // Mark all notifications as read
     markAllNotificationsAsRead: builder.mutation({
       query: (patientId) => ({
-        url: '/Notifications/MarkAllAsRead',
+        url: `/DoctorNotification/MarkAllAsRead`,
         method: 'PUT',
         body: { patientId }
       }),
-      invalidatesTags: (result, error, patientId) => [
-        { type: 'Notifications', id: patientId }
+      invalidatesTags: (result, error, { patientId }) => [
+        { type: 'DoctorNotifications', id: patientId }
       ],
     }),
 
     // Delete notification
     deleteNotification: builder.mutation({
-      query: ({ notificationId, patientId }) => ({
-        url: `/Notifications/DeleteNotification/${notificationId}`,
+      query: (notificationId) => ({
+        url: `/DoctorNotification/DeleteNotification/${notificationId}`,
         method: 'DELETE'
       }),
       invalidatesTags: (result, error, { patientId }) => [
-        { type: 'Notifications', id: patientId }
+        { type: 'DoctorNotifications', id: patientId }
       ],
     })
   }),
 });
 
 export const {
-  useGetPatientNotificationsQuery,
-  useLazyGetPatientNotificationsQuery,
+  useGetPatientDoctorNotificationsQuery,
+  useLazyGetPatientDoctorNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
   useDeleteNotificationMutation,
-} = patientNotificationsApi;
+} = doctorNotificationsApi;
