@@ -41,41 +41,6 @@ console.log("notifications", notifications);
     });
   };
 
-  // const [notifications] = useState([
-  //   {
-  //     id: 1,
-  //     name: "Travis Tremble",
-  //     time: "18.30 PM",
-  //     message: "Sent a amount of $210 for his Appointment",
-  //     doctor: "Dr. Ruby perin",
-  //     avatar: "assets/img/clients/client-01.jpg",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Travis Tremble",
-  //     time: "12 Min Ago",
-  //     message: "has booked her appointment to",
-  //     doctor: "Dr. Hendry Watt",
-  //     avatar: "assets/img/clients/client-02.jpg",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Travis Tremble",
-  //     time: "6 Min Ago",
-  //     message: "Sent a amount  $210 for his Appointment",
-  //     doctor: "Dr. Maria Dyen",
-  //     avatar: "assets/img/clients/client-03.jpg",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Travis Tremble",
-  //     time: "8.30 AM",
-  //     message: "Send a message to his doctor",
-  //     doctor: "",
-  //     avatar: "assets/img/clients/client-04.jpg",
-  //   },
-  // ]);
-
   return (
     <Dropdown align="end" className="notifications">
       <Dropdown.Toggle
@@ -151,7 +116,7 @@ console.log("notifications", notifications);
                   <div className="media-body">
                     <h6 className="mb-1 d-flex justify-content-between">
                       {n.title}
-                      <span className="text-muted small">  {formatTime(n.createdAt)}</span>
+                      <span className="text-muted small" style={{whiteSpace:"nowrap"}}>  {formatTime(n.createdAt)}</span>
                     </h6>
                     <p className="mb-0 small text-ellipsis" style={{direction:"inherit",maxWidth: "230px"}}>
                       {n.message}{" "}

@@ -1200,4 +1200,4 @@ color: white;
 color: var(--terthemecolor);
 }
 .break-accrordion .dc-collapseexp{padding-top: 0 !important;padding-bottom: 10px !important;}
-.notification-title{font-size: 16px !important;font-weight: 600 !important; font-family: 'Poppins', Arial, Helvetica, sans-serif !important;}
+.notification-title{font-size: 14px !important;font-weight: 600 !important; font-family: 'Poppins', Arial, Helvetica, sans-serif !important;}

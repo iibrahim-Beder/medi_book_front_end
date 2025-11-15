@@ -143,7 +143,7 @@ const PatientNotificationsCards = ({ patientId=4 }) => {
       <div className="notification-card">
         <div className="icon-content w-100">
           <div className="alert-icon">
-            <Skeleton circle width={40} height={40} />
+            <Skeleton  width={35} height={30} />
           </div>
           <div style={{ flex: 1 }}>
             <Skeleton height={20} width="20%" />
@@ -176,7 +176,7 @@ const PatientNotificationsCards = ({ patientId=4 }) => {
         </div>
 
         {/* Filters */}
-        <div className="review-filters d-flex gap-3 align-items-center flex-wrap mb-3">
+        <div className="review-filters">
           <FilterDropdown
             small
             filters={[
@@ -231,7 +231,7 @@ const PatientNotificationsCards = ({ patientId=4 }) => {
 
       {/* Notifications List */}
       <div className="table-card">
-        {isLoading || isFetching || isError? (
+        {isLoading || isFetching? (
           Array.from({ length: 5 }).map((_, i) => <ShimmerCard key={i} />)
         ) : isError ? (
           <ErrorLoading onRetry={refetch} />
@@ -256,7 +256,7 @@ const PatientNotificationsCards = ({ patientId=4 }) => {
                     <div style={{ flex: 1 }}>
                       <div className="d-flex justify-content-between">
                       <h6 className=" mb-0 notification-title ">{note.title}</h6>
-                        <p  className="mb-0 text-muted small">{formatDate(note.createdAt)}</p>
+                        <p  className="mb-0 text-muted small"style={{whiteSpace:"nowrap"}}>{formatDate(note.createdAt)}</p>
                       </div>
                       <span className="mb-2" style={{fontSize:"14px"}} >{note.message}</span>
                       <div 
