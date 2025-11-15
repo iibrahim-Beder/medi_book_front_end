@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
-import PatientNotesComponent from "./PatientTabs/PatientNotes";
+import DoctorPatientNotes from "./PatientTabs/DoctorPatientNotesList";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/AllergyTable";
 import ConditionsTable from "./PatientTabs/ConditionsTable";
@@ -33,7 +33,7 @@ export default function PatientProfilePageMain() {
    { key: "Diagnosis", label: t("Diagnosis") },
    { key: "Medications", label: t("medications") },
    { key: "PrescriptionsTable", label: t("Prescriptions") },
-   { key: "PatientNotesComponent", label: t("Notes") },
+   { key: "DoctorPatientNotes", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
 
@@ -71,7 +71,7 @@ export default function PatientProfilePageMain() {
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />} 
-            {activeTab === "PatientNotesComponent" && <PatientNotesComponent />}
+            {activeTab === "DoctorPatientNotes" && <DoctorPatientNotes />}
             {activeTab === "ConditionsTable" &&(isMobile ?<MedicalHistoryMobileView /> : <ConditionsTable />  )}
             {activeTab === "Allergy" && (isMobile ? <AllergyMobileView /> : <AllergyTable />)}
             {activeTab === "Diagnosis" && <DiagnosisTable/>}
