@@ -3,41 +3,78 @@ import { Dropdown, Badge } from "react-bootstrap";
 import { Bell } from "lucide-react";
 import "../patient-management/patient-information/PatientTabs/component/DateRangePicker.css";
 import "./NotificationButton.css"
+import { 
+  useGetDoctorNotificationsQuery,
+  useMarkNotificationAsReadMutation,
+  useMarkAllNotificationsAsReadMutation
+} from "../../api/doctorNotificationsApi";
+import { t } from "i18next";
 const NotificationDropdown = () => {
-  const [notifications] = useState([
-    {
-      id: 1,
-      name: "Travis Tremble",
-      time: "18.30 PM",
-      message: "Sent a amount of $210 for his Appointment",
-      doctor: "Dr. Ruby perin",
-      avatar: "assets/img/clients/client-01.jpg",
-    },
-    {
-      id: 2,
-      name: "Travis Tremble",
-      time: "12 Min Ago",
-      message: "has booked her appointment to",
-      doctor: "Dr. Hendry Watt",
-      avatar: "assets/img/clients/client-02.jpg",
-    },
-    {
-      id: 3,
-      name: "Travis Tremble",
-      time: "6 Min Ago",
-      message: "Sent a amount  $210 for his Appointment",
-      doctor: "Dr. Maria Dyen",
-      avatar: "assets/img/clients/client-03.jpg",
-    },
-    {
-      id: 4,
-      name: "Travis Tremble",
-      time: "8.30 AM",
-      message: "Send a message to his doctor",
-      doctor: "",
-      avatar: "assets/img/clients/client-04.jpg",
-    },
-  ]);
+    const { 
+    data: notificationsResponse, 
+    isLoading, 
+    refetch 
+  } = useGetDoctorNotificationsQuery({
+    pageNumber: 1,
+    pageSize: 20,
+    filter: { isRead: false } // Show only unread by default
+  });
+  const notifications = notificationsResponse?.data || [];
+console.log("notifications", notifications);
+  const formatTime = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return t('Just now');
+    if (diffMins < 60) return `${diffMins} ${t('min ago')}`;
+    if (diffHours < 24) return `${diffHours} ${t('hour ago')}`;
+    if (diffDays < 7) return `${diffDays} ${t('day ago')}`;
+    
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  // const [notifications] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Travis Tremble",
+  //     time: "18.30 PM",
+  //     message: "Sent a amount of $210 for his Appointment",
+  //     doctor: "Dr. Ruby perin",
+  //     avatar: "assets/img/clients/client-01.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Travis Tremble",
+  //     time: "12 Min Ago",
+  //     message: "has booked her appointment to",
+  //     doctor: "Dr. Hendry Watt",
+  //     avatar: "assets/img/clients/client-02.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Travis Tremble",
+  //     time: "6 Min Ago",
+  //     message: "Sent a amount  $210 for his Appointment",
+  //     doctor: "Dr. Maria Dyen",
+  //     avatar: "assets/img/clients/client-03.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Travis Tremble",
+  //     time: "8.30 AM",
+  //     message: "Send a message to his doctor",
+  //     doctor: "",
+  //     avatar: "assets/img/clients/client-04.jpg",
+  //   },
+  // ]);
 
   return (
     <Dropdown align="end" className="notifications">
@@ -82,6 +119,19 @@ const NotificationDropdown = () => {
           className="noti-content"
           style={{ maxHeight: "300px", overflowY: "auto" }}
         >
+            {isLoading ? (
+            <div className="text-center p-3">
+              <div className="spinner-border spinner-border-sm" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="text-muted mt-2 mb-0">{t('Loading notifications...')}</p>
+            </div>
+          ) : notifications.length === 0 ? (
+            <div className="text-center p-4">
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔔</div>
+              <p className="text-muted mb-0">{t('No notifications')}</p>
+            </div>
+          ) : (
           <ul className="list-unstyled m-0">
             {notifications.map((n) => (
               <li key={n.id} className="notification-message border-bottom">
@@ -90,7 +140,7 @@ const NotificationDropdown = () => {
                   className="d-flex align-items-start p-2 text-decoration-none text-dark"
                   style={{ gap: "10px" }}
                 >
-                  <span className="avatar me-2">
+                  <span className="avatar me-2"style={{minWidth:"40px"}}>
                     <img
                       src="/images/user-login.jpg"
                       alt={n.name}
@@ -100,8 +150,8 @@ const NotificationDropdown = () => {
                   </span>
                   <div className="media-body">
                     <h6 className="mb-1 d-flex justify-content-between">
-                      {n.name}{" "}
-                      <span className="text-muted small">{n.time}</span>
+                      {n.title}
+                      <span className="text-muted small">  {formatTime(n.createdAt)}</span>
                     </h6>
                     <p className="mb-0 small text-ellipsis" style={{direction:"inherit",maxWidth: "230px"}}>
                       {n.message}{" "}
@@ -111,7 +161,7 @@ const NotificationDropdown = () => {
                 </a>
               </li>
             ))}
-          </ul>
+          </ul>)}
         </div>
       </Dropdown.Menu>
     </Dropdown>

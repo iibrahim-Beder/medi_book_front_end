@@ -1,4 +1,4 @@
-// patientNotificationsApi.js
+// doctorNotificationsApi.js
 import { baseApi } from './baseApi';
 
 // Transform related entity type
@@ -24,7 +24,7 @@ const transformEntityTypeToUI = (entityType) => {
   return entityTypeMap[entityType] ?? 'System';
 };
 
-// Transform notification type
+// Transform notification type (if exists in API)
 const transformNotificationTypeToAPI = (notificationType) => {
   const notificationTypeMap = {
     'Info': 1,
@@ -45,22 +45,20 @@ const transformNotificationTypeToUI = (notificationType) => {
   return notificationTypeMap[notificationType] ?? 'Info';
 };
 
-const transformDoctorNotificationsData = (response, searchText = "") => {
+const transformDoctorNotificationsData = (response) => {
   if (!response || !response.succeeded) {
     return {
       data: [],
       currentPage: 1,
       totalPages: 0,
       totalCount: 0,
-      searchText: searchText,
       succeeded: false
     };
   }
 
   if (!response.data) return {
     ...response,
-    data: [],
-    searchText: searchText
+    data: []
   };
 
   const transformedData = response.data.map(item => ({
@@ -72,31 +70,26 @@ const transformDoctorNotificationsData = (response, searchText = "") => {
     relatedEntityId: item.relatedEntityId,
     relatedEntityType: transformEntityTypeToUI(item.relatedEntityType),
     relatedEntityTypeValue: item.relatedEntityType,
-    notificationType: transformNotificationTypeToUI(item.type),
-    notificationTypeValue: item.type,
     createdAt: item.createdAt,
     highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.id)
   }));
 
   return {
     ...response,
-    data: transformedData,
-    searchText: searchText
+    data: transformedData
   };
 };
 
-export const patientNotificationsApi = baseApi.injectEndpoints({
+export const doctorNotificationsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getPatientDoctorNotifications: builder.query({
+    getDoctorNotifications: builder.query({
       query: ({ 
-        patientId, 
         filter = {}, 
         orderBy, 
         pageNumber = 1, 
         pageSize = 10 
       }) => {
         const params = {
-          PatientId: patientId,
           ...(filter.isRead !== undefined && { 'filter.IsRead': filter.isRead }),
           ...(filter.type && { 'filter.Type': transformNotificationTypeToAPI(filter.type) }),
           ...(filter.relatedEntityType && { 'filter.RelatedEntityType': transformEntityTypeToAPI(filter.relatedEntityType) }),
@@ -111,14 +104,14 @@ export const patientNotificationsApi = baseApi.injectEndpoints({
         console.log('Doctor Notifications API Request Params:', params);
 
         return {
-          url: '/DoctorNotification/GetPatientDoctorNotification',
+          url: '/DoctorNotification/GetDoctorNotification',
           params,
           timeout: 10000
         };
       },
       transformResponse: (response, meta, args) => {
         console.log('Doctor Notifications API Response:', response);
-        return transformDoctorNotificationsData(response, args.filter?.searchText);
+        return transformDoctorNotificationsData(response);
       },
       transformErrorResponse: (response, meta, args) => {
         console.error('Doctor Notifications API Error:', response);
@@ -127,13 +120,10 @@ export const patientNotificationsApi = baseApi.injectEndpoints({
             succeeded: false, 
             error: response.data,
             status: response.status 
-          }, 
-          args.filter?.searchText
+          }
         );
       },
-      providesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotifications', id: patientId }
-      ],
+      providesTags: ['DoctorNotifications'],
     }),
 
     // Mark notification as read
@@ -142,21 +132,16 @@ export const patientNotificationsApi = baseApi.injectEndpoints({
         url: `/DoctorNotification/MarkAsRead/${notificationId}`,
         method: 'PUT'
       }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotifications', id: patientId }
-      ],
+      invalidatesTags: ['DoctorNotifications'],
     }),
 
     // Mark all notifications as read
     markAllNotificationsAsRead: builder.mutation({
-      query: (patientId) => ({
+      query: () => ({
         url: `/DoctorNotification/MarkAllAsRead`,
-        method: 'PUT',
-        body: { patientId }
+        method: 'PUT'
       }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotifications', id: patientId }
-      ],
+      invalidatesTags: ['DoctorNotifications'],
     }),
 
     // Delete notification
@@ -165,17 +150,15 @@ export const patientNotificationsApi = baseApi.injectEndpoints({
         url: `/DoctorNotification/DeleteNotification/${notificationId}`,
         method: 'DELETE'
       }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotifications', id: patientId }
-      ],
+      invalidatesTags: ['DoctorNotifications'],
     })
   }),
 });
 
 export const {
-  useGetPatientDoctorNotificationsQuery,
-  useLazyGetPatientDoctorNotificationsQuery,
+  useGetDoctorNotificationsQuery,
+  useLazyGetDoctorNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
   useDeleteNotificationMutation,
-} = patientNotificationsApi;
+} = doctorNotificationsApi;
