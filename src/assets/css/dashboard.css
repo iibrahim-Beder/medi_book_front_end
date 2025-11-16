@@ -2615,7 +2615,8 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	list-style: none;
 	line-height: 22px;
 	background-color: var(--cardcolor);
-	box-shadow: 0 9px 20px 0 var(--shadocolor);
+	box-shadow: none
+	/* box-shadow: 0 9px 20px 0 var(--shadocolor); */
 }
 .alert{
 	float: left;
