@@ -5,7 +5,7 @@ import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
 import DoctorPatientNotes from "./PatientTabs/DoctorPatientNotesList";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/AllergyTable";
-import ConditionsTable from "./PatientTabs/ConditionsTable";
+import ConditionsTable from "./PatientTabs/MedicalHistoryTable";
 import MedicalConditions from "./PatientTabs/medical-conditions/MedicalConditions";
 import Medications from "./PatientTabs/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";

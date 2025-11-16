@@ -290,11 +290,6 @@ const DoctorPatientNotes = () => {
       </div>
     );
   };
-
-  // if (isLoading || isFetching) {
-  //   return <AccordionSkeleton />;
-  // }
-
   if (error) {
     return (
       <div className="alert alert-danger text-center">
