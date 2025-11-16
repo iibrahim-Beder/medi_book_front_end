@@ -147,7 +147,7 @@ export default function MakeSlotsMain({ header = true, formData, onSlotsChange, 
               </ul>
             </div>
 
-            <div className="dc-tabscontent tab-content accordion-table"style={{minHeight:"436px"}}>
+            <div className="dc-tabscontent tab-content accordion-table"style={{minHeight:"550px"}}>
               <DoctorSlotsAccordion
                 accordioninnertitleSize="slots-accordion-title"
                 title={`${t("Slots")} ${activeTab}`}

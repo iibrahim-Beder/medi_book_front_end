@@ -2773,7 +2773,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 /* DASHBOARD TABS STYLE */
 	/* .dc-dashboardtabsholder{background: #fff;} */
 .dc-dashboardtabs{
-	width: 30%;
+	width: 20%;
 	float: left;
 }
 .dc-tabstitle{
@@ -2835,7 +2835,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 .dc-tabstitle li a:hover:before{height: 100%;background: var(--bluecolor);}
 .dc-tabstitle li a:after {	
     top: 0;
-    right: -1px;
+    right: -3px;
     height: 100%;
     content: '';
     width: 5px;
@@ -2853,7 +2853,7 @@ background-color: var(--scbccolor);
 }
 .dc-tabscontent{
 	float: left;
-	width: 70%;
+	width: 80%;
 	height: 100%;
 	padding: 30px;
 	border-left: 1px solid #eeeeee66;
