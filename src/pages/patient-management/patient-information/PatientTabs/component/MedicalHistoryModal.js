@@ -21,12 +21,12 @@ const MedicalHistoryModal = ({
   errors = {},
   forceShowError = true,
 }) => {
-  
+
   const historyTypes = [
     { id: "1", label: "Surgery" },
     { id: "2", label: "Accident" },
     { id: "3", label: "Hospitalization" },
-    { id: "4", label: "Family History" },
+    { id: "4", label: "FamilyHistory" },
     { id: "5", label: "Vaccination" },
     { id: "6", label: "Others" }
   ];
@@ -40,7 +40,7 @@ const MedicalHistoryModal = ({
     setRecord({ ...record, [name]: value });
   };
 
-// toggle hereditaryDisease and relatedPerson based on historyType
+  // toggle hereditaryDisease and relatedPerson based on historyType
   useEffect(() => {
     if (record?.historyType === "Family History") {
       setRecord(prev => ({
@@ -58,6 +58,10 @@ const MedicalHistoryModal = ({
     }
   }, [record?.historyType]);
 
+  // this is for date picker 
+  const formattedDate = record?.dateOfEvent 
+    ? new Date(record.dateOfEvent).toISOString().split('T')[0] 
+    : "";
   return (
     <Modal show={show} onHide={onClose} centered className="custom-edit-modal">
       <Modal.Header style={{ 
@@ -99,30 +103,29 @@ const MedicalHistoryModal = ({
           <div className="form-grid" style={{ rowGap: "0.8rem" }}>
             {/* History Type Dropdown - normal Select */}
             <div className="col-2-sm">
-            <SelectField
-              
-              label="History Type *"
-              name="historyType"
-              value={record.historyType || ""}
-              onChange={handleChange}
-              options={historyTypes}
-              placeholder="Select history type"
-              error={errors?.historyType}
-              forceShowError={forceShowError}
-            />
+              <SelectField
+                label="History Type *"
+                name="historyType"
+                value={record.historyType || ""}
+                onChange={handleChange}
+                options={historyTypes}
+                placeholder="Select history type"
+                error={errors?.historyType}
+                forceShowError={forceShowError}
+              />
             </div>
 
             {/* Date of Event */}
             <div className="col-2-sm">
-            <Field
-              label="Date of Event"
-              name="dateOfEvent"
-              type="date"
-              value={record.dateOfEvent || ""}
-              onChange={handleChange}
-              error={errors?.dateOfEvent}
-              forceShowError={forceShowError}
-            />
+              <Field
+                label="Date of Event"
+                name="dateOfEvent"
+                type="date"
+                value={formattedDate} 
+                onChange={handleChange}
+                error={errors?.dateOfEvent}
+                forceShowError={forceShowError}
+              />
             </div>
 
             {/* Hereditary Disease (if FamilyHistory) - DropdownWithSearch */}
@@ -149,24 +152,25 @@ const MedicalHistoryModal = ({
               />
             </div>
 
-            {/* Related Person (if FamilyHistory) - Input  */}
+            {/* Related Person (if FamilyHistory) - Input */}
             <div style={{ gridColumn: "span 2"}}>
-            <Field
-              label="Related Person"
-              name="relatedPerson"
-              type="text"
-              value={record.relatedPerson || ""}
-              onChange={handleChange}
-              placeholder={
-                record.historyType === "Family History" 
-                  ? "e.g., Father, Mother, Brother..." 
-                  : "Available for Family History only"
-              }
-              disabled={record.historyType !== "Family History"}
-              error={errors?.relatedPerson}
-              forceShowError={forceShowError}
-            />
-          </div>
+              <Field
+                label="Related Person"
+                name="relatedPerson"
+                type="text"
+                value={record.relatedPerson || ""}
+                onChange={handleChange}
+                placeholder={
+                  record.historyType === "Family History" 
+                    ? "e.g., Father, Mother, Brother..." 
+                    : "Available for Family History only"
+                }
+                disabled={record.historyType !== "Family History"}
+                error={errors?.relatedPerson}
+                forceShowError={forceShowError}
+              />
+            </div>
+
             {/* Description */}
             <TextAreaField
               label="Description"

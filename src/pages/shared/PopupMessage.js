@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaCheckCircle,
   FaExclamationTriangle,
@@ -34,6 +34,17 @@ export default function PopupMessage({
     }, 300);
   };
 
+   useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
   return (
     <div className={`popup-overlay ${closing ? "closing" : ""}`}>
       <div className="popup-card">
@@ -61,7 +72,6 @@ export default function PopupMessage({
                 onClick={btn.onClick}
               >
                 {btn.text}
-                {console.log("btn.disabled",btn.disabled)}
               </button>
             ))}
           </div>

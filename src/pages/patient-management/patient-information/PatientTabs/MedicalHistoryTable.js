@@ -9,7 +9,7 @@ import "../../Patient-management.css";
 import PopupMessage from "../../../shared/PopupMessage";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useGetPatientMedicalHistoryQuery ,useDeleteMedicalHistoryMutation} from "../../../../api/medicalHistoryApi";
+import { useGetPatientMedicalHistoryQuery ,useDeleteMedicalHistoryMutation ,useUpdateMedicalHistoryMutation,useAddMedicalHistoryMutation} from "../../../../api/medicalHistoryApi";
 import HighlightText from "../../../shared/HighlightText";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import ErrorLoading from "../../../shared/ErrorLoading";
@@ -86,6 +86,8 @@ const MedicalHistoryTable = () => {
     // refetchOnReconnect: true,
   });
 const [deleteMedicalHistory, { isLoading: isDeleting }] = useDeleteMedicalHistoryMutation();
+const [updateMedicalHistory, { isLoading: isUpdating }] = useUpdateMedicalHistoryMutation();
+const [addMedicalHistory, { isLoading: isAdding }] = useAddMedicalHistoryMutation();
 
   // Trigger refetch after save/delete
   const triggerRefetch = () => {
@@ -146,16 +148,6 @@ const [deleteMedicalHistory, { isLoading: isDeleting }] = useDeleteMedicalHistor
     setShowModal(true);
   };
 
-  // Handle Save (Add/Update)
-  const handleSave = () => {
-    if (!selectedRecord) return;
-    console.log('Saving medical history record:', selectedRecord);
-
-    setShowModal(false);
-    setSelectedRecord(null);
-    triggerRefetch();
-  };
-
   // Handle Delete from Modal
   const handleDeleteInModal = () => {
     if (selectedRecord) {
@@ -163,48 +155,16 @@ const [deleteMedicalHistory, { isLoading: isDeleting }] = useDeleteMedicalHistor
       setShowPopup(true);
     }
   };
-
-  // Confirm Delete
-const handleConfirmDelete = async () => {
-  if (!recordToDelete) return;
   
-  console.log("Deleting medical history record:", recordToDelete);
-      const loadingToast = toast.loading('Deleting...');
-      console.log("isdeleting: ", isDeleting);
-  try {
-    const res = await deleteMedicalHistory({ 
-      historyId: recordToDelete.id, 
-      patientId: PATIENT_ID 
-    }).unwrap();
-    
-    console.log("Delete response:", res);
-    
-    if (res?.succeeded) {
-      console.log("Deleted Successfully");
-      toast.success(res.message || "Deleted Successfully");
-      toast.dismiss(loadingToast);
-      
-       
-      setShowPopup(false);
-      setRecordToDelete(null);
-      setShowModal(false);
-      
-    } else {
-      console.error("Failed to delete", res);
-      toast.dismiss.error(res.message || "Failed to delete");
-    }
-  } catch (error) {
-    toast.dismiss(loadingToast);
-    toast.error(error?.data?.message || "Error deleting this medical history record.");
-    setShowPopup(false);
-  }
-};
-
-  // Close Popup
-  const handleClosePopup = () => {
+// Close Popup
+const handleClosePopup = () => {
     setShowPopup(false);
     setRecordToDelete(null);
   };
+
+
+
+  
 
   const handleExpandClick = (id, field) => {
     const key = `${id}-${field}`;
@@ -242,6 +202,115 @@ const handleConfirmDelete = async () => {
     t("Mental Health Disorders"),
     t("Other")
   ];
+///// ======   api functions   ===== \\\\\\\\
+
+
+
+// Handle Save (Add/Update)
+const handleSave = async () => {
+  if (!selectedRecord||isLoading||isAdding) return;
+  console.log('Saving record:', selectedRecord);
+  const loadingToast = toast.loading('Saving...');
+
+if (isAddMode) {
+   try {
+      const addData = {
+        ...selectedRecord,
+        // dateOfEvent: formatDateForAddAPI(selectedRecord.dateOfEvent)
+      };
+
+      console.log('Sending add data:', addData);
+
+      const res = await addMedicalHistory({ 
+        patientId: PATIENT_ID, 
+        ...addData 
+      }).unwrap();
+      
+      if (res?.succeeded) {
+        console.log("Added Successfully");
+        toast.success(res.message || "Added Successfully");
+        toast.dismiss(loadingToast);
+        setShowModal(false);
+        setSelectedRecord(null);
+        triggerRefetch();
+      } else {
+        console.error("Failed to add", res);
+        toast.dismiss(loadingToast);
+        toast.error(res.message || "Failed to add");
+      }
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      console.error('Add error:', error);
+      toast.error(error?.data?.message || "Error adding medical history record.");
+    }
+  } else {
+
+  try {
+    const updateData = {
+      ...selectedRecord,
+    };
+
+    console.log('Sending update data:', updateData);
+
+    const res = await updateMedicalHistory({ 
+      historyId: selectedRecord.id, 
+      patientId: PATIENT_ID, 
+      updates: updateData 
+    }).unwrap();
+    
+    if (res?.succeeded) {
+      console.log("Updated Successfully");
+      toast.success(res.message || "Updated Successfully");
+      toast.dismiss(loadingToast);
+      setShowModal(false);
+      setSelectedRecord(null);
+      triggerRefetch();
+    } else {
+      console.error("Failed to update", res);
+      toast.dismiss(loadingToast);
+      toast.error(res.message || "Failed to update");
+    }
+  } catch (error) {
+    toast.dismiss(loadingToast);
+    console.error('Update error:', error);
+    toast.error(error?.data?.message || "Error updating medical history record.");
+  }}
+
+
+};
+
+// Delete
+const handleConfirmDelete = async () => {
+  if (!recordToDelete) return;
+  
+      const loadingToast = toast.loading('Deleting...');
+  try {
+    const res = await deleteMedicalHistory({ 
+      historyId: recordToDelete.id, 
+      patientId: PATIENT_ID 
+    }).unwrap();
+    
+    
+    if (res?.succeeded) {
+      console.log("Deleted Successfully");
+      toast.success(res.message || "Deleted Successfully");
+      toast.dismiss(loadingToast);
+      
+       
+      setShowPopup(false);
+      setRecordToDelete(null);
+      setShowModal(false);
+      
+    } else {
+      console.error("Failed to delete", res);
+      toast.dismiss.error(res.message || "Failed to delete");
+    }
+  } catch (error) {
+    toast.dismiss(loadingToast);
+    toast.error(error?.data?.message || "Error deleting this medical history record.");
+    setShowPopup(false);
+  }
+};
 
   return (
     <div className="table-container">

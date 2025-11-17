@@ -7,9 +7,9 @@ const transformHistoryTypeToAPI = (historyType) => {
     'Surgery': 1,
     'Accident': 2,
     'Hospitalization': 3,
-    'FamilyHistory': 4,
+    'Family History': 4,
     'Vaccination': 5,
-    'others': 6
+    'Others': 6
   };
   return historyTypeMap[historyType] ?? null;
 };
@@ -48,7 +48,6 @@ const transformMedicalHistoryData = (response, searchValue = "") => {
     id: item.id,
     historyId: item.id,
     historyType:item.historyType,
-    historyTypeValue: item.historyType,
     hereditaryDiseaseName: item.hereditaryDiseaseName,
     description: item.description,
     dateOfEvent: item.dateOfEvent,
@@ -117,31 +116,59 @@ export const medicalHistoryApi = baseApi.injectEndpoints({
 
     // Add new medical history record
     addMedicalHistory: builder.mutation({
-      query: ({ patientId, historyData }) => ({
-        url: '/MedicalHistory/AddMedicalHistory',
-        method: 'POST',
-        body: {
-          patientId,
-          ...historyData
-        }
-      }),
+      query: ({ patientId, ...historyData }) => {
+        const params = {
+          PatientId: patientId,
+          HistoryType: transformHistoryTypeToAPI(historyData.historyType),
+          ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: historyData.hereditaryDiseaseName }),
+          ...(historyData.description && { Description: historyData.description }),
+          ...(historyData.dateOfEvent && { DateOfEvent: historyData.dateOfEvent }),
+          ...(historyData.relatedPerson && { RelatedPerson: historyData.relatedPerson }),
+          ...(historyData.notes && { Notes: historyData.notes })
+        };
+
+        console.log('Add Medical History Params:', params);
+
+        return {
+          url: '/MedicalHistory/AddPatientMedicalHistory',
+          method: 'POST',
+          params: params
+        };
+      },
       invalidatesTags: (result, error, { patientId }) => [
         { type: 'MedicalHistory', id: patientId }
       ],
     }),
+
+
 
     // Update medical history record
-    updateMedicalHistory: builder.mutation({
-      query: ({ historyId, updates }) => ({
-        url: `/MedicalHistory/UpdateMedicalHistory/${historyId}`,
-        method: 'PUT',
-        body: updates
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'MedicalHistory', id: patientId }
-      ],
-    }),
+   updateMedicalHistory: builder.mutation({
+  query: ({ historyId, updates }) => {
+    const params = {
+      Id: historyId,
+      HistoryType: transformHistoryTypeToAPI(updates.historyType),
+      ...(updates.hereditaryDiseaseName && { HereditaryDiseaseName: updates.hereditaryDiseaseName }),
+      ...(updates.description && { Description: updates.description }),
+      ...(updates.dateOfEvent && { DateOfEvent: updates.dateOfEvent }),
+      ...(updates.relatedPerson && { RelatedPerson: updates.relatedPerson }),
+      ...(updates.notes && { Notes: updates.notes })
+    };
 
+    console.log('Update Medical History Params:', params);
+
+    return {
+      url: '/MedicalHistory/UpdatePatientMedicalHistory',
+      method: 'PATCH', 
+      params: params 
+    };
+  },
+  invalidatesTags: (result, error, { patientId }) => [
+    { type: 'MedicalHistory', id: patientId }
+  ],
+}),
+
+    
     // Delete medical history record
 deleteMedicalHistory: builder.mutation({
   query: ({ historyId }) => ({
