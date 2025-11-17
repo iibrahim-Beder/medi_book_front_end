@@ -9,10 +9,12 @@ import "../../Patient-management.css";
 import PopupMessage from "../../../shared/PopupMessage";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useGetPatientMedicalHistoryQuery } from "../../../../api/medicalHistoryApi";
+import { useGetPatientMedicalHistoryQuery ,useDeleteMedicalHistoryMutation} from "../../../../api/medicalHistoryApi";
 import HighlightText from "../../../shared/HighlightText";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import ErrorLoading from "../../../shared/ErrorLoading";
+import toast, { Toaster } from 'react-hot-toast';
+import {formatDate} from "../../../shared/FormatDate";
 
 const MedicalHistoryTable = () => {
   const { t } = useTranslation();
@@ -83,6 +85,7 @@ const MedicalHistoryTable = () => {
     // refetchOnFocus: false,         // Don't refetch when tab returns
     // refetchOnReconnect: true,
   });
+const [deleteMedicalHistory, { isLoading: isDeleting }] = useDeleteMedicalHistoryMutation();
 
   // Trigger refetch after save/delete
   const triggerRefetch = () => {
@@ -153,12 +156,6 @@ const MedicalHistoryTable = () => {
     triggerRefetch();
   };
 
-  // Handle Delete Click
-  const handleDeleteClick = (history) => {
-    setRecordToDelete(history);
-    setShowPopup(true);
-  };
-
   // Handle Delete from Modal
   const handleDeleteInModal = () => {
     if (selectedRecord) {
@@ -168,16 +165,40 @@ const MedicalHistoryTable = () => {
   };
 
   // Confirm Delete
-  const handleConfirmDelete = () => {
-    if (recordToDelete) {
-      console.log('Deleting medical history record:', recordToDelete);
+const handleConfirmDelete = async () => {
+  if (!recordToDelete) return;
+  
+  console.log("Deleting medical history record:", recordToDelete);
+      const loadingToast = toast.loading('Deleting...');
+      console.log("isdeleting: ", isDeleting);
+  try {
+    const res = await deleteMedicalHistory({ 
+      historyId: recordToDelete.id, 
+      patientId: PATIENT_ID 
+    }).unwrap();
     
+    console.log("Delete response:", res);
+    
+    if (res?.succeeded) {
+      console.log("Deleted Successfully");
+      toast.success(res.message || "Deleted Successfully");
+      toast.dismiss(loadingToast);
+      
+       
       setShowPopup(false);
       setRecordToDelete(null);
       setShowModal(false);
-      triggerRefetch();
+      
+    } else {
+      console.error("Failed to delete", res);
+      toast.dismiss.error(res.message || "Failed to delete");
     }
-  };
+  } catch (error) {
+    toast.dismiss(loadingToast);
+    toast.error(error?.data?.message || "Error deleting this medical history record.");
+    setShowPopup(false);
+  }
+};
 
   // Close Popup
   const handleClosePopup = () => {
@@ -201,18 +222,6 @@ const MedicalHistoryTable = () => {
   const needsExpand = (text, maxLength = 70) => {
     return text && text.length > maxLength;
   };
-
-  // Format date
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   // History types for filters
   const historyTypes = [
     { key: "Surgery", label: t("Surgery") },
@@ -563,7 +572,7 @@ const MedicalHistoryTable = () => {
           type="danger"
           title={t('MedicalHistory.confirm_delete_title')}
           message={t('MedicalHistory.confirm_delete_message', {
-            description: recordToDelete.description
+            description: recordToDelete.historyType
           })}
           buttons={[
             {
@@ -574,12 +583,19 @@ const MedicalHistoryTable = () => {
             {
               text: t('Delete'),
               onClick: handleConfirmDelete,
-              variant: "danger"
+              variant: "danger",
+              disabled: isDeleting
             }
           ]}
           onClose={handleClosePopup}
         />
       )}
+      <Toaster
+  position="top-right"
+  reverseOrder={true}
+
+/>
+      
     </div>
   );
 };

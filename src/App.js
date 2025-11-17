@@ -12,6 +12,7 @@ import SecuritySettings from "./pages/securty/MainSecuritySettings";
 import MainAppointtmentList2 from "./pages/appointmentList/MainAppointmentList";
 import MakeSlostMain from "./pages/making-slots/MakeSlostMain";
 import { useTranslation } from "react-i18next";
+import { Toaster } from 'react-hot-toast';
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
 import AppointmentManagementMain from "./pages/appointment-management/AppointmentmanagementMain";
@@ -63,41 +64,65 @@ const { i18n } = useTranslation();
           </div>
         </div>
       )}
-{!loading && (
- <Routes>
- 
-      <Route path="/registration" element={<DoctorRegistration />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/" element={<Login />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      {!loading && (
+        <Routes>
+          <Route path="/registration" element={<DoctorRegistration />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      <Route
-        path="/*"
-        element={
-          <div>
-            <Navbar />
-            <Sidebar />
-            <div className="contentdiv">
-              <Routes>
-                <Route path="dashboard" element={<DashboardMain />} />       
-                <Route path="appointment-list" element={<MainAppointtmentList2 />} />
-                <Route path="appointment-location" element={<LocationMain />} />
-                <Route path="Messages" element={<MessagesPage />} />
-                <Route path="manage-patients" element={<PatientManagement />} />
-                <Route path="how-v1" element={<Test />} />
-                <Route path="manage-financial" element={<DoctorFinancialDashboard/>} />
-                <Route path="Generate-Doctor-Slots" element={<MakeSlostMain />} />
-                <Route path="security-settings" element={<SecuritySettings />} />
-                <Route path="account-settings" element={<Acco />} /> 
-                <Route path="pationt-information" element={<PatientProfilePageMain />} />
-                <Route path="appointment-management" element={<AppointmentManagementMain/>} /> 
-              </Routes>
-            </div>
-          </div>
-        }
-      />
-    </Routes>
-)}
+          <Route
+            path="/*"
+            element={
+              <div>
+                <Navbar />
+                <Sidebar />
+                <div className="contentdiv">
+                  <Routes>
+                    <Route path="dashboard" element={<DashboardMain />} />
+                    <Route
+                      path="appointment-list"
+                      element={<MainAppointtmentList2 />}
+                    />
+                    <Route
+                      path="appointment-location"
+                      element={<LocationMain />}
+                    />
+                    <Route path="Messages" element={<MessagesPage />} />
+                    <Route
+                      path="manage-patients"
+                      element={<PatientManagement />}
+                    />
+                    <Route path="how-v1" element={<Test />} />
+                    <Route
+                      path="manage-financial"
+                      element={<DoctorFinancialDashboard />}
+                    />
+                    <Route
+                      path="Generate-Doctor-Slots"
+                      element={<MakeSlostMain />}
+                    />
+                    <Route
+                      path="security-settings"
+                      element={<SecuritySettings />}
+                    />
+                    <Route path="account-settings" element={<Acco />} />
+                    <Route
+                      path="pationt-information"
+                      element={<PatientProfilePageMain />}
+                    />
+                    <Route
+                      path="appointment-management"
+                      element={<AppointmentManagementMain />}
+                    />
+                  </Routes>
+                </div>
+              </div>
+            }
+          />
+        </Routes>
+      )}
+      <div></div>
     </div>
   );
 }

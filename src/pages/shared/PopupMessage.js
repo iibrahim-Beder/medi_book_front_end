@@ -13,7 +13,7 @@ export default function PopupMessage({
   title = "Title here",
   message = "This is a popup message",
   iconOverride,
-  buttons = [{ text: "OK", onClick: () => {}, variant: "primary" }],
+  buttons = [{ text: "OK", onClick: () => {}, variant: "primary" ,disabled: false }],
   onClose
 }) {
   const [closing, setClosing] = useState(false);
@@ -55,11 +55,13 @@ export default function PopupMessage({
           <div className="popup-footer">
             {buttons.map((btn, index) => (
               <button
+              disabled={btn.disabled}
                 key={index}
                 className={`popup-btn ${btn.variant || "primary"}`}
                 onClick={btn.onClick}
               >
                 {btn.text}
+                {console.log("btn.disabled",btn.disabled)}
               </button>
             ))}
           </div>

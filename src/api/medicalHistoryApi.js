@@ -143,15 +143,15 @@ export const medicalHistoryApi = baseApi.injectEndpoints({
     }),
 
     // Delete medical history record
-    deleteMedicalHistory: builder.mutation({
-      query: (historyId) => ({
-        url: `/MedicalHistory/DeleteMedicalHistory/${historyId}`,
-        method: 'DELETE'
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'MedicalHistory', id: patientId }
-      ],
-    })
+deleteMedicalHistory: builder.mutation({
+  query: ({ historyId }) => ({
+    url: `/MedicalHistory/DeletePatientMedicalHistory?Id=${historyId}`,
+    method: 'DELETE'
+  }),
+  invalidatesTags: (result, error, { patientId }) => [
+    { type: 'MedicalHistory', id: patientId }
+  ],
+})
   }),
 });
 
