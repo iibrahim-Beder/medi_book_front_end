@@ -14,7 +14,7 @@ const PatientStats = () => {
       value: 168,
       percentage: 3.48,
       isPositive: true,
-      icon: FaUsers,
+      icon: '/images/card-icon/patients.png',
       color: "#3B82F6",
     },
     {
@@ -22,7 +22,7 @@ const PatientStats = () => {
       value: 162,
       percentage: 5.12,
       isPositive: true,
-      icon: FaUserCheck,
+      icon:'/images/card-icon/active-patient1.png',
       color: "#28a745",
     },
     {
@@ -30,7 +30,7 @@ const PatientStats = () => {
       value: 485,
       percentage: 0.87,
       isPositive: false,
-      icon: GrCompliance,
+      icon: '/images/card-icon/completed.png',
       color: "#14B8A6",
     },
     {
@@ -38,7 +38,7 @@ const PatientStats = () => {
       value: 50,
       percentage: 5.12,
       isPositive: true,
-      icon: FaUserCheck,
+      icon: '/images/card-icon/stopped-treatment.png',
       color: "#F43F5E",
     },
   ];

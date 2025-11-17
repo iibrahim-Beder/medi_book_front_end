@@ -28,79 +28,79 @@ export default function ConversationList() {
       > 
         <ConversationItem
          
-          img="images/messages/img-01.jpg"
+          img="/images/avt/patient-avt.png"
           name="Reta Milnes"
           lastMsg="Consectetur adipisicing elit sed do..."
           active
         />
         <ConversationItem
-          img="images/messages/img-12.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jed Loeffler"
           lastMsg="Consectetur adipisicing elit sed do..."
            messeagesDotNotification={4}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={2}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={2}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={12}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={21}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={20}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={122}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={122}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={122}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={122}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={122}
         />
         <ConversationItem
-          img="images/messages/img-03.jpg"
+          img="/images/avt/patient-avt.png"
           name="Jovan Mery"
           lastMsg="Consectetur adipisicing elit sed do..."
           messeagesDotNotification={122}

@@ -10,7 +10,7 @@ export default function ConversationHeader() {
       <div className="dc-userlogedin-gird">
         <div className="dc-userlogedin">
           <figure className="dc-userimg">
-            <img src="images/user-img.jpg" alt="user" />
+            <img src="/images/avt/patient-avt.png" alt="user" />
           </figure>
           <div className="dc-username">
             <h3>

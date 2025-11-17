@@ -2,11 +2,11 @@ import { ArrowUp, ArrowDown } from "lucide-react";
 
 const StatCard = ({ title, value, percentage, isPositive, icon: Icon, color }) => {
   return (
-    <div className="col-xl-3 col-sm-6 col-12 stats-card">
+    <div className="col-xl-3 col-sm-12 col-md-6 col-12 stats-card">
       <div className="dc-insightsitem dc-dashboardbox stats-card-item">
         <div>
           <figure className="dc-userlistingimg">
-          <img alt="icon " src="/images/thumbnail/img-19.png" ></img>
+        <img alt="icon " src={Icon} ></img>
           </figure>
           {/* <div
             className="d-flex align-items-center justify-content-center  mb-3 "

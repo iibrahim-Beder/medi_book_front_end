@@ -29,7 +29,7 @@ const AppointmentInformation = () => {
               <div className="dc-dashboardbox pl-4 pr-4">
                 <PationtCard
                   userName={"Ibrahem makhasi"}
-                  userImg={"images/feedback/user-img.jpg"}
+                  userImg={"/images/avt/patient-avt.png"}
                   userLocation={"Egypt"}      
                 />
                 <div className="dc-user-details">

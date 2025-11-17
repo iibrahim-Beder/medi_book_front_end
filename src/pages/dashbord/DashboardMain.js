@@ -12,21 +12,21 @@ export default function DashboardMain() {
   const { t } = useTranslation();
 
   const appointmentsData = [
-    { img: "/images/user/userlisting/img-01.jpg", name: "Terrence Tynan", date: "Jun 27, 2019" },
-    { img: "/images/user/userlisting/img-02.jpg", name: "Aileen Remington", date: "Jun 27, 2019" },
-    { img: "/images/user/userlisting/img-03.jpg", name: "Freddie Lisi", date: "Jun 27, 2019" },
-    { img: "/images/user/userlisting/img-07.jpg", name: "Golden Fellman", date: "Jun 27, 2019" }
+    { img: "/images/avt/patient-avt.png", name: "Terrence Tynan", date: "Jun 27, 2019" },
+    { img: "/images/avt/patient-avt.png", name: "Aileen Remington", date: "Jun 27, 2019" },
+    { img: "/images/avt/patient-avt.png", name: "Freddie Lisi", date: "Jun 27, 2019" },
+    { img: "/images/avt/patient-avt.png", name: "Golden Fellman", date: "Jun 27, 2019" }
   ];
 
   const statsData = [
-    { img: "/images/thumbnail/img-17.png", count: "150", title: t("dashboard.totalAppointments") },
-    { img: "/images/thumbnail/img-16.png", count: "1406", title: t("dashboard.completedAppointments") },
-    { img: "/images/thumbnail/img-15.png", count: "2075", title: t("dashboard.cancelledAppointments") },
-    { img: "/images/thumbnail/img-18.png", count: "334", title: t("dashboard.followupAppointments") }
+    { img: "/images/card-icon/img-17.png", count: "150", title: t("dashboard.totalAppointments") },
+    { img: "/images/card-icon/img-16.png", count: "1406", title: t("dashboard.completedAppointments") },
+    { img: "/images/card-icon/img-15.png", count: "2075", title: t("dashboard.cancelledAppointments") },
+    { img: "/images/card-icon/img-18.png", count: "334", title: t("dashboard.followupAppointments") }
   ];
 
   const insightsData = [
-    { img: "/images/thumbnail/img-19.png", title: t("dashboard.newMessages"), link: "#" },
+    { img: '/images/card-icon/chat.png', title: t("dashboard.newMessages"), link: "#",isNotIcon:true },
     { img: "/images/thumbnail/img-20.png", title: t("dashboard.latestProposals"), link: "#" },
     { img: "/images/thumbnail/img-21.png", title: t("dashboard.checkPackageExpiry"), link: "#", countdown: "2025-08-20T20:20:22" },
     { img: "/images/thumbnail/img-22.png", title: t("dashboard.viewSavedItems"), link: "#" }

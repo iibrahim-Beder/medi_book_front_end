@@ -71,11 +71,11 @@ let iconSize=20;
         {/* Profile Section */}
         <div className="dc-companysdetails dc-usersidebar">
           <figure className="dc-companysimg">
-            <img src="/images/sidebar/img-01.jpg" alt="Profile" />
+            <img src="/images/card-icon/img-01.jpg" alt="Profile" />
           </figure>
           <div className="dc-companysinfo">
             <figure>
-              <img src="/images/sidebar/img-02.jpg" alt="Badge" />
+              <img src="/images/avt/doctor-imge-avt.png" alt="Badge" />
             </figure>
             <div className="dc-title">
               <h2>

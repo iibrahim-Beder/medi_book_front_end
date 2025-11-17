@@ -12,7 +12,7 @@ export default function DashboardInsights({ insights }) {
             className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
             key={index}
           >
-            <div className="dc-insightsitem dc-dashboardbox">
+            <div className={`dc-insightsitem dc-dashboardbox ${item.isNotIcon?"dc-insightnoticon":""}`}>
               {item.countdown && (
                 <CountdownTimer targetDate={item.countdown} />
               )}

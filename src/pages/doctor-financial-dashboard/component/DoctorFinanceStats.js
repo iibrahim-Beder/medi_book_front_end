@@ -13,7 +13,7 @@ const DoctorFinanceStats = () => {
       value: 12500,
       percentage: 4.5,
       isPositive: true,
-      icon: FaMoneyBillWave,
+      icon: "/images/card-icon/total-earnings.png",
       color: "#3B82F6",
     },
     {
@@ -21,7 +21,7 @@ const DoctorFinanceStats = () => {
       value: 2300,
       percentage: 2.1,
       isPositive: false,
-      icon: FaWallet,
+      icon: "/images/card-icon/pending-payments.png",
       color: "#F59E0B",
     },
     {
@@ -29,7 +29,7 @@ const DoctorFinanceStats = () => {
       value: 8700,
       percentage: 1.3,
       isPositive: false,
-      icon: FaArrowDown,
+      icon: "/images/card-icon/withdrawn-amount.png",
       color: "#EF4444",
     },
     {
@@ -37,7 +37,7 @@ const DoctorFinanceStats = () => {
       value: "+8.7%",
       percentage: 8.7,
       isPositive: true,
-      icon: FaArrowUp,
+      icon: "/images/card-icon/monthly-growth.png",
       color: "#10B981",
     },
   ];
