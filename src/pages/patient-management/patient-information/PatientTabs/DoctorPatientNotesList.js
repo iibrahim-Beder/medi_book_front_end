@@ -1,20 +1,20 @@
 // DoctorPatientNotes.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import CustomAccordion from "../../../shared/CustomAccordion";
 import DynamicEditModal from "../../../shared/DynamicEditModal";
 import { useDevice } from "../../../../context/useIsMobile";
 import { useTranslation } from "react-i18next";
-import { useLazyGetDoctorPatientNotesQuery } from "../../../../api/doctorNotesApi";
+import { useGetDoctorPatientNotesQuery } from "../../../../api/doctorNotesApi";
 import ConditionsFilters from "./component/ConditionsFilters";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import ErrorLoading from "../../../shared/ErrorLoading";
 
 const DoctorPatientNotes = () => {
   const { t } = useTranslation();  
   const { isMobile } = useDevice();
   const PATIENT_ID = 4;
 
-  // Filters states
   const formatDateForAPI = (date) => {
     if (!date) return undefined;
     const d = new Date(date);
@@ -36,31 +36,16 @@ const DoctorPatientNotes = () => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
 
   // State to manage expanded items locally
   const [expandedItems, setExpandedItems] = useState({});
 
-  // RTK Query for doctor notes
-  const [triggerGetDoctorNotes, { 
-    data: doctorNotesData, 
-    isLoading, 
-    isFetching, 
-    error 
-  }] = useLazyGetDoctorPatientNotesQuery();
-
-  console.log("Doctor Notes Data:", doctorNotesData);
-
-  useEffect(() => {
-    setAppliedFilters(currentFilters);
-    fetchDoctorNotes();
-  }, [currentPage, appliedFilters, currentFilters.fromDate, currentFilters.toDate]);
-
-  const fetchDoctorNotes = () => {
+  const queryArgs = useMemo(() => {
     const apiFilters = {
       ...appliedFilters,
-      fromDate: formatDateForAPI(appliedFilters.fromDate),
-      toDate: formatDateForAPI(appliedFilters.toDate),
+      fromDate: formatDateForAPI(currentFilters.fromDate),
+      toDate: formatDateForAPI(currentFilters.toDate),
     };
 
     console.log('API Filters for Doctor Notes:', apiFilters);
@@ -72,12 +57,26 @@ const DoctorPatientNotes = () => {
       }
     });
 
-    triggerGetDoctorNotes({
+    return {
       patientId: PATIENT_ID,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
-    });
+    };
+  }, [appliedFilters, currentPage, currentFilters]); 
+
+  const {
+    data: doctorNotesData,
+    isLoading,
+    isFetching,
+    error,
+    refetch
+  } = useGetDoctorPatientNotesQuery(queryArgs);
+
+  console.log("Doctor Notes Data:", doctorNotesData);
+
+  const triggerRefetch = () => {
+    refetch();
   };
 
   const handleSearch = (filters) => {
@@ -241,7 +240,7 @@ const DoctorPatientNotes = () => {
         console.log('Update note:', currentNote);
       }
       // Refresh data after mutation
-      fetchDoctorNotes();
+      triggerRefetch();
     }
     setShowModal(false);
     setCurrentNote(null);
@@ -290,10 +289,14 @@ const DoctorPatientNotes = () => {
       </div>
     );
   };
+
   if (error) {
     return (
       <div className="alert alert-danger text-center">
-        {t('Common.error_loading_data')}
+        <ErrorLoading
+          isError={error}
+          refetch={triggerRefetch}
+        />
       </div>
     );
   }
@@ -357,7 +360,12 @@ const DoctorPatientNotes = () => {
         {/* No data message */}
         {accordionData.length === 0 && !isFetching && (
           <div className="text-center p-4">
-            <p className="text-muted">{t('Common.no_data_available')}</p>
+            <p className="text-muted">
+              {appliedFilters.searchText ? 
+                t('Common.no_results_for_search', { search: appliedFilters.searchText }) :
+                t('Common.no_data_available')
+              }
+            </p>
           </div>
         )}
       </div>

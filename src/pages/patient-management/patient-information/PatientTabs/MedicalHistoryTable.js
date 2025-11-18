@@ -202,9 +202,10 @@ const handleClosePopup = () => {
     t("Mental Health Disorders"),
     t("Other")
   ];
-///// ======   api functions   ===== \\\\\\\\
 
 
+
+  ///// ======   api functions   ===== \\\\\\\\
 
 // Handle Save (Add/Update)
 const handleSave = async () => {

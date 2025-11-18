@@ -1,24 +1,24 @@
-// PrescribedMedicationTable.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Table, Button } from "react-bootstrap";
 import ConditionsFilters from "./component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../shared/Pagination";
-import { useLazyGetPrescribedMedicationQuery } from "../../../../api/prescribedMedicationApi";
+import { useGetPrescribedMedicationQuery } from "../../../../api/prescribedMedicationApi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import HighlightText from "../../../shared/HighlightText";
 import "../../Patient-management.css";
-import {formatDate}  from "../../../shared/FormatDate";
+import { formatDate } from "../../../shared/FormatDate";
+import ErrorLoading from "../../../shared/ErrorLoading";
+
 const PrescribedMedicationTable = () => {
   const { t } = useTranslation();
   const PATIENT_ID = 4;
 
   const [expandedRow, setExpandedRow] = useState(null);
   
-  // Filters states
   const formatDateForAPI = (date) => {
     if (!date) return undefined;
     const d = new Date(date);
@@ -42,28 +42,13 @@ const PrescribedMedicationTable = () => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize] = useState(5);
 
-  // RTK Query for prescribed medication
-  const [triggerGetPrescribedMedication, { 
-    data: prescribedMedicationData, 
-    isLoading, 
-    isFetching, 
-    error 
-  }] = useLazyGetPrescribedMedicationQuery();
-
-  console.log("Prescribed Medication Data:", prescribedMedicationData);
-
-  useEffect(() => {
-    setAppliedFilters(currentFilters);
-    fetchPrescribedMedication();
-  }, [currentPage, appliedFilters, currentFilters.fromDate, currentFilters.toDate]);
-
-  const fetchPrescribedMedication = () => {
+  const queryArgs = useMemo(() => {
     const apiFilters = {
       ...appliedFilters,
-      fromDate: formatDateForAPI(appliedFilters.fromDate),
-      toDate: formatDateForAPI(appliedFilters.toDate),
+      fromDate: formatDateForAPI(currentFilters.fromDate),
+      toDate: formatDateForAPI(currentFilters.toDate),
     };
 
     console.log('API Filters for Medication:', apiFilters);
@@ -75,12 +60,26 @@ const PrescribedMedicationTable = () => {
       }
     });
 
-    triggerGetPrescribedMedication({
+    return {
       patientId: PATIENT_ID,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
-    });
+    };
+  }, [appliedFilters, currentPage, currentFilters]); 
+
+  const {
+    data: prescribedMedicationData,
+    isLoading,
+    isFetching,
+    error,
+    refetch
+  } = useGetPrescribedMedicationQuery(queryArgs);
+
+  console.log("Prescribed Medication Data:", prescribedMedicationData);
+
+  const triggerRefetch = () => {
+    refetch();
   };
 
   const handleSearch = (filters) => {
@@ -127,6 +126,7 @@ const PrescribedMedicationTable = () => {
     if (!highlightInfo || !highlightInfo.matchedFields) return [];
     return highlightInfo.matchedFields.map(field => field.fieldName);
   };
+
   // Skeleton loading component for table rows
   const TableSkeleton = () => {
     return (
@@ -144,6 +144,7 @@ const PrescribedMedicationTable = () => {
             </td>
             <td><Skeleton width={150} height={20} /></td>
             <td><Skeleton width={120} height={20} /></td>
+            <td><Skeleton width={100} height={20} /></td>
             <td><Skeleton width={100} height={20} /></td>
           </tr>
         ))}
@@ -167,7 +168,6 @@ const PrescribedMedicationTable = () => {
 
       <div className="p-3">
         <div className="table-card">
-          {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
               searchTerm={currentFilters.searchValue}
@@ -201,11 +201,18 @@ const PrescribedMedicationTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {/* Show skeleton when loading for the first time */}
-                {isLoading || isFetching  ? (
+                {(isLoading || isFetching) ? (
                   <TableSkeleton />
-                ) : (
-                  /* Show actual data when loaded */
+                ) : error ? (
+                  <tr>
+                    <td colSpan="8" className="text-center text-danger">
+                      <ErrorLoading
+                        isError={error}
+                        refetch={refetch}
+                      />
+                    </td>
+                  </tr>
+                ) : currentData.length > 0 ? (
                   currentData.map((medication) => (
                     <React.Fragment key={medication.id}>
                       <tr>
@@ -295,7 +302,7 @@ const PrescribedMedicationTable = () => {
                           style={{ backgroundColor: "transparent" }}
                         >
                           <td
-                            colSpan="7"
+                            colSpan="8"
                             className="border-0 background-in-hover-none"
                           >
                             <div className="description-expanded-section">
@@ -310,19 +317,22 @@ const PrescribedMedicationTable = () => {
                       )}
                     </React.Fragment>
                   ))
+                ) : (
+                  <tr>
+                    <td colSpan="8" className="text-center text-muted">
+                      {appliedFilters.searchValue ?
+                        t('PrescribedMedicationTable.no_results_for_search', { search: appliedFilters.searchValue }) :
+                        t('PrescribedMedicationTable.no_records_found')
+                      }
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </Table>
-
-            {currentData.length === 0 && !isLoading && !isFetching && (
-              <div className="text-center p-4">
-                <p className="text-muted">{t('Common.no_data_available')}</p>
-              </div>
-            )}
           </div>
 
           {/* Pagination */}
-          {!isLoading && (
+          {prescribedMedicationData && prescribedMedicationData.data && prescribedMedicationData.data.length > 0 && (
             <Pagination
               currentPage={currentPage}
               totalItems={totalItems}
