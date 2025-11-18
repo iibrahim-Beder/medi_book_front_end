@@ -12,7 +12,6 @@ import SecuritySettings from "./pages/securty/MainSecuritySettings";
 import MainAppointtmentList2 from "./pages/appointmentList/MainAppointmentList";
 import MakeSlostMain from "./pages/making-slots/MakeSlostMain";
 import { useTranslation } from "react-i18next";
-import { Toaster } from 'react-hot-toast';
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
 import AppointmentManagementMain from "./pages/appointment-management/AppointmentmanagementMain";

@@ -23,6 +23,7 @@ const MedicalHistoryModal = ({
 }) => {
 
   const historyTypes = [
+    { id: "0", label: "select medical history type" },
     { id: "1", label: "Surgery" },
     { id: "2", label: "Accident" },
     { id: "3", label: "Hospitalization" },
@@ -34,6 +35,7 @@ const MedicalHistoryModal = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRecord({ ...record, [name]: value });
+    console.log( "e.target.value", e.target.name ,e.target.value,);
   };
 
   const handleDropdownChange = (name, value) => {

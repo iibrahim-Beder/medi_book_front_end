@@ -208,7 +208,11 @@ const handleClosePopup = () => {
 
 // Handle Save (Add/Update)
 const handleSave = async () => {
-  if (!selectedRecord||isLoading||isAdding) return;
+  if (!selectedRecord||isDeleting||isUpdating||isAdding) return;
+  if (selectedRecord.historyType==="") {
+    toast.error('Please select a medical history type.');
+    return;
+  }
   console.log('Saving record:', selectedRecord);
   const loadingToast = toast.loading('Saving...');
 
@@ -227,12 +231,11 @@ if (isAddMode) {
       }).unwrap();
       
       if (res?.succeeded) {
-        console.log("Added Successfully");
         toast.success(res.message || "Added Successfully");
         toast.dismiss(loadingToast);
         setShowModal(false);
         setSelectedRecord(null);
-        triggerRefetch();
+        // triggerRefetch();
       } else {
         console.error("Failed to add", res);
         toast.dismiss(loadingToast);
@@ -250,7 +253,7 @@ if (isAddMode) {
       ...selectedRecord,
     };
 
-    console.log('Sending update data:', updateData);
+    console.log('Sending update data:',   updateData);
 
     const res = await updateMedicalHistory({ 
       historyId: selectedRecord.id, 
@@ -660,10 +663,9 @@ const handleConfirmDelete = async () => {
         />
       )}
       <Toaster
-  position="top-right"
-  reverseOrder={true}
-
-/>
+      position="top-right"
+      reverseOrder={true}
+      />
       
     </div>
   );
