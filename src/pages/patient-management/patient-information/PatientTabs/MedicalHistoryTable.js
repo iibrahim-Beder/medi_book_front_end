@@ -661,12 +661,8 @@ const handleConfirmDelete = async () => {
             }
           ]}
           onClose={handleClosePopup}
-        />
-      )}
-      <Toaster
-      position="top-right"
-      reverseOrder={true}
-      />
+          />
+        )}
       
     </div>
   );

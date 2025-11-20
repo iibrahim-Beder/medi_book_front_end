@@ -25,7 +25,7 @@ import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorF
 import Login from "./pages/login/Login";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import 'react-loading-skeleton/dist/skeleton.css';
-
+import Toaster from "react-hot-toast";
 
 
 function App() {
@@ -121,8 +121,11 @@ const { i18n } = useTranslation();
           />
         </Routes>
       )}
-      <div></div>
-    </div>
+    {/* <Toaster
+      position="top-right"
+      reverseOrder={true}
+      />   */}
+        </div>
   );
 }
 

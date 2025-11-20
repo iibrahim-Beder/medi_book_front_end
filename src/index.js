@@ -21,6 +21,7 @@ import './assets/css/transitions.css'
 // import "leaflet/dist/leaflet.css";
 import $ from 'jquery';
 import './i18n';
+import { Toaster } from "react-hot-toast";
 window.$ = window.jQuery = $;
 
 
@@ -54,6 +55,7 @@ root.render(
         </DeviceProvider>
       </ThemeProvider>
     </BrowserRouter>
+    <Toaster position="top-right" reverseOrder />
   </Provider>
 );
 

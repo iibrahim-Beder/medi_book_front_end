@@ -167,7 +167,7 @@ const CustomAccordion = memo(({
 
   const renderItemTitle = (item) => {
     if (getItemTitle) return getItemTitle(item);
-    return item.title || item.type || "New Item";
+    return item.title || item.type || item.medication ||  "New Item";
   };
 
   // === Truncate long titles ===

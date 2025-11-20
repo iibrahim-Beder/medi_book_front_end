@@ -26,7 +26,8 @@ const TwoLevelAccordion = memo(({
   onUpdateRecipe,
   onSaveRecipe,
   noHedarBefore = false,
-  readOnly = false
+  readOnly = false,
+  getItemTitleRecipe 
 }) => {
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
@@ -299,6 +300,7 @@ const TwoLevelAccordion = memo(({
               {/* Nested Medications */}
               {(item.isNew || item.isExpanded) && (
                 <CustomAccordion
+                 getItemTitle={getItemTitleRecipe}
                   readOnly={readOnly}
                   accordioninnertitleSize="small"
                   noHedarBefore={true}
