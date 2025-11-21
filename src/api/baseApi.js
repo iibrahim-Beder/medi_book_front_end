@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.REACT_APP_API_BASE_URL || 'https://9be6b972b3c6.ngrok-free.app/Api/v1',
+  baseUrl: process.env.REACT_APP_API_BASE_URL || 'https://7f1c31dce5bd.ngrok-free.app/Api/v1',
   prepareHeaders: (headers) => {
     headers.set('Content-Type', 'application/json');
     headers.set('Accept', 'application/json');

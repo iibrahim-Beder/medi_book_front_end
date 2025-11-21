@@ -1,13 +1,17 @@
 // useNestedItemHandlers.js (محدث)
 import { useCallback } from "react";
-import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutation , useDeletePrescribedMedicationMutation, } from "../../../api/prescribedMedicationApi"; 
-import { addDays } from "date-fns";
+import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutation , useDeletePrescribedMedicationMutation
+} from "../../../api/prescribedMedicationApi"; 
+import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../api/patientDiagnosesApi";
 import toast from "react-hot-toast";
 
 export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis) => {
   const [addPrescribedMedication, { isLoading: isAddingPrescriptionMedication }] = useAddPrescribedMedicationMutation();
   const [updatePrescribedMedication, { isLoading: isUpdatingPrescriptionMedication }] = useUpdatePrescribedMedicationMutation();
   const [deletePrescribedMedication, { isLoading: isDeletingPrescriptionMedication }] = useDeletePrescribedMedicationMutation();
+ const [addDiagnosisNote, { isLoading: isAddingNote }] = useAddDiagnosisNoteMutation();
+  const [updateDiagnosisNote, { isLoading: isUpdatingNote }] = useUpdateDiagnosisNoteMutation();
+  const [deleteDiagnosisNote, { isLoading: isDeletingNote }] = useDeleteDiagnosisNoteMutation();
 
   // === Recipes Management ===
  const handleAddRecipe = useCallback((prescriptionId) => {
@@ -288,14 +292,36 @@ const handleSaveRecipe = useCallback(
       notes: [newNote, ...(prev.notes || [])]
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
+// delete//
+const handleDeleteNote = useCallback(async (noteId) => {
+  if (!editingDiagnosis|| isDeletingNote) return;
+       const loadingToast = toast.loading('Deleting...');
+  try {
+    const note = editingDiagnosis.notes?.find(n => n.id === noteId);    
+    if (note && !note.isNew) {
+      const result = await deleteDiagnosisNote(noteId).unwrap();
+      
+      if (result?.succeeded) {
+        toast.success('Deleted Successfully');
+        toast.dismiss(loadingToast);
+      } else {
+        toast.error(result?.message || 'Failed to delete');
+        toast.dismiss(loadingToast);
+        return; 
+      }
+    }
 
-  const handleDeleteNote = useCallback((noteId) => {
-    if (!editingDiagnosis) return;
     setEditingDiagnosis(prev => ({
       ...prev,
       notes: (prev.notes || []).filter(note => note.id !== noteId)
     }));
-  }, [editingDiagnosis, setEditingDiagnosis]);
+
+  } catch (error) {
+    // console.error('Error deleting note:', error);
+    toast.error(error?.data?.message || error?.message || 'Error deleting note');
+    toast.dismiss(loadingToast);
+  }
+}, [editingDiagnosis, setEditingDiagnosis, deleteDiagnosisNote]);
 
   const handleUpdateNote = useCallback((noteId, field, value) => {
     if (!editingDiagnosis) return;
@@ -307,16 +333,90 @@ const handleSaveRecipe = useCallback(
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
 
-  const handleSaveNote = useCallback((noteId, noteData) => {
-    if (!editingDiagnosis) return;
-    setEditingDiagnosis(prev => ({
-      ...prev,
-      notes: (prev.notes || []).map(note =>
-        note.id === noteId ? { ...noteData, isNew: false, isExpanded: false } : note
-      )
-    }));
-  }, [editingDiagnosis, setEditingDiagnosis]);
+  //  Save Note //
+const handleSaveNote = useCallback(async (noteId, noteData) => {
+  if (!editingDiagnosis || isUpdatingNote || isAddingNote ) return;
+        const loadingToast = toast.loading('Saving...');
 
+  try {
+    const note = editingDiagnosis.notes?.find(n => n.id === noteId);
+    
+    if (!note) {
+      toast.error('Note not found');
+      toast.dismiss(loadingToast);
+      return;
+    }
+
+    let success = false;
+
+    if (note.isNew) {
+      const payload = {
+        diagnosisId: editingDiagnosis.diagnosisId,
+        content: noteData.note
+      };
+
+      console.log('Add Diagnosis Note Payload:', payload);
+      const result = await addDiagnosisNote(payload).unwrap();
+
+      if (result?.succeeded) {
+        toast.success( result?.message || 'Saved Successfully');
+        toast.dismiss(loadingToast);
+        
+        success = true;
+
+        setEditingDiagnosis(prev => ({
+          ...prev,
+          notes: (prev.notes || []).map(note =>
+            note.id === noteId 
+              ? { 
+                  ...noteData, 
+                  id: result.data?.id || noteId,
+                  isNew: false, 
+                  isExpanded: false 
+                }
+              : note
+          )
+        }));
+      } else {
+        toast.error(result?.message || 'Failed to save');
+        toast.dismiss(loadingToast);
+      }
+    } else {
+      const payload = {
+        diagnosisNoteId: noteId,
+        noteContent: noteData.note
+      };
+
+      console.log('Update Diagnosis Note Payload:', payload);
+      const result = await updateDiagnosisNote(payload).unwrap();
+
+      if (result?.succeeded) {
+        toast.success(result?.message || 'Saved Successfully');
+        toast.dismiss(loadingToast);
+        success = true;
+
+        setEditingDiagnosis(prev => ({
+          ...prev,
+          notes: (prev.notes || []).map(note =>
+            note.id === noteId 
+              ? { ...noteData, isExpanded: false }
+              : note
+          )
+        }));
+      } else {
+        toast.error(result?.message || 'Failed to save');
+        toast.dismiss(loadingToast);
+      }
+    }
+
+    return success;
+  } catch (error) {
+    // console.error('Error saving note:', error);
+    toast.error(error?.data?.message || 'Error saving note');
+    toast.dismiss(loadingToast);
+    return false;
+  }
+}, [editingDiagnosis, setEditingDiagnosis, addDiagnosisNote, updateDiagnosisNote]);
   // === Prescriptions Management ===
   const handleAddPrescription = useCallback(() => {
     if (!editingDiagnosis) return;

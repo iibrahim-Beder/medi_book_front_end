@@ -23,13 +23,14 @@ const DiagnosisMobileViewWithCRUD = () => {
     data: diagnosesData,
     isLoading,
     error,
+    isFetching,
     refetch
   } = useGetPatientDiagnosesQuery({
     patientId: PATIENT_ID,
     pageNumber: currentPage,
     pageSize: rowsPerPage
   });
-
+console.log( "isFetching ",isFetching)
   // Use custom hook for CRUD operations
   const {
     selectedDiagnosis,
@@ -77,7 +78,7 @@ const DiagnosisMobileViewWithCRUD = () => {
 
       <div className="p-2">
         <DiagnosisList
-          isLoading={isLoading}
+          isLoading={isLoading||isFetching}
           currentItems={currentItems}
           onEditDiagnosis={handleEditDiagnosis}
           t={t}

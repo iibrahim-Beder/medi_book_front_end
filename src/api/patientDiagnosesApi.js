@@ -146,6 +146,85 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
       invalidatesTags: (result, error, { patientId }) => [
         { type: 'PatientDiagnoses', id: patientId }
       ],
+    }),
+
+ // Add diagnosis note 
+    addDiagnosisNote: builder.mutation({
+      query: ({ diagnosisId, content }) => {
+        const params = {
+          DiagnosisId: diagnosisId,
+          Content: content
+        };
+
+        console.log('Add Diagnosis Note Params:', params);
+
+        return {
+          url: '/PatientDiagnoses/AddDiagnosisNote',
+          method: 'POST',
+          params: params
+        };
+      },
+      invalidatesTags: (result, error, { diagnosisId }) => [
+        { type: 'PatientDiagnoses', id: diagnosisId }
+      ],
+    }),
+
+    // Update diagnosis note 
+    updateDiagnosisNote: builder.mutation({
+      query: ({ diagnosisNoteId, noteContent }) => {
+        const params = {
+          DiagnosisNoteId: diagnosisNoteId,
+          NoteContent: noteContent
+        };
+
+        console.log('Update Diagnosis Note Params:', params);
+
+        return {
+          url: '/PatientDiagnoses/UpdateDiagnosisNote',
+          method: 'PATCH',
+          params: params
+        };
+      },
+      invalidatesTags: (result, error, { diagnosisId }) => [
+        { type: 'PatientDiagnoses', id: diagnosisId }
+      ],
+    }),
+
+    // Delete diagnosis note 
+    deleteDiagnosisNote: builder.mutation({
+      query: (diagnosisNoteId) => {
+        const params = {
+          diagnosisNoteId: diagnosisNoteId
+        };
+
+        console.log('Delete Diagnosis Note Params:', params);
+
+        return {
+          url: '/PatientDiagnoses/DeleteDiagnosisNote',
+          method: 'DELETE',
+          params: params
+        };
+      },
+      invalidatesTags: (result, error, diagnosisNoteId) => [
+        { type: 'PatientDiagnoses', id: 'LIST' }
+      ],
+    }),
+
+    // Get diagnosis notes 
+    getDiagnosisNotes: builder.query({
+      query: (diagnosisId) => {
+        const params = {
+          DiagnosisId: diagnosisId
+        };
+
+        return {
+          url: '/PatientDiagnoses/GetDiagnosisNotes',
+          params: params
+        };
+      },
+      providesTags: (result, error, diagnosisId) => [
+        { type: 'DiagnosisNote', id: diagnosisId }
+      ],
     })
   }),
 });
@@ -156,4 +235,8 @@ export const {
   useAddPatientDiagnosisMutation,
   useUpdatePatientDiagnosisMutation,
   useDeletePatientDiagnosisMutation,
+  useAddDiagnosisNoteMutation,
+  useUpdateDiagnosisNoteMutation,
+  useDeleteDiagnosisNoteMutation,
+  useGetDiagnosisNotesQuery,
 } = patientDiagnosesApi;
