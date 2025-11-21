@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -10,7 +9,7 @@ import DiagnosisModal from "../diagnosis/DiagnosisModal";
 import DeleteConfirmationPopup from "../diagnosis/DeleteConfirmationPopup";
 import { useDiagnosisCRUD } from "../diagnosis/useDiagnosisCRUD";
 import { transformDiagnosisData } from "../diagnosis/diagnosisUtils";
-
+import ErrorLoading from "../../shared/ErrorLoading";
 const DiagnosisMobileViewWithCRUD = () => {
   const { t } = useTranslation();
   const PATIENT_ID = 4;
@@ -54,14 +53,7 @@ const DiagnosisMobileViewWithCRUD = () => {
 
   if (error) {
     return (
-      <div className="table-container mobile-view-card">
-        <div className="text-center text-danger py-5">
-          <p>Error loading diagnoses</p>
-          <Button onClick={refetch} variant="primary">
-            Retry
-          </Button>
-        </div>
-      </div>
+     <ErrorLoading isError={error} refetch={refetch} />
     );
   }
 

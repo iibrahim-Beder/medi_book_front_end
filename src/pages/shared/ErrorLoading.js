@@ -8,11 +8,11 @@ export default function ErrorLoading( { isError, refetch }) {
         <div className="error-loading">
           <div className="text-center text-danger mt-4">
                    <FaExclamationTriangle size={40} />
-                   <h5 className="mt-2">{t("Error loading reviews")}</h5>
+                   <h5 className="mt-2">{t("Error loading data")}</h5>
                    <p>{t("Check the internet connection")}</p>
                    <PropagateLoader color="var(--bluecolor)" loading={isError} size={10} />
                    <div style={{ marginTop: "70px" }}>
-                     <button className="dc-btn" onClick={refetch}>
+                     <button className="dc-btn"onClick={() => refetch()}>
                        {t("Retry")}
                      </button>
                    </div>

@@ -307,7 +307,8 @@ const handleConfirmDelete = async () => {
       
     } else {
       console.error("Failed to delete", res);
-      toast.dismiss.error(res.message || "Failed to delete");
+      toast.error(res.message || "Failed to delete");
+      toast.dismiss(loadingToast);
     }
   } catch (error) {
     toast.dismiss(loadingToast);

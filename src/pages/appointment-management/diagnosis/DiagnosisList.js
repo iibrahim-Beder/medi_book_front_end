@@ -116,6 +116,9 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
                     }}
                   >
                     <MdExpandMore
+                     onClick={() =>
+                      toggleDescription(disease.diagnosisId || disease.id)
+                    }
                       style={{
                         transform: expandedDescriptions[
                           disease.diagnosisId || disease.id

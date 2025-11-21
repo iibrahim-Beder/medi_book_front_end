@@ -1202,9 +1202,9 @@ color: var(--terthemecolor);
 .break-accrordion .dc-collapseexp{padding-top: 0 !important;padding-bottom: 10px !important;}
 .notification-title{font-size: 14px !important;font-weight: 600 !important; font-family: 'Poppins', Arial, Helvetica, sans-serif !important;}
 
-@media (min-width: 600px) {
+@media (min-width: 600px ) and (max-width: 768px)  {
     .modal-dialog {
         max-width: 600px;
-        margin: 1.75rem auto;
+        margin: auto !important;
     }
 }
