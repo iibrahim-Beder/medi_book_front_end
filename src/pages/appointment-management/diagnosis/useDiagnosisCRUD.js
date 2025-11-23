@@ -17,42 +17,47 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
     diagnosisId: null,
     diagnosisName: ""
   });
-
+  
   // API Mutations
-  const [addDiagnosis, { isLoading: isAdding }] = useAddPatientDiagnosisMutation();
+  const [addDiagnosis, { isLoading: isAdding }] = useAddPatientDiagnosisMutation(); 
   const [updateDiagnosis, { isLoading: isUpdating }] = useUpdatePatientDiagnosisMutation();
   const [deleteDiagnosis, { isLoading: isDeleting }] = useDeletePatientDiagnosisMutation();
 
+
  const handleSaveDiagnosis = useCallback(async (diagnosisData) => {
-    try {
-      const diagnosisPayload = {
+  console.log('Saving diagnosis data:', diagnosisData);
+    
+  if (!diagnosisData) {
+    console.error('No diagnosis data provided');
+    toast.error("No diagnosis data to save");
+    return false;
+  }
+
+  try {
+    const result = await addDiagnosis({
+      patientId: PATIENT_ID, 
+      diagnosisData: diagnosisData 
+    }).unwrap();
+
+            console.log("Add Diagnosis Result:",result);
+    
+    if (result?.succeeded) {
+      toast.success(result.message || "Diagnosis saved successfully");
+      
+      if (setCurrentItems) {
+        const newDiagnosis = transformDiagnosisData(result.data);
+        setCurrentItems(prev => [newDiagnosis, ...prev]);
+      }
+      
+      return true;
+    } else {
+        const diagnosisPayload = {
         patientId: PATIENT_ID,
         diagnosisName: diagnosisData.diagnosisName,
         symptomsDescription: diagnosisData.symptomsDescription,
         description: diagnosisData.description,
         code: diagnosisData.code || "0000",
       };
-
-      console.log('Saving diagnosis payload:', diagnosisPayload);
-      let result;
-
-      if (diagnosisData.isNew) {
-        result = await addDiagnosis(diagnosisPayload).unwrap();
-        
-        if (result?.succeeded) {
-          toast.success(result.message || "Diagnosis saved successfully");
-          
-          if (setCurrentItems) {
-            const newDiagnosis = transformDiagnosisData(result.data);
-            setCurrentItems(prev => [newDiagnosis, ...prev]);
-          }
-          
-          return true;
-        } else {
-          toast.error(result.message || "Failed to save diagnosis");
-          return false;
-        }
-      } else {
         result = await updateDiagnosis({
           diagnosisId: diagnosisData.diagnosisId,
           patientId: PATIENT_ID,
@@ -78,7 +83,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
       }
     } catch (error) {
       console.error('Error saving diagnosis:', error);
-      toast.error(error?.data?.message || "Error saving diagnosis");
+      toast.error(error?.message || "Error saving diagnosis");
       return false;
     }
   }, [addDiagnosis, updateDiagnosis, setCurrentItems]);
@@ -134,6 +139,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
 
   const handleConfirmDelete = useCallback(async () => {
     if (deletePopup.diagnosisId) {
+      const loadingToast = toast.loading('Deleting...');
       try {
         if (deletePopup.diagnosisId.toString().startsWith('temp-')) {
           setEditingDiagnosis(null);
@@ -142,15 +148,20 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
           const result = await deleteDiagnosis(deletePopup.diagnosisId).unwrap();
           if (result?.succeeded) {
             toast.success(result.message || "Diagnosis deleted successfully");
-            refetch();
+            setEditingDiagnosis(null);
+            setSelectedDiagnosis(null);            
+            toast.dismiss(loadingToast);
+            setCurrentItems(prev => prev.filter(item => item.diagnosisId !== deletePopup.diagnosisId));
           } else {
             toast.error(result.message || "Failed to delete diagnosis");
+            toast.dismiss(loadingToast);
           }
         }
         handleCloseDeleteConfirm();
       } catch (error) {
         console.error('Error deleting diagnosis:', error);
         toast.error(error?.data?.message || "Error deleting diagnosis");
+        toast.dismiss(loadingToast);
       }
     }
   }, [deletePopup, deleteDiagnosis, refetch, handleCloseDeleteConfirm]);

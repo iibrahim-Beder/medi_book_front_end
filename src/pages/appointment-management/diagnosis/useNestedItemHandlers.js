@@ -496,6 +496,13 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
 const handleDeletePrescription = useCallback(async (prescriptionId) => {
   if (!editingDiagnosis) return;
 
+  if (editingDiagnosis.isNew) {
+    setEditingDiagnosis(prev => ({
+      ...prev,
+      prescriptions: (prev.prescriptions || []).filter(prescription => prescription.id !== prescriptionId)
+    }))
+  };
+
   const loadingToast = toast.loading('Deleting...');
   try {
     const prescription = editingDiagnosis.prescriptions?.find(p => p.id === prescriptionId);

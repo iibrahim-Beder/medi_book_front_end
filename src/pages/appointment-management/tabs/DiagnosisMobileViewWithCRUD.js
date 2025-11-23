@@ -57,6 +57,7 @@ const DiagnosisMobileViewWithCRUD = () => {
       console.log("Updated currentItems from API:", transformedData);
     }
   }, [diagnosesData]);
+  console.log("isFetching :", isFetching);
 
   if (error) {
     return (

@@ -1,5 +1,73 @@
 // patientDiagnosesApi.js
 import { baseApi } from './baseApi';
+const getSeverityValue = (severityText) => {
+  const severityMap = {
+    "Mild": 1,
+    "Moderate": 2,
+    "Severe": 3
+  };
+  return severityMap[severityText] || 1;
+};
+
+// Helper function to convert medical condition name to ID
+const getMedicalConditionId = (conditionName) => {
+  const conditionMap = {
+    "Diabetes": 1,
+    "Hypertension": 2,
+    "Asthma": 3,
+    "Heart Disease": 4,
+    "Cancer": 5,
+    "Mental Health Disorders": 6,
+    "Other": 7,
+    "Rheumatic tricuspid insufficiency": 8,
+    "Seasonal allergies": 9
+    // Add more conditions as needed
+  };
+  return conditionMap[conditionName] || 1;
+};
+
+// Helper function to convert status text to number
+const getStatusValue = (statusText) => {
+  const statusMap = {
+    "Active": 0,
+    "Completed": 1, 
+    "Cancelled": 2,
+    "Pending": 3,
+    "Expired": 4
+  };
+  return statusMap[statusText] || 0;
+};
+
+// Helper function to convert medication name to ID
+const getMedicationId = (medicationName) => {
+  const medicationMap = {
+    "Ibuprofen": 1,
+    "Paracetamol": 2,
+    "Amoxicillin": 3,
+    "Aspirin": 4,
+    "Metformin": 5,
+    "Atorvastatin": 6,
+    "Lisinopril": 7,
+    "Levothyroxine": 8,
+    "Amlodipine": 9,
+    "Omeprazole": 10,
+    "Guaifenesin Syrup": 11,
+    "Cough Syrup": 12
+  };
+  return medicationMap[medicationName] || 1;
+};
+
+// Helper function to convert status number to text
+const getStatusText = (status) => {
+  const statusMap = {
+    0: "Active",
+    1: "Completed", 
+    2: "Cancelled",
+    3: "Pending",
+    4: "Expired"
+  };
+  return statusMap[status] || "Unknown";
+};
 
 const transformDiagnosesData = (response, searchValue = "") => {
   if (!response || !response.succeeded) {
@@ -52,7 +120,7 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
       query: ({ 
         patientId, 
         filter = {}, 
-        orderBy, 
+        orderBy=1, 
         pageNumber = 1, 
         pageSize = 10 
       }) => {
@@ -98,56 +166,108 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
       ],
     }),
 
-    // Add new diagnosis
-    addPatientDiagnosis: builder.mutation({
-      query: ({ patientId, diagnosisData }) => ({
-        url: '/PatientDiagnoses/AddPatientDiagnosis',
-        method: 'POST',
-        body: {
-          patientId,
-          ...diagnosisData
-        }
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PatientDiagnoses', id: patientId }
-      ],
-    }),
+addPatientDiagnosis: builder.mutation({
+  query: (args) => {
+    console.log("All Arguments:", args);
+    console.log("Diagnosis Data:", args?.diagnosisData);
+    
+    if (!args?.diagnosisData && args?.diagnosisName) {
+      args = { diagnosisData: args };
+    }
+    
+    const diagnosisData = args?.diagnosisData;
+    
+    if (!diagnosisData) {
+      throw new Error('Diagnosis data is required');
+    }
 
-   updatePatientDiagnosis: builder.mutation({
-  query: ({ diagnosisId, patientId, updates }) => { 
-    const params = {
-      DiagnosisId: diagnosisId,
-      PatientId: patientId, 
-      DiagnosisName: updates.diagnosisName,
-      code: updates.code,
-      symptomsDescription: updates.symptomsDescription,
-      description: updates.description
+    const body = {
+      diagnosisName: diagnosisData.diagnosisName,
+      bookingId: diagnosisData.bookingId || 1,
+      code: diagnosisData.code || "DX-000",
+      symptomsDescription: diagnosisData.symptomsDescription,
+      description: diagnosisData.description,
+      prescriptions: (diagnosisData.prescriptions || []).map(prescription => ({
+        diagnosisId: 22,
+        title: prescription.title,
+        notes: prescription.notes,
+        status: getStatusValue(prescription.status),
+        prescribedMedications: (prescription.recipes || []).map(med => ({
+          PrescriptionId: 22,
+          medicationId:22,
+          startDate: med.startDate || new Date().toISOString(),
+          endDate: med.endDate || new Date(Date.now() + (med.durationInDays || 1) * 24 * 60 * 60 * 1000).toISOString(),
+          dosage: med.dosage,
+          durationInDays: med.durationInDays,
+          instructions: med.instructions
+        }))
+      })),
+      internalMedicalConditions: (diagnosisData.conditions || []).map(condition => ({
+        diagnosisId:20,
+        medicalConditionId:22,
+        severity: getSeverityValue(condition.severity),
+        isActive: true,
+        notes: condition.notes
+      })),
+      diagnosisNotes: (diagnosisData.notes || []).map(note => ({
+        diagnosisId: 0,
+        content: note.note
+      }))
     };
 
-    console.log('Update Diagnosis Params:', params);
+    console.log('Add Patient Diagnosis Body:', body);
 
     return {
-      url: '/PatientDiagnoses/UpdatePatientDiagnosis',
-      method: 'PATCH',
-      params: params
+      url: '/PatientDiagnoses/AddPatientDiagnosis',
+      method: 'POST',
+      body: body
     };
   },
-  invalidatesTags: (result, error, { patientId }) => [
-    { type: '', id: patientId }
+  invalidatesTags: (result, error, args) => [
+    { type: '', id: args?.patientId || 'LIST' }
   ],
 }),
 
-    // Delete diagnosis
-    deletePatientDiagnosis: builder.mutation({
-      query: (diagnosisId) => ({
-        url: `/PatientDiagnoses/DeletePatientDiagnosis/${diagnosisId}`,
-        method: 'DELETE'
-      }),
+    // Update patient diagnosis - UPDATED
+    updatePatientDiagnosis: builder.mutation({
+      query: ({ diagnosisId, updates }) => {
+        const body = {
+          diagnosisId: diagnosisId,
+          diagnosisName: updates.diagnosisName,
+          code: updates.code,
+          symptomsDescription: updates.symptomsDescription,
+          description: updates.description
+          // Note: For update, you might want to handle prescriptions, conditions, and notes separately
+        };
+
+        console.log('Update Patient Diagnosis Body:', body);
+
+        return {
+          url: '/PatientDiagnoses/UpdatePatientDiagnosis',
+          method: 'PATCH',
+          body: body
+        };
+      },
       invalidatesTags: (result, error, { patientId }) => [
         { type: 'PatientDiagnoses', id: patientId }
       ],
     }),
 
+    deletePatientDiagnosis: builder.mutation({
+  query: (diagnosisId) => {
+    console.log('Deleting diagnosis with ID:', diagnosisId);
+    
+    return {
+      url: '/PatientDiagnoses/DeletePatientDiagnosis',
+      method: 'DELETE',
+      params: { diagnosisId }
+    };
+  },
+  invalidatesTags: (result, error, diagnosisId) => [
+    { type: 'PatientDiagnoses', id: 'LIST' },
+    { type: 'PatientDiagnoses', id: diagnosisId }
+  ],
+}),
  // Add diagnosis note 
     addDiagnosisNote: builder.mutation({
       query: ({ diagnosisId, content }) => {
