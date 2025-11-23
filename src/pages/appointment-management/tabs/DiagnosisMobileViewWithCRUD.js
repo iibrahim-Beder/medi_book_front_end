@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -57,7 +57,9 @@ const DiagnosisMobileViewWithCRUD = () => {
       console.log("Updated currentItems from API:", transformedData);
     }
   }, [diagnosesData]);
-  console.log("isFetching :", isFetching);
+  useEffect(() => {
+    if(currentItems.length === 0)refetch(); 
+  }, [handleConfirmDelete]);
 
   if (error) {
     return (
