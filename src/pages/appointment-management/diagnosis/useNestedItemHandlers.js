@@ -3,16 +3,19 @@ import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutati
 } from "../../../api/prescribedMedicationApi"; 
 import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../api/patientDiagnosesApi";
 import {
-  useAddPatientPrescriptionMutation,
+  useAddPatientPrescriptionMutation, useUpdatePatientPrescriptionMutation, useDeletePatientPrescriptionMutation
 } from "../../../api/patientPrescriptionApi"; 
 import toast from "react-hot-toast";
 export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,setCurrentItems) => {
   const [addPrescribedMedication, { isLoading: isAddingPrescriptionMedication }] = useAddPrescribedMedicationMutation();
   const [updatePrescribedMedication, { isLoading: isUpdatingPrescriptionMedication }] = useUpdatePrescribedMedicationMutation();
   const [deletePrescribedMedication, { isLoading: isDeletingPrescriptionMedication }] = useDeletePrescribedMedicationMutation();
-    const [addPatientPrescription, { isLoading: isAddingPrescription }] = useAddPatientPrescriptionMutation();
 
- const [addDiagnosisNote, { isLoading: isAddingNote }] = useAddDiagnosisNoteMutation();
+  const [addPatientPrescription, { isLoading: isAddingPrescription }] = useAddPatientPrescriptionMutation();
+  const [updatePatientPrescription, { isLoading: isUpdatingPrescription  }] =  useUpdatePatientPrescriptionMutation();
+  const [deletePatientPrescription, { isLoading: isDeletingPrescription }] = useDeletePatientPrescriptionMutation(); 
+
+  const [addDiagnosisNote, { isLoading: isAddingNote }] = useAddDiagnosisNoteMutation();
   const [updateDiagnosisNote, { isLoading: isUpdatingNote }] = useUpdateDiagnosisNoteMutation();
   const [deleteDiagnosisNote, { isLoading: isDeletingNote }] = useDeleteDiagnosisNoteMutation();
 
@@ -52,7 +55,6 @@ export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,set
     )
   }));
 }, [editingDiagnosis, setEditingDiagnosis]);
-
 
   const handleDeleteRecipe = useCallback(async (prescriptionId, recipeId) => {
   if (!editingDiagnosis) return;
@@ -115,8 +117,6 @@ const handleSaveRecipe = useCallback(
   async (prescriptionId, recipeId, recipeData) => {
     if (!editingDiagnosis) return;
 
-
-    // 
    if (editingDiagnosis.isNew) {
     setEditingDiagnosis(prev => ({
       ...prev,
@@ -133,8 +133,6 @@ const handleSaveRecipe = useCallback(
           : prescription
       )
     }));
-
-    console.log("==Editing Diagnosis", editingDiagnosis);
     return; 
   }
 
@@ -346,7 +344,7 @@ const handleSaveRecipe = useCallback(
       notes: [newNote, ...(prev.notes || [])]
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
-// delete//
+
 const handleDeleteNote = useCallback(async (noteId) => {
   if (!editingDiagnosis|| isDeletingNote) return;
   const loadingToast = toast.loading('Deleting...');
@@ -387,11 +385,14 @@ const handleDeleteNote = useCallback(async (noteId) => {
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
 
-  //  Save Note //
 const handleSaveNote = useCallback(async (noteId, noteData) => {
   if (!editingDiagnosis || isUpdatingNote || isAddingNote ) return;
-        const loadingToast = toast.loading('Saving...');
-
+  console.log('Editing Diagnosis:', editingDiagnosis, "noteId:", noteId, "noteData:", noteData);
+        if(editingDiagnosis.isNew){
+          setEditingDiagnosis(prev => ({...prev,notes: (prev.notes || []).map(note =>note.id === noteId ? { ...noteData, isNew: false, isExpanded: false } : note)}));
+          return;
+        }
+      const loadingToast = toast.loading('Saving...');
   try {
     const note = editingDiagnosis.notes?.find(n => n.id === noteId);
     
@@ -472,7 +473,6 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
   }
 }, [editingDiagnosis, setEditingDiagnosis, addDiagnosisNote, updateDiagnosisNote]);
 
-
   // === Prescriptions Management ===
   const handleAddPrescription = useCallback(() => {
     if (!editingDiagnosis) return;
@@ -493,13 +493,41 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
 
-  const handleDeletePrescription = useCallback((prescriptionId) => {
-    if (!editingDiagnosis) return;
+const handleDeletePrescription = useCallback(async (prescriptionId) => {
+  if (!editingDiagnosis) return;
+
+  const loadingToast = toast.loading('Deleting...');
+  try {
+    const prescription = editingDiagnosis.prescriptions?.find(p => p.id === prescriptionId);
+    
+    if (!prescription) {
+      toast.error('Prescription not found');
+      return;
+    }
+
+    if (!prescription.isNew) {
+      const result = await deletePatientPrescription(prescriptionId).unwrap();
+      
+      if (result?.succeeded) {
+        toast.success(result?.message || 'Deleted Successfully');
+      } else {
+        toast.error(result?.message || 'Failed to delete');
+        return; 
+      }
+    }
+
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).filter(prescription => prescription.id !== prescriptionId)
     }));
-  }, [editingDiagnosis, setEditingDiagnosis]);
+
+  } catch (error) {
+    console.error('Error deleting prescription:', error);
+    toast.error(error?.data?.message || 'Error deleting prescription');
+  }finally {
+    toast.dismiss(loadingToast);
+  }
+}, [editingDiagnosis, setEditingDiagnosis, deletePatientPrescription]);
 
   const handleUpdatePrescription = useCallback((prescriptionId, field, value) => {
     if (!editingDiagnosis) return;
@@ -512,8 +540,8 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
   }, [editingDiagnosis, setEditingDiagnosis]);
 
   const handleSavePrescription = useCallback(async (prescriptionId, prescriptionData) => {
-    console.log('Saving prescription:', prescriptionData);
-    if (!editingDiagnosis) return;
+    // console.log('Saving prescription:', prescriptionData);
+    if (!editingDiagnosis|| isAddingPrescription|| isUpdatingPrescription) return;
     if (editingDiagnosis.isNew) {
       setEditingDiagnosis(prev => ({
         ...prev,
@@ -523,6 +551,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
       }));
       return;
     }
+    const loadingToast = toast.loading('Saving...');
       try {
     const prescription = editingDiagnosis.prescriptions?.find(p => p.id === prescriptionId);
     
@@ -569,35 +598,51 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
         toast.error(result?.message || 'Failed to save');
       }
     } else {
-      console.log('Updating existing prescription:', prescriptionData);
-      
-      setEditingDiagnosis(prev => ({
-        ...prev,
-        prescriptions: (prev.prescriptions || []).map(prescription =>
-          prescription.id === prescriptionId 
-            ? { ...prescriptionData, isNew: false, isExpanded: false }
-            : prescription
-        )
-      }));
-      
-      toast.success('Prescription updated successfully');
-      success = true;
+       const payload = {
+        prescriptionId: prescriptionId, 
+        updates: {
+          title: prescriptionData.title,
+          notes: prescriptionData.notes,
+          status: prescriptionData.status
+        }
+      };
+
+      console.log('Update Patient Prescription Payload:', payload);
+      const result = await updatePatientPrescription(payload).unwrap();
+
+      if (result?.succeeded) {
+        toast.success(result?.message || 'Saved Successfully');
+        success = true;
+
+        setEditingDiagnosis(prev => ({
+          ...prev,
+          prescriptions: (prev.prescriptions || []).map(p =>
+            p.id === prescriptionId 
+              ? { ...prescriptionData, isExpanded: false }
+              : p
+          )
+        }));
+      } else {
+        toast.error(result?.message || 'Failed to save');
+      }
     }
 
     return success;
   } catch (error) {
     console.error('Error saving prescription:', error);
-    toast.error(error?.data?.message || 'Error saving prescription');
+    toast.error(error?.data?.message || 'Failed to save');
     return false;
+  }finally{
+    toast.dismiss(loadingToast);
   }
-
-
-
-
-
-
-  }, [editingDiagnosis, setEditingDiagnosis]);
-
+}, [
+  editingDiagnosis, 
+  setEditingDiagnosis, 
+  addPatientPrescription, 
+  updatePatientPrescription,
+  isAddingPrescription,
+  isUpdatingPrescription
+]);
   // Handle cancel for nested items
   const handleCancelNestedItem = useCallback((itemType, itemId) => {
     if (!editingDiagnosis) return;

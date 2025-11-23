@@ -202,25 +202,25 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
       ],
     }),
 
-    // Delete patient prescription
-    deletePatientPrescription: builder.mutation({
-      query: (prescriptionId) => {
-        const params = {
-          PrescriptionId: prescriptionId
-        };
+// Delete patient prescription
+deletePatientPrescription: builder.mutation({
+  query: (prescriptionId) => {
+    console.log('Delete Patient Prescription ID:', prescriptionId);
 
-        console.log('Delete Patient Prescription Params:', params);
+    return {
+      url: '/PatientPrescription/DeletePatientPrescription',
+      method: 'DELETE',
+      body: {
+        prescriptionId: prescriptionId
+      }
+    };
+  },
+  invalidatesTags: (result, error, prescriptionId) => [
+    { type: 'PatientPrescription', id: 'LIST' }
+  ],
+})
 
-        return {
-          url: '/PatientPrescription/DeletePatientPrescription',
-          method: 'DELETE',
-          params: params
-        };
-      },
-      invalidatesTags: (result, error, patientId) => [
-        { type: 'PatientPrescription', id: patientId }
-      ],
-    })
+
   }),
 });
 
