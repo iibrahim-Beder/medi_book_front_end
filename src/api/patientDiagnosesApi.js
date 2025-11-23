@@ -133,7 +133,7 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
     };
   },
   invalidatesTags: (result, error, { patientId }) => [
-    { type: 'PatientDiagnoses', id: patientId }
+    { type: '', id: patientId }
   ],
 }),
 

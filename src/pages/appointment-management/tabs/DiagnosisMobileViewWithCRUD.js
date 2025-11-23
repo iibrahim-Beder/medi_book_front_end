@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -16,7 +16,7 @@ const DiagnosisMobileViewWithCRUD = () => {
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage] = useState(5);
+  const [rowsPerPage] = useState(3);
 
   // API Call
   const {
@@ -30,8 +30,9 @@ const DiagnosisMobileViewWithCRUD = () => {
     pageNumber: currentPage,
     pageSize: rowsPerPage
   });
-console.log( "isFetching ",isFetching)
-  // Use custom hook for CRUD operations
+
+  const [currentItems, setCurrentItems] = useState([]);
+
   const {
     selectedDiagnosis,
     editingDiagnosis,
@@ -47,10 +48,15 @@ console.log( "isFetching ",isFetching)
     handleConfirmDelete,
     handleDeleteDiagnosis,
     handleUpdateDiagnosis
-  } = useDiagnosisCRUD(refetch);
+  } = useDiagnosisCRUD(refetch, setCurrentItems); 
 
-  const currentItems = diagnosesData?.data?.map(transformDiagnosisData) || [];
-
+  useEffect(() => {
+    if (diagnosesData?.data) {
+      const transformedData = diagnosesData.data.map(transformDiagnosisData);
+      setCurrentItems(transformedData);
+      console.log("Updated currentItems from API:", transformedData);
+    }
+  }, [diagnosesData]);
 
   if (error) {
     return (
@@ -78,7 +84,7 @@ console.log( "isFetching ",isFetching)
 
       <div className="p-2">
         <DiagnosisList
-          isLoading={isLoading||isFetching}
+          isLoading={isLoading || isFetching}
           currentItems={currentItems}
           onEditDiagnosis={handleEditDiagnosis}
           t={t}
@@ -100,6 +106,7 @@ console.log( "isFetching ",isFetching)
         <DiagnosisModal
           editingDiagnosis={editingDiagnosis}
           setEditingDiagnosis={setEditingDiagnosis}
+          setCurrentItems={setCurrentItems}
           onUpdateDiagnosis={handleUpdateDiagnosis}
           onCancel={handleCancelEdit}
           onSave={handleSaveAndClose}

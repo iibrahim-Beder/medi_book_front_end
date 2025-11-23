@@ -5,10 +5,11 @@ import {
   useUpdatePatientDiagnosisMutation,
   useDeletePatientDiagnosisMutation
 } from "../../../api/patientDiagnosesApi";
+import { transformDiagnosisData } from "./diagnosisUtils";
 
 const PATIENT_ID = 4;
 
-export const useDiagnosisCRUD = (refetch) => {
+export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [deletePopup, setDeletePopup] = useState({
@@ -22,8 +23,7 @@ export const useDiagnosisCRUD = (refetch) => {
   const [updateDiagnosis, { isLoading: isUpdating }] = useUpdatePatientDiagnosisMutation();
   const [deleteDiagnosis, { isLoading: isDeleting }] = useDeletePatientDiagnosisMutation();
 
-  const handleSaveDiagnosis = useCallback(async (diagnosisData) => {
-    console.log('========Saving diagnosis data:', diagnosisData);
+ const handleSaveDiagnosis = useCallback(async (diagnosisData) => {
     try {
       const diagnosisPayload = {
         patientId: PATIENT_ID,
@@ -35,35 +35,53 @@ export const useDiagnosisCRUD = (refetch) => {
 
       console.log('Saving diagnosis payload:', diagnosisPayload);
       let result;
-        const loadingToast = toast.loading('Saving diagnosis...');
+
       if (diagnosisData.isNew) {
         result = await addDiagnosis(diagnosisPayload).unwrap();
+        
+        if (result?.succeeded) {
+          toast.success(result.message || "Diagnosis saved successfully");
+          
+          if (setCurrentItems) {
+            const newDiagnosis = transformDiagnosisData(result.data);
+            setCurrentItems(prev => [newDiagnosis, ...prev]);
+          }
+          
+          return true;
+        } else {
+          toast.error(result.message || "Failed to save diagnosis");
+          return false;
+        }
       } else {
         result = await updateDiagnosis({
           diagnosisId: diagnosisData.diagnosisId,
-          patientId: PATIENT_ID, 
+          patientId: PATIENT_ID,
           updates: diagnosisPayload
         }).unwrap();
-      }
 
-      if (result?.succeeded) {
-        toast.success(result.message || "Diagnosis saved successfully");
-        toast.dismiss(loadingToast);
-        refetch();
-        return true;
-      } else {
-        toast.dismiss(loadingToast);
-        toast.error(result.message || "Failed to save diagnosis");
-        return false;
+        if (result?.succeeded) {
+          toast.success(result.message || "Diagnosis updated successfully");
+          
+          if (setCurrentItems) {
+            setCurrentItems(prev => prev.map(item => 
+              item.diagnosisId === diagnosisData.diagnosisId 
+                ? { ...item, ...diagnosisData }
+                : item
+            ));
+          }
+          
+          return true;
+        } else {
+          toast.error(result.message || "Failed to update diagnosis");
+          return false;
+        }
       }
     } catch (error) {
-      // toast.dismiss(loadingToast);cc
       console.error('Error saving diagnosis:', error);
       toast.error(error?.data?.message || "Error saving diagnosis");
       return false;
     }
-    
-  }, [addDiagnosis, updateDiagnosis, refetch]);
+  }, [addDiagnosis, updateDiagnosis, setCurrentItems]);
 
   const handleAddDiagnosis = useCallback(() => {
     const newDiagnosis = {
@@ -93,7 +111,7 @@ export const useDiagnosisCRUD = (refetch) => {
   }, [editingDiagnosis]);
 
   const handleEditDiagnosis = useCallback((diagnosis) => {
-    console.log('Opening modal with already transformed diagnosis:', diagnosis);
+    // console.log('Opening modal with already transformed diagnosis:', diagnosis);
     setSelectedDiagnosis(diagnosis);
     setEditingDiagnosis({ ...diagnosis });
   }, []);
@@ -165,6 +183,9 @@ export const useDiagnosisCRUD = (refetch) => {
   }, [editingDiagnosis, handleSaveDiagnosis]);
 
   const handleCancelEdit = useCallback(() => {
+     console.log("handleCancelEdit","Selected Diagnosis:", selectedDiagnosis, "editingDiagnosis:", editingDiagnosis);
+
+    console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
     if (editingDiagnosis?.isNew) {
       const hasContent =
         editingDiagnosis.diagnosisName?.trim() ||
@@ -182,6 +203,7 @@ export const useDiagnosisCRUD = (refetch) => {
         return;
       }
     } else {
+
       setSelectedDiagnosis(null);
       setEditingDiagnosis(null);
     }

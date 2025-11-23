@@ -12,7 +12,7 @@ export default function ErrorLoading( { isError, refetch }) {
                    <p>{t("Check the internet connection")}</p>
                    <PropagateLoader color="var(--bluecolor)" loading={isError} size={10} />
                    <div style={{ marginTop: "70px" }}>
-                     <button className="dc-btn"onClick={() => refetch()}>
+                     <button className="dc-btn"onClick={refetch}>
                        {t("Retry")}
                      </button>
                    </div>
