@@ -1,19 +1,24 @@
+// PatientMedicalConditionsTable.jsx
 import React, { useState, useMemo } from "react";
-import { Table, Button, Card } from "react-bootstrap";
+import { Table, Button, Card, Badge } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import ConditionsFilters from "./component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../../shared/Pagination";
 import "../../Patient-management.css";
-import { useGetPatientPrescriptionsQuery, useDeletePatientPrescriptionMutation } from "../../../../api/patientPrescriptionApi";
+import { 
+  useGetPatientMedicalConditionsQuery, 
+  useDeletePatientMedicalConditionMutation,
+  useGetAvailableMedicalConditionsQuery 
+} from "../../../../api/patientMedicalConditionsApi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ErrorLoading from "../../../shared/ErrorLoading";
-import DaynamicEditModal from "../../../shared/DynamicEditModal";
+import MedicalConditionModal from "../../../shared/DynamicEditModal";
 import PopupMessage from "../../../shared/PopupMessage";
 import toast from "react-hot-toast";
 
-const PatientPrescriptionTable = () => {
+const PatientMedicalConditionsTable = () => {
   const { t } = useTranslation();
   const PATIENT_ID = 4;
 
@@ -22,7 +27,9 @@ const PatientPrescriptionTable = () => {
   // Filters states
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
-    status: "",
+    severity: "",
+    conditionType: "",
+    isActive: "",
     dateFrom: null,
     dateTo: null,
   });
@@ -32,8 +39,8 @@ const PatientPrescriptionTable = () => {
 
   // Modal and UI state
   const [showModal, setShowModal] = useState(false);
-  const [selectedPrescription, setSelectedPrescription] = useState(null);
-  const [prescriptionToDelete, setPrescriptionToDelete] = useState(null);
+  const [selectedCondition, setSelectedCondition] = useState(null);
+  const [conditionToDelete, setConditionToDelete] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
 
   // Format date for API
@@ -67,14 +74,16 @@ const PatientPrescriptionTable = () => {
   }, [currentFilters, currentPage]);
 
   const {
-    data: prescriptionsData,
+    data: conditionsData,
     isLoading,
     isFetching,
     error,
     refetch
-  } = useGetPatientPrescriptionsQuery(queryArgs);
+  } = useGetPatientMedicalConditionsQuery(queryArgs);
 
-  const [deletePrescription, { isLoading: isDeleting }] = useDeletePatientPrescriptionMutation();
+  const { data: availableConditions } = useGetAvailableMedicalConditionsQuery();
+
+  const [deleteCondition, { isLoading: isDeleting }] = useDeletePatientMedicalConditionMutation();
 
   const handleSearch = () => {
     setCurrentPage(1);
@@ -83,7 +92,9 @@ const PatientPrescriptionTable = () => {
   const handleResetFilters = () => {
     const resetFilters = {
       searchValue: "",
-      status: "",
+      severity: "",
+      conditionType: "",
+      isActive: "",
       dateFrom: null,
       dateTo: null
     };
@@ -93,50 +104,50 @@ const PatientPrescriptionTable = () => {
 
   // Handle Add New
   const handleAddNew = () => {
-    setSelectedPrescription({
-      title: "",
-      notes: "",
-      status: "Active",
-      prescribedMedications: []
+    setSelectedCondition({
+      medicalConditionId: "",
+      severity: "Mild",
+      isActive: true,
+      notes: ""
     });
     setIsAddMode(true);
     setShowModal(true);
   };
 
   // Handle Edit
-  const handleEdit = (prescription) => {
-    setSelectedPrescription({ ...prescription });
+  const handleEdit = (condition) => {
+    setSelectedCondition({ ...condition });
     setIsAddMode(false);
     setShowModal(true);
   };
 
   // Handle Delete Click
-  const handleDeleteClick = (prescription) => {
-    setPrescriptionToDelete(prescription);
+  const handleDeleteClick = (condition) => {
+    setConditionToDelete(condition);
   };
 
   // Confirm Delete
   const handleConfirmDelete = async () => {
-    if (!prescriptionToDelete) return;
+    if (!conditionToDelete) return;
     
     try {
-      const res = await deletePrescription(prescriptionToDelete.id).unwrap();
+      const res = await deleteCondition(conditionToDelete.id).unwrap();
       if (res?.succeeded) {
-        toast.success(res.message || "Prescription deleted successfully");
+        toast.success(res.message || "Medical condition deleted successfully");
         refetch();
       } else {
-        toast.error(res.message || "Failed to delete prescription");
+        toast.error(res.message || "Failed to delete medical condition");
       }
     } catch (error) {
-      toast.error(error?.data?.message || "Error deleting prescription");
+      toast.error(error?.data?.message || "Error deleting medical condition");
     }
     
-    setPrescriptionToDelete(null);
+    setConditionToDelete(null);
   };
 
   // Close Popup
   const handleClosePopup = () => {
-    setPrescriptionToDelete(null);
+    setConditionToDelete(null);
   };
 
   const handleExpandClick = (id) => {
@@ -161,25 +172,50 @@ const PatientPrescriptionTable = () => {
     });
   };
 
+  // Get severity badge color
+  const getSeverityColor = (severity) => {
+    switch (severity) {
+      case "Mild": return "success";
+      case "Moderate": return "warning";
+      case "Severe": return "danger";
+      default: return "secondary";
+    }
+  };
+
+  // Get status badge color
+  const getStatusColor = (isActive) => {
+    return isActive ? "success" : "secondary";
+  };
+
+  // Severity options for filters
+  const severityOptions = [
+    { key: "Mild", label: t("Mild") },
+    { key: "Moderate", label: t("Moderate") },
+    { key: "Severe", label: t("Severe") }
+  ];
+
+  // Condition type options for filters
+  const conditionTypeOptions = [
+    { key: "Internal", label: t("Internal") },
+    { key: "External", label: t("External") }
+  ];
+
   // Status options for filters
   const statusOptions = [
-    { key: "Active", label: t("Active") },
-    { key: "Completed", label: t("Completed") },
-    { key: "Cancelled", label: t("Cancelled") },
-    { key: "Pending", label: t("Pending") },
-    { key: "Expired", label: t("Expired") }
+    { key: "true", label: t("Active") },
+    { key: "false", label: t("Inactive") }
   ];
 
   return (
     <div className="table-container">
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
-          <h3 className="table-title">{t("Prescriptions")}</h3>
-          <h6 className="table-subtitle">{t("Manage patient prescriptions and medications")}</h6>
+          <h3 className="table-title">{t("Medical Conditions")}</h3>
+          <h6 className="table-subtitle">{t("Manage patient medical conditions and history")}</h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            {t("Add New Prescription")}
+            {t("Add New Condition")}
           </button>
         </div>
       </div>
@@ -191,18 +227,28 @@ const PatientPrescriptionTable = () => {
             <ConditionsFilters
               searchTerm={currentFilters.searchValue}
               setSearchTerm={(value) => setCurrentFilters(prev => ({ ...prev, searchValue: value }))}
-              filterType={currentFilters.status}
-              setFilterType={(value) => setCurrentFilters(prev => ({ ...prev, status: value }))}
+              filterType={currentFilters.severity}
+              setFilterType={(value) => setCurrentFilters(prev => ({ ...prev, severity: value }))}
               filterDateFrom={currentFilters.dateFrom}
               setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, dateFrom: date }))}
               filterDateTo={currentFilters.dateTo}
               setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, dateTo: date }))}
               onReset={handleResetFilters}
               onSearch={handleSearch}
-              conditions={prescriptionsData?.data || []}
+              conditions={conditionsData?.data || []}
               filterConfigs={[
                 {
-                  name: "status",
+                  name: "severity",
+                  label: "Severity",
+                  data: severityOptions,
+                },
+                {
+                  name: "conditionType",
+                  label: "Condition Type",
+                  data: conditionTypeOptions,
+                },
+                {
+                  name: "isActive",
                   label: "Status",
                   data: statusOptions,
                 },
@@ -215,11 +261,12 @@ const PatientPrescriptionTable = () => {
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>{t("Title")}</th>
-                  <th>{t("Diagnosis")}</th>
-                  <th>{t("Notes")}</th>
+                  <th>{t("Condition Name")}</th>
+                  <th>{t("Category")}</th>
+                  <th>{t("Severity")}</th>
                   <th>{t("Status")}</th>
-                  <th>{t("Medications")}</th>
+                  <th>{t("Type")}</th>
+                  <th>{t("Notes")}</th>
                   <th>{t("Created At")}</th>
                   <th>{t("Actions")}</th>
                 </tr>
@@ -230,29 +277,48 @@ const PatientPrescriptionTable = () => {
                     <tr key={index}>
                       <td><Skeleton width={150} height={15} /></td>
                       <td><Skeleton width={120} height={15} /></td>
-                      <td><Skeleton width={200} height={15} /></td>
                       <td><Skeleton width={80} height={15} /></td>
                       <td><Skeleton width={60} height={15} /></td>
+                      <td><Skeleton width={80} height={15} /></td>
+                      <td><Skeleton width={200} height={15} /></td>
                       <td><Skeleton width={100} height={15} /></td>
                       <td><Skeleton width={80} height={15} /></td>
                     </tr>
                   ))
                 ) : error ? (
                   <tr>
-                    <td colSpan="7" className="text-center text-danger">
+                    <td colSpan="8" className="text-center text-danger">
                       <ErrorLoading isError={error} refetch={refetch} />
                     </td>
                   </tr>
-                ) : prescriptionsData?.data && prescriptionsData.data.length > 0 ? (
-                  prescriptionsData.data.map((prescription) => (
-                    <React.Fragment key={prescription.id}>
+                ) : conditionsData?.data && conditionsData.data.length > 0 ? (
+                  conditionsData.data.map((condition) => (
+                    <React.Fragment key={condition.id}>
                       <tr>
                         <td>
-                          <strong>{prescription.title}</strong>
+                          <strong>{condition.medicalConditionName}</strong>
                         </td>
                         
                         <td>
-                          {prescription.diagnosisName || "-"}
+                          {condition.categoryName || "-"}
+                        </td>
+
+                        <td>
+                          <Badge bg={getSeverityColor(condition.severity)}>
+                            {condition.severity}
+                          </Badge>
+                        </td>
+
+                        <td>
+                          <Badge bg={getStatusColor(condition.isActive)}>
+                            {condition.isActive ? t("Active") : t("Inactive")}
+                          </Badge>
+                        </td>
+
+                        <td>
+                          <Badge bg="info">
+                            {condition.conditionType}
+                          </Badge>
                         </td>
 
                         {/* Notes with expand/collapse */}
@@ -261,11 +327,11 @@ const PatientPrescriptionTable = () => {
                             <span
                               className="text-truncate"
                               style={{ maxWidth: "200px" }}
-                              title={prescription.notes}
+                              title={condition.notes}
                             >
-                              {truncateText(prescription.notes, 50)}
+                              {truncateText(condition.notes, 50)}
                             </span>
-                            {prescription.notes && prescription.notes.length > 50 && (
+                            {condition.notes && condition.notes.length > 50 && (
                               <Button
                                 className="view-btn ms-2"
                                 size="sm"
@@ -276,11 +342,11 @@ const PatientPrescriptionTable = () => {
                                   fontSize: "19px",
                                   height: "20px",
                                 }}
-                                onClick={() => handleExpandClick(prescription.id)}
+                                onClick={() => handleExpandClick(condition.id)}
                               >
                                 <MdExpandMore
                                   style={{
-                                    transform: expandedRow === prescription.id ? "rotate(180deg)" : "rotate(0deg)",
+                                    transform: expandedRow === condition.id ? "rotate(180deg)" : "rotate(0deg)",
                                     transition: "transform 0.3s ease",
                                   }}
                                 />
@@ -290,26 +356,7 @@ const PatientPrescriptionTable = () => {
                         </td>
 
                         <td>
-                          <span
-                            className={`badge ${
-                              prescription.status === "Active" ? "bg-success" :
-                              prescription.status === "Completed" ? "bg-primary" :
-                              prescription.status === "Cancelled" ? "bg-danger" :
-                              prescription.status === "Pending" ? "bg-warning" : "bg-secondary"
-                            }`}
-                          >
-                            {prescription.status}
-                          </span>
-                        </td>
-
-                        <td>
-                          <span className="badge bg-info">
-                            {prescription.prescribedMedications?.length || 0}
-                          </span>
-                        </td>
-
-                        <td>
-                          {formatDate(prescription.createdAt)}
+                          {formatDate(condition.createdAt)}
                         </td>
 
                         <td>
@@ -319,7 +366,7 @@ const PatientPrescriptionTable = () => {
                               variant=""
                               size="sm"
                               style={{ color: "#007bff", backgroundColor: "transparent" }}
-                              onClick={() => handleEdit(prescription)}
+                              onClick={() => handleEdit(condition)}
                             >
                               {t("Manage")}
                             </Button>
@@ -328,7 +375,7 @@ const PatientPrescriptionTable = () => {
                               variant=""
                               size="sm"
                               style={{ color: "#dc3545", backgroundColor: "transparent" }}
-                              onClick={() => handleDeleteClick(prescription)}
+                              onClick={() => handleDeleteClick(condition)}
                             >
                               {t("Delete")}
                             </Button>
@@ -337,14 +384,14 @@ const PatientPrescriptionTable = () => {
                       </tr>
 
                       {/* Expanded row for Notes */}
-                      {expandedRow === prescription.id && prescription.notes && prescription.notes.length > 50 && (
+                      {expandedRow === condition.id && condition.notes && condition.notes.length > 50 && (
                         <tr className="table-active-content" style={{ backgroundColor: "transparent" }}>
-                          <td colSpan="7" className="border-0 background-in-hover-none">
+                          <td colSpan="8" className="border-0 background-in-hover-none">
                             <div className="description-expanded-section p-3">
                               <Card>
                                 <Card.Body>
                                   <h6>{t("Notes")}</h6>
-                                  <p className="mb-0">{prescription.notes}</p>
+                                  <p className="mb-0">{condition.notes}</p>
                                 </Card.Body>
                               </Card>
                             </div>
@@ -355,10 +402,10 @@ const PatientPrescriptionTable = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="text-center text-muted">
+                    <td colSpan="8" className="text-center text-muted">
                       {currentFilters.searchValue ?
                         t('No results found for search', { search: currentFilters.searchValue }) :
-                        t('No prescriptions found')
+                        t('No medical conditions found')
                       }
                     </td>
                   </tr>
@@ -368,41 +415,41 @@ const PatientPrescriptionTable = () => {
           </div>
 
           {/* Pagination */}
-          {prescriptionsData && prescriptionsData.data && prescriptionsData.data.length > 0 && (
+          {conditionsData && conditionsData.data && conditionsData.data.length > 0 && (
             <Pagination
               currentPage={currentPage}
-              totalItems={prescriptionsData.totalCount || 0}
+              totalItems={conditionsData.totalCount || 0}
               rowsPerPage={pageSize}
               onPageChange={setCurrentPage}
-              totalPages={prescriptionsData.totalPages || 1}
+              totalPages={conditionsData.totalPages || 1}
             />
           )}
         </div>
       </div>
 
       {/* Modal for Add/Edit */}
-      <DaynamicEditModal
+      <MedicalConditionModal
         show={showModal}
         onClose={() => {
           setShowModal(false);
-          setSelectedPrescription(null);
+          setSelectedCondition(null);
         }}
         onSave={() => {
           setShowModal(false);
-          setSelectedPrescription(null);
+          setSelectedCondition(null);
           refetch();
         }}
-        prescription={selectedPrescription}
+        condition={selectedCondition}
         isEdit={!isAddMode}
-        patientId={PATIENT_ID}
+        availableConditions={availableConditions?.data || []}
       />
 
       {/* Delete Confirmation Popup */}
-      {prescriptionToDelete && (
+      {conditionToDelete && (
         <PopupMessage
           type="danger"
           title={t('Confirm Delete')}
-          message={t('Are you sure you want to delete prescription') + ` "${prescriptionToDelete.title}"?`}
+          message={t('Are you sure you want to delete medical condition') + ` "${conditionToDelete.medicalConditionName}"?`}
           buttons={[
             {
               text: t('Cancel'),
@@ -423,4 +470,4 @@ const PatientPrescriptionTable = () => {
   );
 };
 
-export default PatientPrescriptionTable;
+export default PatientMedicalConditionsTable;

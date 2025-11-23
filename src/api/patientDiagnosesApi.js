@@ -229,29 +229,29 @@ addPatientDiagnosis: builder.mutation({
 }),
 
     // Update patient diagnosis - UPDATED
-    updatePatientDiagnosis: builder.mutation({
-      query: ({ diagnosisId, updates }) => {
-        const body = {
-          diagnosisId: diagnosisId,
-          diagnosisName: updates.diagnosisName,
-          code: updates.code,
-          symptomsDescription: updates.symptomsDescription,
-          description: updates.description
-          // Note: For update, you might want to handle prescriptions, conditions, and notes separately
-        };
+     updatePatientDiagnosis: builder.mutation({
+  query: ({ diagnosisId, patientId, updates }) => { 
+    const params = {
+      DiagnosisId: diagnosisId,
+      PatientId: patientId, 
+      DiagnosisName: updates.diagnosisName,
+      code: updates.code,
+      symptomsDescription: updates.symptomsDescription,
+      description: updates.description
+    };
 
-        console.log('Update Patient Diagnosis Body:', body);
+    console.log('Update Diagnosis Params:', params);
 
-        return {
-          url: '/PatientDiagnoses/UpdatePatientDiagnosis',
-          method: 'PATCH',
-          body: body
-        };
-      },
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PatientDiagnoses', id: patientId }
-      ],
-    }),
+    return {
+      url: '/PatientDiagnoses/UpdatePatientDiagnosis',
+      method: 'PATCH',
+      params: params
+    };
+  },
+  invalidatesTags: (result, error, { patientId }) => [
+    { type: '', id: patientId }
+  ],
+}),
 
     deletePatientDiagnosis: builder.mutation({
   query: (diagnosisId) => {

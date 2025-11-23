@@ -289,7 +289,7 @@ const DiagnosisModal = ({
         {!editingDiagnosis?.isNew && (
           <button
             onClick={() =>
-              onDelete(editingDiagnosis.diagnosisId || editingDiagnosis.id)
+              onDelete(editingDiagnosis.diagnosisId || editingDiagnosis.id, editingDiagnosis.diagnosisName )
             }
             className="btn-simple"
           >

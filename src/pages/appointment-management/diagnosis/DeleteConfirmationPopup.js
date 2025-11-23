@@ -9,7 +9,7 @@ const DeleteConfirmationPopup = ({ deletePopup, onClose, onConfirm, t }) => {
       title={t("Delete Diagnosis")}
       message={
         t("Are you sure you want to delete diagnosis") +
-        ` "${deletePopup.diagnosisName}"? ` +
+        ` "${deletePopup.diagnosisName.slice(0, 120) + (deletePopup.diagnosisName.length > 120 ? "..." : "") } "? ` +
         t("This action cannot be undone.")
       }
       buttons={[

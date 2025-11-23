@@ -26,14 +26,16 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
 
  const handleSaveDiagnosis = useCallback(async (diagnosisData) => {
   console.log('Saving diagnosis data:', diagnosisData);
-    
+    if (isAdding || isUpdating ) return;
   if (!diagnosisData) {
     console.error('No diagnosis data provided');
     toast.error("No diagnosis data to save");
     return false;
   }
-
-  try {
+  const loadingToast = toast.loading('Saving...');
+  if (diagnosisData.isNew) {
+    console.log('Sending add data:', diagnosisData);
+     try {
     const result = await addDiagnosis({
       patientId: PATIENT_ID, 
       diagnosisData: diagnosisData 
@@ -43,6 +45,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
     
     if (result?.succeeded) {
       toast.success(result.message || "Diagnosis saved successfully");
+      toast.dismiss(loadingToast);
       
       if (setCurrentItems) {
         const newDiagnosis = transformDiagnosisData(result.data);
@@ -51,6 +54,20 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
       
       return true;
     } else {
+      toast.error(result.message || "Failed to save diagnosis");
+      toast.dismiss(loadingToast);
+      return false;
+    }
+  } catch (error) {
+    toast.error(error?.data?.message || "Error saving diagnosis");
+    toast.dismiss(loadingToast);
+    return false;
+  }
+    
+  }else
+    {
+      try {
+        let result;
         const diagnosisPayload = {
         patientId: PATIENT_ID,
         diagnosisName: diagnosisData.diagnosisName,
@@ -58,7 +75,8 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
         description: diagnosisData.description,
         code: diagnosisData.code || "0000",
       };
-        result = await updateDiagnosis({
+       console.log('Sending update data:', diagnosisPayload, "Diagnosis ID:", diagnosisData.diagnosisId);
+          result = await updateDiagnosis({
           diagnosisId: diagnosisData.diagnosisId,
           patientId: PATIENT_ID,
           updates: diagnosisPayload
@@ -66,6 +84,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
 
         if (result?.succeeded) {
           toast.success(result.message || "Diagnosis updated successfully");
+          toast.dismiss(loadingToast);
           
           if (setCurrentItems) {
             setCurrentItems(prev => prev.map(item => 
@@ -78,13 +97,16 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
           return true;
         } else {
           toast.error(result.message || "Failed to update diagnosis");
+          toast.dismiss(loadingToast);
           return false;
         }
-      }
-    } catch (error) {
+      }   
+     catch (error) {
       console.error('Error saving diagnosis:', error);
       toast.error(error?.message || "Error saving diagnosis");
+      toast.dismiss(loadingToast);
       return false;
+    }
     }
   }, [addDiagnosis, updateDiagnosis, setCurrentItems]);
 
@@ -166,8 +188,9 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
     }
   }, [deletePopup, deleteDiagnosis, refetch, handleCloseDeleteConfirm]);
 
-  const handleDeleteDiagnosis = useCallback((id) => {
-    handleShowDeleteConfirm(id, 'Unnamed Diagnosis');
+  const handleDeleteDiagnosis = useCallback((id,diagnosisName) => {
+    console.log('Deleting diagnosis with ID:', id, 'Name:', editingDiagnosis);
+    handleShowDeleteConfirm(id, diagnosisName);
   }, [handleShowDeleteConfirm]);
 
   const handleSaveAndClose = useCallback(async () => {
