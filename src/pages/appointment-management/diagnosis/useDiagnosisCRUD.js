@@ -184,7 +184,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
 
   const handleCancelEdit = useCallback(() => {
      console.log("handleCancelEdit","Selected Diagnosis:", selectedDiagnosis, "editingDiagnosis:", editingDiagnosis);
-
+      setCurrentItems(prev => prev.map(item => item.diagnosisId === editingDiagnosis.diagnosisId ? { ...item, ...editingDiagnosis,diagnosisName: selectedDiagnosis.diagnosisName,symptomsDescription: selectedDiagnosis.symptomsDescription,description: selectedDiagnosis.description ,code: selectedDiagnosis.code  } : item));
     console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
     if (editingDiagnosis?.isNew) {
       const hasContent =

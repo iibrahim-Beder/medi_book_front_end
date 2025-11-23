@@ -1,32 +1,41 @@
 import React, { useState, useMemo } from "react";
-import { Table, Button } from "react-bootstrap";
-import ConditionsFilters from "./component/ConditionsFilters";
+import { Table, Button, Card } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
+import ConditionsFilters from "./component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
-import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import Pagination from "../../../shared/Pagination";
-import { 
-  useGetPrescribedMedicationQuery,
-  useAddPrescribedMedicationMutation 
-} from "../../../../api/prescribedMedicationApi";
+import "../../Patient-management.css";
+import { useGetPatientPrescriptionsQuery, useDeletePatientPrescriptionMutation } from "../../../../api/patientPrescriptionApi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import HighlightText from "../../../shared/HighlightText";
-import "../../Patient-management.css";
-import { formatDate } from "../../../shared/FormatDate";
 import ErrorLoading from "../../../shared/ErrorLoading";
-import DynamicEditModal from "../../../shared/DynamicEditModal";
-import toast, { Toaster } from 'react-hot-toast';
+import DaynamicEditModal from "../../../shared/DynamicEditModal";
+import PopupMessage from "../../../shared/PopupMessage";
+import toast from "react-hot-toast";
 
-const PrescribedMedicationTable = () => {
+const PatientPrescriptionTable = () => {
   const { t } = useTranslation();
   const PATIENT_ID = 4;
 
   const [expandedRow, setExpandedRow] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [isAddMode, setIsAddMode] = useState(false);
   
+  // Filters states
+  const [currentFilters, setCurrentFilters] = useState({
+    searchValue: "",
+    status: "",
+    dateFrom: null,
+    dateTo: null,
+  });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
+
+  // Modal and UI state
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPrescription, setSelectedPrescription] = useState(null);
+  const [prescriptionToDelete, setPrescriptionToDelete] = useState(null);
+  const [isAddMode, setIsAddMode] = useState(false);
+
   // Format date for API
   const formatDateForAPI = (date) => {
     if (!date) return undefined;
@@ -34,36 +43,14 @@ const PrescribedMedicationTable = () => {
     return d.toISOString().split('T')[0];
   };
 
-  // Filters states
-  const [currentFilters, setCurrentFilters] = useState({
-    searchValue: "",
-    medicationId: "",
-    medicationCategoryId: "",
-    fromDate: null,
-    toDate: null
-  });
-
-  const [appliedFilters, setAppliedFilters] = useState({
-    searchValue: "",
-    medicationId: "",
-    medicationCategoryId: "",
-    fromDate: null,
-    toDate: null
-  });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
-
-  // RTK Query with caching
+  // RTK Query
   const queryArgs = useMemo(() => {
     const apiFilters = {
-      ...appliedFilters,
-      fromDate: formatDateForAPI(currentFilters.fromDate),
-      toDate: formatDateForAPI(currentFilters.toDate),
+      ...currentFilters,
+      dateFrom: formatDateForAPI(currentFilters.dateFrom),
+      dateTo: formatDateForAPI(currentFilters.dateTo),
     };
 
-    console.log('API Filters for Medication:', apiFilters);
-    
     // Remove undefined and empty values
     Object.keys(apiFilters).forEach(key => {
       if (apiFilters[key] === undefined || apiFilters[key] === "") {
@@ -77,169 +64,83 @@ const PrescribedMedicationTable = () => {
       pageNumber: currentPage,
       pageSize: pageSize
     };
-  }, [appliedFilters, currentPage, currentFilters]);
+  }, [currentFilters, currentPage]);
 
   const {
-    data: prescribedMedicationData,
+    data: prescriptionsData,
     isLoading,
     isFetching,
     error,
     refetch
-  } = useGetPrescribedMedicationQuery(queryArgs);
+  } = useGetPatientPrescriptionsQuery(queryArgs);
 
-  // Add mutation
-  const [addPrescribedMedication, { isLoading: isAdding }] = useAddPrescribedMedicationMutation();
+  const [deletePrescription, { isLoading: isDeleting }] = useDeletePatientPrescriptionMutation();
 
-  // Trigger refetch
-  const triggerRefetch = () => {
-    refetch();
-  };
-
-  const handleSearch = (filters) => {
+  const handleSearch = () => {
     setCurrentPage(1);
-    if (filters && typeof filters === "object") {
-      setAppliedFilters(filters);
-      setCurrentFilters(filters);
-    } else {
-      setAppliedFilters(currentFilters);
-    }
   };
 
   const handleResetFilters = () => {
     const resetFilters = {
       searchValue: "",
-      medicationId: "",
-      medicationCategoryId: "",
-      fromDate: null,
-      toDate: null
+      status: "",
+      dateFrom: null,
+      dateTo: null
     };
     setCurrentFilters(resetFilters);
-    setAppliedFilters(resetFilters);
     setCurrentPage(1);
   };
 
   // Handle Add New
   const handleAddNew = () => {
-    setSelectedRecord({
-      prescriptionId: "",
-      medicationId: "",
-      startDate: "",
-      endDate: "",
-      dosage: "",
-      durationInDays: "",
-      instructions: ""
+    setSelectedPrescription({
+      title: "",
+      notes: "",
+      status: "Active",
+      prescribedMedications: []
     });
     setIsAddMode(true);
     setShowModal(true);
   };
 
-  // Handle Save (Add)
-  const handleSave = async () => {
-    if (!selectedRecord || isAdding) return;
-
-    // Validation
-    if (!selectedRecord.prescriptionId) {
-      toast.error('Please select prescription ID.');
-      return;
-    }
-    if (!selectedRecord.medicationId) {
-      toast.error('Please select medication ID.');
-      return;
-    }
-    if (!selectedRecord.dosage) {
-      toast.error('Please enter dosage.');
-      return;
-    }
-
-    console.log('Saving medication:', selectedRecord);
-    const loadingToast = toast.loading('Adding medication...');
-
-    try {
-      const addData = {
-        ...selectedRecord,
-        startDate: selectedRecord.startDate ? new Date(selectedRecord.startDate).toISOString() : new Date().toISOString(),
-        endDate: selectedRecord.endDate ? new Date(selectedRecord.endDate).toISOString() : new Date().toISOString(),
-        durationInDays: parseInt(selectedRecord.durationInDays) || 0
-      };
-
-      console.log('Sending add data:', addData);
-
-      const res = await addPrescribedMedication(addData).unwrap();
-      
-      if (res?.succeeded) {
-        toast.success(res.message || "Medication added successfully");
-        toast.dismiss(loadingToast);
-        setShowModal(false);
-        setSelectedRecord(null);
-        triggerRefetch();
-      } else {
-        console.error("Failed to add medication", res);
-        toast.dismiss(loadingToast);
-        toast.error(res.message || "Failed to add medication");
-      }
-    } catch (error) {
-      toast.dismiss(loadingToast);
-      console.error('Add medication error:', error);
-      toast.error(error?.data?.message || "Error adding prescribed medication.");
-    }
+  // Handle Edit
+  const handleEdit = (prescription) => {
+    setSelectedPrescription({ ...prescription });
+    setIsAddMode(false);
+    setShowModal(true);
   };
 
-  // Form fields for modal
-  const medicationFields = [
-    {
-      name: "prescriptionId",
-      label: t("Prescription ID"),
-      type: "number",
-      placeholder: t("Enter prescription ID"),
-      required: true
-    },
-    {
-      name: "medicationId", 
-      label: t("Medication ID"),
-      type: "number",
-      placeholder: t("Enter medication ID"),
-      required: true
-    },
-    {
-      name: "startDate",
-      label: t("Start Date"),
-      type: "date",
-      placeholder: t("Select start date")
-    },
-    {
-      name: "endDate",
-      label: t("End Date"), 
-      type: "date",
-      placeholder: t("Select end date")
-    },
-    {
-      name: "dosage",
-      label: t("Dosage"),
-      type: "text",
-      placeholder: t("Enter dosage"),
-      required: true
-    },
-    {
-      name: "durationInDays",
-      label: t("Duration (Days)"),
-      type: "number", 
-      placeholder: t("Enter duration in days")
-    },
-    {
-      name: "instructions",
-      label: t("Instructions"),
-      type: "textarea",
-      placeholder: t("Enter instructions")
-    }
-  ];
+  // Handle Delete Click
+  const handleDeleteClick = (prescription) => {
+    setPrescriptionToDelete(prescription);
+  };
 
-  // Handle expand/collapse for instructions
-  const handleInstructionsClick = (id) => {
-    if (expandedRow === id) {
-      setExpandedRow(null);
-    } else {
-      setExpandedRow(id);
+  // Confirm Delete
+  const handleConfirmDelete = async () => {
+    if (!prescriptionToDelete) return;
+    
+    try {
+      const res = await deletePrescription(prescriptionToDelete.id).unwrap();
+      if (res?.succeeded) {
+        toast.success(res.message || "Prescription deleted successfully");
+        refetch();
+      } else {
+        toast.error(res.message || "Failed to delete prescription");
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || "Error deleting prescription");
     }
+    
+    setPrescriptionToDelete(null);
+  };
+
+  // Close Popup
+  const handleClosePopup = () => {
+    setPrescriptionToDelete(null);
+  };
+
+  const handleExpandClick = (id) => {
+    setExpandedRow(prev => prev === id ? null : id);
   };
 
   // Utility: truncate long text
@@ -249,73 +150,63 @@ const PrescribedMedicationTable = () => {
     return text.substring(0, maxLength) + "...";
   };
 
-  // Get matched fields for highlighting
-  const getMatchedFields = (highlightInfo) => {
-    if (!highlightInfo || !highlightInfo.matchedFields) return [];
-    return highlightInfo.matchedFields.map(field => field.fieldName);
+  // Format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
-  // Skeleton loading component for table rows
-  const TableSkeleton = () => {
-    return (
-      <>
-        {[...Array(5)].map((_, index) => (
-          <tr key={index}>
-            <td><Skeleton width={120} height={20} /></td>
-            <td><Skeleton width={80} height={20} /></td>
-            <td><Skeleton width={60} height={20} /></td>
-            <td>
-              <div className="d-flex align-items-center">
-                <Skeleton width={200} height={20} />
-                <Skeleton width={20} height={20} className="ms-2" />
-              </div>
-            </td>
-            <td><Skeleton width={150} height={20} /></td>
-            <td><Skeleton width={120} height={20} /></td>
-            <td><Skeleton width={100} height={20} /></td>
-            <td><Skeleton width={100} height={20} /></td>
-          </tr>
-        ))}
-      </>
-    );
-  };
-
-  const currentData = prescribedMedicationData?.data || [];
-  const totalItems = prescribedMedicationData?.totalCount || 0;
-  const totalPages = prescribedMedicationData?.totalPages || 1;
-  const searchTerm = appliedFilters.searchValue;
+  // Status options for filters
+  const statusOptions = [
+    { key: "Active", label: t("Active") },
+    { key: "Completed", label: t("Completed") },
+    { key: "Cancelled", label: t("Cancelled") },
+    { key: "Pending", label: t("Pending") },
+    { key: "Expired", label: t("Expired") }
+  ];
 
   return (
     <div className="table-container">
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
-          <h3 className="table-title">{t("PrescribedMedicationTable.table_title")}</h3>
-          <h6 className="table-subtitle">{t("PrescribedMedicationTable.table_subtitle")}</h6>
+          <h3 className="table-title">{t("Prescriptions")}</h3>
+          <h6 className="table-subtitle">{t("Manage patient prescriptions and medications")}</h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>
-            {t('PrescribedMedicationTable.add_medication')}
+            {t("Add New Prescription")}
           </button>
         </div>
       </div>
 
-      <div className="p-3">
+      <div className="">
         <div className="table-card">
           {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
               searchTerm={currentFilters.searchValue}
               setSearchTerm={(value) => setCurrentFilters(prev => ({ ...prev, searchValue: value }))}
-              filterDateFrom={currentFilters.fromDate}
-              setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, fromDate: date }))}
-              filterDateTo={currentFilters.toDate}
-              setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, toDate: date }))}
+              filterType={currentFilters.status}
+              setFilterType={(value) => setCurrentFilters(prev => ({ ...prev, status: value }))}
+              filterDateFrom={currentFilters.dateFrom}
+              setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, dateFrom: date }))}
+              filterDateTo={currentFilters.dateTo}
+              setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, dateTo: date }))}
               onReset={handleResetFilters}
               onSearch={handleSearch}
-              conditions={currentData}
-              showStatusFilter={false}
-              showSeverityFilter={false}
-              showConditionTypeFilter={false}
+              conditions={prescriptionsData?.data || []}
+              filterConfigs={[
+                {
+                  name: "status",
+                  label: "Status",
+                  data: statusOptions,
+                },
+              ]}
             />
           </div>
 
@@ -324,127 +215,138 @@ const PrescribedMedicationTable = () => {
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>{t("PrescribedMedicationTable.medication")}</th>
-                  <th>{t("PrescribedMedicationTable.dosage")}</th>
-                  <th>{t("PrescribedMedicationTable.duration")}</th>
-                  <th>{t("PrescribedMedicationTable.instructions")}</th>
-                  <th>{t("PrescribedMedicationTable.diagnosis_name")}</th>
-                  <th>{t("PrescribedMedicationTable.prescribed_name")}</th>
-                  <th>{t("PrescribedMedicationTable.category")}</th>
-                  <th>{t("created_at")}</th>
+                  <th>{t("Title")}</th>
+                  <th>{t("Diagnosis")}</th>
+                  <th>{t("Notes")}</th>
+                  <th>{t("Status")}</th>
+                  <th>{t("Medications")}</th>
+                  <th>{t("Created At")}</th>
+                  <th>{t("Actions")}</th>
                 </tr>
               </thead>
               <tbody>
                 {(isLoading || isFetching) ? (
-                  <TableSkeleton />
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <tr key={index}>
+                      <td><Skeleton width={150} height={15} /></td>
+                      <td><Skeleton width={120} height={15} /></td>
+                      <td><Skeleton width={200} height={15} /></td>
+                      <td><Skeleton width={80} height={15} /></td>
+                      <td><Skeleton width={60} height={15} /></td>
+                      <td><Skeleton width={100} height={15} /></td>
+                      <td><Skeleton width={80} height={15} /></td>
+                    </tr>
+                  ))
                 ) : error ? (
                   <tr>
-                    <td colSpan="8" className="text-center text-danger">
-                      <ErrorLoading
-                        isError={error}
-                        refetch={refetch}
-                      />
+                    <td colSpan="7" className="text-center text-danger">
+                      <ErrorLoading isError={error} refetch={refetch} />
                     </td>
                   </tr>
-                ) : currentData.length > 0 ? (
-                  currentData.map((medication) => (
-                    <React.Fragment key={medication.id}>
+                ) : prescriptionsData?.data && prescriptionsData.data.length > 0 ? (
+                  prescriptionsData.data.map((prescription) => (
+                    <React.Fragment key={prescription.id}>
                       <tr>
-                        <td title={medication.medicationName}>
-                          <HighlightText
-                            text={medication.medicationName}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="MedicationName"
-                          />
+                        <td>
+                          <strong>{prescription.title}</strong>
                         </td>
-                        <td title={medication.dosage}>
-                          <HighlightText
-                            text={medication.dosage}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="Dosage"
-                          />
-                        </td>
-                        <td title={`${medication.durationInDays} days`}>
-                          {medication.durationInDays} {t('PrescribedMedicationTable.days')}
+                        
+                        <td>
+                          {prescription.diagnosisName || "-"}
                         </td>
 
-                        <td title={medication.instructions}>
+                        {/* Notes with expand/collapse */}
+                        <td>
                           <div className="d-flex align-items-center">
-                            <span className="text-truncate" style={{ maxWidth: "250px" }}>
-                              <HighlightText
-                                text={truncateText(medication.instructions, 80)}
-                                searchTerm={searchTerm}
-                                matchedFields={getMatchedFields(medication.highlightInfo)}
-                                fieldName="Instructions"
-                              />
-                            </span>
-                            <Button
-                              className="view-btn ms-2"
-                              size="sm"
-                              style={{
-                                backgroundColor: "transparent",
-                                color: "#278fff",
-                                padding: 0,
-                                fontSize: "19px",
-                                height: "20px",
-                              }}
-                              onClick={() => handleInstructionsClick(medication.id)}
+                            <span
+                              className="text-truncate"
+                              style={{ maxWidth: "200px" }}
+                              title={prescription.notes}
                             >
-                              <MdExpandMore
+                              {truncateText(prescription.notes, 50)}
+                            </span>
+                            {prescription.notes && prescription.notes.length > 50 && (
+                              <Button
+                                className="view-btn ms-2"
+                                size="sm"
                                 style={{
-                                  transform:
-                                    expandedRow === medication.id
-                                      ? "rotate(180deg)"
-                                      : "rotate(0deg)",
-                                  transition: "transform 0.3s ease",
+                                  backgroundColor: "transparent",
+                                  color: "#278fff",
+                                  padding: 0,
+                                  fontSize: "19px",
+                                  height: "20px",
                                 }}
-                              />
-                            </Button>
+                                onClick={() => handleExpandClick(prescription.id)}
+                              >
+                                <MdExpandMore
+                                  style={{
+                                    transform: expandedRow === prescription.id ? "rotate(180deg)" : "rotate(0deg)",
+                                    transition: "transform 0.3s ease",
+                                  }}
+                                />
+                              </Button>
+                            )}
                           </div>
                         </td>
 
-                        <td title={medication.diagnosisName}>
-                          <HighlightText
-                            text={medication.diagnosisName}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="DiagnosisName"
-                          />
+                        <td>
+                          <span
+                            className={`badge ${
+                              prescription.status === "Active" ? "bg-success" :
+                              prescription.status === "Completed" ? "bg-primary" :
+                              prescription.status === "Cancelled" ? "bg-danger" :
+                              prescription.status === "Pending" ? "bg-warning" : "bg-secondary"
+                            }`}
+                          >
+                            {prescription.status}
+                          </span>
                         </td>
-                        <td title={medication.prescriptionName}>
-                          <HighlightText
-                            text={medication.prescriptionName}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="PrescriptionName"
-                          />
+
+                        <td>
+                          <span className="badge bg-info">
+                            {prescription.prescribedMedications?.length || 0}
+                          </span>
                         </td>
-                        <td title={medication.medicationCategoryName}>
-                          {medication.medicationCategoryName}
+
+                        <td>
+                          {formatDate(prescription.createdAt)}
                         </td>
-                        <td title={medication.createdAt}>
-                          {formatDate(medication.createdAt)}
+
+                        <td>
+                          <div style={{ display: "flex", gap: "8px" }}>
+                            <Button
+                              className="view-btn"
+                              variant=""
+                              size="sm"
+                              style={{ color: "#007bff", backgroundColor: "transparent" }}
+                              onClick={() => handleEdit(prescription)}
+                            >
+                              {t("Manage")}
+                            </Button>
+                            <Button
+                              className="view-btn"
+                              variant=""
+                              size="sm"
+                              style={{ color: "#dc3545", backgroundColor: "transparent" }}
+                              onClick={() => handleDeleteClick(prescription)}
+                            >
+                              {t("Delete")}
+                            </Button>
+                          </div>
                         </td>
                       </tr>
 
-                      {/* Expanded row for Instructions */}
-                      {expandedRow === medication.id && (
-                        <tr
-                          className="table-active-content"
-                          style={{ backgroundColor: "transparent" }}
-                        >
-                          <td
-                            colSpan="8"
-                            className="border-0 background-in-hover-none"
-                          >
-                            <div className="description-expanded-section">
-                              <TextAreaField
-                                label={t("PrescribedMedicationTable.instructions")}
-                                value={medication.instructions}
-                                disabled={true}
-                              />
+                      {/* Expanded row for Notes */}
+                      {expandedRow === prescription.id && prescription.notes && prescription.notes.length > 50 && (
+                        <tr className="table-active-content" style={{ backgroundColor: "transparent" }}>
+                          <td colSpan="7" className="border-0 background-in-hover-none">
+                            <div className="description-expanded-section p-3">
+                              <Card>
+                                <Card.Body>
+                                  <h6>{t("Notes")}</h6>
+                                  <p className="mb-0">{prescription.notes}</p>
+                                </Card.Body>
+                              </Card>
                             </div>
                           </td>
                         </tr>
@@ -453,10 +355,10 @@ const PrescribedMedicationTable = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="8" className="text-center text-muted">
-                      {appliedFilters.searchValue ?
-                        t('PrescribedMedicationTable.no_results_for_search', { search: appliedFilters.searchValue }) :
-                        t('PrescribedMedicationTable.no_records_found')
+                    <td colSpan="7" className="text-center text-muted">
+                      {currentFilters.searchValue ?
+                        t('No results found for search', { search: currentFilters.searchValue }) :
+                        t('No prescriptions found')
                       }
                     </td>
                   </tr>
@@ -466,39 +368,59 @@ const PrescribedMedicationTable = () => {
           </div>
 
           {/* Pagination */}
-          {prescribedMedicationData && prescribedMedicationData.data && prescribedMedicationData.data.length > 0 && (
+          {prescriptionsData && prescriptionsData.data && prescriptionsData.data.length > 0 && (
             <Pagination
               currentPage={currentPage}
-              totalItems={totalItems}
+              totalItems={prescriptionsData.totalCount || 0}
               rowsPerPage={pageSize}
               onPageChange={setCurrentPage}
-              totalPages={totalPages}
+              totalPages={prescriptionsData.totalPages || 1}
             />
           )}
         </div>
       </div>
 
-      {/* Modal for Add Medication */}
-      <DynamicEditModal
+      {/* Modal for Add/Edit */}
+      <DaynamicEditModal
         show={showModal}
         onClose={() => {
           setShowModal(false);
-          setSelectedRecord(null);
+          setSelectedPrescription(null);
         }}
-        onSave={handleSave}
-        record={selectedRecord}
-        setRecord={setSelectedRecord}
-        fields={medicationFields}
-        addMode={isAddMode}
-        title={t('PrescribedMedicationTable.add_medication')}
+        onSave={() => {
+          setShowModal(false);
+          setSelectedPrescription(null);
+          refetch();
+        }}
+        prescription={selectedPrescription}
+        isEdit={!isAddMode}
+        patientId={PATIENT_ID}
       />
 
-      <Toaster
-        position="top-right"
-        reverseOrder={true}
-      />
+      {/* Delete Confirmation Popup */}
+      {prescriptionToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('Confirm Delete')}
+          message={t('Are you sure you want to delete prescription') + ` "${prescriptionToDelete.title}"?`}
+          buttons={[
+            {
+              text: t('Cancel'),
+              onClick: handleClosePopup,
+              variant: "secondary"
+            },
+            {
+              text: t('Delete'),
+              onClick: handleConfirmDelete,
+              variant: "danger",
+              disabled: isDeleting
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };
 
-export default PrescribedMedicationTable;
+export default PatientPrescriptionTable;
