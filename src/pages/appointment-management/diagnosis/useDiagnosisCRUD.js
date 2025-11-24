@@ -6,10 +6,11 @@ import {
   useDeletePatientDiagnosisMutation
 } from "../../../api/patientDiagnosesApi";
 import { transformDiagnosisData } from "./diagnosisUtils";
+import { is } from "date-fns/locale/is";
 
 const PATIENT_ID = 4;
 
-export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
+export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [deletePopup, setDeletePopup] = useState({
@@ -22,11 +23,11 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
   const [addDiagnosis, { isLoading: isAdding }] = useAddPatientDiagnosisMutation(); 
   const [updateDiagnosis, { isLoading: isUpdating }] = useUpdatePatientDiagnosisMutation();
   const [deleteDiagnosis, { isLoading: isDeleting }] = useDeletePatientDiagnosisMutation();
-
-
+  console.log('isAdding:', isAdding, 'isUpdating:', isUpdating);
  const handleSaveDiagnosis = useCallback(async (diagnosisData) => {
   console.log('Saving diagnosis data:', diagnosisData);
-    if (isAdding || isUpdating ) return;
+  if (isAdding || isUpdating ) return;
+  // console.log('isAdding:', isAdding, 'isUpdating:', isUpdating);
   if (!diagnosisData) {
     console.error('No diagnosis data provided');
     toast.error("No diagnosis data to save");
@@ -52,6 +53,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
         setCurrentItems(prev => [newDiagnosis, ...prev]);
       }
       
+        checkAndRefetch(true);      
       return true;
     } else {
       toast.error(result.message || "Failed to save diagnosis");
@@ -108,7 +110,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
       return false;
     }
     }
-  }, [addDiagnosis, updateDiagnosis, setCurrentItems]);
+  }, [addDiagnosis, updateDiagnosis, setCurrentItems,isAdding,isUpdating]);
 
   const handleAddDiagnosis = useCallback(() => {
     const newDiagnosis = {
@@ -160,6 +162,8 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
   }, []);
 
   const handleConfirmDelete = useCallback(async () => {
+    console.log('isDeleting:', isDeleting);
+    if(isDeleting) return;
     if (deletePopup.diagnosisId) {
       const loadingToast = toast.loading('Deleting...');
       try {
@@ -174,6 +178,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
             setSelectedDiagnosis(null);            
             toast.dismiss(loadingToast);
             setCurrentItems(prev => prev.filter(item => item.diagnosisId !== deletePopup.diagnosisId));
+            checkAndRefetch();
           } else {
             toast.error(result.message || "Failed to delete diagnosis");
             toast.dismiss(loadingToast);
@@ -186,7 +191,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
         toast.dismiss(loadingToast);
       }
     }
-  }, [deletePopup, deleteDiagnosis, refetch, handleCloseDeleteConfirm]);
+  }, [deletePopup, deleteDiagnosis, refetch, handleCloseDeleteConfirm, isDeleting]);
 
   const handleDeleteDiagnosis = useCallback((id,diagnosisName) => {
     console.log('Deleting diagnosis with ID:', id, 'Name:', editingDiagnosis);
@@ -195,6 +200,8 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
 
   const handleSaveAndClose = useCallback(async () => {
     if (!editingDiagnosis) return;
+    if (isAdding || isUpdating) return;
+    console.log('===Saving and closing:', isAdding, isUpdating);
     
     const isEmptyNewDiagnosis =
       editingDiagnosis.isNew &&
@@ -214,10 +221,10 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems) => {
       setSelectedDiagnosis(null);
       setEditingDiagnosis(null);
     }
-  }, [editingDiagnosis, handleSaveDiagnosis]);
+  }, [editingDiagnosis, handleSaveDiagnosis , isAdding, isUpdating]);
 
   const handleCancelEdit = useCallback(() => {
-     console.log("handleCancelEdit","Selected Diagnosis:", selectedDiagnosis, "editingDiagnosis:", editingDiagnosis);
+    //  console.log("handleCancelEdit","Selected Diagnosis:", selectedDiagnosis, "editingDiagnosis:", editingDiagnosis);
       setCurrentItems(prev => prev.map(item => item.diagnosisId === editingDiagnosis.diagnosisId ? { ...item, ...editingDiagnosis,diagnosisName: selectedDiagnosis.diagnosisName,symptomsDescription: selectedDiagnosis.symptomsDescription,description: selectedDiagnosis.description ,code: selectedDiagnosis.code  } : item));
     console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
     if (editingDiagnosis?.isNew) {

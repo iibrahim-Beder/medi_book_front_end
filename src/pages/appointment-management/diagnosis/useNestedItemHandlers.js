@@ -57,7 +57,8 @@ export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,set
 }, [editingDiagnosis, setEditingDiagnosis]);
 
   const handleDeleteRecipe = useCallback(async (prescriptionId, recipeId) => {
-  if (!editingDiagnosis) return;
+    console.log('isDeletingPrescriptionMedication:', isDeletingPrescriptionMedication);
+    if (!editingDiagnosis||isDeletingPrescriptionMedication) return;
 
   try {
     const recipe = editingDiagnosis.prescriptions
@@ -494,7 +495,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
   }, [editingDiagnosis, setEditingDiagnosis]);
 
 const handleDeletePrescription = useCallback(async (prescriptionId) => {
-  if (!editingDiagnosis) return;
+  if (!editingDiagnosis||isDeletingPrescription) return;
 
   if (editingDiagnosis.isNew) {
     setEditingDiagnosis(prev => ({

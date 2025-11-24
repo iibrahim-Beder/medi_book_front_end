@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -10,13 +10,18 @@ import DeleteConfirmationPopup from "../diagnosis/DeleteConfirmationPopup";
 import { useDiagnosisCRUD } from "../diagnosis/useDiagnosisCRUD";
 import { transformDiagnosisData } from "../diagnosis/diagnosisUtils";
 import ErrorLoading from "../../shared/ErrorLoading";
+import { useDispatch } from "react-redux";
+import { patientDiagnosesApi } from "../../../api/patientDiagnosesApi";
+
 const DiagnosisMobileViewWithCRUD = () => {
   const { t } = useTranslation();
   const PATIENT_ID = 4;
-  
+
+  const dispatch = useDispatch();
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(3);
+  const [totalCount, setTotalCount] = useState(0);
 
   // API Call
   const {
@@ -47,19 +52,45 @@ const DiagnosisMobileViewWithCRUD = () => {
     handleCloseDeleteConfirm,
     handleConfirmDelete,
     handleDeleteDiagnosis,
+    isAdding,
+    isUpdating,
     handleUpdateDiagnosis
-  } = useDiagnosisCRUD(refetch, setCurrentItems); 
 
+
+  } = useDiagnosisCRUD(refetch, setCurrentItems,checkAndRefetch);
+    console.log('isAdding:', isAdding, 'isUpdating:', isUpdating);
   useEffect(() => {
     if (diagnosesData?.data) {
       const transformedData = diagnosesData.data.map(transformDiagnosisData);
+      setTotalCount(diagnosesData.totalCount);
       setCurrentItems(transformedData);
-      console.log("Updated currentItems from API:", transformedData);
+      console.log("Current Data:", currentItems);
     }
-  }, [diagnosesData]);
+  }, [diagnosesData]);  
   useEffect(() => {
-    if(currentItems.length === 0)refetch(); 
-  }, [handleConfirmDelete]);
+    console.log("Invalidating tags open " , currentItems.length);
+    if (currentItems.length>3) {
+        dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]))
+        console.log("Invalidating tags open====== " , currentItems.length);
+    }
+    
+  }, [currentPage]);
+ 
+
+  function checkAndRefetch(isAdding=false) {
+    if (isAdding) {
+    setTotalCount(prev => prev + 1);
+    return;
+    }
+    if (currentItems.length === 1 && currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    } else {
+      if ( currentItems.length === 1 && totalCount > 3) {
+        refetch();
+      }
+    }
+    setTotalCount(prev => prev - 1);
+  };
 
   if (error) {
     return (
@@ -97,7 +128,7 @@ const DiagnosisMobileViewWithCRUD = () => {
       {diagnosesData && (
         <Pagination
           currentPage={currentPage}
-          totalItems={diagnosesData.totalCount || 0}
+          totalItems={totalCount || 0}
           rowsPerPage={rowsPerPage}
           onPageChange={setCurrentPage}
           totalPages={diagnosesData.totalPages || 1}
@@ -114,6 +145,8 @@ const DiagnosisMobileViewWithCRUD = () => {
           onCancel={handleCancelEdit}
           onSave={handleSaveAndClose}
           onDelete={handleDeleteDiagnosis}
+          isAdding={isAdding}
+          isUpdating={isUpdating}
           t={t}
         />
       )}

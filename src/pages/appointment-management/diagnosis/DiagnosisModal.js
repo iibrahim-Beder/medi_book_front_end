@@ -7,6 +7,7 @@ import TwoLevelAccordion from "../../shared/TwoLevelAccordion";
 
 import { useNestedItemHandlers } from "./useNestedItemHandlers";
 import { createIndexBasedHandlers, createTwoLevelHandlers } from "./handlerUtils";
+import { is } from "date-fns/locale/is";
 
 const DiagnosisModal = ({
   editingDiagnosis,
@@ -35,6 +36,8 @@ const DiagnosisModal = ({
     handleDeleteRecipe,
     handleUpdateRecipe,
     handleSaveRecipe,
+    isAdding=false,
+    isUpdating = false,
     handleCancelNestedItem
   } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis,setCurrentItems);
 
@@ -296,7 +299,9 @@ const DiagnosisModal = ({
             {t("Delete")}
           </button>
         )}
-        <button className="second-btn" onClick={onSave}>
+        {console.log('isloading:',isAdding||isUpdating)}
+        {console.log('isAdding:' , isAdding, 'isUpdating:', isUpdating)}
+        <button className="second-btn" onClick={onSave} disabled={isUpdating}>
           {t("Save")}
         </button>
       </Modal.Footer>
