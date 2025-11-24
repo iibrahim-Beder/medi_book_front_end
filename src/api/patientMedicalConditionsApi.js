@@ -141,40 +141,40 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
       ],
     }),
 
-    // Update patient medical condition
-    updatePatientMedicalCondition: builder.mutation({
-      query: ({ conditionId, updates }) => {
-        const params = {
-          PatientMedicalConditionId: conditionId,
-          Severity: getSeverityValue(updates.severity),
-          IsActive: updates.isActive,
-          Notes: updates.notes
-        };
+// Update patient medical condition 
+updatePatientMedicalCondition: builder.mutation({
+  query: ({ conditionId, updates }) => {
+    const params = {
+      Id: conditionId, 
+      MedicalConditionId: updates.medicalConditionId, 
+      Severity: getSeverityValue(updates.severity),
+      IsActive: updates.isActive,
+      Notes: updates.notes || ''
+    };
 
-        console.log('Update Patient Medical Condition Params:', params);
+    console.log('Update Patient Medical Condition Params:', params);
 
-        return {
-          url: '/PatientMedicalConditions/UpdatePatientMedicalCondition',
-          method: 'PATCH',
-          params: params
-        };
-      },
-      invalidatesTags: (result, error, { conditionId }) => [
-        { type: 'PatientMedicalCondition', id: conditionId }
-      ],
-    }),
-
-    // Delete patient medical condition
+    return {
+      url: '/PatientMedicalConditions/UpdateInternalPatientMedicalConditions', 
+      method: 'PUT', 
+      params: params
+    };
+  },
+  invalidatesTags: (result, error, { conditionId }) => [
+    { type: 'PatientMedicalCondition', id: conditionId }
+  ],
+}),
+   // Delete patient medical condition 
     deletePatientMedicalCondition: builder.mutation({
       query: (conditionId) => {
         const params = {
-          PatientMedicalConditionId: conditionId
+          Id: conditionId 
         };
 
         console.log('Delete Patient Medical Condition Params:', params);
 
         return {
-          url: '/PatientMedicalConditions/DeletePatientMedicalCondition',
+          url: '/PatientMedicalConditions/DeleteInternalPatientMedicalCondition', 
           method: 'DELETE',
           params: params
         };
@@ -184,17 +184,6 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
       ],
     }),
 
-    // Get available medical conditions (for dropdown)
-    getAvailableMedicalConditions: builder.query({
-      query: () => ({
-        url: '/MedicalConditions/GetMedicalConditions',
-        params: {
-          PageNumber: 1,
-          PageSize: 100
-        }
-      }),
-      providesTags: ['MedicalCondition']
-    })
   }),
 });
 

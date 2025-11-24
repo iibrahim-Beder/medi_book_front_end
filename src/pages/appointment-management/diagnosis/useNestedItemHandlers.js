@@ -4,8 +4,14 @@ import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutati
 import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../api/patientDiagnosesApi";
 import {
   useAddPatientPrescriptionMutation, useUpdatePatientPrescriptionMutation, useDeletePatientPrescriptionMutation
-} from "../../../api/patientPrescriptionApi"; 
+} from "../../../api/patientPrescriptionApi";
+
+import {
+  useAddInternalPatientMedicalConditionMutation,useDeletePatientMedicalConditionMutation,useUpdatePatientMedicalConditionMutation
+} from "../../../api/patientMedicalConditionsApi";
+
 import toast from "react-hot-toast";
+import { t } from "i18next";
 export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,setCurrentItems) => {
   const [addPrescribedMedication, { isLoading: isAddingPrescriptionMedication }] = useAddPrescribedMedicationMutation();
   const [updatePrescribedMedication, { isLoading: isUpdatingPrescriptionMedication }] = useUpdatePrescribedMedicationMutation();
@@ -18,6 +24,10 @@ export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,set
   const [addDiagnosisNote, { isLoading: isAddingNote }] = useAddDiagnosisNoteMutation();
   const [updateDiagnosisNote, { isLoading: isUpdatingNote }] = useUpdateDiagnosisNoteMutation();
   const [deleteDiagnosisNote, { isLoading: isDeletingNote }] = useDeleteDiagnosisNoteMutation();
+
+   const [addInternalPatientMedicalCondition, { isLoading: isAddingCondition }] = useAddInternalPatientMedicalConditionMutation();
+   const [updatePatientMedicalCondition, { isLoading: isUpdatingCondition }] = useUpdatePatientMedicalConditionMutation(); 
+ const [deletePatientMedicalCondition, { isLoading: isDeletingCondition }] = useDeletePatientMedicalConditionMutation(); 
 
   // === Recipes Management ===
  const handleAddRecipe = useCallback((prescriptionId) => {
@@ -303,13 +313,48 @@ const handleSaveRecipe = useCallback(
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
 
-  const handleDeleteCondition = useCallback((conditionId) => {
-    if (!editingDiagnosis) return;
+const handleDeleteCondition = useCallback(async (conditionId) => {
+  if (!editingDiagnosis) return;  
+  const loadingToast = toast.loading('Deleting...');
+  try {
+    const condition = editingDiagnosis.conditions?.find(c => c.id === conditionId);
+    if (editingDiagnosis.isNew) {
+      setEditingDiagnosis(prev => ({
+      ...prev,
+      conditions: (prev.conditions || []).filter(condition => condition.id !== conditionId)
+    }));
+    }
+    
+    if (!condition) {
+      toast.error('Condition not found');
+      toast.dismiss(loadingToast);
+      return;
+    }
+
+    if (!condition.isNew) {
+      console.log('Deleting condition from API:', conditionId);
+      const result = await deletePatientMedicalCondition(conditionId).unwrap();
+      
+      if (result?.succeeded) {
+        toast.success(result?.message || 'Deleted Successfully');
+        toast.dismiss(loadingToast);
+      } else {
+        toast.error(result?.message || 'Failed to delete medical condition');
+        toast.dismiss(loadingToast);
+        return; 
+      }
+    }
     setEditingDiagnosis(prev => ({
       ...prev,
       conditions: (prev.conditions || []).filter(condition => condition.id !== conditionId)
     }));
-  }, [editingDiagnosis, setEditingDiagnosis]);
+  } catch (error) {
+    console.error('Error deleting condition:', error, "conditionId",conditionId);
+    toast.error(error?.data?.message || 'Error deleting medical condition');
+    toast.dismiss(loadingToast);
+  }
+  toast.dismiss(loadingToast);
+}, [editingDiagnosis, setEditingDiagnosis, deletePatientMedicalCondition]);
 
   const handleUpdateCondition = useCallback((conditionId, field, value) => {
     if (!editingDiagnosis) return;
@@ -321,15 +366,105 @@ const handleSaveRecipe = useCallback(
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
 
-  const handleSaveCondition = useCallback((conditionId, conditionData) => {
-    if (!editingDiagnosis) return;
-    setEditingDiagnosis(prev => ({
-      ...prev,
-      conditions: (prev.conditions || []).map(condition =>
-        condition.id === conditionId ? { ...conditionData, isNew: false, isExpanded: false } : condition
-      )
-    }));
-  }, [editingDiagnosis, setEditingDiagnosis]);
+const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
+  if (!editingDiagnosis||isAddingCondition||isUpdatingCondition) return false;
+  if(editingDiagnosis.isNew){ 
+     setEditingDiagnosis(prev => ({
+       ...prev,
+       conditions: (prev.conditions || []).map(condition =>
+         condition.id === conditionId ? { ...conditionData, isNew: false, isExpanded: false } : condition
+       )
+     }));
+    return;}
+
+  const loadingToast = toast.loading('Saving...');
+  try {
+    const condition = editingDiagnosis.conditions?.find(c => c.id === conditionId);
+    
+    if (!condition) {
+      toast.error('Condition not found');
+      return false;
+    }
+
+    let success = false;
+
+    if (condition.isNew) {
+      const payload = {
+        diagnosisId: editingDiagnosis.diagnosisId,
+        conditionData: {
+          medicalConditionId: conditionData.medicalCondition,  
+          severity: conditionData.severity,
+          notes: conditionData.notes || '',
+          isActive: true
+        }
+      };
+
+      console.log('Add Internal Patient Medical Condition Payload:', payload);
+      const result = await addInternalPatientMedicalCondition(payload).unwrap();
+
+      if (result?.succeeded) {
+        toast.success(result?.message || 'Added Successfully');
+        toast.dismiss(loadingToast);
+        success = true;
+
+        setEditingDiagnosis(prev => ({
+          ...prev,
+          conditions: (prev.conditions || []).map(condition =>
+            condition.id === conditionId 
+              ? { 
+                  ...conditionData, 
+                  id: result.data?.id || conditionId,
+                  isNew: false, 
+                  isExpanded: false 
+                }
+              : condition
+          )
+        }));
+      } else {
+        toast.error(result?.message || 'Failed to add condition');
+      }
+    } else {
+     const payload = {
+        conditionId: conditionId,
+        updates: {
+          medicalConditionId:conditionData.medicalCondition,
+          severity: conditionData.severity,
+          notes: conditionData.notes || '',
+          isActive: true
+        }
+      };
+
+      console.log('Update Patient Medical Condition Payload:', payload);
+      const result = await updatePatientMedicalCondition(payload).unwrap();
+
+      if (result?.succeeded) {
+        toast.success(result?.message || 'Updated Successfully');
+        toast.dismiss(loadingToast);
+        success = true;
+
+        setEditingDiagnosis(prev => ({
+          ...prev,
+          conditions: (prev.conditions || []).map(condition =>
+            condition.id === conditionId 
+              ? { ...conditionData, isExpanded: false }
+              : condition
+          )
+        }));
+      } else {
+        toast.error(result?.message || 'Failed to update condition');
+        toast.dismiss(loadingToast);
+      }
+    }
+
+    return success;
+  } catch (error) {
+    console.error('Error saving condition:', error);
+    toast.error(error?.data?.message || 'Error saving condition');
+    toast.dismiss(loadingToast);
+    return false;
+  }
+}, [editingDiagnosis, setEditingDiagnosis, addInternalPatientMedicalCondition, isAddingCondition, isUpdatingCondition]);
+
 
   // === Notes Management ===
   const handleAddNote = useCallback(() => {
