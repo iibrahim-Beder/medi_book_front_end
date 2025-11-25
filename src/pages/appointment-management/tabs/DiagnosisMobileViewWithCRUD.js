@@ -58,7 +58,6 @@ const DiagnosisMobileViewWithCRUD = () => {
 
 
   } = useDiagnosisCRUD(refetch, setCurrentItems,checkAndRefetch);
-    console.log('isAdding:', isAdding, 'isUpdating:', isUpdating);
   useEffect(() => {
     if (diagnosesData?.data) {
       const transformedData = diagnosesData.data.map(transformDiagnosisData);

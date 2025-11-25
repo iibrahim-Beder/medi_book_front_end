@@ -23,15 +23,17 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
   const [addDiagnosis, { isLoading: isAdding }] = useAddPatientDiagnosisMutation(); 
   const [updateDiagnosis, { isLoading: isUpdating }] = useUpdatePatientDiagnosisMutation();
   const [deleteDiagnosis, { isLoading: isDeleting }] = useDeletePatientDiagnosisMutation();
-  console.log('isAdding:', isAdding, 'isUpdating:', isUpdating);
+
+
  const handleSaveDiagnosis = useCallback(async (diagnosisData) => {
   console.log('Saving diagnosis data:', diagnosisData);
   if (isAdding || isUpdating ) return;
-  // console.log('isAdding:', isAdding, 'isUpdating:', isUpdating);
   if (!diagnosisData) {
     console.error('No diagnosis data provided');
     toast.error("No diagnosis data to save");
     return false;
+  }else{
+    if(!diagnosisData.diagnosisName) {toast.error('Diagnosis name is required.') ;return false ;};
   }
   const loadingToast = toast.loading('Saving...');
   if (diagnosisData.isNew) {
@@ -199,6 +201,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
   }, [handleShowDeleteConfirm]);
 
   const handleSaveAndClose = useCallback(async () => {
+    if(!editingDiagnosis.diagnosisName){toast.error('Diagnosis name is required.');return false;};
     if (!editingDiagnosis) return;
     if (isAdding || isUpdating) return;
     console.log('===Saving and closing:', isAdding, isUpdating);

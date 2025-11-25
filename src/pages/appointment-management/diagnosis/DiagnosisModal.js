@@ -299,8 +299,6 @@ const DiagnosisModal = ({
             {t("Delete")}
           </button>
         )}
-        {console.log('isloading:',isAdding||isUpdating)}
-        {console.log('isAdding:' , isAdding, 'isUpdating:', isUpdating)}
         <button className="second-btn" onClick={onSave} disabled={isUpdating}>
           {t("Save")}
         </button>

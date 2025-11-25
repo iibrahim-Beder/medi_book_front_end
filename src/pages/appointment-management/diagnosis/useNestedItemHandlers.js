@@ -33,9 +33,9 @@ export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,set
  const handleAddRecipe = useCallback((prescriptionId) => {
   console.log('Adding recipe for prescription ID:', prescriptionId);
   if (!editingDiagnosis) return;
-  
-   
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+if (editingDiagnosis?.prescriptions?.find(p => p.id === prescriptionId)?.recipes?.some(r => r.isNew)){
+   toast.error('Please save the previous medication first');return;} 
+ const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   const oneWeekLater = new Date();
   oneWeekLater.setDate(oneWeekLater.getDate() + 7);
   const endDate = oneWeekLater.toISOString().split('T')[0]; // YYYY-MM-DD
@@ -127,6 +127,8 @@ export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,set
 const handleSaveRecipe = useCallback(
   async (prescriptionId, recipeId, recipeData) => {
     if (!editingDiagnosis) return;
+    if( !recipeData.dosage  ) {toast.error('Please enter dosage'); return;};
+    if( !recipeData.durationInDays ) {toast.error('Please enter duration in days'); return;};
 
    if (editingDiagnosis.isNew) {
     setEditingDiagnosis(prev => ({
@@ -299,6 +301,7 @@ const handleSaveRecipe = useCallback(
     //  === Conditions Management ===
   const handleAddCondition = useCallback(() => {
     if (!editingDiagnosis) return;
+       if (editingDiagnosis.conditions?.[0]?.isNew) {toast.error('Please save the previous condition first'); return;}
     const newCondition = {
       id: `condition-${Date.now()}`,
       medicalCondition: "",
@@ -368,6 +371,8 @@ const handleDeleteCondition = useCallback(async (conditionId) => {
 
 const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
   if (!editingDiagnosis||isAddingCondition||isUpdatingCondition) return false;
+  if (!conditionData.medicalCondition){toast.error('Please select a medical condition'); return;} 
+
   if(editingDiagnosis.isNew){ 
      setEditingDiagnosis(prev => ({
        ...prev,
@@ -459,7 +464,7 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
     return success;
   } catch (error) {
     console.error('Error saving condition:', error);
-    toast.error(error?.data?.message || 'Error saving condition');
+    toast.error(error?.data?.title || 'Error saving condition');
     toast.dismiss(loadingToast);
     return false;
   }
@@ -469,6 +474,7 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
   // === Notes Management ===
   const handleAddNote = useCallback(() => {
     if (!editingDiagnosis) return;
+      if (editingDiagnosis.notes?.[0]?.isNew) {toast.error('Please save the previous note first'); return;}
     const newNote = {
       id: `note-${Date.now()}`,
       note: "",
@@ -523,6 +529,7 @@ const handleDeleteNote = useCallback(async (noteId) => {
 
 const handleSaveNote = useCallback(async (noteId, noteData) => {
   if (!editingDiagnosis || isUpdatingNote || isAddingNote ) return;
+  if (!noteData.note){ toast.error('Note cannot be empty'); return;}
   console.log('Editing Diagnosis:', editingDiagnosis, "noteId:", noteId, "noteData:", noteData);
         if(editingDiagnosis.isNew){
           setEditingDiagnosis(prev => ({...prev,notes: (prev.notes || []).map(note =>note.id === noteId ? { ...noteData, isNew: false, isExpanded: false } : note)}));
@@ -602,8 +609,8 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
 
     return success;
   } catch (error) {
-    // console.error('Error saving note:', error);
-    toast.error(error?.data?.message || 'Error saving note');
+    console.error('Error saving note:', error);
+    toast.error(error?.data?.title || 'Error saving note');
     toast.dismiss(loadingToast);
     return false;
   }
@@ -612,6 +619,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
   // === Prescriptions Management ===
   const handleAddPrescription = useCallback(() => {
     if (!editingDiagnosis) return;
+   if (editingDiagnosis.prescriptions?.[0]?.isNew) {toast.error('Please save the previous prescription first'); return;}
     const newPrescription = {
       id: `prescription-${Date.now()}`,
       title: "",
@@ -683,8 +691,10 @@ const handleDeletePrescription = useCallback(async (prescriptionId) => {
   }, [editingDiagnosis, setEditingDiagnosis]);
 
   const handleSavePrescription = useCallback(async (prescriptionId, prescriptionData) => {
-    // console.log('Saving prescription:', prescriptionData);
+    console.log('Saving prescription:', prescriptionData);
     if (!editingDiagnosis|| isAddingPrescription|| isUpdatingPrescription) return;
+    if (!prescriptionData.title){ toast.error('Prescription title is required'); return false;};
+    if (!prescriptionData.status){ toast.error('Prescription title is required'); return false;};
     if (editingDiagnosis.isNew) {
       setEditingDiagnosis(prev => ({
         ...prev,
