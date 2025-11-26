@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SelectDatePicker from "./SelectDatePicker";
 
 const Field = ({
   label,
@@ -23,6 +24,23 @@ const Field = ({
     if (onBlur) onBlur(e);
   };
 
+if (type==="date") {
+  return (
+     <SelectDatePicker
+     label={label}
+      name={name}
+      value={value}
+      onChange={onChange}
+      onBlur={handleBlur}
+      placeholder={placeholder}
+      error={error}
+      forceShowError={forceShowError}
+      disabled={disabled}
+      required={required}
+    />
+  );
+  
+}
   return (
     <div className={`form-group ${half ? "form-group-half" : ""} ${showError ? "has-error" : ""}`}>
       {label && (
