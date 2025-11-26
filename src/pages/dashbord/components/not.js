@@ -7,7 +7,7 @@ import {
   FaInfoCircle,
   FaTimes
 } from "react-icons/fa";
-import "./aaa.scss";
+import "./AlertMessage.scss";
 // this is components AlertCard
 export default function AlertCard({
   type = "warning", // success, warning, danger, info

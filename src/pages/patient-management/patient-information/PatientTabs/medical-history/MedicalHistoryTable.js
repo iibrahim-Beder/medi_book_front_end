@@ -1,318 +1,68 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import { Table, Button } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
-import MedicalHistoryModal from "./component/MedicalHistoryModal";
-import Pagination from "../../../shared/Pagination";
-import ConditionsFilters from "./component/ConditionsFilters";
+import MedicalHistoryModal from "../component/MedicalHistoryModal";
+import Pagination from "../../../../shared/Pagination";
+import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
-import "../../Patient-management.css";
-import PopupMessage from "../../../shared/PopupMessage";
+import "../../../Patient-management.css";
+import PopupMessage from "../../../../shared/PopupMessage";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useGetPatientMedicalHistoryQuery ,useDeleteMedicalHistoryMutation ,useUpdateMedicalHistoryMutation,useAddMedicalHistoryMutation} from "../../../../api/medicalHistoryApi";
-import HighlightText from "../../../shared/HighlightText";
-import TextAreaField from "../../../ui/form-fields/TextAreaField";
-import ErrorLoading from "../../../shared/ErrorLoading";
-import toast, { Toaster } from 'react-hot-toast';
-import {formatDate} from "../../../shared/FormatDate";
+import HighlightText from "../../../../shared/HighlightText";
+import TextAreaField from "../../../../ui/form-fields/TextAreaField";
+import ErrorLoading from "../../../../shared/ErrorLoading";
+import { useMedicalHistory } from "./useMedicalHistoryOperations";
+import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
 
 const MedicalHistoryTable = () => {
   const { t } = useTranslation();
-  const PATIENT_ID = 4;
-  const [expandedRow, setExpandedRow] = useState(null);
   
-  // Filters states
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0]; // YYYY-MM-DD
-  };
-
-  const [currentFilters, setCurrentFilters] = useState({
-    searchValue: "",
-    historyType: "",
-    dateFrom: null,
-    dateTo: null
-  });
-
-  const [appliedFilters, setAppliedFilters] = useState({
-    searchValue: "",
-    historyType: "",
-    dateFrom: null,
-    dateTo: null
-  });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
-
-  // Modal and UI state
-  const [showModal, setShowModal] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [recordToDelete, setRecordToDelete] = useState(null);
-  const [isAddMode, setIsAddMode] = useState(false);
-
-  // RTK Query with caching
-  const queryArgs = useMemo(() => {
-    const apiFilters = {
-      ...appliedFilters,
-      dateFrom: formatDateForAPI(currentFilters.dateFrom),
-      dateTo: formatDateForAPI(currentFilters.dateTo),
-    };
-
-    // Remove undefined and empty values
-    Object.keys(apiFilters).forEach(key => {
-      if (apiFilters[key] === undefined || apiFilters[key] === "") {
-        delete apiFilters[key];
-      }
-    });
-
-    return {
-      patientId: PATIENT_ID,
-      filter: apiFilters,
-      pageNumber: currentPage,
-      pageSize: pageSize
-    };
-  }, [appliedFilters, currentPage,currentFilters]);
-
   const {
-    data: medicalHistoryData,
+    // State
+    expandedRow,
+    currentFilters,
+    appliedFilters,
+    currentPage,
+    showModal,
+    showPopup,
+    selectedRecord,
+    recordToDelete,
+    isAddMode,
+    medicalHistoryData,
     isLoading,
     isFetching,
     error,
+    isDeleting,
+    pageSize,
+    
+    // Actions
+    handleSearch,
+    handleResetFilters,
+    handleAddNew,
+    handleEdit,
+    handleDeleteInModal,
+    handleClosePopup,
+    handleExpandClick,
+    handleSave,
+    handleConfirmDelete,
+    setCurrentPage,
+    setCurrentFilters,
+    setShowModal,
+    setSelectedRecord,
     refetch
-  } = useGetPatientMedicalHistoryQuery(queryArgs, {
-    // refetchOnFocus: false,         // Don't refetch when tab returns
-    // refetchOnReconnect: true,
-  });
-const [deleteMedicalHistory, { isLoading: isDeleting }] = useDeleteMedicalHistoryMutation();
-const [updateMedicalHistory, { isLoading: isUpdating }] = useUpdateMedicalHistoryMutation();
-const [addMedicalHistory, { isLoading: isAdding }] = useAddMedicalHistoryMutation();
+  } = useMedicalHistory(false);
 
-  // Trigger refetch after save/delete
-  const triggerRefetch = () => {
-    refetch();
-  };
+  const {
+    truncateText,
+    needsExpand,
+    historyTypes,
+    hereditaryDiseases,
+    fieldMapping,
+    formatDate
+  } = medicalHistoryHelpers(t);
 
-  const handleSearch = (filters) => {
-    setCurrentPage(1);
-    if (filters && typeof filters === "object") {
-      setAppliedFilters(filters);
-      setCurrentFilters(filters);
-    } else {
-      setAppliedFilters(currentFilters);
-    }
-  };
-
-  const handleResetFilters = () => {
-    const resetFilters = {
-      searchValue: "",
-      historyType: "",
-      dateFrom: null,
-      dateTo: null
-    };
-    setCurrentFilters(resetFilters);
-    setAppliedFilters(resetFilters);
-    setCurrentPage(1);
-  };
-
-  // Template for new record
-  const emptyRecord = {
-    historyType: "",
-    hereditaryDiseaseName: "",
-    description: "",
-    dateOfEvent: "",
-    relatedPerson: "",
-    notes: ""
-  };
-
-  // Field mapping for highlight
-  const fieldMapping = {
-    description: "Description",
-    hereditaryDiseaseName: "HereditaryDiseaseName",
-    relatedPerson: "RelatedPerson",
-    notes: "Notes"
-  };
-
-  // Handle Add New
-  const handleAddNew = () => {
-    setSelectedRecord({ ...emptyRecord });
-    setIsAddMode(true);
-    setShowModal(true);
-  };
-
-  // Handle Edit
-  const handleEdit = (history) => {
-    setSelectedRecord({ ...history });
-    setIsAddMode(false);
-    setShowModal(true);
-  };
-
-  // Handle Delete from Modal
-  const handleDeleteInModal = () => {
-    if (selectedRecord) {
-      setRecordToDelete(selectedRecord);
-      setShowPopup(true);
-    }
-  };
-  
-// Close Popup
-const handleClosePopup = () => {
-    setShowPopup(false);
-    setRecordToDelete(null);
-  };
-
-
-  const handleExpandClick = (id, field) => {
-    const key = `${id}-${field}`;
-    setExpandedRow(prev => prev === key ? null : key);
-  };
-
-  // Utility: truncate long text
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
-
-  // Check if field needs expand button
-  const needsExpand = (text, maxLength = 70) => {
-    return text && text.length > maxLength;
-  };
-  // History types for filters
-  const historyTypes = [
-    { key: "Surgery", label: t("Surgery") },
-    { key: "FamilyHistory", label: t("FamilyHistory") },
-    { key: "Hospitalization", label: t("Hospitalization") },
-    { key: "Vaccination", label: t("Vaccination") },
-    { key: "Accident", label: t("Accident") },
-    { key: "Others", label: t("Others") }
-  ];
-
-  // Hereditary diseases for modal
-  const hereditaryDiseases = [
-    t("Diabetes"),
-    t("Heart Disease"),
-    t("Cancer"),
-    t("Hypertension"),
-    t("Asthma"),
-    t("Mental Health Disorders"),
-    t("Other")
-  ];
-
-
-
-  ///// ======   api functions   ===== \\\\\\\\
-
-// Handle Save (Add/Update)
-const handleSave = async () => {
-  if (!selectedRecord||isDeleting||isUpdating||isAdding) return;
-  if (selectedRecord.historyType==="") {
-    toast.error('Please select a medical history type.');
-    return;
-  }
-  console.log('Saving record:', selectedRecord);
-  const loadingToast = toast.loading('Saving...');
-
-if (isAddMode) {
-   try {
-      const addData = {
-        ...selectedRecord,
-        // dateOfEvent: formatDateForAddAPI(selectedRecord.dateOfEvent)
-      };
-
-      console.log('Sending add data:', addData);
-
-      const res = await addMedicalHistory({ 
-        patientId: PATIENT_ID, 
-        ...addData 
-      }).unwrap();
-      
-      if (res?.succeeded) {
-        toast.success(res.message || "Added Successfully");
-        toast.dismiss(loadingToast);
-        setShowModal(false);
-        setSelectedRecord(null);
-        // triggerRefetch();
-      } else {
-        console.error("Failed to add", res);
-        toast.dismiss(loadingToast);
-        toast.error(res.message || "Failed to add");
-      }
-    } catch (error) {
-      toast.dismiss(loadingToast);
-      console.error('Add error:', error);
-      toast.error(error?.data?.message || "Error adding medical history record.");
-    }
-  } else {
-
-  try {
-    const updateData = {
-      ...selectedRecord,
-    };
-
-    console.log('Sending update data:',   updateData);
-
-    const res = await updateMedicalHistory({ 
-      historyId: selectedRecord.id, 
-      patientId: PATIENT_ID, 
-      updates: updateData 
-    }).unwrap();
-    
-    if (res?.succeeded) {
-      console.log("Updated Successfully");
-      toast.success(res.message || "Updated Successfully");
-      toast.dismiss(loadingToast);
-      setShowModal(false);
-      setSelectedRecord(null);
-      triggerRefetch();
-    } else {
-      console.error("Failed to update", res);
-      toast.dismiss(loadingToast);
-      toast.error(res.message || "Failed to update");
-    }
-  } catch (error) {
-    toast.dismiss(loadingToast);
-    console.error('Update error:', error);
-    toast.error(error?.data?.message || "Error updating medical history record.");
-  }}
-
-
-};
-
-// Delete
-const handleConfirmDelete = async () => {
-  if (!recordToDelete) return;
-  
-      const loadingToast = toast.loading('Deleting...');
-  try {
-    const res = await deleteMedicalHistory({ 
-      historyId: recordToDelete.id, 
-      patientId: PATIENT_ID 
-    }).unwrap();
-    
-    
-    if (res?.succeeded) {
-      console.log("Deleted Successfully");
-      toast.success(res.message || "Deleted Successfully");
-      toast.dismiss(loadingToast);
-      
-       
-      setShowPopup(false);
-      setRecordToDelete(null);
-      setShowModal(false);
-      
-    } else {
-      console.error("Failed to delete", res);
-      toast.error(res.message || "Failed to delete");
-      toast.dismiss(loadingToast);
-    }
-  } catch (error) {
-    toast.dismiss(loadingToast);
-    toast.error(error?.data?.message || "Error deleting this medical history record.");
-    setShowPopup(false);
-  }
-};
+   
 
   return (
     <div className="table-container">
@@ -452,7 +202,7 @@ const handleConfirmDelete = async () => {
                               style={{ maxWidth: "250px" }}
                             >
                               <HighlightText
-                                text={truncateText(history.description, 50)}
+                                text={truncateText(history.description || "-", 50)}
                                 searchTerm={medicalHistoryData.searchTerm}
                                 matchedFields={history.highlightInfo?.matchedFields || []}
                                 fieldName={fieldMapping.description}
@@ -551,7 +301,7 @@ const handleConfirmDelete = async () => {
                         </td>
                       </tr>
 
-                      {/* Expanded row for Hereditary Disease */}
+                      {/* Expanded rows */}
                       {expandedRow === `${history.id}-hereditary` && needsExpand(history.hereditaryDiseaseName, 50) && (
                         <tr className="table-active-content" style={{ backgroundColor: "transparent" }}>
                           <td colSpan="9" className="border-0 background-in-hover-none">
@@ -566,7 +316,6 @@ const handleConfirmDelete = async () => {
                         </tr>
                       )}
 
-                      {/* Expanded row for Description */}
                       {expandedRow === `${history.id}-description` && needsExpand(history.description, 50) && (
                         <tr className="table-active-content" style={{ backgroundColor: "transparent" }}>
                           <td colSpan="9" className="border-0 background-in-hover-none">
@@ -581,7 +330,6 @@ const handleConfirmDelete = async () => {
                         </tr>
                       )}
 
-                      {/* Expanded row for Notes */}
                       {expandedRow === `${history.id}-notes` && needsExpand(history.notes, 80) && (
                         <tr className="table-active-content" style={{ backgroundColor: "transparent" }}>
                           <td colSpan="9" className="border-0 background-in-hover-none">
@@ -661,7 +409,6 @@ const handleConfirmDelete = async () => {
           onClose={handleClosePopup}
           />
         )}
-      
     </div>
   );
 };

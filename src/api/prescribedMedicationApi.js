@@ -99,33 +99,65 @@ export const prescribedMedicationApi = baseApi.injectEndpoints({
         method: 'POST',
         body: medicationData
       }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PrescribedMedication', id: patientId }
+      transformResponse: (response, meta, arg) => {
+        console.log('Add Prescribed Medication Response:', response);
+        return response;
+      },
+      transformErrorResponse: (response, meta, arg) => {
+        console.error('Add Prescribed Medication Error:', response);
+        return response;
+      },
+      invalidatesTags: (result, error, arg) => [
+        { type: 'PrescribedMedication', id: 'LIST' }
       ],
-    }),
-
-    // Update prescribed medication
+    }),   
+    // Update prescribed medication - CORRECTED
     updatePrescribedMedication: builder.mutation({
-      query: ({ medicationId, updates }) => ({
-        url: `/PrescribedMedication/UpdatePrescribedMedication/${medicationId}`,
-        method: 'PUT',
-        body: updates
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PrescribedMedication', id: patientId }
+      query: ({ prescribedMedicationId, updates }) => {
+        console.log('Update Prescribed Medication Params:', prescribedMedicationId, updates);
+        const body = {
+          prescribedMedicationId: prescribedMedicationId,
+          medicationId: updates.medicationId||40,
+          dosage: updates.dosage,
+          durationInDays: updates.durationInDays,
+          instructions: updates.instructions,
+          startDate: updates.startDate || new Date().toISOString(),
+          endDate: updates.endDate || new Date().toISOString(),
+          isActive: updates.isActive !== undefined ? updates.isActive : true
+        };
+
+        console.log('Update Prescribed Medication Body:', body);
+
+        return {
+          url: '/PrescribedMedication/UpdatePrescribedMedication',
+          method: 'PUT',
+          body: body
+        };
+      },
+      invalidatesTags: (result, error, { prescribedMedicationId }) => [
+        { type: 'PrescribedMedication', id: prescribedMedicationId }
       ],
     }),
 
-    // Delete prescribed medication
+    // Delete prescribed medication - CORRECTED
     deletePrescribedMedication: builder.mutation({
-      query: (medicationId) => ({
-        url: `/PrescribedMedication/DeletePrescribedMedication/${medicationId}`,
-        method: 'DELETE'
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PrescribedMedication', id: patientId }
+      query: (prescribedMedicationId) => {
+        const params = {
+          Id: prescribedMedicationId
+        };
+
+        console.log('Delete Prescribed Medication Params:', params);
+
+        return {
+          url: '/PrescribedMedication/DeletePrescribedMedication',
+          method: 'DELETE',
+          params: params
+        };
+      },
+      invalidatesTags: (result, error, prescribedMedicationId) => [
+        { type: 'PrescribedMedication', id: prescribedMedicationId }
       ],
-    })
+    }),
   }),
 });
 

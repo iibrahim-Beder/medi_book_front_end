@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Table, Button } from "react-bootstrap";
-import {MdExpandMore} from "react-icons/md";
+import { MdExpandMore } from "react-icons/md";
 import DynamicEditModal from "../../../../../shared/DynamicEditModal";
 import Pagination from "../../../../../shared/Pagination";
 import ConditionsFilters from "../../component/ConditionsFilters";
@@ -9,24 +9,29 @@ import "../../../../Patient-management.css";
 import PopupMessage from "../../../../../shared/PopupMessage";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useLazyGetExternalPatientMedicalConditionsQuery } from "../../../../../../api/patientOtherMedicalConditionsApi";
+import { 
+  useGetExternalPatientMedicalConditionsQuery,
+  useDeletePatientMedicalConditionMutation,
+  useUpdatePatientMedicalConditionMutation,
+  useAddPatientMedicalConditionMutation
+} from "../../../../../../api/patientOtherMedicalConditionsApi";
 import HighlightText from "../../../../../shared/HighlightText";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
-
-
+import toast, { Toaster } from 'react-hot-toast';
+import { formatDate } from "../../../../../shared/FormatDate";
 const OtherMedicalConditions = () => {
   const { t } = useTranslation();
-  const PATIENT_ID = 4; 
+  const PATIENT_ID = 4;
 
   const [expandedRow, setExpandedRow] = useState(null);
   
-  // Filters states
   const formatDateForAPI = (date) => {
-  if (!date) return undefined;
-  const d = new Date(date);
-  return d.toISOString().split('T')[0]; // YYYY-MM-DD
-};
+    if (!date) return undefined;
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // YYYY-MM-DD
+  };
+
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
     isActive: "All",
@@ -46,7 +51,7 @@ const OtherMedicalConditions = () => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize] = useState(5);
 
   // Modal and UI state
   const [showModal, setShowModal] = useState(false);
@@ -55,46 +60,47 @@ const OtherMedicalConditions = () => {
   const [recordToDelete, setRecordToDelete] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
 
-  // RTK Query
-  const [triggerGetMedicalConditions, { 
-    data: medicalConditionsData, 
-    isLoading, 
-    isFetching, 
-    error 
-  }] = useLazyGetExternalPatientMedicalConditionsQuery();
-  console.log("Medical Conditions Data:", medicalConditionsData);
-  useEffect(() => {
-     setAppliedFilters(currentFilters);
-    fetchMedicalConditions();
-  }, [currentPage, appliedFilters,  currentFilters.diagnosisDateFrom,
-  currentFilters.diagnosisDateTo,]);
-
-  const fetchMedicalConditions = () => {
+  const queryArgs = useMemo(() => {
     const apiFilters = {
       ...appliedFilters,
-   isActive: appliedFilters.isActive === "All" ? undefined : 
+      diagnosisDateFrom: formatDateForAPI(currentFilters.diagnosisDateFrom),
+      diagnosisDateTo: formatDateForAPI(currentFilters.diagnosisDateTo),
+      isActive: appliedFilters.isActive === "All" ? undefined : 
                 appliedFilters.isActive === "Active" ? true :
-                appliedFilters.isActive === "Inactive" ? false : undefined,
-                diagnosisDateFrom: formatDateForAPI(appliedFilters.diagnosisDateFrom),
-                diagnosisDateTo: formatDateForAPI(appliedFilters.diagnosisDateTo),
-                    };
+                appliedFilters.isActive === "Inactive" ? false : undefined
+    };
 
-                    
-          console.log('API Filters:', apiFilters);
-          // Remove undefined and empty values
+    // Remove undefined and empty values
     Object.keys(apiFilters).forEach(key => {
       if (apiFilters[key] === undefined || apiFilters[key] === "") {
         delete apiFilters[key];
       }
     });
 
-    triggerGetMedicalConditions({
+    return {
       patientId: PATIENT_ID,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
-    });
-    console.log('==================== API Filters:', apiFilters);
+    };
+  }, [appliedFilters, currentPage, currentFilters]); 
+
+  const {
+    data: medicalConditionsData,
+    isLoading,
+    isFetching,
+    error,
+    refetch
+  } = useGetExternalPatientMedicalConditionsQuery(queryArgs);
+
+  // Mutations
+  const [deleteMedicalCondition, { isLoading: isDeleting }] = useDeletePatientMedicalConditionMutation();
+  const [updateMedicalCondition, { isLoading: isUpdating }] = useUpdatePatientMedicalConditionMutation();
+  const [addMedicalCondition, { isLoading: isAdding }] =      useAddPatientMedicalConditionMutation();
+
+  // Trigger refetch after save/delete
+  const triggerRefetch = () => {
+    refetch();
   };
 
   const handleSearch = (filters) => {
@@ -138,7 +144,8 @@ const OtherMedicalConditions = () => {
       name: "medicalConditionName", 
       label: t('OtherMedicalConditions.medical_condition_name'), 
       type: "text", 
-      placeholder: t('OtherMedicalConditions.enter_condition_name') 
+      placeholder: t('OtherMedicalConditions.enter_condition_name'),
+      required: true
     },
     { 
       name: "categoryName", 
@@ -156,7 +163,8 @@ const OtherMedicalConditions = () => {
         { value: "Severe", label: t('OtherMedicalConditions.severity_options.Severe') },
         { value: "Critical", label: t('OtherMedicalConditions.severity_options.Critical') }
       ], 
-      placeholder: t('OtherMedicalConditions.select_severity') 
+      placeholder: t('OtherMedicalConditions.select_severity'),
+      required: true
     },
     { 
       name: "conditionType", 
@@ -180,8 +188,18 @@ const OtherMedicalConditions = () => {
       ], 
       placeholder: t('OtherMedicalConditions.select_status') 
     },
-    { name: "diagnosedDate", label: t('OtherMedicalConditions.diagnosed_date'), type: "date", placeholder: t('OtherMedicalConditions.select_date') },
-    { name: "note", label: t('OtherMedicalConditions.notes'), type: "textarea", placeholder: t('OtherMedicalConditions.enter_notes') },
+    { 
+      name: "diagnosedDate", 
+      label: t('OtherMedicalConditions.diagnosed_date'), 
+      type: "date", 
+      placeholder: t('OtherMedicalConditions.select_date') 
+    },
+    { 
+      name: "note", 
+      label: t('OtherMedicalConditions.notes'), 
+      type: "textarea", 
+      placeholder: t('OtherMedicalConditions.enter_notes') 
+    },
   ];
 
   // Field mapping for highlight
@@ -205,40 +223,11 @@ const OtherMedicalConditions = () => {
     setShowModal(true);
   };
 
-  // Handle Save (Add/Update)
-  const handleSave = () => {
-    if (!selectedRecord) return;
-
-    console.log('Saving record:', selectedRecord);
-    
-    setShowModal(false);
-    setSelectedRecord(null);
-    fetchMedicalConditions();
-  };
-
-  // Handle Delete Click
-  const handleDeleteClick = (condition) => {
-    setRecordToDelete(condition);
-    setShowPopup(true);
-  };
-
   // Handle Delete from Modal
   const handleDeleteInModal = () => {
     if (selectedRecord) {
       setRecordToDelete(selectedRecord);
       setShowPopup(true);
-    }
-  };
-
-  // Confirm Delete
-  const handleConfirmDelete = () => {
-    if (recordToDelete) {
-      console.log('Deleting record:', recordToDelete);
-      
-      setShowPopup(false);
-      setRecordToDelete(null);
-      setShowModal(false);
-      fetchMedicalConditions();
     }
   };
 
@@ -253,6 +242,122 @@ const OtherMedicalConditions = () => {
       setExpandedRow(null);
     } else {
       setExpandedRow(id);
+    }
+  };
+
+  ///// ====== API functions ===== \\\\\\
+
+  // Handle Save (Add/Update)
+  const handleSave = async () => {
+    if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
+    
+    if (!selectedRecord.medicalConditionName) {
+      toast.error('Please enter medical condition name.');
+      return;
+    }
+
+    if (!selectedRecord.severity) {
+      toast.error('Please select severity.');
+      return;
+    }
+
+    console.log('Saving record:', selectedRecord);
+    const loadingToast = toast.loading('Saving...');
+
+    if (isAddMode) {
+      try {
+        const addData = {
+          ...selectedRecord,
+          diagnosedDate: formatDateForAPI(selectedRecord.diagnosedDate)
+        };
+
+        console.log('Sending add data:', addData);
+
+        const res = await addMedicalCondition({ 
+          patientId: PATIENT_ID, 
+          ...addData 
+        }).unwrap();
+        
+        if (res?.succeeded) {
+          toast.success(res.message || "Added Successfully");
+          toast.dismiss(loadingToast);
+          setShowModal(false);
+          setSelectedRecord(null);
+          triggerRefetch();
+        } else {
+          console.error("Failed to add", res);
+          toast.dismiss(loadingToast);
+          toast.error(res.message || "Failed to add");
+        }
+      } catch (error) {
+        toast.dismiss(loadingToast);
+        console.error('Add error:', error);
+        toast.error(error?.data?.message || "Error adding medical condition.");
+      }
+    } else {
+      try {
+        const updateData = {
+          ...selectedRecord,
+          diagnosedDate: formatDateForAPI(selectedRecord.diagnosedDate)
+        };
+
+        console.log('Sending update data:', updateData);
+
+        const res = await updateMedicalCondition({ 
+          conditionId: selectedRecord.id, 
+          patientId: PATIENT_ID, 
+          updates: updateData 
+        }).unwrap();
+        
+        if (res?.succeeded) {
+          console.log("Updated Successfully");
+          toast.success(res.message || "Updated Successfully");
+          toast.dismiss(loadingToast);
+          setShowModal(false);
+          setSelectedRecord(null);
+          triggerRefetch();
+        } else {
+          console.error("Failed to update", res);
+          toast.dismiss(loadingToast);
+          toast.error(res.message || "Failed to update");
+        }
+      } catch (error) {
+        toast.dismiss(loadingToast);
+        console.error('Update error:', error);
+        toast.error(error?.data?.message || "Error updating medical condition.");
+      }
+    }
+  };
+
+  // Delete
+  const handleConfirmDelete = async () => {
+    if (!recordToDelete) return;
+    
+    const loadingToast = toast.loading('Deleting...');
+    try {
+      const res = await deleteMedicalCondition({ 
+        conditionId: recordToDelete.id, 
+        patientId: PATIENT_ID 
+      }).unwrap();
+      
+      if (res?.succeeded) {
+        console.log("Deleted Successfully");
+        toast.success(res.message || "Deleted Successfully");
+        toast.dismiss(loadingToast);
+        
+        setShowPopup(false);
+        setRecordToDelete(null);
+        setShowModal(false);
+        triggerRefetch();
+      } else {
+        console.error("Failed to delete", res);
+        toast.dismiss(loadingToast);
+        toast.error(res.message || "Failed to delete");
+      }
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error(error?.data?.message || "Error deleting this medical condition.");
+      setShowPopup(false);
     }
   };
 
@@ -287,17 +392,6 @@ const OtherMedicalConditions = () => {
     return text.substring(0, maxLength) + "...";
   };
 
-  // Format date
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   return (
     <div className="table-container">
       <div className="table-header" style={{ marginBottom: "10px" }}>
@@ -314,13 +408,12 @@ const OtherMedicalConditions = () => {
 
       <div className="">
         <div className="table-card">
-          {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
               searchTerm={currentFilters.searchValue}
               setSearchTerm={(value) => setCurrentFilters(prev => ({ ...prev, searchValue: value }))}
-              // filterType={currentFilters.conditionType}
-              // setFilterType={(value) => setCurrentFilters(prev => ({ ...prev, conditionType: value }))}
+              filterType={currentFilters.conditionType}
+              setFilterType={(value) => setCurrentFilters(prev => ({ ...prev, conditionType: value }))}
               filterStatus={currentFilters.isActive}
               setFilterStatus={(value) => setCurrentFilters(prev => ({ ...prev, isActive: value }))}
               filterSeverity={currentFilters.severity}
@@ -333,31 +426,31 @@ const OtherMedicalConditions = () => {
               onSearch={handleSearch}
               conditions={medicalConditionsData?.data || []}
               filterConfigs={[
-              {
-                name: "isActive",
-                label: "Status",
-                data: ["All", "Active", "Inactive"].map((opt) => ({
-                  key: opt,
-                  label: opt,
-                })),
-              },
-              {
-                name: "conditionType",
-                label: "Condition Type",
-                data: ["External", " Acute", "Chronic", "Internal" ].map((opt) => ({
-                  key: opt,
-                  label: opt,
-                })),
-              },
-              {
-                name: "severity",
-                label: "Severity",
-                data: ["Mild", "Moderate", "Severe"].map((opt) => ({
-                  key: opt,
-                  label: opt,
-                })),
-              },
-            ]}
+                {
+                  name: "isActive",
+                  label: "Status",
+                  data: ["All", "Active", "Inactive"].map((opt) => ({
+                    key: opt,
+                    label: opt,
+                  })),
+                },
+                {
+                  name: "conditionType",
+                  label: "Condition Type",
+                  data: ["External", "Acute", "Chronic", "Internal"].map((opt) => ({
+                    key: opt,
+                    label: opt,
+                  })),
+                },
+                {
+                  name: "severity",
+                  label: "Severity",
+                  data: ["Mild", "Moderate", "Severe"].map((opt) => ({
+                    key: opt,
+                    label: opt,
+                  })),
+                },
+              ]}
             />
           </div>
 
@@ -389,15 +482,17 @@ const OtherMedicalConditions = () => {
                       <td><Skeleton width={90} height={15} /></td>
                       <td><Skeleton width={60} height={15} /></td>
                       <td><Skeleton width={150} height={15} /></td>
+                      <td><Skeleton width={100} height={15} /></td>
+                      <td><Skeleton width={100} height={15} /></td>
                       <td><Skeleton width={80} height={15} /></td>
                     </tr>
                   ))
                 ) : error ? (
                   <tr>
-                    <td colSpan="8" className="text-center text-danger">
+                    <td colSpan="10" className="text-center text-danger">
                       <ErrorLoading
                         isError={error}
-                        refetch={fetchMedicalConditions}
+                        refetch={refetch}
                       />
                     </td>
                   </tr>
@@ -490,8 +585,8 @@ const OtherMedicalConditions = () => {
                               )}
                             </div>
                           </td>
-                      <td>{formatDate(condition.createdAt)}</td>
-                      <td>{formatDate(condition.updatedAt)}</td>
+                          <td>{formatDate(condition.createdAt)}</td>
+                          <td>{formatDate(condition.updatedAt)}</td>
                           <td>
                             <div style={{ display: "flex", gap: "8px" }}>
                               <Button
@@ -505,7 +600,6 @@ const OtherMedicalConditions = () => {
                               </Button>
                             </div>
                           </td>
-                  
                         </tr>
 
                         {/* Expanded row for Notes */}
@@ -515,7 +609,7 @@ const OtherMedicalConditions = () => {
                             style={{ backgroundColor: "transparent" }}
                           >
                             <td
-                              colSpan="8"
+                              colSpan="10"
                               className="border-0 background-in-hover-none"
                             >
                               <div className="description-expanded-section">
@@ -533,7 +627,7 @@ const OtherMedicalConditions = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="8" className="text-center text-muted">
+                    <td colSpan="10" className="text-center text-muted">
                       {appliedFilters.searchValue ? 
                         t('OtherMedicalConditions.no_results_for_search', { search: appliedFilters.searchValue }) :
                         t('OtherMedicalConditions.no_records_found')
@@ -591,12 +685,18 @@ const OtherMedicalConditions = () => {
             { 
               text: t('Delete'), 
               onClick: handleConfirmDelete, 
-              variant: "danger" 
+              variant: "danger",
+              disabled: isDeleting
             }
           ]}
           onClose={handleClosePopup}
         />
       )}
+
+      <Toaster
+        position="top-right"
+        reverseOrder={true}
+      />
     </div>
   );
 };
