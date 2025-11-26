@@ -23,11 +23,11 @@ const MedicalHistoryModal = ({
 }) => {
 
   const historyTypes = [
-    { id: "0", label: "select medical history type" },
+    { id: "0", label: "select a history type" },
     { id: "1", label: "Surgery" },
     { id: "2", label: "Accident" },
     { id: "3", label: "Hospitalization" },
-    { id: "4", label: "FamilyHistory" },
+    { id: "4", label: "Family History" },
     { id: "5", label: "Vaccination" },
     { id: "6", label: "Others" }
   ];

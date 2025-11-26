@@ -1351,7 +1351,7 @@
     "no_results_for_search": "No results found for \"{{search}}\"",
     "history_type_options": {
       "Surgery": "Surgery",
-      "FamilyHistory": "Family History", 
+      "Family History": "Family History", 
       "Hospitalization": "Hospitalization",
       "Vaccination": "Vaccination",
       "Accident": "Accident",

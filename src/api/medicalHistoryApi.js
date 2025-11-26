@@ -19,7 +19,7 @@ const transformHistoryTypeToUI = (historyType) => {
     1: 'Surgery',
     2: 'Accident',
     3: 'Hospitalization',
-    4: 'FamilyHistory',
+    4: 'Family History',
     5: 'Vaccination',
     6: 'others'
   };
@@ -47,8 +47,9 @@ const transformMedicalHistoryData = (response, searchValue = "") => {
   const transformedData = response.data.map(item => ({
     id: item.id,
     historyId: item.id,
-    historyType:item.historyType,
+    historyType:item.historyType==="FamilyHistory"?"Family History":item.historyType,
     hereditaryDiseaseName: item.hereditaryDiseaseName,
+    // hereditaryDiseaseName: "test hereditaryDiseaseName",
     description: item.description,
     dateOfEvent: item.dateOfEvent,
     relatedPerson: item.relatedPerson,
@@ -120,7 +121,9 @@ export const medicalHistoryApi = baseApi.injectEndpoints({
         const params = {
           PatientId: patientId,
           HistoryType: transformHistoryTypeToAPI(historyData.historyType),
-          ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: historyData.hereditaryDiseaseName }),
+          HereditaryDiseaseId: 34,
+          ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: 22 }),
+          // ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: historyData.hereditaryDiseaseName }),
           ...(historyData.description && { Description: historyData.description }),
           ...(historyData.dateOfEvent && { DateOfEvent: historyData.dateOfEvent }),
           ...(historyData.relatedPerson && { RelatedPerson: historyData.relatedPerson }),
@@ -148,6 +151,7 @@ export const medicalHistoryApi = baseApi.injectEndpoints({
     const params = {
       Id: historyId,
       HistoryType: transformHistoryTypeToAPI(updates.historyType),
+      HereditaryDiseaseId: 29,
       ...(updates.hereditaryDiseaseName && { HereditaryDiseaseName: updates.hereditaryDiseaseName }),
       ...(updates.description && { Description: updates.description }),
       ...(updates.dateOfEvent && { DateOfEvent: updates.dateOfEvent }),
