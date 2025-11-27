@@ -68,7 +68,7 @@ const transformMedicalConditionData = (response, searchValue = "") => {
 export const patientMedicalConditionsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get patient medical conditions
-    getPatientMedicalConditions: builder.query({
+  getPatientMedicalConditions: builder.query({
       query: ({ 
         patientId, 
         filter = {}, 
@@ -78,21 +78,21 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
       }) => {
         const params = {
           PatientId: patientId,
-          ...(filter.searchValue && { 'MedicalConditionSearchFilter.SearchValue': filter.searchValue }),
-          ...(filter.fromDate && { 'MedicalConditionSearchFilter.FromDate': filter.fromDate }),
-          ...(filter.toDate && { 'MedicalConditionSearchFilter.ToDate': filter.toDate }),
-          ...(filter.severity !== undefined && { 'MedicalConditionSearchFilter.Severity': filter.severity }),
-          ...(filter.conditionType && { 'MedicalConditionSearchFilter.ConditionType': filter.conditionType }),
-          ...(filter.isActive !== undefined && { 'MedicalConditionSearchFilter.IsActive': filter.isActive }),
-          ...(orderBy && { 'MedicalConditionOrdering': orderBy }),
           ...(pageNumber && { 'PageNumber': pageNumber }),
-          ...(pageSize && { 'PageSize': pageSize })
+          ...(pageSize && { 'PageSize': pageSize }),
+          ...(orderBy && { 'OrderBy': orderBy }),
+          ...(filter.searchValue && { 'PatientMedicalConditionFilter.SearchValue': filter.searchValue }),
+          ...(filter.fromDate && { 'PatientMedicalConditionFilter.DateFrom': filter.fromDate }),
+          ...(filter.toDate && { 'PatientMedicalConditionFilter.DateTo': filter.toDate }),
+          ...(filter.severity !== undefined && { 'PatientMedicalConditionFilter.Severity': filter.severity }),
+          ...(filter.conditionType && { 'PatientMedicalConditionFilter.ConditionType': filter.conditionType }),
+          ...(filter.isActive !== undefined && { 'PatientMedicalConditionFilter.IsActive': filter.isActive })
         };
 
         console.log('Patient Medical Conditions API Request Params:', params);
 
         return {
-          url: '/PatientMedicalConditions/GetPatientMedicalConditions',
+          url: '/PatientMedicalConditions/GetInternalPatientMedicalConditions', // Updated URL
           params,
           timeout: 10000
         };
@@ -116,6 +116,7 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
         { type: 'PatientMedicalCondition', id: patientId }
       ],
     }),
+
 
     // Add internal patient medical condition
     addInternalPatientMedicalCondition: builder.mutation({
