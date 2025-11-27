@@ -262,7 +262,7 @@
     font-size: 12px;
     font-weight: 700;
 }
-.rdp-range_end .rdp-day_button , .rdp-range_start .rdp-day_button{
+.rdp-range_end .rdp-day_button , .rdp-range_start .rdp-day_button, .datepicker .rdp-selected .rdp-day_button{
     background-color: #3fabf3 !important;
     border: #3fabf3 solid 1px !important;
 }
@@ -273,7 +273,8 @@
     border-radius: 0 6px 6px 0 !important;
     margin-left: -3px;
 }
-.rdp-range_start.rdp-range_end .rdp-day_button {
+.datepicker .rdp-selected .rdp-day_button{color: white;}
+.rdp-range_start.rdp-range_end .rdp-day_button,.datepicker .rdp-selected .rdp-day_button {
   border-radius: 6px !important;
 }
 /* .rdp-range_end .rdp-day_button */
