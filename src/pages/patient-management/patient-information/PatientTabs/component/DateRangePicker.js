@@ -3,7 +3,6 @@ import { format, subDays, startOfDay, endOfDay, startOfMonth, endOfMonth, subMon
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
-import './DateRangePicker.css';
 import { t } from 'i18next';
 
 const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {

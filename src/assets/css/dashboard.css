@@ -2905,7 +2905,7 @@ background-color: var(--scbccolor);
 	float: none;
 	width: auto;
 	margin: -5px;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 .dc-userform fieldset .form-group{
 	margin: 0;
@@ -5730,6 +5730,7 @@ html[dir="rtl"]  {
 }
 /* <<< */
 @media (max-width: 720px){
+	.patient-management-container .p-4{padding: 0 !important; }
 	.doctor-registration .title-with-icon{
 		flex-direction: column;
 		gap: 10px;
@@ -5910,7 +5911,6 @@ padding: 0 10px;
             padding-left: 10px !important;
         }
 	}}
-/* <<< */
 }	
 
 	.PatientsFilters{padding: 10px !important;}

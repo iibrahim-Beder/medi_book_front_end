@@ -98,9 +98,3 @@ font-size: 28px;
   transform: translateY(0);
       box-shadow: 0 0 15px 0 var(--shadocolor);
 }
-
-.alert-neutral.hide { 
-  opacity: 0;
-  transform: translateY(50px);
-  pointer-events: none;
-}
