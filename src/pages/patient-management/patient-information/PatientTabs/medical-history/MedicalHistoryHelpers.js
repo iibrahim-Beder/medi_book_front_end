@@ -9,7 +9,7 @@ export const medicalHistoryHelpers = (t) => {
   const needsExpand = (text, maxLength = 70) => {
     return text && text.length > maxLength;
   };  const formatDate = (dateString) => {
- formatDateMain(dateString)
+  return formatDateMain(dateString)
   };
 
   const historyTypes = [

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { format, parse, isValid, startOfDay } from 'date-fns';
+import { format, parse, isValid } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
@@ -22,25 +22,31 @@ const SelectDatePicker = ({
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
 
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null); // Date object كامل (مع الساعة)
   const [tempDate, setTempDate] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [manualInput, setManualInput] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [inputError, setInputError] = useState('');
-  const [month, setMonth] = useState(new Date()); // State for current month
+  const [month, setMonth] = useState(new Date());
 
   const dropdownRef = useRef();
   const inputRef = useRef();
 
+  // تحويل القيمة اللي جاية من الـ backend لـ Date object كامل
   useEffect(() => {
-    // Initialize dates from value prop
-    if (value && isValid(new Date(value))) {
-      const dateValue = startOfDay(new Date(value));
-      setSelectedDate(dateValue);
-      setTempDate(dateValue);
-      setMonth(dateValue); // Set month to selected date
-      setManualInput(format(dateValue, 'dd/MM/yyyy'));
+    if (value) {
+      const date = new Date(value); // يدعم ISO string كامل
+      if (isValid(date)) {
+        setSelectedDate(date);
+        setTempDate(date);
+        setMonth(date);
+        setManualInput(format(date, 'dd/MM/yyyy'));
+      } else {
+        setSelectedDate(null);
+        setTempDate(null);
+        setManualInput('');
+      }
     } else {
       setSelectedDate(null);
       setTempDate(null);
@@ -55,13 +61,12 @@ const SelectDatePicker = ({
         setIsEditing(false);
         setTouched(true);
         if (onBlur) {
-          const syntheticEvent = {
+          onBlur({
             target: {
-              name: name,
-              value: selectedDate
+              name,
+              value: selectedDate ? selectedDate.toISOString().slice(0, -1) : null
             }
-          };
-          onBlur(syntheticEvent);
+          });
         }
       }
     };
@@ -71,105 +76,101 @@ const SelectDatePicker = ({
 
   const handleDateSelect = (date) => {
     if (date && isValid(date)) {
-      const selected = startOfDay(date);
+      // لا نستخدم startOfDay أبدًا → نحتفظ بالوقت الحالي
+      const now = new Date();
+      const selected = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        now.getHours(),
+        now.getMinutes(),
+        now.getSeconds(),
+        now.getMilliseconds()
+      );
+
       setSelectedDate(selected);
-      setTempDate(selected);
-      setMonth(selected); // Update month to selected date
+      setTempDate(date); // للـ DayPicker بس
+      setMonth(date);
       setManualInput(format(selected, 'dd/MM/yyyy'));
       setShowDropdown(false);
       setIsEditing(false);
       setTouched(true);
       setInputError('');
-      
-      // Trigger onChange with event-like object to match Field component
-      const syntheticEvent = {
+
+      onChange?.({
         target: {
-          name: name,
-          value: selected
+          name,
+          value: selected.toISOString().slice(0, -1) // 2025-11-27T10:22:05.7395677
         }
-      };
-      onChange?.(syntheticEvent);
+      });
     }
   };
 
   const formatDate = () => {
     if (!selectedDate || !isValid(selectedDate)) return '';
-    try {
-      return format(selectedDate, 'dd/MM/yyyy');
-    } catch (error) {
-      console.error('Error formatting date:', error);
-      return '';
-    }
+    return format(selectedDate, 'dd/MM/yyyy');
   };
 
   const handleManualInputChange = (e) => {
-    const value = e.target.value;
-    setManualInput(value);
+    const val = e.target.value.replace(/[^\d/]/g, '').slice(0, 10);
+    setManualInput(val);
     setInputError('');
   };
 
   const handleManualInputSubmit = () => {
-    // Handle empty input
     if (manualInput.trim() === '') {
       setSelectedDate(null);
       setTempDate(null);
+      setInputError('');
+      onChange?.({ target: { name, value: null } });
       setShowDropdown(false);
       setIsEditing(false);
       setTouched(true);
-      setInputError('');
-      
-      const syntheticEvent = {
-        target: {
-          name: name,
-          value: null
-        }
-      };
-      onChange?.(syntheticEvent);
       return;
     }
 
-    const datePattern = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
-    const match = manualInput.match(datePattern);
-    
-    if (match) {
-      const [, day, month, year] = match;
-      
-      // Validate day and month ranges
-      const dayNum = parseInt(day, 10);
-      const monthNum = parseInt(month, 10);
-      
-      if (dayNum < 1 || dayNum > 31 || monthNum < 1 || monthNum > 12) {
-        setInputError('Invalid date');
-        return;
-      }
-      
-      const dateStr = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-      const parsedDate = parse(dateStr, 'yyyy-MM-dd', new Date());
-      
-      if (isValid(parsedDate)) {
-        const selected = startOfDay(parsedDate);
-        setSelectedDate(selected);
-        setTempDate(selected);
-        setMonth(selected); // Update month to selected date
-        setShowDropdown(false);
-        setIsEditing(false);
-        setTouched(true);
-        setInputError('');
-        
-        // Trigger onChange with event-like object
-        const syntheticEvent = {
-          target: {
-            name: name,
-            value: selected
-          }
-        };
-        onChange?.(syntheticEvent);
-      } else {
-        setInputError('Invalid date');
-      }
-    } else {
+    const match = manualInput.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (!match) {
       setInputError('Please use format: DD/MM/YYYY');
+      return;
     }
+
+    const [, day, month, year] = match;
+    const dateStr = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    const parsed = parse(dateStr, 'yyyy-MM-dd', new Date());
+
+    if (!isValid(parsed)) {
+      setInputError('Invalid date');
+      return;
+    }
+
+    // نضيف الوقت الحالي عشان ما يتغيرش
+    const now = new Date();
+    const finalDate = new Date(
+      parsed.getFullYear(),
+      parsed.getMonth(),
+      parsed.getDate(),
+      now.getHours(),
+      now.getMinutes(),
+      now.getSeconds(),
+      now.getMilliseconds()
+    );
+
+    setSelectedDate(finalDate);
+    setTempDate(parsed);
+    setMonth(parsed);
+    setManualInput(format(finalDate, 'dd/MM/yyyy'));
+    setShowDropdown(false);
+    setIsEditing(false);
+    setTouched(true);
+    setInputError('');
+
+    onChange?.({
+      target: {
+        name,
+        value: finalDate.toISOString().slice(0, -1)
+      }
+    });
   };
 
   const handleInputFocus = () => {
@@ -178,39 +179,28 @@ const SelectDatePicker = ({
     setShowDropdown(true);
   };
 
-  const handleInputBlur = (e) => {
+  const handleInputBlur = () => {
     setTimeout(() => {
       if (!showDropdown) {
         setIsEditing(false);
         setTouched(true);
-        if (onBlur) {
-          const syntheticEvent = {
-            target: {
-              name: name,
-              value: selectedDate
-            }
-          };
-          onBlur(syntheticEvent);
-        }
       }
     }, 200);
   };
 
   const handleIconClick = () => {
     if (disabled) return;
-    
     if (isEditing) {
       handleManualInputSubmit();
     } else {
       setShowDropdown(!showDropdown);
-      if (!showDropdown) {
-        setIsEditing(true);
-      }
+      if (!showDropdown) setIsEditing(true);
     }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleManualInputSubmit();
     }
   };
@@ -231,19 +221,15 @@ const SelectDatePicker = ({
             {icon}
           </span>
         )}
-        <div
-          className="DateRangePicker datepicker"
-          style={{ position: "relative", width }}
-          ref={dropdownRef}
-        >
+        <div className="DateRangePicker datepicker" style={{ position: "relative", width }} ref={dropdownRef}>
           <div style={{ position: "relative", width: "100%" }}>
             <CiCalendar
               onClick={handleIconClick}
               style={{
                 position: "absolute",
                 top: "50%",
-                transform: "translateY(-50%)",
                 left: "8px",
+                transform: "translateY(-50%)",
                 color: "#012047",
                 cursor: disabled ? "not-allowed" : "pointer",
                 zIndex: 2,
@@ -255,17 +241,15 @@ const SelectDatePicker = ({
               ref={inputRef}
               type="text"
               className={`form-control Select1 DateRangePickerMain ${showError ? "input-error" : ""}`}
-              id={name}
-              name={name}
               value={displayValue}
               onChange={handleManualInputChange}
               onFocus={handleInputFocus}
               onBlur={handleInputBlur}
               onKeyDown={handleKeyDown}
               disabled={disabled}
-              autoComplete="off"
+              placeholder={placeholder}
               style={{
-                padding: "10px 40px 10px 10px",
+                padding: "10px 40px 10px 35px",
                 width: "100%",
                 borderRadius: "5px",
                 border: inputError || showError ? "1px solid #ff4d4f" : "1px solid #E6E8EE",
@@ -275,109 +259,46 @@ const SelectDatePicker = ({
                 boxSizing: "border-box",
                 opacity: disabled ? 0.6 : 1
               }}
-              placeholder={placeholder}
             />
 
             {(inputError || showError) && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  color: "#ff4d4f",
-                  fontSize: "12px",
-                  marginTop: "4px",
-                }}
-              >
+              <div style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                color: "#ff4d4f",
+                fontSize: "12px",
+                marginTop: "4px",
+              }}>
                 {inputError || error}
               </div>
             )}
           </div>
 
           {showDropdown && !disabled && (
-            <div className="">
-              <div
-                className='list-date-option open'
-                style={{
-                  padding: "8px",
-                  backgroundColor: "#fff",
-                  border: "1px solid #E6E8EE",
-                  borderRadius: "5px",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                  position: 'absolute',
-                  zIndex: 1000,
-                  marginTop: '4px'
+            <div style={{
+              position: 'absolute',
+              zIndex: 1000,
+              marginTop: '4px',
+              backgroundColor: "#fff",
+              border: "1px solid #E6E8EE",
+              borderRadius: "5px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              padding: "8px"
+            }}>
+              <DayPicker
+                mode="single"
+                selected={tempDate}
+                onSelect={handleDateSelect}
+                month={month}
+                onMonthChange={setMonth}
+                styles={{
+                  caption: { display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' },
+                  caption_label: { textTransform: "capitalize", fontWeight: 'bold' },
+                  day: { cursor: "pointer", borderRadius: "3px" },
+                  selected: { backgroundColor: "#3fabf3", color: "white", fontWeight: 'bold' }
                 }}
-              >
-                <DayPicker
-                  mode="single"
-                  selected={tempDate}
-                  onSelect={handleDateSelect}
-                  month={month} // Control the displayed month
-                  onMonthChange={setMonth} // Update month when user navigates
-                  formatters={{
-                    formatCaption: (month, options) => format(month, "MMM yyyy", { locale: options?.locale }),
-                  }}
-                  styles={{
-                    caption: { 
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '1rem'
-                    },
-                    caption_label: { 
-                      textTransform: "capitalize",
-                      fontWeight: 'bold'
-                    },
-                    nav: {
-                      display: 'flex',
-                      gap: '0.5rem'
-                    },
-                    day: { 
-                      cursor: "pointer",
-                      borderRadius: "3px",
-                      transition: 'all 0.2s ease'
-                    },
-                    selected: {
-                      backgroundColor: "#3fabf3",
-                      color: "white",
-                      fontWeight: 'bold'
-                    }
-                  }}
-                  components={{
-                    IconLeft: ({ ...props }) => (
-                      <button
-                        {...props}
-                        style={{
-                          ...props.style,
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          fontSize: '1.2rem',
-                          padding: '0.25rem'
-                        }}
-                      >
-                        ‹
-                      </button>
-                    ),
-                    IconRight: ({ ...props }) => (
-                      <button
-                        {...props}
-                        style={{
-                          ...props.style,
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          fontSize: '1.2rem',
-                          padding: '0.25rem'
-                        }}
-                      >
-                        ›
-                      </button>
-                    ),
-                  }}
-                />
-              </div>
+              />
             </div>
           )}
         </div>

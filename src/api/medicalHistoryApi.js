@@ -121,8 +121,8 @@ export const medicalHistoryApi = baseApi.injectEndpoints({
         const params = {
           PatientId: patientId,
           HistoryType: transformHistoryTypeToAPI(historyData.historyType),
-          HereditaryDiseaseId: 34,
-          ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: 22 }),
+          // HereditaryDiseaseId: 34, 
+          // ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: 22 }),
           // ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: historyData.hereditaryDiseaseName }),
           ...(historyData.description && { Description: historyData.description }),
           ...(historyData.dateOfEvent && { DateOfEvent: historyData.dateOfEvent }),
