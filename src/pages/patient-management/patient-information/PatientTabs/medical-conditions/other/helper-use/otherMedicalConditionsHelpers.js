@@ -6,9 +6,9 @@ export const otherMedicalConditionsHelpers = (t) => {
     { 
       name: "medicalConditionName", 
       label: t('OtherMedicalConditions.medical_condition_name'), 
-      type: "text", 
+      type: "dropdown", 
       placeholder: t('OtherMedicalConditions.enter_condition_name'),
-      required: true
+      // required: true
     },
     { 
       name: "categoryName", 
@@ -65,14 +65,12 @@ export const otherMedicalConditionsHelpers = (t) => {
     },
   ];
 
-  // Field mapping for highlight
   const fieldMapping = {
     medicalConditionName: "MedicalConditionName",
     categoryName: "CategoryName",
     note: "Note"
   };
 
-  // Filter configurations
   const filterConfigs = [
     {
       name: "isActive",
@@ -100,7 +98,6 @@ export const otherMedicalConditionsHelpers = (t) => {
     },
   ];
 
-  // ترجمة القيم
   const translateSeverity = (severity) => {
     return t(`OtherMedicalConditionsMobileView.severity_options.${severity?.toLowerCase()}`);
   };

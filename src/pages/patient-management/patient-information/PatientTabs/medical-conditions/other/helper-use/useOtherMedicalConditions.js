@@ -160,6 +160,8 @@ export const useOtherMedicalConditions = () => {
     //   toast.error('Please select severity.');
     //   return;
     // }
+    
+    console.log('Selected Record:', selectedRecord);
 
     const loadingToast = toast.loading('Saving...');
 

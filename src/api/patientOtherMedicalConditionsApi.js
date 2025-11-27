@@ -129,7 +129,8 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
           ...(filter.diagnosisDateTo && { 'PatientMedicalConditionFilter.DateTo': filter.diagnosisDateTo }),
           ...(orderBy && { 'OrderBy': orderBy }),
           ...(pageNumber && { 'PageNumber': pageNumber }),
-          ...(pageSize && { 'PageSize': pageSize })
+          ...(pageSize && { 'PageSize': pageSize }),
+          orderBy:1
         };
 
         console.log('API Request Params:', params); 
@@ -224,7 +225,7 @@ addExternalPatientMedicalCondition: builder.mutation({
     // Delete Medical Condition - Fixed parameter
     deleteExternalPatientMedicalCondition: builder.mutation({
       query: (data) => ({ // Accept object with conditionId
-        url: `/PatientMedicalConditions/DeleteExternalPatientMedicalCondition/${data.conditionId}`,
+        url: `/PatientMedicalConditions/DeleteExternalPatientMedicalCondition?id=${data.conditionId}`,
         method: 'DELETE'
       }),
       invalidatesTags: (result, error, { patientId }) => [
