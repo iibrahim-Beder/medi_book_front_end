@@ -66,7 +66,7 @@ const DynamicEditModal = ({
       });
     }
   };
-console.log(record);
+// console.log(record);
   return (
     <Modal show={show} onHide={onClose} centered className="custom-edit-modal">
       <Modal.Header style={{
