@@ -68,7 +68,7 @@ const DropdownWithSearch = ({
     setPage(0);
   }, [searchTerm]);
 
-  const displayValue = value ? value.name : `Select ${type}`;
+  const displayValue = value?.name ? value.name : `Select ${type}`;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
