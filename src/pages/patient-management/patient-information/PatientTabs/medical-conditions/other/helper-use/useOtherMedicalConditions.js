@@ -49,8 +49,8 @@ export const useOtherMedicalConditions = () => {
   const queryArgs = useMemo(() => {
     const apiFilters = {
       ...appliedFilters,
-      diagnosisDateFrom: formatDateForAPI(appliedFilters.diagnosisDateFrom), // Use appliedFilters
-      diagnosisDateTo: formatDateForAPI(appliedFilters.diagnosisDateTo), // Use appliedFilters
+      diagnosisDateFrom: formatDateForAPI(currentFilters.diagnosisDateFrom), 
+      diagnosisDateTo: formatDateForAPI(currentFilters.diagnosisDateTo), 
       isActive: appliedFilters.isActive === "All" ? undefined : 
                 appliedFilters.isActive === "Active" ? true :
                 appliedFilters.isActive === "Inactive" ? false : undefined
@@ -69,7 +69,7 @@ export const useOtherMedicalConditions = () => {
       pageNumber: currentPage,
       pageSize: pageSize
     };
-  }, [appliedFilters, currentPage, pageSize]);
+  }, [appliedFilters, currentPage, pageSize,currentFilters]);
 
   const {
     data: medicalConditionsData,
@@ -151,7 +151,8 @@ export const useOtherMedicalConditions = () => {
   const handleSave = async () => {
     if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
     
-    if (!selectedRecord.MedicalConditionId) {
+    if (!selectedRecord.medicalConditionId) {
+      console.log('Selected Record:', selectedRecord);
       toast.error('Please select a medical condition.');
       return;
     }

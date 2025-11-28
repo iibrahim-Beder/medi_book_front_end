@@ -1,285 +1,86 @@
-// OtherMedicalConditionsMobileView.jsx
-import React, { useState, useEffect, useCallback } from "react";
-import { Button, Card } from "react-bootstrap";
-import "../../../../Patient-management.css";
-import ConditionsFilters from "../../component/ConditionsFilters";
+import {  Card } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../../../../shared/Pagination";
 import PopupMessage from "../../../../../shared/PopupMessage";
 import DynamicEditModal from "../../../../../shared/DynamicEditModal";
-import {
-  useLazyGetExternalPatientMedicalConditionsQuery,
-} from "../../../../../../api/patientOtherMedicalConditionsApi";
 import HighlightText from "../../../../../shared/HighlightText";
-import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import Skeleton from "react-loading-skeleton";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
-const PATIENT_ID = 4;          
-const PAGE_SIZE = 5;        
+import ConditionsFilters from "../../component/ConditionsFilters";
+
+import { useOtherMedicalConditions } from "./helper-use/useOtherMedicalConditions";
+import { otherMedicalConditionsHelpers } from "./helper-use/otherMedicalConditionsHelpers";
+
+import "../../../../Patient-management.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const OtherMedicalConditionsMobileView = () => {
   const { t } = useTranslation();
 
+  const {
+    // State
+    expandedRow,
+    currentFilters,
+    appliedFilters,
+    currentPage,
+    showModal,
+    showPopup,
+    selectedRecord,
+    recordToDelete,
+    isAddMode,
+    medicalConditionsData,
+    isLoading,
+    isFetching,
+    error,
+    isDeleting,
+    pageSize,
 
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split("T")[0]; // YYYY-MM-DD
-  };
+    // Actions
+    handleSearch,
+    handleResetFilters,
+    handleAddNew,
+    handleEdit,
+    handleDeleteInModal,
+    handleClosePopup,
+    handleNotesClick, 
+    handleSave,
+    handleConfirmDelete,
+    setCurrentPage,
+    setCurrentFilters,
+    setShowModal,
+    setSelectedRecord,
+    refetch,
 
-  const [currentFilters, setCurrentFilters] = useState({
-    searchValue: "",
-    isActive: "All",
-    severity: "",
-    conditionType: "",
-    diagnosisDateFrom: null,
-    diagnosisDateTo: null,
-  });
+    // Utilities
+    getSeverityColor,
+    getStatusInfo,
+  } = useOtherMedicalConditions();
 
-  const [appliedFilters, setAppliedFilters] = useState({ ...currentFilters });
-  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    fields,
+    fieldMapping,
+    filterConfigs,
+    formatDate,
+    translateSeverity,
+    translateConditionType,
+    translateStatus,
+  } = otherMedicalConditionsHelpers(t);
 
- 
-  const [triggerGet, { data: apiData, isLoading, isFetching, error }] =
-    useLazyGetExternalPatientMedicalConditionsQuery();
+  const conditions = medicalConditionsData?.data || [];
+  const totalItems = medicalConditionsData?.totalCount || 0;
+  const totalPages = medicalConditionsData?.totalPages || 1;
 
-  const fetchData = useCallback(() => {
-    const apiFilters = {
-      ...appliedFilters,
-      isActive:
-        appliedFilters.isActive === "All"
-          ? undefined
-          : appliedFilters.isActive === "Active"
-          ? true
-          : appliedFilters.isActive === "Inactive"
-          ? false
-          : undefined,
-      diagnosisDateFrom: formatDateForAPI(appliedFilters.diagnosisDateFrom),
-      diagnosisDateTo: formatDateForAPI(appliedFilters.diagnosisDateTo),
-    };
-
-    Object.keys(apiFilters).forEach((key) => {
-      if (apiFilters[key] === undefined || apiFilters[key] === "") {
-        delete apiFilters[key];
-      }
-    });
-
-    triggerGet({
-      patientId: PATIENT_ID,
-      filter: apiFilters,
-      pageNumber: currentPage,
-      pageSize: PAGE_SIZE,
-    });
-  }, [triggerGet, appliedFilters, currentPage]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  
-  const handleSearch = (filters) => {
-    setCurrentPage(1);
-    const newFilters = filters && typeof filters === "object" ? filters : currentFilters;
-    setAppliedFilters(newFilters);
-    setCurrentFilters(newFilters);
-  };
-
-  const handleResetFilters = () => {
-    const reset = {
-      searchValue: "",
-      isActive: "All",
-      severity: "",
-      conditionType: "",
-      diagnosisDateFrom: null,
-      diagnosisDateTo: null,
-    };
-    setCurrentFilters(reset);
-    setAppliedFilters(reset);
-    setCurrentPage(1);
-  };
-
-  const [selectedCondition, setSelectedCondition] = useState(null);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [recordToDelete, setRecordToDelete] = useState(null);
-  const [isAddMode, setIsAddMode] = useState(false);
-  const [expandedNotes, setExpandedNotes] = useState({});
-
-  const emptyRecord = {
-    medicalConditionName: "",
-    categoryName: "",
-    severity: "",
-    diagnosedDate: "",
-    isActive: true,
-    note: "",
-    conditionType: "External",
-  };
-
-  const fields = [
-    {
-      name: "medicalConditionName",
-      label: t("OtherMedicalConditions.medical_condition_name"),
-      type: "text",
-      placeholder: t("OtherMedicalConditions.enter_condition_name"),
-    },
-    {
-      name: "categoryName",
-      label: t("OtherMedicalConditions.category"),
-      type: "text",
-      placeholder: t("OtherMedicalConditions.enter_category"),
-    },
-    {
-      name: "severity",
-      label: t("OtherMedicalConditions.severity"),
-      type: "select",
-      options: [
-        { value: "Mild", label: t("OtherMedicalConditions.severity_options.Mild") },
-        { value: "Moderate", label: t("OtherMedicalConditions.severity_options.Moderate") },
-        { value: "Severe", label: t("OtherMedicalConditions.severity_options.Severe") },
-        { value: "Critical", label: t("OtherMedicalConditions.severity_options.Critical") },
-      ],
-      placeholder: t("OtherMedicalConditions.select_severity"),
-    },
-    {
-      name: "conditionType",
-      label: t("OtherMedicalConditions.condition_type"),
-      type: "select",
-      options: [
-        { value: "External", label: t("OtherMedicalConditions.condition_type_options.External") },
-        { value: "Internal", label: t("OtherMedicalConditions.condition_type_options.Internal") },
-        { value: "Chronic", label: t("OtherMedicalConditions.condition_type_options.Chronic") },
-        { value: "Acute", label: t("OtherMedicalConditions.condition_type_options.Acute") },
-      ],
-      placeholder: t("OtherMedicalConditions.select_condition_type"),
-    },
-    {
-      name: "isActive",
-      label: t("OtherMedicalConditions.status"),
-      type: "select",
-      options: [
-        { value: true, label: t("Common.status_options.active") },
-        { value: false, label: t("Common.status_options.inactive") },
-      ],
-      placeholder: t("OtherMedicalConditions.select_status"),
-    },
-    {
-      name: "diagnosedDate",
-      label: t("OtherMedicalConditions.diagnosed_date"),
-      type: "date",
-      placeholder: t("OtherMedicalConditions.select_date"),
-    },
-    {
-      name: "note",
-      label: t("OtherMedicalConditions.notes"),
-      type: "textarea",
-      placeholder: t("OtherMedicalConditions.enter_notes"),
-    },
-  ];
-
-
-  const handleAddNew = () => {
-    setSelectedCondition({ ...emptyRecord });
-    setIsAddMode(true);
-    setShowEditModal(true);
-  };
-
-  const handleEdit = (condition) => {
-    setSelectedCondition({ ...condition });
-    setIsAddMode(false);
-    setShowEditModal(true);
-  };
-
-  const handleSave = () => {
-    if (!selectedCondition) return;
-    console.log("Saving record (mobile):", selectedCondition);
-    setShowEditModal(false);
-    setSelectedCondition(null);
-    fetchData(); 
-  };
-
-  const handleDeleteInModal = () => {
-    if (selectedCondition) {
-      setRecordToDelete(selectedCondition);
-      setShowPopup(true);
-    }
-  };
-
-  const handleConfirmDelete = () => {
-    if (recordToDelete) {
-      console.log("Deleting record (mobile):", recordToDelete);
-      setShowPopup(false);
-      setRecordToDelete(null);
-      setShowEditModal(false);
-      fetchData();
-    }
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    setRecordToDelete(null);
-  };
-
-  const toggleNotes = (conditionId) => {
-    setExpandedNotes((prev) => ({
-      ...prev,
-      [conditionId]: !prev[conditionId],
-    }));
-  };
-
-
-  const getSeverityColor = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case "mild":
-        return "#4BAE78";
-      case "moderate":
-        return "#FFA500";
-      case "severe":
-        return "#D66A6A";
-      case "critical":
-        return "#DC3545";
-      default:
-        return "#6C757D";
-    }
-  };
-
-  const getStatusInfo = (isActive) => ({
-    color: isActive ? "#3fabf3" : "#7A8B97",
-    text: t(`Common.status_options.${isActive ? "active" : "inactive"}`),
-  });
-
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    return text.length <= maxLength ? text : `${text.substring(0, maxLength)}...`;
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-
-const conditions = apiData?.data || [];
-  const totalItems = apiData?.totalCount || 0;
-  const totalPages = apiData?.totalPages || 1;
-
-  const noResults =
-    !isLoading &&
-    !isFetching &&
-    conditions.length === 0 &&
-    appliedFilters.searchValue;
+  const noResults = !isLoading && !isFetching && conditions.length === 0 && appliedFilters.searchValue;
 
   return (
     <div className="table-container mobile-view-card">
       {/* Header */}
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
-          <h3 className="table-title">{t("OtherMedicalConditionsMobileView.table_title")}</h3>
+          <h3 className="table-title">
+            {t("OtherMedicalConditionsMobileView.table_title")}
+          </h3>
           <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
         </div>
         <div>
@@ -291,273 +92,260 @@ const conditions = apiData?.data || [];
 
       <div className="p-2">
         {/* Filters */}
-        <div className="mb-3 p-3">
+        <div className="mb-3 p-3 ">
           <ConditionsFilters
             searchTerm={currentFilters.searchValue}
-            setSearchTerm={(v) => setCurrentFilters((p) => ({ ...p, searchValue: v }))}
+            setSearchTerm={(v) =>
+              setCurrentFilters((prev) => ({ ...prev, searchValue: v }))
+            }
+            filterType={currentFilters.conditionType}
+            setFilterType={(v) =>
+              setCurrentFilters((prev) => ({ ...prev, conditionType: v }))
+            }
             filterStatus={currentFilters.isActive}
-            setFilterStatus={(v) => setCurrentFilters((p) => ({ ...p, isActive: v }))}
+            setFilterStatus={(v) =>
+              setCurrentFilters((prev) => ({ ...prev, isActive: v }))
+            }
             filterSeverity={currentFilters.severity}
-            setFilterSeverity={(v) => setCurrentFilters((p) => ({ ...p, severity: v }))}
+            setFilterSeverity={(v) =>
+              setCurrentFilters((prev) => ({ ...prev, severity: v }))
+            }
             filterDateFrom={currentFilters.diagnosisDateFrom}
-            setFilterDateFrom={(d) => setCurrentFilters((p) => ({ ...p, diagnosisDateFrom: d }))}
+            setFilterDateFrom={(d) =>
+              setCurrentFilters((prev) => ({ ...prev, diagnosisDateFrom: d }))
+            }
             filterDateTo={currentFilters.diagnosisDateTo}
-            setFilterDateTo={(d) => setCurrentFilters((p) => ({ ...p, diagnosisDateTo: d }))}
+            setFilterDateTo={(d) =>
+              setCurrentFilters((prev) => ({ ...prev, diagnosisDateTo: d }))
+            }
             onReset={handleResetFilters}
             onSearch={handleSearch}
             conditions={conditions}
-            filterConfigs={[
-              {
-                name: "isActive",
-                label: "Status",
-                data: ["All", "Active", "Inactive"].map((opt) => ({ key: opt, label: opt })),
-              },
-              {
-                name: "conditionType",
-                label: "Condition Type",
-                data: ["External", "Internal", "Chronic", "Acute"].map((opt) => ({
-                  key: opt,
-                  label: opt,
-                })),
-              },
-              {
-                name: "severity",
-                label: "Severity",
-                data: ["Mild", "Moderate", "Severe", "Critical"].map((opt) => ({
-                  key: opt,
-                  label: opt,
-                })),
-              },
-            ]}
+            filterConfigs={filterConfigs}
           />
         </div>
 
-        {/* Loading / Error */}
-        {(isLoading || isFetching) ? (
-            <div className="space-y-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Card key={i} className="mobile-view-card">
+        {/* Loading */}
+        {(isLoading || isFetching|| noResults) &&
+          Array.from({ length: 3 }).map((_, index) => (
+            <Card key={index} className="mobile-view-card">
+              <Card.Body style={{ padding: "15px" }}>
+                <Skeleton height={20} width="60%" className="mb-2" />
+                <Skeleton height={15} width="20%"  className="mb-2" />
+                <Skeleton height={15}  className="mb-2" />
+                <div className="row text-center mb-3">
+                  <div className="col-4">
+                    <Skeleton height={30} />
+                  </div>
+                  <div className="col-4">
+                    <Skeleton height={30} />
+                  </div>
+                  <div className="col-4">
+                    <Skeleton height={30} />
+                  </div>
+                </div>
+                <Skeleton
+                  height={35}
+                  width="100px"
+                  style={{ float: "right" }}
+                />
+              </Card.Body>
+            </Card>
+          ))}
+
+        {/* Error */}
+        {error && <ErrorLoading isError={error} refetch={refetch} />}
+
+        {/* Data Cards */}
+        {!isLoading && !isFetching && conditions.length > 0 && (
+          <div className="space-y-3">
+            {conditions.map((condition) => {
+              const statusInfo = getStatusInfo(condition.isActive);
+              const isExpanded = expandedRow === condition.id;
+
+              return (
+                <Card key={condition.id} className="mobile-view-card shadow-sm">
                   <Card.Body style={{ padding: "15px" }}>
-                           <div className="d-flex justify-content-between align-items-start mb-2">
-                             <Skeleton width={150} height={20} />
-                           </div>
-                           <div className="row text-center mb-3">
-                             <div className="col-4">
-                               <Skeleton width={60} height={20} />
-                               <Skeleton width={50} height={15} />
-                             </div>
-                             <div className="col-4">
-                               <Skeleton width={80} height={20} />
-                               <Skeleton width={70} height={15} />
-                             </div>
-                             <div className="col-4">
-                               <Skeleton width={50} height={20} />
-                               <Skeleton width={40} height={15} />
-                             </div>
-                           </div>
-                               <Skeleton width={40} height={15} />
-                           <div style={{textAlign:"end"}}>
-                           <Skeleton width={80} height={30} />
-                           </div>
-                         </Card.Body>
-                </Card>
-              ))}
-            </div>
-        ) : (<>   
-         {/* Cards */}
-        <div className="space-y-3">
-          {conditions.map((condition) => {
-            const statusInfo = getStatusInfo(condition.isActive);
-            const isNotesExpanded = expandedNotes[condition.id];
-
-            return (
-              <Card key={condition.id} className="mobile-view-card">
-                <Card.Body style={{ padding: "15px" }}>
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h5 className="text-ellipsis" style={{ margin: 0 }}>
-                      <HighlightText
-                        text={condition.medicalConditionName}
-                        searchTerm={apiData?.searchTerm}
-                        matchedFields={
-                          condition.highlightInfo?.matchedFields || []
-                        }
-                        fieldName="MedicalConditionName"
-                      />
-                    </h5>
-                    <small style={{ whiteSpace: "nowrap" }}>
-                      {" "}
-                      {formatDate(condition.diagnosedDate)}{" "}
-                    </small>
-                  </div>
-
-                  <div className="row text-center mb-3">
-                    <div className="col-4 border-end">
-                      <div
-                        className="fw-bold"
-                        style={{ color: getSeverityColor(condition.severity) }}
-                      >
-                        {t(
-                          `OtherMedicalConditionsMobileView.severity_options.${condition.severity.toLowerCase()}`
-                        )}
-                      </div>
+                    {/* Title + Date */}
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 className="mb-0 text-ellipsis flex-fill me-2">
+                        <HighlightText
+                          text={condition.medicalConditionName}
+                          searchTerm={medicalConditionsData.searchTerm}
+                          matchedFields={
+                            condition.highlightInfo?.matchedFields || []
+                          }
+                          fieldName={fieldMapping.medicalConditionName}
+                        />
+                      </h5>
                       <small className="text-muted">
-                        {t("OtherMedicalConditionsMobileView.severity")}
+                        {formatDate(condition.diagnosedDate)}
                       </small>
                     </div>
-                    <div className="col-4 border-end">
-                      <div
-                        className="fw-bold"
-                        style={{ color: statusInfo.color }}
-                      >
-                        {statusInfo.text}
-                      </div>
-                      <small className="text-muted">
-                        {t("OtherMedicalConditionsMobileView.status")}
-                      </small>
-                    </div>
-                    <div className="col-4 pl-0 pr-1">
-                      <div className="fw-bold text-secondary">
-                        {condition.conditionType}
-                      </div>
-                      <small className="text-muted">
-                        {t("OtherMedicalConditionsMobileView.conditionType")}
-                      </small>
-                    </div>
-                  </div>
+                      <div className="mb-3">
+              <small className="text-muted d-block mb-1">
+                {t("OtherMedicalConditionsMobileView.category")} :
+              </small>
+              <div className="expandable-content">
+                <p className="mb-0">
+                  <HighlightText
+                    text={condition.categoryName}
+                    searchTerm={medicalConditionsData.searchTerm}
+                    matchedFields={
+                      condition.highlightInfo?.matchedFields || []
+                    }
+                    fieldName={fieldMapping.categoryName}
+                  />
+                </p>
+              </div>
+                 </div>
 
-                  {/* Notes */}
-                  <div className="mb-2">
-                    <small
-                      className="text-muted d-flex mb-1"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => toggleNotes(condition.id)}
-                    >
-                      {t("OtherMedicalConditionsMobileView.notes")} :
-                      {condition.note && (
-                        <button
-                          className=""
-                          onClick={() => toggleNotes(condition.id)}
+                    {/* Severity | Status | Type */}
+                    <div className="row text-center mb-3 g-2">
+                      <div className="col-4 border-end">
+                        <div
+                          className="fw-bold"
                           style={{
-                            fontSize: "20px",
-                            color: "#278fff",
-                            padding: "3px 0 0",
+                            color: getSeverityColor(condition.severity),
                           }}
                         >
+                          {translateSeverity(condition.severity)}
+                        </div>
+                        <small className="text-muted">
+                          {t("OtherMedicalConditionsMobileView.severity")}
+                        </small>
+                      </div>
+                      <div className="col-4 border-end">
+                        <div
+                          className="fw-bold"
+                          style={{ color: statusInfo.color }}
+                        >
+                          {translateStatus(condition.isActive)}
+                        </div>
+                        <small className="text-muted">
+                          {t("OtherMedicalConditionsMobileView.status")}
+                        </small>
+                      </div>
+                      <div className="col-4">
+                        <div className="fw-bold text-secondary">
+                          {translateConditionType(condition.conditionType)}
+                        </div>
+                        <small className="text-muted">
+                          {t("OtherMedicalConditionsMobileView.conditionType")}
+                        </small>
+                      </div>
+                    </div>
+
+                    {/* Notes */}
+                    {condition.note && (
+                      <div className="mb-3">
+                        <div className="text-muted d-flex align-items-center mb-1">
+                          <small
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleNotesClick(condition.id)}
+                            className="text-muted"
+                          >
+                            {t("OtherMedicalConditionsMobileView.notes")}
+                          </small>
                           <MdExpandMore
-                            onClick={() => toggleNotes(condition.id)}
+                            onClick={() => handleNotesClick(condition.id)}
                             style={{
-                              transform: isNotesExpanded
+                              cursor: "pointer",
+                              fontSize: "22px",
+                              transform: isExpanded
                                 ? "rotate(180deg)"
                                 : "rotate(0deg)",
                               transition: "transform 0.3s ease",
+                              color: "#278fff",
                             }}
                           />
-                        </button>
-                      )}
-                    </small>
+                        </div>
 
-                    <div
-                      className={`expandable-content ${
-                        isNotesExpanded ? "" : "p-0"
-                      }`}
-                    >
-                      <p
-                        onClick={() => toggleNotes(condition.id)}
-                        className="mt-1"
-                        style={{
-                          margin: "0",
-                          cursor: "pointer",
-                          transition: "all 0.3s ease",
-                        }}
-                      >
-                        {isNotesExpanded ? (
-                          <HighlightText
-                            text={condition.note}
-                            searchTerm={apiData.searchTerm}
-                            matchedFields={
-                              condition.highlightInfo?.matchedFields || []
-                            }
-                            fieldName={"notes"}
-                          />
-                        ) : (
-                          ""
+                        {isExpanded && (
+                          <div className="expandable-content ">
+                            <HighlightText
+                              text={condition.note}
+                              searchTerm={medicalConditionsData.searchTerm}
+                              matchedFields={
+                                condition.highlightInfo?.matchedFields || []
+                              }
+                              fieldName={fieldMapping.note}
+                            />
+                          </div>
                         )}
-                      </p>
+                      </div>
+                    )}
+
+                    {/* Action Button */}
+                    <div className="">
+                      <button
+                        style={{ float: "inline-end" }}
+                        className="view-btn btn btn-outline-primary btn-sm btn btn-outline-primary btn-sm"
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => handleEdit(condition)}
+                      >
+                        {t("Manage")}
+                      </button>
                     </div>
-                  </div>
+                  </Card.Body>
+                </Card>
+              );
+            })}
+          </div>
+        )}
 
-                  <div>
-                    <Button
-                      className="view-btn btn btn-outline-primary btn-sm"
-                      variant="outline-primary"
-                      size="sm"
-                      style={{ float: "inline-end" }}
-                      onClick={() => handleEdit(condition)}
-                    >
-                      {t("Manage")}
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            );
-          })} </div> </>)}
+        {/* No Results */}
+        {noResults && (
+          <Card className="text-center py-5">
+            <Card.Body>
+              <p className="text-muted">
+                {t("OtherMedicalConditions.no_results_for_search", {
+                  search: appliedFilters.searchValue,
+                })}
+              </p>
+            </Card.Body>
+          </Card>
+        )}
 
-     
-
-          {/* No results */}
-          {noResults &&!error&& (
+        {/* Empty State */}
+        {!isLoading &&
+          !isFetching &&
+          conditions.length === 0 &&
+          !appliedFilters.searchValue &&
+          !error && (
             <Card className="text-center py-5">
               <Card.Body>
                 <p className="text-muted">
-                  {t("OtherMedicalConditions.no_results_for_search", {
-                    search: appliedFilters.searchValue,
-                  })}
+                  {t("OtherMedicalConditions.no_records_found")}
                 </p>
               </Card.Body>
             </Card>
           )}
-          {error && (
-         <ErrorLoading isError={error} refetch={fetchData}  />
-          )
 
-          }
-
-          {/* Empty state (no filters) */}
-          {!isLoading &&
-            !isFetching &&
-            conditions.length === 0 &&
-            !appliedFilters.searchValue && !error && (
-              <Card className="text-center py-5">
-                <Card.Body>
-                  <p className="text-muted">{t("OtherMedicalConditions.no_records_found")}</p>
-                </Card.Body>
-              </Card>
-            )}
-       
+        {/* Pagination */}
+        {conditions.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={totalItems}
+            rowsPerPage={pageSize}
+            onPageChange={setCurrentPage}
+            totalPages={totalPages}
+          />
+        )}
       </div>
 
-      {/* Pagination */}
-      {conditions.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalItems={totalItems}
-          rowsPerPage={PAGE_SIZE}
-          onPageChange={setCurrentPage}
-          totalPages={totalPages}
-        />
-      )}
-
-      {/* Edit / Add Modal */}
+      {/* Modal */}
       <DynamicEditModal
-        show={showEditModal}
+        show={showModal}
         onClose={() => {
-          setShowEditModal(false);
-          setSelectedCondition(null);
+          setShowModal(false);
+          setSelectedRecord(null);
         }}
         onSave={handleSave}
         onDelete={handleDeleteInModal}
-        record={selectedCondition}
-        setRecord={setSelectedCondition}
+        record={selectedRecord}
+        setRecord={setSelectedRecord}
         fields={fields}
         addMode={isAddMode}
         title={
@@ -567,7 +355,7 @@ const conditions = apiData?.data || [];
         }
       />
 
-      {/* Delete Confirmation */}
+      {/* Delete Popup */}
       {showPopup && recordToDelete && (
         <PopupMessage
           type="danger"
@@ -576,8 +364,17 @@ const conditions = apiData?.data || [];
             condition: recordToDelete.medicalConditionName,
           })}
           buttons={[
-            { text: t("Cancel"), onClick: handleClosePopup, variant: "secondary" },
-            { text: t("Delete"), onClick: handleConfirmDelete, variant: "danger" },
+            {
+              text: t("Cancel"),
+              onClick: handleClosePopup,
+              variant: "secondary",
+            },
+            {
+              text: t("Delete"),
+              onClick: handleConfirmDelete,
+              variant: "danger",
+              disabled: isDeleting,
+            },
           ]}
           onClose={handleClosePopup}
         />

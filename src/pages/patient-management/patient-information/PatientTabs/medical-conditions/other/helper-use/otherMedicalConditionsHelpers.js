@@ -11,12 +11,6 @@ export const otherMedicalConditionsHelpers = (t) => {
       // required: true
     },
     { 
-      name: "categoryName", 
-      label: t('OtherMedicalConditions.category'), 
-      type: "text", 
-      placeholder: t('OtherMedicalConditions.enter_category') 
-    },
-    { 
       name: "severity", 
       label: t('OtherMedicalConditions.severity'), 
       type: "select", 
