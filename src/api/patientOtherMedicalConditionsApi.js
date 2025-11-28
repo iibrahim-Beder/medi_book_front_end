@@ -164,10 +164,10 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
    // Add external patient medical condition - FIXED VERSION
 addExternalPatientMedicalCondition: builder.mutation({
   query: (data) => {
+    console.log('Add External Patient Medical Condition Data:', data);
     const params = {
-      PatientId: data.patientId, // Use actual patientId from data
-      MedicalConditionId: 33, // Use actual medicalConditionId
-      // MedicalConditionId: data.conditionData.medicalConditionId, // Use actual medicalConditionId
+      PatientId: data.patientId, 
+      MedicalConditionId: data.conditionData.MedicalConditionId, 
       Severity: transformSeverityToAPI(data.conditionData.severity),
       DiagnosisDate: data.conditionData.diagnosisDate,
       DiagnosedByName: data.conditionData.diagnosedByName || '',

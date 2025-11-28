@@ -87,8 +87,8 @@ export const useOtherMedicalConditions = () => {
   const emptyRecord = {
     medicalConditionName: "",
     categoryName: "",
-    severity: "",
-    diagnosedDate: "",
+    severity: "Mild",
+    diagnosedDate: new Date().toISOString(),
     isActive: true,
     note: "",
     conditionType: "External"
@@ -151,15 +151,10 @@ export const useOtherMedicalConditions = () => {
   const handleSave = async () => {
     if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
     
-    // if (!selectedRecord.medicalConditionName) {
-    //   toast.error('Please enter medical condition name.');
-    //   return;
-    // }
-
-    // if (!selectedRecord.severity) {
-    //   toast.error('Please select severity.');
-    //   return;
-    // }
+    if (!selectedRecord.MedicalConditionId) {
+      toast.error('Please select a medical condition.');
+      return;
+    }
     
     console.log('Selected Record:', selectedRecord);
 
@@ -172,13 +167,13 @@ export const useOtherMedicalConditions = () => {
           conditionData: {
             ...selectedRecord,
             diagnosisDate: formatDateForAPI(selectedRecord.diagnosedDate), // Match API expected field name
-            medicalConditionId: selectedRecord.medicalConditionId || 0, // Ensure this is set
+            MedicalConditionId: selectedRecord.medicalConditionId || 0, // Ensure this is set
             notes: selectedRecord.note || '' // Match API expected field name
           }
         };
 
         const res = await addMedicalCondition(addData).unwrap();
-        console.log('API Response:', res);
+        console.log( "addMedicalCondition", addData ,'API Response:', res);
         
         if (res.succeeded) {
           toast.success(res.message || "Added Successfully");
@@ -186,7 +181,7 @@ export const useOtherMedicalConditions = () => {
           setSelectedRecord(null);
           refetch();
         } else {
-          toast.error(res.message || "Failed to add");
+          toast.error(res.data.message || "Failed to add");
         }
       } else {
         const updateData = {
@@ -212,7 +207,7 @@ export const useOtherMedicalConditions = () => {
       }
     } catch (error) {
       console.error('Save error:', error);
-      toast.error(error?.error || `Error ${isAddMode ? 'adding' : 'updating'} medical condition.`);
+      toast.error(error.data?.message || `Error ${isAddMode ? 'adding' : 'updating'} medical condition.`);
     } finally {
       toast.dismiss(loadingToast);
     }
