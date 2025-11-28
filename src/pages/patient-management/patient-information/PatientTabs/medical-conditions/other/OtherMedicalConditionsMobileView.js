@@ -263,6 +263,7 @@ const OtherMedicalConditionsMobileView = () => {
 
                         {isExpanded && (
                           <div className="expandable-content ">
+                            <p className="mb-0">
                             <HighlightText
                               text={condition.note}
                               searchTerm={medicalConditionsData.searchTerm}
@@ -270,7 +271,7 @@ const OtherMedicalConditionsMobileView = () => {
                                 condition.highlightInfo?.matchedFields || []
                               }
                               fieldName={fieldMapping.note}
-                            />
+                            /></p>
                           </div>
                         )}
                       </div>

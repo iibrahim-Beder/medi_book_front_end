@@ -194,7 +194,7 @@ const DiagnosedConditionsMobileView = () => {
 
                       {/* Notes - Expandable */}
                       {condition.notes && (
-                        <div className="mb-3">
+                        <div className="">
                           <small
                             className="text-muted d-flex align-items-center mb-1"
                             style={{ cursor: "pointer" }}
@@ -212,7 +212,8 @@ const DiagnosedConditionsMobileView = () => {
                             />
                           </small>
                           {isNotesExpanded && (
-                            <p style={{ margin: "8px 0 0", fontSize: "14px" }}>
+                            <div className="expandable-content ">
+                            <p  style={{ margin: "0"}}>
                               <HighlightText
                                 text={condition.notes}
                                 searchTerm={appliedFilters.searchValue}
@@ -220,6 +221,7 @@ const DiagnosedConditionsMobileView = () => {
                                 fieldName={fieldMapping.notes}
                               />
                             </p>
+                            </div>
                           )}
                         </div>
                       )}

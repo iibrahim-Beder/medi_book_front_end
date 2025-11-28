@@ -215,12 +215,14 @@ const AllergyMobileView = () => {
                         </div>
                         {isExpanded && (
                           <div className="expandable-content">
+                            <p className="mb-0">
                             <HighlightText
                               text={entry.notes}
                               searchTerm={allergiesData.searchTerm}
                               matchedFields={entry.highlightInfo?.matchedFields || []}
                               fieldName={fieldMapping.notes}
                             />
+                            </p>
                           </div>
                         )}
                       </div>
