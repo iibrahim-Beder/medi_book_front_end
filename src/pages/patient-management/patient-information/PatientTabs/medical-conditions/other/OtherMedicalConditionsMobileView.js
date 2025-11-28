@@ -126,7 +126,7 @@ const OtherMedicalConditionsMobileView = () => {
         </div>
 
         {/* Loading */}
-        {(isLoading || isFetching|| noResults) &&
+        {(isLoading || isFetching) &&
           Array.from({ length: 3 }).map((_, index) => (
             <Card key={index} className="mobile-view-card">
               <Card.Body style={{ padding: "15px" }}>

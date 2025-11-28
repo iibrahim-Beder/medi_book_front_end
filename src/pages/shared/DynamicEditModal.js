@@ -19,6 +19,7 @@ const DynamicEditModal = ({
   title = "Edit Record",
   errors = {},
   forceShowError = true,
+  typeDropdown = "disease",
 }) => {
 
   const { t } = useTranslation();
@@ -39,23 +40,23 @@ const DynamicEditModal = ({
     setRecord({ ...record, [name]: val });
   };
 
+  console.log("record", record);
   // Handle dropdown selection for medical conditions
-  const handleMedicalConditionChange = (selectedOption) => {
-    if (selectedOption) {
-      setRecord({ 
-        ...record, 
-        medicalConditionName: selectedOption.name,
-        // يمكنك إضافة حقول إضافية إذا كانت موجودة في الـ option
-        medicalConditionId: selectedOption.id 
-      });
-    } else {
-      setRecord({ 
-        ...record, 
-        medicalConditionName: "",
-        medicalConditionId: null
-      });
-    }
-  };
+  // const handleMedicalConditionChange = (selectedOption) => {
+  //   if (selectedOption) {
+  //     setRecord({ 
+  //       ...record, 
+  //       medicalConditionName: selectedOption.name,
+  //       medicalConditionId: selectedOption.id 
+  //     });
+  //   } else {
+  //     setRecord({ 
+  //       ...record, 
+  //       medicalConditionName: "",
+  //       medicalConditionId: null
+  //     });
+  //   }
+  // };
 
   return (
     <Modal show={show} onHide={onClose} centered className="custom-edit-modal">
@@ -97,30 +98,41 @@ const DynamicEditModal = ({
         {record && (
           <div className="form-grid" style={{ rowGap: "0.8rem" }}>
             {fields.map((field) => {
-              if ( field.type === "dropdown") {
-                return (
-                  <div key={field.name} style={{ marginBottom: "0" ,gridColumn: "span 2" }}>
-                    <DropdownWithSearch
-                      type="disease" 
-                      value={record.medicalConditionName ? { 
-                        id: record.medicalConditionId, 
-                        name: record.medicalConditionName 
-                      } : null}
-                      onChange={handleMedicalConditionChange}
-                      disabled={false}
-                    />
-                    {errors?.[field.name] && forceShowError && (
-                      <div style={{ 
-                        color: "red", 
-                        fontSize: "0.875rem", 
-                        marginTop: "0.25rem" 
-                      }}>
-                        {errors[field.name]}
-                      </div>
-                    )}
-                  </div>
-                );
-              }
+              if (field.type === "dropdown") {
+    const value = record[`${field.name}`]
+      ? {
+          id: record[`${field.name}Id`],
+          name: record[`${field.name}`],
+        }
+      : null;
+
+    return (
+      <div key={field.name} style={{ marginBottom: "0", gridColumn: "span 2" }}>
+        <DropdownWithSearch
+          type={typeDropdown}
+          value={value}
+          onChange={(selected) => {
+            setRecord({
+              ...record,
+              [`${field.name}Id`]: selected ? selected.id : null,
+              [`${field.name}`]: selected ? selected.name : "",
+            });
+          }}
+          disabled={false}
+        />
+
+        {errors?.[field.name] && forceShowError && (
+          <div style={{
+            color: "red",
+            fontSize: "0.875rem",
+            marginTop: "0.25rem",
+          }}>
+            {errors[field.name]}
+          </div>
+        )}
+      </div>
+    );
+  }
 
               if (field.type === "textarea") {
                 return (
