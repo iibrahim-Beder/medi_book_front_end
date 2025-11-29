@@ -1286,6 +1286,9 @@
     }
   ,
     "Othermedications": {
+        "start_date": "Start Date",
+  "end_date": "End Date",
+  "medicationCategory": "Medication Category",
     "add_medication": "Add Medication",
     "edit_medication": "Edit Medication",
     "manage": "Manage",

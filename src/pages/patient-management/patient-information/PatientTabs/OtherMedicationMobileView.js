@@ -257,9 +257,7 @@ const OtherMedicationMobileView = () => {
 
           {/* Mobile Cards */}
           <div className="space-y-3">
-            {currentData.map((prescription) => {
-              const isInstructionsExpanded = expandedInstructions[prescription.id];
-              
+            {currentData.map((prescription) => {              
               return (
                 <Card key={prescription.id} className="mobile-view-card">
                   <Card.Body style={{ padding: "15px" }}>
@@ -270,15 +268,15 @@ const OtherMedicationMobileView = () => {
                     <div className="row text-center mb-3">
                       <div className="col-4 border-end">
                         <div className="fw-bold text-primary">
-                          {prescription.dosage}
+                          {prescription.catogory}
                         </div>
                         <small className="text-muted">
-                          {t("OtherMedicationMobileView.dosage")}
+                          {t("OtherMedicationMobileView.")}
                         </small>
                       </div>
                       <div className="col-4 border-end">
                         <div className="fw-bold text-primary">
-                          {prescription.duration}
+                          {prescription.startDate}
                         </div>
                         <small className="text-muted">
                           {t("OtherMedicationMobileView.duration")}
@@ -287,63 +285,12 @@ const OtherMedicationMobileView = () => {
                       <div className="col-4 pl-0 pr-1">
                         <div
                           className="fw-bold"
-                          style={{ color: getStatusColor(prescription.status) }}
                         >
                           {t(`Common.status_options.${prescription.status}`)}
                         </div>
                         <small className="text-muted">
                           {t("OtherMedicationMobileView.status")}
                         </small>
-                      </div>
-                    </div>
-                    <div className="mb-2">
-                      <small
-                        className="text-muted d-flex mb-1"
-                        onClick={() => toggleInstructions(prescription.id)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {t("OtherMedicationMobileView.instructions")} :
-                        {prescription.instructions && (
-                          <button
-                            className=""
-                            onClick={() => toggleInstructions(prescription.id)}
-                            style={{
-                              fontSize: "20px",
-                              color: "#278fff",
-                              padding: "3px 0 0",
-                            }}
-                          >
-                            <MdExpandMore
-                              onClick={() =>
-                                toggleInstructions(prescription.id)
-                              }
-                              style={{
-                                transform: expandedInstructions[prescription.id]
-                                  ? "rotate(180deg)"
-                                  : "rotate(0deg)",
-                                transition: "transform 0.3s ease",
-                              }}
-                            />
-                          </button>
-                        )}
-                      </small>
-                      <div
-                        className={`expandable-content ${
-                          expandedInstructions[prescription.id] ? "" : "p-0"
-                        }`}
-                      >
-                        <p
-                          style={{
-                            margin: "0",
-                            cursor: "pointer",
-                            transition: "all 0.3s ease",
-                          }}
-                          onClick={() => toggleInstructions(prescription.id)}
-                        >
-                          {expandedInstructions[prescription.id]
-                            ? prescription.instructions
-                            : ""}
-                        </p>
                       </div>
                     </div>
 

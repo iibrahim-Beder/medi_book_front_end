@@ -1425,6 +1425,9 @@
   "enter_instructions": "أدخل التعليمات"
 },
 "Othermedications": {
+  "start_date": "تاريخ البدء",
+  "end_date": "تاريخ الانتهاء",
+  "medicationCategory": "تصنيف الدواء",
     "table_title": "قائمة الأدوية الأخرى",
   "add_medication": "إضافة دواء",
   "edit_medication": "تعديل الدواء",

@@ -145,6 +145,7 @@ const DynamicEditModal = ({
                     placeholder={field.placeholder}
                     error={errors?.[field.name]}
                     forceShowError={forceShowError}
+                    disabled={field.disabled}
                   />
                 );
               }
@@ -183,6 +184,7 @@ const DynamicEditModal = ({
                   options={field.options}
                   error={errors?.[field.name]}
                   forceShowError={forceShowError}
+                  disabled={field.disabled}
                 />
               );
             })}
