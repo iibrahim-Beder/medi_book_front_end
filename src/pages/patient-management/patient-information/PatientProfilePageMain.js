@@ -7,7 +7,7 @@ import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/allergy/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/medical-history/MedicalHistoryTable";
 import MedicalConditions from "./PatientTabs/medical-conditions/MedicalConditions";
-import Medications from "./PatientTabs/Medications";
+import Medications from "./PatientTabs/medication/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
 import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
@@ -15,6 +15,7 @@ import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
 import AllergyMobileView from "./PatientTabs/allergy/AllergyMobileView";
 import MedicalHistoryMobileView from  "./PatientTabs/medical-history/MedicalHistoryMobileView";
+import Test from "./PatientTabs/medication/prescribed-medication/PrescribedMedicationMobileView";
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
   const { t } = useTranslation();
@@ -80,7 +81,7 @@ export default function PatientProfilePageMain() {
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
-            {/* {activeTab === "Test" && <Test/>} */}
+            {activeTab === "Test" && <Test/>}
           </div>
         </div>
       </div>

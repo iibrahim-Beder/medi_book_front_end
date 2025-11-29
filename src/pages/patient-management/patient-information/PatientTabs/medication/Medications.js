@@ -1,11 +1,11 @@
 // Medications.jsx
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Othermedications from "./Othermedications";
-import PrescribedMedicationTable from "./PrescribedMedicationTable";
-import { useDevice } from "../../../../context/useIsMobile";
-import PrescribedMedicationMobileView from "./PrescribedMedicationMobileView";
-import OtherMedicationMobileView from "./OtherMedicationMobileView";
+import Othermedications from "../Othermedications";
+import PrescribedMedicationTable from "./prescribed-medication/PrescribedMedicationTable";
+import { useDevice } from "../../../../../context/useIsMobile";
+import PrescribedMedicationMobileView from "./prescribed-medication/PrescribedMedicationMobileView";
+import OtherMedicationMobileView from "../OtherMedicationMobileView";
 
 export default function Medications() {
   const [activeTab, setActiveTab] = useState("PrescribedMedicationTable");
