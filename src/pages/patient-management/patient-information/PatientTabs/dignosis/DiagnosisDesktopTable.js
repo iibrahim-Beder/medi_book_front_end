@@ -1,5 +1,4 @@
-// DiagnosisTable.jsx
-import React, { useState, useMemo, useEffect } from "react";
+import React from "react";
 import { Table, Button } from "react-bootstrap";
 import CustomAccordion from "../../../../shared/CustomAccordion";
 import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
@@ -9,161 +8,58 @@ import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../../../shared/Pagination";
 import "../../../Patient-management.css";
-import { useGetPatientDiagnosesQuery } from "../../../../../api/patientDiagnosesApi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ErrorLoading from "../../../../shared/ErrorLoading";
+import HighlightText from "../../../../shared/HighlightText";
+import { useDiagnoses } from "./useDiagnoses";
+import { diagnosisHelpers } from "./diagnosisHelpers";
+import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 
 const DiagnosisTable = () => {
   const { t } = useTranslation();
-  const PATIENT_ID = 4;
-
-  const [expandedRow, setExpandedRow] = useState(null);
-  const [expandedField, setExpandedField] = useState(null);
   
-  const [currentFilters, setCurrentFilters] = useState({
-    searchValue: "",
-    diagnosisType: "",
-    dateFrom: null,
-    dateTo: null,
-  });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
-
-  // Format date for API
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
-
-  const queryArgs = useMemo(() => {
-    const apiFilters = {
-      ...currentFilters,
-      dateFrom: formatDateForAPI(currentFilters.dateFrom),
-      dateTo: formatDateForAPI(currentFilters.dateTo),
-    };
-
-    // Remove undefined and empty values
-    Object.keys(apiFilters).forEach(key => {
-      if (apiFilters[key] === undefined || apiFilters[key] === "") {
-        delete apiFilters[key];
-      }
-    });
-
-    console.log('Diagnosis API Filters:', apiFilters);
-
-    return {
-      patientId: PATIENT_ID,
-      filter: apiFilters,
-      pageNumber: currentPage,
-      pageSize: pageSize
-    };
-  }, [currentFilters, currentPage]); 
-
   const {
-    data: diagnosesData,
+    // State
+    appliedFilters,
+    expandedRow,
+    expandedField,
+    currentFilters,
+    currentPage,
+    diagnosesData,
     isLoading,
     isFetching,
     error,
-    refetch
-  } = useGetPatientDiagnosesQuery(queryArgs);
+    pageSize,
+    
+    // Actions
+    handleViewClick,
+    handleSearch,
+    handleResetFilters,
+    setCurrentPage,
+    setCurrentFilters,
+    refetch,
+    
+    // Utilities
+    truncateText,
+    formatDate,
+    transformDiagnosisData,
+    transformPrescriptionData,
+    getStatusText
+  } = useDiagnoses();
 
-  // Handle expand/collapse for row fields
-  const handleViewClick = (id, field) => {
-    if (expandedRow === id && expandedField === field) {
-      setExpandedRow(null);
-      setExpandedField(null);
-    } else {
-      setExpandedRow(id);
-      setExpandedField(field);
-    }
-  };
+  const {
+    filterConfigs,
+    diagnosedConditionsFields,
+    notesFields,
+    prescriptionFields,
+    prescriptionRecipeFields,
+    translateTableHeaders,
+    translateEmptyStates
+  } = diagnosisHelpers(t);
 
-  const handleSearch = () => {
-    setCurrentPage(1); 
-  };
-
-  const handleResetFilters = () => {
-    const resetFilters = {
-      searchValue: "",
-      diagnosisType: "",
-      dateFrom: null,
-      dateTo: null
-    };
-    setCurrentFilters(resetFilters);
-    setCurrentPage(1);
-  };
-
-  // Utility: truncate long text
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
-
-  // Format date for display
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  // Transform API data to match component structure
-  const transformDiagnosisData = (diagnosis) => {
-    return {
-      id: diagnosis.diagnosisId,
-      diagnosisName: diagnosis.diagnosisName,
-      code: diagnosis.code,
-      symptomsDescription: diagnosis.symptomsDescription,
-      diagnosisDescription: diagnosis.description,
-      diagnosedConditions: diagnosis.patientInternalMedicalConditionLinkOverViews || [],
-      notes: diagnosis.diagnosisNoteOverviews || [],
-      prescription: diagnosis.prescriptionOverviews || [],
-      createdAt: diagnosis.createdAt
-    };
-  };
-
-  // Transform prescription data for TwoLevelAccordion
-  const transformPrescriptionData = (prescriptions) => {
-    return prescriptions.map(prescription => ({
-      id: prescription.id,
-      title: prescription.title || "Prescription",
-      status: prescription.status,
-      note: prescription.notes,
-      isExpanded: false,
-      recipes: prescription.prescribedMedications?.map(med => ({
-        type: "medication",
-        medication: med.medicationName,
-        dosage: med.dosage,
-        durationInDays: med.durationInDays,
-        instructions: med.instructions,
-        createdAt: med.createdAt
-      })) || []
-    }));
-  };
-
-  // Helper function to get status text
-  const getStatusText = (status) => {
-    const statusMap = {
-      0: "Active",
-      1: "Completed", 
-      2: "Cancelled",
-      3: "Pending"
-    };
-    return statusMap[status] || "Unknown";
-  };
-
-  // Diagnosis types for filters
-  const diagnosisTypes = [
-    { key: "Type 2 Diabetes Mellitus", label: "Type 2 Diabetes Mellitus" },
-    { key: "Test", label: "Test" }
-  ];
+  const tableHeaders = translateTableHeaders();
+  const emptyStates = translateEmptyStates();
 
   return (
     <div className="table-container">
@@ -190,13 +86,7 @@ const DiagnosisTable = () => {
               onReset={handleResetFilters}
               onSearch={handleSearch}
               conditions={diagnosesData?.data || []}
-              filterConfigs={[
-                {
-                  name: "diagnosisType",
-                  label: "Diagnosis Type",
-                  data: diagnosisTypes,
-                },
-              ]}
+              filterConfigs={filterConfigs}
             />
           </div>
 
@@ -205,14 +95,14 @@ const DiagnosisTable = () => {
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>{t('Diagnosis Name')}</th>
-                  <th>{t('Code')}</th>
-                  <th>{t('Symptoms Description')}</th>
-                  <th>{t('Diagnosis Description')}</th>
-                  <th>{t('Conditions')}</th>
-                  <th>{t('Notes')}</th>
-                  <th>{t('Prescriptions')}</th>
-                  <th>{t('Created At')}</th>
+                  <th>{tableHeaders.diagnosisName}</th>
+                  <th>{tableHeaders.code}</th>
+                  <th>{tableHeaders.symptomsDescription}</th>
+                  <th>{tableHeaders.diagnosisDescription}</th>
+                  <th>{tableHeaders.conditions}</th>
+                  <th>{tableHeaders.notes}</th>
+                  <th>{tableHeaders.prescriptions}</th>
+                  <th>{tableHeaders.createdAt}</th>
                 </tr>
               </thead>
               <tbody>
@@ -247,7 +137,14 @@ const DiagnosisTable = () => {
                       <React.Fragment key={transformedDiagnosis.id}>
                         <tr>
                           <td>
-                            <strong>{transformedDiagnosis.diagnosisName}</strong>
+                            <strong>
+                              <HighlightText
+                                text={transformedDiagnosis.diagnosisName}
+                                searchTerm={diagnosesData.searchTerm}
+                                matchedFields={diagnosis.highlightInfo?.matchedFields || []}
+                                fieldName="DiagnosisName"
+                              />
+                            </strong>
                           </td>
                           
                           <td>
@@ -256,13 +153,20 @@ const DiagnosisTable = () => {
 
                           {/* Symptoms Description with expand/collapse */}
                           <td>
+                            {diagnosis.symptomsDescription ? (                                     
                             <div className="d-flex align-items-center">
                               <span
                                 className="text-truncate"
                                 style={{ maxWidth: "200px" }}
                                 title={transformedDiagnosis.symptomsDescription}
                               >
-                                {truncateText(transformedDiagnosis.symptomsDescription, 50)}
+                                    <HighlightText
+                              text={truncateText(transformedDiagnosis.symptomsDescription, 50)}
+                              searchTerm={diagnosesData.searchTerm}
+                              matchedFields={diagnosis.highlightInfo?.matchedFields || []}
+                              fieldName="SymptomsDescription"
+                            />
+                                
                               </span>
                               {transformedDiagnosis.symptomsDescription && 
                                transformedDiagnosis.symptomsDescription.length > 50 && (
@@ -295,53 +199,58 @@ const DiagnosisTable = () => {
                                   />
                                 </Button>
                               )}
-                            </div>
+                            </div>):("-")}
                           </td>
-
                           {/* Diagnosis Description with expand/collapse */}
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <span
-                                className="text-truncate"
-                                style={{ maxWidth: "250px" }}
-                                title={transformedDiagnosis.diagnosisDescription}
-                              >
-                                {truncateText(transformedDiagnosis.diagnosisDescription, 60)}
-                              </span>
-                              {transformedDiagnosis.diagnosisDescription && 
-                               transformedDiagnosis.diagnosisDescription.length > 60 && (
-                                <Button
-                                  style={{
-                                    backgroundColor: "transparent",
-                                    color: "#278fff",
-                                    padding: 0,
-                                    fontSize: "19px",
-                                    height: "20px",
-                                  }}
-                                  className="view-btn ms-2"
-                                  size="sm"
-                                  onClick={() =>
-                                    handleViewClick(
-                                      transformedDiagnosis.id,
-                                      "diagnosisDescription"
-                                    )
-                                  }
+                         <td>
+                            {diagnosis.description ? (
+                              <div className="d-flex align-items-center">
+                                <span
+                                  className="text-truncate"
+                                  style={{ maxWidth: "250px" }}
+                                  title={transformedDiagnosis.diagnosisDescription}
                                 >
-                                  <MdExpandMore
-                                    style={{
-                                      transform:
-                                        expandedRow === transformedDiagnosis.id &&
-                                        expandedField === "diagnosisDescription"
-                                          ? "rotate(180deg)"
-                                          : "rotate(0deg)",
-                                      transition: "transform 0.3s ease",
-                                    }}
+                                  <HighlightText
+                                    text={truncateText(transformedDiagnosis.diagnosisDescription, 60)}
+                                    searchTerm={diagnosesData.searchTerm}
+                                    matchedFields={diagnosis.highlightInfo?.matchedFields || []}
+                                    fieldName="DiagnosisDescription"
                                   />
-                                </Button>
-                              )}
-                            </div>
+                                </span>
+                                {transformedDiagnosis.diagnosisDescription && 
+                                 transformedDiagnosis.diagnosisDescription.length > 60 && (
+                                  <Button
+                                    style={{
+                                      backgroundColor: "transparent",
+                                      color: "#278fff",
+                                      padding: 0,
+                                      fontSize: "19px",
+                                      height: "20px",
+                                    }}
+                                    className="view-btn ms-2"
+                                    size="sm"
+                                    onClick={() =>
+                                      handleViewClick(
+                                        transformedDiagnosis.id,
+                                        "diagnosisDescription"
+                                      )
+                                    }
+                                  >
+                                    <MdExpandMore
+                                      style={{
+                                        transform:
+                                          expandedRow === transformedDiagnosis.id &&
+                                          expandedField === "diagnosisDescription"
+                                            ? "rotate(180deg)"
+                                            : "rotate(0deg)",
+                                        transition: "transform 0.3s ease",
+                                      }}
+                                    />
+                                  </Button>
+                                )}
+                              </div>
+                            ) : ("-")}
                           </td>
-
                           {/* Diagnosed Conditions - Read Only Accordion */}
                           <td>
                             <Button
@@ -460,7 +369,7 @@ const DiagnosisTable = () => {
                               <div className="accordion-in-table">
                                 {expandedField === "symptomsDescription" && (
                                   <div className="description-expanded-section">
-                                    <Field
+                                    <TextAreaField
                                       label={t('Symptoms Description')}
                                       value={transformedDiagnosis.symptomsDescription}
                                       type="textarea"
@@ -471,7 +380,7 @@ const DiagnosisTable = () => {
 
                                 {expandedField === "diagnosisDescription" && (
                                   <div className="description-expanded-section">
-                                    <Field
+                                    <TextAreaField
                                       label={t('Diagnosis Description')}
                                       value={transformedDiagnosis.diagnosisDescription}
                                       type="textarea"
@@ -485,26 +394,7 @@ const DiagnosisTable = () => {
                                     readOnly={true}
                                     backgroundColor="var(--scbccolor)"
                                     data={transformedDiagnosis.diagnosedConditions}
-                                    formFields={[
-                                      {
-                                        name: "MedicalCondition",
-                                        placeholder: t('Condition Type'),
-                                        half: true,
-                                        label: t('Medical Condition'),
-                                      },
-                                      {
-                                        name: "Severity",
-                                        placeholder: t('Severity'),
-                                        half: true,
-                                        label: t('Severity'),
-                                      },
-                                      {
-                                        name: "note",
-                                        type: "textarea",
-                                        placeholder: t('Note Content'),
-                                        label: t('Note'),
-                                      },
-                                    ]}
+                                    formFields={diagnosedConditionsFields}
                                   />
                                 )}
 
@@ -513,14 +403,7 @@ const DiagnosisTable = () => {
                                     readOnly={true}
                                     backgroundColor="var(--scbccolor)"
                                     data={transformedDiagnosis.notes}
-                                    formFields={[
-                                      {
-                                        name: "content",
-                                        type: "textarea",
-                                        placeholder: t('Note Content'),
-                                        label: t('Note Content'),
-                                      },
-                                    ]}
+                                    formFields={notesFields}
                                   />
                                 )}
 
@@ -530,53 +413,8 @@ const DiagnosisTable = () => {
                                     backgroundColor="var(--scbccolor)"
                                     titleBackgroundColor="var(--scbccolor)"
                                     data={transformedPrescriptions}
-                                    formFields={[
-                                      {
-                                        name: "title",
-                                        type: "text",
-                                        placeholder: t('Prescription Title'),
-                                        half: true,
-                                        label: t('Prescription Title'),
-                                      },
-                                      {
-                                        name: "status",
-                                        placeholder: t('Status'),
-                                        half: true,
-                                        label: t('Status'),
-                                      },
-                                      {
-                                        name: "note",
-                                        type: "textarea",
-                                        placeholder: t('Prescription Note'),
-                                        label: t('Note'),
-                                      },
-                                    ]}
-                                    formFieldsRecipe={[
-                                      {
-                                        name: "medication",
-                                        placeholder: t('Medication'),
-                                        label: t('Medication'),
-                                      },
-                                      {
-                                        name: "dosage",
-                                        placeholder: t('Dosage'),
-                                        half: true,
-                                        label: t('Dosage'),
-                                      },
-                                      {
-                                        name: "durationInDays",
-                                        type: "number",
-                                        placeholder: t('Duration (Days)'),
-                                        half: true,
-                                        label: t('Duration (Days)'),
-                                      },
-                                      {
-                                        name: "instructions",
-                                        placeholder: t('Instructions'),
-                                        type: "textarea",
-                                        label: t('Instructions'),
-                                      },
-                                    ]}
+                                    formFields={prescriptionFields}
+                                    formFieldsRecipe={prescriptionRecipeFields}
                                   />
                                 )}
                               </div>
@@ -589,10 +427,7 @@ const DiagnosisTable = () => {
                 ) : (
                   <tr>
                     <td colSpan="8" className="text-center text-muted">
-                      {currentFilters.searchValue ?
-                        `No results found for "${currentFilters.searchValue}"` :
-                        'No diagnoses found'
-                      }
+                      {emptyStates.noResults(currentFilters.searchValue)}
                     </td>
                   </tr>
                 )}
