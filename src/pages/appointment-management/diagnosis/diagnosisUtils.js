@@ -14,7 +14,7 @@ export const getStatusText = (status) => {
 
 // Transform API data to match component structure
 export const transformDiagnosisData = (diagnosis) => {
-  // console.log('Original API diagnosis:', diagnosis);
+  console.log('Original API diagnosis:', diagnosis);
   
   const transformed = {
     // Basic diagnosis info - using exact API field names
@@ -37,7 +37,8 @@ export const transformDiagnosisData = (diagnosis) => {
     // Conditions - ensure unique IDs
     conditions: (diagnosis.patientInternalMedicalConditionLinkOverViews || []).map((condition, index) => ({
       id: condition.id || `condition-${diagnosis.diagnosisId}-${index}-${Date.now()}`,
-      medicalCondition: condition.medicalCondition,
+      medicalCondition: {name:condition.medicalConditionName,id:null },
+      category: condition.categoryName,
       severity: condition.severity,
       notes: condition.notes,
       isNew: false,
@@ -55,7 +56,8 @@ export const transformDiagnosisData = (diagnosis) => {
       // Medications - ensure unique IDs
       recipes: (prescription.prescribedMedications || []).map((med, medIndex) => ({
         id: med.id || `med-${diagnosis.diagnosisId}-${index}-${medIndex}-${Date.now()}`,
-        medication: med.medicationName,
+        medication:{name: med.medicationName , id: med.medicationNameId},
+        category: med.medicationCategoryName,
         dosage: med.dosage,
         durationInDays: med.durationInDays,
         instructions: med.instructions,

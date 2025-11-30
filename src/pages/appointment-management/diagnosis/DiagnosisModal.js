@@ -124,7 +124,7 @@ const DiagnosisModal = ({
                 handleCancelNestedItem("conditions", conditionId),
             })}
             getItemTitle={(condition) =>
-              condition.medicalCondition || "No Condition"
+              condition.medicalCondition.name || "No Condition"
             }
             itemType="conditions"
             formFields={[
@@ -132,7 +132,16 @@ const DiagnosisModal = ({
                 label: t("Medical Condition"),
                 name: "medicalCondition",
                 placeholder: t("Enter medical condition"),
+                type:"dropdown",
+                DropdownType: "disease",
+                // half: true,
+              },
+              {
+                label: t("Category"),
+                name: "category",
+                type: "text",
                 half: true,
+                disabled: true
               },
               {
                 label: t("Severity"),
@@ -189,7 +198,7 @@ const DiagnosisModal = ({
             readOnly={false}
             backgroundColor="var(--scbccolor)"
             titleBackgroundColor="var(--scbccolor)"
-            getItemTitleRecipe={(recipe) => recipe.medication || "medication"}
+            getItemTitleRecipe={(recipe) => recipe.medication.name || "medication"}
             data={editingDiagnosis?.prescriptions || []}
             onAdd={handleAddPrescription}
             {...createTwoLevelHandlers(editingDiagnosis?.prescriptions || [], {
@@ -232,25 +241,27 @@ const DiagnosisModal = ({
                 label: t("Medication"),
                 name: "medication",
                 type: "dropdown",
-                options: [
-                  "Ibuprofen",
-                  "Paracetamol",
-                  "Amoxicillin",
-                  "Aspirin",
-                  "Metformin",
-                  "Atorvastatin",
-                  "Lisinopril",
-                  "Levothyroxine",
-                  "Amlodipine",
-                  "Omeprazole",
-                ],
                 placeholder: t("Select medication"),
-                half: true,
+                // half: true,
+              },
+              {
+                label: t("category"),
+                name: "category",
+                type: "text",
+                disabled: true,
+                // half: true,
               },
               {
                 label: t("Dosage"),
                 name: "dosage",
                 placeholder: t("Enter dosage"),
+                half: true,
+              },
+               {
+                label: t("Duration (Days)"),
+                name: "durationInDays",
+                type: "number",
+                placeholder: t("Enter duration in days"),
                 half: true,
               },
               {
@@ -265,13 +276,6 @@ const DiagnosisModal = ({
                 name: "endDate",
                 type: "date",
                 placeholder: t("Select end date"),
-                half: true,
-              },
-              {
-                label: t("Duration (Days)"),
-                name: "durationInDays",
-                type: "number",
-                placeholder: t("Enter duration in days"),
                 half: true,
               },
               {
