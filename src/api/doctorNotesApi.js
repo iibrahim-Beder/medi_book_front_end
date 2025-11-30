@@ -3,23 +3,47 @@ import { baseApi } from './baseApi';
 // Transform note type
 const transformNoteTypeToAPI = (noteType) => {
   const noteTypeMap = {
-    'Consultation': 1,
-    'FollowUp': 2, 
+    'Communication': 1,
+    'Administrative': 2, 
     'Reminder': 3,
-    'General': 4
   };
   return noteTypeMap[noteType] ?? null;
 };
 
 const transformNoteTypeToUI = (noteType) => {
   const noteTypeMap = {
-    1: 'Consultation',
-    2: 'FollowUp',
+    1: 'Communication',
+    2: 'Administrative',
     3: 'Reminder', 
-    4: 'General'
   };
   return noteTypeMap[noteType] ?? 'General';
 };
+
+const transformSingleDoctorNote = (response) => {
+  if (!response || !response.succeeded || !response.data) {
+    return {
+      succeeded: false,
+      data: null,
+      error: response?.error || 'Operation failed'
+    };
+  }
+
+  return {
+    ...response,
+    data: {
+      id: response.data.id,
+      noteType: transformNoteTypeToAPI(response.data.noteType),
+      noteTypeValue: response.data.noteType,
+      content: response.data.content,
+      createdAt: response.data.createdAt,
+      lastModifiedAt: response.data.lastModifiedAt,
+      patientId: response.data.patientId,
+      doctorId: response.data.doctorId,
+      doctorName: response.data.doctorName
+    }
+  };
+};
+
 
 const transformDoctorNotesData = (response, searchText = "") => {
   if (!response || !response.succeeded) {
@@ -42,7 +66,7 @@ const transformDoctorNotesData = (response, searchText = "") => {
   const transformedData = response.data.map(item => ({
     id: item.id,
     noteId: item.id,
-    noteType: transformNoteTypeToUI(item.noteType),
+    noteType: item.noteType,
     noteTypeValue: item.noteType,
     content: item.content,
     createdAt: item.createdAt,
@@ -105,51 +129,87 @@ export const doctorNotesApi = baseApi.injectEndpoints({
         );
       },
       providesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotes', id: patientId }
+        { type: 'DoctorNote', id: patientId }
       ],
     }),
 
-    // Add new doctor note
-    addDoctorNote: builder.mutation({
-      query: (noteData) => ({
-        url: '/DoctorNote/AddDoctorNote',
-        method: 'POST',
-        body: noteData
-      }),
+addDoctorPatientNote: builder.mutation({
+      query: ({ patientId, noteData }) => {
+        const params = {
+          PatientId: patientId,
+          NoteType: transformNoteTypeToAPI(noteData.noteType),
+          Content: noteData.content || ''
+        };
+
+        console.log('Add Doctor Patient Note Params:', params);
+
+        return {
+          url: '/DoctorNote/AddDoctorPatientNote',
+          method: 'POST',
+          params: params
+        };
+      },
+      transformResponse: (response) => {
+        console.log('Add Doctor Patient Note Response:', response);
+        return transformSingleDoctorNote(response);
+      },
       invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotes', id: patientId }
+        { type: 'DoctorNote', id: patientId }
       ],
     }),
 
-    // Update doctor note
-    updateDoctorNote: builder.mutation({
-      query: ({ noteId, updates }) => ({
-        url: `/DoctorNote/UpdateDoctorNote/${noteId}`,
-        method: 'PUT',
-        body: updates
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotes', id: patientId }
+    // Update doctor patient note
+    updateDoctorPatientNote: builder.mutation({
+      query: ({ noteId, updates }) => {
+        const params = {
+          Id: noteId,
+          NoteType: transformNoteTypeToAPI(updates.noteType),
+          Content: updates.content || ''
+        };
+
+        console.log('Update Doctor Patient Note Params:', params);
+
+        return {
+          url: '/DoctorNote/UpdateDoctorPatientNote',
+          method: 'PUT',
+          params: params
+        };
+      },
+      transformResponse: (response) => {
+        console.log('Update Doctor Patient Note Response:', response);
+        return transformSingleDoctorNote(response);
+      },
+      invalidatesTags: (result, error,  { patientId }) => [
+        { type: 'DoctorNote', id: patientId }
       ],
     }),
 
-    // Delete doctor note
-    deleteDoctorNote: builder.mutation({
-      query: (noteId) => ({
-        url: `/DoctorNote/DeleteDoctorNote/${noteId}`,
-        method: 'DELETE'
-      }),
+    // Delete doctor patient note
+    deleteDoctorPatientNote: builder.mutation({
+      query: (noteId) => {
+        const params = {
+          Id: noteId
+        };
+
+        console.log('Delete Doctor Patient Note Params:', params);
+
+        return {
+          url: '/DoctorNote/DeleteDoctorPatientNote',
+          method: 'DELETE',
+          params: params
+        };
+      },
       invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNotes', id: patientId }
+        { type: 'DoctorNote', id: patientId }
       ],
-    })
+    }),
   }),
 });
 
 export const {
   useGetDoctorPatientNotesQuery,
   useLazyGetDoctorPatientNotesQuery,
-  useAddDoctorNoteMutation,
-  useUpdateDoctorNoteMutation,
-  useDeleteDoctorNoteMutation,
+  useAddDoctorPatientNoteMutation,
+  useUpdateDoctorPatientNoteMutation,
+  useDeleteDoctorPatientNoteMutation,
 } = doctorNotesApi;

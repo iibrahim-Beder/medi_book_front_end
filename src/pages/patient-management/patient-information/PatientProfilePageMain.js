@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
-import DoctorPatientNotes from "./PatientTabs/DoctorPatientNotesList";
+import DoctorPatientNotes from "./PatientTabs/doctor-patient-notes-list/DoctorPatientNotes";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/allergy/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/medical-history/MedicalHistoryTable";
@@ -80,7 +80,6 @@ export default function PatientProfilePageMain() {
             {activeTab === "MedicalConditions" && <MedicalConditions/>}
             {activeTab === "Reviews" && <PatientReviewsCards/>}
             {activeTab === "PatientNotificationsCards" && <PatientNotificationsCards/>}
-            {/* {activeTab === "Test" && <Test/>} */}
           </div>
         </div>
       </div>
