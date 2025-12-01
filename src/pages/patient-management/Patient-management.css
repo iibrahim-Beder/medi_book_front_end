@@ -204,3 +204,22 @@ border-bottom: 1px solid #dee2e670 !important;
   padding-top: 0 !important ;
 }
 .patient-management-container .dc-dashboardbox{box-shadow:0px 0px 8px 3px var(--shado3color)}
+
+
+.dc-accordioninnertitle.skeleton{padding: 5px 10px;}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px;
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.skeleton-item > div > span {
+  display: block !important;
+}

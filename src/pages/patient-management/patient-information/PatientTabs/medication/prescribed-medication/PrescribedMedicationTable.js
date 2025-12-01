@@ -1,161 +1,56 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import { Table, Button } from "react-bootstrap";
-import ConditionsFilters from "./component/ConditionsFilters";
+import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import TextAreaField from "../../../ui/form-fields/TextAreaField";
-import Pagination from "../../../shared/Pagination";
-import { useGetPrescribedMedicationQuery } from "../../../../api/prescribedMedicationApi";
-import Skeleton from "react-loading-skeleton";
+import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
+import Pagination from "../../../../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
-import HighlightText from "../../../shared/HighlightText";
-import "../../Patient-management.css";
-import { formatDate } from "../../../shared/FormatDate";
-import ErrorLoading from "../../../shared/ErrorLoading";
+import HighlightText from "../../../../../shared/HighlightText";
+import "../../../../Patient-management.css";
+import ErrorLoading from "../../../../../shared/ErrorLoading";
+import { usePrescribedMedication } from "./usePrescribedMedication";
+import { prescribedMedicationHelpers, TableSkeleton } from "./prescribedMedicationHelpers";
 
 const PrescribedMedicationTable = () => {
   const { t } = useTranslation();
-  const PATIENT_ID = 4;
-
-  const [expandedRow, setExpandedRow] = useState(null);
   
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0]; // YYYY-MM-DD
-  };
-
-  const [currentFilters, setCurrentFilters] = useState({
-    searchValue: "",
-    medicationId: "",
-    medicationCategoryId: "",
-    fromDate: null,
-    toDate: null
-  });
-
-  const [appliedFilters, setAppliedFilters] = useState({
-    searchValue: "",
-    medicationId: "",
-    medicationCategoryId: "",
-    fromDate: null,
-    toDate: null
-  });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
-
-  const queryArgs = useMemo(() => {
-    const apiFilters = {
-      ...appliedFilters,
-      fromDate: formatDateForAPI(currentFilters.fromDate),
-      toDate: formatDateForAPI(currentFilters.toDate),
-    };
-
-    console.log('API Filters for Medication:', apiFilters);
-    
-    // Remove undefined and empty values
-    Object.keys(apiFilters).forEach(key => {
-      if (apiFilters[key] === undefined || apiFilters[key] === "") {
-        delete apiFilters[key];
-      }
-    });
-
-    return {
-      patientId: PATIENT_ID,
-      filter: apiFilters,
-      pageNumber: currentPage,
-      pageSize: pageSize
-    };
-  }, [appliedFilters, currentPage, currentFilters]); 
-
   const {
-    data: prescribedMedicationData,
+    // State
+    expandedRow,
+    currentFilters,
+    appliedFilters,
+    currentPage,
+    prescribedMedicationData,
     isLoading,
     isFetching,
     error,
-    refetch
-  } = useGetPrescribedMedicationQuery(queryArgs);
+    pageSize,
+    currentData,
+    totalItems,
+    totalPages,
+    searchTerm,
+    
+    // Actions
+    handleSearch,
+    handleResetFilters,
+    handleInstructionsClick,
+    setCurrentPage,
+    setCurrentFilters,
+    refetch,
+    
+    // Utilities
+    truncateText,
+    getMatchedFields
+  } = usePrescribedMedication();
 
-  console.log("Prescribed Medication Data:", prescribedMedicationData);
-
-  const triggerRefetch = () => {
-    refetch();
-  };
-
-  const handleSearch = (filters) => {
-    setCurrentPage(1);
-    if (filters && typeof filters === "object") {
-      setAppliedFilters(filters);
-      setCurrentFilters(filters);
-    } else {
-      setAppliedFilters(currentFilters);
-    }
-  };
-
-  const handleResetFilters = () => {
-    const resetFilters = {
-      searchValue: "",
-      medicationId: "",
-      medicationCategoryId: "",
-      fromDate: null,
-      toDate: null
-    };
-    setCurrentFilters(resetFilters);
-    setAppliedFilters(resetFilters);
-    setCurrentPage(1);
-  };
-
-  // Handle expand/collapse for instructions
-  const handleInstructionsClick = (id) => {
-    if (expandedRow === id) {
-      setExpandedRow(null);
-    } else {
-      setExpandedRow(id);
-    }
-  };
-
-  // Utility: truncate long text
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
-
-  // Get matched fields for highlighting
-  const getMatchedFields = (highlightInfo) => {
-    if (!highlightInfo || !highlightInfo.matchedFields) return [];
-    return highlightInfo.matchedFields.map(field => field.fieldName);
-  };
-
-  // Skeleton loading component for table rows
-  const TableSkeleton = () => {
-    return (
-      <>
-        {[...Array(5)].map((_, index) => (
-          <tr key={index}>
-            <td><Skeleton width={120} height={20} /></td>
-            <td><Skeleton width={80} height={20} /></td>
-            <td><Skeleton width={60} height={20} /></td>
-            <td>
-              <div className="d-flex align-items-center">
-                <Skeleton width={200} height={20} />
-                <Skeleton width={20} height={20} className="ms-2" />
-              </div>
-            </td>
-            <td><Skeleton width={150} height={20} /></td>
-            <td><Skeleton width={120} height={20} /></td>
-            <td><Skeleton width={100} height={20} /></td>
-            <td><Skeleton width={100} height={20} /></td>
-          </tr>
-        ))}
-      </>
-    );
-  };
-
-  const currentData = prescribedMedicationData?.data || [];
-  const totalItems = prescribedMedicationData?.totalCount || 0;
-  const totalPages = prescribedMedicationData?.totalPages || 1;
-  const searchTerm = appliedFilters.searchValue;
+  const {
+    fieldMapping,
+    tableHeaders,
+    emptyStates,
+    formatDate,
+    formatDuration
+  } = prescribedMedicationHelpers(t);
 
   return (
     <div className="table-container">
@@ -168,6 +63,7 @@ const PrescribedMedicationTable = () => {
 
       <div className="p-3">
         <div className="table-card">
+          {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
               searchTerm={currentFilters.searchValue}
@@ -190,14 +86,14 @@ const PrescribedMedicationTable = () => {
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
-                  <th>{t("PrescribedMedicationTable.medication")}</th>
-                  <th>{t("PrescribedMedicationTable.dosage")}</th>
-                  <th>{t("PrescribedMedicationTable.duration")}</th>
-                  <th>{t("PrescribedMedicationTable.instructions")}</th>
-                  <th>{t("PrescribedMedicationTable.diagnosis_name")}</th>
-                  <th>{t("PrescribedMedicationTable.prescribed_name")}</th>
-                  <th>{t("PrescribedMedicationTable.category")}</th>
-                  <th>{t("created_at")}</th>
+                  <th>{tableHeaders.medication}</th>
+                  <th>{tableHeaders.dosage}</th>
+                  <th>{tableHeaders.duration}</th>
+                  <th>{tableHeaders.instructions}</th>
+                  <th>{tableHeaders.diagnosisName}</th>
+                  <th>{tableHeaders.prescribedName}</th>
+                  <th>{tableHeaders.category}</th>
+                  <th>{tableHeaders.createdAt}</th>
                 </tr>
               </thead>
               <tbody>
@@ -221,7 +117,7 @@ const PrescribedMedicationTable = () => {
                             text={medication.medicationName}
                             searchTerm={searchTerm}
                             matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="MedicationName"
+                            fieldName={fieldMapping.medicationName}
                           />
                         </td>
                         <td title={medication.dosage}>
@@ -229,11 +125,11 @@ const PrescribedMedicationTable = () => {
                             text={medication.dosage}
                             searchTerm={searchTerm}
                             matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="Dosage"
+                            fieldName={fieldMapping.dosage}
                           />
                         </td>
-                        <td title={`${medication.durationInDays} days`}>
-                          {medication.durationInDays} {t('PrescribedMedicationTable.days')}
+                        <td title={formatDuration(medication.durationInDays)}>
+                          {formatDuration(medication.durationInDays)}
                         </td>
 
                         <td title={medication.instructions}>
@@ -243,7 +139,7 @@ const PrescribedMedicationTable = () => {
                                 text={truncateText(medication.instructions, 80)}
                                 searchTerm={searchTerm}
                                 matchedFields={getMatchedFields(medication.highlightInfo)}
-                                fieldName="Instructions"
+                                fieldName={fieldMapping.instructions}
                               />
                             </span>
                             <Button
@@ -276,7 +172,7 @@ const PrescribedMedicationTable = () => {
                             text={medication.diagnosisName}
                             searchTerm={searchTerm}
                             matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="DiagnosisName"
+                            fieldName={fieldMapping.diagnosisName}
                           />
                         </td>
                         <td title={medication.prescriptionName}>
@@ -284,7 +180,7 @@ const PrescribedMedicationTable = () => {
                             text={medication.prescriptionName}
                             searchTerm={searchTerm}
                             matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName="PrescriptionName"
+                            fieldName={fieldMapping.prescriptionName}
                           />
                         </td>
                         <td title={medication.medicationCategoryName}>
@@ -307,7 +203,7 @@ const PrescribedMedicationTable = () => {
                           >
                             <div className="description-expanded-section">
                               <TextAreaField
-                                label={t("PrescribedMedicationTable.instructions")}
+                                label={tableHeaders.instructions}
                                 value={medication.instructions}
                                 disabled={true}
                               />
@@ -320,10 +216,7 @@ const PrescribedMedicationTable = () => {
                 ) : (
                   <tr>
                     <td colSpan="8" className="text-center text-muted">
-                      {appliedFilters.searchValue ?
-                        t('PrescribedMedicationTable.no_results_for_search', { search: appliedFilters.searchValue }) :
-                        t('PrescribedMedicationTable.no_records_found')
-                      }
+                      {emptyStates.noResults(appliedFilters.searchValue)}
                     </td>
                   </tr>
                 )}

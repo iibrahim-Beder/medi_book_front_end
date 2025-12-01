@@ -2,20 +2,19 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
-import DoctorPatientNotes from "./PatientTabs/DoctorPatientNotesList";
+import DoctorPatientNotes from "./PatientTabs/doctor-patient-notes-list/DoctorPatientNotes";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
-import AllergyTable from "./PatientTabs/AllergyTable";
+import AllergyTable from "./PatientTabs/allergy/AllergyTable";
 import MedicalHistoryTable from "./PatientTabs/medical-history/MedicalHistoryTable";
 import MedicalConditions from "./PatientTabs/medical-conditions/MedicalConditions";
-import Medications from "./PatientTabs/Medications";
+import Medications from "./PatientTabs/medication/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
 import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
 import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
-import AllergyMobileView from "./PatientTabs/AllergyMobileView";
+import AllergyMobileView from "./PatientTabs/allergy/AllergyMobileView";
 import MedicalHistoryMobileView from  "./PatientTabs/medical-history/MedicalHistoryMobileView";
-
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
   const { t } = useTranslation();
@@ -37,7 +36,6 @@ export default function PatientProfilePageMain() {
    { key: "Files", label: t("Files and Attachments") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
    { key: "Test", label: t("Test") },
-   { key: "Test2", label: t("Test") },
 
   ];
 

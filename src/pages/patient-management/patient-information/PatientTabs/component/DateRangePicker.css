@@ -334,3 +334,6 @@ font-family: sans-serif !important;
     max-width: 150px;
     padding-right: 2px;
 }
+.datepicker .DateRangePickerMain{
+  max-height: 50px !important;
+}

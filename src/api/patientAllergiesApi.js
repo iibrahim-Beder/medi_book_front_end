@@ -18,6 +18,32 @@ const transformSeverityToUI = (severity) => {
   return severityMap[severity] ?? 'Mild';
 };
 
+const transformSingleAllergy = (response) => {
+  if (!response || !response.succeeded || !response.data) {
+    return {
+      succeeded: false,
+      data: null,
+      error: response?.error || 'Operation failed'
+    };
+  }
+
+  return {
+    ...response,
+    data: {
+      id: response.data.id,
+      allergenId: response.data.allergenId,
+      allergenName: response.data.allergenName,
+      severity: transformSeverityToAPI(response.data.severity),
+      severityValue: response.data.severity,
+      isActive: response.data.isActive,
+      dateNoted: response.data.dateNoted,
+      reaction: response.data.reaction,
+      notes: response.data.notes,
+      createdAt: response.data.createdAt,
+      updatedAt: response.data.updatedAt
+    }
+  };
+};
 const transformAllergiesData = (response, searchTerm = "") => {
   if (!response || !response.data) return response;
 
@@ -71,50 +97,84 @@ export const patientAllergiesApi = baseApi.injectEndpoints({
           params
         };
       },
-      transformResponse: (response, meta, args) => 
+      transformResponse: (response, meta, args) => console.log('Patient Allergies API Response:', response) ||
         transformAllergiesData(response, args.filter?.searchValue),
       providesTags: (result, error, { patientId }) => [
         { type: 'PatientAllergies', id: patientId }
       ],
     }),
 
-    //Adding a new Allergy (in the future)
+    // Add patient allergy
     addPatientAllergy: builder.mutation({
-      query: ({ patientId, allergyData }) => ({
-        url: '/PatientAllergies/AddPatientAllergy',
-        method: 'POST',
-        body: {
-          patientId,
-          ...allergyData
-        }
-      }),
+      query: ({ patientId, allergyData }) => {
+        const params = {
+          PatientId: patientId,
+          AllergenId: allergyData.allergenId,
+          Severity: transformSeverityToAPI(allergyData.severity),
+          IsActive: allergyData.isActive !== undefined ? allergyData.isActive : true,
+          DateNoted: allergyData.dateNoted,
+          Reaction: allergyData.reaction || '',
+          Notes: allergyData.notes || ''
+        };
+
+        console.log('Add Patient Allergy Params:', params);
+
+        return {
+          url: '/PatientAllergies/AddPatientAllergie',
+          method: 'POST',
+          params: params
+        };
+      },
+      transformResponse: (response) => {
+        console.log('Add Patient Allergy Response:', response);
+        return transformSingleAllergy(response);
+      },
       invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PatientAllergies', id: patientId }
+        { type: 'PatientAllergy', id: patientId }
       ],
     }),
 
-    // update Allergy (in the future)
+    // Update patient allergy
     updatePatientAllergy: builder.mutation({
-      query: ({ allergyId, updates }) => ({
-        url: `/PatientAllergies/UpdatePatientAllergy/${allergyId}`,
-        method: 'PUT',
-        body: updates
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PatientAllergies', id: patientId }
+      query: ({ allergyId, updates }) => {
+        const params = {
+          Id: allergyId,
+          AllergenId: updates.allergenId,
+          Severity: transformSeverityToAPI(updates.severity),
+          IsActive: updates.isActive,
+          DateNoted: updates.dateNoted,
+          Reaction: updates.reaction || '',
+          Notes: updates.notes || ''
+        };
+
+        console.log('Update Patient Allergy Params:', params);
+
+        return {
+          url: '/PatientAllergies/UpdatePatientAllergie',
+          method: 'PUT',
+          params: params
+        };
+      },
+      transformResponse: (response) => {
+        console.log('Update Patient Allergy Response:', response);
+        return transformSingleAllergy(response);
+      },
+      invalidatesTags: (result, error, { allergyId }) => [
+        { type: 'PatientAllergy', id: allergyId }
       ],
     }),
 
-    // delete Allergy (in the future)
-    deletePatientAllergy: builder.mutation({
-      query: (allergyId) => ({
-        url: `/PatientAllergies/DeletePatientAllergy/${allergyId}`,
-        method: 'DELETE'
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PatientAllergies', id: patientId }
-      ],
-    })
+
+ deletePatientAllergy: builder.mutation({
+  query: ({ allergyId, patientId }) => ({
+    url: `/PatientAllergies/DeletePatientAllergie?id=${allergyId}`,
+    method: 'DELETE'
+  }),
+  invalidatesTags: (result, error, { patientId }) => [
+    { type: 'PatientAllergies', id: patientId },
+    { type: 'PatientAllergies', id: 'LIST' }
+  ],
+})
   }),
 });
 

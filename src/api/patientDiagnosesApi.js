@@ -38,25 +38,6 @@ const getStatusValue = (statusText) => {
   return statusMap[statusText] || 0;
 };
 
-// Helper function to convert medication name to ID
-const getMedicationId = (medicationName) => {
-  const medicationMap = {
-    "Ibuprofen": 1,
-    "Paracetamol": 2,
-    "Amoxicillin": 3,
-    "Aspirin": 4,
-    "Metformin": 5,
-    "Atorvastatin": 6,
-    "Lisinopril": 7,
-    "Levothyroxine": 8,
-    "Amlodipine": 9,
-    "Omeprazole": 10,
-    "Guaifenesin Syrup": 11,
-    "Cough Syrup": 12
-  };
-  return medicationMap[medicationName] || 1;
-};
-
 // Helper function to convert status number to text
 const getStatusText = (status) => {
   const statusMap = {

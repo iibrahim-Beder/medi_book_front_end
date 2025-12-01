@@ -876,6 +876,7 @@
     }
   },
   "PrescribedMedicationTable": {
+        "days": "Days",
     "category": "Category",
     "table_title": "Prescribed medication list",
     "table_subtitle": "Ahmed Mohamed Ali",
@@ -1285,6 +1286,9 @@
     }
   ,
     "Othermedications": {
+        "start_date": "Start Date",
+  "end_date": "End Date",
+  "medicationCategory": "Medication Category",
     "add_medication": "Add Medication",
     "edit_medication": "Edit Medication",
     "manage": "Manage",

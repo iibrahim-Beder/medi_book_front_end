@@ -158,7 +158,7 @@ export const useMedicalHistory = (isMobile = false) => {
       toast.error('Please select a medical history type.');
       return;
     }
-    
+    console.log('Saving record:', selectedRecord);
     const loadingToast = toast.loading('Saving...');
     
     if (isAddMode) {

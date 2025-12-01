@@ -16,7 +16,6 @@ const MedicalHistoryModal = ({
   onSave,
   record,
   setRecord,
-  hereditaryDiseases = [], 
   title = "Add Medical History",
   errors = {},
   forceShowError = true,
@@ -35,10 +34,11 @@ const MedicalHistoryModal = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRecord({ ...record, [name]: value });
-    console.log( "e.target.value", e.target.name ,e.target.value,);
+    // console.log( "e.target.value", e.target.name ,e.target.value,);
   };
 
   const handleDropdownChange = (name, value) => {
+    console.log("name", name, "value", value);
     setRecord({ ...record, [name]: value });
   };
 
@@ -141,14 +141,9 @@ const MedicalHistoryModal = ({
                 Hereditary Disease
               </label>
               <DropdownWithSearch
-                label="Select Disease"
-                options={hereditaryDiseases}
-                placeholder={
-                  record.historyType === "Family History" 
-                    ? "Select hereditary disease" 
-                    : "Select Family History first"
-                }
-                onSelect={(value) => handleDropdownChange("hereditaryDisease", value)}
+                type="disease"
+                value={{  name: record.hereditaryDisease?.name }|| ""}
+                onChange={(value) => handleDropdownChange("hereditaryDisease", value)}
                 itemsPerPage={6}
                 disabled={record.historyType !== "Family History"}
               />

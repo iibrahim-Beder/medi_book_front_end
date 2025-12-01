@@ -17,7 +17,6 @@ import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
 
 const MedicalHistoryMobileView = () => {
   const { t } = useTranslation();
-
   const {
     // State
     currentFilters,
@@ -383,12 +382,7 @@ const MedicalHistoryMobileView = () => {
           </div>
         )}
       </div>
-
-      
     )
-  
-      
-
   }
 
       {/* Modal */}
