@@ -29,6 +29,7 @@ export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,set
    const [updatePatientMedicalCondition, { isLoading: isUpdatingCondition }] = useUpdatePatientMedicalConditionMutation(); 
  const [deletePatientMedicalCondition, { isLoading: isDeletingCondition }] = useDeletePatientMedicalConditionMutation(); 
 
+//  console.log('Editing Diagnosis:', editingDiagnosis);
   // === Recipes Management ===
  const handleAddRecipe = useCallback((prescriptionId) => {
   console.log('Adding recipe for prescription ID:', prescriptionId);
@@ -129,7 +130,7 @@ const handleSaveRecipe = useCallback(
     if (!editingDiagnosis) return;
     if( !recipeData.dosage  ) {toast.error('Please enter dosage'); return;};
     if( !recipeData.durationInDays ) {toast.error('Please enter duration in days'); return;};
-
+   console.log('Saving recipe:', { prescriptionId, recipeId, recipeData });
    if (editingDiagnosis.isNew) {
     setEditingDiagnosis(prev => ({
       ...prev,
@@ -206,7 +207,7 @@ const handleSaveRecipe = useCallback(
         const payload = {
           ...basePayload,
           prescriptionId: prescriptionId,
-          medicationId: 29 
+          medicationId: recipeData.medication.id
         };
 
         const result = await addPrescribedMedication(payload).unwrap();
@@ -243,7 +244,7 @@ const handleSaveRecipe = useCallback(
           ...basePayload,
           prescribedMedicationId: recipeId,
            updates: {
-    medicationId: 29,
+    medicationId: recipeData.medication.id,
     dosage: recipeData.dosage,
     durationInDays: parseInt(recipeData.durationInDays, 10) || 0,
     instructions: recipeData.instructions,
@@ -397,7 +398,8 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
       const payload = {
         diagnosisId: editingDiagnosis.diagnosisId,
         conditionData: {
-          medicalConditionId: conditionData.medicalCondition,  
+          
+          medicalConditionId: conditionData.medicalCondition.id,  
           severity: conditionData.severity,
           notes: conditionData.notes || '',
           isActive: true
@@ -418,6 +420,7 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
             condition.id === conditionId 
               ? { 
                   ...conditionData, 
+                  category: result.data?.categoryName,
                   id: result.data?.id || conditionId,
                   isNew: false, 
                   isExpanded: false 
@@ -427,12 +430,13 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
         }));
       } else {
         toast.error(result?.message || 'Failed to add condition');
+        toast.dismiss(loadingToast);
       }
     } else {
      const payload = {
         conditionId: conditionId,
         updates: {
-          medicalConditionId:conditionData.medicalCondition,
+          medicalConditionId: conditionData.medicalCondition.id,
           severity: conditionData.severity,
           notes: conditionData.notes || '',
           isActive: true
@@ -735,7 +739,7 @@ const handleDeletePrescription = useCallback(async (prescriptionId) => {
 
       console.log('Add Patient Prescription Payload:', payload);
       const result = await addPatientPrescription(payload).unwrap();
-
+         console.log('Add Patient Prescription Result:', result);
       if (result?.succeeded) {
         toast.success( result?.message || 'Saved Successfully');
         success = true;

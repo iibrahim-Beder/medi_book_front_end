@@ -98,7 +98,7 @@ const transformPrescriptionData = (response, searchValue = "") => {
 export const patientPrescriptionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get patient prescriptions
-    getPatientPrescriptions: builder.query({
+  getPatientPrescriptions: builder.query({
       query: ({ 
         patientId, 
         filter = {}, 
@@ -108,18 +108,18 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
       }) => {
         const params = {
           PatientId: patientId,
+          ...(pageNumber && { 'PageNumber': pageNumber }),
+          ...(pageSize && { 'PageSize': pageSize }),
+          ...(orderBy && { 'PrescriptionOrdering': orderBy }),
           ...(filter.searchValue && { 'PrescriptionSearchFilter.SearchValue': filter.searchValue }),
           ...(filter.fromDate && { 'PrescriptionSearchFilter.FromDate': filter.fromDate }),
           ...(filter.toDate && { 'PrescriptionSearchFilter.ToDate': filter.toDate }),
           ...(filter.status !== undefined && { 'PrescriptionSearchFilter.Status': filter.status }),
           ...(filter.medicationId && { 'PrescriptionSearchFilter.MedicationId': filter.medicationId }),
-          ...(filter.medicationCategoryId && { 'PrescriptionSearchFilter.MedicationCategoryId': filter.medicationCategoryId }),
-          ...(orderBy && { 'PrescriptionOrdering': orderBy }),
-          ...(pageNumber && { 'PageNumber': pageNumber }),
-          ...(pageSize && { 'PageSize': pageSize })
+          ...(filter.medicationCategoryId && { 'PrescriptionSearchFilter.MedicationCategoryId': filter.medicationCategoryId })
         };
 
-        console.log('Patient Prescription API Request Params:', params);
+        console.log('Patient Prescriptions API Request Params:', params);
 
         return {
           url: '/PatientPrescription/GetPatientPrescription',
@@ -128,11 +128,11 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
         };
       },
       transformResponse: (response, meta, args) => {
-        console.log('Patient Prescription API Response:', response);
+        console.log('Patient Prescriptions API Response:', response);
         return transformPrescriptionData(response, args.filter?.searchValue);
       },
       transformErrorResponse: (response, meta, args) => {
-        console.error('Patient Prescription API Error:', response);
+        console.error('Patient Prescriptions API Error:', response);
         return transformPrescriptionData(
           { 
             succeeded: false, 

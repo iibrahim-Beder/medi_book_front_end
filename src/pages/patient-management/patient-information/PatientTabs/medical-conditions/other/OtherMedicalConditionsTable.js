@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import { Table, Button } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import DynamicEditModal from "../../../../../shared/DynamicEditModal";
@@ -9,388 +9,64 @@ import "../../../../Patient-management.css";
 import PopupMessage from "../../../../../shared/PopupMessage";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { 
-  useGetExternalPatientMedicalConditionsQuery,
-  useDeletePatientMedicalConditionMutation,
-  useUpdatePatientMedicalConditionMutation,
-  useAddPatientMedicalConditionMutation
-} from "../../../../../../api/patientOtherMedicalConditionsApi";
 import HighlightText from "../../../../../shared/HighlightText";
 import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
-import toast, { Toaster } from 'react-hot-toast';
-import { formatDate } from "../../../../../shared/FormatDate";
+import { useOtherMedicalConditions } from "./helper-use/useOtherMedicalConditions";
+import { otherMedicalConditionsHelpers } from "./helper-use/otherMedicalConditionsHelpers";
+
 const OtherMedicalConditions = () => {
   const { t } = useTranslation();
-  const PATIENT_ID = 4;
-
-  const [expandedRow, setExpandedRow] = useState(null);
   
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0]; // YYYY-MM-DD
-  };
-
-  const [currentFilters, setCurrentFilters] = useState({
-    searchValue: "",
-    isActive: "All",
-    severity: "",
-    conditionType: "",
-    diagnosisDateFrom: null,
-    diagnosisDateTo: null
-  });
-
-  const [appliedFilters, setAppliedFilters] = useState({
-    searchValue: "",
-    isActive: "All",
-    severity: "",
-    conditionType: "",
-    diagnosisDateFrom: null,
-    diagnosisDateTo: null
-  });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
-
-  // Modal and UI state
-  const [showModal, setShowModal] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [recordToDelete, setRecordToDelete] = useState(null);
-  const [isAddMode, setIsAddMode] = useState(false);
-
-  const queryArgs = useMemo(() => {
-    const apiFilters = {
-      ...appliedFilters,
-      diagnosisDateFrom: formatDateForAPI(currentFilters.diagnosisDateFrom),
-      diagnosisDateTo: formatDateForAPI(currentFilters.diagnosisDateTo),
-      isActive: appliedFilters.isActive === "All" ? undefined : 
-                appliedFilters.isActive === "Active" ? true :
-                appliedFilters.isActive === "Inactive" ? false : undefined
-    };
-
-    // Remove undefined and empty values
-    Object.keys(apiFilters).forEach(key => {
-      if (apiFilters[key] === undefined || apiFilters[key] === "") {
-        delete apiFilters[key];
-      }
-    });
-
-    return {
-      patientId: PATIENT_ID,
-      filter: apiFilters,
-      pageNumber: currentPage,
-      pageSize: pageSize
-    };
-  }, [appliedFilters, currentPage, currentFilters]); 
-
   const {
-    data: medicalConditionsData,
+    // State
+    expandedRow,
+    currentFilters,
+    appliedFilters,
+    currentPage,
+    showModal,
+    showPopup,
+    selectedRecord,
+    recordToDelete,
+    isAddMode,
+    medicalConditionsData,
     isLoading,
     isFetching,
     error,
-    refetch
-  } = useGetExternalPatientMedicalConditionsQuery(queryArgs);
-
-  // Mutations
-  const [deleteMedicalCondition, { isLoading: isDeleting }] = useDeletePatientMedicalConditionMutation();
-  const [updateMedicalCondition, { isLoading: isUpdating }] = useUpdatePatientMedicalConditionMutation();
-  const [addMedicalCondition, { isLoading: isAdding }] =      useAddPatientMedicalConditionMutation();
-
-  // Trigger refetch after save/delete
-  const triggerRefetch = () => {
-    refetch();
-  };
-
-  const handleSearch = (filters) => {
-    setCurrentPage(1);
-    if (filters && typeof filters === "object") {
-      setAppliedFilters(filters);
-      setCurrentFilters(filters);
-    } else {
-      setAppliedFilters(currentFilters);
-    }
-  };
-
-  const handleResetFilters = () => {
-    const resetFilters = {
-      searchValue: "",
-      isActive: "All",
-      severity: "",
-      conditionType: "",
-      diagnosisDateFrom: null,
-      diagnosisDateTo: null
-    };
-    setCurrentFilters(resetFilters);
-    setAppliedFilters(resetFilters);
-    setCurrentPage(1);
-  };
-
-  // Template for new record
-  const emptyRecord = {
-    medicalConditionName: "",
-    categoryName: "",
-    severity: "",
-    diagnosedDate: "",
-    isActive: true,
-    note: "",
-    conditionType: "External"
-  };
-
-  // Form fields configuration for modal
-  const fields = [
-    { 
-      name: "medicalConditionName", 
-      label: t('OtherMedicalConditions.medical_condition_name'), 
-      type: "text", 
-      placeholder: t('OtherMedicalConditions.enter_condition_name'),
-      required: true
-    },
-    { 
-      name: "categoryName", 
-      label: t('OtherMedicalConditions.category'), 
-      type: "text", 
-      placeholder: t('OtherMedicalConditions.enter_category') 
-    },
-    { 
-      name: "severity", 
-      label: t('OtherMedicalConditions.severity'), 
-      type: "select", 
-      options: [
-        { value: "Mild", label: t('OtherMedicalConditions.severity_options.Mild') },
-        { value: "Moderate", label: t('OtherMedicalConditions.severity_options.Moderate') }, 
-        { value: "Severe", label: t('OtherMedicalConditions.severity_options.Severe') },
-        { value: "Critical", label: t('OtherMedicalConditions.severity_options.Critical') }
-      ], 
-      placeholder: t('OtherMedicalConditions.select_severity'),
-      required: true
-    },
-    { 
-      name: "conditionType", 
-      label: t('OtherMedicalConditions.condition_type'), 
-      type: "select", 
-      options: [
-        { value: "External", label: t('OtherMedicalConditions.condition_type_options.External') },
-        { value: "Internal", label: t('OtherMedicalConditions.condition_type_options.Internal') },
-        { value: "Chronic", label: t('OtherMedicalConditions.condition_type_options.Chronic') },
-        { value: "Acute", label: t('OtherMedicalConditions.condition_type_options.Acute') }
-      ], 
-      placeholder: t('OtherMedicalConditions.select_condition_type') 
-    },
-    { 
-      name: "isActive", 
-      label: t('OtherMedicalConditions.status'), 
-      type: "select", 
-      options: [
-        { value: true, label: t('Common.status_options.active') },
-        { value: false, label: t('Common.status_options.inactive') }
-      ], 
-      placeholder: t('OtherMedicalConditions.select_status') 
-    },
-    { 
-      name: "diagnosedDate", 
-      label: t('OtherMedicalConditions.diagnosed_date'), 
-      type: "date", 
-      placeholder: t('OtherMedicalConditions.select_date') 
-    },
-    { 
-      name: "note", 
-      label: t('OtherMedicalConditions.notes'), 
-      type: "textarea", 
-      placeholder: t('OtherMedicalConditions.enter_notes') 
-    },
-  ];
-
-  // Field mapping for highlight
-  const fieldMapping = {
-    medicalConditionName: "MedicalConditionName",
-    categoryName: "CategoryName",
-    note: "Note"
-  };
-
-  // Handle Add New
-  const handleAddNew = () => {
-    setSelectedRecord({ ...emptyRecord });
-    setIsAddMode(true);
-    setShowModal(true);
-  };
-
-  // Handle Edit
-  const handleEdit = (condition) => {
-    setSelectedRecord({ ...condition });
-    setIsAddMode(false);
-    setShowModal(true);
-  };
-
-  // Handle Delete from Modal
-  const handleDeleteInModal = () => {
-    if (selectedRecord) {
-      setRecordToDelete(selectedRecord);
-      setShowPopup(true);
-    }
-  };
-
-  // Close Popup
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    setRecordToDelete(null);
-  };
-
-  const handleNotesClick = (id) => {
-    if (expandedRow === id) {
-      setExpandedRow(null);
-    } else {
-      setExpandedRow(id);
-    }
-  };
-
-  ///// ====== API functions ===== \\\\\\
-
-  // Handle Save (Add/Update)
-  const handleSave = async () => {
-    if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
+    isDeleting,
+    pageSize,
     
-    if (!selectedRecord.medicalConditionName) {
-      toast.error('Please enter medical condition name.');
-      return;
-    }
-
-    if (!selectedRecord.severity) {
-      toast.error('Please select severity.');
-      return;
-    }
-
-    console.log('Saving record:', selectedRecord);
-    const loadingToast = toast.loading('Saving...');
-
-    if (isAddMode) {
-      try {
-        const addData = {
-          ...selectedRecord,
-          diagnosedDate: formatDateForAPI(selectedRecord.diagnosedDate)
-        };
-
-        console.log('Sending add data:', addData);
-
-        const res = await addMedicalCondition({ 
-          patientId: PATIENT_ID, 
-          ...addData 
-        }).unwrap();
-        
-        if (res?.succeeded) {
-          toast.success(res.message || "Added Successfully");
-          toast.dismiss(loadingToast);
-          setShowModal(false);
-          setSelectedRecord(null);
-          triggerRefetch();
-        } else {
-          console.error("Failed to add", res);
-          toast.dismiss(loadingToast);
-          toast.error(res.message || "Failed to add");
-        }
-      } catch (error) {
-        toast.dismiss(loadingToast);
-        console.error('Add error:', error);
-        toast.error(error?.data?.message || "Error adding medical condition.");
-      }
-    } else {
-      try {
-        const updateData = {
-          ...selectedRecord,
-          diagnosedDate: formatDateForAPI(selectedRecord.diagnosedDate)
-        };
-
-        console.log('Sending update data:', updateData);
-
-        const res = await updateMedicalCondition({ 
-          conditionId: selectedRecord.id, 
-          patientId: PATIENT_ID, 
-          updates: updateData 
-        }).unwrap();
-        
-        if (res?.succeeded) {
-          console.log("Updated Successfully");
-          toast.success(res.message || "Updated Successfully");
-          toast.dismiss(loadingToast);
-          setShowModal(false);
-          setSelectedRecord(null);
-          triggerRefetch();
-        } else {
-          console.error("Failed to update", res);
-          toast.dismiss(loadingToast);
-          toast.error(res.message || "Failed to update");
-        }
-      } catch (error) {
-        toast.dismiss(loadingToast);
-        console.error('Update error:', error);
-        toast.error(error?.data?.message || "Error updating medical condition.");
-      }
-    }
-  };
-
-  // Delete
-  const handleConfirmDelete = async () => {
-    if (!recordToDelete) return;
+    // Actions
+    handleSearch,
+    handleResetFilters,
+    handleAddNew,
+    handleEdit,
+    handleDeleteInModal,
+    handleClosePopup,
+    handleNotesClick,
+    handleSave,
+    handleConfirmDelete,
+    setCurrentPage,
+    setCurrentFilters,
+    setShowModal,
+    setSelectedRecord,
+    refetch,
     
-    const loadingToast = toast.loading('Deleting...');
-    try {
-      const res = await deleteMedicalCondition({ 
-        conditionId: recordToDelete.id, 
-        patientId: PATIENT_ID 
-      }).unwrap();
-      
-      if (res?.succeeded) {
-        console.log("Deleted Successfully");
-        toast.success(res.message || "Deleted Successfully");
-        toast.dismiss(loadingToast);
-        
-        setShowPopup(false);
-        setRecordToDelete(null);
-        setShowModal(false);
-        triggerRefetch();
-      } else {
-        console.error("Failed to delete", res);
-        toast.dismiss(loadingToast);
-        toast.error(res.message || "Failed to delete");
-      }
-    } catch (error) {
-      toast.dismiss(loadingToast);
-      toast.error(error?.data?.message || "Error deleting this medical condition.");
-      setShowPopup(false);
-    }
-  };
+    // Utilities
+    getSeverityColor,
+    getStatusInfo,
+    truncateText
+  } = useOtherMedicalConditions();
 
-  // Get severity color
-  const getSeverityColor = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case "mild":
-        return "#4BAE78";
-      case "moderate":
-        return "#FFA500";
-      case "severe":
-        return "#D66A6A";
-      case "critical":
-        return "#DC3545";
-      default:
-        return "#6C757D";
-    }
-  };
-
-  // Get status color and text
-  const getStatusInfo = (isActive) => {
-    return {
-      color: isActive ? "#3fabf3" : "#7A8B97",
-      text: t(`Common.status_options.${isActive ? "active" : "inactive"}`),
-    };
-  };
-
-  // Utility: truncate long text
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
+  const {
+    fields,
+    fieldMapping,
+    filterConfigs,
+    formatDate,
+    translateSeverity,
+    translateConditionType,
+    translateStatus
+  } = otherMedicalConditionsHelpers(t);
 
   return (
     <div className="table-container">
@@ -408,6 +84,7 @@ const OtherMedicalConditions = () => {
 
       <div className="">
         <div className="table-card">
+          {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
               searchTerm={currentFilters.searchValue}
@@ -425,32 +102,7 @@ const OtherMedicalConditions = () => {
               onReset={handleResetFilters}
               onSearch={handleSearch}
               conditions={medicalConditionsData?.data || []}
-              filterConfigs={[
-                {
-                  name: "isActive",
-                  label: "Status",
-                  data: ["All", "Active", "Inactive"].map((opt) => ({
-                    key: opt,
-                    label: opt,
-                  })),
-                },
-                {
-                  name: "conditionType",
-                  label: "Condition Type",
-                  data: ["External", "Acute", "Chronic", "Internal"].map((opt) => ({
-                    key: opt,
-                    label: opt,
-                  })),
-                },
-                {
-                  name: "severity",
-                  label: "Severity",
-                  data: ["Mild", "Moderate", "Severe"].map((opt) => ({
-                    key: opt,
-                    label: opt,
-                  })),
-                },
-              ]}
+              filterConfigs={filterConfigs}
             />
           </div>
 
@@ -526,12 +178,12 @@ const OtherMedicalConditions = () => {
                                 fontSize: "14px",
                               }}
                             >
-                              {t(`OtherMedicalConditionsMobileView.severity_options.${condition.severity.toLowerCase()}`)}
+                              {translateSeverity(condition.severity)}
                             </span>
                           </td>
                           <td>{formatDate(condition.diagnosedDate)}</td>
                           <td>
-                            {t(`OtherMedicalConditionsMobileView.condition_type_options.${condition.conditionType}`)}
+                            {translateConditionType(condition.conditionType)}
                           </td>
                           <td>
                             <span
@@ -541,7 +193,7 @@ const OtherMedicalConditions = () => {
                                 fontSize: "14px",
                               }}
                             >
-                              {statusInfo.text}
+                              {translateStatus(condition.isActive)}
                             </span>
                           </td>
                           <td title={condition.note}>
@@ -692,11 +344,6 @@ const OtherMedicalConditions = () => {
           onClose={handleClosePopup}
         />
       )}
-
-      <Toaster
-        position="top-right"
-        reverseOrder={true}
-      />
     </div>
   );
 };

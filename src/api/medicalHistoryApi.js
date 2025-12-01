@@ -118,11 +118,12 @@ export const medicalHistoryApi = baseApi.injectEndpoints({
     // Add new medical history record
     addMedicalHistory: builder.mutation({
       query: ({ patientId, ...historyData }) => {
+        console.log('Add Medical History Data:', historyData);
         const params = {
           PatientId: patientId,
           HistoryType: transformHistoryTypeToAPI(historyData.historyType),
-          HereditaryDiseaseId: 34,
-          ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: 22 }),
+          HereditaryDiseaseId: historyData.hereditaryDisease?.id || null , 
+          // ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: 22 }),
           // ...(historyData.hereditaryDiseaseName && { HereditaryDiseaseName: historyData.hereditaryDiseaseName }),
           ...(historyData.description && { Description: historyData.description }),
           ...(historyData.dateOfEvent && { DateOfEvent: historyData.dateOfEvent }),

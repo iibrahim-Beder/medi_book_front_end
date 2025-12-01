@@ -143,6 +143,7 @@ const CustomAccordion = memo(({
         type={field.type || "text"}
         min={field.min}
         max={field.max}
+        disabled={readOnly || field.disabled}
         onChange={(e) => onChange(index, field.name, e.target.value)}
       />;
     }
@@ -294,13 +295,11 @@ const CustomAccordion = memo(({
                   {formFields.map(
                     (field, idx) =>
                       field.type === "dropdown" && (
-                        <div key={idx} className="dropdown-with-search-in-accordion">
+                        <div key={idx} className={`dropdown-with-search-in-accordion ${ field.half ? "form-group-half" :"" } `} >
                           <DropdownWithSearch
-                            label={field.label || "Medication"}
-                            options={field.options || []}
+                            type={field.DropdownType}
                             value={item[field.name] || ""}
                             onChange={(val) => handleFieldChange(index, field.name, val)}
-                            placeholder={field.placeholder}
                           />
                         </div>
                       )
