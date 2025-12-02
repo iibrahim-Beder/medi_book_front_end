@@ -190,7 +190,7 @@ const CustomAccordion = memo(({
           ) : (
             <h3>{title}</h3>
           )}
-          {onAdd && (
+          {onAdd && !readOnly && (
             <a
               href="#!"
               onClick={(e) => {
