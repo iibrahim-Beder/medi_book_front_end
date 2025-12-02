@@ -104,7 +104,7 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
         console.log('Doctor Notifications API Request Params:', params);
 
         return {
-          url: '/DoctorNotification/GetDoctorNotification',
+          url: '/Notification/GetNotification',
           params,
           timeout: 10000
         };

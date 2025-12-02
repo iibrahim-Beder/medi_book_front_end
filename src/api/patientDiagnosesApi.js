@@ -164,7 +164,7 @@ addPatientDiagnosis: builder.mutation({
 
     const body = {
       diagnosisName: diagnosisData.diagnosisName,
-      bookingId: diagnosisData.bookingId || 1,
+      bookingId: diagnosisData.bookingId || 73  ,
       code: diagnosisData.code || "DX-000",
       symptomsDescription: diagnosisData.symptomsDescription,
       description: diagnosisData.description,
@@ -203,6 +203,15 @@ addPatientDiagnosis: builder.mutation({
       method: 'POST',
       body: body
     };
+  },
+  transformErrorResponse: (response, meta, args) => {
+    console.error('Add Patient Diagnosis API Error:', response);
+    
+    // if(response.data.message==="Prescriptions[0].Status: Invalid prescription status.") {
+    //   return { succeeded: false, error: "prescriptions one, status : Invalid Prescription Status", status: 400 }
+    // }
+    response.data.message=formatErrorMessage(response.data.message);
+    return response;
   },
   invalidatesTags: (result, error, args) => [
     { type: '', id: args?.patientId || 'LIST' }
@@ -341,3 +350,23 @@ export const {
   useDeleteDiagnosisNoteMutation,
   useGetDiagnosisNotesQuery,
 } = patientDiagnosesApi;
+
+const formatErrorMessage = (errorMessage) => {
+  if (!errorMessage) return errorMessage;
+
+  const regex = /^([a-zA-Z]+)\[(\d+)\]\.([a-zA-Z]+):\s*(.+)$/;
+
+  const match = errorMessage.match(regex);
+
+  if (match) {
+    const [, entity, indexStr, field, message] = match;
+
+    const index = Number(indexStr); // تحويل index لرقم
+
+    const formattedEntity = entity.toLowerCase().replace(/s$/, '');
+    const formattedField = field.toLowerCase();
+    const formattedMessage = message.charAt(0).toUpperCase() + message.slice(1);
+
+    return `${formattedEntity} ${index + 1}, ${formattedField} : ${formattedMessage}`;
+  }
+};

@@ -24,23 +24,6 @@ const getStatusText = (status) => {
   return statusMap[status] || "Unknown";
 };
 
-const getMedicationId = (medicationName) => {
-  const medicationMap = {
-    "Ibuprofen": 1,
-    "Paracetamol": 2,
-    "Amoxicillin": 3,
-    "Aspirin": 4,
-    "Metformin": 5,
-    "Atorvastatin": 6,
-    "Lisinopril": 7,
-    "Levothyroxine": 8,
-    "Amlodipine": 9,
-    "Omeprazole": 10,
-    "Guaifenesin Syrup": 11
-  };
-  return medicationMap[medicationName] || 1;
-};
-
 const transformPrescriptionData = (response, searchValue = "") => {
   if (!response || !response.succeeded) {
     return {
@@ -150,6 +133,7 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
     // Add patient prescription
     addPatientPrescription: builder.mutation({
       query: ({ diagnosisId, prescriptionData }) => {
+        console.log('Add Patient Prescription Data:', prescriptionData);
         const body = {
           diagnosisId: diagnosisId,
           title: prescriptionData.title,
@@ -157,7 +141,7 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
           status: getStatusValue(prescriptionData.status),
           prescribedMedications: (prescriptionData.prescribedMedications || []).map(med => ({
             prescriptionId: prescriptionData.prescriptionId || 2,
-            medicationId: getMedicationId(med.medicationName),
+            medicationId: med.medicationName.id,
             startDate: med.startDate || new Date().toISOString(),
             endDate: med.endDate || new Date(Date.now() + (med.durationInDays || 1) * 24 * 60 * 60 * 1000).toISOString(),
             dosage: med.dosage,

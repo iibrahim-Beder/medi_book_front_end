@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const baseQuery = fetchBaseQuery({
   
 
-  baseUrl: process.env.REACT_APP_API_BASE_URL || 'https://chuck-dependent-startup-titled.trycloudflare.com/Api/v1',
+  baseUrl: process.env.REACT_APP_API_BASE_URL || 'https://declared-regression-streams-mas.trycloudflare.com/Api/v1',
   prepareHeaders: (headers) => {
     headers.set('Content-Type', 'application/json');
     headers.set('Accept', 'application/json');

@@ -150,8 +150,7 @@ export const useOtherMedicalConditions = () => {
   // API Operations - Fixed parameter structure
   const handleSave = async () => {
     if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
-    
-    if (!selectedRecord.medicalConditionId) {
+    if (!selectedRecord.medicalConditionNameId) {
       console.log('Selected Record:', selectedRecord);
       toast.error('Please select a medical condition.');
       return;
@@ -168,7 +167,7 @@ export const useOtherMedicalConditions = () => {
           conditionData: {
             ...selectedRecord,
             diagnosisDate: formatDateForAPI(selectedRecord.diagnosedDate), // Match API expected field name
-            MedicalConditionId: selectedRecord.medicalConditionId || 0, // Ensure this is set
+            MedicalConditionId: selectedRecord.medicalConditionNameId, // Ensure this is set
             notes: selectedRecord.note || '' // Match API expected field name
           }
         };
