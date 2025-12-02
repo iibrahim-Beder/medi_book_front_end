@@ -262,11 +262,8 @@
 .dc-collapseexp {
   max-height: 0;
   opacity: 0;
-<<<<<<< HEAD
-  /* overflow: hidden; */
-=======
->>>>>>> feature/api-integration
-  /* transition: max-height 0.5s ease, opacity 0.5s ease; */
+  /* overflow: hidden; */ 
+ /* transition: max-height 0.5s ease, opacity 0.5s ease; */
   transition:all 0.6s ease;
   
 }
