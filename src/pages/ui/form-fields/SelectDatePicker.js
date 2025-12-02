@@ -87,7 +87,7 @@ const SelectDatePicker = ({
       );
 
       setSelectedDate(selected);
-      setTempDate(date);
+      setTempDate(date); 
       setMonth(date);
       setManualInput(format(selected, 'dd/MM/yyyy'));
       setShowDropdown(false);

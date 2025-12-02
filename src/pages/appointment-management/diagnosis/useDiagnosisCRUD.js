@@ -6,7 +6,6 @@ import {
   useDeletePatientDiagnosisMutation
 } from "../../../api/patientDiagnosesApi";
 import { transformDiagnosisData } from "./diagnosisUtils";
-import { is } from "date-fns/locale/is";
 
 const PATIENT_ID = 4;
 
@@ -33,7 +32,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
     toast.error("No diagnosis data to save");
     return false;
   }else{
-    if(!diagnosisData.diagnosisName) {toast.error('Diagnosis name is required.') ;return false ;};
+    // if(!diagnosisData.diagnosisName) {toast.error('Diagnosis name is required.') ;return false ;};
   }
   const loadingToast = toast.loading('Saving...');
   if (diagnosisData.isNew) {
@@ -47,7 +46,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
             console.log("Add Diagnosis Result:",result);
     
     if (result?.succeeded) {
-      toast.success(result.message || "Diagnosis saved successfully");
+      toast.success("Diagnosis saved successfully");
       toast.dismiss(loadingToast);
       
       if (setCurrentItems) {
@@ -58,11 +57,13 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         checkAndRefetch(true);      
       return true;
     } else {
+      console.log("Failed to save diagnosis:", result);
       toast.error(result.message || "Failed to save diagnosis");
       toast.dismiss(loadingToast);
       return false;
     }
   } catch (error) {
+    console.log("Error saving diagnosis:", error);
     toast.error(error?.data?.message || "Error saving diagnosis");
     toast.dismiss(loadingToast);
     return false;
@@ -87,7 +88,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         }).unwrap();
 
         if (result?.succeeded) {
-          toast.success(result.message || "Diagnosis updated successfully");
+          toast.success("Diagnosis updated successfully");
           toast.dismiss(loadingToast);
           
           if (setCurrentItems) {
@@ -106,7 +107,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         }
       }   
      catch (error) {
-      console.error('Error saving diagnosis:', error);
+      console.log('Error saving diagnosis:', error);
       toast.error(error?.message || "Error saving diagnosis");
       toast.dismiss(loadingToast);
       return false;
@@ -175,7 +176,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         } else {
           const result = await deleteDiagnosis(deletePopup.diagnosisId).unwrap();
           if (result?.succeeded) {
-            toast.success(result.message || "Diagnosis deleted successfully");
+            toast.success("Diagnosis deleted successfully");
             setEditingDiagnosis(null);
             setSelectedDiagnosis(null);            
             toast.dismiss(loadingToast);
@@ -183,13 +184,14 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
             checkAndRefetch();
           } else {
             toast.error(result.message || "Failed to delete diagnosis");
-            toast.dismiss(loadingToast);
           }
         }
         handleCloseDeleteConfirm();
       } catch (error) {
         console.error('Error deleting diagnosis:', error);
         toast.error(error?.data?.message || "Error deleting diagnosis");
+        toast.dismiss(loadingToast);
+      }finally {
         toast.dismiss(loadingToast);
       }
     }

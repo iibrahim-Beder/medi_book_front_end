@@ -14,7 +14,7 @@ export const getStatusText = (status) => {
 
 // Transform API data to match component structure
 export const transformDiagnosisData = (diagnosis) => {
-  console.log('Original API diagnosis:', diagnosis);
+  // console.log('Original API diagnosis:', diagnosis);
   
   const transformed = {
     // Basic diagnosis info - using exact API field names
