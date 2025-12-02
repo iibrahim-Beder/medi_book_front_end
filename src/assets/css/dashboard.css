@@ -3270,7 +3270,7 @@ background-color: var(--scbccolor);
 	display: inline-block;
 	vertical-align: middle;
 }
-.dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup .dc-btn{
+/* .dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup .dc-btn{
     margin: 0;
 	color: #fff;
     width: 160px;
@@ -3284,15 +3284,15 @@ background-color: var(--scbccolor);
     text-transform: uppercase;
 	background: #00cc8d !important;
     font: 700 13px/50px 'Poppins', Arial, Helvetica, sans-serif;
-}
+} */
 .form-group-label label input{display: none;}
-.dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup span{
+/* .dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup span{
 	font-size: 14px;
 	margin-left:25px; 
 	line-height: 16px;
 	display: inline-block;
 	vertical-align: middle;
-}
+} */
 .dc-fileuploading{
 	float: right;
 	display: none;
