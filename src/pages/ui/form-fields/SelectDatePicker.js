@@ -22,7 +22,7 @@ const SelectDatePicker = ({
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
 
-  const [selectedDate, setSelectedDate] = useState(null); // Date object كامل (مع الساعة)
+  const [selectedDate, setSelectedDate] = useState(null);
   const [tempDate, setTempDate] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [manualInput, setManualInput] = useState('');
@@ -33,10 +33,9 @@ const SelectDatePicker = ({
   const dropdownRef = useRef();
   const inputRef = useRef();
 
-  // تحويل القيمة اللي جاية من الـ backend لـ Date object كامل
   useEffect(() => {
     if (value) {
-      const date = new Date(value); // يدعم ISO string كامل
+      const date = new Date(value); 
       if (isValid(date)) {
         setSelectedDate(date);
         setTempDate(date);
@@ -76,7 +75,6 @@ const SelectDatePicker = ({
 
   const handleDateSelect = (date) => {
     if (date && isValid(date)) {
-      // لا نستخدم startOfDay أبدًا → نحتفظ بالوقت الحالي
       const now = new Date();
       const selected = new Date(
         date.getFullYear(),
@@ -89,7 +87,7 @@ const SelectDatePicker = ({
       );
 
       setSelectedDate(selected);
-      setTempDate(date); // للـ DayPicker بس
+      setTempDate(date); 
       setMonth(date);
       setManualInput(format(selected, 'dd/MM/yyyy'));
       setShowDropdown(false);
@@ -144,7 +142,6 @@ const SelectDatePicker = ({
       return;
     }
 
-    // نضيف الوقت الحالي عشان ما يتغيرش
     const now = new Date();
     const finalDate = new Date(
       parsed.getFullYear(),
