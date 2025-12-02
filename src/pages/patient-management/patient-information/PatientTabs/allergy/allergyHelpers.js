@@ -1,4 +1,4 @@
-import { formatDate } from "../../../../shared/FormatDate";
+import { formatDate } from "../../../../shared/utils";
 
 export const allergyHelpers = (t) => {
 

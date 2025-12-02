@@ -16,7 +16,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { CiSearch } from "react-icons/ci";
 import Popper from "@mui/material/Popper";
-import useDropdownData from "./remoteDropdown/useDropdownData";
+import useDropdownData, { LoadingSkeleton } from "./remoteDropdown/useDropdownData";
 
 const DropdownWithSearch = ({
   type = "medication", // medication, disease, allergy
@@ -101,26 +101,6 @@ const DropdownWithSearch = ({
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
-const LoadingSkeleton = () => {
-  return (
-    <>
-      {[...Array(itemsPerPage)].map((_, idx) => (
-        <div key={idx} style={{ padding: "6px 0" }}>
-          <Skeleton
-            variant="rectangular"
-            width="100%"
-            height={30}
-            sx={{ borderRadius: "6px", marginBottom: "6px" }}
-          />
-        </div>
-      ))}
-    </>
-  );
-};
-
-
-
   return (
     <div className="dropdown-container" style={{ opacity: disabled ? 0.6 : 1 }}>
       <Box
@@ -220,9 +200,11 @@ const LoadingSkeleton = () => {
                       key={option.id}
                       button
                       onClick={() => handleSelect(option)}
+                      // cursor: "pointer",
+                      style={{cursor:"pointer"}}
                       sx={{
                         borderRadius: "5px",
-                        "&:hover": { backgroundColor: "#f0f0f0" },
+                        "&:hover": { backgroundColor: "#f0f0f0"  },
                       }}
                     >
                       {option.name}

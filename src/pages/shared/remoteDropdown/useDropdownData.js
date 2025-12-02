@@ -4,6 +4,8 @@ import {
   useGetMedicalConditionsQuery, 
   useGetMedicationsQuery 
 } from '../../../api/lookupDataApi';
+import Skeleton from 'react-loading-skeleton';
+import { getRandomNumber } from '../utils';
 
 const useDropdownData = (type, searchTerm = '', page = 0, itemsPerPage = 6, open = false) => {
   const [data, setData] = useState({
@@ -94,3 +96,20 @@ const useDropdownData = (type, searchTerm = '', page = 0, itemsPerPage = 6, open
 };
 
 export default useDropdownData;
+
+  export  const LoadingSkeleton = () => {
+  return (
+    <>
+      {[...Array(6)].map((_, idx) => (
+        <div key={idx} style={{ padding: "6px 0" }}>
+          <Skeleton
+            variant="rectangular"
+            width={`${getRandomNumber()}%`}
+            height={20}
+            sx={{ borderRadius: "6px", marginBottom: "6px" }}
+          />
+        </div>
+      ))}
+    </>
+  );
+};
