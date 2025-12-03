@@ -152,7 +152,7 @@ const DropdownWithSearch = ({
                 padding: "10px",
                 display: "flex",
                 flexDirection: "column",
-                boxShadow: "0px 11px 12px 0px var(--scshadocolor)",
+                boxShadow: "0px 11px 12px 0px var(--shado1color)",
                 border: "1px solid #ddd",
                 width: width,
                 position: "absolute",

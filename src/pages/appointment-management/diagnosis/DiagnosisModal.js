@@ -67,7 +67,7 @@ const DiagnosisModal = ({
         </button>
       </Modal.Header>
 
-      <Modal.Body className="space-y-4 pt-0">
+      <Modal.Body className="space-y-4 pt-0 diagnosis-modal-body ">
         {/* Basic Information */}
         <div className="mb-4">
           <div className="row">

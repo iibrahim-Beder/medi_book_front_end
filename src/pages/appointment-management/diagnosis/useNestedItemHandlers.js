@@ -637,11 +637,14 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
     };
     setEditingDiagnosis(prev => ({
       ...prev,
-      prescriptions: [newPrescription, ...(prev.prescriptions || [])]
+    prescriptions: [
+      newPrescription,
+      ...(prev.prescriptions?.map(p => ({ ...p, isExpanded: false })) || [])
+    ]
     }));
   }, [editingDiagnosis, setEditingDiagnosis]);
 
-const handleDeletePrescription = useCallback(async (prescriptionId) => {
+   const handleDeletePrescription = useCallback(async (prescriptionId) => {
   if (!editingDiagnosis||isDeletingPrescription) return;
 
   if (editingDiagnosis.isNew) {
@@ -682,7 +685,7 @@ const handleDeletePrescription = useCallback(async (prescriptionId) => {
   }finally {
     toast.dismiss(loadingToast);
   }
-}, [editingDiagnosis, setEditingDiagnosis, deletePatientPrescription]);
+   }, [editingDiagnosis, setEditingDiagnosis, deletePatientPrescription]);
 
   const handleUpdatePrescription = useCallback((prescriptionId, field, value) => {
     if (!editingDiagnosis) return;

@@ -1206,4 +1206,4 @@ color: var(--terthemecolor);
         max-width: 90% !important ;
     }
 }
-
+.diagnosis-modal .modal-body .second-btn{width: 80px;}
