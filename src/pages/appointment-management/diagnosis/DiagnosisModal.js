@@ -45,7 +45,7 @@ const DiagnosisModal = ({
 
   return (
     <Modal
-      className="mobile-view"
+      className="mobile-view diagnosis-modal"
       show={true}
       onHide={onCancel}
       size="lg"

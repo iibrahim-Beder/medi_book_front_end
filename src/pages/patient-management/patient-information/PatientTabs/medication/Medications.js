@@ -1,7 +1,7 @@
 // Medications.jsx
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Othermedications from "./other/OthermedicationsMobileView";
+import Othermedications from "./other/OthermedicationsTable";
 import PrescribedMedicationTable from "./prescribed-medication/PrescribedMedicationTable";
 import { useDevice } from "../../../../../context/useIsMobile";
 import PrescribedMedicationMobileView from "./prescribed-medication/PrescribedMedicationMobileView";
