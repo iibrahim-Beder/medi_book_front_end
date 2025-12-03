@@ -124,7 +124,7 @@ const DiagnosisModal = ({
                 handleCancelNestedItem("conditions", conditionId),
             })}
             getItemTitle={(condition) =>
-              condition.medicalCondition.name || "No Condition"
+              condition.medicalCondition.name || "Condition"
             }
             itemType="conditions"
             formFields={[
@@ -170,7 +170,7 @@ const DiagnosisModal = ({
             readOnly={false}
             backgroundColor="var(--scbccolor)"
             data={editingDiagnosis?.notes || []}
-            getItemTitle={(note) => note.note || "No Note"}
+            getItemTitle={(note) => note.note || "Note"}
             onAdd={handleAddNote}
             {...createIndexBasedHandlers(editingDiagnosis?.notes || [], {
               onDelete: handleDeleteNote,

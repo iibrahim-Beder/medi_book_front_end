@@ -8,3 +8,8 @@ export  const formatDate = (dateString) => {
     });
   };
 export const getRandomNumber = ( min = 40, max = 95 ) => {return Math.floor(Math.random() * (max - min + 1)) + min;};
+  // === Truncate long titles ===
+   export const truncateTitle = (text, maxLength = 50) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };

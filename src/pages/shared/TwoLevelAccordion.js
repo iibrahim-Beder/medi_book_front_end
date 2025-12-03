@@ -66,9 +66,13 @@ const TwoLevelAccordion = memo(({
         );
         return;
       }
+      const currentData = data || [];
+      const item = currentData[index];
+      if (item?.isExpanded === true) {
+        item._initialTitle = renderItemTitle(item);
+      }
 
       if (onUpdate) {
-        const currentData = data || [];
         currentData.forEach((_, i) => {
           onUpdate(i, "isExpanded", i === index ? !currentData[index]?.isExpanded : false);
         });
@@ -101,13 +105,6 @@ const TwoLevelAccordion = memo(({
   };
 
   const accordionData = readOnly ? dataRead : data;
-
-  // === Truncate long titles ===
-  const truncateTitle = (text, maxLength = 50) => {
-    if (!text) return "";
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-  };
-
   const renderItemTitle = (item) => {
     return item.title || item.medication || item.type || "New Prescription";
   };
@@ -137,192 +134,200 @@ const TwoLevelAccordion = memo(({
 
       {/* Items */}
       <ul className="dc-experienceaccordion accordion">
-        {(accordionData || []).map((item, index) => (
-          <li key={item.id || index}>
-            {/* Item Header */}
-            <div
-              className={`dc-accordioninnertitle ${readOnly ? "" : "medium"}`}
-              style={{
-                borderColor: "#eee",
-                borderLeft: item.isNew
-                  ? "2px solid #ffa500"
-                  : item.isExpanded
-                  ? "2px solid var(--themecolor)"
-                  : "",
-                borderBottomLeftRadius: item.isExpanded ? "0" : "",
-                backgroundColor: titleBackgroundColor,
-              }}
-            >
-              <span
+        {(accordionData || []).map((item, index) => {
+
+          if (!item._initialTitle) {
+            item._initialTitle = renderItemTitle(item);
+          }
+
+          return (
+            <li key={item.id || index}>
+              <div
+                className={`dc-accordioninnertitle ${readOnly ? "" : "medium"}`}
                 style={{
-                  flex: 1,
-                  minWidth: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
+                  borderColor: "#eee",
+                  borderLeft: item.isNew
+                    ? "2px solid #ffa500"
+                    : item.isExpanded
+                    ? "2px solid var(--themecolor)"
+                    : "",
+                  borderBottomLeftRadius: item.isExpanded ? "0" : "",
+                  backgroundColor: titleBackgroundColor,
                 }}
               >
-                {item.icon && <span>{item.icon}</span>}
                 <span
                   style={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    maxWidth: "100%",
-                    display: "inline-block",
+                    flex: 1,
+                    minWidth: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
                   }}
-                  title={renderItemTitle(item)} // Tooltip
                 >
-                  {truncateTitle(renderItemTitle(item), 60)}
-                {item.date && <em style={{ color: "#666", fontSize: "0.9em" }}>{item.date}</em>}
-                </span>
+                  {item.icon && <span>{item.icon}</span>}
+                  <span
+                    style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "98%",
+                      display: "inline-block",
+                    }}
+                    title={renderItemTitle(item)}
+                  >
                 {item.isNew && (
-                <span style={{ color: "#ffa500", fontWeight: "bold", fontSize: "0.9em" }}>
-                    (New)
-                  </span>
-                )}
-              </span>
+                    <span  style={{ color: "#ffa500", fontWeight: "bold",margin:"0 5px", fontSize: "0.9em" }}>
+                      (New)
+                    </span>
+                  )}
+                    {item.isExpanded ? item._initialTitle : renderItemTitle(item)}
 
-              {/* Action Buttons */}
-              <div className="dc-rightarea" onClick={(e) => e.stopPropagation()}>
-                <a
-                  href="#!"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleEditClick(index);
-                  }}
-                  className="dc-addinfo dc-skillsaddinfo"
-                >
-                  <FiEdit2 />
-                </a>
-                {onDelete && !readOnly && (
+                  {item.date && <em style={{ color: "#666", fontSize: "0.9em" }}>{item.date}</em>}
+                  </span>
+             
+                </span>
+
+                {/* Action Buttons */}
+                <div className="dc-rightarea" onClick={(e) => e.stopPropagation()}>
                   <a
                     href="#!"
                     onClick={(e) => {
                       e.preventDefault();
-                      e.stopPropagation();
-                      handleShowDeleteConfirm(index);
+                      handleEditClick(index);
                     }}
-                    className="dc-deleteinfo"
-                    style={{ marginLeft: "8px" }}
+                    className="dc-addinfo dc-skillsaddinfo"
                   >
-                    <IoTrashOutline />
+                    <FiEdit2 />
                   </a>
+                  {onDelete && !readOnly && (
+                    <a
+                      href="#!"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleShowDeleteConfirm(index);
+                      }}
+                      className="dc-deleteinfo"
+                      style={{ marginLeft: "8px" }}
+                    >
+                      <IoTrashOutline />
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Item Body */}
+              <div
+                style={{
+                  borderLeft: "2px solid var(--themecolor)",
+                  backgroundColor: backgroundColor,
+                }}
+                className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
+              >
+                {/* Form */}
+                <form
+                  className="dc-formtheme dc-userform"
+                  style={{ marginBottom: "20px" }}
+                  onSubmit={(e) => handleSave(index, e)}
+                >
+                  <fieldset>
+                    {(formFields || []).map((field, idx) => (
+                      <div
+                        key={idx}
+                        className={`form-group ${field.half ? "form-group-half" : ""}`}
+                      >
+                        {field.type === "textarea" ? (
+                          <TextAreaField
+                            label={field.label}
+                            name={field.name}
+                            value={item[field.name] || ""}
+                            onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                            placeholder={field.placeholder}
+                            icon={field.icon}
+                            disabled={readOnly}
+                          />
+                        ) : field.type === "select" ? (
+                          <SelectField
+                            label={field.label}
+                            disabled={readOnly}
+                            value={item[field.name] || ""}
+                            name={field.name}
+                            options={field.options}
+                            onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          />
+                        ) : field.type === "number" ? (
+                          <input
+                            disabled={readOnly}
+                            type="number"
+                            className="form-control"
+                            placeholder={field.placeholder}
+                            value={item[field.name] || ""}
+                            onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                            min="0"
+                          />
+                        ) : (
+                          <Field
+                            label={field.label}
+                            disabled={readOnly}
+                            type={field.type}
+                            className="form-control"
+                            placeholder={field.placeholder}
+                            value={item[field.name] || ""}
+                            onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                          />
+                        )}
+                      </div>
+                    ))}
+
+                    {!readOnly && (
+                      <div className="dc-btnarea d-flex">
+                        <button
+                          type="button"
+                          className="simple-btn"
+                          onClick={() => handleCancel(index)}
+                          style={{ margin: "11px 4px" }}
+                        >
+                          {t("Cancel")}
+                        </button>
+                        <button
+                          type="submit"
+                          className="second-btn"
+                          style={{ margin: "11px 4px" }}
+                        >
+                          {item.isNew ? t("Add") : t("Save")}
+                        </button>
+                      </div>
+                    )}
+                  </fieldset>
+                </form>
+
+                {/* Nested Medications */}
+                {(item.isNew || item.isExpanded) && (
+                  <CustomAccordion
+                   getItemTitle={getItemTitleRecipe}
+                    readOnly={readOnly}
+                    accordioninnertitleSize="small"
+                    noHedarBefore={true}
+                    backgroundColor="var(--cardcolor)"
+                    titleBackgroundColor="var(--cardcolor)"
+                    title={t("Prescribed Medication")}
+                    addNewLabel={t("Add Medication Detail")}
+                    data={item.recipes || []}
+                    formFields={formFieldsRecipe}
+                    onAdd={() => onAddRecipe(index)}
+                    onDelete={(recipeIndex) => onDeleteRecipe(index, recipeIndex)}
+                    onUpdate={(recipeIndex, field, value) =>
+                      onUpdateRecipe(index, recipeIndex, field, value)
+                    }
+                    onSave={(recipeIndex, recipeData) =>
+                      onSaveRecipe(index, recipeIndex, recipeData)
+                    }
+                  />
                 )}
               </div>
-            </div>
-
-            {/* Item Body */}
-            <div
-              style={{
-                borderLeft: "2px solid var(--themecolor)",
-                backgroundColor: backgroundColor,
-              }}
-              className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
-            >
-              {/* Form */}
-              <form
-                className="dc-formtheme dc-userform"
-                style={{ marginBottom: "20px" }}
-                onSubmit={(e) => handleSave(index, e)}
-              >
-                <fieldset>
-                  {(formFields || []).map((field, idx) => (
-                    <div
-                      key={idx}
-                      className={`form-group ${field.half ? "form-group-half" : ""}`}
-                    >
-                      {field.type === "textarea" ? (
-                        <TextAreaField
-                          label={field.label}
-                          name={field.name}
-                          value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
-                          placeholder={field.placeholder}
-                          icon={field.icon}
-                          disabled={readOnly}
-                        />
-                      ) : field.type === "select" ? (
-                        <SelectField
-                          label={field.label}
-                          disabled={readOnly}
-                          value={item[field.name] || ""}
-                          name={field.name}
-                          options={field.options}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
-                        />
-                      ) : field.type === "number" ? (
-                        <input
-                          disabled={readOnly}
-                          type="number"
-                          className="form-control"
-                          placeholder={field.placeholder}
-                          value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
-                          min="0"
-                        />
-                      ) : (
-                        <Field
-                          label={field.label}
-                          disabled={readOnly}
-                          type={field.type}
-                          className="form-control"
-                          placeholder={field.placeholder}
-                          value={item[field.name] || ""}
-                          onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
-                        />
-                      )}
-                    </div>
-                  ))}
-
-                  {!readOnly && (
-                    <div className="dc-btnarea d-flex">
-                      <button
-                        type="button"
-                        className="simple-btn"
-                        onClick={() => handleCancel(index)}
-                        style={{ margin: "11px 4px" }}
-                      >
-                        {t("Cancel")}
-                      </button>
-                      <button
-                        type="submit"
-                        className="second-btn"
-                        style={{ margin: "11px 4px" }}
-                      >
-                        {item.isNew ? t("Add") : t("Save")}
-                      </button>
-                    </div>
-                  )}
-                </fieldset>
-              </form>
-
-              {/* Nested Medications */}
-              {(item.isNew || item.isExpanded) && (
-                <CustomAccordion
-                 getItemTitle={getItemTitleRecipe}
-                  readOnly={readOnly}
-                  accordioninnertitleSize="small"
-                  noHedarBefore={true}
-                  backgroundColor="var(--cardcolor)"
-                  titleBackgroundColor="var(--cardcolor)"
-                  title={t("Prescribed Medication")}
-                  addNewLabel={t("Add Medication Detail")}
-                  data={item.recipes || []}
-                  formFields={formFieldsRecipe}
-                  onAdd={() => onAddRecipe(index)}
-                  onDelete={(recipeIndex) => onDeleteRecipe(index, recipeIndex)}
-                  onUpdate={(recipeIndex, field, value) =>
-                    onUpdateRecipe(index, recipeIndex, field, value)
-                  }
-                  onSave={(recipeIndex, recipeData) =>
-                    onSaveRecipe(index, recipeIndex, recipeData)
-                  }
-                />
-              )}
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
 
       {/* Delete Confirmation Popup */}
