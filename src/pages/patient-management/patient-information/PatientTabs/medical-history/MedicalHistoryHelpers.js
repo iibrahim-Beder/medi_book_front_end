@@ -1,4 +1,4 @@
-import { formatDate as formatDateMain} from "../../../../shared/FormatDate";
+import { formatDate as formatDateMain} from "../../../../shared/utils";
 export const medicalHistoryHelpers = (t) => {
   const truncateText = (text, maxLength = 70) => {
     if (!text) return "";

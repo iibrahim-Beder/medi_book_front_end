@@ -1,4 +1,4 @@
-import { formatDate } from "../../../../../shared/FormatDate";
+import { formatDate } from "../../../../../shared/utils";
 import Skeleton from "react-loading-skeleton";
 
 export const otherMedicationsHelpers = (t) => {

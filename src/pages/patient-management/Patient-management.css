@@ -223,3 +223,49 @@ border-bottom: 1px solid #dee2e670 !important;
 .skeleton-item > div > span {
   display: block !important;
 }
+
+/* modal css start */
+.diagnosis-modal .modal-dialog {
+  max-width: 900px;
+  min-height: 500px;
+}
+
+.modal-header-custom {
+  background-color: #f8f9fa;
+    padding-top: 20px !important;
+}
+
+.modal-title-custom {
+  color: #333;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.btn-close-custom {
+  background: none;
+  border: none;
+  color: #6c757d;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content-custom {
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+ .diagnosis-modal .modal-footer-custom {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  padding: 0 1rem ;
+}
+
+.close-btn {
+  min-width: 100px;
+}
+/* modal css end */

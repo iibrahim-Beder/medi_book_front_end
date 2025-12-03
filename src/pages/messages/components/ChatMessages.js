@@ -6,7 +6,7 @@ export default function ChatMessages() {
      
       <ChatMessage
         type="sender"
-        img="/images/avt/doctor-avt.jpg"
+        img="/images/avt/doctor-imge-avt.png"
         text="Eiusmod tempor incididunt labore et dolore magna."
         link="https://themeforest.net"
         date="Jun 28, 2017 09:30"

@@ -9,7 +9,7 @@ import ErrorLoading from "../../../../../shared/ErrorLoading";
 import "../../../../Patient-management.css";
 import { useOtherMedications } from "./useOtherMedications";
 import { MobileSkeleton, otherMedicationsHelpers, TableSkeleton } from "./otherMedicationsHelpers";
-import {formatDate} from "../../../../../shared/FormatDate";
+import {formatDate} from "../../../../../shared/utils";
 const OtherMedicationsMobileView = () => {
   const { t } = useTranslation();
 
