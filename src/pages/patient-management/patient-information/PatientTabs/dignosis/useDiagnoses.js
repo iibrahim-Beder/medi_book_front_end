@@ -4,9 +4,6 @@ import { useGetPatientDiagnosesQuery } from "../../../../../api/patientDiagnoses
 const PATIENT_ID = 4;
 
 export const useDiagnoses = () => {
-  // State 
-  const [expandedRow, setExpandedRow] = useState(null);
-  const [expandedField, setExpandedField] = useState(null);
   
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
@@ -61,16 +58,16 @@ export const useDiagnoses = () => {
     refetch
   } = useGetPatientDiagnosesQuery(queryArgs);
 
-  // Actions 
-  const handleViewClick = (id, field) => {
-    if (expandedRow === id && expandedField === field) {
-      setExpandedRow(null);
-      setExpandedField(null);
-    } else {
-      setExpandedRow(id);
-      setExpandedField(field);
-    }
-  };
+  // // Actions 
+  // const handleViewClick = (id, field) => {
+  //   if (expandedRow === id && expandedField === field) {
+  //     setExpandedRow(null);
+  //     setExpandedField(null);
+  //   } else {
+  //     setExpandedRow(id);
+  //     setExpandedField(field);
+  //   }
+  // };
 
   const handleSearch = (filters) => {
     setCurrentPage(1);
@@ -157,6 +154,70 @@ export const useDiagnoses = () => {
     return statusMap[status] || "Unknown";
   };
 
+
+
+
+  // === Modal state ===
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [expandedField, setExpandedField] = useState(null);
+  
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const [modalType, setModalType] = useState(null);
+  
+  const handleOpenModal = (diagnosisId, fieldType, data) => {
+    setExpandedRow(diagnosisId);
+    setExpandedField(fieldType);
+    setModalData(data);
+    setModalType(fieldType);
+    setModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setModalData(null);
+    setModalType(null);
+    setExpandedRow(null);
+    setExpandedField(null);
+  };
+  
+  const handleViewClick = (diagnosisId, fieldType) => {
+    const diagnosis = diagnosesData?.data?.find(d => d.id === diagnosisId);
+    if (!diagnosis) return;
+    
+    const transformedDiagnosis = transformDiagnosisData(diagnosis);
+    const transformedPrescriptions = transformPrescriptionData(transformedDiagnosis.prescription);
+    
+    let data = null;
+    switch(fieldType) {
+      case 'diagnosedConditions':
+        data = transformedDiagnosis.diagnosedConditions;
+        break;
+      case 'notes':
+        data = transformedDiagnosis.notes;
+        break;
+      case 'prescription':
+        data = transformedPrescriptions;
+        break;
+      case 'symptomsDescription':
+      case 'diagnosisDescription':
+        if (expandedRow === diagnosisId && expandedField === fieldType) {
+          setExpandedRow(null);
+          setExpandedField(null);
+        } else {
+          setExpandedRow(diagnosisId);
+          setExpandedField(fieldType);
+        }
+        return;
+      default:
+        return;
+    }
+    
+    handleOpenModal(diagnosisId, fieldType, data);
+  };
+  
+
+
   return {
     // State
     appliedFilters,
@@ -169,7 +230,7 @@ export const useDiagnoses = () => {
     isFetching,
     error,
     pageSize,
-    
+
     // Actions
     handleViewClick,
     handleSearch,
@@ -177,12 +238,20 @@ export const useDiagnoses = () => {
     setCurrentPage,
     setCurrentFilters,
     refetch,
-    
+
     // Utilities
     truncateText,
     formatDate,
     transformDiagnosisData,
     transformPrescriptionData,
-    getStatusText
+    getStatusText,
+
+    //modal
+    modalOpen,
+    modalData,
+    modalType,
+    
+    handleOpenModal,
+    handleCloseModal,
   };
 };

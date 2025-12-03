@@ -1,9 +1,7 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
-import CustomAccordion from "../../../../shared/CustomAccordion";
-import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
+import {DiagnosisModal} from "./diagnosisHelpers";
 import { MdExpandMore } from "react-icons/md";
-import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../../../shared/Pagination";
@@ -19,9 +17,9 @@ import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 const DiagnosisTable = () => {
   const { t } = useTranslation();
   
+  
   const {
     // State
-    appliedFilters,
     expandedRow,
     expandedField,
     currentFilters,
@@ -31,21 +29,26 @@ const DiagnosisTable = () => {
     isFetching,
     error,
     pageSize,
-    
+
+    // Modal states
+    modalOpen,
+    modalData,
+    modalType,
+
     // Actions
     handleViewClick,
+    handleCloseModal,
     handleSearch,
     handleResetFilters,
     setCurrentPage,
     setCurrentFilters,
     refetch,
-    
+
     // Utilities
     truncateText,
     formatDate,
     transformDiagnosisData,
     transformPrescriptionData,
-    getStatusText
   } = useDiagnoses();
 
   const {
@@ -63,6 +66,20 @@ const DiagnosisTable = () => {
 
   return (
     <div className="table-container">
+          <DiagnosisModal
+        show={modalOpen}
+        onHide={handleCloseModal}
+        type={modalType}
+        data={modalData}
+        formFields={
+          modalType === 'diagnosedConditions' ? diagnosedConditionsFields :
+          modalType === 'notes' ? notesFields :
+          prescriptionFields
+        }
+        formFieldsRecipe={
+          modalType === 'prescription' ? prescriptionRecipeFields : undefined
+        }
+      />
       <div className="table-header">
         <div>
           <h3 className="table-title">{t('Diagnosis')}</h3>
@@ -256,12 +273,7 @@ const DiagnosisTable = () => {
                             <Button
                               className="view-btn"
                               size="sm"
-                              variant={
-                                expandedRow === transformedDiagnosis.id &&
-                                expandedField === "diagnosedConditions"
-                                  ? "primary"
-                                  : "outline-primary"
-                              }
+                              variant="outline-primary"
                               onClick={() =>
                                 handleViewClick(transformedDiagnosis.id, "diagnosedConditions")
                               }
@@ -269,65 +281,39 @@ const DiagnosisTable = () => {
                             >
                               {t('View')}
                               {transformedDiagnosis.diagnosedConditions.length > 0 && (
-                                <span
-                                  className="num-item"
-                                  style={{
-                                    backgroundColor:
-                                      expandedRow === transformedDiagnosis.id &&
-                                      expandedField === "diagnosedConditions"
-                                        ? "#f8f9fa"
-                                        : "transparent",
-                                  }}
-                                >
+                                <span className="num-item">
                                   {transformedDiagnosis.diagnosedConditions.length}
                                 </span>
                               )}
                             </Button>
                           </td>
-
-                          {/* Notes - Read Only Accordion */}
+                            
+                          {/* Notes - Button opens modal */}
                           <td>
                             <Button
                               className="view-btn"
                               size="sm"
-                              variant={
-                                expandedRow === transformedDiagnosis.id &&
-                                expandedField === "notes"
-                                  ? "primary"
-                                  : "outline-primary"
+                              variant="outline-primary"
+                              onClick={() => 
+                                handleViewClick(transformedDiagnosis.id, "notes")
                               }
-                              onClick={() => handleViewClick(transformedDiagnosis.id, "notes")}
                               disabled={transformedDiagnosis.notes.length === 0}
                             >
                               {t('View')}
                               {transformedDiagnosis.notes.length > 0 && (
-                                <span
-                                  className="num-item"
-                                  style={{
-                                    backgroundColor:
-                                      expandedRow === transformedDiagnosis.id &&
-                                      expandedField === "notes"
-                                        ? "#f8f9fa"
-                                        : "transparent",
-                                  }}
-                                >
+                                <span className="num-item">
                                   {transformedDiagnosis.notes.length}
                                 </span>
                               )}
                             </Button>
                           </td>
-
-                          {/* Prescription - TwoLevelAccordion (Read Only) */}
+                            
+                          {/* Prescription - Button opens modal */}
                           <td>
                             <Button
                               className="view-btn"
                               size="sm"
-                              variant={
-                                expandedRow === transformedDiagnosis.id &&
-                                expandedField === "prescription"
-                                  ? "primary"
-                                  : "outline-primary"
-                              }
+                              variant="outline-primary"
                               onClick={() =>
                                 handleViewClick(transformedDiagnosis.id, "prescription")
                               }
@@ -335,37 +321,23 @@ const DiagnosisTable = () => {
                             >
                               {t('View')}
                               {transformedDiagnosis.prescription.length > 0 && (
-                                <span
-                                  className="num-item"
-                                  style={{
-                                    backgroundColor:
-                                      expandedRow === transformedDiagnosis.id &&
-                                      expandedField === "prescription"
-                                        ? "#f8f9fa"
-                                        : "transparent",
-                                  }}
-                                >
+                                <span className="num-item">
                                   {transformedDiagnosis.prescription.length}
                                 </span>
                               )}
                             </Button>
                           </td>
-
+                            
                           <td>
                             {formatDate(transformedDiagnosis.createdAt)}
                           </td>
                         </tr>
-
-                        {/* Expanded row content */}
-                        {expandedRow === transformedDiagnosis.id && (
-                          <tr
-                            className="table-active-content"
-                            style={{ backgroundColor: "transparent" }}
-                          >
-                            <td
-                              colSpan="8"
-                              className="border-0 background-in-hover-none"
-                            >
+                            
+                        {/* Expanded row content فقط لـ symptomsDescription و diagnosisDescription */}
+                        {expandedRow === transformedDiagnosis.id && 
+                         (expandedField === "symptomsDescription" || expandedField === "diagnosisDescription") && (
+                          <tr className="table-active-content">
+                            <td colSpan="8">
                               <div className="accordion-in-table">
                                 {expandedField === "symptomsDescription" && (
                                   <div className="description-expanded-section">
@@ -377,7 +349,7 @@ const DiagnosisTable = () => {
                                     />
                                   </div>
                                 )}
-
+        
                                 {expandedField === "diagnosisDescription" && (
                                   <div className="description-expanded-section">
                                     <TextAreaField
@@ -388,35 +360,6 @@ const DiagnosisTable = () => {
                                     />
                                   </div>
                                 )}
-
-                                {expandedField === "diagnosedConditions" && (
-                                  <CustomAccordion
-                                    readOnly={true}
-                                    backgroundColor="var(--scbccolor)"
-                                    data={transformedDiagnosis.diagnosedConditions}
-                                    formFields={diagnosedConditionsFields}
-                                  />
-                                )}
-
-                                {expandedField === "notes" && (
-                                  <CustomAccordion
-                                    readOnly={true}
-                                    backgroundColor="var(--scbccolor)"
-                                    data={transformedDiagnosis.notes}
-                                    formFields={notesFields}
-                                  />
-                                )}
-
-                                {expandedField === "prescription" && (
-                                  <TwoLevelAccordion
-                                    readOnly={true}
-                                    backgroundColor="var(--scbccolor)"
-                                    titleBackgroundColor="var(--scbccolor)"
-                                    data={transformedPrescriptions}
-                                    formFields={prescriptionFields}
-                                    formFieldsRecipe={prescriptionRecipeFields}
-                                  />
-                                )}
                               </div>
                             </td>
                           </tr>
@@ -425,7 +368,7 @@ const DiagnosisTable = () => {
                     );
                   })
                 ) : (
-                  <tr>
+                          <tr>
                     <td colSpan="8" className="text-center text-muted">
                       {emptyStates.noResults(currentFilters.searchValue)}
                     </td>

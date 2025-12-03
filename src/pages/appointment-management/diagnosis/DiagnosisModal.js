@@ -45,7 +45,7 @@ const DiagnosisModal = ({
 
   return (
     <Modal
-      className="mobile-view"
+      className="mobile-view diagnosis-modal"
       show={true}
       onHide={onCancel}
       size="lg"
@@ -67,7 +67,7 @@ const DiagnosisModal = ({
         </button>
       </Modal.Header>
 
-      <Modal.Body className="space-y-4 pt-0">
+      <Modal.Body className="space-y-4 pt-0 diagnosis-modal-body ">
         {/* Basic Information */}
         <div className="mb-4">
           <div className="row">
@@ -124,7 +124,7 @@ const DiagnosisModal = ({
                 handleCancelNestedItem("conditions", conditionId),
             })}
             getItemTitle={(condition) =>
-              condition.medicalCondition.name || "No Condition"
+              condition.medicalCondition.name || "Condition"
             }
             itemType="conditions"
             formFields={[
@@ -170,7 +170,7 @@ const DiagnosisModal = ({
             readOnly={false}
             backgroundColor="var(--scbccolor)"
             data={editingDiagnosis?.notes || []}
-            getItemTitle={(note) => note.note || "No Note"}
+            getItemTitle={(note) => note.note || "Note"}
             onAdd={handleAddNote}
             {...createIndexBasedHandlers(editingDiagnosis?.notes || [], {
               onDelete: handleDeleteNote,

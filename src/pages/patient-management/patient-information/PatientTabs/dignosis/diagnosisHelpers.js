@@ -1,5 +1,8 @@
 import { useTranslation } from "react-i18next";
-
+import Modal from 'react-bootstrap/Modal';
+import { MdClose } from 'react-icons/md';
+import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
+import CustomAccordion from "../../../../shared/CustomAccordion";
 export const diagnosisHelpers = (t) => {
   // Diagnosis types for filters
   const diagnosisTypes = [
@@ -99,7 +102,6 @@ export const diagnosisHelpers = (t) => {
     },
   ];
 
-  // ترجمة النصوص
   const translateTableHeaders = () => ({
     diagnosisName: t('Diagnosis Name'),
     code: t('Code'),
@@ -117,8 +119,17 @@ export const diagnosisHelpers = (t) => {
         ? `No results found for "${searchValue}"` 
         : 'No diagnoses found'
   });
+    const getModalTitle = (type) => {
+    switch(type) {
+      case 'diagnosedConditions': return t('Diagnosed Conditions');
+      case 'notes': return t('Notes');
+      case 'prescription': return t('Prescription');
+      default: return t('Details');
+    }
+  };
 
   return {
+    getModalTitle,
     diagnosisTypes,
     filterConfigs,
     diagnosedConditionsFields,
@@ -128,4 +139,112 @@ export const diagnosisHelpers = (t) => {
     translateTableHeaders,
     translateEmptyStates
   };
+};
+// Diagnosis Modal 
+export const DiagnosisModal = ({ 
+  show, 
+  onHide, 
+  type, 
+  data,
+  formFields,
+  formFieldsRecipe,
+  title 
+}) => {
+  const { t } = useTranslation();
+  
+  const getModalTitle = () => {
+    switch(type) {
+      case 'diagnosedConditions':
+        return t('Diagnosed Conditions');
+      case 'notes':
+        return t('Notes');
+      case 'prescription':
+        return t('Prescriptions');
+      default:
+        return title || t('Details');
+    }
+  };
+  
+  const getModalContent = () => {
+    if (!data || data.length === 0) {
+      return (
+        <div className="text-center py-4">
+          <p className="text-muted">{t('No data available')}</p>
+        </div>
+      );
+    }
+    
+    switch(type) {
+      case 'diagnosedConditions':
+        return (
+          <CustomAccordion
+            readOnly={true}
+            backgroundColor="var(--scbccolor)"
+            data={data}
+            formFields={formFields}
+          />
+        );
+        
+      case 'notes':
+        return (
+          <CustomAccordion
+            readOnly={true}
+            backgroundColor="var(--scbccolor)"
+            data={data}
+            formFields={formFields}
+          />
+        );
+        
+      case 'prescription':
+        return (
+          <TwoLevelAccordion
+            readOnly={true}
+            backgroundColor="var(--scbccolor)"
+            titleBackgroundColor="var(--scbccolor)"
+            data={data}
+            formFields={formFields}
+            formFieldsRecipe={formFieldsRecipe}
+          />
+        );
+        
+      default:
+        return null;
+    }
+  };
+  
+  return (
+    <Modal 
+      show={show} 
+      onHide={onHide} 
+      size="lg"
+      centered
+      className="diagnosis-modal pr-0"
+    >
+      <Modal.Header className="modal-header-custom">
+        <Modal.Title className="modal-title-custom">
+          {getModalTitle()}
+        </Modal.Title>
+        <button
+          type="button"
+          className="btn-close-custom"
+          onClick={onHide}
+        >
+          <MdClose size={24} />
+        </button>
+      </Modal.Header>
+      <Modal.Body className="p-0">
+        <div className="modal-content-custom">
+          {getModalContent()}
+        </div>
+      </Modal.Body>
+      <Modal.Footer className="modal-footer-custom">
+        <button 
+          onClick={onHide}
+          className="dc-btn dc-cancel-btn"
+        >
+          {t('Close')}
+        </button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
