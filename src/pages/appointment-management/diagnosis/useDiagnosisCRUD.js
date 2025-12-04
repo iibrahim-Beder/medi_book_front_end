@@ -9,7 +9,7 @@ import { transformDiagnosisData } from "./diagnosisUtils";
 
 const PATIENT_ID = 4;
 
-export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
+export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsChange) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [deletePopup, setDeletePopup] = useState({
@@ -46,6 +46,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
             console.log("Add Diagnosis Result:",result);
     
     if (result?.succeeded) {
+      setIsChange(true);
       toast.success("Diagnosis saved successfully");
       toast.dismiss(loadingToast);
       
@@ -88,6 +89,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         }).unwrap();
 
         if (result?.succeeded) {
+          setIsChange(true);
           toast.success("Diagnosis updated successfully");
           toast.dismiss(loadingToast);
           
@@ -176,6 +178,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         } else {
           const result = await deleteDiagnosis(deletePopup.diagnosisId).unwrap();
           if (result?.succeeded) {
+            setIsChange(true);
             toast.success("Diagnosis deleted successfully");
             setEditingDiagnosis(null);
             setSelectedDiagnosis(null);            

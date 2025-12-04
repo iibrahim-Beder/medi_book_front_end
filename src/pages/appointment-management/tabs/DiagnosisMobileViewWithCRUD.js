@@ -1,4 +1,4 @@
-import React, { use, useCallback, useEffect, useMemo, useState } from "react";
+import {useEffect,useState } from "react";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -20,7 +20,8 @@ const DiagnosisMobileViewWithCRUD = () => {
   const dispatch = useDispatch();
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [showRowsPerPage, setshowRowsPerPage] = useState(3);
   const [totalCount, setTotalCount] = useState(0);
 
   // API Call
@@ -37,6 +38,7 @@ const DiagnosisMobileViewWithCRUD = () => {
   });
 
   const [currentItems, setCurrentItems] = useState([]);
+  const [isChange, setIsChange] = useState(false);
 
   const {
     selectedDiagnosis,
@@ -45,10 +47,8 @@ const DiagnosisMobileViewWithCRUD = () => {
     deletePopup,
     handleAddDiagnosis,
     handleEditDiagnosis,
-    handleSaveDiagnosis,
     handleCancelEdit,
     handleSaveAndClose,
-    handleShowDeleteConfirm,
     handleCloseDeleteConfirm,
     handleConfirmDelete,
     handleDeleteDiagnosis,
@@ -57,41 +57,64 @@ const DiagnosisMobileViewWithCRUD = () => {
     handleUpdateDiagnosis
 
 
-  } = useDiagnosisCRUD(refetch, setCurrentItems,checkAndRefetch);
+  } = useDiagnosisCRUD(refetch, setCurrentItems,checkAndRefetch,setIsChange);
+  const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
     if (diagnosesData?.data) {
       const transformedData = diagnosesData.data.map(transformDiagnosisData);
       setTotalCount(diagnosesData.totalCount);
       setCurrentItems(transformedData);
-      console.log("Current Data:", currentItems);
+      console.log("Current Data:", currentItems, "isChange", isChange);
+      setIsChange(false);
     }
   }, [diagnosesData]);  
-  useEffect(() => {
-    console.log("Invalidating tags open " , currentItems.length);
-    if (currentItems.length>3) {
-        dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]))
-        console.log("Invalidating tags open====== " , currentItems.length);
+// Case 1: When page changes
+useEffect(() => {
+  if (isChange) {
+    console.log("Page changed → invalidate");
+    dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]));
+  }
+  console.log(" الشرطCurrent Page", currentPage, "Last Page", lastPage, "Total==Count", totalCount);
+  if(lastPage!==currentPage){
+    if((showRowsPerPage>3&&totalCount>6) || 
+    (showRowsPerPage<3&&totalCount<6 && currentPage>lastPage)
+    ){setRowsPerPage(showRowsPerPage);}
+    else{setshowRowsPerPage(3);setRowsPerPage(3);};
+    setLastPage(currentPage);
+  }
+}, [currentPage]);
+
+// Case 2: When component unmounts
+useEffect(() => {
+  return () => {
+    if (isChange) {
+      console.log("Component unmounted → invalidate");
+      dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]));
     }
-    
-  }, [currentPage]);
- 
+  };
+}, [isChange]);
+
 
   function checkAndRefetch(isAdding=false) {
     if (isAdding) {
     setTotalCount(prev => prev + 1);
+    setshowRowsPerPage(prev => prev + 1);
     return;
+  }
+  if(showRowsPerPage!==1){setshowRowsPerPage((prev )=> prev - 1);}
+  setTotalCount(prev => prev - 1);
+  if (currentItems.length === 1 && currentPage > 1) {
+    setCurrentPage((prev) => prev - 1);
+    setshowRowsPerPage(3);
+  } else {
+    if ( currentItems.length === 1 && totalCount > showRowsPerPage) {
+      refetch();
+      setshowRowsPerPage(3);
     }
-    if (currentItems.length === 1 && currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    } else {
-      if ( currentItems.length === 1 && totalCount > 3) {
-        refetch();
-      }
-    }
-    setTotalCount(prev => prev - 1);
-  };
+  }
+};
 
-  if (error) {
+if (error) {
     return (
      <ErrorLoading isError={error} refetch={refetch} />
     );
@@ -128,7 +151,7 @@ const DiagnosisMobileViewWithCRUD = () => {
         <Pagination
           currentPage={currentPage}
           totalItems={totalCount || 0}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={showRowsPerPage}
           onPageChange={setCurrentPage}
           totalPages={diagnosesData.totalPages || 1}
         />
@@ -137,6 +160,7 @@ const DiagnosisMobileViewWithCRUD = () => {
       {/* Edit/Manage Modal */}
       {(selectedDiagnosis || editingDiagnosis) && (
         <DiagnosisModal
+        setIsChange={setIsChange}
           editingDiagnosis={editingDiagnosis}
           setEditingDiagnosis={setEditingDiagnosis}
           setCurrentItems={setCurrentItems}

@@ -17,6 +17,7 @@ const DiagnosisModal = ({
   onSave,
   onDelete,
   setCurrentItems,
+  setIsChange,
   t
 }) => {
   const {
@@ -39,7 +40,7 @@ const DiagnosisModal = ({
     isAdding=false,
     isUpdating = false,
     handleCancelNestedItem
-  } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis,setCurrentItems);
+  } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis,setIsChange);
 
   if (!editingDiagnosis) return null;
 
