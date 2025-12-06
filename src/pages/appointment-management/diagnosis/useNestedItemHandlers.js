@@ -5,13 +5,11 @@ import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteD
 import {
   useAddPatientPrescriptionMutation, useUpdatePatientPrescriptionMutation, useDeletePatientPrescriptionMutation
 } from "../../../api/patientPrescriptionApi";
-
 import {
   useAddInternalPatientMedicalConditionMutation,useDeletePatientMedicalConditionMutation,useUpdatePatientMedicalConditionMutation
 } from "../../../api/patientMedicalConditionsApi";
-
+import { BsFillInfoCircleFill } from "react-icons/bs";
 import toast from "react-hot-toast";
-import { t } from "i18next";
 export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,setIsChange) => {
   const [addPrescribedMedication, { isLoading: isAddingPrescriptionMedication }] = useAddPrescribedMedicationMutation();
   const [updatePrescribedMedication, { isLoading: isUpdatingPrescriptionMedication }] = useUpdatePrescribedMedicationMutation();
@@ -477,7 +475,6 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
   }
 }, [editingDiagnosis, setEditingDiagnosis, addInternalPatientMedicalCondition, isAddingCondition, isUpdatingCondition]);
 
-
   // === Notes Management ===
   const handleAddNote = useCallback(() => {
     if (!editingDiagnosis) return;
@@ -733,8 +730,11 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
           title: prescriptionData.title,
           notes: prescriptionData.notes,
           status: prescriptionData.status,
-          prescribedMedications: (prescriptionData.recipes || []).map(med => ({
-            medicationName: med.medication, 
+          prescribedMedications: (prescriptionData.recipes || [])
+          .filter(med => !med.isNew)
+          .map(med => ({
+            medicationId: med.medication.id,
+            medication: med.medication, 
             startDate: med.startDate || new Date().toISOString(),
             endDate: med.endDate || new Date().toISOString(),
             dosage: med.dosage,
@@ -746,19 +746,54 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
 
       console.log('Add Patient Prescription Payload:', payload);
       const result = await addPatientPrescription(payload).unwrap();
-         console.log('Add Patient Prescription Result:', result);
       if (result?.succeeded) { 
-        setIsChange(true);
-        toast.success( result?.message || 'Saved Successfully');
+              console.log('Add Patient Prescription Result:', result);
+               setIsChange(true);
+        toast.success(result?.message || "Saved Successfully");
         success = true;
-        console.log('Add Patient Prescription Result:', result);
-
+      
+        const accepted = result?.meta?.acceptedItems || [];
+        const rejected = result?.meta?.rejectedItems || [];
+      
+        const filteredPrescriptions = (prescriptionData.recipes || []).filter(
+          med => accepted.includes(med.medication.id)
+        );
+        console.log('Filtered Prescriptions:', filteredPrescriptions, "Accepted",accepted, "Rejected", rejected);
+      
+      if (rejected.length > 0) {
+      
+        rejected.forEach(item => {
+          const rejectedMed = (prescriptionData.recipes || []).find(
+            med => med.medication.id === item.itemId
+          );
+      
+          const medName = rejectedMed ? rejectedMed.medication.name : "therapy medication";
+      
+          toast(
+            `${medName}, failed: ${item.reason}`,
+            {
+              icon: <BsFillInfoCircleFill style={{ fontSize: "large" }} />,
+              duration: 15000,
+            }
+          );
+        });
+      
+      }
+      
         setEditingDiagnosis(prev => ({
-        ...prev,
-        prescriptions: (prev.prescriptions || []).map(prescription =>
-          prescription.id === prescriptionId ? { ...prescriptionData, id: result.data.id, isNew: false, isExpanded: false } : prescription
-        )
-      }));
+          ...prev,
+          prescriptions: (prev.prescriptions || []).map(prescription =>
+            prescription.id === prescriptionId
+              ? {
+                  ...prescriptionData,
+                  recipes: filteredPrescriptions, 
+                  id: result.data.id,
+                  isNew: false,
+                  isExpanded: false
+                }
+              : prescription
+          )
+        }));
       } else {
         toast.error(result?.message || 'Failed to save');
       }
@@ -800,14 +835,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
   }finally{
     toast.dismiss(loadingToast);
   }
-}, [
-  editingDiagnosis, 
-  setEditingDiagnosis, 
-  addPatientPrescription, 
-  updatePatientPrescription,
-  isAddingPrescription,
-  isUpdatingPrescription
-]);
+}, [editingDiagnosis, setEditingDiagnosis, addPatientPrescription, updatePatientPrescription,isAddingPrescription,isUpdatingPrescription]);
   // Handle cancel for nested items
   const handleCancelNestedItem = useCallback((itemType, itemId) => {
     if (!editingDiagnosis) return;

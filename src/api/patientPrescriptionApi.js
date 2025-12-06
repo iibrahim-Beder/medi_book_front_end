@@ -141,7 +141,7 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
           status: getStatusValue(prescriptionData.status),
           prescribedMedications: (prescriptionData.prescribedMedications || []).map(med => ({
             prescriptionId: prescriptionData.prescriptionId || 2,
-            medicationId: med.medicationName.id,
+            medicationId: med.medication.id,
             startDate: med.startDate || new Date().toISOString(),
             endDate: med.endDate || new Date(Date.now() + (med.durationInDays || 1) * 24 * 60 * 60 * 1000).toISOString(),
             dosage: med.dosage,
