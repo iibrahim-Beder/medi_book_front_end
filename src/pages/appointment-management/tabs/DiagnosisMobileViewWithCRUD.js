@@ -74,7 +74,6 @@ useEffect(() => {
     console.log("Page changed → invalidate");
     dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]));
   }
-  console.log(" الشرطCurrent Page", currentPage, "Last Page", lastPage, "Total==Count", totalCount);
   if(lastPage!==currentPage){
     if((showRowsPerPage>3&&totalCount>6) || 
     (showRowsPerPage<3&&totalCount<6 && currentPage>lastPage)

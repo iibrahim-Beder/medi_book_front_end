@@ -78,3 +78,26 @@ export const transformDiagnosisData = (diagnosis) => {
   // console.log('Transformed diagnosis (WITH IDS):', transformed);
   return transformed;
 };
+export const removeNewChildren = (diagnosis) => {
+  if (!diagnosis) return diagnosis;
+
+  // Remove new notes
+  const notes = (diagnosis.notes || []).filter(n => !n.isNew);
+
+  // Remove new conditions
+  const conditions = (diagnosis.conditions || []).filter(c => !c.isNew);
+
+  // Remove new prescriptions
+  const prescriptions = (diagnosis.prescriptions || []).map(p => ({
+    ...p,
+    recipes: (p.recipes || []).filter(r => !r.isNew),
+    // remove prescription entirely if it was new
+  })).filter(p => !p.isNew);
+
+  return {
+    ...diagnosis,
+    notes,
+    conditions,
+    prescriptions
+  };
+};

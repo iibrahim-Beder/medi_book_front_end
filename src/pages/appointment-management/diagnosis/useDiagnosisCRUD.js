@@ -5,7 +5,7 @@ import {
   useUpdatePatientDiagnosisMutation,
   useDeletePatientDiagnosisMutation
 } from "../../../api/patientDiagnosesApi";
-import { transformDiagnosisData } from "./diagnosisUtils";
+import { removeNewChildren, transformDiagnosisData } from "./diagnosisUtils";
 
 const PATIENT_ID = 4;
 
@@ -223,7 +223,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
       return;
     }
 
-    const success = await handleSaveDiagnosis(editingDiagnosis);
+    const success = await handleSaveDiagnosis(removeNewChildren(editingDiagnosis));
    
     if (success) {
       setSelectedDiagnosis(null);
@@ -232,9 +232,23 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
   }, [editingDiagnosis, handleSaveDiagnosis , isAdding, isUpdating]);
 
   const handleCancelEdit = useCallback(() => {
-    //  console.log("handleCancelEdit","Selected Diagnosis:", selectedDiagnosis, "editingDiagnosis:", editingDiagnosis);
-      setCurrentItems(prev => prev.map(item => item.diagnosisId === editingDiagnosis.diagnosisId ? { ...item, ...editingDiagnosis,diagnosisName: selectedDiagnosis.diagnosisName,symptomsDescription: selectedDiagnosis.symptomsDescription,description: selectedDiagnosis.description ,code: selectedDiagnosis.code  } : item));
-    console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
+     const cleanedDiagnosis = removeNewChildren(editingDiagnosis);
+     console.log(  "normal", editingDiagnosis ,  'Cleaned Diagnosis:', cleanedDiagnosis);
+     setCurrentItems(prev =>
+       prev.map(item =>
+         item.diagnosisId === editingDiagnosis.diagnosisId
+           ? {
+               ...item,
+               ...cleanedDiagnosis,
+               diagnosisName: selectedDiagnosis.diagnosisName,
+               symptomsDescription: selectedDiagnosis.symptomsDescription,
+               description: selectedDiagnosis.description,
+               code: selectedDiagnosis.code
+             }
+           : item
+       )
+      );
+      console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
     if (editingDiagnosis?.isNew) {
       const hasContent =
         editingDiagnosis.diagnosisName?.trim() ||
