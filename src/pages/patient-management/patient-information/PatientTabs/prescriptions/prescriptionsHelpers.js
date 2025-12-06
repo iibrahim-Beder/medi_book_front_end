@@ -15,7 +15,8 @@ export const prescriptionsHelpers = (t) => {
     status: t("PrescriptionsTable.status"),
     diagnosis_name: t("PrescriptionsTable.diagnosis_name"),
     medication: t("PrescriptionsTable.medication"),
-    view: t("PrescriptionsTable.view")
+    view: t("PrescriptionsTable.view"),
+    created_at: t("created_at")
   };
 
   // Mobile headers translation

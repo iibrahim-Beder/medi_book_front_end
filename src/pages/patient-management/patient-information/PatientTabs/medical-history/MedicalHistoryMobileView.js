@@ -1,5 +1,4 @@
 // MedicalHistoryMobileView.jsx
-import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import MedicalHistoryModal from "../component/MedicalHistoryModal";
 import ConditionsFilters from "../component/ConditionsFilters";
@@ -14,6 +13,7 @@ import ErrorLoading from "../../../../shared/ErrorLoading";
 import HighlightText from "../../../../shared/HighlightText";
 import { useMedicalHistory } from "./useMedicalHistoryOperations";
 import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
+import { formatDate } from "../../../../shared/utils";
 
 const MedicalHistoryMobileView = () => {
   const { t } = useTranslation();
@@ -59,7 +59,6 @@ const MedicalHistoryMobileView = () => {
     historyTypes,
     hereditaryDiseases,
     fieldMapping,
-    formatDate
   } = medicalHistoryHelpers(t);
 
   // if (isLoading || isFetching) {
@@ -152,12 +151,13 @@ const MedicalHistoryMobileView = () => {
                 <Card key={history.id} className="mobile-view-card">
                   <Card.Body style={{ padding: "15px" }}>
                     {/* Header with History Type and Manage Button */}
-                    <div className="d-flex justify-content-between align-items-start mb-2">
+                    <div className="custom-card-title">
                       <h5 style={{ margin: 0 }}>
                         {t(
                           `MedicalHistory.history_type_options.${history.historyType}`
                         )}
                       </h5>
+                  {history.createdAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(history.createdAt)}</small></div>)}
                     </div>
                     {/* Hereditary Disease */}
                     {history.hereditaryDiseaseName && (

@@ -5730,6 +5730,12 @@ html[dir="rtl"]  {
 }
 /* <<< */
 @media (max-width: 720px){
+.created-date{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
 	.patient-management-container .p-4{padding: 0 !important; }
 	.doctor-registration .title-with-icon{
 		flex-direction: column;

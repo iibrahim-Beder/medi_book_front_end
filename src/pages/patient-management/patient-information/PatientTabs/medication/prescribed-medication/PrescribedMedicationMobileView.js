@@ -12,6 +12,7 @@ import "../../../../Patient-management.css";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { usePrescribedMedication } from "./usePrescribedMedication";
 import { MobileSkeleton, prescribedMedicationHelpers } from "./prescribedMedicationHelpers";
+import { formatDate } from "../../../../../shared/utils";
 
 
 const PrescribedMedicationMobileView = () => {
@@ -100,7 +101,7 @@ const PrescribedMedicationMobileView = () => {
                   <Card key={medication.id} className="mobile-view-card">
                     {/* {console.log('medication:', medication)} */}
                     <Card.Body style={{ padding: "15px" }}>
-                      <div className="d-flex justify-content-between align-items-start mb-2">
+                      <div className="custom-card-title">
                         <h5 style={{ margin: 0 }}>
                           <HighlightText
                             text={medication.medicationName}
@@ -109,6 +110,7 @@ const PrescribedMedicationMobileView = () => {
                             fieldName="MedicationName"
                           />
                         </h5>
+                    {medication.createdAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(medication.createdAt)}</small></div>)}
                       </div>
 
                       <div className="mb-2">

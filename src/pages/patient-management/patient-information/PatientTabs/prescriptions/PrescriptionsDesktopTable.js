@@ -12,6 +12,7 @@ import ErrorLoading from "../../../../shared/ErrorLoading";
 import "../../../Patient-management.css";
 import { usePrescriptions } from "./usePrescriptions";
 import { prescriptionsHelpers, TableSkeleton } from "./prescriptionsHelpers";
+import { formatDate } from "../../../../shared/utils";
 
 const PrescriptionsTable = () => {
   const { t } = useTranslation();
@@ -46,7 +47,7 @@ const PrescriptionsTable = () => {
     getStatusColor,
     getMatchedFields,
     transformMedicationData
-  } = usePrescriptions(false); // false يعني ديسكتوب
+  } = usePrescriptions(false);
 
   const {
     fieldMapping,
@@ -96,6 +97,7 @@ const PrescriptionsTable = () => {
                   <th>{tableHeaders.status}</th>
                   <th>{tableHeaders.diagnosis_name}</th>
                   <th>{tableHeaders.medication}</th>
+                  <th>{tableHeaders.created_at}</th>
                 </tr>
               </thead>
               <tbody>
@@ -224,6 +226,7 @@ const PrescriptionsTable = () => {
                             )}
                           </Button>
                         </td>
+                        <td>{formatDate(prescription.createdAt)}</td>
                       </tr>
 
                       {expandedRow === prescription.id && (
