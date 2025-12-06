@@ -22,19 +22,25 @@ export const diagnosisHelpers = (t) => {
   // Form fields for CustomAccordion - Diagnosed Conditions
   const diagnosedConditionsFields = [
     {
-      name: "MedicalCondition",
+      name: "medicalConditionName",
       placeholder: t('Condition Type'),
-      half: true,
+      // half: true,
       label: t('Medical Condition'),
     },
     {
-      name: "Severity",
+      name:"categoryName",
+      placeholder: t('Category'),
+      half: true,
+      label: t('Category'),
+    },
+    {
+      name: "conditionType",
       placeholder: t('Severity'),
       half: true,
       label: t('Severity'),
     },
     {
-      name: "note",
+      name: "notes",
       type: "textarea",
       placeholder: t('Note Content'),
       label: t('Note'),
@@ -44,7 +50,7 @@ export const diagnosisHelpers = (t) => {
   // Form fields for CustomAccordion - Notes
   const notesFields = [
     {
-      name: "content",
+      name: "note",
       type: "textarea",
       placeholder: t('Note Content'),
       label: t('Note Content'),
@@ -178,6 +184,7 @@ export const DiagnosisModal = ({
       case 'diagnosedConditions':
         return (
           <CustomAccordion
+           getItemTitle={(condition) => condition.medicalConditionName || "Condition"}
             readOnly={true}
             backgroundColor="var(--scbccolor)"
             data={data}
@@ -192,6 +199,8 @@ export const DiagnosisModal = ({
             backgroundColor="var(--scbccolor)"
             data={data}
             formFields={formFields}
+            getItemTitle={(note) => note.note || "Note"}
+
           />
         );
         

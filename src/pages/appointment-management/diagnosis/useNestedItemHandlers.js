@@ -5,14 +5,12 @@ import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteD
 import {
   useAddPatientPrescriptionMutation, useUpdatePatientPrescriptionMutation, useDeletePatientPrescriptionMutation
 } from "../../../api/patientPrescriptionApi";
-
 import {
   useAddInternalPatientMedicalConditionMutation,useDeletePatientMedicalConditionMutation,useUpdatePatientMedicalConditionMutation
 } from "../../../api/patientMedicalConditionsApi";
-
+import { BsFillInfoCircleFill } from "react-icons/bs";
 import toast from "react-hot-toast";
-import { t } from "i18next";
-export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,setCurrentItems) => {
+export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,setIsChange) => {
   const [addPrescribedMedication, { isLoading: isAddingPrescriptionMedication }] = useAddPrescribedMedicationMutation();
   const [updatePrescribedMedication, { isLoading: isUpdatingPrescriptionMedication }] = useUpdatePrescribedMedicationMutation();
   const [deletePrescribedMedication, { isLoading: isDeletingPrescriptionMedication }] = useDeletePrescribedMedicationMutation();
@@ -80,6 +78,7 @@ if (editingDiagnosis?.prescriptions?.find(p => p.id === prescriptionId)?.recipes
       const result = await deletePrescribedMedication(recipeId).unwrap();
       const loadingToast = toast.loading('deleting...');
       if (result?.succeeded) {
+        setIsChange(true);
         toast.success(result?.message || 'Deleted Successfully');
         toast.dismiss(loadingToast);
       } else {
@@ -213,6 +212,7 @@ const handleSaveRecipe = useCallback(
         const result = await addPrescribedMedication(payload).unwrap();
 
         if (result?.succeeded) {
+           setIsChange(true);
           toast.success(  result?.message || 'Added Successfully');
           success = true;
 
@@ -257,7 +257,8 @@ const handleSaveRecipe = useCallback(
 
         const result = await updatePrescribedMedication(payload).unwrap();
 
-        if (result?.succeeded) {
+        if (result?.succeeded) {            setIsChange(true);
+          setIsChange(true);
           toast.success(result?.message || 'Updated Successfully');
           success = true;
 
@@ -339,7 +340,7 @@ const handleDeleteCondition = useCallback(async (conditionId) => {
       console.log('Deleting condition from API:', conditionId);
       const result = await deletePatientMedicalCondition(conditionId).unwrap();
       
-      if (result?.succeeded) {
+      if (result?.succeeded) {            setIsChange(true);
         toast.success(result?.message || 'Deleted Successfully');
         toast.dismiss(loadingToast);
       } else {
@@ -409,7 +410,7 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
       console.log('Add Internal Patient Medical Condition Payload:', payload);
       const result = await addInternalPatientMedicalCondition(payload).unwrap();
 
-      if (result?.succeeded) {
+      if (result?.succeeded) {            setIsChange(true);
         toast.success(result?.message || 'Added Successfully');
         toast.dismiss(loadingToast);
         success = true;
@@ -446,7 +447,7 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
       console.log('Update Patient Medical Condition Payload:', payload);
       const result = await updatePatientMedicalCondition(payload).unwrap();
 
-      if (result?.succeeded) {
+      if (result?.succeeded) {            setIsChange(true);
         toast.success(result?.message || 'Updated Successfully');
         toast.dismiss(loadingToast);
         success = true;
@@ -474,7 +475,6 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
   }
 }, [editingDiagnosis, setEditingDiagnosis, addInternalPatientMedicalCondition, isAddingCondition, isUpdatingCondition]);
 
-
   // === Notes Management ===
   const handleAddNote = useCallback(() => {
     if (!editingDiagnosis) return;
@@ -499,7 +499,7 @@ const handleDeleteNote = useCallback(async (noteId) => {
     if (note && !note.isNew) {
       const result = await deleteDiagnosisNote(noteId).unwrap();
       
-      if (result?.succeeded) {
+      if (result?.succeeded) {            setIsChange(true);
         toast.success('Deleted Successfully');
         toast.dismiss(loadingToast);
       } else {
@@ -560,7 +560,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
       console.log('Add Diagnosis Note Payload:', payload);
       const result = await addDiagnosisNote(payload).unwrap();
 
-      if (result?.succeeded) {
+      if (result?.succeeded) {            setIsChange(true);
         toast.success( result?.message || 'Saved Successfully');
         toast.dismiss(loadingToast);
         
@@ -592,7 +592,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
       console.log('Update Diagnosis Note Payload:', payload);
       const result = await updateDiagnosisNote(payload).unwrap();
 
-      if (result?.succeeded) {
+      if (result?.succeeded) {            setIsChange(true);
         toast.success(result?.message || 'Saved Successfully');
         toast.dismiss(loadingToast);
         success = true;
@@ -667,6 +667,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
       const result = await deletePatientPrescription(prescriptionId).unwrap();
       
       if (result?.succeeded) {
+        setIsChange(true);
         toast.success(result?.message || 'Deleted Successfully');
       } else {
         toast.error(result?.message || 'Failed to delete');
@@ -729,8 +730,11 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
           title: prescriptionData.title,
           notes: prescriptionData.notes,
           status: prescriptionData.status,
-          prescribedMedications: (prescriptionData.recipes || []).map(med => ({
-            medicationName: med.medication, 
+          prescribedMedications: (prescriptionData.recipes || [])
+          .filter(med => !med.isNew)
+          .map(med => ({
+            medicationId: med.medication.id,
+            medication: med.medication, 
             startDate: med.startDate || new Date().toISOString(),
             endDate: med.endDate || new Date().toISOString(),
             dosage: med.dosage,
@@ -742,18 +746,54 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
 
       console.log('Add Patient Prescription Payload:', payload);
       const result = await addPatientPrescription(payload).unwrap();
-         console.log('Add Patient Prescription Result:', result);
-      if (result?.succeeded) {
-        toast.success( result?.message || 'Saved Successfully');
+      if (result?.succeeded) { 
+              console.log('Add Patient Prescription Result:', result);
+               setIsChange(true);
+        toast.success(result?.message || "Saved Successfully");
         success = true;
-        console.log('Add Patient Prescription Result:', result);
-
+      
+        const accepted = result?.meta?.acceptedItems || [];
+        const rejected = result?.meta?.rejectedItems || [];
+      
+        const filteredPrescriptions = (prescriptionData.recipes || []).filter(
+          med => accepted.includes(med.medication.id)
+        );
+        console.log('Filtered Prescriptions:', filteredPrescriptions, "Accepted",accepted, "Rejected", rejected);
+      
+      if (rejected.length > 0) {
+      
+        rejected.forEach(item => {
+          const rejectedMed = (prescriptionData.recipes || []).find(
+            med => med.medication.id === item.itemId
+          );
+      
+          const medName = rejectedMed ? rejectedMed.medication.name : "therapy medication";
+      
+          toast(
+            `${medName}, failed: ${item.reason}`,
+            {
+              icon: <BsFillInfoCircleFill style={{ fontSize: "large" }} />,
+              duration: 15000,
+            }
+          );
+        });
+      
+      }
+      
         setEditingDiagnosis(prev => ({
-        ...prev,
-        prescriptions: (prev.prescriptions || []).map(prescription =>
-          prescription.id === prescriptionId ? { ...prescriptionData, id: result.data.id, isNew: false, isExpanded: false } : prescription
-        )
-      }));
+          ...prev,
+          prescriptions: (prev.prescriptions || []).map(prescription =>
+            prescription.id === prescriptionId
+              ? {
+                  ...prescriptionData,
+                  recipes: filteredPrescriptions, 
+                  id: result.data.id,
+                  isNew: false,
+                  isExpanded: false
+                }
+              : prescription
+          )
+        }));
       } else {
         toast.error(result?.message || 'Failed to save');
       }
@@ -770,7 +810,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
       console.log('Update Patient Prescription Payload:', payload);
       const result = await updatePatientPrescription(payload).unwrap();
 
-      if (result?.succeeded) {
+      if (result?.succeeded) {            setIsChange(true);
         toast.success(result?.message || 'Saved Successfully');
         success = true;
 
@@ -795,14 +835,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
   }finally{
     toast.dismiss(loadingToast);
   }
-}, [
-  editingDiagnosis, 
-  setEditingDiagnosis, 
-  addPatientPrescription, 
-  updatePatientPrescription,
-  isAddingPrescription,
-  isUpdatingPrescription
-]);
+}, [editingDiagnosis, setEditingDiagnosis, addPatientPrescription, updatePatientPrescription,isAddingPrescription,isUpdatingPrescription]);
   // Handle cancel for nested items
   const handleCancelNestedItem = useCallback((itemType, itemId) => {
     if (!editingDiagnosis) return;
