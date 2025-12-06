@@ -5,11 +5,11 @@ import {
   useUpdatePatientDiagnosisMutation,
   useDeletePatientDiagnosisMutation
 } from "../../../api/patientDiagnosesApi";
-import { transformDiagnosisData } from "./diagnosisUtils";
+import { removeNewChildren, transformDiagnosisData } from "./diagnosisUtils";
 
 const PATIENT_ID = 4;
 
-export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
+export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsChange) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [deletePopup, setDeletePopup] = useState({
@@ -46,6 +46,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
             console.log("Add Diagnosis Result:",result);
     
     if (result?.succeeded) {
+      setIsChange(true);
       toast.success("Diagnosis saved successfully");
       toast.dismiss(loadingToast);
       
@@ -88,6 +89,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         }).unwrap();
 
         if (result?.succeeded) {
+          setIsChange(true);
           toast.success("Diagnosis updated successfully");
           toast.dismiss(loadingToast);
           
@@ -176,6 +178,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
         } else {
           const result = await deleteDiagnosis(deletePopup.diagnosisId).unwrap();
           if (result?.succeeded) {
+            setIsChange(true);
             toast.success("Diagnosis deleted successfully");
             setEditingDiagnosis(null);
             setSelectedDiagnosis(null);            
@@ -220,7 +223,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
       return;
     }
 
-    const success = await handleSaveDiagnosis(editingDiagnosis);
+    const success = await handleSaveDiagnosis(removeNewChildren(editingDiagnosis));
    
     if (success) {
       setSelectedDiagnosis(null);
@@ -229,9 +232,23 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch) => {
   }, [editingDiagnosis, handleSaveDiagnosis , isAdding, isUpdating]);
 
   const handleCancelEdit = useCallback(() => {
-    //  console.log("handleCancelEdit","Selected Diagnosis:", selectedDiagnosis, "editingDiagnosis:", editingDiagnosis);
-      setCurrentItems(prev => prev.map(item => item.diagnosisId === editingDiagnosis.diagnosisId ? { ...item, ...editingDiagnosis,diagnosisName: selectedDiagnosis.diagnosisName,symptomsDescription: selectedDiagnosis.symptomsDescription,description: selectedDiagnosis.description ,code: selectedDiagnosis.code  } : item));
-    console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
+     const cleanedDiagnosis = removeNewChildren(editingDiagnosis);
+     console.log(  "normal", editingDiagnosis ,  'Cleaned Diagnosis:', cleanedDiagnosis);
+     setCurrentItems(prev =>
+       prev.map(item =>
+         item.diagnosisId === editingDiagnosis.diagnosisId
+           ? {
+               ...item,
+               ...cleanedDiagnosis,
+               diagnosisName: selectedDiagnosis.diagnosisName,
+               symptomsDescription: selectedDiagnosis.symptomsDescription,
+               description: selectedDiagnosis.description,
+               code: selectedDiagnosis.code
+             }
+           : item
+       )
+      );
+      console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
     if (editingDiagnosis?.isNew) {
       const hasContent =
         editingDiagnosis.diagnosisName?.trim() ||

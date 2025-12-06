@@ -76,7 +76,7 @@ const CustomAccordion = memo(({
       } else if (onUpdate) {
         const currentData = data || [];
         currentData.forEach((_, i) => {
-          if (currentData[index]?.isExpanded === true) {currentData[index]._initialTitle = renderItemTitle(currentData[index]);}
+          if (currentData[index]?.isExpanded === true && !readOnly) {currentData[index]._initialTitle = renderItemTitle(currentData[index]);}
           if (i === index) {
             onUpdate(i, "isExpanded", !currentData[index]?.isExpanded);
           } else if (!allowMultipleOpen) {
@@ -210,7 +210,7 @@ const CustomAccordion = memo(({
       ) : (
         <ul className="dc-experienceaccordion accordion">
           {dataRead.map((item, index) => {
-            if (!item._initialTitle) {item._initialTitle = renderItemTitle(item);}
+            if (!item._initialTitle && !readOnly ) {item._initialTitle = renderItemTitle(item);}
             const isSingle = oneAccordion && dataRead.length === 1;
             const collapseClass = isSingle ? "dc-collapseexp show" : `dc-collapseexp ${item.isExpanded ? "show" : "hide"}`;
 
@@ -252,8 +252,10 @@ const CustomAccordion = memo(({
                       </span>
                     )}
                       {/* {truncateTitle(renderItemTitle(item), 60)} */}
-                      {item.isExpanded? item._initialTitle: renderItemTitle(item)}
-                    {item.date && <em style={{ marginLeft: "8px", color: "#666", margin: "0 11px"}}>{item.date}</em>}
+                      {/* {readOnly ? (renderItemTitle(item)) : ( {item.isExpanded? item._initialTitle: renderItemTitle(item)})   }*/}
+                    {readOnly? renderItemTitle(item): (item.isExpanded ? item._initialTitle : renderItemTitle(item))}
+                    {item.date && <em style={{ marginLeft: "8px", color: "#666", margin: "0 11px"}}>{item.date}</em>} 
+
                     </span>
                   </span>
 

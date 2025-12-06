@@ -206,10 +206,7 @@ addPatientDiagnosis: builder.mutation({
   },
   transformErrorResponse: (response, meta, args) => {
     console.error('Add Patient Diagnosis API Error:', response);
-    
-    // if(response.data.message==="Prescriptions[0].Status: Invalid prescription status.") {
-    //   return { succeeded: false, error: "prescriptions one, status : Invalid Prescription Status", status: 400 }
-    // }
+
     response.data.message=formatErrorMessage(response.data.message);
     return response;
   },
@@ -352,6 +349,7 @@ export const {
 } = patientDiagnosesApi;
 
 const formatErrorMessage = (errorMessage) => {
+  console.log('before Formatted Error Message:', errorMessage);
   if (!errorMessage) return errorMessage;
 
   const regex = /^([a-zA-Z]+)\[(\d+)\]\.([a-zA-Z]+):\s*(.+)$/;
@@ -361,7 +359,7 @@ const formatErrorMessage = (errorMessage) => {
   if (match) {
     const [, entity, indexStr, field, message] = match;
 
-    const index = Number(indexStr); // تحويل index لرقم
+    const index = Number(indexStr);
 
     const formattedEntity = entity.toLowerCase().replace(/s$/, '');
     const formattedField = field.toLowerCase();
