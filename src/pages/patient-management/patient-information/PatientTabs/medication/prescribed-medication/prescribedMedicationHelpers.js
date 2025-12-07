@@ -1,4 +1,3 @@
-import { formatDate } from "../../../../../shared/utils";
 import Skeleton from "react-loading-skeleton";
 
 export const prescribedMedicationHelpers = (t) => {
@@ -63,7 +62,6 @@ export const prescribedMedicationHelpers = (t) => {
     tableHeaders,
     mobileHeaders,
     emptyStates,
-    formatDate,
     formatDuration,
     statusOptions
   };

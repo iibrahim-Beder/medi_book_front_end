@@ -128,17 +128,6 @@ export const useMedicalConditions = (isMobile = false) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   return {
     // State
     currentFilters,
@@ -167,6 +156,5 @@ export const useMedicalConditions = (isMobile = false) => {
     getSeverityColor,
     getStatusInfo,
     truncateText,
-    formatDate
   };
 };

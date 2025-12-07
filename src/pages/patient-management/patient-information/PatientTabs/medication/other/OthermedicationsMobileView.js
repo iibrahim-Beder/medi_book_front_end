@@ -115,7 +115,7 @@ const OtherMedicationsMobileView = () => {
                   <Card key={med.id} className="mobile-view-card">
                     <Card.Body style={{ padding: "15px" }}>
                       {/* Medication Name */}
-                      <div className="d-flex justify-content-between align-items-start mb-2">
+                      <div className="custom-card-title">
                         <h5 style={{ margin: 0 }}>
                           <HighlightText
                             text={med.medicationName}
@@ -123,6 +123,8 @@ const OtherMedicationsMobileView = () => {
                             matchedFields={getMatchedFields(med.highlightInfo)}
                             fieldName={fieldMapping.medicationName}
                           />
+                      {med.createdAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(med.createdAt)}</small></div>)}
+
                         </h5>
                       </div>
 

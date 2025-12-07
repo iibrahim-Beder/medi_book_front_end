@@ -12,6 +12,7 @@ import ErrorLoading from "../../../../../shared/ErrorLoading";
 import HighlightText from "../../../../../shared/HighlightText";
 import { useMedicalConditions } from "./useMedicalConditions"; 
 import { medicalConditionsHelpers } from "./medicalConditionsHelpers";
+import { formatDate } from "../../../../../shared/utils";
 
 const DiagnosedConditionsMobileView = () => {
   const { t } = useTranslation();
@@ -35,7 +36,6 @@ const DiagnosedConditionsMobileView = () => {
 
     getSeverityColor,
     getStatusInfo,
-    formatDate
   } = useMedicalConditions(true); // true = mobile view
    const {
       conditionTypes,
@@ -146,6 +146,7 @@ const DiagnosedConditionsMobileView = () => {
                   <Card key={condition.id} className="mobile-view-card">
                     <Card.Body style={{ padding: "15px" }}>
                       {/* Condition Name */}
+                      <div className="custom-card-title">
                       <h5>
                         <HighlightText
                           text={condition.medicalConditionName}
@@ -154,6 +155,8 @@ const DiagnosedConditionsMobileView = () => {
                           fieldName={fieldMapping.medicalConditionName}
                         />
                       </h5>
+                       {condition.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(condition.createdAt)}</small></div>)}
+                      </div>
 
                       {/* Diagnosis Name */}
                       <div className="mb-2">

@@ -1,4 +1,3 @@
-import { formatDate as formatDateMain} from "../../../../shared/utils";
 export const medicalHistoryHelpers = (t) => {
   const truncateText = (text, maxLength = 70) => {
     if (!text) return "";
@@ -8,9 +7,9 @@ export const medicalHistoryHelpers = (t) => {
 
   const needsExpand = (text, maxLength = 70) => {
     return text && text.length > maxLength;
-  };  const formatDate = (dateString) => {
-  return formatDateMain(dateString)
-  };
+  };  
+  
+
 
   const historyTypes = [
     { key: "Surgery", label: t("Surgery") },
@@ -43,7 +42,6 @@ export const medicalHistoryHelpers = (t) => {
   return {
     truncateText,
     needsExpand,
-    formatDate,
     historyTypes,
     hereditaryDiseases,
     fieldMapping,

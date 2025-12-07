@@ -98,16 +98,6 @@ export const useDiagnoses = () => {
     return text.substring(0, maxLength) + "...";
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   // Transform API data to match component structure
   const transformDiagnosisData = (diagnosis) => {
     console.log(' Original Diagnosis:', diagnosis);
@@ -241,7 +231,6 @@ export const useDiagnoses = () => {
 
     // Utilities
     truncateText,
-    formatDate,
     transformDiagnosisData,
     transformPrescriptionData,
     getStatusText,

@@ -14,6 +14,7 @@ import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 import ErrorLoading from "../../../../shared/ErrorLoading";
 import { useMedicalHistory } from "./useMedicalHistoryOperations";
 import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
+import { formatDate } from "../../../../shared/utils";
 
 const MedicalHistoryTable = () => {
   const { t } = useTranslation();
@@ -59,7 +60,6 @@ const MedicalHistoryTable = () => {
     historyTypes,
     hereditaryDiseases,
     fieldMapping,
-    formatDate
   } = medicalHistoryHelpers(t);
 
    
