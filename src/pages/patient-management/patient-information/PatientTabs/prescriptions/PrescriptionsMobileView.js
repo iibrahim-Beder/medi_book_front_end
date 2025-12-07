@@ -13,6 +13,7 @@ import ErrorLoading from "../../../../shared/ErrorLoading";
 import "../../../Patient-management.css";
 import { usePrescriptions } from "./usePrescriptions";
 import { prescriptionsHelpers, MobileSkeleton } from "./prescriptionsHelpers";
+import { formatDate } from "../../../../shared/utils";
 
 const PrescriptionsMobileView = () => {
   const { t } = useTranslation();
@@ -37,8 +38,8 @@ const PrescriptionsMobileView = () => {
     handleSearch,
     handleResetFilters,
     toggleNotes,
-    handleOpenModal,
-    handleCloseModal,
+    handleOpenModalMobile,
+    handleCloseModalMobile,
     handleModalExited,
     setCurrentPage,
     setCurrentFilters,
@@ -54,7 +55,7 @@ const PrescriptionsMobileView = () => {
     mobileHeaders,
     mobileStatusOptions,
     filterConfigs,
-    mobileMedicationFields,
+    medicationFields,
     emptyStates
   } = prescriptionsHelpers(t);
 
@@ -107,7 +108,7 @@ const PrescriptionsMobileView = () => {
                 return (
                   <Card key={prescription.id} className="mobile-view-card">
                     <Card.Body style={{ padding: "15px" }}>
-                      <div className="d-flex justify-content-between align-items-start mb-2">
+                      <div className="custom-card-title">
                         <h5 style={{ margin: 0 }}>
                           <HighlightText
                             text={prescription.title}
@@ -116,6 +117,7 @@ const PrescriptionsMobileView = () => {
                             fieldName="Title"
                           />
                         </h5>
+                        {prescription.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(prescription.createdAt)}</small></div>)}
                       </div>
 
                       <div className="mb-2">
@@ -186,7 +188,7 @@ const PrescriptionsMobileView = () => {
                           className="view-btn btn btn-outline-primary btn-sm"
                           variant="outline-primary"
                           size="sm"
-                          onClick={() => handleOpenModal(prescription)}
+                          onClick={() => handleOpenModalMobile(prescription)}
                         >
                           {mobileHeaders.view_all_details}
                         </Button>
@@ -223,7 +225,7 @@ const PrescriptionsMobileView = () => {
       <Modal
         className="mobile-view"
         show={showModal}
-        onHide={handleCloseModal}
+        onHide={handleCloseModalMobile}
         onExited={handleModalExited}
         size="lg"
         centered
@@ -231,7 +233,7 @@ const PrescriptionsMobileView = () => {
       >
         <Modal.Header className="border-bottom-0">
           <Modal.Title>{selectedPrescription?.title}</Modal.Title>
-          <button className="btn-modal-close" onClick={handleCloseModal}>
+          <button className="btn-modal-close" onClick={handleCloseModalMobile}>
             <MdClose />
           </button>
         </Modal.Header>
@@ -245,29 +247,30 @@ const PrescriptionsMobileView = () => {
 
           <Field
             label={mobileHeaders.status}
-            value={selectedPrescription?.status ? mobileStatusOptions[selectedPrescription.status] : ""}
+            value={selectedPrescription?.status || ""}
             disabled
             style={{ color: getStatusColor(selectedPrescription?.status) }}
           />
 
           <TextAreaField
             label={mobileHeaders.prescription_note}
-            value={selectedPrescription?.note || ""}
+            value={selectedPrescription?.notes || ""}
             disabled
           />
 
           <CustomAccordion
+            getItemTitle={(medication) => medication.medicationName || "Medication"}
             titleBackgroundColor="var(--scbccolor)"
             title={mobileHeaders.medications}
             readOnly={true}
             backgroundColor="var(--scbccolor)"
             data={selectedPrescription?.prescribedMedications ? transformMedicationData(selectedPrescription.prescribedMedications) : []}
-            formFields={mobileMedicationFields}
+            formFields={medicationFields}
           />
         </Modal.Body>
 
         <Modal.Footer className="border-top-0">
-          <button className="dc-btn dc-cancel-btn" onClick={handleCloseModal}>
+          <button className="dc-btn dc-cancel-btn" onClick={handleCloseModalMobile}>
             {mobileHeaders.close}
           </button>
         </Modal.Footer>

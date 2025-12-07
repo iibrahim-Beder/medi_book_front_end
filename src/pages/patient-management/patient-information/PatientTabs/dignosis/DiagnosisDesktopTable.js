@@ -13,6 +13,7 @@ import HighlightText from "../../../../shared/HighlightText";
 import { useDiagnoses } from "./useDiagnoses";
 import { diagnosisHelpers } from "./diagnosisHelpers";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
+import { formatDate } from "../../../../shared/utils";
 
 const DiagnosisTable = () => {
   const { t } = useTranslation();
@@ -46,7 +47,6 @@ const DiagnosisTable = () => {
 
     // Utilities
     truncateText,
-    formatDate,
     transformDiagnosisData,
     transformPrescriptionData,
   } = useDiagnoses();

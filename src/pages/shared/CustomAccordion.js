@@ -97,6 +97,9 @@ const CustomAccordion = memo(({
     e.preventDefault();
     const currentData = data || [];
     const itemData = currentData[index];
+     if (itemData && !readOnly&& itemData.isExpanded===false) {
+    itemData._initialTitle = renderItemTitle(itemData);
+  }
     if (onSave && itemData) {
       onSave(index, itemData);
     }

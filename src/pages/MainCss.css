@@ -348,7 +348,7 @@ li {
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: #bdbbbb9b;
+  color: #bdbbbb9b !important;
 }
 
 abbr[title] {
@@ -1037,7 +1037,7 @@ margin: 0;
 background-color: transparent;
 border: none;
 box-shadow: none;
-color: black
+color: var(--terthemecolor)
 }
 .mobile-view-card .nav-table {
   margin-top: 0 !important;
@@ -1207,3 +1207,14 @@ color: var(--terthemecolor);
     }
 }
 .diagnosis-modal .modal-body .second-btn{width: 80px;}
+
+.custom-card-title{
+  display: flex;
+  justify-content: space-between;
+}
+.created-date{
+    display: flex;
+    gap: 2px;
+}
+.created-date small{white-space: nowrap ;}  
+.created-date.small{flex-direction: row; gap: 2px;}  

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
+import { formatDate } from "../../shared/utils";
 
 const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
@@ -18,16 +19,6 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
     if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
   };
 
   if (isLoading) {
@@ -76,25 +67,51 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
           className="mobile-view-card"
         >
           <Card.Body style={{ padding: "15px" }}>
-            <div className="">
+            <div className="custom-card-title">
               <h5 className="">{disease.diagnosisName}</h5>
+              {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
+            </div>
               {disease.code && (
                 <small className="text-muted">Code: {disease.code}</small>
               )}
-            </div>
-            
-            <div className="mb-3">
+            {/* symptoms */}
+           {disease.symptomsDescription &&  <div className="mb-3">
               <small className="text-muted d-block mb-1">
                 {t("Symptoms")} :
               </small>
               <div className="expandable-content">
-                <p className="mb-0">
+                <p title={disease.symptomsDescription} className="mb-0">
                   {truncateText(disease.symptomsDescription, 180)}
                 </p>
               </div>
+            </div>}
+            {/* row */}
+            <div className="row text-center mb-3">
+              <div className="col-4">
+                <div className="border-end">
+                  <div className="fw-bold text-primary">
+                    {disease.conditions?.length || 0}
+                  </div>
+                  <small className="text-muted">{t("Conditions")}</small>
+                </div>
+              </div>
+              <div className="col-4">
+                <div className="border-end">
+                  <div className="fw-bold text-primary">
+                    {disease.notes?.length || 0}
+                  </div>
+                  <small className="text-muted">{t("Notes")}</small>
+                </div>
+              </div>
+              <div className="col-4">
+                <div className="fw-bold text-primary">
+                  {disease.prescriptions?.length || 0}
+                </div>
+                <small className="text-muted">{t("Prescriptions")}</small>
+              </div>
             </div>
-            
-            <div className="mb-2">
+            {/* diagnosis description */}
+              {disease.description && ( <div className="mb-2">
               <small
                 className="text-muted d-flex mb-1"
                 style={{ cursor: "pointer" }}
@@ -103,7 +120,7 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
                     }
               >
                 {t("Diagnosis Description")} :
-                {disease.description && (
+               
                   <button
                     className=""
                     onClick={() =>
@@ -129,7 +146,7 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
                       }}
                     />
                   </button>
-                )}
+               
               </small>
               <div
                 className={`expandable-content ${
@@ -153,39 +170,8 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
                     : ""}
                 </p>
               </div>
-            </div>
-            
-            <div className="row text-center mb-3">
-              <div className="col-4">
-                <div className="border-end">
-                  <div className="fw-bold text-primary">
-                    {disease.conditions?.length || 0}
-                  </div>
-                  <small className="text-muted">{t("Conditions")}</small>
-                </div>
-              </div>
-              <div className="col-4">
-                <div className="border-end">
-                  <div className="fw-bold text-primary">
-                    {disease.notes?.length || 0}
-                  </div>
-                  <small className="text-muted">{t("Notes")}</small>
-                </div>
-              </div>
-              <div className="col-4">
-                <div className="fw-bold text-primary">
-                  {disease.prescriptions?.length || 0}
-                </div>
-                <small className="text-muted">{t("Prescriptions")}</small>
-              </div>
-            </div>
-            
-            {disease.createdAt && (
-              <small className="text-muted d-block mb-2">
-                Created: {formatDate(disease.createdAt)}
-              </small>
-            )}
-            
+            </div> )}
+
             <Button
               className="view-btn btn btn-outline-primary btn-sm"
               style={{ float: "inline-end" }}

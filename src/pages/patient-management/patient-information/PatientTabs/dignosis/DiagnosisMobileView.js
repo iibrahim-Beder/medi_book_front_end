@@ -11,6 +11,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ErrorLoading from "../../../../shared/ErrorLoading";
 import { useDiagnoses } from "./useDiagnoses";
+import { formatDate } from "../../../../shared/utils";
 
 const DiagnosisMobileView = () => {
   const { t } = useTranslation();
@@ -33,7 +34,6 @@ const DiagnosisMobileView = () => {
 
     // Utilities
     truncateText,
-    formatDate,
     transformDiagnosisData,
     transformPrescriptionData,
   } = useDiagnoses();
@@ -126,8 +126,9 @@ const DiagnosisMobileView = () => {
                 return (
                   <Card key={disease.id} className="mobile-view-card">
                     <Card.Body style={{ padding: "15px" }}>
-                      <div className="d-flex justify-content-between align-items-start mb-2">
+                      <div className="custom-card-title">
                         <h5 style={{ margin: 0 }}>{disease.diagnosisName}</h5>
+                        {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
                       </div>
 
                       <div className="mb-3">
@@ -137,6 +138,38 @@ const DiagnosisMobileView = () => {
                         <p className="mb-2">
                           {truncateText(disease.symptomsDescription, 80)}
                         </p>
+                      </div>
+
+                      {/* Diagnosis (Conditions - Notes - Prescription) */}
+                      <div className="row text-center mb-3">
+                        <div className="col-4">
+                          <div className="border-end">
+                            <div className="fw-bold text-primary">
+                              {disease.diagnosedConditions.length}
+                            </div>
+                            <small className="text-muted">
+                              {t("DiagnosisMobileView.conditions")}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="border-end">
+                            <div className="fw-bold text-primary">
+                              {disease.notes.length}
+                            </div>
+                            <small className="text-muted">
+                              {t("DiagnosisMobileView.notes")}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="fw-bold text-primary">
+                            {disease.prescription.length}
+                          </div>
+                          <small className="text-muted">
+                            {t("DiagnosisMobileView.prescription")}
+                          </small>
+                        </div>
                       </div>
 
                       {/* Diagnosis Description - Expand/Collapse */}
@@ -189,38 +222,7 @@ const DiagnosisMobileView = () => {
                         </div>
                       </div>
 
-                      {/* Diagnosis (Conditions - Notes - Prescription) */}
-                      <div className="row text-center mb-3">
-                        <div className="col-4">
-                          <div className="border-end">
-                            <div className="fw-bold text-primary">
-                              {disease.diagnosedConditions.length}
-                            </div>
-                            <small className="text-muted">
-                              {t("DiagnosisMobileView.conditions")}
-                            </small>
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="border-end">
-                            <div className="fw-bold text-primary">
-                              {disease.notes.length}
-                            </div>
-                            <small className="text-muted">
-                              {t("DiagnosisMobileView.notes")}
-                            </small>
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="fw-bold text-primary">
-                            {disease.prescription.length}
-                          </div>
-                          <small className="text-muted">
-                            {t("DiagnosisMobileView.prescription")}
-                          </small>
-                        </div>
-                      </div>
-
+                    {disease.updatedAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.updatedAt)}</small></div>)}
                       <div className="d-flex justify-content-between align-items-center">
                         <div style={{ flex: 1 }}></div>
                         <Button

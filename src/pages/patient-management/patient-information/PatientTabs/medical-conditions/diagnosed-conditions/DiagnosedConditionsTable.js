@@ -11,6 +11,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { useMedicalConditions } from "./useMedicalConditions";
 import { medicalConditionsHelpers } from "./medicalConditionsHelpers";
+import { formatDate } from "../../../../../shared/utils";
 
 const DiagnosedConditionsTable = () => {
   const { t } = useTranslation();
@@ -39,7 +40,6 @@ const DiagnosedConditionsTable = () => {
     getSeverityColor,
     getStatusInfo,
     truncateText,
-    formatDate
   } = useMedicalConditions(false); 
 
   const {
@@ -109,6 +109,7 @@ const DiagnosedConditionsTable = () => {
                   <th>{t("DiagnosedConditionsTable.diagnosed_date")}</th>
                   <th>{t("DiagnosedConditionsTable.status")}</th>
                   <th>{t("DiagnosedConditionsTable.notes")}</th>
+                  <th>{t("created_at")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -201,6 +202,7 @@ const DiagnosedConditionsTable = () => {
                               )}
                             </div>
                           </td>
+                          <td>{formatDate(condition.createdAt)}</td>
                         </tr>
 
                         {/* Expanded row for Notes */}
