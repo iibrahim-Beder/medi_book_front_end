@@ -1,5 +1,8 @@
 import Skeleton from "react-loading-skeleton";
-
+import Modal from 'react-bootstrap/Modal';
+import { useTranslation } from 'react-i18next';
+import { MdClose } from 'react-icons/md';
+import CustomAccordion from '../../../../shared/CustomAccordion';
 export const prescriptionsHelpers = (t) => {
   // Field mapping for highlight
   const fieldMapping = {
@@ -71,6 +74,13 @@ export const prescriptionsHelpers = (t) => {
       name: "medicationName",
       placeholder: t("PrescriptionsTable.medication_name"),
       label: t("PrescriptionsTable.medication"),
+      half: true
+    },
+    {
+      name: "categoryName",
+      placeholder: t("PrescriptionsTable.category_name"),
+      label: t("PrescriptionsTable.category_name"),
+      half: true
     },
     {
       name: "dosage",
@@ -79,10 +89,22 @@ export const prescriptionsHelpers = (t) => {
       label: t("PrescriptionsTable.dosage"),
     },
     {
-      name: "duration",
+      name: "durationInDays",
       placeholder: t("PrescriptionsTable.duration"),
       half: true,
       label: t("PrescriptionsTable.duration"),
+    },
+    {
+      name: "startDate",
+      placeholder: t("PrescriptionsTable.start_date"),
+      half: true,
+      label: t("PrescriptionsTable.start_date"),
+    },
+    {
+      name: "endDate",
+      placeholder: t("PrescriptionsTable.end_date"),
+      half: true,
+      label: t("PrescriptionsTable.end_date"),
     },
     {
       name: "instructions",
@@ -92,30 +114,6 @@ export const prescriptionsHelpers = (t) => {
     },
   ];
 
-  // Mobile form fields
-  const mobileMedicationFields = [
-    {
-      label: t('PrescriptionsMobileView.medication_name'),
-      name: "medicationName",
-      placeholder: t('PrescriptionsMobileView.medication'),
-    },
-    { 
-      label: t('PrescriptionsMobileView.dosage'), 
-      name: "dosage", 
-      half: true 
-    },
-    { 
-      label: t('PrescriptionsMobileView.duration'), 
-      name: "duration", 
-      half: true 
-    },
-    {
-      label: t('PrescriptionsMobileView.instructions'),
-      name: "instructions",
-      type: "textarea",
-      placeholder: t('PrescriptionsMobileView.instructions'),
-    },
-  ];
 
   // Empty states translation
   const emptyStates = {
@@ -134,7 +132,6 @@ export const prescriptionsHelpers = (t) => {
     mobileStatusOptions,
     filterConfigs,
     medicationFields,
-    mobileMedicationFields,
     emptyStates
   };
 };
@@ -211,5 +208,91 @@ export const MobileSkeleton = () => {
 
       ))}
     </>
+  );
+};
+
+
+
+export const PrescriptionsModal = ({ 
+  show, 
+  onHide, 
+  type, 
+  data,
+  formFields,
+  title 
+}) => {
+    console.log("PrescriptionsTable", data);
+
+  const { t } = useTranslation();
+  
+  const getModalTitle = () => {
+    switch(type) {
+      case 'prescribedMedication':
+        return t('PrescriptionsTable.medication_details');
+      default:
+        return title || t('Details');
+    }
+  };
+  
+  const getModalContent = () => {
+    if (!data || data.length === 0) {
+      return (
+        <div className="text-center py-4">
+          <p className="text-muted">{t('PrescriptionsTable.no_medication_data')}</p>
+        </div>
+      );
+    }
+    
+    switch(type) {
+      case 'prescribedMedication':
+        return (
+          <CustomAccordion
+            getItemTitle={(medication) => medication.medicationName || "Medication"}
+            readOnly={true}
+            backgroundColor="var(--scbccolor)"
+            data={data}
+            formFields={formFields}
+          />
+        );
+        
+      default:
+        return null;
+    }
+  };
+  
+  return (
+    <Modal 
+      show={show} 
+      onHide={onHide} 
+      size="lg"
+      centered
+      className="diagnosis-modal pr-0"
+    >
+      <Modal.Header className="modal-header-custom">
+        <Modal.Title className="modal-title-custom">
+          {getModalTitle()}
+        </Modal.Title>
+        <button
+          type="button"
+          className="btn-close-custom"
+          onClick={onHide}
+        >
+          <MdClose size={24} />
+        </button>
+      </Modal.Header>
+      <Modal.Body className="p-0">
+        <div className="modal-content-custom">
+          {getModalContent()}
+        </div>
+      </Modal.Body>
+      <Modal.Footer className="modal-footer-custom">
+        <button
+          onClick={onHide}
+          className="dc-btn dc-cancel-btn"
+        >
+          {t('Close')}
+        </button>
+      </Modal.Footer>
+    </Modal>
   );
 };

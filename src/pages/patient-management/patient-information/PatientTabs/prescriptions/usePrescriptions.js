@@ -101,7 +101,7 @@ export const usePrescriptions = (isMobile = false) => {
     setCurrentPage(1);
   };
 
-  const handleViewClick = (id, field) => {
+  const handleViewClickMobile = (id, field) => {
     if (expandedRow === id && expandedField === field) {
       setExpandedRow(null);
       setExpandedField(null);
@@ -118,12 +118,12 @@ export const usePrescriptions = (isMobile = false) => {
     }));
   };
 
-  const handleOpenModal = (prescription) => {
+  const handleOpenModalMobile = (prescription) => {
     setSelectedPrescription(prescription);
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModalMobile = () => {
     setShowModal(false);
   };
 
@@ -163,12 +163,14 @@ export const usePrescriptions = (isMobile = false) => {
   // Transform prescription data  for CustomAccordion
   const transformMedicationData = (prescribedMedications) => {
     if (!prescribedMedications) return [];
+    console.log(" original prescribedMedications  ",prescribedMedications);
     
     return prescribedMedications.map(med => ({
       id: med.id,
       medicationName: med.medicationName,
+      categoryName: med.medicationCategoryName,
       dosage: med.dosage,
-      duration: med.duration,
+      durationInDays: med.durationInDays,
       instructions: med.instructions,
       // Additional fields if needed
       startDate: med.startDate,
@@ -182,6 +184,58 @@ export const usePrescriptions = (isMobile = false) => {
   const totalPages = prescriptionsData?.totalPages || 1;
   const searchTerm = appliedFilters.searchValue;
 
+
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const [modalType, setModalType] = useState(null);
+  
+  const handleOpenModal = (prescriptionId, fieldType, data) => {
+    setExpandedRow(prescriptionId);
+    setExpandedField(fieldType);
+    setModalData(data);
+    setModalType(fieldType);
+    setModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setModalData(null);
+    setModalType(null);
+    setExpandedRow(null);
+    setExpandedField(null);
+  };
+    const handleViewClick = (prescriptionId, fieldType) => {
+    const prescription = currentData.find(p => p.id === prescriptionId);
+    if (!prescription) return;
+    
+    switch(fieldType) {
+      case 'prescribedMedication':
+        const medicationData = transformMedicationData(prescription.prescribedMedications);
+        handleOpenModal(prescriptionId, fieldType, medicationData);
+        break;
+        
+      case 'note':
+      case 'diagnosisName':
+        if (expandedRow === prescriptionId && expandedField === fieldType) {
+          setExpandedRow(null);
+          setExpandedField(null);
+        } else {
+          setExpandedRow(prescriptionId);
+          setExpandedField(fieldType);
+        }
+        break;
+        
+      default:
+        if (expandedRow === prescriptionId && expandedField === fieldType) {
+          setExpandedRow(null);
+          setExpandedField(null);
+        } else {
+          setExpandedRow(prescriptionId);
+          setExpandedField(fieldType);
+        }
+    }
+  };
   return {
     // State
     expandedRow,
@@ -202,10 +256,17 @@ export const usePrescriptions = (isMobile = false) => {
     totalPages,
     searchTerm,
     
+     modalOpen,
+    modalData,
+    modalType,
+    
     // Actions
+    handleOpenModalMobile,
+    
     handleSearch,
     handleResetFilters,
     handleViewClick,
+    handleCloseModalMobile,
     toggleNotes,
     handleOpenModal,
     handleCloseModal,
