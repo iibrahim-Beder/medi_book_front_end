@@ -348,7 +348,7 @@ li {
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: #bdbbbb9b;
+  color: #bdbbbb9b !important;
 }
 
 abbr[title] {
