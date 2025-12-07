@@ -11,7 +11,7 @@ import "../../../../Patient-management.css";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { usePrescribedMedication } from "./usePrescribedMedication";
 import { prescribedMedicationHelpers, TableSkeleton } from "./prescribedMedicationHelpers";
-import { formatDate } from "date-fns";
+import { formatDate } from "../../../../../shared/utils";
 
 const PrescribedMedicationTable = () => {
   const { t } = useTranslation();
