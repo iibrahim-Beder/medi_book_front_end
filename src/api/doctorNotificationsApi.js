@@ -68,7 +68,7 @@ const transformDoctorNotificationsData = (response) => {
     message: item.message,
     isRead: item.isRead,
     relatedEntityId: item.relatedEntityId,
-    relatedEntityType: transformEntityTypeToUI(item.relatedEntityType),
+    relatedEntityType: item.type,
     relatedEntityTypeValue: item.relatedEntityType,
     createdAt: item.createdAt,
     highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.id)
@@ -125,16 +125,18 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
       },
       providesTags: ['DoctorNotifications'],
     }),
-
+    
     // Mark notification as read
     markNotificationAsRead: builder.mutation({
-      query: (notificationId) => ({
-        url: `/DoctorNotification/MarkAsRead/${notificationId}`,
-        method: 'PUT'
+      query: (notificationId) => (console.log('notificationId', notificationId)
+      ,
+      {
+        url: `/Notifications/MarkNotificationAsRead?NotificationId=${notificationId}`,
+        method: 'POST'
       }),
       invalidatesTags: ['DoctorNotifications'],
     }),
-
+    
     // Mark all notifications as read
     markAllNotificationsAsRead: builder.mutation({
       query: () => ({
@@ -143,7 +145,7 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['DoctorNotifications'],
     }),
-
+    
     // Delete notification
     deleteNotification: builder.mutation({
       query: (notificationId) => ({
