@@ -3,6 +3,70 @@ import { useState, useEffect, useCallback } from 'react';
 import { signalRService } from './signalRService';
 import toast from 'react-hot-toast';
 import { useMarkNotificationAsReadMutation } from "../../api/doctorNotificationsApi";
+import {
+  FaCalendarCheck,
+  FaCalendarTimes,
+  FaClock,
+  FaEnvelopeOpenText,
+  FaMoneyBillWave,
+  FaInfoCircle,
+  FaBell,
+  FaExclamationTriangle,
+  FaTools,
+  FaUserMd,
+  FaComments,
+  FaFlask,
+  FaSyncAlt,
+  FaTimesCircle
+} from "react-icons/fa";
+
+ const getNotificationIcon = (type) => {
+  console.log("type===", type);
+  switch (type) {
+    case "AppointmentBooked":
+      return <FaCalendarCheck style={{ color: "#2ecc71" }} />; // Green
+
+    case "AppointmentCancelledByDoctor":
+      return <FaTimesCircle style={{ color: "#e74c3c" }} />; // Red
+
+    case "AppointmentCancelledByPatient":
+      return <FaCalendarTimes style={{ color: "#e74c3c" }} />; // Red
+
+    case "AppointmentRescheduled":
+      return <FaSyncAlt style={{ color: "#9b59b6" }} />; // Purple
+
+    case "AppointmentReminder24h":
+    case "AppointmentReminder1h":
+      return <FaClock style={{ color: "#f39c12" }} />; // Orange
+
+    case "PaymentSuccessful":
+      return <FaMoneyBillWave style={{ color: "#27ae60" }} />; // Dark Green
+
+    case "PaymentFailed":
+      return <FaExclamationTriangle style={{ color: "#c0392b" }} />; // Dark Red
+
+    case "SystemAnnouncement":
+      return <FaInfoCircle style={{ color: "#3498db" }} />; // Blue
+
+    case "MaintenanceNotification":
+      return <FaTools style={{ color: "#7f8c8d" }} />; // Grey
+
+    case "AccountVerificationReminder":
+      return <FaEnvelopeOpenText style={{ color: "#2980b9" }} />; // Blue
+
+    case "NewDoctorAvailableInArea":
+      return <FaUserMd style={{ color: "#8e44ad" }} />; // Purple
+
+    case "NewMessage":
+      return <FaComments style={{ color: "#16a085" }} />; // Teal
+
+    case "Test":
+      return <FaFlask style={{ color: "#8e44ad" }} />; // Purple
+
+    default:
+      return <FaBell style={{ color: "#95a5a6" }} />; // Light Grey
+  }
+};
 
 export const useSignalRNotifications = (userId, options = {}) => {
   const [connectionStatus, setConnectionStatus] = useState(false);
@@ -153,6 +217,7 @@ export const useSignalRNotifications = (userId, options = {}) => {
     markAllAsRead,
     addNotification,
     clearRealtimeNotifications,
+    getNotificationIcon,
     isConnected: signalRService.isConnected(),
   };
 };

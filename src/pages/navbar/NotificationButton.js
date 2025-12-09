@@ -9,76 +9,9 @@ import {
 } from "../../api/doctorNotificationsApi";
 import { useSignalRNotifications } from "../../api/notifications/useSignalR";
 import { t } from "i18next";
-import {
-  FaCalendarCheck,
-  FaCalendarTimes,
-  FaClock,
-  FaEnvelopeOpenText,
-  FaMoneyBillWave,
-  FaInfoCircle,
-  FaBell,
-  FaExclamationTriangle,
-  FaTools,
-  FaUserMd,
-  FaComments,
-  FaFlask,
-  FaSyncAlt,
-  FaTimesCircle
-} from "react-icons/fa";
-
- const getNotificationIcon = (type) => {
-  console.log("type===", type);
-  switch (type) {
-    case "AppointmentBooked":
-      return <FaCalendarCheck style={{ color: "#2ecc71" }} />; // Green
-
-    case "AppointmentCancelledByDoctor":
-      return <FaTimesCircle style={{ color: "#e74c3c" }} />; // Red
-
-    case "AppointmentCancelledByPatient":
-      return <FaCalendarTimes style={{ color: "#e74c3c" }} />; // Red
-
-    case "AppointmentRescheduled":
-      return <FaSyncAlt style={{ color: "#9b59b6" }} />; // Purple
-
-    case "AppointmentReminder24h":
-    case "AppointmentReminder1h":
-      return <FaClock style={{ color: "#f39c12" }} />; // Orange
-
-    case "PaymentSuccessful":
-      return <FaMoneyBillWave style={{ color: "#27ae60" }} />; // Dark Green
-
-    case "PaymentFailed":
-      return <FaExclamationTriangle style={{ color: "#c0392b" }} />; // Dark Red
-
-    case "SystemAnnouncement":
-      return <FaInfoCircle style={{ color: "#3498db" }} />; // Blue
-
-    case "MaintenanceNotification":
-      return <FaTools style={{ color: "#7f8c8d" }} />; // Grey
-
-    case "AccountVerificationReminder":
-      return <FaEnvelopeOpenText style={{ color: "#2980b9" }} />; // Blue
-
-    case "NewDoctorAvailableInArea":
-      return <FaUserMd style={{ color: "#8e44ad" }} />; // Purple
-
-    case "NewMessage":
-      return <FaComments style={{ color: "#16a085" }} />; // Teal
-
-    case "Test":
-      return <FaFlask style={{ color: "#8e44ad" }} />; // Purple
-
-    default:
-      return <FaBell style={{ color: "#95a5a6" }} />; // Light Grey
-  }
-};
-
-
-
 const NotificationDropdown = () => {
   const [localUserId, setLocalUserId] = useState(1); 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [localNotifications, setLocalNotifications] = useState([]);
   
   const { 
@@ -86,7 +19,8 @@ const NotificationDropdown = () => {
     unreadCount, 
     updateUnreadCount,
     markAsRead,
-    realtimeNotifications
+    realtimeNotifications,
+    getNotificationIcon
   } = useSignalRNotifications(localUserId, {
     enableToast: true
   });
@@ -175,9 +109,12 @@ const NotificationDropdown = () => {
         align="end" 
         className="notifications" 
         onToggle={(isOpen) => {
-          setIsDropdownOpen(isOpen);
+          // setIsDropdownOpen(isOpen);
           if (isOpen) {
-            // refetch();
+            if(!connectionStatus){
+              refetch();
+              // console.log("refetch");
+            }
           }
         }}
       >
@@ -241,25 +178,6 @@ const NotificationDropdown = () => {
             </span>
             
             <div className="d-flex align-items-center gap-2">
-              {/* {connectionStatus ? (
-                <span className="badge bg-success" style={{ fontSize: '0.65rem' }}>
-                  Live
-                </span>
-              ) : (
-                <span className="badge bg-danger" style={{ fontSize: '0.65rem' }}>
-                  Offline
-                </span>
-              )} */}
-              
-              {/* {unreadCount > 0 && (
-                <button 
-                  className="btn btn-sm btn-outline-primary"
-                  onClick={markAllAsReadHandler}
-                  style={{ fontSize: '0.75rem', padding: '2px 8px' }}
-                >
-                  Mark all read
-                </button>
-              )} */}
             </div>
           </div>
           
@@ -319,16 +237,12 @@ const NotificationDropdown = () => {
                         >
                           {n.message}
                         </p>
-                        {/* {n.relatedEntityType && (
-                          <small className="text-muted">
-                            Type: {n.relatedEntityType}
-                          </small>
-                        )} */}
                       </div>
                       
                       {!n.isRead && (
                         <span className="ms-auto">
                           <div className="rounded-circle "
+                            title ={isNewNotification(n.createdAt)?t("New"):""}
                             style={{ width: "8px", height: "8px", backgroundColor: isNewNotification(n.createdAt) ? '#28a745' : '#dc3545' }} 
                             />
                         </span> 
@@ -342,8 +256,7 @@ const NotificationDropdown = () => {
           
           {localNotifications.length > 0 && (
             <div className="topnav-dropdown-footer border-top p-2 text-center">
-              <a 
-                href="#" 
+              <button
                 className="text-primary text-decoration-none"
                 onClick={(e) => {
                   e.preventDefault();
@@ -352,7 +265,7 @@ const NotificationDropdown = () => {
                 }}
               >
                 View all notifications
-              </a>
+              </button>
             </div>
           )}
         </Dropdown.Menu>
