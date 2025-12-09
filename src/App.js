@@ -17,7 +17,7 @@ import MessagesPage from "./pages/messages/MessagesPage";
 import AppointmentManagementMain from "./pages/appointment-management/AppointmentmanagementMain";
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
-import Test from './not used/Test';
+// import Test from './not used/Test';
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -25,7 +25,6 @@ import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorF
 import Login from "./pages/login/Login";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import 'react-loading-skeleton/dist/skeleton.css';
-import Toaster from "react-hot-toast";
 
 
 function App() {
@@ -92,7 +91,7 @@ const { i18n } = useTranslation();
                       path="manage-patients"
                       element={<PatientManagement />}
                     />
-                    <Route path="how-v1" element={<Test />} />
+                    {/* <Route path="how-v1" element={<Test />} /> */}
                     <Route
                       path="manage-financial"
                       element={<DoctorFinancialDashboard />}
