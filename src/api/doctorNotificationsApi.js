@@ -35,16 +35,6 @@ const transformNotificationTypeToAPI = (notificationType) => {
   return notificationTypeMap[notificationType] ?? null;
 };
 
-const transformNotificationTypeToUI = (notificationType) => {
-  const notificationTypeMap = {
-    1: 'Info',
-    2: 'Warning', 
-    3: 'Alert',
-    4: 'Reminder'
-  };
-  return notificationTypeMap[notificationType] ?? 'Info';
-};
-
 const transformDoctorNotificationsData = (response) => {
   if (!response || !response.succeeded) {
     return {
@@ -140,11 +130,18 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
     // Mark all notifications as read
     markAllNotificationsAsRead: builder.mutation({
       query: () => ({
-        url: `/DoctorNotification/MarkAllAsRead`,
-        method: 'PUT'
+        url: `/Notifications/MarkAllNotificationsAsRead`,
+        method: 'POST'
       }),
       invalidatesTags: ['DoctorNotifications'],
     }),
+    transformResponse: (response, meta, args) => {
+      console.log('Doctor Notifications API Response:', response);
+    },
+    transformErrorResponse: (response, meta, args) => {
+      console.error('Doctor Notifications API Error:', response);
+
+    },
     
     // Delete notification
     deleteNotification: builder.mutation({

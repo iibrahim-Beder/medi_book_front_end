@@ -8,6 +8,8 @@ import {
 } from "../../api/doctorNotificationsApi";
 import { useSignalRNotifications } from "../../api/notifications/useSignalR";
 import { t } from "i18next";
+import { Link } from "react-router-dom";
+import { getNotificationIcon } from "../shared/utils";
 const NotificationDropdown = () => {
   const [localUserId, setLocalUserId] = useState(1); 
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,7 +21,6 @@ const NotificationDropdown = () => {
     updateUnreadCount,
     markAsRead,
     realtimeNotifications,
-    getNotificationIcon
   } = useSignalRNotifications(localUserId, {
     enableToast: true
   });
@@ -199,7 +200,6 @@ const NotificationDropdown = () => {
             ) : (
               <ul className="list-unstyled m-0">
                 {localNotifications.map((n, index) => (
-                 console.log("notification===",n),
                   <li 
                     key={n.id || `realtime-${index}`} 
                     className="notification-message border-bottom"
@@ -255,16 +255,18 @@ const NotificationDropdown = () => {
           
           {localNotifications.length > 0 && (
             <div className="topnav-dropdown-footer border-top p-2 text-center">
+              <Link to="/notifications">
               <button
                 className="text-primary text-decoration-none"
-                onClick={(e) => {
-                  e.preventDefault();
-                  // Navigate to all notifications page
-                  console.log("View all notifications clicked");
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   // Navigate to all notifications page
+                //   console.log("View all notifications clicked");
+                // }}
               >
                 View all notifications
               </button>
+              </Link>
             </div>
           )}
         </Dropdown.Menu>
