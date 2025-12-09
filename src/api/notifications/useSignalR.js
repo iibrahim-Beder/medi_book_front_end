@@ -1,4 +1,3 @@
-// hooks/useSignalRNotifications.js
 import { useState, useEffect, useCallback } from 'react';
 import { signalRService } from './signalRService';
 import toast from 'react-hot-toast';
@@ -17,64 +16,62 @@ import {
   FaComments,
   FaFlask,
   FaSyncAlt,
-  FaTimesCircle
+  FaTimesCircle,
+  FaTimes
 } from "react-icons/fa";
+const getNotificationIcon = (type) => {
+ console.log("type===", type);
+ switch (type) {
+   case "AppointmentBooked":
+     return <FaCalendarCheck style={{ color: "#2ecc71" }} />; // Green
 
- const getNotificationIcon = (type) => {
-  console.log("type===", type);
-  switch (type) {
-    case "AppointmentBooked":
-      return <FaCalendarCheck style={{ color: "#2ecc71" }} />; // Green
+   case "AppointmentCancelledByDoctor":
+     return <FaTimesCircle style={{ color: "#e74c3c" }} />; // Red
 
-    case "AppointmentCancelledByDoctor":
-      return <FaTimesCircle style={{ color: "#e74c3c" }} />; // Red
+   case "AppointmentCancelledByPatient":
+     return <FaCalendarTimes style={{ color: "#e74c3c" }} />; // Red
 
-    case "AppointmentCancelledByPatient":
-      return <FaCalendarTimes style={{ color: "#e74c3c" }} />; // Red
+   case "AppointmentRescheduled":
+     return <FaSyncAlt style={{ color: "#9b59b6" }} />; // Purple
 
-    case "AppointmentRescheduled":
-      return <FaSyncAlt style={{ color: "#9b59b6" }} />; // Purple
+   case "AppointmentReminder24h":
+   case "AppointmentReminder1h":
+     return <FaClock style={{ color: "#f39c12" }} />; // Orange
 
-    case "AppointmentReminder24h":
-    case "AppointmentReminder1h":
-      return <FaClock style={{ color: "#f39c12" }} />; // Orange
+   case "PaymentSuccessful":
+     return <FaMoneyBillWave style={{ color: "#27ae60" }} />; // Dark Green
 
-    case "PaymentSuccessful":
-      return <FaMoneyBillWave style={{ color: "#27ae60" }} />; // Dark Green
+   case "PaymentFailed":
+     return <FaExclamationTriangle style={{ color: "#c0392b" }} />; // Dark Red
 
-    case "PaymentFailed":
-      return <FaExclamationTriangle style={{ color: "#c0392b" }} />; // Dark Red
+   case "SystemAnnouncement":
+     return <FaInfoCircle style={{ color: "#3498db" }} />; // Blue
 
-    case "SystemAnnouncement":
-      return <FaInfoCircle style={{ color: "#3498db" }} />; // Blue
+   case "MaintenanceNotification":
+     return <FaTools style={{ color: "#7f8c8d" }} />; // Grey
 
-    case "MaintenanceNotification":
-      return <FaTools style={{ color: "#7f8c8d" }} />; // Grey
+   case "AccountVerificationReminder":
+     return <FaEnvelopeOpenText style={{ color: "#2980b9" }} />; // Blue
 
-    case "AccountVerificationReminder":
-      return <FaEnvelopeOpenText style={{ color: "#2980b9" }} />; // Blue
+   case "NewDoctorAvailableInArea":
+     return <FaUserMd style={{ color: "#8e44ad" }} />; // Purple
 
-    case "NewDoctorAvailableInArea":
-      return <FaUserMd style={{ color: "#8e44ad" }} />; // Purple
+   case "NewMessage":
+     return <FaComments style={{ color: "#16a085" }} />; // Teal
 
-    case "NewMessage":
-      return <FaComments style={{ color: "#16a085" }} />; // Teal
+   case "Test":
+     return <FaFlask style={{ color: "#8e44ad" }} />; // Purple
 
-    case "Test":
-      return <FaFlask style={{ color: "#8e44ad" }} />; // Purple
-
-    default:
-      return <FaBell style={{ color: "#95a5a6" }} />; // Light Grey
-  }
+   default:
+     return <FaBell style={{ color: "#95a5a6" }} />; // Light Grey
+ }
 };
-
 export const useSignalRNotifications = (userId, options = {}) => {
   const [connectionStatus, setConnectionStatus] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [realtimeNotifications, setRealtimeNotifications] = useState([]);
   const { enableToast = true } = options;
   const [markNotificationAsRead] = useMarkNotificationAsReadMutation();
-
   useEffect(() => {
     if (!userId) return;
 
@@ -108,41 +105,45 @@ export const useSignalRNotifications = (userId, options = {}) => {
           setUnreadCount(prev => prev + 1);
           
           if (enableToast && notification) {
-            toast.custom((t) => (
-              <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} 
-                max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
-                <div className="flex-1 w-0 p-4">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 pt-0.5">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                        <span className="text-blue-600 text-lg">🔔</span>
-                      </div>
-                    </div>
-                    <div className="ml-3 flex-1">
-                      <p className="text-sm font-medium text-gray-900">
-                        {notification.title}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-500">
-                        {notification.message}
-                      </p>
-                    </div>
-                  </div>
+          toast.custom(
+            (t) => (
+              <div
+                className={`toast-box toast-custom-box shadow  bg-white border p-3 d-flex align-items-start 
+             ${t.visible ? "opacity-100" : "opacity-0"} 
+              transition-opacity`}
+              >
+                {/* Avatar / Icon */}
+                <div
+                  className="rounded-circle d-flex align-items-center justify-content-center me-3"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    background: "#eef1f6",
+                    fontSize: "18px",
+                  }}
+                >
+                  {getNotificationIcon(notification.type)}
                 </div>
-                <div className="flex border-l border-gray-200">
-                  <button
-                    onClick={() => {
-                      toast.dismiss(t.id);
-                    }}
-                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-blue-600 hover:text-blue-500 focus:outline-none"
-                  >
-                    View
-                  </button>
+
+                {/* Content */}
+                <div className="flex-grow-1">
+                  <h6 className="fw-bold mb-1">{notification.title}</h6>
+                  <p className="text-muted m-0">{notification.message}</p>
                 </div>
-              </div>  
-            ), {
-              duration: 5000,
-              position: 'top-left',
-            });
+
+                {/* Close */}
+                <button
+                  className="btn-close ms-2"
+                  onClick={() => toast.dismiss(t.id)}
+                />
+                <FaTimes />
+              </div>
+            ),
+            {
+              duration: 600000,
+              position: "top-left",
+            }
+          );
           }
         };
 
@@ -158,7 +159,6 @@ export const useSignalRNotifications = (userId, options = {}) => {
 
     initConnection();
 
-    // تنظيف عند unmount
     return () => {
       signalRService.stopConnection();
     };
@@ -217,7 +217,7 @@ export const useSignalRNotifications = (userId, options = {}) => {
     markAllAsRead,
     addNotification,
     clearRealtimeNotifications,
-    getNotificationIcon,
     isConnected: signalRService.isConnected(),
+    getNotificationIcon
   };
 };

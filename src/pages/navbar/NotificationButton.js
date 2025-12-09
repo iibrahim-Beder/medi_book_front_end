@@ -1,4 +1,3 @@
-// NotificationDropdown.js
 import React, { useState, useEffect, useMemo } from "react";
 import { Dropdown, Badge } from "react-bootstrap";
 import { Bell } from "lucide-react";

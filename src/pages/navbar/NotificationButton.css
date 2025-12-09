@@ -40,3 +40,14 @@ header.inner-header .header-nav .header-navbar-rht li.noti-nav > a.active-dot::b
 .dropdown-menu-end.list-date-option.open:after{top:-5px}
 .media-body h6{ font-size:clamp(12px, 13px ,13px);}
 .notification-message:hover{ background-color: #f1f1f191; } 
+.toast-custom-box{
+  max-width: fit-content;
+  margin: 10px;
+  transition: opacity 0.3s;
+  border-radius: 10px;
+  gap: 10px;
+  box-shadow: 0 0 10px var(--scshadocolor);
+}
+.toast-custom-box h6{font-size: clamp(12px, 1.5vw, 13px);}
+.notifications .btn:hover{ transform:translateY(0)} 
+.btn-close{cursor: pointer;}
