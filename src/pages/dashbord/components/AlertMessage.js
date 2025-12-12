@@ -4,8 +4,8 @@ import {
   FaExclamationTriangle,
   FaTimesCircle,
   FaInfoCircle,
-  FaTimes,
 } from "react-icons/fa";
+import { RiCloseLargeLine } from "react-icons/ri";
 import "./AlertMessage.scss";
 
 export default function AlertMessage({
@@ -47,7 +47,7 @@ export default function AlertMessage({
     >
       <div className="table-card alert-neutral dc-jobalerts p-3 mb-2">
         <button className="alert-close" onClick={onClose}>
-          <FaTimes />
+          <RiCloseLargeLine />
         </button>
 
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>

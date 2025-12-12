@@ -1,3 +1,21 @@
+import { t } from "i18next";
+import {
+  FaCalendarCheck,
+  FaCalendarTimes,
+  FaClock,
+  FaEnvelopeOpenText,
+  FaMoneyBillWave,
+  FaInfoCircle,
+  FaBell,
+  FaExclamationTriangle,
+  FaTools,
+  FaUserMd,
+  FaComments,
+  FaFlask,
+  FaSyncAlt,
+  FaTimesCircle,
+  FaTimes
+} from "react-icons/fa";
 export  const formatDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
@@ -12,4 +30,70 @@ export const getRandomNumber = ( min = 40, max = 95 ) => {return Math.floor(Math
    export const truncateTitle = (text, maxLength = 50) => {
     if (!text) return "";
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+export const getNotificationIcon = (type) => {
+ switch (type) {
+   case "AppointmentBooked":
+     return <FaCalendarCheck style={{ color: "#2ecc71" }} />; // Green
+
+   case "AppointmentCancelledByDoctor":
+     return <FaTimesCircle style={{ color: "#e74c3c" }} />; // Red
+
+   case "AppointmentCancelledByPatient":
+     return <FaCalendarTimes style={{ color: "#e74c3c" }} />; // Red
+
+   case "AppointmentRescheduled":
+     return <FaSyncAlt style={{ color: "#9b59b6" }} />; // Purple
+
+   case "AppointmentReminder24h":
+   case "AppointmentReminder1h":
+     return <FaClock style={{ color: "#f39c12" }} />; // Orange
+
+   case "PaymentSuccessful":
+     return <FaMoneyBillWave style={{ color: "#27ae60" }} />; // Dark Green
+
+   case "PaymentFailed":
+     return <FaExclamationTriangle style={{ color: "#c0392b" }} />; // Dark Red
+
+   case "SystemAnnouncement":
+     return <FaInfoCircle style={{ color: "#3498db" }} />; // Blue
+
+   case "MaintenanceNotification":
+     return <FaTools style={{ color: "#7f8c8d" }} />; // Grey
+
+   case "AccountVerificationReminder":
+     return <FaEnvelopeOpenText style={{ color: "#2980b9" }} />; // Blue
+
+   case "NewDoctorAvailableInArea":
+     return <FaUserMd style={{ color: "#8e44ad" }} />; // Purple
+
+   case "NewMessage":
+     return <FaComments style={{ color: "#16a085" }} />; // Teal
+
+   case "Test":
+     return <FaFlask style={{ color: "#8e44ad" }} />; // Purple
+
+   default:
+     return <FaBell style={{ color: "#95a5a6" }} />; // Light Grey
+ }
+};
+
+  export const formatTime = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return t('Just now');
+    if (diffMins < 60) return `${diffMins} ${t('min ago')}`;
+    if (diffHours < 24) return `${diffHours} ${t('hour ago')}`;
+    if (diffDays < 7) return `${diffDays} ${t('day ago')}`;
+    
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
   };

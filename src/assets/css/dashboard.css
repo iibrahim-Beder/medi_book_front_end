@@ -5769,6 +5769,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.DateRangePicker{margin: 10px 0;}
 	        .dc-offersmessages ul li:first-child{border-right: none;}
 	.login-container{margin: 15px 0;}
 	.dc-accordioninnertitle{padding: 4px 10px !important; height: 40px;}
@@ -5909,7 +5910,7 @@ padding: 0 10px;
        /* dropdown notification css start */
 	    .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before {right: 59%;}
         .dropdown-menu-end.list-date-option.open:before{right: calc(59% - 1px) !important;}
-		 .dropdown-menu-end.list-date-option.open{ min-width: 320px !important;  transform: translate3d( 179px , 34px, 0px) !important;  }
+		 .dropdown-menu-end.list-date-option.open{max-width: 318px !important;min-width: 318px !important; transform: translate3d( 179px , 34px, 0px) !important;  }
 		 /* dropdown notification css end */
 		.dc-checkboxgroup{grid-template-columns: repeat(1, 1fr);}
 		        .two-tabs .nav {
