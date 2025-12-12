@@ -24,6 +24,7 @@ import {
 } from 'react-icons/fa';
 import { useTranslation } from "react-i18next";
 import './Sidebar.scss';
+import { IoNotificationsOutline } from "react-icons/io5";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -128,7 +129,6 @@ let iconSize=20;
              <li>
               <Link to="/pationt-information">
                 <InfomationIcon width={iconSize} height={iconSize} className="icon" />
-
                 <span>{t("sidebar.pationtInformation")}</span>
               </Link>
             </li>
@@ -154,6 +154,12 @@ let iconSize=20;
               <Link to="/security-settings">
                 <LiaUserShieldSolid className="icon" />
                 <span>{t("sidebar.securitySettings")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/notifications">
+                <IoNotificationsOutline className="icon" />
+                <span>{t("sidebar.notifications")}</span>
               </Link>
             </li>
             <li>

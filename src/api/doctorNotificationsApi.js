@@ -35,16 +35,6 @@ const transformNotificationTypeToAPI = (notificationType) => {
   return notificationTypeMap[notificationType] ?? null;
 };
 
-const transformNotificationTypeToUI = (notificationType) => {
-  const notificationTypeMap = {
-    1: 'Info',
-    2: 'Warning', 
-    3: 'Alert',
-    4: 'Reminder'
-  };
-  return notificationTypeMap[notificationType] ?? 'Info';
-};
-
 const transformDoctorNotificationsData = (response) => {
   if (!response || !response.succeeded) {
     return {
@@ -136,15 +126,39 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['DoctorNotifications'],
     }),
+    // Mark notification as read
+    markNotificationAsReadwithoutInvalidate: builder.mutation({
+      query: (notificationId) => (console.log('notificationId', notificationId)
+      ,
+      {
+        url: `/Notifications/MarkNotificationAsRead?NotificationId=${notificationId}`,
+        method: 'POST'
+      }),
+      invalidatesTags: [''],
+    }),
     
     // Mark all notifications as read
     markAllNotificationsAsRead: builder.mutation({
       query: () => ({
-        url: `/DoctorNotification/MarkAllAsRead`,
-        method: 'PUT'
+        url: `/Notifications/MarkAllNotificationsAsRead`,
+        method: 'POST'
       }),
       invalidatesTags: ['DoctorNotifications'],
     }),
+    markAllNotificationsAsReadwithoutInvalidate: builder.mutation({
+      query: () => ({
+        url: `/Notifications/MarkAllNotificationsAsRead`,
+        method: 'POST'
+      }),
+      invalidatesTags: [''],
+    }),
+    transformResponse: (response, meta, args) => {
+      console.log('Doctor Notifications API Response:', response);
+    },
+    transformErrorResponse: (response, meta, args) => {
+      console.error('Doctor Notifications API Error:', response);
+
+    },
     
     // Delete notification
     deleteNotification: builder.mutation({
@@ -161,6 +175,8 @@ export const {
   useGetDoctorNotificationsQuery,
   useLazyGetDoctorNotificationsQuery,
   useMarkNotificationAsReadMutation,
+  useMarkNotificationAsReadwithoutInvalidateMutation,
   useMarkAllNotificationsAsReadMutation,
+  useMarkAllNotificationsAsReadwithoutInvalidateMutation,
   useDeleteNotificationMutation,
 } = doctorNotificationsApi;
