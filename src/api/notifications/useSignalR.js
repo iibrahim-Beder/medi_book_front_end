@@ -50,14 +50,15 @@ export const useSignalRNotifications = (userId, options = {}) => {
              ${t.visible ? "opacity-100" : "opacity-0"} 
               transition-opacity`}
               >
+                <div style={{marginRight:"60px"}}>     
                 <div className='d-flex'>
                 <div className='avatar-title'>
                 {/* Avatar / Icon */}
                 <div
                   className="rounded-circle d-flex align-items-center justify-content-center me-3"
                   style={{
-                    width: "40px",
-                    height: "40px",
+                    minWidth: "40px",
+                    minHeight: "40px",
                     background: "#eef1f6",
                     fontSize: "18px",
                   }}
@@ -66,14 +67,6 @@ export const useSignalRNotifications = (userId, options = {}) => {
                 </div>  
              <h6 className="fw-bold mb-1">{notification.title}</h6>
                 </div>
-             {/* Close */}
-                <button
-                  className="btn-close ms-2"
-                  onClick={() => toast.dismiss(t.id)}
-                >
-                  close
-                {/* <MdClose /> */}
-                </button>
 
 
                 </div>
@@ -83,7 +76,15 @@ export const useSignalRNotifications = (userId, options = {}) => {
                   <p className=" m-0">{notification.message}</p>
                 </div>
 
-           
+             </div>
+             {/* Close */}
+                <button
+                  className="btn-close ms-2"
+                  onClick={() => toast.dismiss(t.id)}
+                >
+                  close
+                {/* <MdClose /> */}
+                </button>
               </div>
             ),
             {

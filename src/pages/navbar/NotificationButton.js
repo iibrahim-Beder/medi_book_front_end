@@ -10,7 +10,7 @@ import {
 import { useSignalRNotifications } from "../../api/notifications/useSignalR";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
-import { formatTime, getNotificationIcon } from "../shared/utils";
+import { formatTime, getNotificationIcon, truncateTitle } from "../shared/utils";
 import { IoCheckmarkOutline } from "react-icons/io5";
 
 const NotificationDropdown = () => {
@@ -264,7 +264,7 @@ const NotificationDropdown = () => {
                     }}
                   >
                     <div
-                      className="d-flex align-items-start p-2 text-decoration-none text-dark"
+                      className="  d-flex align-items-start p-2 text-decoration-none text-dark"
                       style={{ 
                         gap: "10px",
                       }}
@@ -277,7 +277,7 @@ const NotificationDropdown = () => {
                       </span>
                       <div className="media-body">
                         <h6 className="mb-1 d-flex justify-content-between">
-                          <span>{n.title}</span>
+                          <span className="text-ellipsis" title={n.title}>{n.title}</span>
                           <span className="text-muted small" style={{ whiteSpace: "nowrap" }}>
                             {formatTime(n.createdAt)}
                           </span>
