@@ -30,8 +30,6 @@ class SignalRService {
     .build();
     console.log("SignalR connection started", this.connection,"|  userId", userId);
 
-      console.log("SignalR connection started", this.connection,"|  userId", userId);
-
       this.connection.on("ReceiveNotification", (notification) => {
         console.log("Notification received:", notification);
         if (this.onNotificationReceived) {
@@ -87,7 +85,7 @@ class SignalRService {
   markAsRead = (notificationId) => {
     console.log("Marking notification as read:", notificationId);
     if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
-      this.connection.invoke("MarkAsRead", notificationId)
+      this.connection.invoke("MarkNotificationAsRead", notificationId)
         .catch(err => console.error("Error marking as read:", err));
     }
   };

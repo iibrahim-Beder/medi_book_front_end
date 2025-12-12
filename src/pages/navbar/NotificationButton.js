@@ -5,21 +5,25 @@ import "../patient-management/patient-information/PatientTabs/component/DateRang
 import "./NotificationButton.css"
 import { 
   useGetDoctorNotificationsQuery,
+  useMarkAllNotificationsAsReadMutation,
 } from "../../api/doctorNotificationsApi";
 import { useSignalRNotifications } from "../../api/notifications/useSignalR";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
-import { getNotificationIcon } from "../shared/utils";
+import { formatTime, getNotificationIcon } from "../shared/utils";
+import { IoCheckmarkOutline } from "react-icons/io5";
+
 const NotificationDropdown = () => {
   const [localUserId, setLocalUserId] = useState(1); 
-  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [localNotifications, setLocalNotifications] = useState([]);
+  const [localUnreadCount, setLocalUnreadCount] = useState(0);
   
   const { 
     connectionStatus, 
-    unreadCount, 
+    unreadCount: serverUnreadCount, 
     updateUnreadCount,
-    markAsRead,
+    markAsRead: signalRMarkAsRead,
     realtimeNotifications,
   } = useSignalRNotifications(localUserId, {
     enableToast: true
@@ -33,12 +37,12 @@ const NotificationDropdown = () => {
   } = useGetDoctorNotificationsQuery({
     pageNumber: 1,
     pageSize: 10,
-    // filter: { isRead: false }
   }, {
     refetchOnMountOrArgChange: true,
   });
-  console.log("notificationsResponse", notificationsResponse);
+  const [markAllAsRead] = useMarkAllNotificationsAsReadMutation();
 
+  // Update local notifications when data changes
   useEffect(() => {
     if (notificationsResponse && notificationsResponse.data) {
       const serverNotifications = notificationsResponse.data;
@@ -56,14 +60,24 @@ const NotificationDropdown = () => {
       
       const unreadFromServer = serverNotifications.filter(n => !n.isRead).length;
       const unreadFromRealtime = uniqueRealtimeNotifs.filter(n => !n.isRead).length;
-      updateUnreadCount(unreadFromServer + unreadFromRealtime);
+      const totalUnread = unreadFromServer + unreadFromRealtime;
+      setLocalUnreadCount(totalUnread);
+      updateUnreadCount(totalUnread);
     } else if (realtimeNotifications.length > 0) {
-      setLocalNotifications(realtimeNotifications.slice(0, 15));
-      updateUnreadCount(realtimeNotifications.filter(n => !n.isRead).length);
+      setLocalNotifications(realtimeNotifications);
+      const unreadCount = realtimeNotifications.filter(n => !n.isRead).length;
+      setLocalUnreadCount(unreadCount);
+      updateUnreadCount(unreadCount);
     }
   }, [notificationsResponse, realtimeNotifications, updateUnreadCount]);
 
+
   const handleNotificationClick = async (notificationId) => {
+    const notification = localNotifications.find(n => n.id === notificationId);
+    
+    if (!notification || notification.isRead) return;
+    
+    // Optimistic update: update UI immediately
     setLocalNotifications(prev => 
       prev.map(notif => 
         notif.id === notificationId 
@@ -71,29 +85,56 @@ const NotificationDropdown = () => {
           : notif
       )
     );
-    await markAsRead(notificationId);
+        setLocalUnreadCount(prev => Math.max(0, prev - 1));
+
+    try {
+      await signalRMarkAsRead(notificationId);
+      console.log("localNotifications",localNotifications)
+    } catch (err) {
+      console.log("Failed to mark as read", err);
+      
+      // Revert on error
+       setLocalNotifications (prev => 
+        prev.map(notif => 
+          notif.id === notificationId 
+            ? { ...notif, isRead: false }
+            : notif
+        )
+      );
+      
+      setLocalUnreadCount(prev => prev + 1);
+      
+    }
   };
 
-
-
-  const formatTime = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return t('Just now');
-    if (diffMins < 60) return `${diffMins} ${t('min ago')}`;
-    if (diffHours < 24) return `${diffHours} ${t('hour ago')}`;
-    if (diffDays < 7) return `${diffDays} ${t('day ago')}`;
+  // Mark all as read with optimistic update
+  const handleMarkAllAsRead = async () => {
+    // Store original state for rollback
+    const originalNotifications = [...localNotifications];
+    const originalUnreadCount = localUnreadCount;
     
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
+    // Optimistic update: mark all as read immediately
+    const updatedNotifications = localNotifications.map(notif => ({
+      ...notif,
+      isRead: true
+    }));
+    
+    setLocalNotifications(updatedNotifications);
+    setLocalUnreadCount(0);
+
+    try {
+        await markAllAsRead().unwrap();
+      
+    } catch (err) {
+      console.error("Failed to mark all as read", err);
+      
+      // Revert on error
+      setLocalNotifications(originalNotifications);
+      setLocalUnreadCount(originalUnreadCount);
+      
+      // Optional: Show error toast
+      // toast.error(t("Failed to mark all as read"));
+    }
   };
 
   const isNewNotification = (createdAt) => {
@@ -103,17 +144,21 @@ const NotificationDropdown = () => {
     return diffMinutes < 5; 
   };
 
+  // Use local unread count for display
+  const displayUnreadCount = connectionStatus === "Connected" ? 
+    localUnreadCount : serverUnreadCount;
+
   return (
     <>
       <Dropdown 
+        show={isDropdownOpen}
         align="end" 
         className="notifications" 
         onToggle={(isOpen) => {
-          // setIsDropdownOpen(isOpen);
+          setIsDropdownOpen(isOpen);
           if (isOpen) {
-            if(!connectionStatus){
+            if (!connectionStatus) {
               refetch();
-              // console.log("refetch");
             }
           }
         }}
@@ -121,7 +166,7 @@ const NotificationDropdown = () => {
         <Dropdown.Toggle
           variant="light"
           id="dropdown-notifications"
-          className="position-relative noti-nav active-dot active-dot-danger rounded-circle"
+          className="position-relative noti-nav active-dot rounded-circle"
           style={{
             borderRadius: "50%",
             fontSize: "large",
@@ -135,13 +180,13 @@ const NotificationDropdown = () => {
           }}
         >
           <Bell size={18} />
-          {unreadCount > 0 && (
+          {displayUnreadCount > 0 && (
             <Badge 
               pill 
               bg="danger" 
               className="position-absolute"
               style={{
-                backgroundColor:"red",
+                backgroundColor: "red",
                 color: 'white',
                 top: '-5px',
                 right: '-5px',
@@ -153,39 +198,48 @@ const NotificationDropdown = () => {
                 justifyContent: 'center'
               }}
             >
-              {unreadCount > 99 ? '99+' : unreadCount}
+              {displayUnreadCount > 99 ? '99+' : displayUnreadCount}
             </Badge>
           )}
         </Dropdown.Toggle>
 
         <Dropdown.Menu
-         className="dropdown-menu-end notifications shadow list-date-option open"
-        style={{
-          minWidth: "350px",
-          backgroundColor: "var(--cardcolor)",
-          border: "1px solid #ccc",
-          marginTop: "10px",
-          maxHeight: "0",
-          opacity: "0",
-          overflow: "hidden",
-          display: "block",
-          transform: "translate(3px, 267.2222px)",
-        }}
+          className="dropdown-menu-end notifications shadow list-date-option open"
+          style={{
+            minWidth: "350px",
+            backgroundColor: "var(--cardcolor)",
+            border: "1px solid #ccc",
+            marginTop: "10px",
+            maxHeight: "0",
+            opacity: "0",
+            overflow: "hidden",
+            display: "block",
+            transform: "translate(3px, 267.2222px)",
+          }}
         >
           <div className="topnav-dropdown-header p-2 border-bottom">
             <span className="fw-bold" style={{ color: "var(--terthemecolor)" }}>
               Notifications
             </span>
             
-            <div className="d-flex align-items-center gap-2">
-            </div>
+            {localNotifications.filter(n => !n.isRead).length > 0 && (
+              <div className="d-flex align-items-center gap-2">
+                <button
+                  onClick={handleMarkAllAsRead}
+                  className="add-btn"
+                >
+                  {t('Mark all as read')}
+                  <IoCheckmarkOutline/>
+                </button>
+              </div>
+            )}
           </div>
           
           <div
             className="noti-content"
             style={{ maxHeight: "300px", overflowY: "auto" }}
           >
-            {isLoading ? (
+            {isLoading  ? (
               <div className="text-center p-3">
                 <div className="spinner-border spinner-border-sm" role="status">
                   <span className="visually-hidden">Loading...</span>
@@ -205,7 +259,7 @@ const NotificationDropdown = () => {
                     className="notification-message border-bottom"
                     onClick={() => handleNotificationClick(n.id)}
                     style={{ 
-                      cursor: 'pointer',
+                      cursor: n.isRead ? 'default' : 'pointer',
                       position: 'relative'
                     }}
                   >
@@ -215,24 +269,23 @@ const NotificationDropdown = () => {
                         gap: "10px",
                       }}
                     >
-                      <span className="avatar me-2" style={{minWidth:"40px"}}>
-                        <div className="rounded-circle  d-flex align-items-center justify-content-center"
-                          style={{ width: "40px", height: "40px", color: 'white', backgroundColor:"#e6e8ee57"}}>
-                          {/* {n.relatedEntityType ? n.relatedEntityType.charAt(0) : 'N'} */}
+                      <span className="avatar me-2" style={{ minWidth: "40px" }}>
+                        <div className="rounded-circle d-flex align-items-center justify-content-center"
+                          style={{ width: "40px", height: "40px", color: 'white', backgroundColor: "#e6e8ee57" }}>
                           {getNotificationIcon(n.relatedEntityType)}
                         </div>
                       </span>
                       <div className="media-body">
                         <h6 className="mb-1 d-flex justify-content-between">
                           <span>{n.title}</span>
-                          <span className="text-muted small" style={{whiteSpace:"nowrap"}}>
+                          <span className="text-muted small" style={{ whiteSpace: "nowrap" }}>
                             {formatTime(n.createdAt)}
                           </span>
                         </h6>
                         <p 
                           title={n.message} 
                           className="mb-0 small text-ellipsis" 
-                          style={{direction:"inherit", maxWidth: "230px"}}
+                          style={{ direction: "inherit", maxWidth: "230px" }}
                         >
                           {n.message}
                         </p>
@@ -240,10 +293,15 @@ const NotificationDropdown = () => {
                       
                       {!n.isRead && (
                         <span className="ms-auto">
-                          <div className="rounded-circle "
-                            title ={isNewNotification(n.createdAt)?t("New"):""}
-                            style={{ width: "8px", height: "8px", backgroundColor: isNewNotification(n.createdAt) ? '#28a745' : '#dc3545' }} 
-                            />
+                          <div 
+                            className="rounded-circle"
+                            title={isNewNotification(n.createdAt) ? t("New") : ""}
+                            style={{ 
+                              width: "8px", 
+                              height: "8px", 
+                              backgroundColor: isNewNotification(n.createdAt) ? '#28a745' : '#dc3545' 
+                            }} 
+                          />
                         </span> 
                       )}
                     </div>
@@ -256,16 +314,12 @@ const NotificationDropdown = () => {
           {localNotifications.length > 0 && (
             <div className="topnav-dropdown-footer border-top p-2 text-center">
               <Link to="/notifications">
-              <button
-                className="text-primary text-decoration-none"
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   // Navigate to all notifications page
-                //   console.log("View all notifications clicked");
-                // }}
-              >
-                View all notifications
-              </button>
+                <button
+                  className="text-primary text-decoration-none"
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  View all notifications
+                </button>
               </Link>
             </div>
           )}

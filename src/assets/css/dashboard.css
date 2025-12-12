@@ -5769,6 +5769,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.DateRangePicker{margin: 10px 0;}
 	        .dc-offersmessages ul li:first-child{border-right: none;}
 	.login-container{margin: 15px 0;}
 	.dc-accordioninnertitle{padding: 4px 10px !important; height: 40px;}

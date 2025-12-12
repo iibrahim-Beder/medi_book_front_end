@@ -126,6 +126,16 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['DoctorNotifications'],
     }),
+    // Mark notification as read
+    markNotificationAsReadwithoutInvalidate: builder.mutation({
+      query: (notificationId) => (console.log('notificationId', notificationId)
+      ,
+      {
+        url: `/Notifications/MarkNotificationAsRead?NotificationId=${notificationId}`,
+        method: 'POST'
+      }),
+      invalidatesTags: [''],
+    }),
     
     // Mark all notifications as read
     markAllNotificationsAsRead: builder.mutation({
@@ -134,6 +144,13 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
         method: 'POST'
       }),
       invalidatesTags: ['DoctorNotifications'],
+    }),
+    markAllNotificationsAsReadwithoutInvalidate: builder.mutation({
+      query: () => ({
+        url: `/Notifications/MarkAllNotificationsAsRead`,
+        method: 'POST'
+      }),
+      invalidatesTags: [''],
     }),
     transformResponse: (response, meta, args) => {
       console.log('Doctor Notifications API Response:', response);
@@ -158,6 +175,8 @@ export const {
   useGetDoctorNotificationsQuery,
   useLazyGetDoctorNotificationsQuery,
   useMarkNotificationAsReadMutation,
+  useMarkNotificationAsReadwithoutInvalidateMutation,
   useMarkAllNotificationsAsReadMutation,
+  useMarkAllNotificationsAsReadwithoutInvalidateMutation,
   useDeleteNotificationMutation,
 } = doctorNotificationsApi;

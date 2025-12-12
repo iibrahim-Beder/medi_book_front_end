@@ -3,7 +3,8 @@ import { signalRService } from './signalRService';
 import toast from 'react-hot-toast';
 import { useMarkNotificationAsReadMutation } from "../../api/doctorNotificationsApi";
 import { getNotificationIcon } from '../../pages/shared/utils';
-import { FaTimes } from 'react-icons/fa';
+
+
 export const useSignalRNotifications = (userId, options = {}) => {
   const [connectionStatus, setConnectionStatus] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -12,7 +13,6 @@ export const useSignalRNotifications = (userId, options = {}) => {
   const [markNotificationAsRead] = useMarkNotificationAsReadMutation();
   useEffect(() => {
     if (!userId) return;
-
     const initConnection = async () => {
       try {
         signalRService.onConnectionStatusChanged = (isConnected) => {
@@ -50,6 +50,8 @@ export const useSignalRNotifications = (userId, options = {}) => {
              ${t.visible ? "opacity-100" : "opacity-0"} 
               transition-opacity`}
               >
+                <div className='d-flex'>
+                <div className='avatar-title'>
                 {/* Avatar / Icon */}
                 <div
                   className="rounded-circle d-flex align-items-center justify-content-center me-3"
@@ -61,26 +63,32 @@ export const useSignalRNotifications = (userId, options = {}) => {
                   }}
                 >
                   {getNotificationIcon(notification.type)}
+                </div>  
+             <h6 className="fw-bold mb-1">{notification.title}</h6>
                 </div>
-
-                {/* Content */}
-                <div className="flex-grow-1">
-                  <h6 className="fw-bold mb-1">{notification.title}</h6>
-                  <p className="text-muted m-0">{notification.message}</p>
-                </div>
-
-                {/* Close */}
+             {/* Close */}
                 <button
                   className="btn-close ms-2"
                   onClick={() => toast.dismiss(t.id)}
                 >
-                <FaTimes />
+                  close
+                {/* <MdClose /> */}
                 </button>
+
+
+                </div>
+
+                {/* Content */}
+                <div className="flex-grow-1">
+                  <p className=" m-0">{notification.message}</p>
+                </div>
+
+           
               </div>
             ),
             {
               duration: 600000,
-              position: "bottom-left",
+              position: "top-left",
             }
           );
           }
@@ -123,10 +131,11 @@ export const useSignalRNotifications = (userId, options = {}) => {
         
         setUnreadCount(prev => Math.max(0, prev - 1));
         
-        signalRService.markAsRead(notificationId);
+        return result;
       }
     } catch (error) {
-      console.error("Error marking notification as read:", error);
+      console.log("Error marking notification as read:", error);
+      return error;
     }
   }, [markNotificationAsRead]);
 
