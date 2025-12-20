@@ -1,6 +1,5 @@
 // services/signalRService.js
 import * as signalR from '@microsoft/signalr';
-import { audioService } from "../../pages/notifications/audioService";
 
 class SignalRService {
   constructor() {
@@ -35,7 +34,6 @@ class SignalRService {
         console.log("Notification received:", notification);
         if (this.onNotificationReceived) {
           this.onNotificationReceived(notification);
-            audioService.play();
           console.log("Notification received in hook:", notification);
         }
       });

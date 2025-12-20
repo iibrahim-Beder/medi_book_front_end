@@ -27,6 +27,7 @@ import ForgotPassword from "./pages/login/ForgotPassword";
 import 'react-loading-skeleton/dist/skeleton.css';
 import NotificationsPage from "./pages/notifications/NotificationsPageMain";
 import { audioService } from "./pages/notifications/audioService";
+import { signalRService } from "./api/chat/ChatSignalRService";
 
 
 function App() {
@@ -57,6 +58,19 @@ const { i18n } = useTranslation();
     }, 20);
     return () => clearTimeout(timer);
   }, []);
+  
+// signalR chat connection
+   useEffect(() => {
+      // if (userId) {
+        signalRService.startConnection(1);
+      // }
+  
+      return () => {
+        signalRService.stopConnection();
+      };
+    // }, [userId]);
+    }, []);
+      console.log('SignalR Connection State:', signalRService.connection ? signalRService.connection.state : 'Disconnected');
 
   return (
     <div className="dc-userlogin">

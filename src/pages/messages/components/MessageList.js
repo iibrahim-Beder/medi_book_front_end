@@ -1,6 +1,6 @@
 import MessageHeader from "./MessageHeader";
 import ConversationHeader from "./ConversationHeader";
-import ConversationList from "./ConversationList";
+import ConversationList from "../chat-ui/ConversationList";
 import ChatBox from "./ChatBox";
 
 export default function MessageList() {
