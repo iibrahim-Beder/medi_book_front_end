@@ -123,7 +123,7 @@ export const doctorChatApi = baseApi.injectEndpoints({
       },
       providesTags: ['DoctorChats'],
     }),
-
+// getChatMessages endpoints
     getChatMessages: builder.query({
       query: ({ 
         chatId, 
@@ -157,9 +157,32 @@ export const doctorChatApi = baseApi.injectEndpoints({
           status: response.status
         });
       },
-      providesTags: (result, error, { chatId }) => 
-        result ? [{ type: 'ChatMessages', id: chatId }] : [],
-    }),
+    
+  serializeQueryArgs: ({ endpointName, queryArgs }) =>
+    `${endpointName}-${queryArgs.chatId}`,
+
+
+  merge: (currentCache, newCache, { arg }) => {
+    if (arg.pageNumber === 1) {
+      return newCache; // 🔥 reset
+    }
+
+    currentCache.data.push(...newCache.data);
+    currentCache.currentPage = newCache.currentPage;
+    currentCache.hasNextPage = newCache.hasNextPage;
+  },
+
+  forceRefetch({ currentArg, previousArg }) {
+    return (
+      currentArg?.pageNumber !== previousArg?.pageNumber ||
+      currentArg?.chatId !== previousArg?.chatId
+    );
+  },
+
+  providesTags: (r, e, { chatId }) => [
+    { type: 'ChatMessages', id: chatId },
+  ],
+}),
 
     sendMessage: builder.mutation({
       query: (messageData) => ({
@@ -167,10 +190,6 @@ export const doctorChatApi = baseApi.injectEndpoints({
         method: 'POST',
         body: messageData,
       }),
-      invalidatesTags: (result, error, { chatId }) => [
-        '',
-        { type: '', id: chatId },
-      ],
     }),
 
     markMessagesAsRead: builder.mutation({

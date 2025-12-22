@@ -7,20 +7,21 @@ import { useMessages } from "../hooks/useMessages";
 
 export default function ChatMessages() {
   const { Typing } = useConversations();
-  const { messages } = useMessages();
+  const { messages ,chatContainerRef,handleScroll} = useMessages();
 
-  const chatRef = useRef(null);
+  // const chatRef = useRef(null);
 
-  useEffect(() => {
-    const el = chatRef.current;
-    if (!el) return;
+  // useEffect(() => {
+  //   const el = chatContainerRef.current;
+  //   if (!el) return;
 
-    el.scrollTop = el.scrollHeight
-  }, [messages.length]);
+  //   el.scrollTop = el.scrollHeight
+  // }, [messages.length]);
 
   return (
     <div
-      ref={chatRef}
+      ref={chatContainerRef}
+      onScroll={handleScroll}
       className="dc-messages dc-verticalscrollbar dc-dashboardscrollbar"
     > 
     <SyncLoader speedMultiplier={0.7} margin={4} className="typing-spinner"   color="#7474749c" loading={Typing.isTyping===true} size={8} />

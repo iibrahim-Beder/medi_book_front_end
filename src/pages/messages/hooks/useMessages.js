@@ -1,72 +1,91 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import {  
+import { useState, useEffect, useCallback, useRef } from "react";
+import {
   useGetChatMessagesQuery,
   useSendMessageMutation,
-} from '../../../api/chat/doctorChatApi';
-import { useSignalR } from '../../../api/chat/chatUseSignalR';
-import {doctorChatApi} from '../../../api/chat/doctorChatApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { useConversations } from './useConversations';
+} from "../../../api/chat/doctorChatApi";
+import { useSignalR } from "../../../api/chat/chatUseSignalR";
+import { doctorChatApi } from "../../../api/chat/doctorChatApi";
+import { useDispatch, useSelector } from "react-redux";
+import { useConversations } from "./useConversations";
 
 export const useMessages = () => {
-    const{
-      setConversationsMap,
-    } = useConversations();
-      
-    const dispatch = useDispatch();
-    
-    
-      const selectedChat = useSelector((state) => state.chats.selectedChatId);
-    console.log("selectedChatId",selectedChat,)    
-    
-      const [messagesMap, setMessagesMap] = useState({});
-      const [pageNumberMessage, setPageNumberMessage] = useState(1);
-      const pageSizeMessage = 30;
-    
-      const lastReceivedMessage = useRef(null);
-    
-      //  WebSocket hooks
-      const {
-        getIsconnection,
-        onMessageReceived,
-        onMessageStatusUpdated,
-        updateMessageStatus,
-        markAsRead: markAsReadViaWS,
-      } = useSignalR();
-    
-    
-      const {
-        data: messagesData,
-        isLoading: messagesLoading,
-        isError: messagesIsError,
-        refetch: refetchMessages,
-      } = useGetChatMessagesQuery(
-        {
+  const dispatch = useDispatch();
+
+  const { setConversationsMap } = useConversations();
+  const selectedChat = useSelector((state) => state.chats.selectedChatId);
+  console.log("selectedChatId", selectedChat);
+
+  const [pageNumberMessage, setPageNumberMessage] = useState(1);
+  const [pageByChat, setPageByChat] = useState({});
+  const currentPage = pageByChat[selectedChat] ?? 1;
+
+  const pageSizeMessage = 30;
+
+  const lastReceivedMessage = useRef(null);
+
+  //  WebSocket hooks
+  const {
+    getIsconnection,
+    onMessageReceived,
+    onMessageStatusUpdated,
+    updateMessageStatus,
+    markAsRead: markAsReadViaWS,
+  } = useSignalR();
+
+  const {
+    data: messagesData,
+    isLoading: messagesLoading,
+    isError: messagesIsError,
+    refetch: refetchMessages,
+  } = useGetChatMessagesQuery(
+    selectedChat
+      ? {
           PersonId: 1,
           chatId: selectedChat,
-          pageNumber: pageNumberMessage,
+          pageNumber: currentPage,
           pageSize: pageSizeMessage,
-        },
-      );
-      const [sendMessageApi, { isLoading: isSending }] = useSendMessageMutation();
-    
+        }
+      : null
+  );
 
-  useEffect(() => {
-    if (messagesData?.data && selectedChat) {
-      const chatIdStr = selectedChat.toString();
+  console.log("messagesData", messagesData);
+  const [sendMessageApi, { isLoading: isSending }] = useSendMessageMutation();
+  const chatContainerRef = useRef(null);
+  const toLatestMessage = () => {
+    const el = chatContainerRef.current;
+    if (!el) return;
+    console.log("el.scrollHeight", el.scrollHeight);
+    el.scrollTop = el.scrollHeight;
+  };
 
-      setMessagesMap((prev) => ({
-        ...prev,
-        [chatIdStr]: messagesData.data,
-      }));
+  const loadMore = () => {
+    setPageByChat((prev) => ({
+      ...prev,
+      [selectedChat]: (prev[selectedChat] ?? 1) + 1,
+    }));
+  };
+
+  const handleScroll = () => {
+    const el = chatContainerRef.current;
+    if (!el) return;
+
+    if (Math.abs(el.scrollTop) + el.clientHeight >= el.scrollHeight - 5) {
+      loadMore();
     }
-    console.log("messagesData", messagesData);
-  }, [messagesData, selectedChat]);
+  };
+  // in selectedChat change
+  useEffect(() => {
+    setPageByChat((prev) => ({
+      ...prev,
+      [selectedChat]: 1,
+    }));
+    toLatestMessage();
+  }, [selectedChat]);
 
   // handle new message
   useEffect(() => {
     const handleNewMessage = (message) => {
-     const chatIdStr = message.chatId.toString();
+      const chatIdStr = message.chatId.toString();
       setConversationsMap((prev) => {
         const updated = { ...prev };
 
@@ -100,7 +119,7 @@ export const useMessages = () => {
           {
             PersonId: 1,
             chatId: message.chatId,
-            pageNumber: pageNumberMessage,
+            pageNumber: 1,
             pageSize: pageSizeMessage,
           },
           (draft) => {
@@ -149,139 +168,88 @@ export const useMessages = () => {
           }
         )
       );
-
-      message.id = message.messageId;
-      message.isMine = false;
-      lastReceivedMessage.current = message;
-
-
-      if (selectedChat && parseInt(selectedChat) === message.chatId) {
-        setMessagesMap((prev) => {
-          const existingMessages = prev[chatIdStr] || [];
-          if (
-            !existingMessages.some((msg) => msg.messageId === message.messageId)
-          ) {
-            return {
-              ...prev,
-              [chatIdStr]: [message, ...existingMessages],
-            };
-          }
-          return prev;
-        });
-      }
-      console.log("messagesMap=", messagesMap);
-
-      
     };
 
     if (getIsconnection) {
-    onMessageReceived(handleNewMessage);
+      onMessageReceived(handleNewMessage);
     }
   }, [getIsconnection, onMessageReceived, selectedChat]);
 
+  useEffect(() => {
+    const handleMessageStatusUpdate = (statusUpdate) => {
+      console.log("==Message status update from WebSocket :", statusUpdate);
+      console.log("==MessagesData :", messagesData);
+      dispatch(
+        doctorChatApi.util.updateQueryData(
+          "getChatMessages",
+          {
+            PersonId: 1,
+            chatId: statusUpdate.chatId,
+            pageNumber: 1,
+            pageSize: pageSizeMessage,
+          },
+          (draft) => {
+            if (!draft?.data) return;
 
-        useEffect(() => {
-          const handleMessageStatusUpdate = (statusUpdate) => {
-            console.log("==Message status update from WebSocket :", statusUpdate);
-            console.log("==MessagesData :", messagesData);
-            dispatch(
-              doctorChatApi.util.updateQueryData(
-                "getChatMessages",
-                {
-                  PersonId: 1,
-                  chatId: statusUpdate.chatId,
-                  pageNumber: pageNumberMessage,
-                  pageSize: pageSizeMessage,
-                },
-                (draft) => {
-                  if (!draft?.data) return;
-      
-                  draft.data.forEach((msg) => {
-                    if (statusUpdate.messageId === msg.id) {
-                      msg.status = statusUpdate.messageStatus;
-                    }
-                  });
-                }
-              )
-            );
-      
-            // if (statusUpdate.status === 'Seen') {
-            //   dispatch(
-            //     doctorChatApi.util.updateQueryData(
-            //       'getDoctorChats',
-            //       {
-            //         pageNumber: 1,
-            //         pageSize: 10,
-            //       },
-            //       (draft) => {
-            //         if (!draft?.data) return;
-      
-            //         const chat = draft.data.find(
-            //           c => c.chatId === statusUpdate.chatId
-            //         );
-      
-            //         if (chat) {
-            //           chat.lastMessageStatus = 'Seen';
-            //           chat.unreadCount = 0;
-            //         }
-            //       }
-            //     )
-            //   );
-            // }
-      
-            const chatIdStr = statusUpdate.chatId.toString();
-      
-            setMessagesMap((prev) => {
-              const updated = { ...prev };
-              const chatMessages = updated[chatIdStr];
-      
-              if (chatMessages) {
-                return {
-                  ...updated,
-                  [chatIdStr]: chatMessages.map((msg) => {
-                    if (statusUpdate.messageIds?.includes(msg.messageId)) {
-                      return {
-                        ...msg,
-                        status: statusUpdate.status,
-                        seenAt: statusUpdate.seenAt,
-                        deliveredAt: statusUpdate.deliveredAt,
-                      };
-                    }
-                    return msg;
-                  }),
-                };
+            draft.data.forEach((msg) => {
+              if (statusUpdate.messageId === msg.id) {
+                msg.status = statusUpdate.messageStatus;
               }
-              return prev;
             });
-      
-            if (statusUpdate.status === "Seen") {
-              setConversationsMap((prev) => {
-                const updated = { ...prev };
-      
-                if (updated[chatIdStr]) {
-                  updated[chatIdStr] = {
-                    ...updated[chatIdStr],
-                    unreadCount: Math.max(
-                      0,
-                      (updated[chatIdStr].unreadCount || 0) - statusUpdate.seenCount
-                    ),
-                  };
-                }
-      
-                return updated;
-              });
-            }
-          };
-      
-          onMessageStatusUpdated(handleMessageStatusUpdate);
-        }, [getIsconnection, onMessageStatusUpdated]);
-  
+          }
+        )
+      );
 
+      // if (statusUpdate.status === 'Seen') {
+      //   dispatch(
+      //     doctorChatApi.util.updateQueryData(
+      //       'getDoctorChats',
+      //       {
+      //         pageNumber: 1,
+      //         pageSize: 10,
+      //       },
+      //       (draft) => {
+      //         if (!draft?.data) return;
 
-const sendMessage = useCallback(
+      //         const chat = draft.data.find(
+      //           c => c.chatId === statusUpdate.chatId
+      //         );
+
+      //         if (chat) {
+      //           chat.lastMessageStatus = 'Seen';
+      //           chat.unreadCount = 0;
+      //         }
+      //       }
+      //     )
+      //   );
+      // }
+
+      const chatIdStr = statusUpdate.chatId.toString();
+      if (statusUpdate.status === "Seen") {
+        setConversationsMap((prev) => {
+          const updated = { ...prev };
+
+          if (updated[chatIdStr]) {
+            updated[chatIdStr] = {
+              ...updated[chatIdStr],
+              unreadCount: Math.max(
+                0,
+                (updated[chatIdStr].unreadCount || 0) - statusUpdate.seenCount
+              ),
+            };
+          }
+
+          return updated;
+        });
+      }
+    };
+
+    onMessageStatusUpdated(handleMessageStatusUpdate);
+  }, [getIsconnection, onMessageStatusUpdated]);
+
+  const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
       if (!content.trim() || !chatId) return null;
-
       const tempMessage = {
         chatId: chatId,
         senderId: 1,
@@ -299,7 +267,7 @@ const sendMessage = useCallback(
           {
             PersonId: 1,
             chatId: tempMessage.chatId,
-            pageNumber: pageNumberMessage,
+            pageNumber: 1,
             pageSize: pageSizeMessage,
           },
           (draft) => {
@@ -356,15 +324,7 @@ const sendMessage = useCallback(
       );
 
       try {
-    
         const chatIdStr = chatId.toString();
-        setMessagesMap((prev) => {
-          const existingMessages = prev[chatIdStr] || [];
-          return {
-            ...prev,
-            [chatIdStr]: [...existingMessages, tempMessage],
-          };
-        });
 
         setConversationsMap((prev) => {
           const updated = { ...prev };
@@ -384,42 +344,28 @@ const sendMessage = useCallback(
         if (result.succeeded) {
           console.log("success result:  ", result);
 
-          try {
-            dispatch(
-              doctorChatApi.util.updateQueryData(
-                "getChatMessages",
-                {
-                  PersonId: 1,
-                  chatId: selectedChat,
-                  pageNumber: pageNumberMessage,
-                  pageSize: pageSizeMessage,
-                },
-                (draft) => {
-                  if (!draft?.data) return;
-                  draft.data.forEach((msg) => {
-                    if (tempMessage.id === msg.id) {
-                      msg.id = result.data.messageId;
-                      msg.status = result.data.messageStatus;
-                      msg.sentAtFormatted = result.data.sentAt;
-                      msg.isDelivered = result.data.isDelivered;
-                    }
-                  });
-                }
-              )
-            );
-          } catch {}
-
-          setMessagesMap((prev) => {
-            const chatMessages = prev[chatIdStr] || [];
-            return {
-              ...prev,
-              [chatIdStr]: chatMessages.map((msg) =>
-                msg.messageId === tempMessage.messageId
-                  ? { ...msg, ...result, status: "Sent" }
-                  : msg
-              ),
-            };
-          });
+          dispatch(
+            doctorChatApi.util.updateQueryData(
+              "getChatMessages",
+              {
+                PersonId: 1,
+                chatId: selectedChat,
+                pageNumber: 1,
+                pageSize: pageSizeMessage,
+              },
+              (draft) => {
+                if (!draft?.data) return;
+                draft.data.forEach((msg) => {
+                  if (tempMessage.id === msg.id) {
+                    msg.id = result.data.messageId;
+                    msg.status = result.data.messageStatus;
+                    msg.sentAtFormatted = result.data.sentAt;
+                    msg.isDelivered = result.data.isDelivered;
+                  }
+                });
+              }
+            )
+          );
         }
 
         // console.log('Message sent successfully resalt:', result);
@@ -435,7 +381,7 @@ const sendMessage = useCallback(
               {
                 PersonId: 1,
                 chatId: selectedChat,
-                pageNumber: pageNumberMessage,
+                pageNumber: 1,
                 pageSize: pageSizeMessage,
               },
               (draft) => {
@@ -449,77 +395,44 @@ const sendMessage = useCallback(
             )
           );
         } catch {}
-
-        const chatIdStr = chatId.toString();
-        setMessagesMap((prev) => {
-          const chatMessages = prev[chatIdStr] || [];
-          return {
-            ...prev,
-            [chatIdStr]: chatMessages.map((msg) =>
-              msg.messageId?.startsWith("temp-") ? { ...msg, status: 3 } : msg
-            ),
-          };
-        });
-
         throw error;
       }
     },
+
     [selectedChat, sendMessageApi]
   );
 
-
   //mark all Messages As Read
-    const markMessagesAsRead = useCallback(
-      async (chatId) => {
-        if (!chatId) return;
-  
-        try {
-          const chatIdStr = chatId.toString();
-  
-          setMessagesMap((prev) => {
-            const chatMessages = prev[chatIdStr];
-            if (chatMessages) {
-              return {
-                ...prev,
-                [chatIdStr]: chatMessages.map((msg) => ({
-                  ...msg,
-                  status: msg.isMine ? msg.status : "Seen",
-                  seenAt: msg.isMine ? msg.seenAt : new Date().toISOString(),
-                })),
-              };
-            }
-            return prev;
-          });
-  
-          setConversationsMap((prev) => {
-            const updated = { ...prev };
-            if (updated[chatIdStr]) {
-              updated[chatIdStr] = {
-                ...updated[chatIdStr],
-                unreadCount: 0,
-              };
-            }
-            return updated;
-          });
-  
-          // Mark messages as read via WebSocket
-          await markAsReadViaWS(chatId);
-  
-          // await markAsReadApi({ chatId: parseInt(chatId) }).unwrap();
-        } catch (error) {
-          console.error("Error marking messages as read:", error);
-        }
-      },
-      [markAsReadViaWS]
-    );
+  const markMessagesAsRead = useCallback(
+    async (chatId) => {
+      if (!chatId) return;
 
-      const currentMessages = selectedChat
-    ? messagesMap[selectedChat.toString()] || []
-    : [];
-    console.log('selectedChat', selectedChat);
+      try {
+        const chatIdStr = chatId.toString();
+        setConversationsMap((prev) => {
+          const updated = { ...prev };
+          if (updated[chatIdStr]) {
+            updated[chatIdStr] = {
+              ...updated[chatIdStr],
+              unreadCount: 0,
+            };
+          }
+          return updated;
+        });
 
-     return {
+        // Mark messages as read via WebSocket
+        await markAsReadViaWS(chatId);
 
+        // await markAsReadApi({ chatId: parseInt(chatId) }).unwrap();
+      } catch (error) {
+        console.error("Error marking messages as read:", error);
+      }
+    },
+    [markAsReadViaWS]
+  );
+
+  const currentMessages = messagesData?.data ?? [];
+  return {
     messages: currentMessages,
     messagesLoading: selectedChat ? messagesLoading : false,
     messagesIsError: selectedChat ? messagesIsError : false,
@@ -527,10 +440,13 @@ const sendMessage = useCallback(
 
     sendMessage,
     isSending,
+    handleScroll,
+    chatContainerRef,
+    toLatestMessage,
 
     markMessagesAsRead,
 
     // WebSocket
     lastMessage: lastReceivedMessage.current,
   };
-}
+};

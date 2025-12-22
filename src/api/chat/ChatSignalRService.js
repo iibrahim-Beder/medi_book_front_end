@@ -27,7 +27,7 @@
         try {
           this.connection = new signalR.HubConnectionBuilder()
             .withUrl(
-              `https://expansion-neighbors-occur-pamela.trycloudflare.com/chathub?userId=${userId}`,
+              `https://motors-liked-sewing-cnet.trycloudflare.com/chathub?userId=${userId}`,
               {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets,
@@ -79,8 +79,8 @@
       });
 
             //  MarkAllMessagesAsRead
-      this.connection.on("MarkFromLastMessagesAsRead", (message) => {
-        console.log("New MarkAllMessagesAsRead :", message);
+      this.connection.on("markfromlastmessageasread", (message) => {
+        console.log("New markfromlastmessageasread :", message);
 
         this.MarkAllMessagesAsRead.forEach((handler) => {
           try {
