@@ -109,6 +109,33 @@ export const doctorChatApi = baseApi.injectEndpoints({
           params,
         };
       },
+      serializeQueryArgs: ({ endpointName }) => {
+    return endpointName; 
+      },
+    
+      merge: (currentCache, newData) => {
+        if (!currentCache?.data) {
+          return newData;
+        }
+      
+        const existingIds = new Set(
+          currentCache.data.map(c => c.chatId)
+        );
+      
+        newData.data.forEach(chat => {
+          if (!existingIds.has(chat.chatId)) {
+            currentCache.data.push(chat);
+          }
+        });
+      
+        currentCache.currentPage = newData.currentPage;
+        currentCache.totalPages = newData.totalPages;
+      },
+    
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.pageNumber !== previousArg?.pageNumber;
+      },
+    
       transformResponse: (response, meta, args) => {
         console.log('Doctor Chats API Response:', response);
         return transformChatsData(response);
@@ -164,7 +191,7 @@ export const doctorChatApi = baseApi.injectEndpoints({
 
   merge: (currentCache, newCache, { arg }) => {
     if (arg.pageNumber === 1) {
-      return newCache; // 🔥 reset
+      return newCache; 
     }
 
     currentCache.data.push(...newCache.data);

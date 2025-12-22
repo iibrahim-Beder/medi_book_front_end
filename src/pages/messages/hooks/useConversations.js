@@ -16,7 +16,6 @@ export const useConversations = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [conversationsMap, setConversationsMap] = useState({});
   const [Typing, setTyping] = useState(false);
 
 
@@ -58,10 +57,7 @@ export const useConversations = () => {
       dispatch(
         doctorChatApi.util.updateQueryData(
           "getDoctorChats",
-          {
-            pageNumber: 1,
-            pageSize: 10,
-          },
+          undefined,
           (draft) => {
             if (!draft?.data) return;
 
@@ -77,59 +73,12 @@ export const useConversations = () => {
         )
       );
 
-      setConversationsMap((prev) => {
-        const updated = { ...prev };
-        const chatIdStr = statusUpdate.chatId.toString();
-
-        if (updated[chatIdStr]) {
-          updated[chatIdStr] = {
-            ...updated[chatIdStr],
-            isOnline: statusUpdate.isOnline,
-            lastSeen: statusUpdate.isOnline ? null : statusUpdate.lastSeen,
-            lastActivity: statusUpdate.lastActivity,
-          };
-        }
-
-        return updated;
-      });
     };
 
     // if (connection) {
     onUserStatusChanged(handleUserStatusChange);
     // }
   }, [getIsconnection, onUserStatusChanged, chatsData]);
-
-  useEffect(() => {
-    if (chatsData?.data) {
-      setConversationsMap((prev) => {
-        const newMap = { ...prev };
-
-        chatsData.data.forEach((chat) => {
-          const chatKey = chat.chatId.toString();
-
-          if (newMap[chatKey]) {
-            newMap[chatKey] = {
-              ...chat,
-              ...newMap[chatKey],
-             
-              lastMessage:
-                newMap[chatKey].lastMessageTime > chat.lastMessageTime
-                  ? newMap[chatKey].lastMessage
-                  : chat.lastMessage,
-              lastMessageTime: Math.max(
-                new Date(newMap[chatKey].lastMessageTime || 0).getTime(),
-                new Date(chat.lastMessageTime || 0).getTime()
-              ),
-            };
-          } else {
-            newMap[chatKey] = chat;
-          }
-        });
-
-        return newMap;
-      });
-    }
-  }, [chatsData]);
 
 
   const handleSearch = useCallback((term) => {
@@ -149,35 +98,26 @@ export const useConversations = () => {
 
 
     console.log('selectedChat', selectedChat);
+ 
+  const conversations = chatsData?.data ?? [];
+
   const currentChat = selectedChat
-    ? conversationsMap[selectedChat.toString()]
+    ? conversations.find(c => c.chatId === selectedChat)
     : null;
-
-
-    console.log('conversationsMap', conversationsMap);
   return {
-    setConversationsMap,
-    conversations: Object.values(conversationsMap),
-
+    conversations,
     currentChat,
-
     isLoading,
     isError,
     isSearching: isLoading && pageNumber === 1,
-
-
     searchTerm,
     handleSearch,
     setSearchTerm,
-
-
     loadMore,
     refetch: refetchConversations,
-
     // chat selection
     selectedChat,
     changeChat,
-
     // WebSocket
     Typing,
     connection: getIsconnection,
