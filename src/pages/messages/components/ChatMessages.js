@@ -1,12 +1,11 @@
-import { useEffect, useRef } from "react";
-import { formatChatDate, formatDay, formatTime, formatTime12, isSameDay } from "../../shared/utils";
+import { formatChatDate, isSameDay } from "../../shared/utils";
 import { useConversations } from "../hooks/useConversations";
 import ChatMessage from "./ChatMessage";
 import { SyncLoader } from "react-spinners";
 import { useMessages } from "../hooks/useMessages";
 
 export default function ChatMessages() {
-  const { Typing } = useConversations();
+  const { isChatTyping } = useConversations();
   const { messages ,chatContainerRef,handleScroll} = useMessages();
 
   // const chatRef = useRef(null);
@@ -24,7 +23,7 @@ export default function ChatMessages() {
       onScroll={handleScroll}
       className="dc-messages dc-verticalscrollbar dc-dashboardscrollbar"
     > 
-    <SyncLoader speedMultiplier={0.7} margin={4} className="typing-spinner"   color="#7474749c" loading={Typing.isTyping===true} size={8} />
+    <SyncLoader speedMultiplier={0.7} margin={4} className="typing-spinner"   color="#7474749c" loading={isChatTyping} size={8} />
 
     {messages.map((message, index) => {
   const prevMessage = messages[index - 1];

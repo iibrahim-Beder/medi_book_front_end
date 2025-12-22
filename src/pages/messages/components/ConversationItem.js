@@ -1,9 +1,11 @@
 import { formatChatDate, formatTime } from "../../shared/utils";
 import { useConversations } from "../hooks/useConversations";
+import {  useSelector } from 'react-redux';
+import { selectIsChatTyping } from '../slices/messagesSlice';
 
 export default function ConversationItem({ id, img, name, lastMsg, active ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime}) {
-  const {Typing ,changeChat} = useConversations();
-  const istypingHere = Typing?.chatId === id && Typing?.isTyping === true;
+  const {changeChat} = useConversations();
+  const istypingHere =  useSelector(selectIsChatTyping(id));
   return (
     
     <div onClick={() =>   {document.documentElement.setAttribute("isConversationOpen", "true"); changeChat(id);  } }

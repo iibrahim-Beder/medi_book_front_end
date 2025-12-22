@@ -6,6 +6,7 @@ import { useSignalR } from '../../../api/chat/chatUseSignalR';
 import {doctorChatApi} from '../../../api/chat/doctorChatApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectChat } from '../slices/chatsSlice';
+import { selectIsChatTyping, updateTyping } from '../slices/messagesSlice';
 export const useConversations = () => {
   const dispatch = useDispatch();
 
@@ -16,7 +17,6 @@ export const useConversations = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [Typing, setTyping] = useState(false);
 
 
   const pageSize = 10;
@@ -43,8 +43,7 @@ export const useConversations = () => {
 
     useEffect(() => {
     const handleUserTyping = (typingUpdate) => {
-      console.log("==User typing update from WebSocket :", typingUpdate);
-      setTyping(typingUpdate);
+      dispatch(updateTyping({chatId:typingUpdate.chatId,userId: typingUpdate.userId,isTyping: typingUpdate.isTyping,}));
     };
     onUserTyping(handleUserTyping);
   }, [onUserTyping, getIsconnection]);
@@ -88,6 +87,7 @@ export const useConversations = () => {
 
 
   // typing
+  const isChatTyping = useSelector(selectIsChatTyping(selectedChat));
 
   // lad more chats
   const loadMore = useCallback(() => {
@@ -119,7 +119,7 @@ export const useConversations = () => {
     selectedChat,
     changeChat,
     // WebSocket
-    Typing,
+    isChatTyping,
     connection: getIsconnection,
     lastMessage: lastReceivedMessage.current,
   };
