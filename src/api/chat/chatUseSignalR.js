@@ -50,6 +50,9 @@ export const useSignalR = (userId) => {
   const updateMessageStatus = useCallback(async (chatId, messageId, messageStatus) => {
     return await signalRService.updateMessageStatus(chatId, messageId, messageStatus);
   }, []);
+  const InvokeMarkFromLastMessagesAsRead = useCallback(async (chatId, messageId) => {
+    return await signalRService.InvokeMarkFromLastMessagesAsRead(chatId, messageId);
+  }, []);
   // update message status
   const updateusertyping = useCallback(async (chatId, messageStatus) => {
     return await signalRService.updateusertyping(chatId, messageStatus);
@@ -68,6 +71,9 @@ export const useSignalR = (userId) => {
   const onUserStatusChanged = useCallback((handler) => {
     signalRService.onUserStatusChanged(componentId.current, handler);
   }, []);
+  const onMarkAllMessagesAsRead = useCallback((handler) => {
+    signalRService.onMarkAllMessagesAsRead(componentId.current, handler);
+  }, []);
 
   // get connection true or false
   const getIsconnection = useCallback(() => {
@@ -83,6 +89,8 @@ export const useSignalR = (userId) => {
     onMessageStatusUpdated,
     onUserStatusChanged, 
     updateMessageStatus,
+    InvokeMarkFromLastMessagesAsRead,
+    onMarkAllMessagesAsRead,
     updateInvokeJoinChat,
     updateusertyping,
     stopConnection,

@@ -15,7 +15,6 @@ export const useMessages = () => {
   const selectedChat = useSelector((state) => state.chats.selectedChatId);
   console.log("selectedChatId", selectedChat);
 
-  const [pageNumberMessage, setPageNumberMessage] = useState(1);
   const [pageByChat, setPageByChat] = useState({});
   const currentPage = pageByChat[selectedChat] ?? 1;
 
@@ -29,6 +28,8 @@ export const useMessages = () => {
     onMessageReceived,
     onMessageStatusUpdated,
     updateMessageStatus,
+    InvokeMarkFromLastMessagesAsRead,
+    onMarkAllMessagesAsRead,
     markAsRead: markAsReadViaWS,
   } = useSignalR();
 
@@ -47,6 +48,7 @@ export const useMessages = () => {
         }
       : null
   );
+    const currentMessages = messagesData?.data ?? [];
 
   console.log("messagesData", messagesData);
   const [sendMessageApi, { isLoading: isSending }] = useSendMessageMutation();
@@ -80,8 +82,13 @@ export const useMessages = () => {
       [selectedChat]: 1,
     }));
     toLatestMessage();
+    if(getIsconnection()&& selectedChat&& currentMessages){
+      InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
+      console.log("selectedChat", selectedChat,"messageId", currentMessages[0]?.id);
+    }
   }, [selectedChat]);
-
+  
+  // console.log("selectedChat", selectedChat,"messageId", currentMessages[0]?.id);
   // handle new message
   useEffect(() => {
     const handleNewMessage = (message) => {
@@ -107,10 +114,10 @@ export const useMessages = () => {
         return updated;
       });
       console.log("New message received from WebSocket:", message);
-      if (1 === message.chatId) {
-        updateMessageStatus(1, message.messageId, 2);
+      if (selectedChat === message.chatId) {
+        updateMessageStatus( message.chatId  , message.messageId, 2);
       } else {
-        updateMessageStatus(1, message.messageId, 1);
+        updateMessageStatus( message.chatId  , message.messageId, 1);
       }
       // ===== (RTK Query) =====
       dispatch(
@@ -246,6 +253,77 @@ export const useMessages = () => {
 
     onMessageStatusUpdated(handleMessageStatusUpdate);
   }, [getIsconnection, onMessageStatusUpdated]);
+  // on 
+  useEffect(() => {
+    const handleMessageMarkfromlastmessageasread = (MessageMark) => {
+      console.log("==  onMarkAllMessagesAsRead from WebSocket :", MessageMark);
+      console.log("==MessagesData :", messagesData);
+      dispatch(
+        doctorChatApi.util.updateQueryData(
+          "getChatMessages",
+          {
+            PersonId: 1,
+            chatId: MessageMark.chatId,
+            pageNumber: 1,
+            pageSize: pageSizeMessage,
+          },
+          (draft) => {
+            if (!draft?.data) return;
+
+            draft.data.forEach((msg) => {
+              if (MessageMark.lastReadMessageId >= msg.id) {
+                msg.status = 2;
+              }
+            });
+          }
+        )
+      );
+
+      // if (MessageMark.status === 'Seen') {
+        dispatch(
+          doctorChatApi.util.updateQueryData(
+            'getDoctorChats',
+            {
+              pageNumber: 1,
+              pageSize: 10,
+            },
+            (draft) => {
+              if (!draft?.data) return;
+
+              const chat = draft.data.find(
+                c => c.chatId === MessageMark.chatId
+              );
+
+              if (chat) {
+                chat.lastMessageStatus =2;
+                chat.unreadCount = 0;
+              }
+            }
+          )
+        );
+      // }
+
+      const chatIdStr = MessageMark.chatId.toString();
+      // if (MessageMark.status === "Seen") {
+        setConversationsMap((prev) => {
+          const updated = { ...prev };
+
+          if (updated[chatIdStr]) {
+            updated[chatIdStr] = {
+              ...updated[chatIdStr],
+              unreadCount: 0
+            };
+          }
+
+          return updated;
+        });
+      // }
+    };
+    if (getIsconnection)  {
+      onMarkAllMessagesAsRead(handleMessageMarkfromlastmessageasread);
+    }
+
+  }, [getIsconnection, onMarkAllMessagesAsRead]);
 
   const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
@@ -431,7 +509,7 @@ export const useMessages = () => {
     [markAsReadViaWS]
   );
 
-  const currentMessages = messagesData?.data ?? [];
+
   return {
     messages: currentMessages,
     messagesLoading: selectedChat ? messagesLoading : false,

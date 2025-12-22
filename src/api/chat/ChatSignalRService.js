@@ -5,13 +5,13 @@
       this.connection = null;
       this.startPromise = null;
       this.messageHandlers = new Map();
-      this.MarkAllMessagesAsRead = new Map();
+      this.markAllMessageHandlers = new Map();
       this.statusHandlers = new Map();
       this.userStatusHandlers = new Map(); 
       this.UserTypingHandlers = new Map();
       
 
-    }
+    }ذ
 
     // start connection
     startConnection = async (userId=1) => {
@@ -78,11 +78,11 @@
         });
       });
 
-            //  MarkAllMessagesAsRead
+            //  onMarkAllMessagesAsRead
       this.connection.on("markfromlastmessageasread", (message) => {
         console.log("New markfromlastmessageasread :", message);
 
-        this.MarkAllMessagesAsRead.forEach((handler) => {
+        this.markAllMessageHandlers.forEach((handler) => {
           try {
             handler(message);
           } catch (error) {
@@ -159,8 +159,8 @@
         throw error;
       }
     };
-    // listener to update message status ( seen/delivered)
     updateMessageStatus = async (chatId, messageId, messageStatus ) => {
+      console.log("updateMessageStatus chatId from  signalRService : ", chatId,"messageId", messageId,"messageStatus", messageStatus);
       if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
         throw new Error('Connection is not established');
       }
@@ -170,6 +170,20 @@
         return true;
       } catch (error) { 
         console.error('Error updating message status:', error);
+        throw error;
+      }
+    };
+    InvokeMarkFromLastMessagesAsRead = async (chatId, messageId ) => {
+              console.log("MarkFromLastMessageAsRead chatId from  signalRService : ", chatId,"messageId", messageId);
+      if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
+        throw new Error('Connection is not established');
+      }
+
+      try {
+        await this.connection.invoke('InvokeMarkFromLastMessagesAsRead',  Number(chatId), Number(messageId));
+        return true;
+      } catch (error) { 
+        console.error('Error InvokeMarkFromLastMessagesAsRead message status:', error);
         throw error;
       }
     };
@@ -195,7 +209,7 @@
       this.messageHandlers.set(handlerId, handler);
     };
     onMarkAllMessagesAsRead = (handlerId, handler) => {
-      this.MarkAllMessagesAsRead.set(handlerId, handler);
+      this.markAllMessageHandlers.set(handlerId, handler);
     };
 
     onMessageStatusUpdated = (handlerId, handler) => {
