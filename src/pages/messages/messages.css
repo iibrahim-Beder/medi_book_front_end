@@ -8,6 +8,24 @@
 .dc-offerermessage .dc-description time{color: #ffffffd1;}
 .dc-messagebox .dc-userprofile figure img{border-color: var(--cardcolor);box-shadow:0 0 15px 0 var(--shado1color);}
 }
+/* end dark */
+
+.loading-in-chat.preloader-outer {
+    top: 9px;
+    left: 0;
+    width: 85%;
+    height: 100%;
+    z-index: 9999;
+    position: relative;
+    margin: 20px;
+    /* background: #fff; */
+}
+.preloader-outer.messages{position: absolute !important;}
+
+.dc-offersmessages ul li .dc-messages.dc-dashboardscrollbar.loading{
+    min-height: 55vh;
+      justify-content: center;
+}
 
  .dc-offersmessages ul li .dc-dashboardscrollbar{
     height: auto !important;
@@ -129,10 +147,9 @@
 }
 .dc-memessage .dc-description p{background: #005ce4 !important;}
 
-
+.dc-memessage .dc-description p {  word-break: break-word;overflow-wrap: anywhere;}
 .dc-first-in-group.dc-memessage .dc-description p { border-radius: 20px !important; border-top-right-radius: 0px !important;}
 .dc-first-in-group.dc-memessage .dc-description p::after {
-
 content: "";
     position: absolute;
     top: 1px;

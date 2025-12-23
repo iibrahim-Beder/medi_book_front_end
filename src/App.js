@@ -74,14 +74,14 @@ const { i18n } = useTranslation();
 
   return (
     <div className="dc-userlogin">
-      {loading && (
+      {/* {loading && (
         <div className="preloader-outer">
           <div className="wt-preloader-holder">
             <div className="wt-loader"></div>
           </div>
         </div>
-      )}
-      {!loading && (
+      )} */}
+      {/* {!loading && ( */}
         <Routes>
           <Route path="/registration" element={<DoctorRegistration />} />
           <Route path="/Login" element={<Login />} />
@@ -142,7 +142,7 @@ const { i18n } = useTranslation();
             }
           />
         </Routes>
-      )}
+      {/* )} */}
         </div>
   );
 }

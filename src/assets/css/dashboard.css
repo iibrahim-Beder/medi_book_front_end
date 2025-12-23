@@ -329,7 +329,7 @@ address { font-style: italic; }
 	height: 100%;
 	z-index: 9999;
 	position: fixed;
-	background: #fff;
+	/* background: #fff; */
 }
 .wt-loader {
 	width: 15px;

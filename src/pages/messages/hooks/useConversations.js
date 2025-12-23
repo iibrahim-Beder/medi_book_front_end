@@ -41,6 +41,7 @@ export const useConversations = () => {
     pageSize,
   });
   console.log("chatsData",chatsData);
+  console.log("isLoading",isLoading);
 
     useEffect(() => {
     const handleUserTyping = (typingUpdate) => {

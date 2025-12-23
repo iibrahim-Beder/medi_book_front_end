@@ -6,14 +6,17 @@ import {
 import { useSignalR } from "../../../api/chat/chatUseSignalR";
 import { doctorChatApi } from "../../../api/chat/doctorChatApi";
 import { useDispatch, useSelector } from "react-redux";
+import Skeleton from "react-loading-skeleton";
 
 export const useMessages = () => {
   const dispatch = useDispatch();
 
   const selectedChat = useSelector((state) => state.chats.selectedChatId);
-  console.log("selectedChatId", selectedChat);
 
   const [pageByChat, setPageByChat] = useState({});
+  const [isFetchingOld, setIsFetchingOld] = useState(false);  
+
+
   const currentPage = pageByChat[selectedChat] ?? 1;
 
   const pageSizeMessage = 30;
@@ -34,6 +37,7 @@ export const useMessages = () => {
     data: messagesData,
     isLoading: messagesLoading,
     isError: messagesIsError,
+    isFetching,
     refetch: refetchMessages,
   } = useGetChatMessagesQuery(
     selectedChat
@@ -47,17 +51,16 @@ export const useMessages = () => {
   );
     const currentMessages = messagesData?.data ?? [];
 
-  console.log("messagesData", messagesData);
   const [sendMessageApi, { isLoading: isSending }] = useSendMessageMutation();
   const chatContainerRef = useRef(null);
   const toLatestMessage = () => {
     const el = chatContainerRef.current;
     if (!el) return;
-    console.log("el.scrollHeight", el.scrollHeight);
     el.scrollTop = el.scrollHeight;
   };
 
   const loadMore = () => {
+    if(!messagesData.hasNextPage)return
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: (prev[selectedChat] ?? 1) + 1,
@@ -68,7 +71,7 @@ export const useMessages = () => {
     const el = chatContainerRef.current;
     if (!el) return;
 
-    if (Math.abs(el.scrollTop) + el.clientHeight >= el.scrollHeight - 5) {
+    if (Math.abs(el.scrollTop) + el.clientHeight >= el.scrollHeight - 335) {
       loadMore();
     }
   };
@@ -79,15 +82,12 @@ export const useMessages = () => {
       [selectedChat]: 1,
     }));
     toLatestMessage();
-    if(getIsconnection()&& selectedChat&& currentMessages){
+    if(getIsconnection()&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
       InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
       markMessagesAsRead();
-      console.log("selectedChat", selectedChat,"messageId", currentMessages[0]?.id);
     }
-    markMessagesAsRead();
   }, [selectedChat]);
   
-  // console.log("selectedChat", selectedChat,"messageId", currentMessages[0]?.id);
   // handle new message
   useEffect(() => {
     const handleNewMessage = (message) => {
@@ -230,7 +230,7 @@ export const useMessages = () => {
             });
           }
         )
-      );
+      );  
 
         dispatch(
           doctorChatApi.util.updateQueryData(
@@ -417,15 +417,13 @@ export const useMessages = () => {
           )
         );}
 
-  //   },
-  // );
-
   return {
     messages: currentMessages,
     messagesLoading: selectedChat ? messagesLoading : false,
     messagesIsError: selectedChat ? messagesIsError : false,
     refetchMessages,
-
+    isLoadingOlderMessages :isFetching&&pageByChat[selectedChat]>1,
+    isLoadingNewerMessages :isFetching&&pageByChat[selectedChat]===1,
     sendMessage,
     isSending,
     handleScroll,
