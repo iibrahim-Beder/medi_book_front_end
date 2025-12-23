@@ -3,8 +3,9 @@ import { useConversations } from "../hooks/useConversations";
 import {  useSelector } from 'react-redux';
 import { selectIsChatTyping } from '../slices/messagesSlice';
 
-export default function ConversationItem({ id, img, name, lastMsg, active ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime}) {
-  const {changeChat} = useConversations();
+export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime}) {
+  const {changeChat ,selectedChat} = useConversations();
+  const active= (id===selectedChat)
   const istypingHere =  useSelector(selectIsChatTyping(id));
   return (
     
