@@ -52,7 +52,7 @@ export  const transformPatientData = (apiData) => {
     nextVisit: 'Sep 15, 2025', // Default value
     
     // UI Data
-    image: patient.imagePath || 'images/feedback/user-img.jpg',
+    image: patient.imagePath || '/images/avt/patient-avt.png',
     verified: true,
     
     // Original API data for reference

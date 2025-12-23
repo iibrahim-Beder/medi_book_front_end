@@ -2,20 +2,19 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
-import PatientNotesComponent from "./PatientTabs/PatientNotes";
+import DoctorPatientNotes from "./PatientTabs/doctor-patient-notes-list/DoctorPatientNotes";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
-import AllergyTable from "./PatientTabs/AllergyTable";
-import ConditionsTable from "./PatientTabs/ConditionsTable";
+import AllergyTable from "./PatientTabs/allergy/AllergyTable";
+import MedicalHistoryTable from "./PatientTabs/medical-history/MedicalHistoryTable";
 import MedicalConditions from "./PatientTabs/medical-conditions/MedicalConditions";
-import Medications from "./PatientTabs/Medications";
+import Medications from "./PatientTabs/medication/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
 import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
 import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
-import AllergyMobileView from "./PatientTabs/AllergyMobileView";
-import MedicalHistoryMobileView from "./PatientTabs/MedicalHistoryMobileView";
-
+import AllergyMobileView from "./PatientTabs/allergy/AllergyMobileView";
+import MedicalHistoryMobileView from  "./PatientTabs/medical-history/MedicalHistoryMobileView";
 export default function PatientProfilePageMain() {
   const [activeTab, setActiveTab] = useState("BasicInfo");
   const { t } = useTranslation();
@@ -27,15 +26,16 @@ export default function PatientProfilePageMain() {
    { key: "PatientNotificationsCards", label: t("Notifications") },
    { key: "Appointments", label: t("Appointments") },
    { key: "Reviews", label: t("Reviews") },
-   { key: "ConditionsTable", label: t("Medical History") },
+   { key: "MedicalHistoryTable", label: t("Medical History") },
    { key: "MedicalConditions", label: t("Medical Conditions") },
    { key: "Allergy", label: t("Allergies") },
    { key: "Diagnosis", label: t("Diagnosis") },
    { key: "Medications", label: t("medications") },
    { key: "PrescriptionsTable", label: t("Prescriptions") },
-   { key: "PatientNotesComponent", label: t("Notes") },
+   { key: "DoctorPatientNotes", label: t("Notes") },
    { key: "Files", label: t("Files and Attachments") },
    { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
+   { key: "Test", label: t("Test") },
 
   ];
 
@@ -71,8 +71,8 @@ export default function PatientProfilePageMain() {
           >
             {activeTab === "BasicInfo" && <PatientBasicInfo />}
             {activeTab === "Appointments" && <AppointmentsTable />} 
-            {activeTab === "PatientNotesComponent" && <PatientNotesComponent />}
-            {activeTab === "ConditionsTable" &&(isMobile ?<MedicalHistoryMobileView /> : <ConditionsTable />  )}
+            {activeTab === "DoctorPatientNotes" && <DoctorPatientNotes />}
+            {activeTab === "MedicalHistoryTable" &&(isMobile ?<MedicalHistoryMobileView /> : <MedicalHistoryTable />  )}
             {activeTab === "Allergy" && (isMobile ? <AllergyMobileView /> : <AllergyTable />)}
             {activeTab === "Diagnosis" && <DiagnosisTable/>}
             {activeTab === "PrescriptionsTable" && <Prescriptions/>}

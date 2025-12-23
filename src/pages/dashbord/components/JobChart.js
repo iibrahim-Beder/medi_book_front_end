@@ -65,7 +65,7 @@ const JobChart = () => {
   },
 };
   return (
-    <div className="" style={{boxShadow: "0 0 15px 0 var(--shadocolor)"}}>
+    <div>
       <Bar data={data} options={options} />
     </div>
   );

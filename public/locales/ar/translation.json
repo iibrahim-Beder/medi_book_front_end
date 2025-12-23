@@ -1184,6 +1184,8 @@
     }
   },
   "PrescribedMedicationTable": {
+    "days": "الأيام",
+    "category": "القسم",
   "table_title": "قائمة الأدوية الموصوفة",
   "table_subtitle": "أحمد محمد علي",
   "medication": "الدواء",
@@ -1423,6 +1425,9 @@
   "enter_instructions": "أدخل التعليمات"
 },
 "Othermedications": {
+  "start_date": "تاريخ البدء",
+  "end_date": "تاريخ الانتهاء",
+  "medicationCategory": "تصنيف الدواء",
     "table_title": "قائمة الأدوية الأخرى",
   "add_medication": "إضافة دواء",
   "edit_medication": "تعديل الدواء",
@@ -1520,7 +1525,8 @@
 "Search ...":"بحث ...",
 "Error loading reviews" :"خطأ في تحميل البيانات",
 "Retry":"إعادة المحاولة",
-"Check the internet connection":" تحقق من اتصال الانترنت"
+"Check the internet connection":" تحقق من اتصال الانترنت",
+"updated_at":"اخر تحديث"
 }
 
 

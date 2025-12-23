@@ -43,8 +43,9 @@ const PatientManagement = () => {
   };
 
   return (
-    <Container fluid className="p-4">
-<i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i>
+    <div className="patient-management-container">
+    <Container fluid className="p-4 pt-0">
+{/* <i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i><i class="fi fi-tr-user-trust"></i> */}
       <PatientStats stats={stats} />
       <PatientsTable
         patients={filteredPatients}
@@ -56,6 +57,7 @@ const PatientManagement = () => {
 
      
     </Container>
+    </div>
   );
 };
 

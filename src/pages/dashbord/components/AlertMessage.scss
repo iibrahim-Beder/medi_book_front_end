@@ -25,7 +25,7 @@ position: relative;
   background: transparent;
   border: none;
   font-size: 18px;
-    color: #4285f4;
+    color: #333;
   cursor: pointer;
 
   &:hover {
@@ -97,10 +97,4 @@ font-size: 28px;
   opacity: 1;
   transform: translateY(0);
       box-shadow: 0 0 15px 0 var(--shadocolor);
-}
-
-.alert-neutral.hide { 
-  opacity: 0;
-  transform: translateY(50px);
-  pointer-events: none;
 }

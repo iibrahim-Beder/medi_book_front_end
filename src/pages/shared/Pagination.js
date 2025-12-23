@@ -6,9 +6,11 @@ const Pagination = ({
   totalItems,
   rowsPerPage,
   onPageChange,
+  totalPages,
+  
 }) => {
   const { t } = useTranslation();
-  const totalPages = Math.ceil(totalItems / rowsPerPage);
+  const totalPage = totalPages|| Math.ceil(totalItems / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
 
   if (totalItems === 0) return null;
@@ -37,7 +39,7 @@ const Pagination = ({
             {t("previous")}
         </button>
 
-        {[...Array(totalPages)].map((_, index) => (
+        {[...Array(totalPage)].map((_, index) => (
           <button
             key={index}
             className={`dt-paging-button none ${
@@ -51,7 +53,7 @@ const Pagination = ({
 
         <button
           className="dt-paging-button next"
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPage}
           onClick={() => onPageChange(currentPage + 1)}
         >
              {t("next")}
@@ -59,8 +61,8 @@ const Pagination = ({
 
         <button
           className="dt-paging-button last"
-          disabled={currentPage === totalPages}
-          onClick={() => onPageChange(totalPages)}
+          disabled={currentPage === totalPage}
+          onClick={() => onPageChange(totalPage)}
         >
           »
         </button>

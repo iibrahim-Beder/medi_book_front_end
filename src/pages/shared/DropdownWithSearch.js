@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import Skeleton from "@mui/material/Skeleton";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import "./dropdown.css";
 import {
   Box,
@@ -15,19 +16,14 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { CiSearch } from "react-icons/ci";
 import Popper from "@mui/material/Popper";
+import useDropdownData, { LoadingSkeleton } from "./remoteDropdown/useDropdownData";
 
 const DropdownWithSearch = ({
-  label = "Dropdown",
-  options = [],
-  itemsPerPage = 6,
-  placeholder = "Select option",
-  value = null, // currently selected value (id)
+  type = "medication", // medication, disease, allergy
+  value = null,
   onChange = () => {},
-  onNext = () => {},
-  onPrev = () => {},
   disabled = false,
-  labelKey = "label", 
-  valueKey = "id",    
+  itemsPerPage = 6,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,39 +34,27 @@ const DropdownWithSearch = ({
   const selectRef = useRef(null);
   const searchInputRef = useRef(null);
 
-  // Get the selected option for display
-  const selectedOption = options.find(opt => {
-    if (typeof opt === "string") {
-      return opt === value;
-    }
-    return opt[valueKey] === value;
-  });
-
-  const displayValue = selectedOption 
-    ? (typeof selectedOption === "string" ? selectedOption : selectedOption[labelKey])
-    : placeholder;
+  const { items: options, loading, error, totalPages } = useDropdownData(type, searchTerm, page, itemsPerPage,open );
 
   // Keep dropdown width in sync with input width
-useEffect(() => {
-  if (!selectRef.current) return;
+  useEffect(() => {
+    if (!selectRef.current) return;
 
-  const updateWidth = () => {
-    if (selectRef.current) {
-      setWidth(selectRef.current.offsetWidth);
-    }
-  };
+    const updateWidth = () => {
+      if (selectRef.current) {
+        setWidth(selectRef.current.offsetWidth);
+      }
+    };
 
-  const observer = new ResizeObserver(updateWidth);
-  observer.observe(selectRef.current);
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(selectRef.current);
 
-  // Initial update
-  updateWidth();
+    updateWidth();
 
-  return () => {
-    observer.disconnect();
-  };
-}, []);
-
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // Autofocus search input when dropdown opens
   useEffect(() => {
@@ -79,17 +63,12 @@ useEffect(() => {
     }
   }, [open]);
 
-  // Filter options by search term
-  const filteredOptions = options.filter((opt) => {
-    const label = typeof opt === "string" ? opt : String(opt[labelKey]);
-    return label.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  // Reset page when search term changes
+  useEffect(() => {
+    setPage(0);
+  }, [searchTerm]);
 
-  const totalPages = Math.ceil(filteredOptions.length / itemsPerPage);
-  const currentItems = filteredOptions.slice(
-    page * itemsPerPage,
-    page * itemsPerPage + itemsPerPage
-  );
+  const displayValue = value?.name ? value.name : `Select ${type}`;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -98,17 +77,10 @@ useEffect(() => {
 
   const handleClose = () => {
     setOpen(false);
-    setSearchTerm("");
-    setPage(0);
   };
 
-  // Handle selecting an item (returns only the id if object)
   const handleSelect = (option) => {
-    if (typeof option === "string") {
-      onChange(option);
-    } else {
-      onChange(option[valueKey]);
-    }
+    onChange(option);
     handleClose();
   };
 
@@ -116,7 +88,6 @@ useEffect(() => {
     event.stopPropagation();
     if (page < totalPages - 1) {
       setPage(page + 1);
-      onNext(page + 1);
     }
   };
 
@@ -124,15 +95,16 @@ useEffect(() => {
     event.stopPropagation();
     if (page > 0) {
       setPage(page - 1);
-      onPrev(page - 1);
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
   return (
     <div className="dropdown-container" style={{ opacity: disabled ? 0.6 : 1 }}>
       <Box
         sx={{
-          // width: "100%",
           margin: "10px 0 20px 0",
           fontFamily: "Inter, sans-serif",
         }}
@@ -140,7 +112,7 @@ useEffect(() => {
         <TextField
           disabled={disabled}
           ref={selectRef}
-          label={label}
+          label={`${type}`}
           value={displayValue}
           onClick={disabled ? undefined : handleClick}
           fullWidth
@@ -161,7 +133,7 @@ useEffect(() => {
           }}
         />
 
-        <Popper 
+        <Popper
           open={open}
           anchorEl={anchorEl}
           placement="bottom-start"
@@ -180,13 +152,13 @@ useEffect(() => {
                 padding: "10px",
                 display: "flex",
                 flexDirection: "column",
-                boxShadow: "0px 11px 12px 0px var(--scshadocolor)",
+                boxShadow: "0px 11px 12px 0px var(--shado1color)",
                 border: "1px solid #ddd",
                 width: width,
                 position: "absolute",
                 zIndex: 2,
                 backgroundColor: "var(--cardcolor)",
-                color:"var(--terthemecolor)"
+                color: "var(--terthemecolor)",
               }}
             >
               {/* Search field inside dropdown */}
@@ -195,12 +167,9 @@ useEffect(() => {
                 className="inside-search"
                 variant="outlined"
                 size="small"
-                placeholder="Search"
+                placeholder="search ... "
                 value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setPage(0);
-                }}
+                onChange={handleSearchChange}
                 fullWidth
                 InputProps={{
                   startAdornment: (
@@ -214,34 +183,50 @@ useEffect(() => {
                 sx={{ marginBottom: "10px" }}
               />
 
-              {/* Render filtered items */}
-              <List sx={{ maxHeight: 150, overflowY: "auto" }}>
-                {currentItems.length > 0 ? (
-                  currentItems.map((opt) => {
-                    const label =
-                      typeof opt === "string" ? opt : String(opt[labelKey]);
-                    const value =
-                      typeof opt === "string" ? opt : opt[valueKey];
-
-                    return (
-                      <ListItem
-                        key={value}
-                        button
-                        onClick={() => handleSelect(opt)}
-                        sx={{ borderRadius: "5px", "&:hover": { backgroundColor: "#f0f0f0" } }}
-                      >
-                        {label}
-                      </ListItem>
-                    );
-                  })
+              {/* Render items */}
+              <List sx={{ maxHeight: 200, overflowY: "auto" }}>
+                {loading ? (
+                  <LoadingSkeleton />
+                ) : error ? (
+                  <MenuItem
+                    style={{ margin: "auto", textAlign: "center" }}
+                    disabled
+                  >
+                    An error occurred in loading the data.
+                  </MenuItem>
+                ) : options.length > 0 ? (
+                  options.map((option) => (
+                    <ListItem
+                      key={option.id}
+                      button
+                      onClick={() => handleSelect(option)}
+                      // cursor: "pointer",
+                      style={{cursor:"pointer"}}
+                      sx={{
+                        borderRadius: "5px",
+                        "&:hover": { backgroundColor: "#f0f0f0"  },
+                      }}
+                    >
+                      {option.name}
+                    </ListItem>
+                  ))
+                ) : searchTerm ? (
+                  <MenuItem
+                    style={{ margin: "auto", textAlign: "center",color:"black" }}
+                    disabled
+                  >
+                    No results found for "{searchTerm}"
+                  </MenuItem>
                 ) : (
-                  <MenuItem style={{ margin: "auto" }} disabled>
-                    No results
+                  <MenuItem
+                    style={{ margin: "auto", textAlign: "center" }}
+                    disabled
+                  >
+                    "No results found"
                   </MenuItem>
                 )}
               </List>
-
-              {/* Pagination controls */}
+                {/* Pagination */}
               {totalPages > 1 && (
                 <nav
                   className="dc-pagination"
@@ -251,7 +236,9 @@ useEffect(() => {
                     paddingTop: "10px",
                   }}
                 >
-                  <ul style={{ width: "100%" }}>
+                  <ul
+                    style={{width: "100%",}}
+                  >
                     <li
                       className="dc-prevpage"
                       onClick={handlePrevPage}
@@ -284,6 +271,7 @@ useEffect(() => {
                         style={{
                           cursor: "pointer",
                           fontWeight: "bold",
+                          backgroundColor: "#f0f0f0",
                         }}
                       >
                         <a>{page + 1}</a>

@@ -76,6 +76,7 @@ const CustomAccordion = memo(({
       } else if (onUpdate) {
         const currentData = data || [];
         currentData.forEach((_, i) => {
+          if (currentData[index]?.isExpanded === true && !readOnly) {currentData[index]._initialTitle = renderItemTitle(currentData[index]);}
           if (i === index) {
             onUpdate(i, "isExpanded", !currentData[index]?.isExpanded);
           } else if (!allowMultipleOpen) {
@@ -96,6 +97,9 @@ const CustomAccordion = memo(({
     e.preventDefault();
     const currentData = data || [];
     const itemData = currentData[index];
+     if (itemData && !readOnly&& itemData.isExpanded===false) {
+    itemData._initialTitle = renderItemTitle(itemData);
+  }
     if (onSave && itemData) {
       onSave(index, itemData);
     }
@@ -143,6 +147,7 @@ const CustomAccordion = memo(({
         type={field.type || "text"}
         min={field.min}
         max={field.max}
+        disabled={readOnly || field.disabled}
         onChange={(e) => onChange(index, field.name, e.target.value)}
       />;
     }
@@ -167,13 +172,7 @@ const CustomAccordion = memo(({
 
   const renderItemTitle = (item) => {
     if (getItemTitle) return getItemTitle(item);
-    return item.title || item.type || "New Item";
-  };
-
-  // === Truncate long titles ===
-  const truncateTitle = (text, maxLength = 50) => {
-    if (!text) return "";
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    return item.title || item.type || item.medication ||  "New Item";
   };
 
   return (
@@ -189,7 +188,7 @@ const CustomAccordion = memo(({
           ) : (
             <h3>{title}</h3>
           )}
-          {onAdd && (
+          {onAdd && !readOnly && (
             <a
               href="#!"
               onClick={(e) => {
@@ -214,6 +213,7 @@ const CustomAccordion = memo(({
       ) : (
         <ul className="dc-experienceaccordion accordion">
           {dataRead.map((item, index) => {
+            if (!item._initialTitle && !readOnly ) {item._initialTitle = renderItemTitle(item);}
             const isSingle = oneAccordion && dataRead.length === 1;
             const collapseClass = isSingle ? "dc-collapseexp show" : `dc-collapseexp ${item.isExpanded ? "show" : "hide"}`;
 
@@ -244,18 +244,21 @@ const CustomAccordion = memo(({
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        maxWidth: "100%",
+                        maxWidth: "98%",
                         verticalAlign: "middle",
                       }}
                       title={renderItemTitle(item)}
                     >
                     {item.isNew && (
-                      <span style={{ color: "#ffa500", marginLeft: "8px", fontWeight: "bold" }}>
+                      <span style={{ color: "#ffa500", margin:"0 5px", fontWeight: "bold" }}>
                         (New)
                       </span>
                     )}
-                      {truncateTitle(renderItemTitle(item), 60)}
-                    {item.date && <em style={{ marginLeft: "8px", color: "#666", margin: "0 11px"}}>{item.date}</em>}
+                      {/* {truncateTitle(renderItemTitle(item), 60)} */}
+                      {/* {readOnly ? (renderItemTitle(item)) : ( {item.isExpanded? item._initialTitle: renderItemTitle(item)})   }*/}
+                    {readOnly? renderItemTitle(item): (item.isExpanded ? item._initialTitle : renderItemTitle(item))}
+                    {item.date && <em style={{ marginLeft: "8px", color: "#666", margin: "0 11px"}}>{item.date}</em>} 
+
                     </span>
                   </span>
 
@@ -294,13 +297,11 @@ const CustomAccordion = memo(({
                   {formFields.map(
                     (field, idx) =>
                       field.type === "dropdown" && (
-                        <div key={idx} className="dropdown-with-search-in-accordion">
+                        <div key={idx} className={`dropdown-with-search-in-accordion ${ field.half ? "form-group-half" :"" } `} >
                           <DropdownWithSearch
-                            label={field.label || "Medication"}
-                            options={field.options || []}
+                            type={field.DropdownType}
                             value={item[field.name] || ""}
                             onChange={(val) => handleFieldChange(index, field.name, val)}
-                            placeholder={field.placeholder}
                           />
                         </div>
                       )

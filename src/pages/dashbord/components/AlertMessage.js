@@ -1,60 +1,61 @@
-import { useState } from "react";
-import "./AlertMessage.scss";
+import { motion } from "framer-motion";
 import {
   FaCheckCircle,
   FaExclamationTriangle,
   FaTimesCircle,
   FaInfoCircle,
-  FaTimes,
 } from "react-icons/fa";
+import { RiCloseLargeLine } from "react-icons/ri";
+import "./AlertMessage.scss";
 
-//this alert message component is used to show alert messages in the dashboard
-// it takes the following props:
 export default function AlertMessage({
-  type = "info", // success, warning, danger, info
+  type = "info",
   title = "This is neutral message",
   message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   actionText = "Action",
-  onActionClick
+  onActionClick,
+  onClose, 
 }) {
-  const [visible, setVisible] = useState(true);
-  const [closing, setClosing] = useState(false);
-
-  // Define styles and icons for each alert type
   const typeStyles = {
     success: { background: "#28a745", icon: <FaCheckCircle style={{ color: "#28a745" }} /> },
     warning: { background: "#ffc107", icon: <FaExclamationTriangle style={{ color: "#ffc107" }} /> },
     danger: { background: "#dc3545", icon: <FaTimesCircle style={{ color: "#dc3545" }} /> },
-    info: { background: "#4285f4", icon: <FaInfoCircle style={{ color: "var(--themecolor)" }} /> }
+    info: { background: "#4285f4", icon: <FaInfoCircle style={{ color: "var(--themecolor)" }} /> },
   };
 
   const { buttonStyle, icon } = typeStyles[type] || typeStyles.info;
 
-  const handleClose = () => {
-    setClosing(true); // Start closing animation
-    setTimeout(() => setVisible(false), 300); // Hide element after animation
-  };
-
-  if (!visible) return null;
-
   return (
-    <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-      {/* <div className={`alert-neutral dc-jobalerts ${closing ? "hide" : ""}`}> */}
-      <div className={` table-card  alert-neutral dc-jobalerts p-3  mb-2 ${closing ? "hide" : ""}`}>
-      
-      
-      
-
-        <button className="alert-close" onClick={handleClose}>
-          <FaTimes />
+    <motion.div
+      layout 
+      initial={{ opacity: 0, scale: 0.95, height: 0 }}
+      animate={{ opacity: 1, scale: 1, height: "auto" }}
+      exit={{ 
+        opacity: 0, 
+        scale: 0.95, 
+        height: 0, 
+        marginBottom: 0,
+        paddingTop: 0,
+        paddingBottom: 0 
+      }}
+      transition={{ 
+        duration: 0.35, 
+        ease: [0.4, 0, 0.2, 1] 
+      }}
+      style={{ overflow: "hidden" }}
+      className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"
+    >
+      <div className="table-card alert-neutral dc-jobalerts p-3 mb-2">
+        <button className="alert-close" onClick={onClose}>
+          <RiCloseLargeLine />
         </button>
-     
-          <div style={{display:"flex" ,gap:"10px"}}>
-        <div className="alert-icon">{icon}</div>
-          
-        <h3 className="alert-title">{title}</h3>
+
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div className="alert-icon">{icon}</div>
+          <h3 className="alert-title">{title}</h3>
         </div>
-        <p className="alert-message text-ellipsis ">{message}</p>
+
+        <p className="alert-message text-ellipsis">{message}</p>
 
         <div className="alert-actions">
           <button
@@ -66,6 +67,6 @@ export default function AlertMessage({
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

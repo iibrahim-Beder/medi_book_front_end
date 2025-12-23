@@ -52,7 +52,7 @@ function UserMenu() {
     >
   
       <figure className="dc-userimg">
-        <img src="/images/user-login.jpg" alt="user" />
+        <img src="/images/avt/doctor-imge-avt.png" alt="user" />
       </figure>
 
       <div className="dc-username" onClick={toggleMenu}>

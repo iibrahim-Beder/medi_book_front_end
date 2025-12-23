@@ -4,7 +4,7 @@ export default function ProfileSidebar() {
       <div className="dc-dashboardboxcontent">
         <div className="dc-userprofile">
           <figure>
-            <img src="images/profile/img-02.jpg" alt="profile" />
+            <img src="/images/avt/patient-avt.png" alt="profile" />
           </figure>
           <div className="dc-title">
             <h3>

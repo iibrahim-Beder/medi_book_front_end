@@ -1,22 +1,22 @@
-export default function ChatMessage({ type, img, text, link, date }) {
+const MessageStatus = [
+  "Sent",
+  "Delivered",
+  "Read",
+  "Failed",
+  "Sending"
+];
+export default function ChatMessage({isIngroupAndNotTheLast, type, img, text, date ,status,isfirstInGroup}) {
   const msgClass =
     type === "sender" ? "dc-memessage dc-readmessage" : "dc-offerermessage";
 
   return (
-    <div className={msgClass}>
-      <figure>
+    <div className={msgClass + (isIngroupAndNotTheLast ? " dc-ingroupmessage" : " dc-ingroupmessage-last" ) + (isfirstInGroup ? " dc-first-in-group" : " not-the-first" )}>
+      { img && <figure>
         <img src={img} alt="user" />
-      </figure>
+      </figure>}
       <div className="dc-description">
-        <p>{text}</p>
-        {link && (
-          <p>
-            <a href={link} target="_blank" rel="noreferrer">
-              {link}
-            </a>
-          </p>
-        )}
-        <time>{date}</time>
+        <p className="dc-messagecontent">{text}
+      {date &&  <time className={`${MessageStatus[status]}`} >{date}</time>}</p>
       </div>
     </div>
   );

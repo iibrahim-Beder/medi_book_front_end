@@ -876,6 +876,8 @@
     }
   },
   "PrescribedMedicationTable": {
+        "days": "Days",
+    "category": "Category",
     "table_title": "Prescribed medication list",
     "table_subtitle": "Ahmed Mohamed Ali",
     "medication": "Medication",
@@ -1284,6 +1286,9 @@
     }
   ,
     "Othermedications": {
+        "start_date": "Start Date",
+  "end_date": "End Date",
+  "medicationCategory": "Medication Category",
     "add_medication": "Add Medication",
     "edit_medication": "Edit Medication",
     "manage": "Manage",
@@ -1334,9 +1339,28 @@
   "notes": "Notes",
   "enter_notes": "Enter notes"
 },
- "MedicalHistory": {
-    "confirm_delete_title": "Confirm Deletion",
-    "confirm_delete_message": "Are you sure you want to delete '{{description}}'? This action cannot be undone."
+  "MedicalHistory": {
+    "add_history": "Add Medical History",
+    "edit_history": "Edit Medical History",
+    "history_type": "History Type",
+    "hereditary_disease": "Hereditary Disease", 
+    "description": "Description",
+    "date_of_event": "Date of Event",
+    "related_person": "Related Person",
+    "notes": "Notes",
+    "actions": "Actions",
+    "confirm_delete_title": "Delete Medical History",
+    "confirm_delete_message": "Are you sure you want to delete \"{{description}}\"?",
+    "no_records_found": "No medical history records found",
+    "no_results_for_search": "No results found for \"{{search}}\"",
+    "history_type_options": {
+      "Surgery": "Surgery",
+      "Family History": "Family History", 
+      "Hospitalization": "Hospitalization",
+      "Vaccination": "Vaccination",
+      "Accident": "Accident",
+      "Others": "Others"
+    }
   },
    "login": {
     "title": "Login to",
@@ -1383,6 +1407,7 @@
     "backToLogin": "Back to Login"
 
   },
-    "actions": "Actions"
+    "actions": "Actions",
+    "updated_at": "Updated At"
   }
   

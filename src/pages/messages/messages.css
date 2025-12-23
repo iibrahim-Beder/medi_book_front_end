@@ -1,14 +1,8 @@
 
-/* .disin{
-
-}
-
- @media (max-width: 991px) {
-    .dc-offersmessages ul li .dc-dashboardscrollbar {
-        display: flex;
-
-    }
-} */
+ @media (max-width: 568px) {
+.dc-first-in-group.dc-memessage .dc-description p::after{right: 41px !important;}
+.dc-offerermessage .dc-description p::before{left: calc(left - 20px);}
+} 
  .dc-offersmessages ul li .dc-dashboardscrollbar{
     height: auto !important;
     overflow-y: auto;
@@ -51,3 +45,142 @@
         padding: 0 10px !important;
     }
 }
+/* message status */
+.dc-messagecontent time{white-space: nowrap;}
+.dc-readmessage .dc-description time{color: #ffffffd1 !important;font-size: 10px !important;  }
+.dc-readmessage .dc-description time.Sent:before{
+	color: white ;
+    opacity: 0.8;
+}
+.dc-readmessage .dc-description time.Delivered:before{
+    content: '\f00c\f00c';
+    letter-spacing: -6px;
+	color: #f6f6f6;
+    padding: 0 3px;
+        opacity: 0.8;
+}
+.dc-readmessage .dc-description time.Read:before{
+    content: '\f00c\f00c';
+    padding: 0 3px;
+        letter-spacing: -7px;
+    color: var(--bluecolor);
+
+}
+.dc-readmessage .dc-description time.Failed:before{
+    content: '\f00d';
+    color: red;
+}
+.dc-readmessage .dc-description time.Sending:before{
+    content: none;
+}
+
+/* end */
+.dc-readmessage .dc-description time.day-time:before{display: none;}
+.dc-readmessage .dc-description time.day-time{color: #ffffffd4;
+    padding: 0;
+}
+.dc-messagecontent{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    align-items: flex-end;
+}
+.dc-messagecontent time{width: fit-content !important;}
+.online::after {
+    position: absolute;
+    bottom: 2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
+    background-color: #00cc67;
+    border-radius: 50%;
+    border:2px solid var(--cardcolor);
+    content: '';
+}
+
+.dc-messages {
+  overflow-y: auto;
+  scrollbar-width: none;        
+  -ms-overflow-style: none;     
+}
+
+.dc-messages::-webkit-scrollbar {
+  display: none;               
+}
+.dc-ingroupmessage .dc-messagecontent{border-radius: 20px!important;  }
+.dc-readmessage p {margin: 0 !important;}
+.dc-ingroupmessage{margin: 0 !important;}
+.dc-ingroupmessage-last{margin-top: 0 !important;}
+.typing-spinner{
+    border: 1px solid #f2f2f2;
+    border-radius: 20px 20px 20px 0px;
+    background: var(--badybkcolor);
+    /* color: white; */
+    padding: 10px;
+    /* padding-right: 10px;
+    padding-bottom: 10px; */
+    width: fit-content;
+}
+.dc-memessage .dc-description p{background: #005ce4 !important;}
+
+
+.dc-first-in-group.dc-memessage .dc-description p { border-radius: 20px !important; border-top-right-radius: 0px !important;}
+.dc-first-in-group.dc-memessage .dc-description p::after {
+
+content: "";
+    position: absolute;
+    top: 1px;
+    right: 61px;
+    width: 0;
+    height: 0;
+    border-width: 10px 10px 0 10px;
+    border-style: solid;
+    border-color: #005ce4 transparent transparent transparent;
+}
+
+.dc-offerermessage .dc-description p { border-top-left-radius: 0px !important; }
+.dc-offerermessage .dc-description p::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 61px;
+    width: 0;
+    height: 0;
+    border-width: 10px 10px 0 10px;
+    border-style: solid;
+    border-color: #f7f7f7 transparent transparent transparent;
+}
+.dc-offerermessage .dc-description p::before{
+   content: "";
+    position: absolute;
+    top: 1px;
+    left: 63px;
+    width: 0;
+    height: 0;
+    border-width: 10px 10px 0 10px;
+    border-style: solid;
+    z-index: 5;
+    border-color: #fcfcfc transparent transparent transparent;
+}
+
+.dc-typing{
+    color: #00cc67;
+}
+
+
+
+
+/* 
+.lnr-thumbs-down:before {
+    	/* top: 0;
+	right: 0;
+	width: 16px;
+	height: 16px;
+	font-size: 11px;
+	line-height: 16px;
+	position: absolute; */
+	/* font-family: 'Linearicons-Free'; */
+	/* content: '\f00c'; */
+    /* content: "\e86e";    */
+       /* content: '\f165';     */
+/* } */

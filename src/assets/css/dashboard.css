@@ -1278,6 +1278,7 @@ width: 100%;
 	background: #fff;
 	border-radius: 50%;
 	border:1px solid #ddd;
+	max-width: 50px;
 }
 .dc-userimg img{
 	width: 100%;
@@ -2418,7 +2419,8 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	border-radius: 50%;
 	border: 6px solid #fff;
 		-webkit-box-shadow: 0 0 30px 0 rgba(0,0,0,0.30);
-	box-shadow: 0 0 30px 0 rgba(0,0,0,0.30);
+	/* box-shadow: 0 0 30px 0 rgba(0,0,0,0.30); */
+	box-shadow:0 0 30px 0 rgb(0 0 0 / 14%);
 }
 .dc-companysinfo figure img{border-radius: 50%;}
 .dc-companysinfo .dc-title h2{
@@ -2615,7 +2617,8 @@ body.dc-userlogin .dc-loginarea{display: none;}
 	list-style: none;
 	line-height: 22px;
 	background-color: var(--cardcolor);
-	box-shadow: 0 9px 20px 0 var(--shadocolor);
+	box-shadow: none
+	/* box-shadow: 0 9px 20px 0 var(--shadocolor); */
 }
 .alert{
 	float: left;
@@ -2773,7 +2776,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 /* DASHBOARD TABS STYLE */
 	/* .dc-dashboardtabsholder{background: #fff;} */
 .dc-dashboardtabs{
-	width: 30%;
+	width: 20%;
 	float: left;
 }
 .dc-tabstitle{
@@ -2835,7 +2838,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
 .dc-tabstitle li a:hover:before{height: 100%;background: var(--bluecolor);}
 .dc-tabstitle li a:after {	
     top: 0;
-    right: -1px;
+    right: -3px;
     height: 100%;
     content: '';
     width: 5px;
@@ -2853,7 +2856,7 @@ background-color: var(--scbccolor);
 }
 .dc-tabscontent{
 	float: left;
-	width: 70%;
+	width: 80%;
 	height: 100%;
 	padding: 30px;
 	border-left: 1px solid #eeeeee66;
@@ -2902,7 +2905,7 @@ background-color: var(--scbccolor);
 	float: none;
 	width: auto;
 	margin: -5px;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 .dc-userform fieldset .form-group{
 	margin: 0;
@@ -3267,7 +3270,7 @@ background-color: var(--scbccolor);
 	display: inline-block;
 	vertical-align: middle;
 }
-.dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup .dc-btn{
+/* .dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup .dc-btn{
     margin: 0;
 	color: #fff;
     width: 160px;
@@ -3281,15 +3284,15 @@ background-color: var(--scbccolor);
     text-transform: uppercase;
 	background: #00cc8d !important;
     font: 700 13px/50px 'Poppins', Arial, Helvetica, sans-serif;
-}
+} */
 .form-group-label label input{display: none;}
-.dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup span{
+/* .dc-experienceaccordion .dc-collapseexp fieldset .form-group .dc-labelgroup span{
 	font-size: 14px;
 	margin-left:25px; 
 	line-height: 16px;
 	display: inline-block;
 	vertical-align: middle;
-}
+} */
 .dc-fileuploading{
 	float: right;
 	display: none;
@@ -3912,6 +3915,7 @@ input[type="button"]:focus{outline: none;}
 	display: block;
 	border-radius: 4px;
 	border: 1px solid #eff2f5;
+	max-height: 121px;
 }
 .dc-user-header .dc-title{
 	width: auto;
@@ -5134,6 +5138,7 @@ top: 50%;
     border-radius: 6px;
     background: var(--themecolor);
     color: white;
+	min-width: fit-content;
 }
 /*Messages Styles*/
 .dc-offersmessages .dc-ad:after{
@@ -5179,7 +5184,7 @@ top: 50%;
 .dc-offerermessage .dc-description p,
 .dc-memessage .dc-description p{
 	padding: 10px;
-	font-size: 14px;
+	font-size: 15px;
 	margin: 0 0 5px;
 	max-width: 485px;
 	line-height: 24px;
@@ -5190,17 +5195,18 @@ top: 50%;
 .dc-offerermessage .dc-description p {
 	border: 1px solid #f2f2f2;
     border-radius: 20px 20px 20px 0px;
-    background: var(--themecolor);
-	color: white;
-    padding: 20px;
-	padding-right: 10px;
-	padding-bottom: 10px;
+    background: var(--badybkcolor);
+	/* color: white; */
+    padding: 10px;
+	/* padding-right: 10px;
+	padding-bottom: 10px; */
 }
 .dc-memessage .dc-description p{
 	border: 1px solid #f2f2f2;
 	border-radius: 20px 20px 0px 20px;
-	background: var(--badybkcolor);
-	padding: 20px;
+	background: var(--themecolor);
+    color: white;
+	padding: 10px;
 }
 .dc-offerermessage .dc-description p a,
 .dc-memessage .dc-description p a{
@@ -5226,7 +5232,7 @@ top: 50%;
 	right: 0;
 	width: 16px;
 	height: 16px;
-	color: #00cc67;
+	/* color: #00cc67; */
 	font-size: 11px;
 	line-height: 16px;
 	content: '\f00c';
@@ -5256,7 +5262,7 @@ top: 50%;
 	color: #fff;
 	width: 70px;
 	height: 29px;
-	line-height: 29px;
+	/* line-height: 29px; */
 	text-align: center;
 	margin: 4px;
 	border-radius: 4px;
@@ -5588,6 +5594,7 @@ top: 50%;
 	padding-top:90px;
 	padding-left: 70px;
 	margin-right: 25px;
+	margin-bottom: 25px;
 }
 
 .small-filter {
@@ -5725,6 +5732,13 @@ html[dir="rtl"]  {
 }
 /* <<< */
 @media (max-width: 720px){
+.created-date{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+	.patient-management-container .p-4{padding: 0 !important; }
 	.doctor-registration .title-with-icon{
 		flex-direction: column;
 		gap: 10px;
@@ -5757,6 +5771,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.DateRangePicker{margin: 10px 0;}
 	        .dc-offersmessages ul li:first-child{border-right: none;}
 	.login-container{margin: 15px 0;}
 	.dc-accordioninnertitle{padding: 4px 10px !important; height: 40px;}
@@ -5897,7 +5912,7 @@ padding: 0 10px;
        /* dropdown notification css start */
 	    .dropdown-menu-end.list-date-option.open:after, .dropdown-menu-end.list-date-option.open:before {right: 59%;}
         .dropdown-menu-end.list-date-option.open:before{right: calc(59% - 1px) !important;}
-		 .dropdown-menu-end.list-date-option.open{ min-width: 320px !important;  transform: translate3d( 179px , 34px, 0px) !important;  }
+		 .dropdown-menu-end.list-date-option.open{max-width: 318px !important;min-width: 318px !important; transform: translate3d( 179px , 34px, 0px) !important;  }
 		 /* dropdown notification css end */
 		.dc-checkboxgroup{grid-template-columns: repeat(1, 1fr);}
 		        .two-tabs .nav {

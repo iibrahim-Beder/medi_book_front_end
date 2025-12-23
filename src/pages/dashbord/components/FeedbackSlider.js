@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./FeedbackSlider.scss";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Placeholder } from "react-bootstrap";
 
 const NextArrow = ({ onClick }) => (
   <div className="custom-arrow next" onClick={onClick}>
@@ -19,22 +20,22 @@ const PrevArrow = ({ onClick }) => (
 const FeedbackSlider = () => {
   const feedbacks = [
     {
-      img: "/images/feedback/img-02.jpg",
+      img: "/images/avt/patient-avt.png",
       title: "Internal Braces on mo...",
       date: "Jun 27, 2018",
     },
     {
-      img: "/images/feedback/img-01.jpg",
+      img: "/images/avt/patient-avt.png",
       title: "Sleeping Noise from H...",
       date: "Jun 27, 2018",
     },
     {
-      img: "/images/feedback/img-03.jpg",
+      img: "/images/avt/patient-avt.png",
       title: "Visited For Conservative",
       date: "Jun 27, 2018",
     },
     {
-      img: "/images/feedback/img-02.jpg",
+      img: "/images/avt/patient-avt.png",
       title: "Another Feedback Example",
       date: "Jul 15, 2018",
     },
@@ -73,7 +74,7 @@ const FeedbackSlider = () => {
           <div className="item" key={index}>
             <div className="dc-postedsilderitem">
               <figure className="dc-consultation-img">
-                <img src={item.img} alt={item.title} />
+                <img  style={{maxHeight:"40px"}} src={item.img} alt={item.title} />
               </figure>
               <div className="dc-consultation-title">
                 <h5>

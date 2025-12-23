@@ -6,6 +6,7 @@ import SelectField from "../ui/form-fields/SelectField";
 import { MdClose } from "react-icons/md";
 import DropdownWithSearch from "./DropdownWithSearch";
 import { useTranslation } from "react-i18next";
+
 const DynamicEditModal = ({
   addMode,
   show,
@@ -18,13 +19,11 @@ const DynamicEditModal = ({
   title = "Edit Record",
   errors = {},
   forceShowError = true,
-  // new props for dropdown
-  dropdownOptions = [],            // Array of options for dropdown
-  dropdownField = "allergenId",    // Field name where dropdown ID will be stored
-  dropdownLabel = "Allergen",      // Label displayed for dropdown
+  typeDropdown = "disease",
 }) => {
 
   const { t } = useTranslation();
+
   // Handle changes in basic input fields
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -41,31 +40,23 @@ const DynamicEditModal = ({
     setRecord({ ...record, [name]: val });
   };
 
-  // Handle dropdown selection (custom dropdown with search)
-  const handleDropdownChange = (selectedId) => {
-    if (!selectedId) {
-      setRecord({ ...record, [dropdownField]: null, allergenLabel: "" });
-      return;
-    }
-
-    const selectedOption = dropdownOptions.find(opt => opt.id === selectedId);
-    
-    if (selectedOption) {
-      // Update record with both id and label from dropdown
-      setRecord({ 
-        ...record, 
-        [dropdownField]: selectedId, 
-        allergenLabel: selectedOption.label 
-      });
-    } else {
-      // Fallback: use selectedId as label if not found
-      setRecord({ 
-        ...record, 
-        [dropdownField]: selectedId, 
-        allergenLabel: String(selectedId) 
-      });
-    }
-  };
+  console.log("record", record);
+  // Handle dropdown selection for medical conditions
+  // const handleMedicalConditionChange = (selectedOption) => {
+  //   if (selectedOption) {
+  //     setRecord({ 
+  //       ...record, 
+  //       medicalConditionName: selectedOption.name,
+  //       medicalConditionId: selectedOption.id 
+  //     });
+  //   } else {
+  //     setRecord({ 
+  //       ...record, 
+  //       medicalConditionName: "",
+  //       medicalConditionId: null
+  //     });
+  //   }
+  // };
 
   return (
     <Modal show={show} onHide={onClose} centered className="custom-edit-modal">
@@ -81,7 +72,6 @@ const DynamicEditModal = ({
           {title}
         </Modal.Title>
 
-        {/* Close button (icon only, styled manually) */}
         <Button
           onClick={onClose}
           style={{
@@ -105,25 +95,45 @@ const DynamicEditModal = ({
       </Modal.Header>
 
       <Modal.Body style={{ padding: "0.5rem 1.5rem 1rem" }}>
-        {/* Dropdown for selecting allergen */}
-        {dropdownOptions && dropdownOptions.length > 0 && (
-          <div style={{ marginBottom: "0.8rem" }}>
-            <label style={{ display: "block", marginBottom: "0.25rem", fontWeight: 500 }}>
-              {dropdownLabel}
-            </label>
-            <DropdownWithSearch
-              options={dropdownOptions}
-              value={record?.[dropdownField] ?? null}
-              onChange={handleDropdownChange}
-              placeholder={`Search ${dropdownLabel}...`}
-            />
-          </div>
-        )}
-
-        {/* Dynamic fields rendering */}
         {record && (
           <div className="form-grid" style={{ rowGap: "0.8rem" }}>
             {fields.map((field) => {
+              if (field.type === "dropdown") {
+    const value = record[`${field.name}`]
+      ? {
+          id: record[`${field.name}Id`],
+          name: record[`${field.name}`],
+        }
+      : null;
+
+    return (
+      <div key={field.name} style={{ marginBottom: "0", gridColumn: "span 2" }}>
+        <DropdownWithSearch
+          type={typeDropdown}
+          value={value}
+          onChange={(selected) => {
+            setRecord({
+              ...record,
+              [`${field.name}Id`]: selected ? selected.id : null,
+              [`${field.name}`]: selected ? selected.name : "",
+            });
+          }}
+          disabled={false}
+        />
+
+        {errors?.[field.name] && forceShowError && (
+          <div style={{
+            color: "red",
+            fontSize: "0.875rem",
+            marginTop: "0.25rem",
+          }}>
+            {errors[field.name]}
+          </div>
+        )}
+      </div>
+    );
+  }
+
               if (field.type === "textarea") {
                 return (
                   <TextAreaField
@@ -135,6 +145,7 @@ const DynamicEditModal = ({
                     placeholder={field.placeholder}
                     error={errors?.[field.name]}
                     forceShowError={forceShowError}
+                    disabled={field.disabled}
                   />
                 );
               }
@@ -173,6 +184,7 @@ const DynamicEditModal = ({
                   options={field.options}
                   error={errors?.[field.name]}
                   forceShowError={forceShowError}
+                  disabled={field.disabled}
                 />
               );
             })}
@@ -182,7 +194,7 @@ const DynamicEditModal = ({
 
       <Modal.Footer style={{ border: "none", padding: "0.5rem 1.5rem 1.5rem", gap: "0.8rem" }}>
         <button className="simple-btn" onClick={onClose}>{t("Cancel")}</button>
-      { !addMode &&  <button onClick={onDelete} className="btn-simple">{t("Delete")}</button>}
+        {!addMode && <button onClick={onDelete} className="btn-simple">{t("Delete")}</button>}
         <button onClick={onSave} className="second-btn">{t("Save")}</button>
       </Modal.Footer>
     </Modal>

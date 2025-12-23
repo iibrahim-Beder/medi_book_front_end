@@ -25,10 +25,15 @@ import DoctorFinancialDashboard from "./pages/doctor-financial-dashboard/DoctorF
 import Login from "./pages/login/Login";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import 'react-loading-skeleton/dist/skeleton.css';
-
+import NotificationsPage from "./pages/notifications/NotificationsPageMain";
+import { audioService } from "./pages/notifications/audioService";
+import { signalRService } from "./api/chat/ChatSignalRService";
 
 
 function App() {
+window.addEventListener("click", () => {
+  audioService.init();
+}, { once: true });
 
   // language in html
 const { i18n } = useTranslation();
@@ -53,6 +58,19 @@ const { i18n } = useTranslation();
     }, 20);
     return () => clearTimeout(timer);
   }, []);
+  
+// signalR chat connection
+   useEffect(() => {
+      // if (userId) {
+        signalRService.startConnection(1);
+      // }
+  
+      return () => {
+        signalRService.stopConnection();
+      };
+    // }, [userId]);
+    }, []);
+      console.log('SignalR Connection State:', signalRService.connection ? signalRService.connection.state : 'Disconnected');
 
   return (
     <div className="dc-userlogin">
@@ -63,42 +81,69 @@ const { i18n } = useTranslation();
           </div>
         </div>
       )}
-{!loading && (
- <Routes>
- 
-      <Route path="/registration" element={<DoctorRegistration />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/" element={<Login />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      {!loading && (
+        <Routes>
+          <Route path="/registration" element={<DoctorRegistration />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      <Route
-        path="/*"
-        element={
-          <div>
-            <Navbar />
-            <Sidebar />
-            <div className="contentdiv">
-              <Routes>
-                <Route path="dashboard" element={<DashboardMain />} />       
-                <Route path="appointment-list" element={<MainAppointtmentList2 />} />
-                <Route path="appointment-location" element={<LocationMain />} />
-                <Route path="Messages" element={<MessagesPage />} />
-                <Route path="manage-patients" element={<PatientManagement />} />
-                <Route path="how-v1" element={<Test />} />
-                <Route path="manage-financial" element={<DoctorFinancialDashboard/>} />
-                <Route path="Generate-Doctor-Slots" element={<MakeSlostMain />} />
-                <Route path="security-settings" element={<SecuritySettings />} />
-                <Route path="account-settings" element={<Acco />} /> 
-                <Route path="pationt-information" element={<PatientProfilePageMain />} />
-                <Route path="appointment-management" element={<AppointmentManagementMain/>} /> 
-              </Routes>
-            </div>
-          </div>
-        }
-      />
-    </Routes>
-)}
-    </div>
+          <Route
+            path="/*"
+            element={
+              <div>
+                <Navbar />
+                <Sidebar />
+                <div className="contentdiv">
+                  <Routes>
+                    <Route path="dashboard" element={<DashboardMain />} />
+                    <Route
+                      path="appointment-list"
+                      element={<MainAppointtmentList2 />}
+                    />
+                    <Route
+                      path="appointment-location"
+                      element={<LocationMain />}
+                    />
+                    <Route path="Messages" element={<MessagesPage />} />
+                    <Route
+                      path="manage-patients"
+                      element={<PatientManagement />}
+                    />
+                    <Route path="how-v1" element={<Test />} />
+                    <Route
+                      path="manage-financial"
+                      element={<DoctorFinancialDashboard />}
+                    />
+                    <Route
+                      path="Generate-Doctor-Slots"
+                      element={<MakeSlostMain />}
+                    />
+                    <Route
+                      path="security-settings"
+                      element={<SecuritySettings />}
+                    />
+                    <Route path="account-settings" element={<Acco />} />
+                    <Route
+                      path="pationt-information"
+                      element={<PatientProfilePageMain />}
+                    />
+                    <Route
+                      path="appointment-management"
+                      element={<AppointmentManagementMain />}
+                    />
+                    <Route
+                      path="notifications"
+                      element={<NotificationsPage />}
+                    />
+                  </Routes>
+                </div>
+              </div>
+            }
+          />
+        </Routes>
+      )}
+        </div>
   );
 }
 
