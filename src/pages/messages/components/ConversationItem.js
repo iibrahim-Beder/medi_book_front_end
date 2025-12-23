@@ -24,7 +24,7 @@ export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotN
         <img src={img} alt={name} />
       </figure>
       <div className="dc-adcontent">
-        <h3>{name} {!isOnline &&formatTime(lastSeen)}</h3> 
+        <h3> <span>{name}</span>  <span className={`${isOnline?"text-online ":""} text-lastseen `} > {isOnline ? "Online" : formatTime(lastSeen)}  </span></h3> 
         {istypingHere ? <span className="dc-typing">Typing...</span>:<span className="text-ellipsis"style={{paddingRight:"18px"}} > {lastMessageIsMine && "you: "}{lastMsg}  <span className="dc-time">{formatChatDate(lastMessageTime)}</span>  </span>}
       </div>
     </div></div>

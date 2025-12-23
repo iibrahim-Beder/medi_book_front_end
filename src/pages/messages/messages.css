@@ -191,7 +191,10 @@ content: "";
        /* content: '\f165';     */
 /* } */
 
-
+.dc-offersmessages .dc-ad h3{display: flex !important;justify-content: space-between;}
+.dc-offersmessages .dc-ad h3 .text-online{color:#00cc67}
+.dc-offersmessages .dc-ad h3 .text-lastseen{font-size: 12px; font-weight: 400;}
+.dc-offersmessages .dc-ad span .dc-time{font-size: 12px;}
 
 
 @media (max-width: 1199px) and (min-width: 992px) {

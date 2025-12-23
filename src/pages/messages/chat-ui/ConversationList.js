@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 export default function ConversationList() {
   const {
     conversations,
-    pagination,
+    hasNextPage,
     isLoading,
     isError,
     isSearching,
@@ -30,7 +30,7 @@ export default function ConversationList() {
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    if (scrollHeight - scrollTop <= clientHeight + 50 && pagination.hasMore && !isLoading) {
+    if (scrollHeight - scrollTop <= clientHeight + 50 && hasNextPage && !isLoading) {
       loadMore();
     }
   };

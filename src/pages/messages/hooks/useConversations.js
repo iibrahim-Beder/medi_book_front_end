@@ -40,6 +40,7 @@ export const useConversations = () => {
     pageNumber,
     pageSize,
   });
+  console.log("chatsData",chatsData);
 
     useEffect(() => {
     const handleUserTyping = (typingUpdate) => {
@@ -115,6 +116,7 @@ export const useConversations = () => {
     setSearchTerm,
     loadMore,
     refetch: refetchConversations,
+    hasNextPage: chatsData?.hasNextPage,
     // chat selection
     selectedChat,
     changeChat,
