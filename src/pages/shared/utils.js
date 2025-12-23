@@ -97,3 +97,60 @@ export const getNotificationIcon = (type) => {
       day: 'numeric'
     });
   };
+
+  export function formatTime12(dateString) {
+  return new Date(dateString).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+export function formatDay(dateString) {
+  const date = new Date(dateString);
+  const month = date.toLocaleString("en-US", { month: "short" });
+  return `${month} ${date.getDate()}, ${date.getFullYear()}`;
+}
+export function isSameDay(d1, d2) {
+  return (
+    d1.getDate() === d2.getDate() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getFullYear() === d2.getFullYear()
+  );
+}
+
+
+
+export function formatChatDate(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  const sameDay =
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+
+  const sameYear =
+    date.getFullYear() === now.getFullYear();
+
+  const time = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,   // ✅ 12-hour
+  });
+
+  if (sameDay) {
+    // 09:30 AM
+    return time;
+  }
+
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const day = date.getDate();
+
+  if (sameYear) {
+    // Jun 28, 09:30 AM
+    return `${month} ${day}, ${time}`;
+  }
+
+  // Jun 28, 2017 09:30 AM
+  return `${month} ${day}, ${date.getFullYear()} ${time}`;
+}

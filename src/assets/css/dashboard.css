@@ -5138,6 +5138,7 @@ top: 50%;
     border-radius: 6px;
     background: var(--themecolor);
     color: white;
+	min-width: fit-content;
 }
 /*Messages Styles*/
 .dc-offersmessages .dc-ad:after{
@@ -5183,7 +5184,7 @@ top: 50%;
 .dc-offerermessage .dc-description p,
 .dc-memessage .dc-description p{
 	padding: 10px;
-	font-size: 14px;
+	font-size: 15px;
 	margin: 0 0 5px;
 	max-width: 485px;
 	line-height: 24px;
@@ -5194,17 +5195,18 @@ top: 50%;
 .dc-offerermessage .dc-description p {
 	border: 1px solid #f2f2f2;
     border-radius: 20px 20px 20px 0px;
-    background: var(--themecolor);
-	color: white;
-    padding: 20px;
-	padding-right: 10px;
-	padding-bottom: 10px;
+    background: var(--badybkcolor);
+	/* color: white; */
+    padding: 10px;
+	/* padding-right: 10px;
+	padding-bottom: 10px; */
 }
 .dc-memessage .dc-description p{
 	border: 1px solid #f2f2f2;
 	border-radius: 20px 20px 0px 20px;
-	background: var(--badybkcolor);
-	padding: 20px;
+	background: var(--themecolor);
+    color: white;
+	padding: 10px;
 }
 .dc-offerermessage .dc-description p a,
 .dc-memessage .dc-description p a{
@@ -5230,7 +5232,7 @@ top: 50%;
 	right: 0;
 	width: 16px;
 	height: 16px;
-	color: #00cc67;
+	/* color: #00cc67; */
 	font-size: 11px;
 	line-height: 16px;
 	content: '\f00c';
@@ -5260,7 +5262,7 @@ top: 50%;
 	color: #fff;
 	width: 70px;
 	height: 29px;
-	line-height: 29px;
+	/* line-height: 29px; */
 	text-align: center;
 	margin: 4px;
 	border-radius: 4px;

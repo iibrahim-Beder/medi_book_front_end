@@ -17,7 +17,7 @@ import MessagesPage from "./pages/messages/MessagesPage";
 import AppointmentManagementMain from "./pages/appointment-management/AppointmentmanagementMain";
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
-// import Test from './not used/Test';
+import Test from './not used/Test';
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -26,9 +26,14 @@ import Login from "./pages/login/Login";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import 'react-loading-skeleton/dist/skeleton.css';
 import NotificationsPage from "./pages/notifications/NotificationsPageMain";
+import { audioService } from "./pages/notifications/audioService";
+import { signalRService } from "./api/chat/ChatSignalRService";
 
 
 function App() {
+window.addEventListener("click", () => {
+  audioService.init();
+}, { once: true });
 
   // language in html
 const { i18n } = useTranslation();
@@ -53,6 +58,19 @@ const { i18n } = useTranslation();
     }, 20);
     return () => clearTimeout(timer);
   }, []);
+  
+// signalR chat connection
+   useEffect(() => {
+      // if (userId) {
+        signalRService.startConnection(1);
+      // }
+  
+      return () => {
+        signalRService.stopConnection();
+      };
+    // }, [userId]);
+    }, []);
+      console.log('SignalR Connection State:', signalRService.connection ? signalRService.connection.state : 'Disconnected');
 
   return (
     <div className="dc-userlogin">
@@ -92,7 +110,7 @@ const { i18n } = useTranslation();
                       path="manage-patients"
                       element={<PatientManagement />}
                     />
-                    {/* <Route path="how-v1" element={<Test />} /> */}
+                    <Route path="how-v1" element={<Test />} />
                     <Route
                       path="manage-financial"
                       element={<DoctorFinancialDashboard />}
