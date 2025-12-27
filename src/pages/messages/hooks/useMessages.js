@@ -6,7 +6,6 @@ import {
 import { useSignalR } from "../../../api/chat/chatUseSignalR";
 import { doctorChatApi } from "../../../api/chat/doctorChatApi";
 import { useDispatch, useSelector } from "react-redux";
-import Skeleton from "react-loading-skeleton";
 
 export const useMessages = () => {
   const dispatch = useDispatch();
@@ -14,8 +13,6 @@ export const useMessages = () => {
   const selectedChat = useSelector((state) => state.chats.selectedChatId);
 
   const [pageByChat, setPageByChat] = useState({});
-  const [isFetchingOld, setIsFetchingOld] = useState(false);  
-
 
   const currentPage = pageByChat[selectedChat] ?? 1;
 
@@ -60,7 +57,8 @@ export const useMessages = () => {
   };
 
   const loadMore = () => {
-    if(!messagesData.hasNextPage)return
+    console.log("==loadMore hasNextPage", messagesData.hasNextPage) ;
+    if(!messagesData.hasNextPage||isFetching)return
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: (prev[selectedChat] ?? 1) + 1,
@@ -71,7 +69,7 @@ export const useMessages = () => {
     const el = chatContainerRef.current;
     if (!el) return;
 
-    if (Math.abs(el.scrollTop) + el.clientHeight >= el.scrollHeight - 335) {
+    if (Math.abs(el.scrollTop) + el.clientHeight >= el.scrollHeight - 5) {
       loadMore();
     }
   };

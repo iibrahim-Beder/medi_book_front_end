@@ -63,8 +63,8 @@ export default function ChatMessages() {
               );
 
             return (
-              <div key={message.id}>
                 <ChatMessage
+                key={`${message.chatId}-${message.id}`}
                   {...message}
                   status={message.status}
                   text={message.content}
@@ -80,8 +80,7 @@ export default function ChatMessages() {
                   date={formatChatDate(message.sentAt)}
                   isIngroupAndNotTheLast={!showAvatar}
                   isfirstInGroup={isfirstInGroup}
-                />
-              </div>
+                />         
             );
           })}
           {isLoadingOlderMessages && Loader("loading-in-chat")}

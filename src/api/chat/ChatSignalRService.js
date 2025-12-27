@@ -25,9 +25,10 @@
 
       this.startPromise = (async () => {
         try {
+           const baseUrl = process.env.REACT_APP_API_URL 
           this.connection = new signalR.HubConnectionBuilder()
             .withUrl(
-              `https://motors-liked-sewing-cnet.trycloudflare.com/chathub?userId=${userId}`,
+              `${baseUrl}/chathub?userId=${userId}`,
               {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets,

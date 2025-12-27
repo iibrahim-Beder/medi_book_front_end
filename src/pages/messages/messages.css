@@ -161,7 +161,7 @@ content: "";
     border-color: #005ce4 transparent transparent transparent;
 }
 
-.dc-offerermessage.dc-first-in-group .dc-description p { border-top-left-radius: 0px !important; }
+.dc-offerermessage.dc-first-in-group .dc-description p {border-radius: 20px !important; border-top-left-radius: 0px !important; }
 .dc-offerermessage.dc-first-in-group .dc-description p::after {
     content: "";
     position: absolute;
@@ -212,10 +212,25 @@ content: "";
 .dc-offersmessages .dc-ad h3 .text-online{color:#00cc67}
 .dc-offersmessages .dc-ad h3 .text-lastseen{font-size: 12px; font-weight: 400;}
 .dc-offersmessages .dc-ad span .dc-time{font-size: 12px;}
+.emoji-container{
+    position: absolute;
+    box-shadow: 0 0 10px var(--scshadocolor);
+    bottom: 40px;
+    right: -320px;
+    z-index: 1000;
+    border-radius: 10px;
+}
+   emoji-picker {
+        --background:var(--badybkcolor);
+          -webkit-text-stroke: 0 !important;
 
-
+        --border-radius: 10px;
+        --border-color: #ddd;
+        /* --border-color: var(--border-color); */
+        --input-border-radius: 1.5rem;
+            max-height: 327px;
+    }
 @media (max-width: 1199px) and (min-width: 992px) {
-
     .dc-first-in-group.dc-memessage .dc-description p::after{right: 42px;}
     /*  */
     .dc-offerermessage.dc-first-in-group .dc-description p::after {left: 40px;}
@@ -227,3 +242,43 @@ content: "";
  .dc-offerermessage.dc-first-in-group .dc-description p::after {left: 40px;}
 .dc-offerermessage.dc-first-in-group .dc-description p::before{left: 44px;}
 } 
+@media (max-width: 991px) {
+    /* .dc-dbsectionspace-test .dc-dbsectionspace-row .dc-messagebox{display: none;} */
+    .emoji-container{right: 30%; bottom: 130px;}
+}
+@media (max-width: 700px) {
+    
+    .emoji-container{width: 100%;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 0px;
+        position: relative;
+        bottom: 0;
+        right: 0;
+    }
+      emoji-picker {
+            --emoji-padding: 0.3rem;
+    .picker div.nav {overflow: auto !important;} 
+       
+    .picker{--total-category-emoji-size: 32px !important;}
+            --total-category-emoji-size: 32px;
+          --num: 5; 
+          width: 100%;
+        }
+emoji-picker  .nav-emoji{width: 25px !important;
+background-color: red !important;
+}
+.nav-emoji{width: 25px !important;}
+
+.picker div.nav {overflow: auto !important;} 
+
+
+
+
+@media (max-width: 400px) {
+  emoji-picker {
+          --emoji-padding: 0.2rem;
+          --num-columns: 6;
+  }
+}}
+
+

@@ -23,6 +23,7 @@
     "axios": "^1.11.0",
     "chart.js": "^4.5.0",
     "date-fns": "^4.1.0",
+    "emoji-picker-element": "^1.28.1",
     "es-toolkit": "^1.39.10",
     "firebase": "^12.6.0",
     "formik": "^2.4.6",

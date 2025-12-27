@@ -40,8 +40,8 @@ export const useConversations = () => {
     pageNumber,
     pageSize,
   });
-  console.log("chatsData",chatsData);
-  console.log("isLoading",isLoading);
+  // console.log("chatsData",chatsData);
+  // console.log("isLoading",isLoading);
 
     useEffect(() => {
     const handleUserTyping = (typingUpdate) => {

@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
 import { signalRService } from "../../../api/chat/ChatSignalRService";
+import { useSelector } from "react-redux";
 
 const TYPING_TIMEOUT = 2000; // 2 seconds
 
 export function useTypingIndicator({
-  chatId,
   message,
   updateUserTyping,
 }) {
+    const chatId = useSelector((state) => state.chats.selectedChatId);
+
   const isTypingRef = useRef(false);
   const typingTimerRef = useRef(null);
 
