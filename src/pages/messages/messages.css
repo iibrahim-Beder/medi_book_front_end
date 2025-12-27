@@ -68,6 +68,8 @@
      .dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:last-child,       .messages-page  .dc-dashboardboxcontent,.messages-page .dc-collapseexp {
         padding: 0 10px !important;
     }
+    .messages-page{padding: 10px !important;}
+    .messages-page .col-lg-8{padding: 0px !important;}
 }
 /* message status */
 .dc-messagecontent time{white-space: nowrap;}
@@ -271,8 +273,9 @@ background-color: red !important;
 
 .picker div.nav {overflow: auto !important;} 
 
-
-
+.dc-replaybox {
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;}
 
 @media (max-width: 400px) {
   emoji-picker {

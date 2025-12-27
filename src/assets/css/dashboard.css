@@ -5337,6 +5337,7 @@ top: 50%;
     float: left;
     width: 100%;
     border: 1px solid #eaedef;
+	margin-bottom: 20px;
 }
 .dc-iconbox {
     width: 100%;
