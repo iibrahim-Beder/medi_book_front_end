@@ -79,7 +79,7 @@ export default function ConversationList() {
               lastMessageTime={chat.lastMessageTime}
               lastMessageIsMine={chat.lastMessageIsMine}
               messeagesDotNotification={chat.unreadCount > 0 ? chat.unreadCount : undefined}
-              status={chat.status}
+              lastMessageStatus={chat.lastMessageStatus}
             />
           ))
         )}

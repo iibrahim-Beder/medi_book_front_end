@@ -4,8 +4,11 @@ import ChatMessage from "./ChatMessage";
 import { SyncLoader } from "react-spinners";
 import {  useMessages } from "../hooks/useMessages";
 import Loader from "../../shared/Loader";
+import { useSelector } from "react-redux";
 
 export default function ChatMessages() {
+    const selectedChat = useSelector((state) => state.chats.selectedChatId);
+  
   const { isChatTyping } = useConversations();
   const {
     messages,
@@ -28,6 +31,7 @@ export default function ChatMessages() {
 
   return (
     <div
+     key={selectedChat}
       ref={chatContainerRef}
       onScroll={handleScroll}
       className={`dc-messages dc-verticalscrollbar dc-dashboardscrollbar ${messagesLoading ||isLoadingNewerMessages ? "loading" : ""}`}

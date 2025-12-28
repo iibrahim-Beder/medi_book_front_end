@@ -38,7 +38,7 @@ window.addEventListener("click", () => {
 const soundsConfig = {
   notification: '/sounds/notification.mp3',
   messageArrived: '/sounds/message-arrives.wav',
-  sendMessage: '/sounds/Send-message.wav',
+  sendMessage: '/sounds/send-message.mp3',
   writing: '/sounds/writing.mp3',
   messageArrivedChatIn: '/sounds/message-arrived-chatIn.mp3'
 };
