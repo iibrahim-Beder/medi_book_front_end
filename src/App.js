@@ -28,6 +28,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import NotificationsPage from "./pages/notifications/NotificationsPageMain";
 import { audioService } from "./pages/notifications/audioService";
 import { signalRService } from "./api/chat/ChatSignalRService";
+import { useMessageListener } from "./pages/messages/components/ToastMrssage";
 
 
 function App() {
@@ -38,10 +39,11 @@ const soundsConfig = {
   notification: '/sounds/notification.mp3',
   messageArrived: '/sounds/message-arrives.wav',
   sendMessage: '/sounds/Send-message.wav',
-  writing: '/sounds/writing.mp3'
+  writing: '/sounds/writing.mp3',
+  messageArrivedChatIn: '/sounds/message-arrived-chatIn.mp3'
 };
 audioService.init(soundsConfig);
-
+useMessageListener();
   // language in html
 const { i18n } = useTranslation();
 

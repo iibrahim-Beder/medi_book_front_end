@@ -210,6 +210,18 @@ content: "";
        /* content: '\f165';     */
 /* } */
 
+
+/* toast css start */
+.toast-messsage-img{width: 40px; font-size: 12px;}
+  .toast-custom-box  .content time{white-space: nowrap;}
+  .toast-custom-box  .content{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 22px;
+    width: 100%;
+  }
+
 .dc-offersmessages .dc-ad h3{display: flex !important;justify-content: space-between;}
 .dc-offersmessages .dc-ad h3 .text-online{color:#00cc67}
 .dc-offersmessages .dc-ad h3 .text-lastseen{font-size: 12px; font-weight: 400;}
@@ -278,6 +290,9 @@ background-color: red !important;
     border-bottom-right-radius: 11px;}
 
 @media (max-width: 400px) {
+    .toast-custom-box.message .avatar-title{flex-direction: row;}
+    .toast-custom-box .content{gap: 0;
+    }
   emoji-picker {
           --emoji-padding: 0.2rem;
           --num-columns: 6;

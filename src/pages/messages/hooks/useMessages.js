@@ -92,6 +92,7 @@ export const useMessages = () => {
     const handleNewMessage = (message) => {
       console.log("New message received from WebSocket:", message);
       if (selectedChat === message.chatId) {
+        audioService.play('messageArrivedChatIn')
         updateMessageStatus( message.chatId  , message.messageId, 2);
       } else {
         updateMessageStatus( message.chatId  , message.messageId, 1);
@@ -149,7 +150,6 @@ export const useMessages = () => {
           }
         )
       );
-      audioService.play('messageArrived')
     };
 
     if (getIsconnection) {
