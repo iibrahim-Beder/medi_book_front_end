@@ -34,6 +34,13 @@ function App() {
 window.addEventListener("click", () => {
   audioService.init();
 }, { once: true });
+const soundsConfig = {
+  notification: '/sounds/notification.mp3',
+  messageArrived: '/sounds/message-arrives.wav',
+  sendMessage: '/sounds/Send-message.wav',
+  writing: '/sounds/writing.mp3'
+};
+audioService.init(soundsConfig);
 
   // language in html
 const { i18n } = useTranslation();

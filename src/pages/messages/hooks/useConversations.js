@@ -7,11 +7,11 @@ import {doctorChatApi} from '../../../api/chat/doctorChatApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectChat } from '../slices/chatsSlice';
 import { selectIsChatTyping, updateTyping } from '../slices/messagesSlice';
+import { audioService } from '../../notifications/audioService';
 export const useConversations = () => {
   const dispatch = useDispatch();
 
   const selectedChat = useSelector((state) => state.chats.selectedChatId);
-  
   
   const changeChat = useCallback((chatId) => dispatch(selectChat(chatId)), [dispatch]);  
 
@@ -44,11 +44,13 @@ export const useConversations = () => {
   // console.log("isLoading",isLoading);
 
     useEffect(() => {
-    const handleUserTyping = (typingUpdate) => {
-      dispatch(updateTyping({chatId:typingUpdate.chatId,userId: typingUpdate.userId,isTyping: typingUpdate.isTyping,}));
+    const handleUserTyping = (typingUpdate) => {  
+         dispatch(updateTyping({chatId:typingUpdate.chatId,userId: typingUpdate.userId,isTyping: typingUpdate.isTyping,}));
+    if(typingUpdate.chatId===selectedChat){
+      audioService.play('writing')}
     };
     onUserTyping(handleUserTyping);
-  }, [onUserTyping, getIsconnection]);
+  }, [onUserTyping, getIsconnection,selectedChat]);
 
   useEffect(() => {
     const handleUserStatusChange = (statusUpdate) => {

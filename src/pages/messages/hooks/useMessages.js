@@ -6,6 +6,7 @@ import {
 import { useSignalR } from "../../../api/chat/chatUseSignalR";
 import { doctorChatApi } from "../../../api/chat/doctorChatApi";
 import { useDispatch, useSelector } from "react-redux";
+import { audioService } from "../../notifications/audioService";
 
 export const useMessages = () => {
   const dispatch = useDispatch();
@@ -148,6 +149,7 @@ export const useMessages = () => {
           }
         )
       );
+      audioService.play('messageArrived')
     };
 
     if (getIsconnection) {
@@ -327,7 +329,7 @@ export const useMessages = () => {
           }
         )
       );
-
+       audioService.play('sendMessage');
       try {
 
         const result = await sendMessageApi(tempMessage).unwrap();
