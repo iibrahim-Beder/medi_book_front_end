@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const chatsSlice = createSlice({
   name: "chats",
   initialState: {
-    selectedChatId: 3,
+    selectedChatId: null,
   },
   reducers: {
     selectChat: (state, action) => {

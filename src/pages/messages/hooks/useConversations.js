@@ -40,7 +40,14 @@ export const useConversations = () => {
     pageNumber,
     pageSize,
   });
-  // console.log("chatsData",chatsData);
+  console.log("chatsData",chatsData);
+  useEffect(() => {
+    if(window.innerWidth >= 992&&!isLoading){
+  changeChat(chatsData.data[0]?.chatId);
+  }
+    
+  },[isLoading])
+
   // console.log("isLoading",isLoading);
 
     useEffect(() => {

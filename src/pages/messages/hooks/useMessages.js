@@ -76,6 +76,7 @@ export const useMessages = () => {
   };
   // in selectedChat change
   useEffect(() => {
+    console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: 1,
@@ -85,7 +86,7 @@ export const useMessages = () => {
       InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
       markMessagesAsRead();
     }
-  }, [selectedChat]);
+  }, [selectedChat,messagesLoading,isConnected]);
   
   // handle new message
   useEffect(() => {
