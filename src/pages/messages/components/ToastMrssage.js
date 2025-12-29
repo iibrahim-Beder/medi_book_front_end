@@ -39,7 +39,7 @@ export default function ToastMessage({ t, message }) {
               {/* <h6 className="fw-bold mb-1">{message.naem}</h6> */}
               {/* Content */}
               <div className="content w-100">
-                <p className=" m-0"> {(message.content)}</p>
+                <p className=" m-0"> {truncateTitle(message.content, 90)}</p>
                 <time className="text-muted"> {formatChatDate(message.sentAt)} </time>
               </div>
 
