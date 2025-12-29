@@ -15,9 +15,9 @@ export default function ToastMessage({ t, message }) {
              ${t.visible ? "opacity-100" : "opacity-0"} 
               transition-opacity`}
       >
-        <div>
+        <div className="w-100">
           <div className="d-flex">
-            <div className="avatar-title">
+            <div className="avatar-title w-100">
               {/* Avatar / Icon */}
               <div
                 className="rounded-circle d-flex align-items-center justify-content-center me-3"
@@ -34,12 +34,12 @@ export default function ToastMessage({ t, message }) {
                   alt="avatar"
                 />
               </div>
-              <div>
-              <h6 className="fw-bold mb-1">patient name</h6>
+              <div className="w-100">
+              <h6 className="fw-bold m-0">patient name</h6>
               {/* <h6 className="fw-bold mb-1">{message.naem}</h6> */}
               {/* Content */}
-              <div className="content">
-                <p className=" m-0"> {truncateTitle(message.content,40)}</p>
+              <div className="content w-100">
+                <p className=" m-0"> {(message.content)}</p>
                 <time className="text-muted"> {formatChatDate(message.sentAt)} </time>
               </div>
 
@@ -58,7 +58,7 @@ export default function ToastMessage({ t, message }) {
   );
 }
 export const useMessageListener = () => {
-  const { onMessageReceived ,getIsconnection} = useSignalR();
+  const { onMessageReceived ,isConnected} = useSignalR();
     const { isMobile } = useDevice();
   const selectedChat = useSelector((state) => state.chats.selectedChatId);
 
@@ -75,8 +75,8 @@ export const useMessageListener = () => {
       );
     };
 
-    if (getIsconnection())  {
+    if (isConnected)  {
       onMessageReceived(handleNewMessage);
     }
-  }, [onMessageReceived, selectedChat]);
+  }, [onMessageReceived, selectedChat,isConnected]);
 };

@@ -25,7 +25,7 @@ export const useConversations = () => {
 
   //  WebSocket hooks
   const {
-    getIsconnection,
+    isConnected,
     onUserStatusChanged,
     onUserTyping,
   } = useSignalR();
@@ -50,7 +50,7 @@ export const useConversations = () => {
       audioService.play('writing')}
     };
     onUserTyping(handleUserTyping);
-  }, [onUserTyping, getIsconnection,selectedChat]);
+  }, [onUserTyping, isConnected,selectedChat]);
 
   useEffect(() => {
     const handleUserStatusChange = (statusUpdate) => {
@@ -81,7 +81,7 @@ export const useConversations = () => {
     // if (connection) {
     onUserStatusChanged(handleUserStatusChange);
     // }
-  }, [getIsconnection, onUserStatusChanged, chatsData]);
+  }, [isConnected, onUserStatusChanged, chatsData]);
 
 
   const handleSearch = useCallback((term) => {
@@ -125,7 +125,7 @@ export const useConversations = () => {
     changeChat,
     // WebSocket
     isChatTyping,
-    connection: getIsconnection,
+    connection: isConnected,
     lastMessage: lastReceivedMessage.current,
   };
 };

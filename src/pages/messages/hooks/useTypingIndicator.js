@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { signalRService } from "../../../api/chat/ChatSignalRService";
 import { useSelector } from "react-redux";
+import { useSignalR } from "../../../api/chat/chatUseSignalR";
 
 const TYPING_TIMEOUT = 2000; // 2 seconds
 
@@ -9,13 +9,14 @@ export function useTypingIndicator({
   updateUserTyping,
 }) {
     const chatId = useSelector((state) => state.chats.selectedChatId);
+    const { isConnected } = useSignalR();
 
   const isTypingRef = useRef(false);
   const typingTimerRef = useRef(null);
 
   const startTyping = () => {
     if (isTypingRef.current) return;
-    if (signalRService.connection?.state === "Connecting") return;
+    if (!isConnected) return;
 
     isTypingRef.current = true;
     updateUserTyping(chatId, true);
@@ -23,7 +24,7 @@ export function useTypingIndicator({
 
   const stopTyping = () => {
     if (!isTypingRef.current) return;
-    if (signalRService.connection?.state === "Connecting") return;
+    if (!isConnected) return;
 
     isTypingRef.current = false;
     updateUserTyping(chatId, false);

@@ -1,18 +1,21 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback,useState } from 'react';
 import { signalRService } from './ChatSignalRService';
 
 export const useSignalR = (userId) => {
   const componentId = useRef(`component_${Date.now()}_${Math.random()}`);
+  const [isConnected, setIsConnected] = useState(false);
 
   // start connection
   useEffect(() => {
-    if (!userId) return;
+    // if (!userId) return;
 
     const connect = async () => {
       try {
         await signalRService.startConnection(userId);
+        setIsConnected(true);
       } catch (error) {
         console.error('Failed to connect to SignalR:', error);
+        setIsConnected(false);
       }
     };
 
@@ -20,6 +23,7 @@ export const useSignalR = (userId) => {
 
     //clean up unmount
     return () => {
+      setIsConnected(false);
       signalRService.removeMessageHandler(componentId.current);
       signalRService.removeStatusHandler(componentId.current);
       signalRService.removeUserStatusHandler(componentId.current);
@@ -75,16 +79,8 @@ export const useSignalR = (userId) => {
     signalRService.onMarkAllMessagesAsRead(componentId.current, handler);
   }, []);
 
-  // get connection true or false
-  const getIsconnection = useCallback(() => {
-    console.log('getConnectionState', signalRService.getConnectionState());
-    if (signalRService.getConnectionState() === 'Connected') {
-      return true
-    }else{
-      return false
-    }
-  }, []);
   return {
+    isConnected,
     onMessageReceived,
     onMessageStatusUpdated,
     onUserStatusChanged, 
@@ -96,6 +92,5 @@ export const useSignalR = (userId) => {
     stopConnection,
     getConnectionState,
     onUserTyping,
-    getIsconnection
   };
 };

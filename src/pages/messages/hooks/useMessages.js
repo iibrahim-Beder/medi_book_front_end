@@ -23,7 +23,7 @@ export const useMessages = () => {
 
   //  WebSocket hooks
   const {
-    getIsconnection,
+    isConnected,
     onMessageReceived,
     onMessageStatusUpdated,
     updateMessageStatus,
@@ -81,7 +81,7 @@ export const useMessages = () => {
       [selectedChat]: 1,
     }));
     toLatestMessage();
-    if(getIsconnection()&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
+    if(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
       InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
       markMessagesAsRead();
     }
@@ -152,10 +152,10 @@ export const useMessages = () => {
       );
     };
 
-    if (getIsconnection) {
+    if (isConnected) {
       onMessageReceived(handleNewMessage);
     }
-  }, [getIsconnection, onMessageReceived, selectedChat]);
+  }, [isConnected, onMessageReceived, selectedChat]);
 
   useEffect(() => {
     const handleMessageStatusUpdate = (statusUpdate) => {
@@ -206,7 +206,7 @@ export const useMessages = () => {
     };
 
     onMessageStatusUpdated(handleMessageStatusUpdate);
-  }, [getIsconnection, onMessageStatusUpdated]);
+  }, [isConnected, onMessageStatusUpdated]);
   // on 
   useEffect(() => {
     const handleMessageMarkfromlastmessageasread = (MessageMark) => {
@@ -251,11 +251,11 @@ export const useMessages = () => {
         );
 
     };
-    if (getIsconnection)  {
+    if (isConnected)  {
       onMarkAllMessagesAsRead(handleMessageMarkfromlastmessageasread);
     }
 
-  }, [getIsconnection, onMarkAllMessagesAsRead]);
+  }, [isConnected, onMarkAllMessagesAsRead]);
 
   const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
