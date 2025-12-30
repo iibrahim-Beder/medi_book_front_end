@@ -6,16 +6,6 @@ import {
 import { useSignalR } from "../../../api/chat/chatUseSignalR";
 import { doctorChatApi } from "../../../api/chat/doctorChatApi";
 import { useDispatch, useSelector } from "react-redux";
-<<<<<<< HEAD
-
-export const useMessages = () => {
-  const dispatch = useDispatch();
-
-  const selectedChat = useSelector((state) => state.chats.selectedChatId);
-  console.log("selectedChatId", selectedChat);
-
-  const [pageByChat, setPageByChat] = useState({});
-=======
 import { audioService } from "../../notifications/audioService";
 const MessageStatus = {
   "Sent":0,
@@ -31,7 +21,6 @@ export const useMessages = () => {
   const isChatOpen   = useSelector((state) => state.chats.isChatOpen);
   const [pageByChat, setPageByChat] = useState({});
 
->>>>>>> Messages-ui
   const currentPage = pageByChat[selectedChat] ?? 1;
 
   const pageSizeMessage = 30;
@@ -40,11 +29,7 @@ export const useMessages = () => {
 
   //  WebSocket hooks
   const {
-<<<<<<< HEAD
-    getIsconnection,
-=======
     isConnected,
->>>>>>> Messages-ui
     onMessageReceived,
     onMessageStatusUpdated,
     updateMessageStatus,
@@ -56,10 +41,7 @@ export const useMessages = () => {
     data: messagesData,
     isLoading: messagesLoading,
     isError: messagesIsError,
-<<<<<<< HEAD
-=======
     isFetching,
->>>>>>> Messages-ui
     refetch: refetchMessages,
   } = useGetChatMessagesQuery(
     selectedChat
@@ -73,28 +55,17 @@ export const useMessages = () => {
   );
     const currentMessages = messagesData?.data ?? [];
 
-<<<<<<< HEAD
-  console.log("messagesData", messagesData);
-=======
->>>>>>> Messages-ui
   const [sendMessageApi, { isLoading: isSending }] = useSendMessageMutation();
   const chatContainerRef = useRef(null);
   const toLatestMessage = () => {
     const el = chatContainerRef.current;
     if (!el) return;
-<<<<<<< HEAD
-    console.log("el.scrollHeight", el.scrollHeight);
-=======
->>>>>>> Messages-ui
     el.scrollTop = el.scrollHeight;
   };
 
   const loadMore = () => {
-<<<<<<< HEAD
-=======
     console.log("==loadMore hasNextPage", messagesData.hasNextPage) ;
     if(!messagesData.hasNextPage||isFetching)return
->>>>>>> Messages-ui
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: (prev[selectedChat] ?? 1) + 1,
@@ -109,10 +80,7 @@ export const useMessages = () => {
       loadMore();
     }
   };
-<<<<<<< HEAD
-=======
   console.log("===render===");
->>>>>>> Messages-ui
   // in selectedChat change
   useEffect(() => {
     setPageByChat((prev) => ({
@@ -120,17 +88,6 @@ export const useMessages = () => {
       [selectedChat]: 1,
     }));
     toLatestMessage();
-<<<<<<< HEAD
-    if(getIsconnection()&& selectedChat&& currentMessages){
-      InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
-      markMessagesAsRead();
-      console.log("selectedChat", selectedChat,"messageId", currentMessages[0]?.id);
-    }
-    markMessagesAsRead();
-  }, [selectedChat]);
-  
-  // console.log("selectedChat", selectedChat,"messageId", currentMessages[0]?.id);
-=======
     if(!isConnected)return;
     if(isConnected&& selectedChat!==-1&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
       console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
@@ -139,24 +96,16 @@ export const useMessages = () => {
     }
   }, [selectedChat,messagesLoading,isConnected]);
   
->>>>>>> Messages-ui
   // handle new message
   useEffect(() => {
     const handleNewMessage = (message) => {
       console.log("New message received from WebSocket:", message);
-<<<<<<< HEAD
-      if (selectedChat === message.chatId) {
-        updateMessageStatus( message.chatId  , message.messageId, 2);
-      } else {
-        updateMessageStatus( message.chatId  , message.messageId, 1);
-=======
       if (selectedChat === message.chatId&& isChatOpen) {
         console.log("====================WebSocket:", isChatOpen);
         audioService.play('messageArrivedChatIn')
         updateMessageStatus( message.chatId  , message.messageId, MessageStatus.Read);
       } else {
         updateMessageStatus( message.chatId  , message.messageId, MessageStatus.Delivered);
->>>>>>> Messages-ui
       }
       // ===== (RTK Query) =====
       dispatch(
@@ -213,17 +162,10 @@ export const useMessages = () => {
       );
     };
 
-<<<<<<< HEAD
-    if (getIsconnection) {
-      onMessageReceived(handleNewMessage);
-    }
-  }, [getIsconnection, onMessageReceived, selectedChat]);
-=======
     if (isConnected) {
       onMessageReceived(handleNewMessage);
     }
   }, [isConnected, onMessageReceived, selectedChat, isChatOpen]);
->>>>>>> Messages-ui
 
   useEffect(() => {
     const handleMessageStatusUpdate = (statusUpdate) => {
@@ -272,16 +214,10 @@ export const useMessages = () => {
       // }
 
     };
-<<<<<<< HEAD
-
-    onMessageStatusUpdated(handleMessageStatusUpdate);
-  }, [getIsconnection, onMessageStatusUpdated]);
-=======
   if(isConnected){
     onMessageStatusUpdated(handleMessageStatusUpdate);
   }
   }, [isConnected, onMessageStatusUpdated]);
->>>>>>> Messages-ui
   // on 
   useEffect(() => {
     const handleMessageMarkfromlastmessageasread = (MessageMark) => {
@@ -300,20 +236,12 @@ export const useMessages = () => {
 
             draft.data.forEach((msg) => {
               if (MessageMark.lastReadMessageId >= msg.id) {
-<<<<<<< HEAD
-                msg.status = 2;
-=======
                 msg.status = MessageStatus.Read;
->>>>>>> Messages-ui
               }
             });
           }
         )
-<<<<<<< HEAD
-      );
-=======
       );  
->>>>>>> Messages-ui
 
         dispatch(
           doctorChatApi.util.updateQueryData(
@@ -327,30 +255,18 @@ export const useMessages = () => {
               );
 
               if (chat) {
-<<<<<<< HEAD
-                chat.lastMessageStatus =2;
-=======
                 chat.lastMessageStatus =MessageStatus.Read;
->>>>>>> Messages-ui
               }
             }
           )
         );
 
     };
-<<<<<<< HEAD
-    if (getIsconnection)  {
-      onMarkAllMessagesAsRead(handleMessageMarkfromlastmessageasread);
-    }
-
-  }, [getIsconnection, onMarkAllMessagesAsRead]);
-=======
     if (isConnected)  {
       onMarkAllMessagesAsRead(handleMessageMarkfromlastmessageasread);
     }
 
   }, [isConnected, onMarkAllMessagesAsRead]);
->>>>>>> Messages-ui
 
   const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
@@ -406,11 +322,7 @@ export const useMessages = () => {
               chat.lastMessageTime =
                 tempMessage.sentAt || new Date().toISOString();
               chat.lastMessageIsMine = true;
-<<<<<<< HEAD
-              chat.lastMessageStatus = tempMessage.status || 4;
-=======
               chat.lastMessageStatus = MessageStatus.Sending || 4;
->>>>>>> Messages-ui
 
               if (
                 tempMessage.senderId !== tempMessage.currentUserId &&
@@ -428,11 +340,7 @@ export const useMessages = () => {
           }
         )
       );
-<<<<<<< HEAD
-
-=======
        audioService.play('sendMessage');
->>>>>>> Messages-ui
       try {
 
         const result = await sendMessageApi(tempMessage).unwrap();
@@ -469,11 +377,6 @@ export const useMessages = () => {
         // return result;
       } catch (error) {
         console.error("Error sending message:", error);
-<<<<<<< HEAD
-
-        try {
-=======
->>>>>>> Messages-ui
           dispatch(
             doctorChatApi.util.updateQueryData(
               "getChatMessages",
@@ -487,31 +390,20 @@ export const useMessages = () => {
                 if (!draft?.data) return;
                 draft.data.forEach((msg) => {
                   if (tempMessage.id === msg.id) {
-<<<<<<< HEAD
-                    msg.status = 3;
-=======
                     msg.status = MessageStatus.Failed;
->>>>>>> Messages-ui
                   }
                 });
               }
             )
           );
-<<<<<<< HEAD
-        } catch {}
-        throw error;
-=======
         
         // throw error;
->>>>>>> Messages-ui
       }
     },
 
     [selectedChat, sendMessageApi]
   );
 
-<<<<<<< HEAD
-=======
 const resendMessage = useCallback(
   async (message) => {
     dispatch(
@@ -583,7 +475,6 @@ const resendMessage = useCallback(
   [sendMessageApi]
 );
 
->>>>>>> Messages-ui
   //mark all Messages As Read
   const markMessagesAsRead = 
     async () => {
@@ -606,41 +497,20 @@ const resendMessage = useCallback(
           )
         );}
 
-<<<<<<< HEAD
-  //   },
-  // );
-
-=======
->>>>>>> Messages-ui
   return {
     messages: currentMessages,
     messagesLoading: selectedChat ? messagesLoading : false,
     messagesIsError: selectedChat ? messagesIsError : false,
     refetchMessages,
-<<<<<<< HEAD
-
-    sendMessage,
-=======
     isLoadingOlderMessages :isFetching&&pageByChat[selectedChat]>1,
     isLoadingNewerMessages :isFetching&&pageByChat[selectedChat]===1,
     sendMessage,
     resendMessage,
->>>>>>> Messages-ui
     isSending,
     handleScroll,
     chatContainerRef,
     toLatestMessage,
-<<<<<<< HEAD
-
-    markMessagesAsRead,
-
     // WebSocket
     lastMessage: lastReceivedMessage.current,
   };
 };
-=======
-    // WebSocket
-    lastMessage: lastReceivedMessage.current,
-  };
-};
->>>>>>> Messages-ui
