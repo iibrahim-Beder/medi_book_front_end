@@ -104,10 +104,6 @@ class AudioService {
 
   toggleMute() {
     this.isMuted = !this.isMuted;
-<<<<<<< HEAD
-    return this.isMuted;
-  }
-=======
     if (this.isMuted) {
       this.stopAll();
     }
@@ -133,7 +129,6 @@ class AudioService {
     }
     return false;
   }
->>>>>>> Messages-ui
 }
 
 export const audioService = new AudioService();

@@ -1,37 +1,21 @@
-<<<<<<< HEAD
-import { useEffect, useRef, useCallback } from 'react';
-=======
 import { useEffect, useRef, useCallback,useState } from 'react';
->>>>>>> Messages-ui
 import { signalRService } from './ChatSignalRService';
 
 export const useSignalR = (userId) => {
   const componentId = useRef(`component_${Date.now()}_${Math.random()}`);
-<<<<<<< HEAD
-
-  // start connection
-  useEffect(() => {
-    if (!userId) return;
-=======
   const [isConnected, setIsConnected] = useState(false);
 
   // start connection
   useEffect(() => {
     // if (!userId) return;
->>>>>>> Messages-ui
 
     const connect = async () => {
       try {
         await signalRService.startConnection(userId);
-<<<<<<< HEAD
-      } catch (error) {
-        console.error('Failed to connect to SignalR:', error);
-=======
         setIsConnected(true);
       } catch (error) {
         console.error('Failed to connect to SignalR:', error);
         setIsConnected(false);
->>>>>>> Messages-ui
       }
     };
 
@@ -39,10 +23,7 @@ export const useSignalR = (userId) => {
 
     //clean up unmount
     return () => {
-<<<<<<< HEAD
-=======
       setIsConnected(false);
->>>>>>> Messages-ui
       signalRService.removeMessageHandler(componentId.current);
       signalRService.removeStatusHandler(componentId.current);
       signalRService.removeUserStatusHandler(componentId.current);
