@@ -4,12 +4,12 @@ import { useConversations } from "../hooks/useConversations";
 import { formatTime } from "../../shared/utils";
 
 export default function ConversationHeader() {
-    const {currentChat ,changeChat} =useConversations();
+    const {currentChat ,setIsChatOpen} =useConversations();
 
 
   return (
     <div className="dc-dashboardboxtitle dc-titlemessages">
-      <button onClick={() =>  { document.documentElement.setAttribute("isConversationOpen", "false") ; changeChat(null);  }}  className="dc-back">
+      <button onClick={() =>  { document.documentElement.setAttribute("isConversationOpen", "false") ; setIsChatOpen(false);  }}  className="dc-back">
         <VscArrowLeft/>
       </button>
       <div className="dc-userlogedin-gird chat-header">

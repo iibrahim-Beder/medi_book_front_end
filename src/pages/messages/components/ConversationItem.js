@@ -4,12 +4,12 @@ import {  useSelector } from 'react-redux';
 import { selectIsChatTyping } from '../slices/messagesSlice';
 
 export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime,lastMessageStatus }) {
-  const {changeChat ,selectedChat} = useConversations();
+  const {changeChat ,selectedChat,setIsChatOpen} = useConversations();
   const active= (id===selectedChat)
   const istypingHere =  useSelector(selectIsChatTyping(id));
   return (
     
-    <div onClick={() =>   {document.documentElement.setAttribute("isConversationOpen", "true"); changeChat(id);  } }
+    <div onClick={() =>   {document.documentElement.setAttribute("isConversationOpen", "true"); changeChat(id);setIsChatOpen(true)} }
       className={`dc-ad dc-dotnotification `}
       //If there are no new messages, no notification will appear
         style={

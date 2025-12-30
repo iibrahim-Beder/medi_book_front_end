@@ -5,11 +5,12 @@ import { SyncLoader } from "react-spinners";
 import {  useMessages } from "../hooks/useMessages";
 import Loader from "../../shared/Loader";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function ChatMessages() {
     const selectedChat = useSelector((state) => state.chats.selectedChatId);
   
-  const { isChatTyping } = useConversations();
+  const { isChatTyping,setIsChatOpen } = useConversations();
   const {
     messages,
     chatContainerRef,
@@ -19,15 +20,18 @@ export default function ChatMessages() {
     messagesLoading,
   } = useMessages();
   console.log("messages", messages);
+useEffect(() => {
+      if(window.innerWidth >= 992){
+        setIsChatOpen(true)
+      }
+  return () => {
+    document.documentElement.setAttribute("isConversationOpen", "false");
+    setIsChatOpen(false)
+    console.log("unmount");
+  }
+}, [])
 
-  // const chatRef = useRef(null);
 
-  // useEffect(() => {
-  //   const el = chatContainerRef.current;
-  //   if (!el) return;
-
-  //   el.scrollTop = el.scrollHeight
-  // }, [messages.length]);
 
   return (
     <div

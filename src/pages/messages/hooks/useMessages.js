@@ -11,8 +11,8 @@ import { audioService } from "../../notifications/audioService";
 export const useMessages = () => {
   const dispatch = useDispatch();
 
-  const selectedChat = useSelector((state) => state.chats.selectedChatId);
-
+  const selectedChat = useSelector((state) => state.chats.selectedChatId)||-1;
+  const isChatOpen   = useSelector((state) => state.chats.isChatOpen);
   const [pageByChat, setPageByChat] = useState({});
 
   const currentPage = pageByChat[selectedChat] ?? 1;
@@ -76,13 +76,14 @@ export const useMessages = () => {
   };
   // in selectedChat change
   useEffect(() => {
-    console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
+    // console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: 1,
     }));
     toLatestMessage();
-    if(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
+    if(!isConnected)return;
+    if(isConnected&& selectedChat!==-1&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
       InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
       markMessagesAsRead();
     }
@@ -92,7 +93,8 @@ export const useMessages = () => {
   useEffect(() => {
     const handleNewMessage = (message) => {
       console.log("New message received from WebSocket:", message);
-      if (selectedChat === message.chatId) {
+      if (selectedChat === message.chatId&& isChatOpen) {
+        console.log("====================WebSocket:", isChatOpen);
         audioService.play('messageArrivedChatIn')
         updateMessageStatus( message.chatId  , message.messageId, 2);
       } else {
@@ -156,7 +158,7 @@ export const useMessages = () => {
     if (isConnected) {
       onMessageReceived(handleNewMessage);
     }
-  }, [isConnected, onMessageReceived, selectedChat]);
+  }, [isConnected, onMessageReceived, selectedChat, isChatOpen]);
 
   useEffect(() => {
     const handleMessageStatusUpdate = (statusUpdate) => {
@@ -205,8 +207,9 @@ export const useMessages = () => {
       // }
 
     };
-
+  if(isConnected){
     onMessageStatusUpdated(handleMessageStatusUpdate);
+  }
   }, [isConnected, onMessageStatusUpdated]);
   // on 
   useEffect(() => {
@@ -367,8 +370,6 @@ export const useMessages = () => {
         // return result;
       } catch (error) {
         console.error("Error sending message:", error);
-
-        try {
           dispatch(
             doctorChatApi.util.updateQueryData(
               "getChatMessages",
@@ -388,8 +389,8 @@ export const useMessages = () => {
               }
             )
           );
-        } catch {}
-        throw error;
+        
+        // throw error;
       }
     },
 
@@ -430,9 +431,6 @@ export const useMessages = () => {
     handleScroll,
     chatContainerRef,
     toLatestMessage,
-
-    markMessagesAsRead,
-
     // WebSocket
     lastMessage: lastReceivedMessage.current,
   };

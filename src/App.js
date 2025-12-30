@@ -28,7 +28,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import NotificationsPage from "./pages/notifications/NotificationsPageMain";
 import { audioService } from "./pages/notifications/audioService";
 import { signalRService } from "./api/chat/ChatSignalRService";
-import { useMessageListener } from "./pages/messages/components/ToastMrssage";
+import { useMessageListener } from "./pages/messages/hooks/useMessageListener";
 
 
 function App() {
@@ -56,7 +56,6 @@ const { i18n } = useTranslation();
       document.documentElement.dir = "ltr";
     }
   }, [i18n.language]);
-
 
 //this loading for preloader 
   const [loading, setLoading] = useState(true);
