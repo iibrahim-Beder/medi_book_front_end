@@ -55,7 +55,7 @@
         } catch (error) {
           console.error('SignalR Connection Error:', error);
           this.startPromise = null;
-          throw error;
+          // throw error;
         }
       })();
 
@@ -149,7 +149,7 @@
     // update event join to chat
     updateInvokeJoinChat = async (chatId ) => {
       if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
-        throw new Error('Connection is not established');
+        // throw new Error('Connection is not established');
       }
 
       try {
@@ -157,13 +157,13 @@
         return true;
       } catch (error) { 
         console.error('Error updating message status:', error);
-        throw error;
+        // throw error;
       }
     };
     updateMessageStatus = async (chatId, messageId, messageStatus ) => {
       console.log("updateMessageStatus chatId from  signalRService : ", chatId,"messageId", messageId,"messageStatus", messageStatus);
       if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
-        throw new Error('Connection is not established');
+        // throw new Error('Connection is not established');
       }
 
       try {
@@ -171,13 +171,13 @@
         return true;
       } catch (error) { 
         console.error('Error updating message status:', error);
-        throw error;
+        // throw error;
       }
     };
     InvokeMarkFromLastMessagesAsRead = async (chatId, messageId ) => {
               console.log("MarkFromLastMessageAsRead chatId from  signalRService : ", chatId,"messageId", messageId);
       if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
-        throw new Error('Connection is not established');
+        // throw new Error('Connection is not established');
       }
 
       try {
@@ -185,12 +185,12 @@
         return true;
       } catch (error) { 
         console.error('Error InvokeMarkFromLastMessagesAsRead message status:', error);
-        throw error;
+        // throw error;
       }
     };
     updateusertyping = async (chatId,typing ) => {
       if (!this.connection || this.connection.state !== signalR.HubConnectionState.Connected) {
-        throw new Error('Connection is not established');
+        // throw new Error('Connection is not established');
       }
 
       try {
@@ -198,7 +198,7 @@
         return true;
       } catch (error) { 
         console.error('Error updating InvokeTyping Status :', error);
-        throw error;
+        // throw error;
       }
     };
 

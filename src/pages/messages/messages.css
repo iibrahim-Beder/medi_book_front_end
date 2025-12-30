@@ -193,6 +193,31 @@ content: "";
     color: #00cc67;
 }
 
+/* Retry btn start */
+.Retry {
+  background-color: #ffe5e5;   
+  border: none;
+  border-radius: 50%;          
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #d32f2f;            
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.Retry:hover {
+  background-color: #ffcdd2;   
+  transform: scale(1.05);
+}
+
+.Retry:active {
+  transform: scale(0.95);
+}
+/* Retry btn end */
+
 
 
 

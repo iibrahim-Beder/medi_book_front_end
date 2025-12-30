@@ -88,6 +88,7 @@ useEffect(() => {
                   date={formatChatDate(message.sentAt)}
                   isIngroupAndNotTheLast={!showAvatar}
                   isfirstInGroup={isfirstInGroup}
+                  message={message}
                 />         
             );
           })}

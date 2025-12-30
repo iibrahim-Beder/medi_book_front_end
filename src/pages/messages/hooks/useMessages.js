@@ -7,7 +7,13 @@ import { useSignalR } from "../../../api/chat/chatUseSignalR";
 import { doctorChatApi } from "../../../api/chat/doctorChatApi";
 import { useDispatch, useSelector } from "react-redux";
 import { audioService } from "../../notifications/audioService";
-
+const MessageStatus = {
+  "Sent":0,
+  "Delivered":1,
+  "Read":2,
+  "Failed":3,
+  "Sending":4
+};
 export const useMessages = () => {
   const dispatch = useDispatch();
 
@@ -74,9 +80,9 @@ export const useMessages = () => {
       loadMore();
     }
   };
+  console.log("===render===");
   // in selectedChat change
   useEffect(() => {
-    // console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: 1,
@@ -84,6 +90,7 @@ export const useMessages = () => {
     toLatestMessage();
     if(!isConnected)return;
     if(isConnected&& selectedChat!==-1&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
+      console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
       InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
       markMessagesAsRead();
     }
@@ -96,9 +103,9 @@ export const useMessages = () => {
       if (selectedChat === message.chatId&& isChatOpen) {
         console.log("====================WebSocket:", isChatOpen);
         audioService.play('messageArrivedChatIn')
-        updateMessageStatus( message.chatId  , message.messageId, 2);
+        updateMessageStatus( message.chatId  , message.messageId, MessageStatus.Read);
       } else {
-        updateMessageStatus( message.chatId  , message.messageId, 1);
+        updateMessageStatus( message.chatId  , message.messageId, MessageStatus.Delivered);
       }
       // ===== (RTK Query) =====
       dispatch(
@@ -229,7 +236,7 @@ export const useMessages = () => {
 
             draft.data.forEach((msg) => {
               if (MessageMark.lastReadMessageId >= msg.id) {
-                msg.status = 2;
+                msg.status = MessageStatus.Read;
               }
             });
           }
@@ -248,7 +255,7 @@ export const useMessages = () => {
               );
 
               if (chat) {
-                chat.lastMessageStatus =2;
+                chat.lastMessageStatus =MessageStatus.Read;
               }
             }
           )
@@ -315,7 +322,7 @@ export const useMessages = () => {
               chat.lastMessageTime =
                 tempMessage.sentAt || new Date().toISOString();
               chat.lastMessageIsMine = true;
-              chat.lastMessageStatus = tempMessage.status || 4;
+              chat.lastMessageStatus = MessageStatus.Sending || 4;
 
               if (
                 tempMessage.senderId !== tempMessage.currentUserId &&
@@ -383,7 +390,7 @@ export const useMessages = () => {
                 if (!draft?.data) return;
                 draft.data.forEach((msg) => {
                   if (tempMessage.id === msg.id) {
-                    msg.status = 3;
+                    msg.status = MessageStatus.Failed;
                   }
                 });
               }
@@ -396,6 +403,77 @@ export const useMessages = () => {
 
     [selectedChat, sendMessageApi]
   );
+
+const resendMessage = useCallback(
+  async (message) => {
+    dispatch(
+      doctorChatApi.util.updateQueryData(
+        "getChatMessages",
+        {
+          PersonId: 1,
+          chatId: message.chatId,
+          pageNumber: 1,
+          pageSize: pageSizeMessage,
+        },
+        (draft) => {
+          if (!draft?.data) return;
+          const msg = draft.data.find((m) => m.id === message.id);
+          if (msg) {
+            msg.status = MessageStatus.Sending;
+          }
+        }
+      )
+    );
+
+    try {
+      const result = await sendMessageApi(message).unwrap();
+
+      if (result.succeeded) {
+        dispatch(
+          doctorChatApi.util.updateQueryData(
+            "getChatMessages",
+            {
+              PersonId: 1,
+              chatId: message.chatId,
+              pageNumber: 1,
+              pageSize: pageSizeMessage,
+            },
+            (draft) => {
+              if (!draft?.data) return;
+              const msg = draft.data.find((m) => m.id === message.id);
+              if (msg) {
+                msg.id = result.data.messageId;
+                msg.status = result.data.messageStatus;
+                msg.isDelivered = result.data.isDelivered;
+                msg.sentAtFormatted = result.data.sentAt;
+              }
+            }
+          )
+        );
+      }
+    } catch (error) {
+      dispatch(
+        doctorChatApi.util.updateQueryData(
+          "getChatMessages",
+          {
+            PersonId: 1,
+            chatId: message.chatId,
+            pageNumber: 1,
+            pageSize: pageSizeMessage,
+          },
+          (draft) => {
+            if (!draft?.data) return;
+            const msg = draft.data.find((m) => m.id === message.id);
+            if (msg) {
+              msg.status = MessageStatus.Failed;
+            }
+          }
+        )
+      );
+    }
+  },
+  [sendMessageApi]
+);
 
   //mark all Messages As Read
   const markMessagesAsRead = 
@@ -427,6 +505,7 @@ export const useMessages = () => {
     isLoadingOlderMessages :isFetching&&pageByChat[selectedChat]>1,
     isLoadingNewerMessages :isFetching&&pageByChat[selectedChat]===1,
     sendMessage,
+    resendMessage,
     isSending,
     handleScroll,
     chatContainerRef,

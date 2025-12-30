@@ -72,7 +72,7 @@ class SignalRService {
       return this.connection;
     } catch (error) {
       console.error("SignalR Connection Error:", error);
-      throw error;
+      // throw error;
     }
   };
 

@@ -158,13 +158,13 @@ export const doctorChatApi = baseApi.injectEndpoints({
         pageNumber = 1, 
         pageSize = 10 
       }) => {
-        if(chatId===-1)return;
         const params = new URLSearchParams();
         
         params.append('ChatId', chatId);
         params.append('PersonId', 1);
         params.append('PageNumber', pageNumber);
         params.append('PageSize', pageSize);
+        // if(chatId===-1)return;
 
         console.log('Get Chat Messages Params:', Object.fromEntries(params));
 
