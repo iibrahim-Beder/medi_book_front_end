@@ -3,12 +3,13 @@ import { useConversations } from "../hooks/useConversations";
 import {  useSelector } from 'react-redux';
 import { selectIsChatTyping } from '../slices/messagesSlice';
 
-export default function ConversationItem({ id, img, name, lastMsg, active ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime}) {
-  const {changeChat} = useConversations();
+export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime,lastMessageStatus }) {
+  const {changeChat ,selectedChat,setIsChatOpen} = useConversations();
+  const active= (id===selectedChat)
   const istypingHere =  useSelector(selectIsChatTyping(id));
   return (
     
-    <div onClick={() =>   {document.documentElement.setAttribute("isConversationOpen", "true"); changeChat(id);  } }
+    <div onClick={() =>   {document.documentElement.setAttribute("isConversationOpen", "true"); changeChat(id);setIsChatOpen(true)} }
       className={`dc-ad dc-dotnotification `}
       //If there are no new messages, no notification will appear
         style={
@@ -23,7 +24,7 @@ export default function ConversationItem({ id, img, name, lastMsg, active ,messe
         <img src={img} alt={name} />
       </figure>
       <div className="dc-adcontent">
-        <h3>{name} {!isOnline &&formatTime(lastSeen)}</h3> 
+        <h3> <span>{name}</span>  <span className={`${isOnline?"text-online ":""} text-lastseen `} > {isOnline ? "Online" : formatTime(lastSeen)}  </span></h3> 
         {istypingHere ? <span className="dc-typing">Typing...</span>:<span className="text-ellipsis"style={{paddingRight:"18px"}} > {lastMessageIsMine && "you: "}{lastMsg}  <span className="dc-time">{formatChatDate(lastMessageTime)}</span>  </span>}
       </div>
     </div></div>

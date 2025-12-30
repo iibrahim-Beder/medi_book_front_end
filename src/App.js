@@ -28,13 +28,22 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import NotificationsPage from "./pages/notifications/NotificationsPageMain";
 import { audioService } from "./pages/notifications/audioService";
 import { signalRService } from "./api/chat/ChatSignalRService";
+import { useMessageListener } from "./pages/messages/hooks/useMessageListener";
 
 
 function App() {
 window.addEventListener("click", () => {
   audioService.init();
 }, { once: true });
-
+const soundsConfig = {
+  notification: '/sounds/notification.mp3',
+  messageArrived: '/sounds/message-arrives.wav',
+  sendMessage: '/sounds/send-message.mp3',
+  writing: '/sounds/writing.mp3',
+  messageArrivedChatIn: '/sounds/message-arrived-chatIn.mp3'
+};
+audioService.init(soundsConfig);
+useMessageListener();
   // language in html
 const { i18n } = useTranslation();
 
@@ -47,7 +56,6 @@ const { i18n } = useTranslation();
       document.documentElement.dir = "ltr";
     }
   }, [i18n.language]);
-
 
 //this loading for preloader 
   const [loading, setLoading] = useState(true);
@@ -74,14 +82,14 @@ const { i18n } = useTranslation();
 
   return (
     <div className="dc-userlogin">
-      {loading && (
+      {/* {loading && (
         <div className="preloader-outer">
           <div className="wt-preloader-holder">
             <div className="wt-loader"></div>
           </div>
         </div>
-      )}
-      {!loading && (
+      )} */}
+      {/* {!loading && ( */}
         <Routes>
           <Route path="/registration" element={<DoctorRegistration />} />
           <Route path="/Login" element={<Login />} />
@@ -142,7 +150,7 @@ const { i18n } = useTranslation();
             }
           />
         </Routes>
-      )}
+      {/* )} */}
         </div>
   );
 }

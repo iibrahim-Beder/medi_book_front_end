@@ -164,6 +164,7 @@ export const doctorChatApi = baseApi.injectEndpoints({
         params.append('PersonId', 1);
         params.append('PageNumber', pageNumber);
         params.append('PageSize', pageSize);
+        if(chatId===-1)return;
 
         console.log('Get Chat Messages Params:', Object.fromEntries(params));
 

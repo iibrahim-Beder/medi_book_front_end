@@ -1,91 +1,39 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSignalR } from '../api/chat/chatUseSignalR';
-import { useGetDoctorChatsQuery, useSendMessageMutation } from '../api/chat/doctorChatApi';
-import { signalRService } from '../api/chat/ChatSignalRService';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { selectChat } from '../pages/messages/slices/chatsSlice';
-const ChatContainer = ({ userId=1 }) => {
-  const dispatch = useDispatch()
-  
+import React, { useState, useEffect } from 'react';
+import { audioService } from '../pages/notifications/audioService';
 
-const selectedChatId = useSelector(
-  (state) => state.chats.selectedChatId
-);
-console.log("selectedChatId",selectedChatId,)
+const soundsConfig = {
+  notification: '/sounds/notification.mp3',
+  messageArrived: '/sounds/message-arrives.wav',
+  sendMessage: '/sounds/Send-message.wav',
+  writing: '/sounds/writing.mp3'
+};
 
+audioService.init(soundsConfig);
 
-  const [messages, setMessages] = useState([]);
-  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
-      console.log('SignalR Connection State:', signalRService.connection ? signalRService.connection.state : 'Disconnected');
+const playNotificationSound = () => {
+  audioService.play('notification');
+};
 
-
-  const {
-    onMessageReceived,
-    onMessageStatusUpdated,
-    getConnectionState,
-    updateMessageStatus
-  } = useSignalR(userId);
-  const [sendMessagehook] = useSendMessageMutation();
+const playSendMessage = () => {
+  audioService.play('sendMessage');
+};
 
 
-  const { data: chatsData, refetch: refetchChats } = useGetDoctorChatsQuery({
-    pageNumber: 1,
-    pageSize: 10
-  });
+const AudioPlayer = () => {
+  const [isMuted, setIsMuted] = useState(audioService.isMuted);
 
   useEffect(() => {
-    onMessageReceived((newMessage) => {
-      console.log('New message in component:', newMessage);
-      
-      refetchChats();
-      
-      setMessages(prev => [...prev, newMessage]);
-    });
-  }, [onMessageReceived, refetchChats]);
+    // Initialize audio service when component mounts
+    audioService.init();
+  }, []);
 
-  useEffect(() => {
-    onMessageStatusUpdated((statusUpdate) => {
-      console.log('Message status update:', statusUpdate);
-      
-      setMessages(prev => prev.map(msg => 
-        msg.messageId === statusUpdate.messageId 
-          ? { ...msg, status: statusUpdate.status }
-          : msg
-      ));
-    });
-  }, [onMessageStatusUpdated]);
+  const toggleMute = () => {
+    const newMutedState = audioService.toggleMute();
+    setIsMuted(newMutedState);
+  };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setConnectionStatus(getConnectionState());
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [getConnectionState]);
-
-  const handleSendMessage = async (content, chatId, receiverId) => {
-
-
-dispatch(selectChat(content));
-
-
-
-    const messageData = {
-      chatId :1,
-      senderId: 1,
-      content: content,
-      sentAt: new Date().toISOString()
-    };
-    
-
-    try {
-      await sendMessagehook(messageData);
-      
-      refetchChats();
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    }
+  const playAudio = () => {
+    audioService.play();
   };
 
   const markAsRead = async (messageId, chatId) => {
@@ -108,6 +56,7 @@ dispatch(selectChat(content));
   const [receiverId, setReceiverId] = useState(null);
 
   return (
+<<<<<<< HEAD
     <div className="chat-container">
         
         <input
@@ -141,8 +90,24 @@ dispatch(selectChat(content));
           </div>
         ))}
       </div>
+=======
+    <div>
+      <button onClick={playAudio}>Play Audio</button>
+      <button onClick={toggleMute}>{isMuted ? 'Unmute' : 'Mute'}</button>
+<button onClick={playNotificationSound}>play Notification Sound</button>
+<button onClick={playSendMessage}>play send message Sounded</button>
+<button onClick={() => audioService.play('messageArrived')}>play message-arrives sound  </button>
+<button onClick={() => audioService.play('writing')}>play  writing sound </button>
+<button onClick={() => audioService.toggleMute()}>
+  {audioService.isMuted ? 'unmute' : 'mute'}
+  </button>
+>>>>>>> Messages-ui
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default ChatContainer;
+=======
+export default AudioPlayer;
+>>>>>>> Messages-ui
