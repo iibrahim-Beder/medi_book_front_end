@@ -11,10 +11,11 @@
       this.UserTypingHandlers = new Map();
       
 
-    }ذ
+    }
 
     // start connection
     startConnection = async (userId=1) => {
+      console.log("==startConnection userId", userId);
       if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
         return Promise.resolve();
       }
@@ -65,6 +66,12 @@
     //  event handlers
     setupEventHandlers = () => {
       if (!this.connection) return;
+      
+      this.connection.off("UserTyping");
+      this.connection.off("ReceivePrivateMessage");
+      this.connection.off("MessageStatus");
+      this.connection.off("UserStatusChanged");
+      this.connection.off("markfromlastmessageasread");
 
       this.connection.on("UserTyping", (Typing) => {
         console.log(" ==UserTyping :", Typing);

@@ -7,10 +7,9 @@ const MessageStatus = [
   "Failed",
   "Sending"
 ];
-export default function ChatMessage({isIngroupAndNotTheLast, type, img, text, date ,status,isfirstInGroup,message}) {
+export default function ChatMessage({isIngroupAndNotTheLast, type, img, text, date ,status,isfirstInGroup,message,resendMessage}) {
   const msgClass =
     type === "sender" ? "dc-memessage dc-readmessage" : "dc-offerermessage";
-    const{resendMessage} = useMessages();
   return (
     <div className={msgClass + (isIngroupAndNotTheLast ? " dc-ingroupmessage" : " dc-ingroupmessage-last" ) + (isfirstInGroup ? " dc-first-in-group" : " not-the-first" )}>
       { img && <figure>

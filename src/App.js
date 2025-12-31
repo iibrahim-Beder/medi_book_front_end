@@ -68,16 +68,16 @@ const { i18n } = useTranslation();
   }, []);
   
 // signalR chat connection
-   useEffect(() => {
-      // if (userId) {
-        signalRService.startConnection(1);
-      // }
+  //  useEffect(() => {
+  //     // if (userId) {
+  //       signalRService.startConnection(1);
+  //     // }
   
-      return () => {
-        signalRService.stopConnection();
-      };
-    // }, [userId]);
-    }, []);
+  //     return () => {
+  //       signalRService.stopConnection();
+  //     };
+  //   // }, [userId]);
+  //   }, []);
       console.log('SignalR Connection State:', signalRService.connection ? signalRService.connection.state : 'Disconnected');
 
   return (

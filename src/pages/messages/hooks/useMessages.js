@@ -30,11 +30,7 @@ export const useMessages = () => {
   //  WebSocket hooks
   const {
     isConnected,
-    onMessageReceived,
-    onMessageStatusUpdated,
-    updateMessageStatus,
     InvokeMarkFromLastMessagesAsRead,
-    onMarkAllMessagesAsRead,
   } = useSignalR();
 
   const {
@@ -76,7 +72,7 @@ export const useMessages = () => {
     const el = chatContainerRef.current;
     if (!el) return;
 
-    if (Math.abs(el.scrollTop) + el.clientHeight >= el.scrollHeight - 5) {
+    if (Math.abs(el.scrollTop) + el.clientHeight >= el.scrollHeight - 15) {
       loadMore();
     }
   };
@@ -96,178 +92,6 @@ export const useMessages = () => {
     }
   }, [selectedChat,messagesLoading,isConnected]);
   
-  // handle new message
-  useEffect(() => {
-    const handleNewMessage = (message) => {
-      console.log("New message received from WebSocket:", message);
-      if (selectedChat === message.chatId&& isChatOpen) {
-        console.log("====================WebSocket:", isChatOpen);
-        audioService.play('messageArrivedChatIn')
-        updateMessageStatus( message.chatId  , message.messageId, MessageStatus.Read);
-      } else {
-        updateMessageStatus( message.chatId  , message.messageId, MessageStatus.Delivered);
-      }
-      // ===== (RTK Query) =====
-      dispatch(
-        doctorChatApi.util.updateQueryData(
-          "getChatMessages",
-          {
-            PersonId: 1,
-            chatId: message.chatId,
-            pageNumber: 1,
-            pageSize: pageSizeMessage,
-          },
-          (draft) => {
-            if (!draft?.data) return;
-
-            const exists = draft.data.some((m) => m.id === message.messageId);
-
-            if (!exists) {
-              message.id = message.messageId;
-              draft.data.unshift(message);
-            }
-          }
-        )
-      );
-
-      dispatch(
-        doctorChatApi.util.updateQueryData(
-          "getDoctorChats",
-           undefined,
-          (draft) => {
-            if (!draft?.data) return;
-
-            const chat = draft.data.find((c) => c.chatId === message.chatId);
-
-            if (chat) {
-              chat.lastMessage = message.content;
-              chat.lastMessageTime = message.sentAt || new Date().toISOString();
-              chat.lastMessageIsMine = false;
-              chat.lastMessageStatus = message.status || "Delivered";
-
-              if (
-                message.senderId !== message.currentUserId &&
-                selectedChat !== message.chatId
-              ) {
-                chat.unreadCount = (chat.unreadCount || 0) + 1;
-              }
-            }
-
-            draft.data.sort(
-              (a, b) =>
-                new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
-            );
-          }
-        )
-      );
-    };
-
-    if (isConnected) {
-      onMessageReceived(handleNewMessage);
-    }
-  }, [isConnected, onMessageReceived, selectedChat, isChatOpen]);
-
-  useEffect(() => {
-    const handleMessageStatusUpdate = (statusUpdate) => {
-      console.log("==Message status update from WebSocket :", statusUpdate);
-      console.log("==MessagesData :", messagesData);
-      dispatch(
-        doctorChatApi.util.updateQueryData(
-          "getChatMessages",
-          {
-            PersonId: 1,
-            chatId: statusUpdate.chatId,
-            pageNumber: 1,
-            pageSize: pageSizeMessage,
-          },
-          (draft) => {
-            if (!draft?.data) return;
-
-            draft.data.forEach((msg) => {
-              if (statusUpdate.messageId === msg.id) {
-                msg.status = statusUpdate.messageStatus;
-              }
-            });
-          }
-        )
-      );
-
-      // if (statusUpdate.status === 'Seen') {
-      //   dispatch(
-      //     doctorChatApi.util.updateQueryData(
-      //       'getDoctorChats',
-      //        undefined,
-      //       (draft) => {
-      //         if (!draft?.data) return;
-
-      //         const chat = draft.data.find(
-      //           c => c.chatId === statusUpdate.chatId
-      //         );
-
-      //         if (chat) {
-      //           chat.lastMessageStatus = 'Seen';
-      //           chat.unreadCount = 0;
-      //         }
-      //       }
-      //     )
-      //   );
-      // }
-
-    };
-  if(isConnected){
-    onMessageStatusUpdated(handleMessageStatusUpdate);
-  }
-  }, [isConnected, onMessageStatusUpdated]);
-  // on 
-  useEffect(() => {
-    const handleMessageMarkfromlastmessageasread = (MessageMark) => {
-      console.log("==  onMarkAllMessagesAsRead from WebSocket :", MessageMark);
-      dispatch(
-        doctorChatApi.util.updateQueryData(
-          "getChatMessages",
-          {
-            PersonId: 1,
-            chatId: MessageMark.chatId,
-            pageNumber: 1,
-            pageSize: pageSizeMessage,
-          },
-          (draft) => {
-            if (!draft?.data) return;
-
-            draft.data.forEach((msg) => {
-              if (MessageMark.lastReadMessageId >= msg.id) {
-                msg.status = MessageStatus.Read;
-              }
-            });
-          }
-        )
-      );  
-
-        dispatch(
-          doctorChatApi.util.updateQueryData(
-            'getDoctorChats',
-            undefined,
-            (draft) => {
-              if (!draft?.data) return;
-
-              const chat = draft.data.find(
-                c => c.chatId === MessageMark.chatId
-              );
-
-              if (chat) {
-                chat.lastMessageStatus =MessageStatus.Read;
-              }
-            }
-          )
-        );
-
-    };
-    if (isConnected)  {
-      onMarkAllMessagesAsRead(handleMessageMarkfromlastmessageasread);
-    }
-
-  }, [isConnected, onMarkAllMessagesAsRead]);
-
   const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
       if (!content.trim() || !chatId) return null;
@@ -499,6 +323,7 @@ const resendMessage = useCallback(
 
   return {
     messages: currentMessages,
+    pageSizeMessage,
     messagesLoading: selectedChat ? messagesLoading : false,
     messagesIsError: selectedChat ? messagesIsError : false,
     refetchMessages,

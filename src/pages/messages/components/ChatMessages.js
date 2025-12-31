@@ -18,6 +18,7 @@ export default function ChatMessages() {
     isLoadingOlderMessages,
     isLoadingNewerMessages,
     messagesLoading,
+    resendMessage
   } = useMessages();
   console.log("messages", messages);
 useEffect(() => {
@@ -89,6 +90,7 @@ useEffect(() => {
                   isIngroupAndNotTheLast={!showAvatar}
                   isfirstInGroup={isfirstInGroup}
                   message={message}
+                  resendMessage={resendMessage}
                 />         
             );
           })}

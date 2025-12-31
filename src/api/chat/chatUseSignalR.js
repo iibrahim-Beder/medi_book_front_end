@@ -30,6 +30,9 @@ export const useSignalR = (userId) => {
 
     };
   }, [userId]);
+  const removeMessageHandler = useCallback(() => {
+    signalRService.removeMessageHandler(componentId.current);
+  }, []);
 
   // handler new message
   const onMessageReceived = useCallback((handler) => {
@@ -92,5 +95,6 @@ export const useSignalR = (userId) => {
     stopConnection,
     getConnectionState,
     onUserTyping,
+    removeMessageHandler
   };
 };
