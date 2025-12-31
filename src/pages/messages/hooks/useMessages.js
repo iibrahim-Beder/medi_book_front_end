@@ -78,19 +78,34 @@ export const useMessages = () => {
   };
   console.log("===render===");
   // in selectedChat change
-  useEffect(() => {
-    setPageByChat((prev) => ({
-      ...prev,
-      [selectedChat]: 1,
-    }));
-    toLatestMessage();
-    if(!isConnected)return;
-    if(isConnected&& selectedChat!==-1&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
-      console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
-      InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
-      markMessagesAsRead();
-    }
-  }, [selectedChat,messagesLoading,isConnected]);
+const lastMarkedMessageIdRef = useRef(null);
+
+useEffect(() => {
+  setPageByChat((prev) => ({
+    ...prev,
+    [selectedChat]: 1,
+  }));
+
+  toLatestMessage();
+
+  if (!isConnected) return;
+
+  const firstMessageId = currentMessages?.[0]?.id;
+
+  if (
+    isConnected &&
+    selectedChat !== -1 &&
+    currentMessages?.length > 0 &&
+    firstMessageId &&
+    lastMarkedMessageIdRef.current !== firstMessageId
+  ) {
+    lastMarkedMessageIdRef.current = firstMessageId;
+
+    InvokeMarkFromLastMessagesAsRead(selectedChat, firstMessageId);
+    markMessagesAsRead();
+  }
+}, [selectedChat, messagesLoading, isConnected, isChatOpen]);
+
   
   const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
@@ -316,6 +331,7 @@ const resendMessage = useCallback(
               if (chat) {
                 chat.lastMessageStatus =2;
                 chat.unreadCount = 0;
+                chat.isLastMessageRead = true;
               }
             }
           )

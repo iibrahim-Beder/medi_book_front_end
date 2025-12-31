@@ -195,6 +195,8 @@ content: "";
 
 /* Retry btn start */
 .Retry {
+  float: right;
+  margin-top: 10px;
   background-color: #ffe5e5;   
   border: none;
   border-radius: 50%;          
@@ -261,8 +263,8 @@ content: "";
 .emoji-container{
     position: absolute;
     box-shadow: 0 0 10px var(--scshadocolor);
-    bottom: 40px;
-    right: -320px;
+    bottom: 100px;
+    right: -300px;
     z-index: 1000;
     border-radius: 10px;
 }
@@ -276,6 +278,20 @@ content: "";
         --input-border-radius: 1.5rem;
             max-height: 327px;
     }
+/* read and unread last message */
+.dc-offersmessages .dc-ad span.last-read {
+    color: #6c757d;
+    font-weight: 400;
+}
+.dc-offersmessages .dc-ad span.unread {
+  color: #212529; 
+  font-weight: 600;
+}
+/* read and unread last message emd */
+.conversation-and-messages{
+padding-right: 0 !important ;
+}
+
 @media (max-width: 1199px) and (min-width: 992px) {
     .dc-first-in-group.dc-memessage .dc-description p::after{right: 42px;}
     /*  */
@@ -289,6 +305,7 @@ content: "";
 .dc-offerermessage.dc-first-in-group .dc-description p::before{left: 44px;}
 } 
 @media (max-width: 991px) {
+    .conversation-and-messages{margin-right: 15px !important;}
     /* .dc-dbsectionspace-test .dc-dbsectionspace-row .dc-messagebox{display: none;} */
     .emoji-container{right: 30%; bottom: 130px;}
 }

@@ -32,7 +32,8 @@ const transformChatsData = (response) => {
     lastMessageIsMine: chat.lastMessageIsMine,
     unreadCount: chat.unreadCount,
     isNew: chat.isNew,
-    relativeTime: formatTime(chat.lastMessageSentAtUtc)
+    relativeTime: formatTime(chat.lastMessageSentAtUtc),
+    isLastMessageRead: chat.isLastMessageRead
   }));
 
   return {

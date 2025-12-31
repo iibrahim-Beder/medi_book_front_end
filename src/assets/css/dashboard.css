@@ -5029,7 +5029,7 @@ a.dc-back:hover{color: #55acee;}
 	    max-height: 54vh;
     overflow: auto;
 }
-.dc-offersmessages .dc-formsearch{padding: 20px;background: var(--cardcolor);}
+.dc-offersmessages .dc-formsearch{padding: 20px 10px;background: var(--cardcolor);}
 .dc-offersmessages .dc-formsearch fieldset .form-group{margin: 0;}
 .dc-offersmessages .dc-ad{
 	    margin: 0;
@@ -5668,6 +5668,10 @@ padding-right: 0;
 
 	/* @ another  media   */
 	@media (max-width: 992px) {
+		/* start */
+  .dc-chat-item-content.dc-active, .dc-chat-item-content.dc-active:hover { background: var(--background-default-hover); }
+/* end */
+
 		.dc-chat-item-content.dc-active{background-color: transparent;}
 		.filters-container-search{flex-direction: column; gap: 10px; margin-bottom: 10px; }
 	.dc-dotnotification:before{    margin: -5px 10px 0 ; }
