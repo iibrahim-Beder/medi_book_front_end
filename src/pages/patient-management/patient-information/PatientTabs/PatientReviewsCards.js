@@ -1,5 +1,4 @@
-// PatientReviewsCards.jsx
-import React, { useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import { MdOutlineArrowForward } from "react-icons/md";
 import { useTranslation } from "react-i18next";
@@ -7,125 +6,197 @@ import StarRating from "../../../shared/StarRating";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
 import Pagination from "../../../shared/Pagination";
+import { useGetPatientReviewsQuery } from "../../../../api/patientReviewsApi";
+import Skeleton from "react-loading-skeleton";
+import ErrorLoading from "../../../shared/ErrorLoading";
 
-const reviewsData = [
-  {
-    id: "#RV001",
-    serviceType: "Video Call",
-    rating: 5,
-    review:
-      "Dr. Edalin Hendry has been my family's trusted doctor for years. Their genuine care and thorough approach to our health concerns make every visit reassuring. Dr. Edalin Hendry's ability to listen and explain complex health issues in understandable terms is exceptional. We are grateful to have such a dedicated physician by our side",
-    reviewDate: "11 Mar 2024",
-    bookingId: "#BK001",
-    patientName: "Adrian",
-    patientImg: "assets/img/doctors-dashboard/profile-01.jpg",
-  },
-  {
-    id: "#RV002",
-    serviceType: "In-Person Visit",
-    rating: 4,
-    review:
-      "Good overall experience. The dentist was professional and the cleaning was done carefully. The only downside was the slightly long waiting time.",
-    reviewDate: "11 Mar 2024",
-    bookingId: "#BK002",
-    patientName: "Kelly",
-    patientImg: "assets/img/doctors-dashboard/profile-02.jpg",
-  },
-  {
-    id: "#RV003",
-    serviceType: "Voice Call",
-    rating: 5,
-    review:
-      "Excellent therapy sessions! The therapist was knowledgeable and helped me recover quickly from my injury. The exercises were effective and well-explained.",
-    reviewDate: "11 Mar 2024",
-    bookingId: "#BK003",
-    patientName: "Samuel",
-    patientImg: "assets/img/doctors-dashboard/profile-03.jpg",
-  },
-  {
-    id: "#RV004",
-    serviceType: "In-Person Visit",
-    rating: 3,
-    review:
-      "The examination was comprehensive but I felt a bit rushed during the consultation. The optometrist answered my questions but didn't seem to have much time.",
-    reviewDate: "12 Apr 2022",
-    bookingId: "#BK004",
-    patientName: "Nora",
-    patientImg: "assets/img/doctors-dashboard/profile-04.jpg",
-  },
-];
+const ShimmerCard = () => (
+  <div className="mb-4 table-card card">
+    <div className="d-flex justify-content-between mb-2">
+      <Skeleton width={120} height={20} />
+      <Skeleton width={80} height={20} />
+    </div>
+    <Skeleton count={3} height={14} style={{ marginBottom: "6px" }} />
+    <div className="d-flex justify-content-end mt-2">
+      <Skeleton width={100} height={30} />
+    </div>
+  </div>
+);
 
-const PatientReviewsCards = () => {
+const PatientReviewsCards = ({ patientId = 4 }) => {
   const { t } = useTranslation();
-  // Pagination state
+
+  //  State for filters
+  const [dateRange, setDateRange] = useState({ start: null, end: null });
+  const [starFilters, setStarFilters] = useState({});
+  const [appointmentType, setAppointmentType] = useState(undefined);
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;
-  // Get reviews for the current page only
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, reviewsData.length);
-  const paginatedReviews = reviewsData.slice(startIndex, endIndex);
+
+  //  Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [dateRange, starFilters, appointmentType]);
+
+  //  Build filters
+  const filter = useMemo(() => {
+    const selectedRatings = Object.keys(starFilters)
+      .filter((k) => starFilters[k])
+      .map(Number);
+
+    const minRating = selectedRatings.length
+      ? Math.min(...selectedRatings)
+      : undefined;
+    const maxRating = selectedRatings.length
+      ? Math.max(...selectedRatings)
+      : undefined;
+
+    return {
+      minRating,
+      maxRating,
+      appointmentType,
+      fromDate: dateRange.start?.toISOString(),
+      toDate: dateRange.end?.toISOString(),
+    };
+  }, [starFilters, dateRange, appointmentType]);
+
+  // API call
+  const {
+    data: reviewsResponse,
+    isLoading,
+    isFetching,
+    isError,
+    refetch,
+  } = useGetPatientReviewsQuery({
+    patientId,
+    filter,
+    pageNumber: page,
+    pageSize: itemsPerPage,
+  });
+
+  const reviews = reviewsResponse?.data || [];
+  const averageRating = reviewsResponse?.averageRating ?? 0;
+  const totalCount = reviewsResponse?.totalCount ?? 0;
+  const showShimmer = isFetching || isLoading;
 
   return (
     <div className="comments-list">
+      {/* Header */}
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("PatientReviewsCards.table_title")}</h3>
           <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
         </div>
-
-        {/* Overall rating summary section */}
         <div className="review-content">
           <div className="review-rate">
             <h3>{t("PatientReviewsCards.overall_rating")}</h3>
             <div className="star-over-rated">
-              <span>4.0</span>
-              <StarRating rating={4} />
+              <span>{Number(averageRating).toFixed(1)}</span>
+              <StarRating rating={averageRating} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Filters section */}
-      <div className="review-filters">
-        <FilterDropdown small />
-        <DateRangePicker />
+      {/*  Filters */}
+      <div className="review-filters d-flex gap-3 align-items-center flex-wrap">
+
+      <FilterDropdown
+    small
+    filters={[
+      {
+        name: "rating",
+        label: t("Select Rating max, min"),
+        data: [
+          { key: "5", label: "5 Stars" },
+          { key: "4", label: "4 Stars" },
+          { key: "3", label: "3 Stars" },
+          { key: "2", label: "2 Stars" },
+          { key: "1", label: "1 Star" },
+        ],
+      },
+      {
+        name: "type",
+        label: t("Appointment Type"),
+        data: [
+          { key: "Consultation", label: t("Consultation") },
+          { key: "FollowUp", label: t("Follow Up") },
+          { key: "Emergency", label: t("Emergency") },
+          { key: "Routine", label: t("Routine") },
+        ],
+      },
+    ]}
+    onFilter={(filters) => {
+      //  Extract Rating Filters
+      const ratingFilters = filters.rating || {};
+      const selectedRatings = Object.keys(ratingFilters)
+        .filter((k) => ratingFilters[k])
+        .map(Number);
+      setStarFilters(ratingFilters);
+
+      // Extract Appointment Type
+      const typeFilters = filters.type || {};
+      const selectedType = Object.keys(typeFilters).find(
+        (key) => typeFilters[key]
+      );
+      setAppointmentType(selectedType || undefined);
+    }}
+     onReset={() => {
+      setStarFilters({});
+      setAppointmentType(undefined);
+    }}
+  />
+
+        {/* Date Filter */}
+        <DateRangePicker onChange={setDateRange} />
       </div>
 
-      {/* Render paginated review cards */}
-      {paginatedReviews.map((review) => (
-        <Card key={review.id} className="mb-4 table-card">
-          <div className="comments">
-            {/* Review header with type, date, and rating */}
-            <div className="d-flex justify-content-between align-items-start comment-head mb-2">
-              <div className="patient-info">
-                <h6 className="mb-0 fw-semibold">{review.serviceType}</h6>
-                <span>{review.reviewDate}</span>
-              </div>
-              <div className="text-end">
-                <StarRating rating={review.rating} />
-              </div>
-            </div>
+      {isError ? (
+        <ErrorLoading isError={isError} refetch={refetch} />
+      ) : (
+        <>
+          {showShimmer ? (
+            [...Array(itemsPerPage)].map((_, i) => <ShimmerCard key={i} />)
+          ) : reviews.length === 0 ? (
+            <p className="text-center text-muted mt-4">{t("No reviews found")}</p>
+          ) : (
+            reviews.map((review) => (
+              <Card key={review.reviewId} className="mb-4 table-card">
+                <div className="comments">
+                  <div className="d-flex justify-content-between align-items-start comment-head mb-2">
+                    <div className="patient-info">
+                      <h6 className="mb-0 fw-semibold">{review.bookingType}</h6>
+                      <span>{review.createdAt?.split("T")[0]}</span>
+                    </div>
+                    <div className="text-end">
+                      <StarRating rating={review.rating} />
+                    </div>
+                  </div>
+                  <div className="review-info">
+                    <p className="mb-3">{review.comment}</p>
+                    <div className="comment-footer">
+                      <Button
+                      style={{float:"inline-end"}}
+                        variant="outline-primary"
+                        size="sm"
+                        className="d-flex align-items-center view-btn ms-2"
+                      >
+                        {t("PatientReviewsCards.view_booking")}{" "}
+                        <MdOutlineArrowForward className="ms-1 arrow-icon-view-table" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))
+          )}
+        </>
+      )}
 
-            {/* Review text and view booking button */}
-            <div className="review-info">
-              <p className="mb-3">{review.review}</p>
-              <div className="comment-footer">
-                <Button
-                  variant="outline-primary"
-                  size="sm"
-                  className="d-flex align-items-center view-btn ms-2"
-                >
-                  {t("PatientReviewsCards.view_booking")} <MdOutlineArrowForward className="ms-1 arrow-icon-view-table" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Card>
-      ))}
-
+      {/* Pagination */}
       <Pagination
         currentPage={page}
-        totalItems={reviewsData.length}
+        totalItems={totalCount}
         rowsPerPage={itemsPerPage}
         onPageChange={setPage}
       />

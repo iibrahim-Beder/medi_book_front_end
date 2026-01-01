@@ -4,66 +4,71 @@ import { BiReset } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import DateRangePicker from "./DateRangePicker";
 import FilterDropdown from "./FilterDropdown";
+import { t } from "i18next";
 
 const ConditionsFilters = ({
-  // Filter values
   searchTerm = "",
-  filterServiceType = "",
-  filterRating = "",
   filterDateFrom = null,
   filterDateTo = null,
-  
-  // Filter update functions
   setSearchTerm,
-  setFilterServiceType,
-  setFilterRating,
   setFilterDateFrom,
   setFilterDateTo,
-  
-  // Additional functions
   onReset,
   onSearch,
-  
-  // Customization options
-  searchPlaceholder = "Search reviews...",
+  searchPlaceholder ,
   showSearchInput = true,
   showSearchReset = true,
   showDateRange = true,
   showFilterDropdown = true,
-  customFilters = [],
+  filterConfigs = [],
   conditions = []
 }) => {
-  // Default filters (not used since customFilters are provided)
-  const defaultFilters = [];
+    const placeholder = searchPlaceholder || t("Search ...");
 
-  // Use custom filters if provided, otherwise default
-  const filters = customFilters.length > 0 ? customFilters : defaultFilters;
-
+  // Reset handler
   const handleReset = () => {
     setSearchTerm("");
-    setFilterServiceType("");
-    setFilterRating("");
     setFilterDateFrom(null);
     setFilterDateTo(null);
     if (onReset) onReset();
   };
 
+  // Search handler
   const handleSearch = () => {
     if (onSearch) onSearch();
   };
 
+  // Handle filter change
+  const handleFilterChange = (appliedFilters) => {
+    const result = {};
+    filterConfigs.forEach(filter => {
+      if (appliedFilters[filter.name]) {
+        const selected = Object.keys(appliedFilters[filter.name]).find(
+          key => appliedFilters[filter.name][key]
+        );
+        result[filter.name] = selected || "";
+      }
+    });
+
+    if (onSearch) onSearch(result);
+  };
+
   return (
-    <div className="filter-section">
-      {/* Left side: search and reset */}
+    <div className="filter-section d-flex justify-content-between align-items-center flex-wrap">
+
+      {/* Left side: search and buttons */}
       <div className="d-flex align-items-center" style={{ flexDirection: "column" }}>
         {showSearchInput && (
-          <div style={{ position: "relative"}}>
+          <div style={{ position: "relative" }}>
             <input
               className="form-control small-search"
               type="text"
-              placeholder={searchPlaceholder}
+              placeholder={placeholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
             />
             <CiSearch
               style={{
@@ -79,87 +84,50 @@ const ConditionsFilters = ({
         )}
 
         {showSearchReset && (
-          <div className="" >
-            <div className="btn-group mt-2" > 
-              <Button
-                className="PatientsFiltersBtn"
-                variant="outline-secondary"
-                style={{ boxShadow: "none" }}
-                onClick={handleSearch}
-              >
-                Search
-              </Button>
-              <Button
-                className="PatientsFiltersBtn"
-                variant="outline-secondary"
-                style={{ boxShadow: "none" }}
-                onClick={handleReset}
-              >
-                <BiReset /> Reset
-              </Button>
-            </div>
+          <div className="btn-group mt-2">
+            <Button
+              className="PatientsFiltersBtn"
+              variant="outline-secondary"
+              onClick={handleSearch}
+            >
+              {t("Search")}
+            </Button>
+            <Button
+              className="PatientsFiltersBtn"
+              variant="outline-secondary"
+              onClick={handleReset}
+            >
+              <BiReset /> {t("Reset")}
+            </Button>
           </div>
         )}
       </div>
 
-      {/* Right side: date range and filters */}
-      <div className="filter-and-date" style={{ display: "flex", gap: "12px" }}>
+      {/* Right side: date range & dropdown */}
+      <div className="filter-and-date d-flex "style={{gap:"12px"}}>
         {showDateRange && (
           <DateRangePicker
             startDate={filterDateFrom}
             endDate={filterDateTo}
             onChange={({ start, end }) => {
-              setFilterDateFrom(start);
-              setFilterDateTo(end);
-            }}
+    setFilterDateFrom(start);
+    setFilterDateTo(end);
+    handleSearch({ 
+      ...conditions, 
+      diagnosisDateFrom: start, 
+      diagnosisDateTo: end 
+    });
+  }}
           />
         )}
 
         {showFilterDropdown && (
-          <FilterDropdown 
-            filters={filters} 
-            small={true} 
+          <FilterDropdown
+            filters={filterConfigs}
+            small={true}
             conditions={conditions}
-            defaultValues={{
-              rating: {
-                "1": false,
-                "2": false,
-                "3": false,
-                "4": false,
-                "5": false
-              },
-              serviceType: {
-                "Video Call": false,
-                "Voice Call": false,
-                "In-Person Visit": false
-              }
-            }}
-            onFilter={(filters) => {
-              // Handle applied filters from FilterDropdown
-              if (filters.rating) {
-                const activeRatings = Object.keys(filters.rating).filter(
-                  key => filters.rating[key]
-                );
-                setFilterRating(activeRatings.length > 0 ? activeRatings : "");
-              }
-              
-              if (filters.serviceType) {
-                const activeServiceTypes = Object.keys(filters.serviceType).filter(
-                  key => filters.serviceType[key]
-                );
-                setFilterServiceType(activeServiceTypes.length > 0 ? activeServiceTypes : "");
-              }
-
-              if (filters.condition) {
-                setFilterServiceType(filters.condition);
-              }
-
-              handleSearch();
-            }}
-            onReset={() => {
-              setFilterRating("");
-              setFilterServiceType("");
-            }}
+            onFilter={handleFilterChange}
+            onReset={onReset}
           />
         )}
       </div>

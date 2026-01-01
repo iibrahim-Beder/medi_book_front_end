@@ -6,7 +6,7 @@ import '../MainCss.css'
 
 export default function LocationMain() {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("AddLocation");
+  const [activeTab, setActiveTab] = useState("shifts");
 
   return (
     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">

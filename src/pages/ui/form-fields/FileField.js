@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React, { useState } from "react";
 
 const FileField = ({
@@ -17,30 +18,26 @@ const FileField = ({
     setTouched(true);
     onChange(e);
   };
-
   const showError = error && (touched || forceShowError);
-
   return (
-    <div className={`form-group ${showError ? "has-error" : ""}`}>
-      <label>{label}</label>
-      <label className={`file-upload ${showError ? "file-error" : ""}`}>
-        <span className={`file-icon ${showError ? "icon-error" : ""}`}>
-          {icon}
-        </span>
-        <p>{hint}</p>
-        <span className="btn">
-          {buttonIcon} رفع ملف
-          <input
-            type="file"
-            name={name}
-            accept={accept}
-            onChange={handleChange}
-            hidden
-          />
-        </span>
-      </label>
-      {showError && <span className="error-text">{error}</span>}
-    </div>
+        <div className={`form-group form-group-label ${showError ? "has-error" : ""} `}>
+            <label>{label}</label>
+              <div className={`dc-labelgroup ${showError ? "file-error" : ""} `}>
+                <label htmlFor="filep">
+                  <span className="dc-btn"> {t("profilePhoto.selectFiles")}</span>
+                  <input
+                  accept={accept}
+                  onChange={handleChange}
+                  hidden
+                  name={name}
+                  type="file" id="filep" />
+                </label>
+                <span className="dc-uploadinfo">{t("profilePhoto.dropFiles")}</span>
+                <em className="dc-fileuploading">
+                  {t("profilePhoto.uploading")} <i className="fa fa-spinner fa-spin"></i>
+                </em>
+              </div>
+            </div>
   );
 };
 

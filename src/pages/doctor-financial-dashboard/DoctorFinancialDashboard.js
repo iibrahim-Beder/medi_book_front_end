@@ -6,6 +6,30 @@ import { FaMoneyBillWave, FaWallet } from "react-icons/fa";
 import StatCard from "../patient-management/patients-home-page/components/StatCard";
 import { useTranslation } from "react-i18next";
 import DateRangePicker from "../patient-management/patient-information/PatientTabs/component/DateRangePicker";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const DoctorFinancialDashboard = () => {
     const { t } = useTranslation();
@@ -108,7 +132,8 @@ const DoctorFinancialDashboard = () => {
   };
 
   return (
-    <Container fluid className="p-4">
+    <div className="patient-management-container">
+    <Container fluid className="p-4 pt-0">
         <DoctorFinanceStats/>
         
       {/* Charts */}
@@ -143,11 +168,14 @@ const DoctorFinancialDashboard = () => {
       {stats.map((stat, idx) => (
         <StatCard key={idx} {...stat} />
       ))}
-        <div className="col-xl-3 col-sm-6 col-12"
+        <div className="col-xl-3 col-sm-12 col-md-6 col-12"
         //  style={{    width:" 338px", height:"230px", display: "flex"}}
          >
-          <div className="table-card" style={{    display: "flex",flexDirection:"column",alignItems: "center"}}>
-            <h4 className="text-muted mb-0">Bookings Status</h4>
+          <div
+           className="border-0 shadow-none" 
+           style={{    display: "flex",flexDirection:"column",alignItems: "center"}}>
+
+            {/* <h4 className="text-muted mb-0">Bookings Status</h4> */}
             <Pie data={statusChartData} options={responsive} />
           </div>
         </div>
@@ -156,7 +184,7 @@ const DoctorFinancialDashboard = () => {
         </div>
         <DoctorFinanceTable/>
      
-    </Container>
+    </Container></div>
   );
 };
 

@@ -3,7 +3,7 @@ import { format, subDays, startOfDay, endOfDay, startOfMonth, endOfMonth, subMon
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
-import './DateRangePicker.css';
+import { t } from 'i18next';
 
 const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
   // State for main date range and UI control
@@ -151,7 +151,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
 
   const handleInputFocus = () => {
     setIsEditing(true);
-    setShowDropdown(false);
+    setShowDropdown(true);
   };
 
   // Delay blur to allow button clicks before losing focus
@@ -171,7 +171,11 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
   };
 
   return (
-    <div className="DateRangePicker" style={{ position: "relative", width }} ref={dropdownRef}>
+    <div
+      className="DateRangePicker"
+      style={{ position: "relative", width }}
+      ref={dropdownRef}
+    >
       <div style={{ position: "relative", width: "100%" }}>
         <CiCalendar
           onClick={handleIconClick}
@@ -195,7 +199,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               handleManualInputSubmit();
             }
           }}
@@ -212,16 +216,18 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
             boxSizing: "border-box",
           }}
         />
-     
+
         {inputError && (
-          <div style={{
-            position: "absolute",
-            top: "100%",
-            left: 0,
-            color: "#ff4d4f",
-            fontSize: "12px",
-            marginTop: "4px"
-          }}>
+          <div
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              color: "#ff4d4f",
+              fontSize: "12px",
+              marginTop: "4px",
+            }}
+          >
             {inputError}
           </div>
         )}
@@ -232,33 +238,34 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
         <div
           className={`list-date-option ${showCustomRange ? "custom" : "open"}`}
         >
-          <div className="list-date-option-and-custom" style={{ display: "flex" }}>
+          <div
+            className="list-date-option-and-custom"
+            style={{ display: "flex" }}
+          >
             <div
               className="dropdown-date-options"
               style={{
-                borderRight: showCustomRange ? "1px solid #ddd" : "none",
-                paddingTop: "8px",
-                minWidth: "150px",
-                maxWidth: "150px",
-                paddingRight: showCustomRange ? "2px" : "",
+                borderRight: showCustomRange ? "" : "none",
+                borderLeft: showCustomRange ? "" : "none",
+                paddingRight: showCustomRange ? "2px" : "none",
               }}
             >
               {[
-                { key: "today", label: "Today" },
-                { key: "yesterday", label: "Yesterday" },
-                { key: "last7Days", label: "Last 7 Days" },
-                { key: "last30Days", label: "Last 30 Days" },
-                { key: "thisMonth", label: "This Month" },
-                { key: "lastMonth", label: "Last Month" },
-                { key: "custom", label: "Custom Range" },
+                { key: "today", label: t("Today") },
+                { key: "yesterday", label: t("Yesterday") },
+                { key: "last7Days", label: t("Last 7 Days") },
+                { key: "last30Days", label: t("Last 30 Days") },
+                { key: "thisMonth", label: t("This Month") },
+                { key: "lastMonth", label: t("Last Month") },
+                { key: "custom", label: t("Custom Range") },
               ].map(({ key, label }) => (
                 <div
                   key={key}
                   onClick={() => handleQuickSelect(key)}
                   style={{
                     margin: "0 2px",
-                    backgroundColor: selectedOption === key ? '#3fabf3' : '',
-                    color: selectedOption === key ? '#fff' : '',
+                    backgroundColor: selectedOption === key ? "#3fabf3" : "",
+                    color: selectedOption === key ? "#fff" : "",
                     padding: "4px 12px",
                     cursor: "pointer",
                     whiteSpace: "nowrap",
@@ -272,17 +279,23 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
 
             {/* Custom date range calendar */}
             {showCustomRange && (
-              <div style={{ padding: '8px', margin: '2px', backgroundColor:"#fff" }}>
+              <div
+                style={{
+                  padding: "8px",
+                  margin: "2px",
+                  backgroundColor: "#fff",
+                }}
+              >
                 <DayPicker
                   mode="range"
                   numberOfMonths={2}
                   selected={tempRange}
                   onSelect={setTempRange}
                   formatters={{
-                    formatCaption: (month) => format(month, 'MMM yyyy'),
+                    formatCaption: (month) => format(month, "MMM yyyy"),
                   }}
                   styles={{
-                    caption_label: { textTransform: 'capitalize' },
+                    caption_label: { textTransform: "capitalize" },
                   }}
                 />
               </div>
@@ -292,35 +305,40 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
           {/* Footer buttons for custom range */}
           {showCustomRange && (
             <div
-              className='date-range-footer'
+              className="date-range-footer"
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
-                padding:"3px",
+                padding: "3px",
                 paddingTop: "10px",
                 borderTop: "1px solid #ddd",
                 alignItems: "center",
               }}
             >
               <p className="mb-0">{formatDateRange()}</p>
-              <div>  
-                <button 
-                  className="mr-3 ml-5 simple-btn btn" 
+              <div>
+                <button
+                  className="mr-3 ml-5 simple-btn btn"
                   type="button"
                   onClick={() => {
                     setShowCustomRange(false);
                     setShowDropdown(false);
                   }}
                 >
-                  Cancel
+                  {t("Cancel")}
                 </button>
                 <button
                   onClick={handleApplyCustomRange}
-                  className='second-btn'
+                  className="second-btn"
                   disabled={!tempRange?.from || !tempRange?.to}
-                  style={{ cursor: !tempRange?.from || !tempRange?.to ? "not-allowed" : "pointer" }}
+                  style={{
+                    cursor:
+                      !tempRange?.from || !tempRange?.to
+                        ? "not-allowed"
+                        : "pointer",
+                  }}
                 >
-                  Apply
+                  {t("Apply")}
                 </button>
               </div>
             </div>

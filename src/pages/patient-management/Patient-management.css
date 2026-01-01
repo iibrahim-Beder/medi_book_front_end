@@ -169,3 +169,103 @@ border-bottom: 1px solid #dee2e670 !important;
 .css-rwsrtj-MuiListItem-root:hover {
     background-color: #f0f0f033 !important;
 }
+.stats-card h4{
+  font-size: 16px;
+  font-weight: 600;
+  
+}
+.stats-card h3{
+   font-size: 17px;
+  font-weight: 700;
+}
+
+
+/* prs-state start */
+.prs-state{
+      max-height: 5px;
+    opacity: 0;
+  transition: all .5s ease-in-out; 
+
+}
+.stats-card-item.dc-insightsitem:hover {cursor: pointer;}
+/* .stats-card-item.dc-insightsitem {padding: 25px;} */
+.dc-insightsitem:hover .prs-state{
+      /* max-height: 100px; */
+    opacity: 1;
+  transition: all 0.3s ease-in-out;
+  /* border-top: 1px solid #eee; */
+}
+.small-search.normal-search{
+      max-height: 45px !important;
+    width: 300px !important ;
+    border-color: #b5b5b575;
+}
+.patient-management-container .pt-0{
+  padding-top: 0 !important ;
+}
+.patient-management-container .dc-dashboardbox{box-shadow:0px 0px 8px 3px var(--shado3color)}
+
+
+.dc-accordioninnertitle.skeleton{padding: 5px 10px;}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px;
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.skeleton-item > div > span {
+  display: block !important;
+}
+
+/* modal css start */
+.diagnosis-modal .modal-dialog {
+  max-width: 900px;
+  min-height: 500px;
+}
+
+.modal-header-custom {
+  background-color: #f8f9fa;
+    padding-top: 20px !important;
+}
+
+.modal-title-custom {
+  color: #333;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.btn-close-custom {
+  background: none;
+  border: none;
+  color: #6c757d;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content-custom {
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+ .diagnosis-modal .modal-footer-custom {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  padding: 0 1rem ;
+}
+
+.close-btn {
+  min-width: 100px;
+}
+/* modal css end */

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Field from "../../ui/form-fields/Field";
+import SelectField from "../../ui/form-fields/SelectField";
+import TextAreaField from "../../ui/form-fields/TextAreaField";
 
 export default function DeleteAccount({ onDelete }) {
   const { t } = useTranslation();
@@ -42,10 +45,10 @@ export default function DeleteAccount({ onDelete }) {
         >
           <fieldset>
             <div className="form-group form-group-half">
-              <input
+              <Field
+                 label="password"
                 type="password"
                 name="password"
-                className="form-control"
                 placeholder={t("deleteAccount.placeholders.password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -53,10 +56,10 @@ export default function DeleteAccount({ onDelete }) {
             </div>
 
             <div className="form-group form-group-half">
-              <input
+              <Field
                 type="password"
+                label="confirm Password"
                 name="confirmPassword"
-                className="form-control"
                 placeholder={t("deleteAccount.placeholders.confirmPassword")}
                 value={password2}
                 onChange={(e) => setPassword2(e.target.value)}
@@ -64,27 +67,25 @@ export default function DeleteAccount({ onDelete }) {
             </div>
 
             <div className="form-group">
-              <span className="dc-select">
-                <select
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  required
-                >
-                  <option value="" disabled>
-                    {t("deleteAccount.placeholders.reason")}
-                  </option>
-                  <option value="reason1">{t("deleteAccount.reasons.reason1")}</option>
-                  <option value="reason2">{t("deleteAccount.reasons.reason2")}</option>
-                  <option value="noReason">{t("deleteAccount.reasons.noReason")}</option>
-                </select>
-              </span>
+              <SelectField
+                name="reason"
+                label={t("deleteAccount.placeholders.reason")}
+                options={[
+                  { value: "noReason", label: t("deleteAccount.reasons.noReason") },
+                  { value: "reason1", label: t("deleteAccount.reasons.reason1") },
+                  { value: "reason2", label: t("deleteAccount.reasons.reason2") },
+                ]}
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
+
             </div>
 
             <div className="form-group">
-              <textarea
+
+              <TextAreaField
                 name="message"
-                className="form-control"
-                placeholder={t("deleteAccount.placeholders.description")}
+                label={t("deleteAccount.placeholders.description")}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />

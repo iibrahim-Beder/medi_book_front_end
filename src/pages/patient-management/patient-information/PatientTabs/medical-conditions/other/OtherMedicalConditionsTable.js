@@ -1,194 +1,84 @@
-// OtherMedicalConditions.jsx
-import React, { useState } from "react";
+import React from "react";
 import { Table, Button } from "react-bootstrap";
-import "../../../../Patient-management.css"; // أعدت استيراد الملف لأنه كان معلّق في الكود الأصلي
-import ConditionsFilters from "../../component/ConditionsFilters";
 import { MdExpandMore } from "react-icons/md";
-import { useTranslation } from "react-i18next";
-import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
+import DynamicEditModal from "../../../../../shared/DynamicEditModal";
 import Pagination from "../../../../../shared/Pagination";
+import ConditionsFilters from "../../component/ConditionsFilters";
+import { useTranslation } from "react-i18next";
+import "../../../../Patient-management.css";
+import PopupMessage from "../../../../../shared/PopupMessage";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import HighlightText from "../../../../../shared/HighlightText";
+import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
+import ErrorLoading from "../../../../../shared/ErrorLoading";
+import { useOtherMedicalConditions } from "./helper-use/useOtherMedicalConditions";
+import { otherMedicalConditionsHelpers } from "./helper-use/otherMedicalConditionsHelpers";
 
 const OtherMedicalConditions = () => {
   const { t } = useTranslation();
-  const [expandedRow, setExpandedRow] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchBy, setSearchBy] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1);
+  
+  const {
+    // State
+    expandedRow,
+    currentFilters,
+    appliedFilters,
+    currentPage,
+    showModal,
+    showPopup,
+    selectedRecord,
+    recordToDelete,
+    isAddMode,
+    medicalConditionsData,
+    isLoading,
+    isFetching,
+    error,
+    isDeleting,
+    pageSize,
+    
+    // Actions
+    handleSearch,
+    handleResetFilters,
+    handleAddNew,
+    handleEdit,
+    handleDeleteInModal,
+    handleClosePopup,
+    handleNotesClick,
+    handleSave,
+    handleConfirmDelete,
+    setCurrentPage,
+    setCurrentFilters,
+    setShowModal,
+    setSelectedRecord,
+    refetch,
+    
+    // Utilities
+    getSeverityColor,
+    getStatusInfo,
+    truncateText
+  } = useOtherMedicalConditions();
 
-  // Filters states
-  const [filterType, setFilterType] = useState("");
-  const [filterDateFrom, setFilterDateFrom] = useState(null);
-  const [filterDateTo, setFilterDateTo] = useState(null);
-
-  // Mock data representing diagnosed conditions
-  const conditionsData = [
-    {
-      id: "#DC001",
-      medicalConditionName: "Rheumatoid Arthritis",
-      severity: "Severe",
-      diagnosedDate: "2022-08-12",
-      isActive: true,
-      notes:
-        "Patient presents with symmetric polyarthritis affecting small joints of hands and feet. Morning stiffness lasting over 2 hours. Elevated CRP and ESR levels. Rheumatoid factor positive. Started on Methotrexate and Prednisone taper. Requires regular monitoring of liver function and blood counts.",
-    },
-    {
-      id: "#DC002",
-      medicalConditionName: "Chronic Kidney Disease",
-      severity: "Moderate",
-      diagnosedDate: "2023-03-18",
-      isActive: true,
-      notes:
-        "Estimated GFR 45 mL/min/1.73m². Secondary to long-standing hypertension. Proteinuria 450 mg/24h. Blood pressure well-controlled on ACE inhibitors. Advised renal protective diet: low sodium, moderate protein. Avoid NSAIDs and nephrotoxic agents. Regular monitoring of renal function every 3 months.",
-    },
-    {
-      id: "#DC003",
-      medicalConditionName: "Generalized Anxiety Disorder",
-      severity: "Moderate",
-      diagnosedDate: "2021-11-05",
-      isActive: true,
-      notes:
-        "Patient reports persistent worry, restlessness, muscle tension, and sleep disturbance. Experiencing panic attacks 2-3 times monthly. Started on SSRI and referred for cognitive behavioral therapy. Good response to treatment with reduced anxiety symptoms. Continuing medication and therapy sessions.",
-    },
-    {
-      id: "#DC004",
-      medicalConditionName: "Osteoporosis",
-      severity: "Mild",
-      diagnosedDate: "2020-09-22",
-      isActive: true,
-      notes:
-        "T-score -2.5 at lumbar spine. No previous fractures. Patient educated about fall prevention and importance of weight-bearing exercises. Started on calcium and vitamin D supplementation. Bisphosphonates initiated. Bone density scan scheduled in 2 years. Good adherence to treatment plan.",
-    },
-    {
-      id: "#DC005",
-      medicalConditionName: "Psoriasis",
-      severity: "Moderate",
-      diagnosedDate: "2019-12-10",
-      isActive: false,
-      notes:
-        "Extensive plaques covering approximately 15% of body surface area, primarily on elbows, knees, and scalp. Previously treated with topical corticosteroids and phototherapy. Condition resolved with biologic therapy. Patient currently in remission with clear skin. Monitoring for potential recurrence.",
-    },
-    {
-      id: "#DC006",
-      medicalConditionName: "Hypothyroidism",
-      severity: "Mild",
-      diagnosedDate: "2018-06-30",
-      isActive: true,
-      notes:
-        "TSH elevated at 8.5 mIU/L, free T4 low normal. Positive anti-TPO antibodies. Started on Levothyroxine 50 mcg daily. Symptoms of fatigue and weight gain improved with treatment. TSH now stable at 2.1 mIU/L on current dose. Requires lifelong thyroid replacement therapy with annual TSH monitoring.",
-    },
-    {
-      id: "#DC007",
-      medicalConditionName: "Coronary Artery Disease",
-      severity: "Severe",
-      diagnosedDate: "2023-01-15",
-      isActive: true,
-      notes:
-        "Significant stenosis in LAD, RCA, and LCx arteries. Status post CABG x3. EF 45%. On optimal medical therapy including beta-blocker, statin, aspirin, and ACE inhibitor. No current angina symptoms. Strict lipid control with LDL target <70 mg/dL. Cardiac rehab completed.",
-    },
-    {
-      id: "#DC008",
-      medicalConditionName: "Chronic Obstructive Pulmonary Disease",
-      severity: "Moderate",
-      diagnosedDate: "2022-04-08",
-      isActive: true,
-      notes:
-        "FEV1/FVC 60%, FEV1 65% predicted. Former smoker, quit 5 years ago. Symptoms include dyspnea on exertion and chronic cough. On LAMA/LABA inhaler therapy. Pulmonary rehab referral provided. Annual influenza vaccination and pneumococcal vaccine up to date. No recent exacerbations.",
-    },
-  ];
-
-  // Handle expand/collapse for notes
-  const handleNotesClick = (id) => {
-    if (expandedRow === id) {
-      setExpandedRow(null);
-    } else {
-      setExpandedRow(id);
-    }
-  };
-
-  // Apply search & filters
-  const filteredConditions = conditionsData
-    .filter((condition) => {
-      if (!searchTerm) return true;
-      if (searchBy === "all") {
-        return Object.values(condition)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      } else {
-        return condition[searchBy]
-          ?.toString()
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      }
-    })
-    .filter((condition) => {
-      if (filterType && condition.medicalConditionName !== filterType)
-        return false;
-      return true;
-    });
-
-  const resetFilters = () => {
-    setSearchTerm("");
-    setFilterType("");
-    setFilterDateFrom(null);
-    setFilterDateTo(null);
-    setCurrentPage(1);
-  };
-
-  const rowsPerPage = 5;
-  const totalPages = Math.ceil(filteredConditions.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentData = filteredConditions.slice(
-    startIndex,
-    startIndex + rowsPerPage
-  );
-
-  // Get severity color
-  const getSeverityColor = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case "mild":
-        return "#4BAE78"; // Green
-      case "moderate":
-        return "#FFA500"; // Orange
-      case "severe":
-        return "#D66A6A"; // Red
-      default:
-        return "#6C757D"; // Gray
-    }
-  };
-
-  // Get status color and text
-  const getStatusInfo = (isActive) => {
-    return {
-      color: isActive ? "#3fabf3" : "#7A8B97",
-      text: t(`Common.status_options.${isActive ? "active" : "inactive"}`),
-    };
-  };
-
-  // Utility: truncate long text
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
-
-  // Format date
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  const {
+    fields,
+    fieldMapping,
+    filterConfigs,
+    formatDate,
+    translateSeverity,
+    translateConditionType,
+    translateStatus
+  } = otherMedicalConditionsHelpers(t);
 
   return (
     <div className="table-container">
-      <div className="table-header">
+      <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("OtherMedicalConditionsMobileView.table_title")}</h3>
           <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+        </div>
+        <div>
+          <button className="add-btn" onClick={handleAddNew}>
+            {t('OtherMedicalConditions.add_condition')}
+          </button>
         </div>
       </div>
 
@@ -197,17 +87,22 @@ const OtherMedicalConditions = () => {
           {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filterType={filterType}
-              setFilterType={setFilterType}
-              filterDateFrom={filterDateFrom}
-              setFilterDateFrom={setFilterDateFrom}
-              filterDateTo={filterDateTo}
-              setFilterDateTo={setFilterDateTo}
-              onReset={resetFilters}
-              onSearch={() => setCurrentPage(1)}
-              conditions={conditionsData}
+              searchTerm={currentFilters.searchValue}
+              setSearchTerm={(value) => setCurrentFilters(prev => ({ ...prev, searchValue: value }))}
+              filterType={currentFilters.conditionType}
+              setFilterType={(value) => setCurrentFilters(prev => ({ ...prev, conditionType: value }))}
+              filterStatus={currentFilters.isActive}
+              setFilterStatus={(value) => setCurrentFilters(prev => ({ ...prev, isActive: value }))}
+              filterSeverity={currentFilters.severity}
+              setFilterSeverity={(value) => setCurrentFilters(prev => ({ ...prev, severity: value }))}
+              filterDateFrom={currentFilters.diagnosisDateFrom}
+              setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, diagnosisDateFrom: date }))}
+              filterDateTo={currentFilters.diagnosisDateTo}
+              setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, diagnosisDateTo: date }))}
+              onReset={handleResetFilters}
+              onSearch={handleSearch}
+              conditions={medicalConditionsData?.data || []}
+              filterConfigs={filterConfigs}
             />
           </div>
 
@@ -217,113 +112,238 @@ const OtherMedicalConditions = () => {
               <thead>
                 <tr>
                   <th>{t("OtherMedicalConditionsMobileView.medical_condition_name")}</th>
+                  <th>{t("OtherMedicalConditionsMobileView.category")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.severity")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.diagnosed_date")}</th>
+                  <th>{t("OtherMedicalConditionsMobileView.condition_type")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.status")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.notes")}</th>
+                  <th>{t("created_at")}</th>
+                  <th>{t("updated_at")}</th>
+                  <th>{t("OtherMedicalConditions.actions")}</th>
                 </tr>
               </thead>
               <tbody>
-                {currentData.map((condition) => {
-                  const statusInfo = getStatusInfo(condition.isActive);
-                  return (
-                    <React.Fragment key={condition.id}>
-                      <tr>
-                        <td title={condition.medicalConditionName}>
-                          {condition.medicalConditionName}
-                        </td>
-                        <td>
-                          <span
-                            style={{
-                              color: getSeverityColor(condition.severity),
-                              fontWeight: "600",
-                              fontSize: "14px",
-                            }}
-                          >
-                            {t(`OtherMedicalConditionsMobileView.severity_options.${condition.severity.toLowerCase()}`)}
-                          </span>
-                        </td>
-                        <td>{formatDate(condition.diagnosedDate)}</td>
-                        <td>
-                          <span
-                            style={{
-                              color: statusInfo.color,
-                              fontWeight: "600",
-                              fontSize: "14px",
-                            }}
-                          >
-                            {statusInfo.text}
-                          </span>
-                        </td>
-                        <td title={condition.notes}>
-                          <div className="d-flex align-items-center">
+                {(isLoading || isFetching) ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <tr key={index}>
+                      <td><Skeleton width={120} height={15} /></td>
+                      <td><Skeleton width={100} height={15} /></td>
+                      <td><Skeleton width={80} height={15} /></td>
+                      <td><Skeleton width={100} height={15} /></td>
+                      <td><Skeleton width={90} height={15} /></td>
+                      <td><Skeleton width={60} height={15} /></td>
+                      <td><Skeleton width={150} height={15} /></td>
+                      <td><Skeleton width={100} height={15} /></td>
+                      <td><Skeleton width={100} height={15} /></td>
+                      <td><Skeleton width={80} height={15} /></td>
+                    </tr>
+                  ))
+                ) : error ? (
+                  <tr>
+                    <td colSpan="10" className="text-center text-danger">
+                      <ErrorLoading
+                        isError={error}
+                        refetch={refetch}
+                      />
+                    </td>
+                  </tr>
+                ) : medicalConditionsData?.data && medicalConditionsData.data.length > 0 ? (
+                  medicalConditionsData.data.map((condition) => {
+                    const statusInfo = getStatusInfo(condition.isActive);
+                    return (
+                      <React.Fragment key={condition.id}>
+                        <tr>
+                          <td title={condition.medicalConditionName}>
+                            <HighlightText
+                              text={condition.medicalConditionName}
+                              searchTerm={medicalConditionsData.searchTerm}
+                              matchedFields={condition.highlightInfo?.matchedFields || []}
+                              fieldName={fieldMapping.medicalConditionName}
+                            />
+                          </td>
+                          <td>
+                            <HighlightText
+                              text={condition.categoryName}
+                              searchTerm={medicalConditionsData.searchTerm}
+                              matchedFields={condition.highlightInfo?.matchedFields || []}
+                              fieldName={fieldMapping.categoryName}
+                            />
+                          </td>
+                          <td>
                             <span
-                              className="text-truncate"
-                              style={{ maxWidth: "250px" }}
-                            >
-                              {truncateText(condition.notes, 80)}
-                            </span>
-                            <Button
-                              className="view-btn ms-2"
-                              size="sm"
                               style={{
-                                backgroundColor: "transparent",
-                                color: "#278fff",
-                                padding: 0,
-                                fontSize: "19px",
-                                height: "20px",
+                                color: getSeverityColor(condition.severity),
+                                fontWeight: "600",
+                                fontSize: "14px",
                               }}
-                              onClick={() => handleNotesClick(condition.id)}
                             >
-                              <MdExpandMore
-                                style={{
-                                  transform:
-                                    expandedRow === condition.id
-                                      ? "rotate(180deg)"
-                                      : "rotate(0deg)",
-                                  transition: "transform 0.3s ease",
-                                }}
-                              />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-
-                      {/* Expanded row for Notes */}
-                      {expandedRow === condition.id && (
-                        <tr
-                          className="table-active-content"
-                          style={{ backgroundColor: "transparent" }}
-                        >
-                          <td
-                            colSpan="6"
-                            className="border-0 background-in-hover-none"
-                          >
-                            <div className="description-expanded-section">
-                              <TextAreaField
-                                label={t("OtherMedicalConditionsMobileView.notes")}
-                                value={condition.notes}
-                                disabled={true}
-                              />
+                              {translateSeverity(condition.severity)}
+                            </span>
+                          </td>
+                          <td>{formatDate(condition.diagnosedDate)}</td>
+                          <td>
+                            {translateConditionType(condition.conditionType)}
+                          </td>
+                          <td>
+                            <span
+                              style={{
+                                color: statusInfo.color,
+                                fontWeight: "600",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {translateStatus(condition.isActive)}
+                            </span>
+                          </td>
+                          <td title={condition.note}>
+                            <div className="d-flex align-items-center">
+                              <span
+                                className="text-truncate"
+                                style={{ maxWidth: "250px" }}
+                              >
+                                {condition.note ? (
+                                  <HighlightText
+                                    text={truncateText(condition.note, 80)}
+                                    searchTerm={medicalConditionsData.searchTerm}
+                                    matchedFields={condition.highlightInfo?.matchedFields || []}
+                                    fieldName={fieldMapping.note}
+                                  />
+                                ) : "-"}
+                              </span>
+                              {condition.note && (
+                                <Button
+                                  className="view-btn ms-2"
+                                  size="sm"
+                                  style={{
+                                    backgroundColor: "transparent",
+                                    color: "#278fff",
+                                    padding: 0,
+                                    fontSize: "19px",
+                                    height: "20px",
+                                  }}
+                                  onClick={() => handleNotesClick(condition.id)}
+                                >
+                                  <MdExpandMore
+                                    style={{
+                                      transform:
+                                        expandedRow === condition.id
+                                          ? "rotate(180deg)"
+                                          : "rotate(0deg)",
+                                      transition: "transform 0.3s ease",
+                                    }}
+                                  />
+                                </Button>
+                              )}
+                            </div>
+                          </td>
+                          <td>{formatDate(condition.createdAt)}</td>
+                          <td>{formatDate(condition.updatedAt)}</td>
+                          <td>
+                            <div style={{ display: "flex", gap: "8px" }}>
+                              <Button
+                                className="view-btn"
+                                variant=""
+                                size="sm"
+                                style={{ color: "#007bff", backgroundColor: "transparent" }}
+                                onClick={() => handleEdit(condition)}
+                              >
+                                {t("Manage")}
+                              </Button>
                             </div>
                           </td>
                         </tr>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
+
+                        {/* Expanded row for Notes */}
+                        {expandedRow === condition.id && condition.note && (
+                          <tr
+                            className="table-active-content"
+                            style={{ backgroundColor: "transparent" }}
+                          >
+                            <td
+                              colSpan="10"
+                              className="border-0 background-in-hover-none"
+                            >
+                              <div className="description-expanded-section">
+                                <TextAreaField
+                                  label={t("OtherMedicalConditionsMobileView.notes")}
+                                  value={condition.note}
+                                  disabled={true}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="10" className="text-center text-muted">
+                      {appliedFilters.searchValue ? 
+                        t('OtherMedicalConditions.no_results_for_search', { search: appliedFilters.searchValue }) :
+                        t('OtherMedicalConditions.no_records_found')
+                      }
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </Table>
           </div>
 
-          <Pagination
-            currentPage={currentPage}
-            totalItems={filteredConditions.length}
-            rowsPerPage={rowsPerPage}
-            onPageChange={setCurrentPage}
-          />
+          {/* Pagination */}
+          {medicalConditionsData && medicalConditionsData.data && medicalConditionsData.data.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalItems={medicalConditionsData.totalCount || 0}
+              rowsPerPage={pageSize}
+              onPageChange={setCurrentPage}
+              totalPages={medicalConditionsData.totalPages || 1}
+            />
+          )}
         </div>
       </div>
+
+      {/* Modal for Add/Edit */}
+      <DynamicEditModal
+        show={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedRecord(null);
+        }}
+        onSave={handleSave}
+        onDelete={handleDeleteInModal}
+        record={selectedRecord}
+        setRecord={setSelectedRecord}
+        fields={fields}
+        addMode={isAddMode}
+        title={isAddMode ? t('OtherMedicalConditions.add_condition') : t('OtherMedicalConditions.edit_condition')}
+      />
+
+      {/* Popup for Delete Confirmation */}
+      {showPopup && recordToDelete && (
+        <PopupMessage
+          type="danger"
+          title={t('OtherMedicalConditions.confirm_delete_title')}
+          message={t('OtherMedicalConditions.confirm_delete_message', { 
+            condition: recordToDelete.medicalConditionName 
+          })}
+          buttons={[
+            { 
+              text: t('Cancel'), 
+              onClick: handleClosePopup, 
+              variant: "secondary" 
+            },
+            { 
+              text: t('Delete'), 
+              onClick: handleConfirmDelete, 
+              variant: "danger",
+              disabled: isDeleting
+            }
+          ]}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

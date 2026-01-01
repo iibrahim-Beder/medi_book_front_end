@@ -109,6 +109,7 @@ select {
   background: var(--cardcolor);
   border-radius: 10px;
   max-width: 400px;
+  min-width: 285px;
   padding: 20px;
   position: relative;
   animation: slideIn 0.3s ease;
@@ -347,7 +348,7 @@ li {
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: #bdbbbb9b;
+  color: #bdbbbb9b !important;
 }
 
 abbr[title] {
@@ -737,13 +738,14 @@ font-family: "Inter", sans-serif !important;
   color: #000;
 }
 .second-btn {
-
-    padding: 7px 15px;
+    padding: 7px 28px;
     background-color: rgb(63, 171, 243);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    WIDTH: 100px;
+    min-width: fit-content;
 }
 .simple-btn{
 box-shadow: none !important;   ;
@@ -841,7 +843,7 @@ padding: 0;
   width: 61vw; 
 /* padding: 20px 60px; */
 padding-right: 0;
-float: right;   
+/* float:inline-end;    */
 }
 .dropdown-with-search-in-accordion .dc-pagination ul li{ width: auto !important; }
 .dropdown-with-search-in-accordion  .MuiBox-root.css-1apcsdv{margin: 0  !important;}
@@ -855,7 +857,9 @@ float: right;
 
 /*  comment css start  */
 .comments-list {font-family: "Inter", sans-serif;}
-.review-filters{display: flex; justify-content:flex-end;gap: 10px; }    
+.review-filters{display: flex; justify-content:flex-end;gap: 10px; 
+  align-content: center;
+}    
 .comments-list .table-card {    
   box-shadow: 0px 0px 8px 3px var(--shado3color) ;
   padding-bottom: 15px;
@@ -873,9 +877,9 @@ float: right;
 .star-over-rated {display: flex;justify-content: center;}
 .star-over-rated svg ,.star-over-rated span{margin-left: 2px;font-size:20px; }
 .star-over-rated span{ padding-right: 2px;}
-.review-rate h3 , .comments-list h6 {font-family: "Inter", sans-serif !important;}
+.review-rate h3 , .comments-list h6 {font-family: "Inter", sans-serif ;}
  .comments-list h6 ,.mobile-view-card h5 {font-size:16px;font-weight:500}
-.review-info p  ,.mobile-view-card p {   
+.review-info p  ,.mobile-view-card p ,.error-loading p{   
    font-size: 15px;
     font-weight: 400;
     font-family: 'Inter';
@@ -956,7 +960,9 @@ float: right;
   color: var(--text-sub);
   
 }
-.comments-list .card{ background-color: transparent; }
+.comments-list .card{
+   /* background-color: red; */
+   }
 
 /*  two tabs container start */
 .two-tabs-nav-container{
@@ -1016,7 +1022,7 @@ select {padding: 0 25px !important ; }
   align-items: center;
 }
 .mobile-view .dc-accordioninnertitle .dc-rightarea  { margin: 0 !important;}
-.mobile-view  input[type="text"]  {height: 40px !important;}
+.small-field  input[type="text"]  {height: 40px !important;}
 .mobile-view  .dc-collapseexp{
   padding: 10px 10px ;
   padding-top: 0 !important;
@@ -1033,7 +1039,7 @@ margin: 0;
 background-color: transparent;
 border: none;
 box-shadow: none;
-color: black
+color: var(--terthemecolor)
 }
 .mobile-view-card .nav-table {
   margin-top: 0 !important;
@@ -1043,7 +1049,7 @@ color: black
 .mobile-view.table-card {
 padding: 10px;
 }
-.PatientBasicInfo .dc-user-details{padding: 30px 0;}
+.PatientBasicInfo .dc-user-details{padding: 30px 10px;}
 .table-container-style.tab-content-two-tabs{
   padding: 0 !important;
 }
@@ -1085,18 +1091,6 @@ padding: 10px;
   padding: 10px;
   border-radius: 5px;
 }
-/* .dc-btn.dc-delete-btn {
-    margin: 11px 4px;
-    width: 100px;
-    max-width: 170px;
-    border-color: #ff5851;
-    color: #ff5851;
-    min-width: fit-content;
-}
-.dc-btn.dc-delete-btn:hover {
-    box-shadow: 0 9px 20px 0 #ff5851;
-    background-color: #ff5851;
-} */
  .btn-simple:focus{
 background-color: #ff4757;
 color: white;
@@ -1112,3 +1106,118 @@ color: white;
   .mobile-view ul ul {
     margin-left: 0;
   }
+.modal-dialog .popup-card {
+    position: sticky;
+    top: 30%;
+    bottom: 32%;
+}
+.slots-accordion-title{
+  background-color: var(--cardcolor);
+}
+.two-level-accordion.shifts ul ul {
+  margin-left: 0 !important;
+}
+.dc-rightarea{
+  margin-left: 10px;
+}
+.text-ellipsis{
+  display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    vertical-align: middle;
+}
+.two-tabs .mobile-view-card .table-header{
+  margin:auto 10px;
+}
+.description-expanded-section label, .description-expanded-section .accordion label,.table-active-content .accordion label{
+  float: none !important;
+}
+.filters-container-search{padding-bottom: 10px;}
+.description-expanded-section{width: 80vw;}
+
+.card   .text-muted{font-size: 12px;}
+.patintStats .stats-card-title {
+  color:var(--terthemecolor);    
+  font-weight: 400;
+  line-height: 18px;
+  font-size: 18px;
+  }
+.two-level-accordion.shifts  .form-group-half  .form-group-half {width: 100%;}
+/* Highlight styles */
+.text-highlight {
+  background-color: #fff3cd;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* Loading states */
+.skeleton-loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Filter active state */
+.filter-active {
+  background-color: #e7f3ff !important;
+  border-color: #007bff !important;
+  color: #007bff !important;
+}
+
+.small-filter{margin-bottom: 0 !important;}
+.pagination-container button:hover{
+  border-color: var(--bluecolor)!important; ;
+  /* transition: all ease 0.4s;  */
+
+}
+.notification-card-container{
+  border-bottom: 1px solid #eee;
+  border-radius: 0;
+  padding: 8px;
+  /* background-color: var(--badybkcolor); */
+  /* border-radius: 5px; */
+}
+.notification-card-container:hover{
+  background-color: var(--badybkcolor);;
+  /* background-color: #fafafa; */
+
+}
+
+.PatientsFiltersBtn.btn.btn-outline-secondary:hover{
+color: var(--terthemecolor);
+}
+.break-accrordion .dc-collapseexp{padding-top: 0 !important;padding-bottom: 10px !important;}
+.notification-title{font-size: 14px !important;font-weight: 600 !important; font-family: 'Poppins', Arial, Helvetica, sans-serif !important;}
+@media (min-width: 576px) and (max-width:992px) {
+   .diagnosis-modal  .modal-dialog {
+        max-width: 90% !important ;
+    }
+}
+.diagnosis-modal .modal-body .second-btn{width: 80px;}
+
+.custom-card-title{
+  display: flex;
+  justify-content: space-between;
+}
+.created-date{
+    display: flex;
+    gap: 2px;
+}
+.created-date small{white-space: nowrap ;}  
+.created-date.small{flex-direction: row; gap: 2px;}  
+.add-btn{color: var(--bluecolor);}

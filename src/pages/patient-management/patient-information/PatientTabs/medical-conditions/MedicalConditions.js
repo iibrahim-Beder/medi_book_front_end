@@ -43,13 +43,13 @@ export default function MedicalConditions() {
           style={{ backgroundColor: "var(--scbccolor)" }}
         >
           {activeTab === "DiagnosedConditionsTable" && (
-            <div className="table-responsive">
+            <div className="">
               <DiagnosedConditions />
             </div>
           )}
 
           {activeTab === "OtherMedicalConditions" && (
-            <div className="table-responsive">
+            <div className="">
               <OtherMedicalConditions />
             </div>
           )}

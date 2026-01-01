@@ -257,9 +257,9 @@
 		padding-bottom:0; 
 	}
 	.dc-accordioninnertitle .dc-rightarea{
-		float: left;
+		/* float: left;
 		width: 100%;
-		margin-top:10px; 
+		margin-top:10px;  */
 	}
 	.dc-addawardsholder .dc-skillsform fieldset .form-group .form-control{width: 100%;}
 	.dc-addawardsholder .dc-skillsform fieldset .form-group .form-control:first-child{border-radius: 4px 4px 0 0;border-right: 2px solid #eee;}

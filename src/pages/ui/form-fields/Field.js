@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SelectDatePicker from "./SelectDatePicker";
 
 const Field = ({
   label,
@@ -12,23 +13,50 @@ const Field = ({
   error,
   forceShowError = false,
   disabled = false,
+  half = false,
+  required = false
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
-  // console.log("Field render:", { name, value, error,  forceShowError, showError });
+
   const handleBlur = (e) => {
     setTouched(true);
     if (onBlur) onBlur(e);
   };
 
+if (type==="date") {
   return (
-    <div className={`form-group ${showError ? "has-error" : ""}`}>
-      <label htmlFor={name}>{label}</label>
+     <SelectDatePicker
+     label={label}
+      name={name}
+      value={value}
+      onChange={onChange}
+      onBlur={handleBlur}
+      placeholder={placeholder}
+      error={error}
+      forceShowError={forceShowError}
+      disabled={disabled}
+      required={required}
+    />
+  );
+  
+}
+  return (
+    <div className={`form-group ${half ? "form-group-half" : ""} ${showError ? "has-error" : ""}`}>
+      {label && (
+        <label htmlFor={name}>
+          {label}
+          {required && <span className="required">*</span>}
+        </label>
+      )}
       <div className="input-with-icon">
-        <span className={`input-icon ${showError ? "icon-error" : ""}`}>
-          {icon}
-        </span>
-        <input disabled={disabled}
+        {icon && (
+          <span className={`input-icon ${showError ? "icon-error" : ""}`}>
+            {icon}
+          </span>
+        )}
+        <input 
+          disabled={disabled}
           id={name}
           name={name}
           type={type}

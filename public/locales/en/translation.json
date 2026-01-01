@@ -6,6 +6,7 @@
 
     
   "sidebar": {
+    "makeSlots": "Make Slots",
     "insights": "Insights",
     "appointmentList": "Appointment List",
     "appointmentManagement": "Appointment management",
@@ -257,18 +258,7 @@
     "by": "Cancelled By",
     "financialStatus": "Financial Status",
     "reason": "Cancellation Reason"
-  }
-,
- "days": {
-    "saturday": "Saturday",
-    "sunday": "Sunday",
-    "monday": "Monday",
-    "tuesday": "Tuesday",
-    "wednesday": "Wednesday",
-    "thursday": "Thursday",
-    "friday": "Friday"
-  }
-   ,
+  }  ,
    "locationInfo":{
     "title": "Location Information"
    }
@@ -886,6 +876,8 @@
     }
   },
   "PrescribedMedicationTable": {
+        "days": "Days",
+    "category": "Category",
     "table_title": "Prescribed medication list",
     "table_subtitle": "Ahmed Mohamed Ali",
     "medication": "Medication",
@@ -911,20 +903,10 @@
     "view_all_details": "View All Details",
     "no_medications_found": "No Other Medications Found",
     "close": "Close"
-  }
-  ,
-  "Othermedications": {
-    "table_title": "Other Medication list",
-    "medication": "Medication",
-    "dosage": "Dosage",
-    "duration": "Duration",
-    "instructions": "Instructions",
-    "status": "Status"
-  }
-  ,
+  },
   "MedicalConditions": {
     "tab_diagnosed_conditions": "Diagnosed Conditions",
-    "tab_other": "Other"
+    "tab_other": "Other Conditions"
   },
   
   "DiagnosedConditionsMobileView": {
@@ -958,6 +940,9 @@
     }
   },
  "OtherMedicalConditionsMobileView": {
+  "conditionType" : "Condition Type",
+  "category": "Category",
+  "condition_type": "Condition Type",
     "table_title": "Other Medical Conditions",
     "medical_condition_name": "Medical Condition Name",
     "severity": "Severity",
@@ -971,6 +956,11 @@
       "mild": "Mild",
       "moderate": "Moderate",
       "severe": "Severe"
+    }
+        ,"condition_type_options":{
+      "chronic": "chronic",
+      "acute": "acute",
+      "External":"External"
     }
   }
   ,
@@ -1074,9 +1064,18 @@
       "Inactive": "Inactive"
     }
     
-  }
+  },
+   "last_updated":"Last Updated",
+     "created_at": "Created At"
   ,
   "AllergyTable": {
+    "last_updated":"Last Updated",
+     "created_at": "Created At",
+    "no_results_for_search": "No results found for '{{search}}'",
+    "loading_error": "Error loading allergies data",
+    "retry": "Try again",
+     "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete allergen '{{allergen}}'? This action cannot be undone.",
     "table_title": "Allergies",
     "table_subtitle": "Ahmed Mohamed Ali",
     "add_allergen": "Add Allergen",
@@ -1193,5 +1192,222 @@
       "Mental Health Disorders": "Mental Health Disorders",
       "Other": "Other"
     }
+  },
+    "confirmDeleteSlot": "Are you sure you want to delete \"{{slot}}\"? This action cannot be undone."
+,
+  "days": {
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday"
+  },
+   "Make Slots": "Make Slots"
+,
+"shifts": {
+    "manage_shifts": "Manage Shifts",
+    "add_shift": "Add Shift",
+    "clinic": "Clinic",
+    "day": "Day",
+    "shift_type": "Shift Type",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "select_clinic": "Select Clinic",
+    "select_day": "Select Day",
+    "select_shift_type": "Select Shift Type"
+  },
+  "clinics": {
+    "main": "Main Clinic",
+    "branch": "City Branch",
+    "children": "Pediatric Clinic"
+  },
+  "days": {
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday"
+  },
+  "shiftTypes": {
+    "morning": "Morning",
+    "evening": "Evening",
+    "night": "Night",
+    "custom": "Custom"
+  },
+  "breaks": {
+    "title": "Break Periods",
+    "add_break": "Add Break",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "start": "Start",
+    "end": "End",
+    "no_breaks": "No break periods added"
+  },
+  "status": {
+    "new": "New"
+  },
+  "actions": {
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "popup": {
+    "delete_shift_title": "Delete Shift",
+    "delete_shift_confirm": "Are you sure you want to delete \"{{name}}\"?",
+      "delete_location_title": "Delete Location",
+    "delete_location_confirm": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
+  },
+   "userLocation": {
+    "addYourLocation": "Add Your Location",
+    "addNew": "Add New Location", 
+    "newLocation": "New Location",
+    "manageLocations": "Manage Locations"
+  },
+   "OtherMedication": {
+    "add_medication": "Add Medication",
+    "edit_medication": "Edit Medication",
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete '{{medication}}'? This action cannot be undone.",
+    "medication": "Medication",
+    "enter_medication": "Enter medication name",
+    "dosage": "Dosage",
+    "enter_dosage": "Enter dosage",
+    "duration": "Duration",
+    "enter_duration": "Enter duration",
+    "status": "Status",
+    "select_status": "Select status",
+    "instructions": "Instructions",
+    "enter_instructions": "Enter instructions"
+    }
+  ,
+    "Othermedications": {
+        "start_date": "Start Date",
+  "end_date": "End Date",
+  "medicationCategory": "Medication Category",
+    "add_medication": "Add Medication",
+    "edit_medication": "Edit Medication",
+    "manage": "Manage",
+    "actions": "Actions",
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete '{{medication}}'? This action cannot be undone.",
+    "medication": "Medication",
+    "enter_medication": "Enter medication name",
+    "dosage": "Dosage",
+    "enter_dosage": "Enter dosage",
+    "duration": "Duration",
+    "enter_duration": "Enter duration",
+    "status": "Status",
+    "select_status": "Select status",
+    "instructions": "Instructions",
+    "enter_instructions": "Enter instructions",
+        "table_title": "Other Medication list"
+  },
+  "OtherMedicalConditions": {
+    "category": "Category",
+  "add_condition": "Add Condition",
+  "edit_condition": "Edit Condition",
+  "manage": "Manage",
+  "delete": "Delete",
+  "actions": "Actions",
+  "confirm_delete_title": "Confirm Deletion",
+  "confirm_delete_message": "Are you sure you want to delete '{{condition}}'? This action cannot be undone.",
+  "medical_condition_name": "Medical Condition Name",
+  "enter_condition_name": "Enter condition name",
+  "severity": "Severity",
+  "select_severity": "Select severity",
+  "severity_options": {
+    "Mild": "Mild",
+    "Moderate": "Moderate",
+    "Severe": "Severe"
+  },
+   "condition_type_options": {
+      "External": "External",
+      "Internal": "Internal",
+      "Chronic": "Chronic",
+      "Acute": "Acute"
+    },
+    "condition_type": "Condition Type",
+  "status": "Status",
+  "select_status": "Select status",
+  "diagnosed_date": "Diagnosed Date",
+  "select_date": "Select date",
+  "notes": "Notes",
+  "enter_notes": "Enter notes"
+},
+  "MedicalHistory": {
+    "add_history": "Add Medical History",
+    "edit_history": "Edit Medical History",
+    "history_type": "History Type",
+    "hereditary_disease": "Hereditary Disease", 
+    "description": "Description",
+    "date_of_event": "Date of Event",
+    "related_person": "Related Person",
+    "notes": "Notes",
+    "actions": "Actions",
+    "confirm_delete_title": "Delete Medical History",
+    "confirm_delete_message": "Are you sure you want to delete \"{{description}}\"?",
+    "no_records_found": "No medical history records found",
+    "no_results_for_search": "No results found for \"{{search}}\"",
+    "history_type_options": {
+      "Surgery": "Surgery",
+      "Family History": "Family History", 
+      "Hospitalization": "Hospitalization",
+      "Vaccination": "Vaccination",
+      "Accident": "Accident",
+      "Others": "Others"
+    }
+  },
+   "login": {
+    "title": "Login to",
+    "brand": "Doclisto",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me",
+    "loginWithOTP": "Login with OTP",
+    "button": "Login",
+    "or": "OR",
+    "google": "Sign in with Google",
+    "noAccount": "Don't have an account?",
+    "signupNow": "Sign up now",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "success": "Login successful",
+    "withEmail": "Email",
+    "withPhone": "Phone Number",
+    "phone": "Phone Number",
+    "enterPhone": "Enter your phone number",
+    "phoneRequired": "Phone number is required"
+    ,"with":"sign in with"
+    
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "verifyTitle": "Verify Code",
+    "emailRequired": "Email is required",
+    "phoneRequired": "Phone number is required",
+    "sendCode": "Send Code",
+    "codeSent": "Verification code sent to your email/phone",
+    "codeResent": "Code resent",
+    "codeSentTo": "Code sent to",
+    "didntReceive": "Didn't receive the code?",
+    "resendCode": "Resend",
+    "secs": "Seconds",
+    "verify": "Verify",
+    "otpRequired": "Please enter the complete code",
+    "passwordReset": "Password reset successfully",
+    "rememberPassword": "Remembered your password?",
+    "backToLogin": "Back to Login"
+
+  },
+    "actions": "Actions",
+    "updated_at": "Updated At"
   }
-}
+  

@@ -1,271 +1,66 @@
-// DiagnosisMobileView.jsx
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal, Card } from "react-bootstrap";
 import CustomAccordion from "../../../../shared/CustomAccordion";
 import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdExpandMore } from "react-icons/md";
 import Pagination from "../../../../shared/Pagination";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import ErrorLoading from "../../../../shared/ErrorLoading";
+import { useDiagnoses } from "./useDiagnoses";
+import { formatDate } from "../../../../shared/utils";
 
 const DiagnosisMobileView = () => {
   const { t } = useTranslation();
 
-  const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("");
-  const [filterDateFrom, setFilterDateFrom] = useState(null);
-  const [filterDateTo, setFilterDateTo] = useState(null);
+  const {
+    currentFilters,
+    setCurrentFilters,
+    currentPage,
+    setCurrentPage,
+    diagnosesData,
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+    pageSize,
 
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage] = useState(5); // Number of items per page
+    // Actions
+    handleSearch,
+    handleResetFilters,
 
-  // Mock data representing diseases and related records
-  const diseasesData = [
-    {
-      id: "#DZ001",
-      diagnosisName: "Diabetes Mellitus Type 2",
-      symptomsDescription: "Increased thirst, frequent urination, fatigue, blurred vision",
-      diagnosisDescription: "Chronic condition affecting the way the body processes blood sugar",
-      diagnosedConditions: [
-        { MedicalCondition: "Diabetic Retinopathy", Severity: "Moderate", note: "Requires regular monitoring" },
-        { MedicalCondition: "Hypertension", Severity: "severe", note: "patient has high blood pressure" },
-      ],
-      notes: [
-        { title: "Diabetes Management", content: "Patient started on Metformin 500mg twice daily" },
-        { title: "the checkups specialist", content: "Blood sugar levels improving with medication" },
-      ],
-      prescription: [
-        {
-          id: "RX001",
-          title: "Diabetes Management",
-          status: "completed",
-          isExpanded: false,
-          note: "Patient requires regular monitoring",
-          recipes: [
-            { type: "medication", durationInDays: 30, instructions: "Patient started on Metformin 500mg twice daily", dosage: "2 tablets per day" },
-            { type: "referral", durationInDays: 20, instructions: "Referred to ophthalmologist for regular checkups", dosage: "5 times per week" },
-          ]
-        },
-        {
-          id: "RX002",
-          title: "Eye Care",
-          date: "2025-03-20",
-          isExpanded: false,
-          type: "Specialist",
-          recipes: [
-            { type: "Referral", date: "2025-03-20", content: "Referred to ophthalmologist for regular checkups" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ002",
-      diagnosisName: "Hypertension",
-      symptomsDescription: "Headaches, shortness of breath, nosebleeds",
-      diagnosisDescription: "High blood pressure condition",
-      diagnosedConditions: [
-        { MedicalCondition: "Primary Hypertension", Severity: "Mild", note: "Lifestyle modifications recommended" },
-      ],
-      notes: [
-        { content: "Patient advised to reduce salt intake" },
-        { content: "Regular blood pressure monitoring required" },
-      ],
-      prescription: [
-        {
-          id: "RX003",
-          title: "Blood Pressure Management",
-          status: "active",
-          isExpanded: false,
-          note: "Monitor blood pressure weekly",
-          recipes: [
-            { type: "medication", durationInDays: 30, instructions: "Lisinopril 10mg daily", dosage: "1 tablet per day" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ003",
-      diagnosisName: "Asthma",
-      symptomsDescription: "Wheezing, coughing, chest tightness",
-      diagnosisDescription: "Chronic respiratory condition",
-      diagnosedConditions: [
-        { MedicalCondition: "Allergic Asthma", Severity: "Moderate", note: "Triggered by allergens" },
-      ],
-      notes: [
-        { content: "Patient uses inhaler as needed" },
-        { content: "Avoid known allergens" },
-      ],
-      prescription: [
-        {
-          id: "RX004",
-          title: "Respiratory Care",
-          status: "active",
-          isExpanded: false,
-          note: "Keep rescue inhaler available",
-          recipes: [
-            { type: "medication", durationInDays: 90, instructions: "Albuterol inhaler", dosage: "2 puffs as needed" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ004",
-      diagnosisName: "Migraine",
-      symptomsDescription: "Severe headaches, nausea, sensitivity to light",
-      diagnosisDescription: "Neurological condition characterized by recurrent headaches",
-      diagnosedConditions: [
-        { MedicalCondition: "Chronic Migraine", Severity: "Severe", note: "Frequency: 15+ days per month" },
-      ],
-      notes: [
-        { content: "Patient experiences aura before attacks" },
-        { content: "Triggers include stress and certain foods" },
-      ],
-      prescription: [
-        {
-          id: "RX005",
-          title: "Migraine Management",
-          status: "completed",
-          isExpanded: false,
-          note: "Preventive and abortive therapy",
-          recipes: [
-            { type: "medication", durationInDays: 30, instructions: "Sumatriptan 50mg", dosage: "1 tablet at onset" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ005",
-      diagnosisName: "Arthritis",
-      symptomsDescription: "Joint pain, stiffness, swelling",
-      diagnosisDescription: "Inflammation of one or more joints",
-      diagnosedConditions: [
-        { MedicalCondition: "Osteoarthritis", Severity: "Moderate", note: "Affects knees and hips" },
-      ],
-      notes: [
-        { content: "Patient benefits from physical therapy" },
-        { content: "Weight management recommended" },
-      ],
-      prescription: [
-        {
-          id: "RX006",
-          title: "Joint Pain Management",
-          status: "active",
-          isExpanded: false,
-          note: "Pain management and mobility improvement",
-          recipes: [
-            { type: "medication", durationInDays: 60, instructions: "Ibuprofen 400mg", dosage: "3 times daily as needed" },
-          ]
-        }
-      ],
-    },
-    {
-      id: "#DZ006",
-      diagnosisName: "Anxiety Disorder",
-      symptomsDescription: "Excessive worry, restlessness, fatigue",
-      diagnosisDescription: "Mental health disorder characterized by feelings of worry and fear",
-      diagnosedConditions: [
-        { MedicalCondition: "Generalized Anxiety Disorder", Severity: "Moderate", note: "Cognitive behavioral therapy recommended" },
-      ],
-      notes: [
-        { content: "Patient practicing mindfulness techniques" },
-        { content: "Regular follow-up appointments scheduled" },
-      ],
-      prescription: [
-        {
-          id: "RX007",
-          title: "Anxiety Treatment",
-          status: "active",
-          isExpanded: false,
-          note: "Combination therapy approach",
-          recipes: [
-            { type: "medication", durationInDays: 30, instructions: "Sertraline 50mg daily", dosage: "1 tablet per day" },
-            { type: "therapy", durationInDays: 90, instructions: "Weekly counseling sessions", dosage: "1 hour per week" },
-          ]
-        }
-      ],
-    }
-  ];
+    // Utilities
+    truncateText,
+    transformDiagnosisData,
+    transformPrescriptionData,
+  } = useDiagnoses();
 
-  // Apply search & filters
-  const filteredDiseases = diseasesData
-    .filter((disease) => {
-      if (!searchTerm) return true;
-      return disease.diagnosisName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            disease.symptomsDescription?.toLowerCase().includes(searchTerm.toLowerCase());
-    })
-    .filter((disease) => {
-      if (filterType && disease.diagnosisName !== filterType) return false;
-      
-      // Filter by date range (based on first diagnosed condition)
-      if (filterDateFrom || filterDateTo) {
-        const diagnosisDate = new Date(disease.diagnosedConditions[0]?.date);
-        const fromDate = filterDateFrom ? new Date(filterDateFrom) : null;
-        const toDate = filterDateTo ? new Date(filterDateTo) : null;
+  const [selectedDiagnosis, setSelectedDiagnosis] = React.useState(null);
 
-        if (fromDate && toDate) return diagnosisDate >= fromDate && diagnosisDate <= toDate;
-        if (fromDate) return diagnosisDate >= fromDate;
-        if (toDate) return diagnosisDate <= toDate;
-      }
-      return true;
-    });
+  const [expandedDescriptions, setExpandedDescriptions] = React.useState({});
 
-  // Pagination calculations
-  const totalItems = filteredDiseases.length;
-  const totalPages = Math.ceil(totalItems / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const endIndex = startIndex + rowsPerPage;
-  const currentItems = filteredDiseases.slice(startIndex, endIndex);
-
-  // Reset filters and pagination
-  const resetFilters = () => {
-    setSearchTerm("");
-    setFilterType("");
-    setFilterDateFrom(null);
-    setFilterDateTo(null);
-    setCurrentPage(1); // Reset to first page when filters are cleared
+  const toggleDescription = (diagnosisId) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [diagnosisId]: !prev[diagnosisId],
+    }));
   };
 
-  // Handle page change
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Utility: truncate long text
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
-
-  // Generate page numbers for pagination
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    const maxVisiblePages = 5;
-    
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
-    // Adjust start page if we're near the end
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-    
-    return pageNumbers;
-  };
+  const totalItems = diagnosesData?.totalCount || 0;
+  const currentItems =
+    diagnosesData?.data?.map(transformDiagnosisData) || [];
 
   return (
     <div className="table-container mobile-view-card">
       <div className="table-header">
         <div>
-          <h3 className="table-title">{t('DiagnosisMobileView.table_title')}</h3>
-          <h6 className="table-subtitle">{t('DiagnosisMobileView.table_subtitle')}</h6>
+          <h3 className="table-title">{t("DiagnosisMobileView.table_title")}</h3>
+          <h6 className="table-subtitle">
+            {t("DiagnosisMobileView.table_subtitle")}
+          </h6>
         </div>
       </div>
 
@@ -274,98 +69,199 @@ const DiagnosisMobileView = () => {
           {/* Filters Section */}
           <div className="mb-3 p-3">
             <ConditionsFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filterType={filterType}
-              setFilterType={setFilterType}
-              filterDateFrom={filterDateFrom}
-              setFilterDateFrom={setFilterDateFrom}
-              filterDateTo={filterDateTo}
-              setFilterDateTo={setFilterDateTo}
-              onReset={resetFilters}
-              onSearch={() => setCurrentPage(1)} // Reset to first page on search
-              conditions={diseasesData}
+              searchTerm={currentFilters.searchValue}
+              setSearchTerm={(value) =>
+                setCurrentFilters((prev) => ({ ...prev, searchValue: value }))
+              }
+              filterType={currentFilters.diagnosisType}
+              setFilterType={(value) =>
+                setCurrentFilters((prev) => ({ ...prev, diagnosisType: value }))
+              }
+              filterDateFrom={currentFilters.dateFrom}
+              setFilterDateFrom={(date) =>
+                setCurrentFilters((prev) => ({ ...prev, dateFrom: date }))
+              }
+              filterDateTo={currentFilters.dateTo}
+              setFilterDateTo={(date) =>
+                setCurrentFilters((prev) => ({ ...prev, dateTo: date }))
+              }
+              onReset={handleResetFilters}
+              onSearch={() => {
+                setCurrentPage(1);
+                handleSearch();
+              }}
+              conditions={diagnosesData?.data || []}
             />
           </div>
 
+          {/* Loading / Error */}
+          {(isLoading || isFetching) && (
+            <div className="space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Card key={i} className="mobile-view-card">
+                  <Card.Body style={{ padding: "15px" }}>
+                    <Skeleton height={20} width="70%" />
+                    <Skeleton height={60} className="mt-2" />
+                    <Skeleton height={20} width="40%" className="mt-3" />
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          {error && !isLoading && !isFetching && (
+            <Card className="text-center py-5">
+              <Card.Body>
+                <ErrorLoading isError={error} refetch={refetch} />
+              </Card.Body>
+            </Card>
+          )}
+
           {/* Mobile Cards */}
-          <div className="space-y-3">
-            {currentItems.map((disease) => (
-              <Card
-                key={disease.id}
-                className="mobile-view-card"
-              >
-                <Card.Body className="" style={{ padding: "15px" }}>
-                  <div className="">
-                    <h5 className="">{disease.diagnosisName}</h5>
-                  </div>
+          {!isLoading && !isFetching && !error && (
+            <div className="space-y-3">
+              {currentItems.map((disease) => {
+                const isDescriptionExpanded = expandedDescriptions[disease.id];
 
-                  <div className="mb-3">
-                    <small className="text-muted d-block mb-1">
-                      {t('DiagnosisMobileView.symptoms')}
-                    </small>
-                    <p className="mb-2">
-                      {truncateText(disease.symptomsDescription, 80)}
+                return (
+                  <Card key={disease.id} className="mobile-view-card">
+                    <Card.Body style={{ padding: "15px" }}>
+                      <div className="custom-card-title">
+                        <h5 style={{ margin: 0 }}>{disease.diagnosisName}</h5>
+                        {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
+                      </div>
+
+                      <div className="mb-3">
+                        <small className="text-muted d-block mb-1">
+                          {t("DiagnosisMobileView.symptoms")}
+                        </small>
+                        <p className="mb-2">
+                          {truncateText(disease.symptomsDescription, 80)}
+                        </p>
+                      </div>
+
+                      {/* Diagnosis (Conditions - Notes - Prescription) */}
+                      <div className="row text-center mb-3">
+                        <div className="col-4">
+                          <div className="border-end">
+                            <div className="fw-bold text-primary">
+                              {disease.diagnosedConditions.length}
+                            </div>
+                            <small className="text-muted">
+                              {t("DiagnosisMobileView.conditions")}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="border-end">
+                            <div className="fw-bold text-primary">
+                              {disease.notes.length}
+                            </div>
+                            <small className="text-muted">
+                              {t("DiagnosisMobileView.notes")}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="fw-bold text-primary">
+                            {disease.prescription.length}
+                          </div>
+                          <small className="text-muted">
+                            {t("DiagnosisMobileView.prescription")}
+                          </small>
+                        </div>
+                      </div>
+
+                      {/* Diagnosis Description - Expand/Collapse */}
+                      <div className="mb-2">
+                        <small
+                          className="text-muted d-flex mb-1"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => toggleDescription(disease.id)}
+                        >
+                          {t("DiagnosisMobileView.diagnosis_description")} :
+                          {disease.symptomsDescription && (
+                            <button
+                              className=""
+                              onClick={() => toggleDescription(disease.id)}
+                              style={{
+                                fontSize: "20px",
+                                color: "#278fff",
+                                padding: "3px 0 0",
+                              }}
+                            >
+                              <MdExpandMore
+                                style={{
+                                  transform: isDescriptionExpanded
+                                    ? "rotate(180deg)"
+                                    : "rotate(0deg)",
+                                  transition: "transform 0.3s ease",
+                                }}
+                              />
+                            </button>
+                          )}
+                        </small>
+
+                        <div
+                          className={`expandable-content ${
+                            isDescriptionExpanded ? "" : "p-0"
+                          }`}
+                        >
+                          <p
+                            style={{
+                              margin: 0,
+                              cursor: "pointer",
+                              transition: "all 0.3s ease",
+                            }}
+                            onClick={() => toggleDescription(disease.id)}
+                          >
+                            {isDescriptionExpanded
+                              ? disease.diagnosisDescription
+                              : ""}
+                          </p>
+                        </div>
+                      </div>
+
+                    {disease.updatedAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.updatedAt)}</small></div>)}
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div style={{ flex: 1 }}></div>
+                        <Button
+                          className="view-btn btn btn-outline-primary btn-sm"
+                          variant="outline-primary"
+                          size="sm"
+                          onClick={() => setSelectedDiagnosis(disease)}
+                        >
+                          {t("DiagnosisMobileView.view_all_details")}
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                );
+              })}
+
+              {currentItems.length === 0 && (
+                <Card className="text-center py-5">
+                  <Card.Body>
+                    <p className="text-muted">
+                      {t("DiagnosisMobileView.no_diagnosis_found")}
                     </p>
-                  </div>
-
-                  <div className="row text-center mb-3">
-                    <div className="col-4">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {disease.diagnosedConditions.length}
-                        </div>
-                        <small className="text-muted">{t('DiagnosisMobileView.conditions')}</small>
-                      </div>
-                    </div>
-                    <div className="col-4">
-                      <div className="border-end">
-                        <div className="fw-bold text-primary">
-                          {disease.notes.length}
-                        </div>
-                        <small className="text-muted">{t('DiagnosisMobileView.notes')}</small>
-                      </div>
-                    </div>
-                    <div className="col-4">
-                      <div className="fw-bold text-primary">
-                        {disease.prescription.length}
-                      </div>
-                      <small className="text-muted">{t('DiagnosisMobileView.prescription')}</small>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Button
-                      className="view-btn btn btn-outline-primary btn-sm"
-                      variant="outline-primary"
-                      size="sm"
-                      style={{ float: "inline-end" }}
-                      onClick={() => setSelectedDiagnosis(disease)}
-                    >
-                      {t('DiagnosisMobileView.view_all_details')}
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
-
-            {currentItems.length === 0 && (
-              <Card className="text-center py-5">
-                <Card.Body>
-                  <p className="text-muted">{t('DiagnosisMobileView.no_diagnosis_found')}</p>
-                </Card.Body>
-              </Card>
-            )}
-          </div>
+                  </Card.Body>
+                </Card>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalItems={filteredDiseases.length}
-        rowsPerPage={rowsPerPage}
-        onPageChange={setCurrentPage}
-      />
+      {/* Pagination */}
+      {diagnosesData && totalItems > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalItems={totalItems}
+          rowsPerPage={pageSize}
+          onPageChange={setCurrentPage}
+        />
+      )}
 
       {selectedDiagnosis && (
         <Modal
@@ -382,7 +278,6 @@ const DiagnosisMobileView = () => {
                 <span>{selectedDiagnosis.diagnosisName}</span>
               </div>
             </Modal.Title>
-            {/* Close button (icon only, styled manually) */}
             <button
               className="btn-modal-close"
               onClick={() => setSelectedDiagnosis(null)}
@@ -397,7 +292,7 @@ const DiagnosisMobileView = () => {
             {/* Symptoms Description */}
             <div className="mb-4">
               <Field
-                label={t('DiagnosisMobileView.symptoms_description')}
+                label={t("DiagnosisMobileView.symptoms_description")}
                 value={selectedDiagnosis.symptomsDescription}
                 disabled
               />
@@ -406,7 +301,7 @@ const DiagnosisMobileView = () => {
             {/* Diagnosis Description */}
             <div className="mb-4">
               <Field
-                label={t('DiagnosisMobileView.diagnosis_description')}
+                label={t("DiagnosisMobileView.diagnosis_description")}
                 value={selectedDiagnosis.diagnosisDescription}
                 disabled
               />
@@ -416,28 +311,28 @@ const DiagnosisMobileView = () => {
             <div className="mb-4">
               <CustomAccordion
                 titleBackgroundColor="var(--scbccolor)"
-                title={t('DiagnosisMobileView.conditions')}
+                title={t("DiagnosisMobileView.conditions")}
                 readOnly={true}
                 backgroundColor="var(--scbccolor)"
                 data={selectedDiagnosis.diagnosedConditions}
                 formFields={[
                   {
-                    label: t('DiagnosisMobileView.medical_condition'),
+                    label: t("DiagnosisMobileView.medical_condition"),
                     name: "MedicalCondition",
-                    placeholder: t('DiagnosisMobileView.condition_type'),
+                    placeholder: t("DiagnosisMobileView.condition_type"),
                     half: true,
                   },
                   {
-                    label: t('DiagnosisMobileView.severity'),
+                    label: t("DiagnosisMobileView.severity"),
                     name: "Severity",
-                    placeholder: t('DiagnosisMobileView.severity'),
+                    placeholder: t("DiagnosisMobileView.severity"),
                     half: true,
                   },
                   {
-                    label: t('DiagnosisMobileView.note'),
+                    label: t("DiagnosisMobileView.note"),
                     name: "note",
                     type: "textarea",
-                    placeholder: t('DiagnosisMobileView.note_content'),
+                    placeholder: t("DiagnosisMobileView.note_content"),
                   },
                 ]}
               />
@@ -447,16 +342,16 @@ const DiagnosisMobileView = () => {
             <div className="mb-4">
               <CustomAccordion
                 titleBackgroundColor="var(--scbccolor)"
-                title={t('DiagnosisMobileView.notes')}
+                title={t("DiagnosisMobileView.notes")}
                 readOnly={true}
                 backgroundColor="var(--scbccolor)"
                 data={selectedDiagnosis.notes}
                 formFields={[
                   {
-                    label: t('DiagnosisMobileView.note_content'),
+                    label: t("DiagnosisMobileView.note_content"),
                     name: "content",
                     type: "textarea",
-                    placeholder: t('DiagnosisMobileView.note_content'),
+                    placeholder: t("DiagnosisMobileView.note_content"),
                   },
                 ]}
               />
@@ -465,51 +360,55 @@ const DiagnosisMobileView = () => {
             {/* Prescription */}
             <div className="mb-4">
               <TwoLevelAccordion
-                title={t('DiagnosisMobileView.prescription')}
+                title={t("DiagnosisMobileView.prescription")}
                 readOnly={true}
                 backgroundColor="var(--scbccolor)"
                 titleBackgroundColor="var(--scbccolor)"
-                data={selectedDiagnosis.prescription}
+                data={transformPrescriptionData(selectedDiagnosis.prescription)}
                 formFields={[
                   {
-                    label: t('DiagnosisMobileView.prescription_title'),
+                    label: t("DiagnosisMobileView.prescription_title"),
                     name: "title",
                     type: "text",
-                    placeholder: t('DiagnosisMobileView.prescription_title'),
+                    placeholder: t("DiagnosisMobileView.prescription_title"),
                     half: true,
                   },
                   {
-                    label: t('DiagnosisMobileView.status'),
+                    label: t("DiagnosisMobileView.status"),
                     name: "status",
-                    placeholder: t('DiagnosisMobileView.status'),
+                    placeholder: t("DiagnosisMobileView.status"),
                     half: true,
                   },
                   {
-                    label: t('DiagnosisMobileView.note'),
+                    label: t("DiagnosisMobileView.note"),
                     name: "note",
                     type: "textarea",
-                    placeholder: t('DiagnosisMobileView.prescription_note'),
+                    placeholder: t("DiagnosisMobileView.prescription_note"),
                   },
                 ]}
                 formFieldsRecipe={[
-                  { label: t('DiagnosisMobileView.type'), name: "type", placeholder: t('DiagnosisMobileView.type') },
                   {
-                    label: t('DiagnosisMobileView.dosage'),
+                    label: t("DiagnosisMobileView.type"),
+                    name: "type",
+                    placeholder: t("DiagnosisMobileView.type"),
+                  },
+                  {
+                    label: t("DiagnosisMobileView.dosage"),
                     name: "dosage",
-                    placeholder: t('DiagnosisMobileView.dosage'),
+                    placeholder: t("DiagnosisMobileView.dosage"),
                     half: true,
                   },
                   {
-                    label: t('DiagnosisMobileView.duration_days'),
+                    label: t("DiagnosisMobileView.duration_days"),
                     name: "durationInDays",
                     type: "number",
-                    placeholder: t('DiagnosisMobileView.duration_days'),
+                    placeholder: t("DiagnosisMobileView.duration_days"),
                     half: true,
                   },
                   {
-                    label: t('DiagnosisMobileView.instructions'),
+                    label: t("DiagnosisMobileView.instructions"),
                     name: "instructions",
-                    placeholder: t('DiagnosisMobileView.instructions'),
+                    placeholder: t("DiagnosisMobileView.instructions"),
                     type: "textarea",
                   },
                 ]}
@@ -522,7 +421,7 @@ const DiagnosisMobileView = () => {
               className="dc-btn dc-cancel-btn"
               onClick={() => setSelectedDiagnosis(null)}
             >
-              {t('DiagnosisMobileView.close')}
+              {t("DiagnosisMobileView.close")}
             </button>
           </Modal.Footer>
         </Modal>

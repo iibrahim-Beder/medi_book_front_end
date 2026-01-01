@@ -7,6 +7,7 @@ import { MdOutlineArrowForward } from "react-icons/md";
 import MainSearch from "../../../shared/MainSearch";
 import DateRangePicker from "../../patient-information/PatientTabs/component/DateRangePicker";
 import FilterDropdown from "../../patient-information/PatientTabs/component/FilterDropdown";
+import { CiSearch } from "react-icons/ci";
 
 const PatientsTable = () => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ const PatientsTable = () => {
       phone: "8286329170",
       lastVisit: "20 Oct 2023",
       paid: 100,
-      avatar: "/images/user-login.jpg",
+      avatar: "/images/avt/patient-avt.png",
     },
     {
       patientId: "#PT002",
@@ -30,7 +31,7 @@ const PatientsTable = () => {
       phone: "2077299974",
       lastVisit: "22 Oct 2023",
       paid: 200,
-      avatar: "/images/user-login.jpg",
+      avatar: "/images/avt/patient-avt.png",
     },
     {
       patientId: "#PT003",
@@ -40,7 +41,7 @@ const PatientsTable = () => {
       phone: "2607247769",
       lastVisit: "21 Oct 2023",
       paid: 250,
-      avatar: "/images/user-login.jpg",
+      avatar: "/images/avt/patient-avt.png",
     },
     {
       patientId: "#PT004",
@@ -50,7 +51,7 @@ const PatientsTable = () => {
       phone: "5043686874",
       lastVisit: "21 Sep 2023",
       paid: 150,
-      avatar: "/images/user-login.jpg",
+      avatar: "/images/avt/patient-avt.png",
       
  },
     {
@@ -61,7 +62,7 @@ const PatientsTable = () => {
       phone: "5551234567",
       lastVisit: "15 Oct 2023",
       paid: 300,
-      avatar: "/images/user-login.jpg",
+      avatar: "/images/avt/patient-avt.png",
     },
     {
       patientId: "#PT006",
@@ -71,7 +72,7 @@ const PatientsTable = () => {
       phone: "5557654321",
       lastVisit: "18 Oct 2023",
       paid: 180,
-      avatar: "/images/user-login.jpg",
+      avatar: "/images/avt/patient-avt.png",
     },
   ];
 
@@ -139,52 +140,34 @@ const PatientsTable = () => {
          <div 
          className="filters-container-search" 
          >
-         <MainSearch />
+         {/* <MainSearch /> */}
+         <div style={{ position: "relative" }}>
+            <input
+              className="form-control small-search normal-search"
+              type="text"
+              placeholder={t("search for patient")}
+              style={{height:"100px"}}
+              // value={searchTerm}
+              // onChange={(e) => setSearchTerm(e.target.value)}
+              // onKeyDown={(e) => {
+              //   if (e.key === "Enter") handleSearch();
+              // }}
+            />
+            <CiSearch
+              style={{
+                position: "absolute",
+                left: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#000",
+                fontSize: "23px",
+              }}
+            />
+          </div>
              <div className=" review-filters ">
              
              <FilterDropdown small/>
              <DateRangePicker/>
-
-            {/* <ConditionsFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filterServiceType={filterServiceType}
-              setFilterServiceType={setFilterServiceType}
-              filterRating={filterRating}
-              setFilterRating={setFilterRating}
-              filterDateFrom={filterDateFrom}
-              setFilterDateFrom={setFilterDateFrom}
-              filterDateTo={filterDateTo}
-              setFilterDateTo={setFilterDateTo}
-              onReset={resetFilters}
-              onSearch={handleSearch}
-              conditions={visitTypes}
-              showSearchInput={true}
-              showDateRange={true}
-              showFilterDropdown={true}
-              customFilters={[
-                {
-                  name: "rating",
-                  label: "Rating",
-                  data: [
-                    { key: "1", label: "1 Star" },
-                    { key: "2", label: "2 Stars" },
-                    { key: "3", label: "3 Stars" },
-                    { key: "4", label: "4 Stars" },
-                    { key: "5", label: "5 Stars" },
-                  ],
-                },
-                {
-                  name: "serviceType",
-                  label: "Visit Type",
-                  data: [
-                    { key: "Video Call", label: "Video Call" },
-                    { key: "Voice Call", label: "Voice Call" },
-                    { key: "In-Person Visit", label: "In-Person Visit" },
-                  ],
-                },
-              ]}
-            /> */}
           </div>
        </div>
 
@@ -232,7 +215,7 @@ const PatientsTable = () => {
                     <Button
                       variant="outline-primary"
                       size="sm"
-                      className="d-flex align-items-center view-btn ms-2 pl-0"
+                      className="d-flex align-items-center view-btn ms-2"
                     >
                    {  t("View profile") }<MdOutlineArrowForward className="ms-1 arrow-icon-view-table" />
                     </Button>

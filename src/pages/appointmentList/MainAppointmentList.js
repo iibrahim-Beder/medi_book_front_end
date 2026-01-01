@@ -66,7 +66,7 @@ export default function MainAppointtmentList2(){
               <div className="dc-dashboardbox ">
                 <PationtCard
                   userName={"Ibrahem makhasi"}
-                  userImg={"images/feedback/user-img.jpg"}
+                  userImg={"/images/avt/patient-avt.png"}
                   userLocation={"Egypt"}      
                 />
                 <div className="dc-user-details">

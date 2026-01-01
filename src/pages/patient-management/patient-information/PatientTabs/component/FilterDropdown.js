@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import './new.css';
 import { CiFilter } from "react-icons/ci";
 import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
+import { t } from "i18next";
 
 const FilterDropdown = ({ 
+  isDropdownWithSearch =false,
   onFilter, 
   onReset, 
   filters = [], 
@@ -89,7 +91,7 @@ const FilterDropdown = ({
         onClick={() => setIsOpen(!isOpen)}
       >
         <CiFilter color="#012047" width={20}/> 
-        <p className="mb-0 pr-1 pl-1" style={{ color: "#465D7C" }}>Filter By</p>
+        <p className="mb-0 pr-1 pl-1" style={{ color: "#465D7C" }}>{t("Filter By")}</p>
       </button>
 
       {isOpen && (
@@ -110,12 +112,12 @@ const FilterDropdown = ({
           }}
         >
           <div className="filter-set-view">
-            <DropdownWithSearch
+           {isDropdownWithSearch && <DropdownWithSearch
               label="Condition"
               options={conditions.map(condition => ({ id: condition, label: condition }))}
               value={selectedCondition}
               onChange={setSelectedCondition}
-            />
+            />}
             {filters.map((filter, filterIndex) => (
               <div 
                 className="mb-3" 

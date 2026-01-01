@@ -6,20 +6,23 @@ import { MdClose } from "react-icons/md";
 import DropdownWithSearch from "../../../../shared/DropdownWithSearch";
 import SelectField from "../../../../ui/form-fields/SelectField";
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import { t } from "i18next";
 
 const MedicalHistoryModal = ({
+  onDelete,
+  isEdit,
   show,
   onClose,
   onSave,
   record,
   setRecord,
-  hereditaryDiseases = [], 
   title = "Add Medical History",
   errors = {},
   forceShowError = true,
 }) => {
-  
+
   const historyTypes = [
+    { id: "0", label: "select a history type" },
     { id: "1", label: "Surgery" },
     { id: "2", label: "Accident" },
     { id: "3", label: "Hospitalization" },
@@ -31,13 +34,15 @@ const MedicalHistoryModal = ({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRecord({ ...record, [name]: value });
+    // console.log( "e.target.value", e.target.name ,e.target.value,);
   };
 
   const handleDropdownChange = (name, value) => {
+    console.log("name", name, "value", value);
     setRecord({ ...record, [name]: value });
   };
 
-// toggle hereditaryDisease and relatedPerson based on historyType
+  // toggle hereditaryDisease and relatedPerson based on historyType
   useEffect(() => {
     if (record?.historyType === "Family History") {
       setRecord(prev => ({
@@ -55,6 +60,10 @@ const MedicalHistoryModal = ({
     }
   }, [record?.historyType]);
 
+  // this is for date picker 
+  const formattedDate = record?.dateOfEvent 
+    ? new Date(record.dateOfEvent).toISOString().split('T')[0] 
+    : "";
   return (
     <Modal show={show} onHide={onClose} centered className="custom-edit-modal">
       <Modal.Header style={{ 
@@ -96,30 +105,29 @@ const MedicalHistoryModal = ({
           <div className="form-grid" style={{ rowGap: "0.8rem" }}>
             {/* History Type Dropdown - normal Select */}
             <div className="col-2-sm">
-            <SelectField
-              
-              label="History Type *"
-              name="historyType"
-              value={record.historyType || ""}
-              onChange={handleChange}
-              options={historyTypes}
-              placeholder="Select history type"
-              error={errors?.historyType}
-              forceShowError={forceShowError}
-            />
+              <SelectField
+                label="History Type *"
+                name="historyType"
+                value={record.historyType || ""}
+                onChange={handleChange}
+                options={historyTypes}
+                placeholder="Select history type"
+                error={errors?.historyType}
+                forceShowError={forceShowError}
+              />
             </div>
 
             {/* Date of Event */}
             <div className="col-2-sm">
-            <Field
-              label="Date of Event"
-              name="dateOfEvent"
-              type="date"
-              value={record.dateOfEvent || ""}
-              onChange={handleChange}
-              error={errors?.dateOfEvent}
-              forceShowError={forceShowError}
-            />
+              <Field
+                label="Date of Event"
+                name="dateOfEvent"
+                type="date"
+                value={formattedDate} 
+                onChange={handleChange}
+                error={errors?.dateOfEvent}
+                forceShowError={forceShowError}
+              />
             </div>
 
             {/* Hereditary Disease (if FamilyHistory) - DropdownWithSearch */}
@@ -133,37 +141,33 @@ const MedicalHistoryModal = ({
                 Hereditary Disease
               </label>
               <DropdownWithSearch
-                label="Select Disease"
-                options={hereditaryDiseases}
-                placeholder={
-                  record.historyType === "Family History" 
-                    ? "Select hereditary disease" 
-                    : "Select Family History first"
-                }
-                onSelect={(value) => handleDropdownChange("hereditaryDisease", value)}
+                type="disease"
+                value={{  name: record.hereditaryDisease?.name }|| ""}
+                onChange={(value) => handleDropdownChange("hereditaryDisease", value)}
                 itemsPerPage={6}
                 disabled={record.historyType !== "Family History"}
               />
             </div>
 
-            {/* Related Person (if FamilyHistory) - Input  */}
+            {/* Related Person (if FamilyHistory) - Input */}
             <div style={{ gridColumn: "span 2"}}>
-            <Field
-              label="Related Person"
-              name="relatedPerson"
-              type="text"
-              value={record.relatedPerson || ""}
-              onChange={handleChange}
-              placeholder={
-                record.historyType === "Family History" 
-                  ? "e.g., Father, Mother, Brother..." 
-                  : "Available for Family History only"
-              }
-              disabled={record.historyType !== "Family History"}
-              error={errors?.relatedPerson}
-              forceShowError={forceShowError}
-            />
-          </div>
+              <Field
+                label="Related Person"
+                name="relatedPerson"
+                type="text"
+                value={record.relatedPerson || ""}
+                onChange={handleChange}
+                placeholder={
+                  record.historyType === "Family History" 
+                    ? "e.g., Father, Mother, Brother..." 
+                    : "Available for Family History only"
+                }
+                disabled={record.historyType !== "Family History"}
+                error={errors?.relatedPerson}
+                forceShowError={forceShowError}
+              />
+            </div>
+
             {/* Description */}
             <TextAreaField
               label="Description"
@@ -199,10 +203,13 @@ const MedicalHistoryModal = ({
         }}
       >
         <button className="btn simple-btn" onClick={onClose}>
-          Cancel
+          {t("Cancel")}
         </button>
+       { !isEdit && <button className="btn-simple" onClick={onDelete}>
+          {t("Delete")}
+        </button>}
         <button className="second-btn" onClick={onSave}>
-          Save Medical History
+          {t("Save")}
         </button>
       </Modal.Footer>
     </Modal>

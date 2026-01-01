@@ -232,12 +232,12 @@
   top: initial;
   top: -7px;
   border-top: initial;
-  border-bottom: 7px solid #ccc;
+  border-bottom: 7px solid #ddd;
 }
 
 .list-date-option:after {
   top: initial;
-  top: -6px;
+  top: -5px;
   border-top: initial;
   border-bottom: 6px solid #fff;
 }
@@ -262,7 +262,7 @@
     font-size: 12px;
     font-weight: 700;
 }
-.rdp-range_end .rdp-day_button , .rdp-range_start .rdp-day_button{
+.rdp-range_end .rdp-day_button , .rdp-range_start .rdp-day_button, .datepicker .rdp-selected .rdp-day_button{
     background-color: #3fabf3 !important;
     border: #3fabf3 solid 1px !important;
 }
@@ -273,7 +273,8 @@
     border-radius: 0 6px 6px 0 !important;
     margin-left: -3px;
 }
-.rdp-range_start.rdp-range_end .rdp-day_button {
+.datepicker .rdp-selected .rdp-day_button{color: white;}
+.rdp-range_start.rdp-range_end .rdp-day_button,.datepicker .rdp-selected .rdp-day_button {
   border-radius: 6px !important;
 }
 /* .rdp-range_end .rdp-day_button */
@@ -325,4 +326,14 @@ font-family: sans-serif !important;
 .rdp-months{
     gap: 10px !important;
     color: #465d7c;
+}
+.dropdown-date-options{
+  border-right: 1px solid rgb(221, 221, 221);
+    padding-top: 8px;
+    min-width: 150px;
+    max-width: 150px;
+    padding-right: 2px;
+}
+.datepicker .DateRangePickerMain{
+  max-height: 50px !important;
 }
