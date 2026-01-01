@@ -76,17 +76,37 @@ export const useMessages = () => {
       loadMore();
     }
   };
+
   console.log("===render===");
+
+
+ //mark all Messages As Read
+  const markMessagesAsRead = 
+    async () => {
+              dispatch(
+          doctorChatApi.util.updateQueryData(
+            'getDoctorChats',
+            undefined,
+            (draft) => {
+              if (!draft?.data) return;
+
+              const chat = draft.data.find(
+                c => c.chatId === selectedChat
+              );
+
+              if (chat) {
+                chat.lastMessageStatus =2;
+                chat.unreadCount = 0;
+                chat.isLastMessageRead = true;
+              }
+            }
+          )
+        );}
   // in selectedChat change
 const lastMarkedMessageIdRef = useRef(null);
 
 useEffect(() => {
-  setPageByChat((prev) => ({
-    ...prev,
-    [selectedChat]: 1,
-  }));
-
-  toLatestMessage();
+ 
 
   if (!isConnected) return;
 
@@ -105,8 +125,16 @@ useEffect(() => {
     InvokeMarkFromLastMessagesAsRead(selectedChat, maxMessageId);
     markMessagesAsRead();
   }
-}, [selectedChat, messagesLoading, isConnected, isChatOpen]);
+}, [selectedChat, messagesLoading, isConnected,markMessagesAsRead,InvokeMarkFromLastMessagesAsRead]);
 
+useEffect(() => {
+ setPageByChat((prev) => ({
+    ...prev,
+    [selectedChat]: 1,
+  }));
+
+  toLatestMessage();
+}, [selectedChat]);
   
   const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
@@ -312,28 +340,6 @@ const resendMessage = useCallback(
   [sendMessageApi]
 );
 
-  //mark all Messages As Read
-  const markMessagesAsRead = 
-    async () => {
-              dispatch(
-          doctorChatApi.util.updateQueryData(
-            'getDoctorChats',
-            undefined,
-            (draft) => {
-              if (!draft?.data) return;
-
-              const chat = draft.data.find(
-                c => c.chatId === selectedChat
-              );
-
-              if (chat) {
-                chat.lastMessageStatus =2;
-                chat.unreadCount = 0;
-                chat.isLastMessageRead = true;
-              }
-            }
-          )
-        );}
 
   return {
     messages: currentMessages,
