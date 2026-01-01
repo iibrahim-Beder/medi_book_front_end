@@ -64,13 +64,7 @@
 .dc-chat-item-content:hover{
     background: var(--background-default-hover);
 }
-@media (max-width: 568px) {
-     .dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:last-child,       .messages-page  .dc-dashboardboxcontent,.messages-page .dc-collapseexp {
-        padding: 0 10px !important;
-    }
-    .messages-page{padding: 10px !important;}
-    .messages-page .col-lg-8{padding: 0px !important;}
-}
+
 /* message status */
 .dc-messagecontent time{white-space: nowrap;}
 .dc-readmessage .dc-description time{color: #ffffffd1 !important;font-size: 10px !important;  }
@@ -97,7 +91,7 @@
     color: red;
 }
 .dc-readmessage .dc-description time.Sending:before{
-    content: none;
+     content: "\f017"
 }
 
 /* end */
@@ -347,3 +341,14 @@ background-color: red !important;
           --num-columns: 6;
   }
 }}
+
+@media (max-width: 568px) {
+     .dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:last-child,       .messages-page  .dc-dashboardboxcontent,.messages-page .dc-collapseexp {
+        padding: 0 10px !important;
+    }
+    .conversation-and-messages {
+        margin-right: 0 !important;
+    }
+    .messages-page{padding: 10px !important;}
+    .messages-page .col-lg-8{padding: 0px !important;}
+}

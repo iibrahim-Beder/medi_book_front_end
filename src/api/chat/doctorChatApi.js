@@ -68,7 +68,7 @@ const transformMessagesData = (response,personId=1) => {
     chatId: message.chatId,
     content: message.content,
     sentAt: message.sentAt,
-    sentAtFormatted: formatTime(message.sentAt),
+    sentAtFormatted: message.sentAt,
     status: message.messageStatus,
     isMine: message.senderId === personId,
     isDelivered: message.isDelivered,

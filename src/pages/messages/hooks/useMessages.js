@@ -90,18 +90,19 @@ useEffect(() => {
 
   if (!isConnected) return;
 
-  const firstMessageId = currentMessages?.[0]?.id;
+ const maxMessageId = currentMessages?.length
+  ? Math.max(...currentMessages.map(msg => msg.id))
+  : undefined;
 
   if (
-    isConnected &&
     selectedChat !== -1 &&
     currentMessages?.length > 0 &&
-    firstMessageId &&
-    lastMarkedMessageIdRef.current !== firstMessageId
+    maxMessageId &&
+    lastMarkedMessageIdRef.current !== maxMessageId
   ) {
-    lastMarkedMessageIdRef.current = firstMessageId;
+    lastMarkedMessageIdRef.current = maxMessageId;
 
-    InvokeMarkFromLastMessagesAsRead(selectedChat, firstMessageId);
+    InvokeMarkFromLastMessagesAsRead(selectedChat, maxMessageId);
     markMessagesAsRead();
   }
 }, [selectedChat, messagesLoading, isConnected, isChatOpen]);
@@ -179,7 +180,6 @@ useEffect(() => {
           }
         )
       );
-       audioService.play('sendMessage');
       try {
 
         const result = await sendMessageApi(tempMessage).unwrap();
@@ -202,7 +202,6 @@ useEffect(() => {
                   if (tempMessage.id === msg.id) {
                     msg.id = result.data.messageId;
                     msg.status = result.data.messageStatus;
-                    msg.sentAtFormatted = result.data.sentAt;
                     msg.isDelivered = result.data.isDelivered;
                   }
                 });
@@ -210,9 +209,7 @@ useEffect(() => {
             )
           );
         }
-
-        // console.log('Message sent successfully resalt:', result);
-
+          audioService.play('sendMessage');
         // return result;
       } catch (error) {
         console.error("Error sending message:", error);
@@ -289,6 +286,7 @@ const resendMessage = useCallback(
             }
           )
         );
+               audioService.play('sendMessage');
       }
     } catch (error) {
       dispatch(
