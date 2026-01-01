@@ -1,0 +1,1532 @@
+{
+    "Doctor":"دكتور",
+     "sidebar": {
+    "insights": "الإحصائيات",
+    "appointmentList": "قائمة المواعيد",
+    "appointmentSetting": "إعدادات المواعيد",
+    "appointmentLocation": "موقع المواعيد",
+    "manageServices": "إدارة الخدمات",
+    "manageTeam": "إدارة الفريق",
+    "messages": "الرسائل",
+    "manageArticles": "إدارة المقالات",
+    "accountSettings": "إعدادات الحساب",
+    "securitySettings": "إعدادات الأمان",
+    "logout": "تسجيل الخروج",
+    "allRightsReserved": "جميع الحقوق محفوظة.",
+    "makeSlots":"جدولة المواعيد",
+    "managePatients":"ادارة المرضى",
+    "pationtInformation":"معلومات المريض ",
+    "manageFinancial":"ادارة الماليات",
+    "appointmentManagement":"ادارة المواعيد"
+  }
+  ,
+  "accountSecurity": {
+    "title": "أمان الحساب والإعدادات",
+    "description": "هذا النص تجريبي يوضح إعدادات الأمان والتحكم في الحساب.",
+    "publicProfile": "اجعل ملفي الشخصي عامًا",
+    "searchableProfile": "اجعل ملفي الشخصي قابلاً للبحث",
+    "sharePhoto": "مشاركة صورتي الشخصية",
+    "disableAccount": "تعطيل حسابي مؤقتًا",
+    "showFeedback": "عرض تقييمات العملاء",
+    "enableDisable": "تفعيل/إلغاء التفعيل"
+  },
+  "languageCurrency": {
+    "title": "اللغة والعملة",
+    "selectLanguage": "اختر لغة النظام",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "selectCurrency": "اختر العملة",
+    "real": "الريال البرازيلي",
+    "usd": "الدولار الأمريكي",
+    "yuan": "اليوان الصيني",
+    "peso": "البيزو الكولومبي",
+    "euro": "اليورو",
+    "hkd": "دولار هونغ كونغ"
+  },
+  "dashboardColor": {
+    "title": "إعدادات ألوان لوحة التحكم",
+    "description": "هذا النص تجريبي يوضح إعدادات الألوان في لوحة التحكم.",
+    "useDarkMode": "استخدام الوضع الداكن للوحة التحكم"
+  }
+  ,
+    "userMenu": {
+    "doctor": "دكتور",
+    "insights": "الإحصائيات",
+    "appointmentList": "قائمة المواعيد",
+    "appointmentSetting": "إعدادات المواعيد",
+    "appointmentLocation": "موقع الموعد",
+    "manageServices": "إدارة الخدمات",
+    "manageTeam": "إدارة الفريق",
+    "messages": "الرسائل",
+    "inbox": "الوارد",
+    "send": "إرسال",
+    "trash": "سلة المحذوفات",
+    "manageArticles": "إدارة المقالات",
+    "accountSettings": "إعدادات الحساب",
+    "securitySettings": "إعدادات الأمان",
+    "logout": "تسجيل الخروج"
+  }
+,"navbar": {
+  "healthForum": "منتدى الصحة",
+  "healthForumAnswer": "إجابات المنتدى",
+  "howItWorks": "كيف يعمل؟",
+  "howItWorksV1": "الشرح الإصدار الأول",
+  "howItWorksV2": "الشرح الإصدار الثاني",
+  "pages": "الصفحات",
+  "homeV1": "الصفحة الرئيسية 1",
+  "homeV2": "الصفحة الرئيسية 2",
+  "articles": "المقالات",
+  "about": "من نحن",
+  "contact": "تواصل معنا"
+},
+"profileSettings": {
+  "title": "إعدادات الملف الشخصي",
+  "basicInfo": "المعلومات الأساسية للطبيب",
+  "specializations": "الملف الشخصي والتخصصات",
+  "education": "التعليم",
+  "experience": "الخبرات",
+  "updateNote": "قم بتحديث جميع التغييرات الأخيرة التي أجريتها بمجرد الضغط على زر “حفظ ومتابعة”.",
+  "saveUpdate": "حفظ وتحديث"
+}
+,"yourDetails": {
+  "title": "تفاصيلك",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "selectGender": "اختر الجنس",
+  "male": "ذكر",
+  "female": "أنثى",
+  "dob": "تاريخ الميلاد",
+  "email": "البريد الإلكتروني",
+  "phone": "الهاتف (اختياري)",
+  "license": "رقم الرخصة",
+  "description": "الوصف"
+}
+,"profilePhoto": {
+  "title": "صورة الملف الشخصي",
+  "description": "لوريم إيبسوم هو نص شكلي يستخدم في صناعة الطباعة والتنضيد. تم استخدامه كنص تجريبي منذ القرن السادس عشر.",
+  "selectFiles": "اختر الملفات",
+  "dropFiles": "اسحب الملفات هنا للتحميل",
+  "uploading": "جاري التحميل",
+  "fileName": "صورة الملف الشخصي.jpg",
+  "fileSize": "حجم الملف: 300 كيلوبايت"
+}
+,"bannerPhoto": {
+  "title": "صورة الغلاف",
+  "description": "هذا النص مثال وصفي لصورة الغلاف. يمكنك استبداله بالنص المناسب هنا.",
+  "selectFiles": "اختر الملفات",
+  "dropFiles": "اسحب الملفات هنا للرفع",
+  "uploading": "جاري الرفع",
+  "alt": "صورة الغلاف",
+  "fileName": "صورة الغلاف.jpg",
+  "fileSize": "حجم الملف: 300 كيلوبايت"
+}
+,"education": {
+  "title": "أضف تعليمك",
+  "addNew": "إضافة جديد",
+  "items": [
+    { "title": "أمراض اللثة وزراعة الأسنان", "period": "(2010 - 2012)" },
+    { "title": "ماجستير إدارة المستشفيات", "period": "(2008 - 2010)" },
+    { "title": "طب الفم والأشعة", "period": "(2006 - 2008)" }
+  ],
+  "form": {
+    "companyTitle": "اسم الشركة",
+    "startingDate": "تاريخ البدء",
+    "endingDate": "تاريخ الانتهاء *",
+    "jobTitle": "المسمى الوظيفي",
+    "jobDescription": "وصف الوظيفة",
+    "note": "* اترك تاريخ الانتهاء فارغًا إذا كانت وظيفتك الحالية"
+  }
+}
+,
+  "profile": {
+    "title": "ملفك الشخصي",
+    "experience": "سنوات الخبرة",
+    "bio": "نبذة عنك",
+    "languages": "اللغات التي تتحدثها",
+    "speciality": "تخصصك"
+  }
+,
+  "specializations": {
+    "title": "التخصصات",
+    "placeholder": "اختر تخصصك",
+    "addBtn": "أضف الآن"
+  }
+  ,
+"userExperience": {
+  "addYourExperience": "أضف خبرتك",
+  "addNew": "أضف خبره جديد",
+  "generalDentistry": "طب الأسنان العام",
+  "newExperience": "خبرة جديدة",
+  "companyTitle": "اسم الشركة",
+  "startingDate": "تاريخ البدء",
+  "endingDate": "تاريخ الانتهاء *",
+  "jobTitle": "المسمى الوظيفي",
+  "jobDescription": "وصف وظيفتك",
+  "noteEndingDate": "* اترك تاريخ الانتهاء فارغًا إذا كانت وظيفتك الحالية"
+}
+,
+ "password": {
+    "title": "تغيير كلمة المرور",
+    "old": "كلمة المرور السابقة",
+    "new": "كلمة المرور الجديدة",
+    "logoutAll": "تسجيل الخروج من كل الجلسات الأخرى (ويب/موبايل) الآن.",
+    "updateBtn": "تحديث كلمة المرور",
+    "error": "من فضلك املأ جميع الحقول.",
+    "success": "تم تحديث كلمة المرور بنجاح."
+  }
+
+  , 
+  "securitySettings": {
+    "securityTab": "الأمان والإعدادات",
+    "passwordTab": "إعدادات كلمة المرور",
+    "emailTab": "إشعارات البريد الإلكتروني",
+    "deleteTab": "حذف الحساب"
+    }
+
+
+
+,
+  "emailNotifications": {
+    "title": "إدارة إشعارات البريد الإلكتروني",
+    "description": "نص تجريبي يوضح كيفية التحكم في إشعارات البريد الإلكتروني الخاصة بك بسهولة.",
+    "weeklyNewsletter": "أرسل لي تنبيهات النشرة الأسبوعية",
+    "forwardMessages": "إعادة توجيه الرسائل إلى هذا البريد",
+    "bonusPromos": "أرسل لي العروض والمكافآت",
+    "securityAlerts": "مشاركة آخر تنبيهات الأمان"
+  },
+   "deleteAccount": {
+    "title": "حذف الحساب",
+    "placeholders": {
+      "password": "أدخل كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "reason": "اختر سبب المغادرة",
+      "description": "الوصف (اختياري)"
+    },
+    "reasons": {
+      "reason1": "السبب الأول",
+      "reason2": "السبب الثاني",
+      "noReason": "لا يوجد سبب"
+    },
+    "unsubscribe": "إلغاء الاشتراك من جميع النشرات البريدية",
+    "button": "حذف الحساب",
+    "errors": {
+      "emptyPassword": "من فضلك أدخل كلمة المرور.",
+      "notMatch": "كلمتا المرور غير متطابقتين."
+    },
+    "confirmMessage": "هل أنت متأكد أنك تريد حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.",
+    "successMessage": "محاكاة: تم حذف الحساب بنجاح."
+  }
+
+
+
+  ,
+   "slotsSelct": {
+    "all": "الكل",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "pending": "قيد الانتظار",
+    "spaces": "المقاعد"
+  }
+  ,
+  
+  "slots": {
+    "title": "إدارة مواعيدك",
+    "status": "الحالة",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "pending": "قيد الانتظار",
+    "bookingDate": "تاريخ الحجز",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "duration": "المدة",
+    "shiftName": "اسم الشفت",
+    "location": "المكان",
+    "price": "السعر"
+  },
+    "patient": {
+    "name": "اسم المريض",
+    "idNumber": "رقم الملف أو الهوية",
+    "contact": "بيانات الاتصال",
+    "notes": "ملاحظات الحجز",
+    "bookingType": "نوع الحجز"
+  },
+    "cancellation": {
+    "time": "وقت الإلغاء",
+    "by": "تم الإلغاء بواسطة",
+    "financialStatus": "الحالة المالية",
+    "reason": "سبب الإلغاء"}
+    , 
+     "days": {
+    "saturday": "السبت",
+    "sunday": "الأحد",
+    "monday": "الاثنين",
+    "tuesday": "الثلاثاء",
+    "wednesday": "الأربعاء",
+    "thursday": "الخميس",
+    "friday": "الجمعة"
+  }     
+  ,
+   "slots": "مواعيد"   
+   ,
+   
+  "clinic": "العيادة",
+  "selectClinic": "اختر العيادة",
+  "slotDurationMinutes": "مدة الحجز (بالدقائق)",
+  "daysInAdvance": "عدد الأيام مقدماً",
+  "startTime": "وقت البداية",
+  "endTime": "وقت الانتهاء",
+  "price": "السعر",
+  "currency": "العملة",
+  "selectCurrency": "اختر العملة",
+  "allowedAppointmentTypes": "أنواع المواعيد المسموح بها",
+  "saveChanges": "حفظ التغييرات",
+  "appointmentTypes": {
+        "Follow-up": "متابعة",
+  "Check-up": "فحص دوري",
+    "Consultation": "استشارة",
+    "FollowUp": "متابعة",
+    "Emergency": "طوارئ"
+  },
+"locationSettings": "إعدادات الموقع",
+  "addLocation": "إضافة موقع",
+  "locationAndWorkingHours": "الموقع وساعات العمل",
+  "manageYourShifts": "إدارة الشفتات الخاصة بك",
+  "addNew": "إضافة شفت جديد"
+  ,
+  "LocationInformation":"معلومات المواقع"
+
+,
+
+
+  
+  "AddLocation": "إضافة موقع",
+  "NoLocationSelected": "لم يتم اختيار موقع",
+  "Edit": "تعديل",
+  "Delete": "حذف",
+  "LocationName": "اسم الموقع",
+  "OfficialAddress": "العنوان الرسمي",
+  "Coordinates": "الإحداثيات",
+  "NotSpecified": "غير محدد",
+  "NoLocationsAddedYet": "لم تتم إضافة أي موقع بعد. اضغط \"إضافة موقع\" للبدء.",
+  "LocateYourBusiness": "حدد موقع نشاطك",
+  "SearchForAddress": "ابحث عن العنوان",
+  "PlaceNotFound": "لم يتم العثور على المكان",
+  "SearchError": "حدث خطأ أثناء البحث",
+  "OfficialWebsite": "الموقع الرسمي",
+  "LoadingPlaceName": "جارٍ استرجاع اسم الموقع",
+  "DragPinMessage": "اسحب الدبوس لتغيير الموقع",
+  "SpecialPlaceNameOptional": "اسم المكان الخاص (اختياري)",
+  "Cancel": "إلغاء",
+  "Save": "حفظ",
+  "TapOrDragMapNote": "ملاحظة: اضغط أو اسحب على الخريطة لتحريك الدبوس",
+  "Saved": "تم الحفظ"
+
+,
+  "manageYourShifts": "إدارة الشفتات الخاصة بك",
+  "addNew": "إضافة جديد",
+  "Clinic1": "العيادة 1",
+  "Clinic2": "العيادة 2",
+  "Saturday": "السبت",
+  "Sunday": "الأحد",
+  "Monday": "الاثنين",
+  "Tuesday": "الثلاثاء",
+  "Wednesday": "الأربعاء",
+  "Thursday": "الخميس",
+  "Friday": "الجمعة",
+  "Morning": "صباحي",
+  "Evening": "مسائي",
+  "Night": "ليلي",
+  "CustomShift": "شفت مخصص"
+  ,  "selectLocation": "اختر العيادة",
+  "selectDay": "اختر اليوم",
+  "selectShiftType": "اختر نوع الشفت",
+  "startTime": "وقت البداية",
+  "endTime": "وقت النهاية",
+  "breaks": "فترات الراحة",
+  "addBreak": "إضافة فترة راحة"
+  ,
+  "Make Slots":"توليد مواعيد"
+  , "Add Slot": " اضافة مواعيد " 
+,
+  
+"slots": {
+  "all": "الكل",
+    "status": "الحالة",
+    "pending": "قيد الانتظار",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "bookingDate": "تاريخ الحجز",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "duration": "المدة",
+    "shiftName": "اسم الشفت",
+    "location": "المكان",
+    "price": "السعر"
+  },
+
+  "Slots": "مواعيد"
+,
+
+ "slot": {
+    "status": "الحالة",
+    "bookingDate": "تاريخ الحجز",
+    "startTime": "وقت البداية",
+    "endTime": "وقت النهاية",
+    "duration": "المدة",
+    "shiftName": "اسم الشفت",
+    "location": "الموقع",
+    "price": "السعر"
+  },
+  "slotStatuses": {
+    "all": "الكل",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "empty": "فارغ",
+    "pending": "قيد الانتظار"
+  }
+
+,
+
+  "alerts": {
+    "reminderTitle": "تذكير بالموعد",
+    "reminderMessage": "لديك موعد قادم مع الدكتورة سارة سميث غدًا الساعة 10:00 صباحًا في عيادة سيتي كير.",
+    "warningTitle": "تحذير",
+    "warningMessage": "لديك موعد معلق يحتاج إلى تأكيد.",
+    "dangerTitle": "خطأ",
+    "dangerMessage": "تم إلغاء موعدك!",
+    "infoTitle": "معلومة",
+    "infoMessage": "تحقق من تفاصيل موعدك.",
+    "visit": "زيارة"
+  },
+  "dashboard": {
+    "healthForumFeedback": "آراء المنتدى الصحي",
+    "totalAppointments": "إجمالي المواعيد",
+    "completedAppointments": "المواعيد المكتملة",
+    "cancelledAppointments": "المواعيد الملغاة",
+    "followupAppointments": "مواعيد المتابعة",
+    "latestAppointments": "أحدث المواعيد",
+    "newMessages": "رسائل جديدة",
+    "latestProposals": "آخر المقترحات",
+    "checkPackageExpiry": "تحقق من انتهاء الباقة",
+    "viewSavedItems": "عرض العناصر المحفوظة"
+  },
+  "months": {
+    "march": "مارس",
+    "february": "فبراير",
+    "january": "يناير"
+  }
+,
+
+  "specialty": {
+    "select": "اختر التخصص",
+    "cardiology": "أمراض القلب",
+    "neurology": "الأعصاب",
+    "pediatrics": "طب الأطفال",
+    "surgery": "الجراحة",
+    "internal": "الباطنة",
+    "orthopedics": "العظام",
+    "ophthalmology": "العيون",
+    "dermatology": "الجلدية"
+  },
+  "qualification": {
+    "select": "اختر المؤهل",
+    "mbbs": "بكالوريوس الطب والجراحة",
+    "master": "ماجستير",
+    "phd": "دكتوراه",
+    "board": "البورد",
+    "other": "أخرى"
+  },
+  "steps": {
+    "personalInfo": "المعلومات الشخصية",
+    "profileAndSpecialty": "الملف الشخصي والتخصص",
+    "location": "الموقع",
+    "experience": "الخبرة",
+    "reviewConfirm": "المراجعة والتأكيد",
+    "education": "التعليم",
+    "shift": "الشفتات",
+    "makeSlots": "توليد المواعيد",
+    "PaymentInsurance": "الدفع والتأمين"
+
+
+  },
+  
+  "Management slots": "إدارة المواعيد",
+
+  "personalInfo": {
+    "title": "المعلومات الشخصية الأساسية",
+    "fullName": {
+      "label": "الاسم بالكامل",
+      "placeholder": "الاسم الثلاثي الكامل"
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "example@domain.com"
+    },
+    "phone": {
+      "label": "رقم الهاتف",
+      "placeholder": "05XXXXXXXX"
+    },
+    "nationalId": {
+      "label": "رقم الهوية",
+      "placeholder": "10 أرقام"
+    },
+    "password": {
+      "label": "كلمة المرور",
+      "placeholder": "8 أحرف على الأقل"
+    },
+    "confirmPassword": {
+      "label": "تأكيد كلمة المرور",
+      "placeholder": "أعد إدخال كلمة المرور"
+    }
+
+
+  }
+
+,
+  "qualificationsInfo": {
+    "title": "المؤهلات والشهادات",
+    "qualification": {
+      "label": "المؤهل العلمي"
+    },
+    "university": {
+      "label": "الجامعة",
+      "placeholder": "اسم الجامعة"
+    },
+    "graduationYear": {
+      "label": "سنة التخرج",
+      "placeholder": "سنة التخرج"
+    },
+    "additionalCert": {
+      "label": "شهادات إضافية",
+      "placeholder": "أسماء الشهادات الإضافية"
+    },
+    "certificates": {
+      "label": "تفاصيل الشهادات والإنجازات",
+      "placeholder": "اذكر الشهادات والدورات والإنجازات الهامة"
+    },
+    "certFiles": {
+      "label": "رفع الشهادات والمؤهلات",
+      "hint": "اسحب وأسقط الملفات هنا أو انقر للاختيار (PDF, JPG)"
+    }
+  }
+
+  ,
+   "experienceInfo": {
+    "title": "الخبرة العملية",
+    "addMore": "+ إضافة شركة أخرى"
+  }
+
+  ,
+    "reviewInfo": {
+    "title": "التأكيد والمراجعة النهائية",
+    "termsText": "أوافق على",
+    "termsOfUse": "شروط الاستخدام",
+    "privacyPolicy": "سياسة الخصوصية",
+    "and": "و",
+    "confirm": "وأؤكد صحة المعلومات"
+  }
+  ,
+   "previous": "السابق",
+  "next": "التالي",
+  "skip": "تخطي",
+  "save": "حفظ",
+  "confirmRegistration": "تأكيد التسجيل",
+  "validationError": "خطأ في التحقق",
+  "cancel": "إلغاء"
+
+
+  ,
+   "success": {
+    "title": "تم التسجيل بنجاح!",
+    "message1": "لقد تم تسجيل بياناتك بنجاح في نظام MediPRO Elite",
+    "message2": "سيتم مراجعة بياناتك من قبل الإدارة وسيتم التواصل معك قريباً",
+    "requestNumber": "رقم الطلب",
+    "newRegister": "تسجيل جديد"
+  }
+,
+    "professionalInfo": {
+        "Specializations": {
+    "title": "التخصصات",
+    "placeholder": "أدخل تخصصك هنا",
+    "addBtnText": "إضافة تخصص"
+  },"YearsOfExperience": {
+      "label": "عدد سنوات الخبرة",
+      "placeholder": "أدخل عدد سنوات الخبرة"
+    },
+    "Bio": {
+      "label": "السيرة الذاتية",
+      "placeholder": "اكتب نبذة قصيرة عنك"
+    },
+
+      "languages": {
+        "title": "اللغات",
+        "placeholder": "اكتب لغاتك",
+        "addBtnText": "إضافة لغة"
+      },
+
+    "title": "المعلومات المهنية",
+    "specialty": {
+      "label": "التخصص",
+      "placeholder": "اختر تخصصك"
+    },
+    "subspecialty": {
+      "label": "التخصص الفرعي",
+      "placeholder": "أدخل تخصصك الفرعي"
+    },
+    "licenseNumber": {
+      "label": "رقم الترخيص",
+      "placeholder": "أدخل رقم الترخيص الخاص بك"
+    },
+    "languageSpoken": {
+      "label": "اللغات التي تتحدثها",
+      "placeholder": "أدخل اللغات التي تتحدثها"
+    },
+    "licenseFile": {
+      "label": "ملف الترخيص",
+      "hint": "يرجى تحميل صورة أو ملف PDF"
+    }
+}
+,
+   "locationInfo":{
+    "title": "معلومات الموقع"
+   }
+   ,
+
+   "paymentMethods": {
+    "title": "طرق الدفع والتأمين",
+    "infoBanner": "يجب اختيار طريقة دفع واحدة على الأقل لتتمكن من متابعة الحجز",
+    "acceptedMethods": "طرق الدفع المقبولة",
+    "cash": {
+      "label": "نقداً",
+      "description": "الدفع المباشر عند الحضور"
+    },
+    "card": {
+      "label": "بطاقة بنكية",
+      "description": "الدفع باستخدام بطاقة ائتمانية أو بطاقة مدى"
+    },
+    "bankTransfer": {
+      "label": "تحويل بنكي",
+      "description": "تحويل المبلغ إلى الحساب البنكي للعيادة"
+    },
+    "insurance": {
+      "label": "التأمين الصحي",
+      "description": "الدفع عبر شركة التأمين"
+    },
+    "insuranceCompanies": "شركات التأمين",
+    "insuranceDescription": "اختر شركات التأمين التي تقبلها في عيادتك. يمكن للمرضى تصفية العيادات حسب شركة التأمين الخاصة بهم.",
+    "searchPlaceholder": "ابحث عن شركة التأمين...",
+    "noResults": "لم يتم العثور على شركات تأمين تطابق بحثك.",
+    "addNewCompany": "إضافة شركة جديدة",
+    "addNewCompanyTitle": "إضافة شركة تأمين جديدة",
+    "companyName": {
+      "label": "اسم الشركة",
+      "placeholder": "أدخل اسم الشركة"
+    },
+    "companyCode": {
+      "label": "كود الشركة",
+      "placeholder": "أدخل الكود المختصر للشركة"
+    },
+    "companyType": {
+      "label": "نوع التأمين",
+      "select": "اختر نوع التأمين",
+      "medical": "تأمين طبي",
+      "health": "تأمين صحي",
+      "dental": "تأمين أسنان"
+    },
+    "addCompanyButton": "إضافة الشركة",
+    "addCompanySuccess": "سيتم إضافة شركة:"
+  },
+  "common": {
+    "cancel": "إلغاء"
+  }
+  ,
+    "experience": {
+    "companyName": "اسم الشركة",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ النهاية",
+    "stillWorking": "ما زلت أعمل هنا",
+    "removeCompany": "حذف الشركة"
+  }
+,
+  "validation": {
+      "dynamic": {
+    "minItems": "⚠️ يجب إضافة {{minItems}} عنصر على الأقل",
+    "required": "⚠️ الحقل لا يمكن أن يكون فارغًا"
+  },
+    "step1": {
+      "fullName": "الاسم الكامل مطلوب",
+      "email": "البريد الإلكتروني غير صالح",
+      "phone": "رقم الهاتف غير صحيح",
+      "nationalId": "الرقم القومي غير صحيح",
+      "password": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+      "confirmPassword": "كلمتا المرور غير متطابقتين"
+    },
+    "step2": {
+    "atLeastOne": "يجب إضافة مؤهل واحد على الأقل",
+    "qualification": "المؤهل مطلوب",
+    "university": "اسم الجامعة مطلوب",
+    "graduationYearRequired": "سنة التخرج مطلوبة",
+    "graduationYear": "سنة التخرج يجب أن تكون بين 1950 و {{year}}"
+  },
+    "step3": {
+      "specialty": "التخصص مطلوب",
+      "licenseNumber": "رقم الترخيص مطلوب",
+      "languageSpoken": "اللغات مطلوبة",
+      "licenseFile": "ملف الترخيص مطلوب"
+    },
+    "step4": {
+      "locationsRequired": "يجب إضافة موقع واحد على الأقل",
+      "locationNameRequired": "اسم الموقع مطلوب",
+      "officialAddressRequired": "العنوان الرسمي مطلوب",
+      "invalidCoordinates": "الإحداثيات غير صحيحة"
+        ,"Bio": "السيرة الذاتية مطلوبة",
+      "yearsOfExperience": "عدد سنوات الخبرة مطلوب"
+    },
+    "step5": {
+      "shiftsRequired": "يجب إضافة شفت واحد على الأقل",
+      "clinicRequired": "اسم العيادة مطلوب",
+      "dayRequired": "اليوم مطلوب",
+      "shiftTypeRequired": "نوع الشفت مطلوب",
+      "customFromRequired": "وقت البداية مطلوب",
+      "customToRequired": "وقت النهاية مطلوب",
+      "invalidTimeRange": "وقت البداية يجب أن يكون قبل وقت النهاية",
+      "breakFromRequired": "وقت بداية الراحة مطلوب",
+      "breakToRequired": "وقت نهاية الراحة مطلوب",
+      "invalidBreakTimeRange": "وقت نهاية الراحة يجب أن يكون بعد وقت البداية"
+    },
+    "step6": {
+      "slotsRequired": "يجب إضافة موعد واحد على الأقل",
+      "clinicRequired": "العيادة مطلوبة",
+      "startTimeRequired": "وقت البداية مطلوب",
+      "endTimeRequired": "وقت النهاية مطلوب",
+      "invalidTimeRange": "وقت البداية يجب أن يكون قبل وقت النهاية",
+      "invalidDuration": "مدة الجلسة يجب أن تكون بين 15 و 120 دقيقة",
+      "invalidDaysInAdvance": "الأيام المسبقة يجب أن تكون بين 1 و 365",
+      "invalidPrice": "السعر يجب أن يكون أكبر من أو يساوي صفر",
+      "currencyRequired": "العملة مطلوبة",
+      "appointmentTypesRequired": "يجب اختيار نوع واحد على الأقل من المواعيد"
+    },
+   "step7": {
+    "experiences": "يجب إضافة خبرة واحدة على الأقل",
+    "companyTitle": "اسم الشركة مطلوب",
+    "startingDate": "تاريخ البداية مطلوب",
+    "invalidDate": "تاريخ البداية يجب أن يكون بين 1900 و {{year}}",
+    "invalidEndDate": "تاريخ النهاية يجب أن يكون بعد تاريخ البداية",
+    "jobTitle": "المسمى الوظيفي مطلوب",
+    "jobDescription": "وصف الوظيفة مطلوب"
+  },
+    "step8": {
+      "paymentMethodsRequired": "يجب اختيار وسيلة دفع واحدة على الأقل",
+      "insuranceCompaniesRequired": "يجب اختيار شركة تأمين واحدة على الأقل"
+    }
+
+    ,
+      "step9": {
+        "terms": "يجب الموافقة على الشروط والأحكام قبل الإرسال"
+      }
+  }
+  ,
+  "popup": {
+  "skipToStep7": "بتخطي هذه الخطوة لن تتمكن من إضافة الورديات أو قواعد الفترات الزمنية لاحقًا إلا إذا رجعت وأكملت هذه الخطوة"
+}
+,
+  "uploadFile": "رفع ملف"
+,  "shifts":{
+    "title": "الورديات",
+    "addNew": "أضف وردية جديدة"
+  }
+
+  ,
+
+    "BasicInfo": "معلومات المريض الأساسية",
+  "Appointments": "المواعيد",
+  "Notes": "الملاحظات",
+  "Files": "الملفات والمرفقات",
+  "TreatmentPlans": "الحساسية",
+  "Notifications": "الإشعارات",
+  "MedicalHistory": "التاريخ الطبي",
+  "Statistics": "المستشفى"
+
+  ,
+   "patientsList": "قائمة المرضى",
+  "patientId": "رقم المريض",
+  "name": "الاسم",
+  "age": "العمر",
+  "address": "العنوان",
+  "phone": "الهاتف",
+  "lastVisit": "آخر زيارة",
+  "paid": "المدفوع",
+  "action": "الإجراء",
+  "showing": "عرض",
+  "of": "من"
+  ,
+    "allPatients": "جميع المرضى",
+  "activePatients": "المرضى النشطون",
+  "treatmentCompleted": "العلاجات المكتملة",
+  "stoppedTreatment": "العلاجات المتوقفة",
+   "patientsReviews": "تقييمات المرضى",
+  "overallRating": "التقييم العام",
+  "appointmentType": "نوع الموعد",
+  "rating": "التقييم",
+  "review": "المراجعة",
+  "reviewDate": "تاريخ المراجعة",
+  "action": "الإجراء",
+  "viewBooking": "عرض الحجز",
+  "showing": "عرض",
+  "to": "إلى",
+  "of": "من",
+  "entries": "السجلات",
+  "previous": "السابق",
+  "next": "التالي",
+  "View profile": "عرض الملف الشخصي",
+  
+    "Chronic Migraine": "الصداع النصفي المزمن",
+  "Severe headaches with nausea and sensitivity to light": "صداع شديد مصحوب بالغثيان والحساسية للضوء",
+  "Patient diagnosed with chronic migraine requiring medication management": "تم تشخيص المريض بالصداع النصفي المزمن ويتطلب إدارة الأدوية",
+  "Patient requested reschedule": "طلب المريض إعادة الجدولة",
+  "Allergic to penicillin": "حساسية من البنسلين",
+  "Hypertension": "ارتفاع ضغط الدم",
+  "Moderate": "متوسط",
+  "Requires regular monitoring": "يتطلب مراقبة منتظمة",
+  "Pain Management Prescription": "وصفة إدارة الألم",
+  "Active": "نشط",
+  "For chronic migraine treatment": "لعلاج الصداع النصفي المزمن",
+  "Medical": "طبي",
+  "Patient requires monitoring.": "المريض يتطلب مراقبة.",
+  "Ibuprofen": "ايبوبروفين",
+  "400mg": "400 مجم",
+  "Take one tablet every 6 hours as needed for pain": "خذ قرصًا واحدًا كل 6 ساعات حسب الحاجة للألم",
+  "Follow-up": "متابعة",
+  "Blood test required": "يطلب فحص دم",
+  "diagnosesData: ": "بيانات التشخيصات: ",
+  "diagnosesData after add : ": "بيانات التشخيصات بعد الإضافة: ",
+  "diagnosesData after save : ": "بيانات التشخيصات بعد الحفظ: ",
+  "Diagnostic information": "المعلومات التشخيصية",
+  "Add Diagnostic": "إضافة تشخيص",
+  "Diagnosis Name": "اسم التشخيص",
+  "Symptoms Description": "وصف الأعراض",
+  "Diagnosis Description": "وصف التشخيص",
+  "Prescription Title": "عنوان الوصفة",
+  "select Status": "اختر الحالة",
+  "Prescription Status": "حالة الوصفة",
+  "Prescription note": "ملاحظة الوصفة",
+  "Prescription Note": "ملاحظة الوصفة",
+  "Select Medication": "اختر الدواء",
+  "Dosage": "الجرعة",
+  "Duration (Days)": "المدة (أيام)",
+  "Instructions": "التعليمات",
+  "Completed": "مكتمل",
+  "Cancelled": "ملغى",
+  "Expired": "منتهي الصلاحية",
+  "Paracetamol": "باراسيتامول",
+  "Amoxicillin": "أموكسيسيلين",
+  "Aspirin": "أسبرين",
+  "Metformin": "ميتفورمين",
+  "Atorvastatin": "أتورفاستاتين",
+  "Lisinopril": "ليسينوبريل",
+  "Levothyroxine": "ليفوثيروكسين",
+  "Amlodipine": "أملوديبين",
+  "Omeprazole": "أوميبرازول",
+  "Medication": "الدواء"
+  ,
+   "BasicInfo": "المعلومات الأساسية",
+  "Notifications": "الإشعارات",
+  "Appointments": "المواعيد",
+  "Reviews": "التقييمات",
+  "Medical History": "التاريخ الطبي",
+  "Medical Conditions": "الحالات الطبية",
+  "Allergies": "الحساسيات",
+  "Diagnosis": "التشخيصات",
+  "medications": "الأدوية",
+  "Prescriptions": "الوصفات الطبية",
+  "Notes": "الملاحظات",
+  "Files and Attachments": "الملفات والمرفقات",
+  "Patient Administrative Settings": "الإعدادات الإدارية للمريض"
+  ,
+  "patient": "مريض",
+  "Full Name:": "الاسم الكامل:",
+  "Date of Birth:": "تاريخ الميلاد:",
+  "Age:": "العمر:",
+  "Gender:": "الجنس:",
+  "Phone:": "الهاتف:",
+  "Email:": "البريد الإلكتروني:",
+  "Address:": "العنوان:",
+  "General Health Status": "الحالة الصحية العامة",
+  "Chronic Diseases:": "الأمراض المزمنة:",
+  "Allergies:": "الحساسيات:",
+  "Drug:": "الدواء:",
+  "Food:": "الطعام:",
+  "Medications:": "الأدوية:",
+  "Visits": "الزيارات",
+  "Last Visit:": "آخر زيارة:",
+  "Next Visit:": "الزيارة القادمة:",
+  "Patient Notifications":" اشعارات المريض",
+   "Communication": "الاتصال",
+  "Patient reported feeling better after medication adjustment.": "أبلغ المريض بتحسن حالته بعد تعديل الدواء.",
+  "Administrative": "إداري",
+  "Follow-up appointment scheduled for next week.": "تم جدولة موعد متابعة للأسبوع القادم.",
+  "Reminder": "تذكير", 
+  "Reminder to check lab results on Monday.": "تذكير للتحقق من نتائج المختبر يوم الاثنين.",
+  "N/A": "غير متوفر",
+  "Note Type": "نوع الملاحظة",
+  "Select note type": "اختر نوع الملاحظة",
+  "Content": "المحتوى",
+  "Enter note content...": "أدخل محتوى الملاحظة...",
+  "Created Date": "تاريخ الإنشاء",
+  "Created date": "تاريخ الإنشاء",
+  "Last Modified": "آخر تعديل",
+  "Last modified date": "تاريخ آخر تعديل",
+  "Patient Notes": "ملاحظات المريض",
+  "Add New Note": "إضافة ملاحظة جديدة",
+  "Add New Note": "إضافة ملاحظة جديدة",
+  "Edit Note": "تعديل الملاحظة",
+  "All": "الكل",
+  "Surgery": "جراحة",
+  "Accident": "حادث",
+  "Hospitalization": "تنويم في المستشفى",
+  "FamilyHistory": "تاريخ عائلي",
+  "Vaccination": "تطعيم",
+  "Others": "أخرى",
+  "Diabetes": "داء السكري",
+  "Heart Disease": "أمراض القلب",
+  "Cancer": "السرطان",
+  "Hypertension": "ارتفاع ضغط الدم",
+  "Asthma": "الربو",
+  "Mental Health Disorders": "اضطرابات الصحة النفسية",
+  "Other": "أخرى",
+  "Appendix removal": "استئصال الزائدة الدودية",
+  "Successful surgery with no complications.": "جراحة ناجحة دون مضاعفات.",
+  "Car accident with minor injuries": "حادث سيارة بإصابات طفيفة",
+  "Recovered after 2 weeks.": "تم الشفاء بعد أسبوعين.",
+  "Father had heart disease": "الأب كان يعاني من أمراض القلب",
+  "Father": "الأب",
+  "Family-related record": "سجل مرتبط بالعائلة",
+  "Mother has diabetes": "الأم تعاني من داء السكري",
+  "Mother": "الأم",
+  "Type 2 diabetes diagnosed at age 45": "تم تشخيص داء السكري النوع الثاني في عمر 45",
+  "Saved record:": "تم حفظ السجل:",
+  "Medical History": "التاريخ الطبي",
+  "Ahmed Mohamed Ali": "أحمد محمد علي",
+  "Add Condition": "إضافة حالة",
+  "History Type": "نوع التاريخ",
+  "Hereditary Disease": "المرض الوراثي",
+  "Description": "الوصف",
+  "Date of Event": "تاريخ الحدث",
+  "Related Person": "الشخص المرتبط",
+  "Notes": "ملاحظات",
+  "Actions": "الإجراءات",
+  "Manage": "إدارة",
+  "No medical history records found.": "لم يتم العثور على سجلات التاريخ الطبي.",
+  "Add Medical History": "إضافة تاريخ طبي",
+  "Edit Medical History": "تعديل التاريخ الطبي",
+   "All": "الكل",
+  "Surgery": "جراحة",
+  "Accident": "حادث",
+  "Hospitalization": "تنويم في المستشفى",
+  "FamilyHistory": "تاريخ عائلي",
+  "Vaccination": "تطعيم",
+  "Others": "أخرى",
+  "Diabetes": "داء السكري",
+  "Heart Disease": "أمراض القلب",
+  "Cancer": "السرطان",
+  "Hypertension": "ارتفاع ضغط الدم",
+  "Asthma": "الربو",
+  "Mental Health Disorders": "اضطرابات الصحة النفسية",
+  "Other": "أخرى",
+  "Appendix removal": "استئصال الزائدة الدودية",
+  "Successful surgery with no complications.": "جراحة ناجحة دون مضاعفات.",
+  "Car accident with minor injuries": "حادث سيارة بإصابات طفيفة",
+  "Recovered after 2 weeks.": "تم الشفاء بعد أسبوعين.",
+  "Father had heart disease": "الأب كان يعاني من أمراض القلب",
+  "Father": "الأب",
+  "Family-related record": "سجل مرتبط بالعائلة",
+  "Mother has diabetes": "الأم تعاني من داء السكري",
+  "Mother": "الأم",
+  "Type 2 diabetes diagnosed at age 45": "تم تشخيص داء السكري النوع الثاني في عمر 45",
+  "Saved record:": "تم حفظ السجل:",
+  "Medical History": "التاريخ الطبي",
+  "Ahmed Mohamed Ali": "أحمد محمد علي",
+  "Add Condition": "إضافة حالة",
+  "Hereditary Disease:": "المرض الوراثي:",
+  "Description:": "الوصف:",
+  "Related Person:": "الشخص المرتبط:",
+  "Notes:": "ملاحظات:",
+  "Date of Event": "تاريخ الحدث",
+  "Hereditary": "وراثي",
+  "Non-Hereditary": "غير وراثي",
+  "Type": "النوع",
+  "Manage": "إدارة",
+  "No Medical History Records Found": "لم يتم العثور على سجلات التاريخ الطبي",
+  "Add Medical History": "إضافة تاريخ طبي",
+  "Edit Medical History": "تعديل التاريخ الطبي",
+  "MedicalHistoryMobileView": {
+    "table_title": "التاريخ الطبي",
+    "table_subtitle": "أحمد محمد علي",
+    "add_condition": "إضافة حالة",
+    "no_records_found": "لم يتم العثور على سجلات التاريخ الطبي",
+    "hereditary_disease": "المرض الوراثي",
+    "description": "الوصف",
+    "related_person": "الشخص المرتبط",
+    "notes": "ملاحظات",
+    "date_of_event": "تاريخ الحدث",
+    "type": "النوع",
+    "hereditary": "وراثي",
+    "non_hereditary": "غير وراثي",
+    "manage": "إدارة",
+    "add_medical_history": "إضافة تاريخ طبي",
+    "edit_medical_history": "تعديل التاريخ الطبي",
+    "history_types": {
+      "All": "الكل",
+      "Surgery": "جراحة",
+      "Accident": "حادث",
+      "Hospitalization": "الإدخال للمستشفى",
+      "FamilyHistory": "التاريخ العائلي",
+      "Vaccination": "التطعيم",
+      "Others": "أخرى"
+    },
+    "hereditary_diseases": {
+      "Diabetes": "السكري",
+      "Heart Disease": "أمراض القلب",
+      "Cancer": "السرطان",
+      "Hypertension": "ارتفاع ضغط الدم",
+      "Asthma": "الربو",
+      "Mental Health Disorders": "اضطرابات الصحة العقلية",
+      "Other": "أخرى"
+    }
+  },
+  "AllergyMobileView": {
+    "table_title": "قائمة الحساسية",
+    "table_subtitle": "أحمد محمد علي",
+    "add_allergen": "إضافة مادة مسببة للحساسية",
+    "no_records_found": "لم يتم العثور على سجلات الحساسية",
+    "reaction": "رد الفعل",
+    "date_noted": "تاريخ التسجيل",
+    "notes": "ملاحظات",
+    "severity": "الشدة",
+    "is_active": "نشط",
+    "manage": "إدارة",
+    "add_allergen_modal": "إضافة مادة مسببة للحساسية",
+    "edit_allergen": "تعديل مادة مسببة للحساسية",
+    "allergen": "مسبب الحساسية",
+    "select_severity": "اختر الشدة",
+    "select_active_status": "هل هو نشط؟",
+    "select_date": "اختر التاريخ",
+    "enter_reaction": "أدخل رد الفعل",
+    "enter_notes": "أدخل الملاحظات",
+    "severity_options": {
+      "Mild": "خفيف",
+      "Moderate": "متوسط",
+      "Severe": "شديد"
+    },
+    "active_options": {
+      "Active": "نشط",
+      "Inactive": "غير نشط"
+    }
+  }
+  ,
+  "last_updated":"اخر تحديث",
+  "created_at": "تاريخ الانشاء",
+"AllergyTable": {
+    "no_results_for_search": "لا توجد نتائج للبحث '{{search}}'",
+    "loading_error": "خطأ في تحميل بيانات الحساسيات", 
+    "retry": "إعادة المحاولة",
+   "confirm_delete_title": " تاكيد الحذف",
+    "confirm_delete_message": " هل تريد حذف مادة مسببة للحساسية '{{allergen}}'? هذا الاجراء غير قابل للرجوع.",
+    "table_title": "قائمة الحساسية",
+    "table_subtitle": "أحمد محمد علي",
+    "add_allergen": "إضافة مادة مسببة للحساسية",
+    "no_records_found": "لم يتم العثور على سجلات الحساسية",
+    "allergen": "مسبب الحساسية",
+    "severity": "الشدة",
+    "active": "نشط",
+    "date_noted": "تاريخ التسجيل",
+    "reaction": "رد الفعل",
+    "notes": "ملاحظات",
+    "actions": "الإجراءات",
+    "manage": "إدارة",
+    "add_allergen_modal": "إضافة مادة مسببة للحساسية",
+    "edit_allergen": "تعديل مادة مسببة للحساسية",
+    "select_severity": "اختر الشدة",
+    "select_active_status": "هل هو نشط؟",
+    "select_date": "اختر التاريخ",
+    "enter_reaction": "أدخل رد الفعل",
+    "enter_notes": "أدخل الملاحظات",
+    "severity_options": {
+      "Mild": "خفيف",
+      "Moderate": "متوسط",
+      "Severe": "شديد"
+    },
+    "active_options": {
+      "Active": "نشط",
+      "Inactive": "غير نشط"
+    }
+  },
+  "DiagnosisMobileView": {
+    "table_title": "قائمة التشخيصات",
+    "table_subtitle": "أحمد محمد علي",
+    "symptoms": "الأعراض",
+    "conditions": "الحالات",
+    "notes": "الملاحظات",
+    "prescription": "الوصفات الطبية",
+    "view_all_details": "عرض كل التفاصيل",
+    "no_diagnosis_found": "لم يتم العثور على تشخيصات",
+    "symptoms_description": "وصف الأعراض",
+    "diagnosis_description": "وصف التشخيص",
+    "close": "إغلاق",
+    "medical_condition": "الحالة الطبية",
+    "severity": "الشدة",
+    "note": "ملاحظة",
+    "note_content": "محتوى الملاحظة",
+    "condition_type": "نوع الحالة",
+    "prescription_title": "عنوان الوصفة الطبية",
+    "status": "الحالة",
+    "prescription_note": "ملاحظة الوصفة",
+    "type": "النوع",
+    "dosage": "الجرعة",
+    "duration_days": "المدة (بالأيام)",
+    "instructions": "التعليمات"
+  },
+
+  "DiagnosisTable": {
+    "table_title": "قائمة التشخيصات",
+    "table_subtitle": "أحمد محمد علي",
+    "diagnosis_name": "اسم التشخيص",
+    "symptoms_description": "وصف الأعراض",
+    "diagnosis_description": "وصف التشخيص",
+    "conditions": "الحالات",
+    "notes": "الملاحظات",
+    "prescription": "الوصفات الطبية",
+    "view": "عرض",
+    "medical_condition": "الحالة الطبية",
+    "severity": "الشدة",
+    "note": "ملاحظة",
+    "note_content": "محتوى الملاحظة",
+    "condition_type": "نوع الحالة",
+    "prescription_title": "عنوان الوصفة الطبية",
+    "status": "الحالة",
+    "prescription_note": "ملاحظة الوصفة",
+    "medication": "الدواء",
+    "dosage": "الجرعة",
+    "duration_days": "المدة (بالأيام)",
+    "instructions": "التعليمات"
+  }
+  ,
+  "PrescriptionsMobileView": {
+    "table_title": "قائمة الوصفات الطبية",
+    "table_subtitle": "أحمد محمد علي",
+    "diagnosis": "التشخيص",
+    "note": "ملاحظة",
+    "status": "الحالة",
+    "medications": "الأدوية",
+    "view_all_details": "عرض كل التفاصيل",
+    "no_prescriptions_found": "لم يتم العثور على وصفات طبية",
+    "diagnosis_name": "اسم التشخيص",
+    "prescription_note": "ملاحظة الوصفة",
+    "close": "إغلاق",
+    "medication_name": "اسم الدواء",
+    "medication": "الدواء",
+    "dosage": "الجرعة",
+    "duration": "المدة",
+    "instructions": "التعليمات",
+    "status_options": {
+      "active": "نشط",
+      "completed": "مكتمل",
+      "cancelled": "ملغى",
+      "expired": "منتهي الصلاحية"
+    }
+  },
+  "PrescriptionsTable": {
+    "table_title": "قائمة الوصفات الطبية",
+    "table_subtitle": "أحمد محمد علي",
+    "prescription_title": "عنوان الوصفة الطبية",
+    "note": "ملاحظة",
+    "status": "الحالة",
+    "diagnosis_name": "اسم التشخيص",
+    "medication": "الدواء",
+    "view": "عرض",
+    "prescription_note": "ملاحظة الوصفة",
+    "medication_name": "اسم الدواء",
+    "dosage": "الجرعة",
+    "duration": "المدة",
+    "instructions": "التعليمات",
+    "status_options": {
+      "active": "نشط",
+      "completed": "مكتمل",
+      "cancelled": "ملغى",
+      "expired": "منتهي الصلاحية"
+    }
+  },
+  "Medications": {
+    "prescribed_medication": "الأدوية الموصوفة",
+    "other_medications": "أدوية أخرى"
+  }
+  ,
+  "PrescribedMedicationMobileView": {
+    "table_title": "قائمة الأدوية الموصوفة",
+    "table_subtitle": "أحمد محمد علي",
+    "diagnosis_name": "اسم التشخيص",
+    "prescribed_name": "اسم الوصفة",
+    "dosage": "الجرعة",
+    "duration": "المدة",
+    "status": "الحالة",
+    "instructions": "التعليمات",
+    "view_all_details": "عرض كل التفاصيل",
+    "no_medications_found": "لم يتم العثور على أدوية موصوفة",
+    "close": "إغلاق",
+    "status_options": {
+      "active": "نشط",
+      "completed": "مكتمل",
+      "cancelled": "ملغى",
+      "expired": "منتهي الصلاحية"
+    }
+  },
+  "PrescribedMedicationTable": {
+    "days": "الأيام",
+    "category": "القسم",
+  "table_title": "قائمة الأدوية الموصوفة",
+  "table_subtitle": "أحمد محمد علي",
+  "medication": "الدواء",
+  "dosage": "الجرعة",
+  "duration": "المدة",
+  "instructions": "التعليمات",
+  "status": "الحالة",
+  "diagnosis_name": "اسم التشخيص",
+  "prescribed_name": "اسم الوصفة",
+  "status_options": {
+    "active": "نشط",
+    "completed": "مكتمل",
+    "cancelled": "ملغى",
+    "expired": "منتهي الصلاحية"
+  }
+},
+  "OtherMedicationMobileView": {
+      "confirm_delete_title": "تاكيد الحذف",
+    "confirm_delete_message": "هل انت متاكد من حذف الدواء '{{medication}}'? هذا الاجراء لا يمكن التراجع عنه.",
+    "table_title": "قائمة الأدوية الأخرى",
+    "dosage": "الجرعة",
+    "duration": "المدة",
+    "status": "الحالة",
+    "instructions": "التعليمات",
+    "view_all_details": "عرض كل التفاصيل",
+    "no_medications_found": "لم يتم العثور على أدوية أخرى",
+    "close": "إغلاق"
+  },
+  "MedicalConditions": {
+    "tab_diagnosed_conditions": "الحالات المشخصة",
+    "tab_other": "أخرى"
+  }
+  ,"DiagnosedConditionsMobileView": {
+    "table_title": "قائمة الحالات المشخصة",
+    "diagnosis_name": "اسم التشخيص",
+    "severity": "الشدة",
+    "status": "الحالة",
+    "diagnosed_date": "تاريخ التشخيص",
+    "notes": "ملاحظات",
+    "view_all_details": "عرض كل التفاصيل",
+    "no_conditions_found": "لم يتم العثور على حالات",
+    "close": "إغلاق",
+    "severity_options": {
+      "mild": "خفيف",
+      "moderate": "متوسط",
+      "severe": "شديد"
+    }
+  },
+  "DiagnosedConditionsTable": {
+    "table_title": "قائمة الحالات المشخصة",
+    "medical_condition_name": "اسم الحالة الطبية",
+    "severity": "الشدة",
+    "diagnosis_name": "اسم التشخيص",
+    "diagnosed_date": "تاريخ التشخيص",
+    "status": "الحالة",
+    "notes": "ملاحظات",
+    "severity_options": {
+      "mild": "خفيف",
+      "moderate": "متوسط",
+      "severe": "شديد"
+    }
+  },
+
+ "OtherMedicalConditionsMobileView": {
+ " conditionType": "نوع الحالة",
+  "category": "الفئة",
+  "condition_type": "نوع الحالة",
+  
+    "table_title": "الحالات الطبية الأخرى",
+    "medical_condition_name": "اسم الحالة الطبية",
+    "severity": "الشدة",
+    "status": "الحالة",
+    "diagnosed_date": "تاريخ التشخيص",
+    "notes": "ملاحظات",
+    "view_all_details": "عرض كل التفاصيل",
+    "no_conditions_found": "لم يتم العثور على حالات",
+    "close": "إغلاق",
+    "severity_options": {
+      "mild": "خفيف",
+      "moderate": "متوسط",
+      "severe": "شديد"
+    }
+    ,"condition_type_options":{
+      "chronic": "مزمنة",
+      "acute": "سريعة",
+      "External": "خارجية"
+    }
+  }
+  ,
+  "Common": {
+    "table_subtitle": "أحمد محمد علي",
+    "status_options": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    }}
+    ,
+    "Common": {
+    "table_subtitle": "أحمد محمد علي",
+    "status_options": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    }
+  },
+  "PatientBasicInfo": {
+    "patient_image_alt": "المريض",
+    "full_name": "الاسم الكامل:",
+    "date_of_birth": "تاريخ الميلاد:",
+    "age": "العمر",
+    "gender": "الجنس:",
+    "phone": "الهاتف:",
+    "email": "البريد الإلكتروني:",
+    "address": "العنوان:",
+    "chronic_diseases": "الأمراض المزمنة:",
+    "allergies": "الحساسية:",
+    "allergies_drug": "الأدوية",
+    "allergies_food": "الطعام",
+    "medications": "الأدوية:",
+    "last_visit": "آخر زيارة:",
+    "next_visit": "الزيارة القادمة:"
+  }
+  ,
+  "Common": {
+    "table_subtitle": "أحمد محمد علي",
+    "status_options": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    }
+  },
+  "PatientReviewsCards": {
+    "table_title": "تقييمات المريض",
+    "overall_rating": "التقييم العام",
+    "view_booking": "عرض الحجز"
+  }
+,
+  "Diagnoses" : "التشخيصات",
+  "Appointment information":"معلومات الحجز",
+"Add New Diagnosis":"اضافة تشخيص جديد",
+"Diagnosed Conditions" : "الحالات المشخصة",
+"Prescribed Medications" : "الادوية المقررة",
+  "Delete Diagnosis": "حذف التشخيص",
+  "Are you sure you want to delete diagnosis": "هل أنت متأكد من أنك تريد حذف التشخيص",
+  "This action cannot be undone.": "لا يمكن التراجع عن هذا الإجراء."  
+,"Are you sure you want to delete this slot ? " : "هل أنت متأكد من أنك تريد حذف هذا الحجز؟"  
+,"delete Slot" : "حذف الحجز"
+, "Follow-up": " متابعة",
+"Check-up": "فحص",
+ "confirmDeleteSlot": "هل أنت متأكد من أنك تريد حذف \"{{slot}}\"؟ هذا الإجراء لا يمكن التراجع عنه."
+,
+ "shifts": {
+    "manage_shifts": "إدارة الشيفتات",
+    "add_shift": "إضافة شيفت",
+    "clinic": "العيادة",
+    "day": "اليوم",
+    "shift_type": "نوع الشيفت",
+    "start_time": "وقت البداية",
+    "end_time": "وقت النهاية",
+    "select_clinic": "اختر العيادة",
+    "select_day": "اختر اليوم",
+    "select_shift_type": "اختر نوع الشيفت"
+  },
+  "clinics": {
+    "main": "العيادة الرئيسية",
+    "branch": "فرع المدينة",
+    "children": "عيادة الأطفال"
+  },
+ 
+  "shiftTypes": {
+    "morning": "صباحي",
+    "evening": "مسائي",
+    "night": "ليلي",
+    "custom": "مخصص"
+  },
+  "breaks": {
+    "title": "فترات الراحة",
+    "add_break": "إضافة راحة",
+    "start_time": "وقت البداية",
+    "end_time": "وقت النهاية",
+    "start": "بداية",
+    "end": "نهاية",
+    "no_breaks": "لا توجد فترات راحة مضافة"
+  },
+  "status": {
+    "new": "جديد"
+  },
+  "popup": {
+        "delete_location_title": "حذف الموقع",
+            "delete_location_confirm": "هل أنت متأكد من حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+    "delete_shift_title": "حذف الشيفت",
+    "delete_shift_confirm": "هل أنت متأكد من حذف \"{{name}}\"؟"
+  },
+"userLocation": {
+    "addYourLocation": "إضافة موقعك",
+    "addNew": "إضافة موقع جديد",
+    "newLocation": "موقع جديد",
+    "manageLocations": "إدارة المواقع"
+  }
+,
+"OtherMedicalConditions": {
+  "add_condition": "إضافة حالة",
+  "edit_condition": "تعديل الحالة",
+  "manage": "إدارة",
+  "delete": "حذف",
+  "actions": "الإجراءات",
+  "confirm_delete_title": "تأكيد الحذف",
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{condition}}'؟ لا يمكن التراجع عن هذا الإجراء.",
+  "medical_condition_name": "اسم الحالة الطبية",
+  "enter_condition_name": "أدخل اسم الحالة",
+  "severity": "الحدة",
+  "select_severity": "اختر درجة الحدة",
+  "severity_options": {
+    "Mild": "خفيفة",
+    "Moderate": "متوسطة",
+    "Severe": "شديدة"
+  },
+  "status": "الحالة",
+  "select_status": "اختر الحالة",
+  "diagnosed_date": "تاريخ التشخيص",
+  "select_date": "اختر التاريخ",
+  "notes": "ملاحظات",
+  "enter_notes": "أدخل الملاحظات"
+},
+"OtherMedication": {
+  "category": "التصنيف",
+  "add_medication": "إضافة دواء",
+  "edit_medication": "تعديل الدواء",
+  "confirm_delete_title": "تأكيد الحذف",
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{medication}}'؟ لا يمكن التراجع عن هذا الإجراء.",
+  "medication": "الدواء",
+  "enter_medication": "أدخل اسم الدواء",
+  "dosage": "الجرعة",
+  "enter_dosage": "أدخل الجرعة",
+  "duration": "المدة",
+  "enter_duration": "أدخل المدة",
+  "status": "الحالة",
+  "select_status": "اختر الحالة",
+  "instructions": "التعليمات",
+  "enter_instructions": "أدخل التعليمات"
+},
+"Othermedications": {
+  "start_date": "تاريخ البدء",
+  "end_date": "تاريخ الانتهاء",
+  "medicationCategory": "تصنيف الدواء",
+    "table_title": "قائمة الأدوية الأخرى",
+  "add_medication": "إضافة دواء",
+  "edit_medication": "تعديل الدواء",
+  "manage": "إدارة",
+  "actions": "الإجراءات",
+  "confirm_delete_title": "تأكيد الحذف",
+  "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{medication}}'؟ لا يمكن التراجع عن هذا الإجراء.",
+  "medication": "الدواء",
+  "enter_medication": "أدخل اسم الدواء",
+  "dosage": "الجرعة",
+  "enter_dosage": "أدخل الجرعة",
+  "duration": "المدة",
+  "enter_duration": "أدخل المدة",
+  "status": "الحالة",
+  "select_status": "اختر الحالة",
+  "instructions": "التعليمات",
+  "enter_instructions": "أدخل التعليمات"
+}
+,
+ "MedicalHistory": {
+    "confirm_delete_title": "تأكيد الحذف",
+    "confirm_delete_message": "هل أنت متأكد أنك تريد حذف '{{description}}'؟ لا يمكن التراجع عن هذا الإجراء."
+  },
+    "patient": {
+    "name": "اسم المريض",
+    "idNumber": "رقم الهوية",
+    "contact": "وسيلة الاتصال",
+    "notes": "ملاحظات",
+    "bookingType": "نوع الحجز"
+  },
+  "Filter By":"تصفية",
+  "Today": "اليوم",
+  "Yesterday": "أمس",
+  "Last 7 Days": "آخر 7 أيام",
+  "Last 30 Days": "آخر 30 يومًا",
+  "This Month": "هذا الشهر",
+  "Last Month": "الشهر الماضي",
+  "Custom Range": "نطاق مخصص",    
+"Apply":"تطبيق",
+ "login": {
+    "title": "تسجيل الدخول",
+    "brand": "Doclisto",
+    "email": "البريد الإلكتروني",
+    "enterEmail": "ادخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "enterPassword": "ادخل كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "rememberMe": "تذكرني",
+    "loginWithOTP": "تسجيل الدخول برمز OTP",
+    "button": "تسجيل الدخول",
+    "or": "أو",
+    "google": "التسجيل باستخدام جوجل",
+    "noAccount": "ليس لديك حساب؟",
+    "signupNow": "سجل الآن",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "success": "تم تسجيل الدخول بنجاح",
+     "withEmail": "بالبريد الإلكتروني",
+    "withPhone": "برقم الهاتف",
+    "phone": "رقم الهاتف",
+    "enterPhone": "أدخل رقم هاتفك",
+    "phoneRequired": "رقم الهاتف مطلوب"
+    , "with":"تسجيل الدخول"
+  },
+ "forgotPassword": {
+    "title": "نسيت كلمة المرور",
+    "verifyTitle": "التحقق من الرمز",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "phoneRequired": "رقم الهاتف مطلوب",
+    "sendCode": "إرسال الرمز",
+    "codeSent": "تم إرسال رمز التحقق إلى بريدك الإلكتروني/هاتفك",
+    "codeResent": "تم إعادة إرسال الرمز",
+    "codeSentTo": "تم إرسال الرمز إلى",
+    "didntReceive": "لم تستلم الرمز؟",
+    "resendCode": "إعادة الإرسال",
+    "secs": "ثانية",
+    "verify": "تحقق",
+    "otpRequired": "الرجاء إدخال الرمز بالكامل",
+    "passwordReset": "تم إعادة تعيين كلمة المرور بنجاح",
+    "rememberPassword": "تذكرت كلمة المرور؟",
+    "backToLogin": "العودة لتسجيل الدخول"
+  }
+,
+"Severity":"الشدة",
+"Medical Condition":"المرض",
+"Status":"الحالة",
+"Diagnosed Date":"تاريخ التشخيص",
+"Note Content":"ملاحظات",
+"Note":"ملاحظات",
+"View All Details":"عرض جميع التفاصيل",
+"No Conditions Found":"لم يتم العثور على حالات",
+"Close":"اغلاق",
+"Search":"بحث",
+"Reset":"إعادة ضبط",
+"Search ...":"بحث ...",
+"Error loading reviews" :"خطأ في تحميل البيانات",
+"Retry":"إعادة المحاولة",
+"Check the internet connection":" تحقق من اتصال الانترنت",
+"updated_at":"اخر تحديث"
+}
+
+

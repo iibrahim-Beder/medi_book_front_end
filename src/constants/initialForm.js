@@ -1,0 +1,23 @@
+export const initialForm = {
+  fullName: "",
+  email: "",
+  phone: "",
+  nationalId: "",
+  password: "",
+  confirmPassword: "",
+  specialty: "",
+  subspecialty: "",
+  licenseNumber: "",
+  languageSpoken: "",
+  qualification: "",
+  university: "",
+  graduationYear: "",
+  additionalCert: "",
+  certificates: "",
+  terms: false,
+  licenseFile: null,
+  certFiles: [],
+  experiences: [
+    { companyName: "", startDate: "", endDate: "", stillWorking: false },
+  ],
+};

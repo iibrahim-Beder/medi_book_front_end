@@ -1,0 +1,274 @@
+.form-sorts.dropdown {
+    background: #ffffff; /* بدل $white */
+    border: 1px solid #dcdcdc; /* بدل $border-color */
+    height: 32px;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-sorts.dropdown a {
+    color: #6c757d; /* بدل $gray-600 */
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.form-sorts.dropdown a i {
+    color: #212529; /* بدل $gray-900 */
+}
+
+.form-sorts.dropdown a.dropdown-toggle::after {
+    margin-left: 8px;
+}
+.form-sorts.table-filter-show .filter-dropdown-menu {
+    display: block;
+    opacity: 1;
+}
+
+
+.form-sorts {
+    position: relative;
+}
+
+.form-sorts .filter-dropdown-menu {
+    padding: 20px;
+    border-radius: 5px;
+    background: #ffffff; /*  variables.$white  dark: variables.$dark */
+    border: 1px solid #cccccc; /* reblasing variables.$border-color */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* reblasing variables.$box-shadow */
+    position: absolute;
+    z-index: 9;
+    width: 350px;
+    right: 0;
+    top: 40px;
+    opacity: 0;
+    display: none;
+}
+
+.form-sorts.table-filter-show .filter-dropdown-menu {
+    display: block;
+    opacity: 1;
+}
+
+.form-sorts .filter-set-head h4 {
+    font-size: 20px; /*  variables.$font-size-20 */
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+
+.form-sorts .filter-set-content {
+    margin-bottom: 15px;
+}
+
+.form-sorts .filter-set-content .filter-set-content-head a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.05); /* reblasing variables.$light-transparent */
+    padding: 10px;
+    font-size: 16px; /* variables.$font-size-16 */
+    color: #333333; /* variables.$gray-900 */
+    font-weight: 500; /* variables.$font-weight-medium */
+}
+
+.form-sorts .filter-reset-btns {
+    display: flex;
+    align-items: center;
+    padding-top: 15px;
+}
+
+.form-sorts .filter-reset-btns a {
+    flex: 1;
+    display: inline-flex;
+    justify-content: center;
+   
+}
+
+.form-sorts .filter-reset-btns .btn-light {
+    margin-right: 15px;
+}
+
+
+.form-sorts.dropdown {
+    background: #ffffff; /* variables.$white */
+    border: 1px solid #cccccc; /* variables.$border-color */
+    height: 32px;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-sorts.dropdown a {
+    color: #666666; /* variables.$gray-600 */
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.form-sorts.dropdown a i {
+    color: #333333; /* variables.$gray-900 */
+}
+
+.form-sorts.dropdown a.dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+.filter-checks .checkboxs {
+    display: block;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.filter-checks .checkboxs .check-title {
+    padding-left: 25px;
+    color: #333333; /* variables.$gray-900 */
+}
+
+.filter-checks .checkboxs input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.filter-checks .checkboxs input ~ .checkmarks {
+    border-radius: 5px;
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    border: 1px solid #cccccc; /* variables.$border-color */
+    top: 3px;
+    left: 0;
+}
+
+.filter-checks .checkboxs input:checked ~ .checkmarks {
+    background-color: #007bff; /* variables.$primary */
+    border-color: #007bff; /* variables.$primary */
+}
+
+.filter-checks .checkboxs input:checked ~ .checkmarks:after {
+    display: block;
+}
+
+.filter-checks .checkboxs .checkmarks:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #ffffff; /* variables.$white */
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.filter-set-content-head a i {
+    transition: 0.5s all;
+    font-size: 16px; /* variables.$font-size-16 */
+}
+
+.filter-set-content-head a:not(.collapsed) i {
+    transform: rotate(-90deg);
+    transition: 0.5s all;
+}
+
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.dropdown-content.open {
+  max-height: 500px; 
+}
+
+
+/*  btn Dropdown */
+.dropdown-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+/* arrow */
+.dropdown-btn .arrow {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--terthemecolor);
+  border-bottom: 2px solid var(--terthemecolor);
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;  
+  margin-left: 10px;
+}
+.dropdown-btn{
+    display: flex !important;
+    background-color:#F9F9F9 !important;
+}
+
+/* .dropdown-btn.open {
+    color: black !important;
+} */
+
+.dropdown-btn.open .arrow {
+  transform: rotate(135deg);
+}
+
+.dropdown-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.dropdown-content.open {
+  max-height: 500px; 
+  opacity: 1;
+}
+
+
+
+.filtecss{
+    display: flex ;
+    align-items: center ! important;
+    justify-content: space-around ! important;
+    background: #FFF !important;
+    border: 1px solid #E6E8EE !important;
+    max-height: auto !important;
+    border-radius: 0 !important;
+    padding: 5px !important  ;
+    display: flex !important;
+    align-items: center !important;
+    /* margin-bottom: 20px !important; */
+    color: #465D7C !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    
+}
+.filtecss::after
+ {
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+
+.css-18p5xg2-MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline{
+    /* border-color: var(--len2color) !important; */
+}

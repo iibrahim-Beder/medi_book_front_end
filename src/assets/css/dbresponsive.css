@@ -1,0 +1,731 @@
+@media (max-width:1680px){
+	.dc-wrapper .dc-main { padding-left: 90px; }
+	.dc-wrapper .dc-sidebarwrapper { width: 50px; }
+	.dc-wrapper.dc-closemenu .dc-sidebarwrapper{width:270px;}
+	.dc-closemenu .dc-companysinfo{
+		margin-left: 0;
+		padding: 0 30px 30px;
+	}
+	.dc-closemenu .dc-navdashboard{padding: 0;}
+	.dc-companysinfo{
+		padding: 0;
+		margin-left: 100px;
+	}
+	.dc-btnmenutoggle {
+		left: 35px;
+		color: #fff;
+		background: var(--themecolor);
+	}
+	.dc-closemenu .dc-sidebarwrapper .dc-navdashboard-footer{display: block;}
+	.dc-sidebarwrapper .dc-navdashboard-footer{display: none;}
+	.dc-headerform-holder{
+		margin-left:50px; 
+	}
+	.dc-dashboardsave .dc-proposalsr .dc-proposalsrcontent figure{
+		margin:  0 15px 0 0;
+		padding:  0 15px 0 0;
+    }
+}
+@media (max-width:1536px){
+	.dc-dashboardsave .dc-proposalsr .dc-proposalsrcontent figure{
+		border: 0;
+		margin: 0 0 15px;
+		padding: 0 0 15px;
+		border-bottom: 1px solid var(--lencolor);
+	}
+	.dc-proposalsrcontent .dc-title{width: 100%;}
+}
+@media (max-width:1440px){
+	.dc-spaces-wrap li{width: 33.33%;}
+	.dc-downloads-files li{width: 100%;}
+	.dc-profilephotocontent .dc-attachfilevtwo li{width: 50%;}
+	.dc-userform fieldset .form-group.form-select-half{width: 100%;}
+	.dc-postedsilderitem .dc-consultation-title{
+		width: 100%;
+		float: left;
+		margin: 10px 0 0;
+	}
+	.show-sform .wt-searchbtn,
+	.dc-search-headerform{
+		right: 0;
+		top: 0;
+		width: 100%;
+		display: none;
+		padding: 13px 0;
+		/* background: #fff; */
+		/* position: absolute; */
+	}
+	.show-sform .dc-search-headerform,
+	.dc-removeform,
+	.dc-searchbtn{display: block;}
+	.dc-headerform{float: right;}
+	.dc-headerform-holder{
+		margin: 0;
+		/* float: right; */
+	}
+}
+@media (max-width:1199px){
+	.dc-spaces-wrap li{width: 25%;}
+	.dc-dashboardtabs{width: 100% !important;}
+    .setting{display: unset !important;}
+    .dc-dashboardtabs .dc-tabstitle{display: block;}
+    .dc-dashboardtabsholder .dc-tabscontent{width: 100% !important; border-left: none;}
+	.dc-postedsilderitem .dc-consultation-title{
+		margin:0;
+		width: auto;
+		float: none;
+	}
+	.dc-jobpostedholder > div > div:nth-child(n+3) .dc-insightsitem{margin-top: 15px;}
+	.dc-dbsectionspace-test .dc-dashboardboxcontent > ul > li:first-child {width: 40%;}
+    .dc-dbsectionspace-test .dc-dashboardboxcontent > ul > li:last-child {width: 60%;}
+}
+@media (max-width:991px){
+	.dc-searchresult-head .dc-rightarea {
+		float: right;
+		width: 100%;
+		margin-top: 10px;
+	}
+		.dc-navigation {
+	    top: 100%;
+	    left: 0;
+	    background: #fff;
+	    position: absolute;
+	}
+	.dc-navigation > ul {text-align: left;}
+	.dc-navigation ul li {
+		width: 100%;
+		float: left;
+		display: block;
+	}
+	.dc-dropdowarrow {display: block;}
+	.dc-navigation > ul > li > a {margin: 0;}
+	.sub-menu {
+		opacity: 1;
+		display: none;
+		visibility: visible;
+	}
+	.sub-menu, .mega-menu {
+		clear: both;
+		float: left;
+		display: none;
+		position: static;
+		width: 100% !important;
+	}
+	.dc-navigation > ul > li > a:after,
+	.dc-navigation > ul > li:before{display: none;}
+	.dc-navigation > ul > li > a{padding: 10px 20px;}
+	.dc-navigation ul > li + li > a {border-top: 1px solid #eee;}
+	.dc-navigation ul > li ul.sub-menu{box-shadow: none;}
+	.dc-navigation ul li .sub-menu li a{padding: 10px 30px;position: relative;}
+	.dc-navigation > ul > li > .sub-menu > li.menu-item-has-children ul > li > a {padding: 10px 40px;}
+	.dc-navigation ul > li ul.sub-menu{border-top: 1px solid #eee;}
+	.dc-navigation ul > li > ul.sub-menu{border-width: 2px;}
+	.dc-headervtwo .dc-navigation > ul > li > a{color: var(--terthemecolor);}
+	.dc-navigation > ul{
+        
+        background: var(--cardcolor);
+	  -webkit-box-shadow: 0 9px 20px 0 rgba(165,165,165,0.50);
+		box-shadow: 0 9px 20px 0 rgba(165,165,165,0.50);
+	}
+	.dc-downloads-files li{width: 50%;}
+	.dc-profilephotocontent .dc-attachfilevtwo li{width: 33.33%;}
+	.dc-dashboardsave .dc-proposalsr .dc-proposalsrcontent figure{
+		border: 0;
+		margin: 0 15px 0 0;
+		padding: 0 15px 0 0;
+		border-right: 1px solid #ddd;
+	}
+	.dc-proposalsrcontent .dc-title{width: auto;}
+	.dc-header-dashboard .dc-navigation > ul > li > a{padding: 10px 20px;}
+    .dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:last-child {
+        width: 100%;
+        display: none;
+    }
+	.dc-dbsectionspace-test .dc-dbsectionspace-row .dc-messagebox,
+    .dc-dbsectionspace-test .dc-messages-holders .dc-offersmessages ul li:first-child,
+    .dc-dbsectionspace-test .dc-messages-holders .dc-dashboardboxtitle {display: none;}
+    .dc-dbsectionspace-test .dc-messages-holders .dc-offersmessages ul li:last-child,
+    .dc-dbsectionspace-test .dc-messages-holders .dc-titlemessages {display: block;}
+    .dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:first-child {width: 100%;}
+}
+@media (max-width:800px){
+    .dc-downloads-files li{width: 100%;}
+    .dc-offeraccordion .dc-form-appointment .dc-spacesholder .form-group-half,
+    .dc-offeraccordion .dc-form-appointment .dc-spacesholder .form-group-half.dc-radio-holder{width: 100%;}
+    .dc-dbsectionspacetest .dc-attachfilevtwo li{width: 50%;}
+    .dc-accountinfo li{width: 100%}
+    .dc-accountinfo li:nth-child(n+2){padding-top: 30px;}
+}
+@media (max-width:767px){
+	.dc-form-advancedsearch.dc-headerform fieldset{padding-right: 50px;}
+	.dc-form-appointment{padding: 0 10px;}
+	.dc-profilephotocontent .dc-attachfilevtwo li{width: 50%;}
+	.dc-wrapper.dc-closemenu .dc-main{padding-left:15px }
+	.dc-wrapper .dc-sidebarwrapper{width: 0;}
+    .collapsed	.dc-btnmenutoggle{left: 0;}
+	.dc-yeartag .dc-tag{
+		float: left;
+		/* width: 100%; */
+		margin-top:10px; 
+	}
+	.dc-jobalerts .alert span{max-width: 100%;}
+	.dc-removeform{display: none;}
+	.dc-removeform + .dc-removeform{display:block;}
+	.dc-header-dashboard{padding: 0;}
+	.dc-search-headerform{padding: 13px 20px;}
+	.closeform-holder{width: 5%;float: right;}
+	.dc-headerform{width: 95%;min-width: 0;}
+	.dc-closemenu .dc-sidebarwrapper .dc-btnmenutoggle i:before,
+	.dc-btnmenutoggle i:before{content: "\e68e"}
+    .dc-wrapper .dc-main{padding: 20px 15px;}
+}
+@media (max-width:720px){.dc-spaces-wrap li{width: 33.33%;}}
+@media (max-width:640px){
+	.dc-addays{right: 0;}
+}
+@media (max-width:576px){
+	.alert{padding: 15px 30px 15px 20px;}
+	.dc-alertbtn{
+		float: left;
+		margin: 10px 0 0;
+		position: static;
+	}
+	.dc-jobalerts .alert .close{
+		top: 10px;
+		margin: 0;
+	}
+	.dc-jobpostedholder > div > div:nth-child(n+2) .dc-insightsitem{margin-top:15px; }
+	.dc-userlogedin-gird .dc-viewprofile {grid-row: 2;margin-top:10px; }
+    .dc-dbsectionspace-test .dc-username {padding: 0;}
+    .dc-dbsectionspace-test .dc-username h3 {font-size: 16px;}
+    .dc-memessage{padding: 0 50px 0 0;}
+    .dc-dbsectionspace-test .dc-offerermessage {padding: 0 0 0 50px; }
+    .dc-dbsectionspace-test .dc-offerermessage figure,
+    .dc-dbsectionspace-test .dc-offerermessage figure img,
+    .dc-dbsectionspace-test .dc-memessage figure,
+    .dc-dbsectionspace-test .dc-memessage figure img {
+        width: 40px;
+        height: 40px;
+    }
+}
+@media (max-width:568px){
+	.dc-headerform .dc-formbtn a{border-radius: 0 0 4px 0;}
+	.dc-navigationarea .dc-rightarea .navbar-toggler {margin: 8px 0;}
+	.dc-navigationarea .dc-userlogedin{padding: 0;}
+	.dc-headerform fieldset .form-group input,
+	.dc-headerform fieldset .form-group .dc-select select {border: 0;}
+	.dc-form-advancedsearch fieldset .form-group:nth-child(2),
+	.dc-form-advancedsearch fieldset .form-group:first-child {width: 100%;}
+	.dc-navigationarea .dc-logo {
+		width: 100%;
+		margin: 20px 0;
+	}
+	.dc-navigationarea .dc-logo img {
+		display: block;
+		margin: 0 auto;
+}
+	.dc-usernav ul li .sub-menu{
+		top: 80px;
+		right: 0;
+	}
+	.dc-usernav ul li:hover .sub-menu{top: 100%;}
+	.dc-dbsectionspace-test .dc-messages-holder .dc-offersmessages ul li:last-child{padding: 30px 10px;}
+	.dc-titlemessages{padding: 10px 20px;}
+	.dc-spaces-wrap li{width: 50%;}
+	.dc-addays {
+		left: -40px;
+		right: auto;
+		width: 300px;
+	}
+	.dc-addays:before{right: auto;left: 55px;}
+	.dc-titlewithbtn .dc-rightarea .dc-btn-del{
+		clear: both;
+		margin-top:10px; 
+	}
+	.dc-titlewithbtn .dc-rightarea .dc-btn + .dc-btn{
+		clear: both;
+		margin: 10px 0 0;
+	}
+	.dc-titlewithbtn .dc-rightarea{
+		float: left;
+		width: 100%;
+		margin-top:10px; 
+	}
+	.dc-clinics-content{
+		float: left;
+		width: 100%;
+		padding-bottom:0; 
+	}
+	.dc-accordioninnertitle .dc-rightarea{
+		/* float: left;
+		width: 100%;
+		margin-top:10px;  */
+	}
+	.dc-addawardsholder .dc-skillsform fieldset .form-group .form-control{width: 100%;}
+	.dc-addawardsholder .dc-skillsform fieldset .form-group .form-control:first-child{border-radius: 4px 4px 0 0;border-right: 2px solid #eee;}
+	.dc-addawardsholder .dc-skillsform .dc-datepicker:after{top: auto;bottom: 0;}
+	.dc-addawardsholder .dc-skillsform fieldset .form-group .form-control:nth-child(n+2){border-top: 0;border-radius: 0 0 4px 4px;}
+	.form-select-half .dc-select{width: 100%;}
+	.form-select-half .dc-select:first-child select{border-radius: 4px 4px 0 0;}
+	.form-select-half .dc-select + .dc-select select{border-top: 0;border-left: 2px solid #eee;border-radius: 0 0 4px 4px;}
+	.form-group.form-group-label{text-align: center;}
+	.form-group.form-group-label label{
+		display: block;
+		margin: 0 0 10px;
+	}
+	.dc-myskills li > span{display: block;}
+	.dc-myskills li .dc-rightarea{
+		float: left;
+		width: 100%;
+		margin-top:10px; 
+	}
+	.dc-userform fieldset .form-group.form-group-half{width: 100%;}
+	.dc-dashboardboxcontent,
+	.dc-collapseexp{padding: 30px 10px;}
+	.dc-skillsform fieldset .form-group{padding: 0;}
+	.dc-skillsform fieldset .form-group.dc-btnarea{position: static;margin-top:10px; }
+	.dc-skillscontent-holder,
+	.dc-yourdetails .dc-userform,
+	.dc-experienceaccordion,
+	.dc-profilephotocontent{padding: 0;}
+	.dc-profilephotocontent .dc-attachfilevtwo li{width: 100%;}
+	.dc-btnmenutoggle{top: 200px;}
+	.dc-wrapper .dc-sidebarwrapper{padding-top: 134px;}
+	.dc-header-dashboard .dc-navigationarea .dc-rightarea{padding: 10px 0;}
+	.dc-headerform-holder{float: left;}
+	.dc-headerform-holder .dc-searchbtn{margin: 17px 0;}
+	.dc-headerform .dc-formbtn{
+		top: auto;
+		bottom: 0;
+	}
+	.dc-headerform fieldset .form-group input,
+	.dc-headerform fieldset .form-group .dc-select select{border: 0;}
+	.dc-headerform fieldset .form-group + .form-group{border-top: 1px solid #ddd;}
+	.dc-headerform{
+		border: 1px solid #ddd;
+		border-radius: 4px;	
+	}
+	.dc-navigationarea .dc-rightarea{width: auto;float: right;}
+}
+@media (max-width:480px){
+	.dc-user-info{width: 100%;}
+	.dc-updatall{padding: 10px;}
+	.dc-files-content{position: relative;}
+	 .dc-filecontent a{
+		right: 10px;
+		top: 10px;
+		padding: 0;
+		margin: 0;
+		position: absolute;
+    }
+	.dc-tabscontent{padding:30px 10px;}
+}
+@media (max-width:360px){.dc-spaces-wrap li{width: 100%;}}
+@media(max-width: 768px){
+    .dc-dbsectionspacetest .dc-user-header{padding: 30px 10px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-details{padding: 30px 10px;}
+    .dc-dbsectionspacetest .dc-titlewithbtn{padding: 23px 10px 20px 10px;}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent{padding: 30px 10px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-clinics{padding: 19px 10px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-tabscontenttitle{padding: 10px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-childaccordion.dc-offeraccordion .dc-subpanel .dc-subpaneltitle.dc-subpaneltitlevtwo{padding: 10px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-childaccordion.dc-offeraccordion .dc-subpanel .dc-subpanelcontent .dc-dayspaces-holder.dc-titlewithbtn{padding: 30px 10px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-formtheme.dc-userform.dc-form-appointment{padding: 0 10px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxtitle{padding: 25px 10px}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-appsetting .dc-providingservices{padding: 0 10px}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-appsetting .dc-providingservices .dc-accordion .dc-panel .dc-paneltitle{padding: 10px}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-appsetting .dc-providingservices .dc-accordion .dc-panel .dc-panelcontent{padding: 30px 10px}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-content-holder{padding: 0 10px}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-content-holder .dc-clinics{padding: 19px 10px}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment{padding: 0 10px;}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group{width: 100%}
+    .dc-dbsectionspacetest .dc-articlesservices .dc-formtheme{padding: 0px 10px 30px;}
+    .dc-dbsectionspacetest .dc-profilephotocontent{padding: 0 10px;}
+    .dc-dbsectionspacetest .dc-formtheme.dc-formprojectinfo.dc-formcategory{padding: 0;}
+    .dc-dbsectionspacetest .dc-formprojectinfo .form-group .dc-attachfile{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dc-dbsectionspacetest .dc-attachfilevtwo li{width: unset;}
+    .dc-dbsectionspacetest .dc-articletag-holder{padding: 0;}
+    .dc-dbsectionspacetest .dc-articletag-holder .dc-formtheme{padding: 0}
+    .dc-dbsectionspacetest .dc-offered-holder .dc-dashboardboxcontent .dc-accordion{padding: 0 10px}
+    .dc-dbsectionspacetest .dc-paneltitle{padding: 10px}
+    .dc-dbsectionspacetest .dc-subpaneltitlevtwo{padding: 10px}
+    .dc-dbsectionspacetest .dc-addservices .dc-userform{padding: 0 10px 30px}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-searchresult-head{padding: 19px 10px}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder{padding: 30px 10px}
+    .dc-recentapoint-holdertest{padding: 30px 10px}
+}
+@media(max-width : 660px){
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent .dc-listedarticle .dc-articles .dc-articleslist-content .dc-article{display: grid;}
+    .dc-dbsectionspacetest .dc-articles-list .dc-articleimg{
+        width: 100%;
+        border-radius: 4px 4px 0 0;
+    }
+    .dc-dbsectionspacetest .dc-listedarticle .dc-articles .dc-articleimg img{max-width: none;}
+    .dc-dbsectionspacetest .dc-listedarticle .dc-articles .dc-articlecontent .dc-title{padding: 0 10px}
+    .dc-dbsectionspacetest .dc-listedarticle .dc-articles .dc-articlecontent .dc-optionarea{padding: 10px}
+    .dc-dbsectionspacetest .dc-listedarticle .dc-articles .dc-articlecontent{
+        border: 1px solid #eee;
+        border-radius: 0 0 4px 4px;
+    }
+}
+@media(max-width: 650px){
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{
+        grid-template-columns: auto 1fr;
+        grid-row-gap: 20px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-header .dc-status-test{
+        grid-area: 2/1/3/3;
+        justify-self: start;
+    }
+    .dc-dbsectionspacetest .dc-user-info.dc-info-required{grid-template-columns: 1fr;}
+    .dc-title-test{grid-area: 3;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-formtheme.dc-userform.dc-form-appointment fieldset .form-group{width: 100%;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-appsetting .dc-providingservices .dc-accordion .dc-panel .dc-panelcontent .dc-checkbox-holder .dc-checkbox{width: 100%}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-appsetting .dc-providingservices .dc-accordion .dc-panel .dc-panelcontent .dc-checkbox-holder .dc-checkbox:nth-child(n+2){margin-top: 10px;}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-content-holder .dc-clinics .dc-clinics-content{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group.dc-checkbox-holder{
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-row-gap: 20px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group.dc-checkbox-holder .dc-checkbox{margin: 0}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recentapoint-content{padding: 19px 10px 19px 35px}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recentapoint-content::after{
+        left: 10px;
+        top: 40px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recent-content{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recent-content .dc-recent-contenttest{justify-self: start} 
+}
+@media(max-width: 576px){
+    .dc-recentapoint-holdertest .dc-recent-content span{width: 100%;}
+    .dc-recentapoint-holdertest .dc-recent-content a{
+        float: left;
+        margin: 10px 0 0;
+    }
+    .dc-recentapoint-holdertest .dc-recent-content span{line-height: 18px;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-steps{
+        display: grid;
+        justify-items: center;
+        grid-row-gap: 20px;
+    }
+    .dc-user-grid{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .dc-user-grid .dc-user-info:nth-child(n+2){margin-top: 33px;}
+    .dc-user-grid .dc-user-info:nth-child(n+2).mt-0 {margin-top: 33px!important;}
+    .dc-user-info:nth-child(n+2).mt-0 {margin-top: 33px!important;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxtitle.dc-titlewithbtn{
+        display: grid;
+        grid-row-gap: 10px;
+    }
+    .dc-dbsectionspacetest .mce-container-body.mce-flow-layout{
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+    }
+    .dc-dbsectionspacetest .mce-flow-layout-item.mce-last{
+        grid-area: 2/1/3/3;
+        border: 0;
+    }
+    .dc-dbsectionspacetest .dc-subpaneltitlevtwo{display: grid;}
+    .dc-dbsectionspacetest .dc-subpaneltitlevtwo .dc-rightarea{
+        justify-self: start;
+        margin-top:10px; 
+    }
+    .dc-dbsectionspacetest .dc-subpaneltitlevtwo > span{line-height: 20px;}
+}
+@media (max-width: 480px){
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-header{
+        grid-template-columns: 1fr;
+        grid-row-gap: 0;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-header .dc-status-test{grid-area: unset;}
+    .dc-recentapoint-holdertest ul li a{width: 24px;}
+    .dc-recentapoint-holdertest .dc-recentapoint{flex-direction: column;}
+    .dc-recentapoint-holdertest .dc-apoint-date{border-bottom: 1px solid #eee;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-clinics{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-content-holder .dc-clinics{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .form-group-label .dc-labelgroup{
+        display: grid;
+        justify-items: center;
+    }
+    .dc-dbsectionspacetest .dc-formprojectinfo .form-group .dc-attachfile{
+        grid-template-columns: 1fr;
+    }
+    .dc-dbsectionspacetest .dc-articletag-holder .dc-formtheme fieldset .form-group{padding-right: 0;}
+    .dc-dbsectionspacetest .dc-articletag-holder .dc-formtheme fieldset .form-group.dc-btnarea{
+        position: unset;
+        margin-top: 20px;
+    }
+    .dc-dbsectionspacetest .form-group.form-group-half{width: 100%}
+}
+@media(max-width : 458px){
+    .dc-title-socialicons{
+        margin-left: 0 !important;
+        padding-left: 60px; 
+    }
+}
+@media(max-width : 450px){
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-steps .dc-btnarea{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-steps .dc-btnarea a + a{
+        margin-left: 0;
+        margin-top: 20px;
+    }
+    .dc-dbsectionspacetest .mce-container.mce-flow-layout-item.mce-btn-group:nth-last-child(2){
+        grid-area: 2/1/3/2;
+        border: 0;
+    }
+    .dc-dbsectionspacetest .mce-flow-layout-item.mce-last{
+        grid-area: 2/2/3/5;
+        border-left: 1px solid #d9d9d9;
+    }
+    .dc-dbsectionspacetest .dc-manageteam-wrap .dc-searchresult-head .dc-rightarea .dc-select + .dc-select{margin-left: 0;}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-searchresult-head .dc-rightarea{
+        display: grid;
+        grid-row-gap: 20px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recent-content .dc-recent-contenttest{
+        display: grid;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recent-content .dc-recent-contenttest a:first-child{margin: 10px 0 2px}
+}
+@media(max-width : 380px){
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxtitle.dc-titlewithbtn .dc-rightarea{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxtitle.dc-titlewithbtn .dc-rightarea .dc-addays-holder{
+        margin-bottom: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-childaccordion.dc-offeraccordion .dc-subpanel .dc-subpaneltitle.dc-subpaneltitlevtwo{
+        display: grid;
+        justify-items: center;
+        grid-row-gap: 10px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group.dc-checkbox-holder{grid-template-columns: auto auto;}
+    .dc-dbsectionspacetest .dc-listedarticle .dc-articles .dc-articlecontent .dc-optionarea{
+        display: grid;
+        grid-row-gap: 5px;
+    }
+    .dc-dbsectionspacetest .dc-pagination ul li a.dc-nextpage, .dc-pagination ul li a.dc-nextpage, .dc-pagination ul li a i, .dc-pagination ul li a{
+        width: 23px;
+    }
+}
+@media(max-width : 341px){
+    .dc-title-socialicons{
+        padding-left: 0;
+    }
+    .dc-cardtitle-firstuser .dc-title-content{
+        padding-left: 0;
+        width: 100%;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recentapoint-content{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-row-gap: 10px;
+    }
+    .dc-recentapoint-holdertest .dc-recentapoint-content{padding-left: 35px}
+    .dc-recentapoint-holdertest .dc-apoint-noti:after{left: 15px;} 
+}
+@media(min-width : 380px){
+    .dc-rightarea-test{
+        flex-direction: row;
+    }
+    .dc-apointments-wrap .dc-searchresult-head .dc-rightarea-test .dc-select + .dc-select{
+        margin-left: 10px;
+        margin-top: 0;
+    }
+}
+@media(min-width : 768px){
+    .dc-appointment-border{
+        width: 20%;
+    }
+    .dc-main-circle{
+        left: 40%;
+    }
+    .dc-apointments-wraptest{
+        padding: 30px;
+    }
+    .dc-apointments-holder-test{
+        padding: 30px;
+    }
+}
+@media(min-width : 768px) and (max-width : 860px){
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group{width: 100%;}
+}
+@media(min-width : 801px){
+    .dc-wrapper .dc-sidebarwrappertest {
+        display: block;
+    }
+}
+@media(min-width : 992px){
+    .dc-appointment-border{
+        width: 40%;
+    }
+    .dc-main-circle {
+        left: 45%;
+    }
+}
+@media(min-width: 992px) and (max-width: 1650px){
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group {width: 100%;}
+}
+@media(min-width: 992px) and (max-width: 1576px){
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-formtheme.dc-userform.dc-form-appointment fieldset .form-group{width: 100%;}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-appsetting .dc-providingservices .dc-accordion .dc-panel .dc-panelcontent .dc-checkbox-holder .dc-checkbox{width: 100%}
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-appsetting .dc-providingservices .dc-accordion .dc-panel .dc-panelcontent .dc-checkbox-holder .dc-checkbox:nth-child(n+2){margin-top: 10px;}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-content-holder .dc-clinics .dc-clinics-content{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group.dc-checkbox-holder .dc-checkbox {margin: 0;}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group.dc-checkbox-holder{
+        display: grid;
+        grid-row-gap: 20px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent .dc-listedarticle .dc-articles .dc-articleslist-content .dc-article {display: grid;}
+    .dc-dbsectionspacetest .dc-articles-list .dc-articleimg {
+        width: 100%;
+        border-radius: 4px 4px 0 0;
+    }
+    .dc-dbsectionspacetest .dc-listedarticle .dc-articles .dc-articleimg img {max-width: none;}
+    .dc-dbsectionspacetest .dc-listedarticle .dc-articles .dc-articlecontent {
+        border: 1px solid #eee;
+        border-radius: 0 0 4px 4px;
+    }
+    .dc-dbsectionspacetest .dc-formprojectinfo .form-group .dc-attachfile{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dc-dbsectionspacetest .dc-attachfilevtwo li {width: unset;}
+    .dc-accountinfo li{width: 100%}
+    .dc-accountinfo li:nth-child(n+2){padding-top: 30px;}
+}
+@media(min-width: 992px) and (max-width: 1370px){
+    .dc-dbsectionspacetest .dc-user-info.dc-info-required{grid-template-columns: 1fr;}
+    .dc-title-test{grid-area: 3;}
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group.dc-checkbox-holder{grid-template-columns: auto auto auto;}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recentapoint-content::after{top: 40px;}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recent-content{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recent-content .dc-recent-contenttest {
+        justify-self: start;
+    }
+}
+@media(min-width: 992px) and (max-width: 1250px){
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-user-steps{
+        display: grid;
+        justify-items: center;
+        grid-row-gap: 20px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxtitle.dc-titlewithbtn{
+        display: grid;
+        grid-row-gap: 10px;
+    }
+    .dc-dbsectionspacetest .dc-dashboardbox .dc-dashboardboxcontent.dc-offerday-holder .dc-clinics{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-content-holder .dc-clinics{
+        display: flex;
+        flex-direction: column;
+    }
+    .dc-dbsectionspacetest .mce-container-body.mce-flow-layout {
+        display: grid;
+        grid-template-columns: repeat(5, auto);
+    }
+    .dc-dbsectionspacetest .mce-flow-layout-item.mce-last {
+        grid-area: 2/1/3/3;
+        border: 0;
+    }
+    .dc-dbsectionspacetest .form-group-label .dc-labelgroup {
+        display: grid;
+        justify-items: center;
+    }
+    .dc-dbsectionspacetest .dc-formprojectinfo .form-group .dc-attachfile{
+        grid-template-columns: 1fr;
+    }
+    .dc-dbsectionspacetest .dc-articletag-holder .dc-formtheme fieldset .form-group{padding-right: 0;}
+    .dc-dbsectionspacetest .dc-articletag-holder .dc-formtheme fieldset .form-group.dc-btnarea{
+        position: unset;
+        margin-top: 20px;
+    }
+    .dc-dbsectionspacetest .dc-subpaneltitlevtwo {
+        display: grid;
+    }
+    .dc-dbsectionspacetest .dc-subpaneltitlevtwo .dc-rightarea{
+        justify-self: end;
+    }
+    .dc-dbsectionspacetest .form-group.form-group-half{width: 100%}
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-searchresult-head .dc-rightarea{
+        margin-top: 10px;
+        width: 100%;
+    }
+}
+@media(min-width: 992px) and (max-width: 1004px){
+    .dc-dbsectionspacetest .dc-dashboardbox.dc-manageteam-wrap .dc-recentapoint-holder .dc-recentapoint .dc-recentapoint-content{display: grid;}
+}
+@media(min-width: 1200px){
+    .dc-recentapointdate-test{min-width: 220px;}
+}
+@media(min-width: 1200px) and (max-width: 1440px){
+    .dc-recentapoint-holdertest .dc-recent-content span{width: 100%}
+    .dc-recentapoint-holdertest .dc-recent-content .dc-btn{float: left;}
+    .dc-offeraccordion .dc-form-appointment .dc-spacesholder .form-group-half,
+    .dc-offeraccordion .dc-form-appointment .dc-spacesholder .form-group-half.dc-radio-holder{width: 100%;}
+}
+@media(min-width : 1371px) and (max-width: 1576px){
+    .dc-dbsectionspacetest .dc-dashboardboxcontent .dc-form-appointment fieldset .form-group.dc-checkbox-holder{grid-template-columns: auto auto auto auto;}
+}
+@media(min-width : 1600px){
+    .dc-apointments-holder-test{
+        flex-direction: row;
+    }
+    .dc-dashes{
+        transform: none;
+    }
+    .dc-appointment-border{
+        transform: none;
+        height: auto;
+        width: 20%;
+    }
+    .dc-recentapoint-test{
+        width: 40%;
+    }
+    .dc-appointment-calendartest{
+        width: 66%;
+    }
+}
+@media (max-width: 1199px) and (min-width: 992px){
+    .dc-dbsectionspace-test .dc-offerermessage {padding: 0 0 0 50px;}
+    .dc-dbsectionspace-test .dc-memessage {padding: 0 50px 0 0;}
+    .dc-dbsectionspace-test .dc-offerermessage figure,
+    .dc-dbsectionspace-test .dc-offerermessage figure img,
+    .dc-dbsectionspace-test .dc-memessage figure,
+    .dc-dbsectionspace-test .dc-memessage figure img{
+        width: 40px;
+        height: 40px;
+    }
+}

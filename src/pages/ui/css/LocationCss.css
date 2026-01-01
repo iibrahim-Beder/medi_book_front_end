@@ -1,0 +1,20 @@
+
+
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom { 
+      border-radius: 6px;
+    /* box-shadow: var(--shadocolor) 5px 4px 18px 9px; */
+    border: 2px solid #ddd;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 5;
+}
+
+    .titil{
+        color: var(--themecolor);
+            font-family: ui-rounded;
+
+    }
+.cancelbtn:hover{
+  color: var(--themecolor) !important;
+}

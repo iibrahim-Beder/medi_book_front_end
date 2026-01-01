@@ -1,0 +1,1413 @@
+{
+
+
+
+
+
+    
+  "sidebar": {
+    "makeSlots": "Make Slots",
+    "insights": "Insights",
+    "appointmentList": "Appointment List",
+    "appointmentManagement": "Appointment management",
+    "appointmentLocation": "Appointment Location",
+    "manageServices": "Manage Services",
+    "manageTeam": "Manage Team",
+    "messages": "Messages",
+    "manageArticles": "Manage Articles",
+    "accountSettings": "Account Settings",
+    "securitySettings": "Security Settings",
+    "logout": "Logout",
+    "allRightsReserved": "All Rights Reserved.",
+    "makeSlots  ": "Doctor Slots Generator",
+    "managePatients": "Manage Patients",
+    "pationtInformation": "Patient Information",
+    "manageFinancial": "Manage Financials"
+
+    
+  }
+  ,
+  "accountSecurity": {
+    "title": "Account Security & Settings",
+    "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniamac quis nostrud exercitation ullamco laboris.",
+    "publicProfile": "Make my profile public",
+    "searchableProfile": "Make my profile searchable",
+    "sharePhoto": "Share my profile photo",
+    "disableAccount": "Disable my account temporarily",
+    "showFeedback": "Show my client feedback",
+    "enableDisable": "Enable/ Disable"
+  },
+  "languageCurrency": {
+    "title": "Language & Currency",
+    "selectLanguage": "Select System Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "selectCurrency": "Select Currency",
+    "real": "Brazilian Real",
+    "usd": "US Dollar",
+    "yuan": "Yuan Renminbi",
+    "peso": "Colombian Peso",
+    "euro": "Euro",
+    "hkd": "Hong Kong Dollar"
+  },
+  "dashboardColor": {
+    "title": "Dashboard Color Settings",
+    "description": "Incididunt ut labore et dolore magna aliqua aut enim ad exercitation ullamco laboris.",
+    "useDarkMode": "Use dark version for my dashboard"
+  },
+  
+  "userMenu": {
+    "doctor": "Doctor",
+    "insights": "Insights",
+    "appointmentList": "Appointment List",
+    "appointmentSetting": "Appointment Setting",
+    "appointmentLocation": "Appointment Location",
+    "manageServices": "Manage Services",
+    "manageTeam": "Manage Team",
+    "messages": "Messages",
+    "inbox": "Inbox",
+    "send": "Send",
+    "trash": "Trash",
+    "manageArticles": "Manage Articles",
+    "accountSettings": "Account Settings",
+    "securitySettings": "Security Settings",
+    "logout": "Logout"
+  },
+"navbar": {
+  "healthForum": "Health Forum",
+  "healthForumAnswer": "Health Forum Answer",
+  "howItWorks": "How It Works?",
+  "howItWorksV1": "How It Works V1",
+  "howItWorksV2": "How It Works V2",
+  "pages": "Pages",
+  "homeV1": "Home Version 1",
+  "homeV2": "Home Version 2",
+  "articles": "Articles",
+  "about": "About",
+  "contact": "Contact Us"
+},
+"profileSettings": {
+  "title": "Profile Settings",
+  "basicInfo": "Doctor Basic Info",
+  "specializations": "Profile and Specializations",
+  "education": "Education",
+  "experience": "Experience",
+  "updateNote": "Update all the latest changes made by you, by just clicking on “Save & Continue” button.",
+  "saveUpdate": "Save & Update"
+},
+"yourDetails": {
+  "title": "Your Details",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "selectGender": "Select Gender",
+  "male": "Male",
+  "female": "Female",
+  "dob": "Date of Birth",
+  "email": "Email",
+  "phone": "Phone (Optional)",
+  "license": "License number",
+  "description": "Description"
+}
+  ,
+  
+  "profilePhoto": {
+  "title": "Profile Photo",
+  "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniamac quis nostrud exercitation ullamco laboris.",
+  "selectFiles": "Select Files",
+  "dropFiles": "Drop files here to upload",
+  "uploading": "Uploading",
+  "fileName": "Profile Photo.jpg",
+  "fileSize": "File size: 300 kb"
+}
+,"bannerPhoto": {
+  "title": "Banner Photo",
+  "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniamac quis nostrud exercitation ullamco laboris.",
+  "selectFiles": "Select Files",
+  "dropFiles": "Drop files here to upload",
+  "uploading": "Uploading",
+  "alt": "Banner Photo",
+  "fileName": "Banner Photo.jpg",
+  "fileSize": "File size: 300 kb"
+}
+,"education": {
+  "title": "Add Your Education",
+  "addNew": "Add New",
+  "items": [
+    { "title": "Periodontology & Oral Implantology", "period": "(2010 - 2012)" },
+    { "title": "MBA - Hospital Management", "period": "(2008 - 2010)" },
+    { "title": "Oral Medicine and Radiology", "period": "(2006 - 2008)" }
+  ],
+  "form": {
+    "companyTitle": "Company Title",
+    "startingDate": "Starting Date",
+    "endingDate": "Ending Date *",
+    "jobTitle": "Your Job Title",
+    "jobDescription": "Your Job Description",
+    "note": "* Leave ending date empty if it's your current job"
+}
+  },
+    "profile": {
+    "title": "Your Profile",
+    "experience": "Years of Experience",
+    "bio": "Bio",
+    "languages": "Languages spoken",
+    "speciality": "Speciality ID"
+}
+, 
+ "specializations": {
+    "title": "Specializations",
+    "placeholder": "Select your specialization",
+    "addBtn": "Add Now"
+  },
+"userExperience": {
+  "addYourExperience": "Add Your Experience",
+  "addNew": "Add New Experience",
+  "generalDentistry": "General Dentistry",
+  "newExperience": "New Experience",
+  "companyTitle": "Company Title",
+  "startingDate": "Starting Date",
+  "endingDate": "Ending Date *",
+  "jobTitle": "Your Job Title",
+  "jobDescription": "Your Job Description",
+  "noteEndingDate": "* Leave ending date empty if it's your current job"
+}
+ , "password": {
+    "title": "Change Your Password",
+    "old": "Last Remember Password",
+    "new": "New Password",
+    "logoutAll": "Logout from all other web/mobile session now.",
+    "updateBtn": "Update Password",
+    "error": "Please fill in all fields.",
+    "success": "Your password has been updated successfully."
+  }
+,
+  "securitySettings": {
+    "securityTab": "Security & Settings",
+    "passwordTab": "Password Settings",
+    "emailTab": "Email Notifications",
+    "deleteTab": "Delete Account"
+  },
+
+  "emailNotifications": {
+    "title": "Manage Email Notifications",
+    "description": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aut enim ad minim veniam.",
+    "weeklyNewsletter": "Send me Weekly newsletter alerts",
+    "forwardMessages": "Forward messages on this ID",
+    "bonusPromos": "Send me bonus & promo alerts",
+    "securityAlerts": "Share latest security alerts"
+  }
+, "deleteAccount": {
+    "title": "Delete Account",
+    "placeholders": {
+      "password": "Enter Password",
+      "confirmPassword": "Confirm Password",
+      "reason": "Select Reason to Leave",
+      "description": "Description (Optional)"
+    },
+    "reasons": {
+      "reason1": "Reason 1",
+      "reason2": "Reason 2",
+      "noReason": "There is no reason"
+    },
+    "unsubscribe": "Unsubscribe me from all newsletter list",
+    "button": "Delete Account",
+    "errors": {
+      "emptyPassword": "Please enter your password.",
+      "notMatch": "Passwords do not match."
+    },
+    "confirmMessage": "Are you sure you want to delete your account? This action cannot be undone.",
+    "successMessage": "Simulation: Account has been deleted."
+  }
+,
+  "slotsSelct": {
+    "all": "All",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "empty": "Empty",
+    "pending": "Pending",
+    "spaces": "Spaces"
+  }
+   ,
+   "slots": {
+    "title": "Manage Your Appointment Slots",
+    "status": "Status",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "empty": "Empty",
+    "pending": "Pending",
+    "bookingDate": "Booking Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration",
+    "shiftName": "Shift Name",
+    "location": "Location",
+    "price": "Price"
+  }
+  ,
+  
+  "patient": {
+    "name": "Patient Name",
+    "idNumber": "File or ID Number",
+    "contact": "Contact Information",
+    "notes": "Booking Notes",
+    "bookingType": "Booking Type"
+  }
+  ,
+    "cancellation": {
+    "time": "Cancellation Time",
+    "by": "Cancelled By",
+    "financialStatus": "Financial Status",
+    "reason": "Cancellation Reason"
+  }  ,
+   "locationInfo":{
+    "title": "Location Information"
+   }
+   ,
+   
+  "clinic": "Clinic",
+  "selectClinic": "Select Clinic",
+  "slotDurationMinutes": "Slot Duration (minutes)",
+  "daysInAdvance": "Days in Advance",
+  "startTime": "Start Time",
+  "endTime": "End Time",
+  "price": "Price",
+  "currency": "Currency",
+  "selectCurrency": "Select Currency",
+  "allowedAppointmentTypes": "Allowed Appointment Types",
+  "saveChanges": "Save Changes",
+  "appointmentTypes": {
+    "Follow-up": "Follow-up",
+    "Check-up": "Check-up",
+    "Consultation": "Consultation",
+    "FollowUp": "Follow Up",
+    "Emergency": "Emergency"
+  }
+   ,
+   "locationSettings": "Location Settings",
+  "addLocation": "Add Location",
+  "locationAndWorkingHours": "Location and Working Hours"
+  ,
+  "manageYourShifts": "Manage Your Shifts",
+  "addNew": "Add New",
+  "LocationInformation": "Location Information",
+  "AddLocation": "Add Location",
+  "NoLocationSelected": "No location selected",
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "LocationName": "Location Name",
+  "OfficialAddress": "Official Address",
+  "Coordinates": "Coordinates",
+  "NotSpecified": "Not specified",
+  "NoLocationsAddedYet": "No locations added yet. Click \"Add Location\" to get started."
+  ,
+    "LocateYourBusiness": "Locate your business",
+  "SearchForAddress": "Search for the address",
+  "PlaceNotFound": "Place not found",
+  "SearchError": "An error occurred during search",
+  "OfficialWebsite": "Official website",
+  "LoadingPlaceName": "Loading place name",
+  "DragPinMessage": "Drag the pin to change location",
+  "SpecialPlaceNameOptional": "Name of the special place (optional)",
+  "Cancel": "Cancel",
+  "Save": "Save",
+  "TapOrDragMapNote": "Note: Tap or drag the map to move the pin",
+  "Saved": "Saved"
+  ,
+
+  "Clinic1": "Clinic 1",
+  "Clinic2": "Clinic 2",
+  "Saturday": "Saturday",
+  "Sunday": "Sunday",
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "Friday": "Friday",
+  "Morning": "Morning",
+  "Evening": "Evening",
+  "Night": "Night",
+  "CustomShift": "Custom Shift"
+  ,  "selectLocation": "Select Location",
+  "selectDay": "Select Day",
+  "selectShiftType": "Select Shift Type",
+  "CustomShift": "Custom Shift",
+
+  "breaks": "Breaks",
+  "addBreak": "Add Break",
+    "slots": {
+      "status": "Status",
+      "pending": "Pending",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "empty": "Empty",
+      "bookingDate": "Booking Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "duration": "Duration",
+      "shiftName": "Shift Name",
+      "location": "Location",
+      "price": "Price"
+}   , 
+    "slot": {
+    "status": "Status",
+    "bookingDate": "Booking Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration",
+    "shiftName": "Shift Name",
+    "location": "Location",
+    "price": "Price"
+  },
+  "slotStatuses": {
+    "Completed": "Completed",
+    "Cancelled": "Cancelled",
+    "Empty": "Empty",
+    "Pending": "Pending"
+  }
+
+
+
+,
+
+
+
+  "alerts": {
+    "reminderTitle": "Appointment Reminder",
+    "reminderMessage": "You have an upcoming appointment with Dr. Sarah Smith scheduled for tomorrow at 10:00 AM at CityCare Clinic.",
+    "warningTitle": "Warning",
+    "warningMessage": "You have a pending appointment that needs confirmation.",
+    "dangerTitle": "Danger",
+    "dangerMessage": "Your appointment has been cancelled!",
+    "infoTitle": "Information",
+    "infoMessage": "Check your appointment details.",
+    "visit": "Visit"
+  },
+  "dashboard": {
+    "healthForumFeedback": "Health Forum Feedback",
+    "totalAppointments": "Total Appointments",
+    "completedAppointments": "Completed Appointments",
+    "cancelledAppointments": "Cancelled Appointments",
+    "followupAppointments": "Follow-up Appointments",
+    "latestAppointments": "Latest Appointments",
+    "newMessages": "New Messages",
+    "latestProposals": "Latest Proposals",
+    "checkPackageExpiry": "Check Package Expiry",
+    "viewSavedItems": "View Saved Items"
+  },
+  "months": {
+    "march": "March",
+    "february": "February",
+    "january": "January"
+  }
+
+
+, "specialty": {
+    "select": "Select specialty",
+    "cardiology": "Cardiology",
+    "neurology": "Neurology",
+    "pediatrics": "Pediatrics",
+    "surgery": "Surgery",
+    "internal": "Internal Medicine",
+    "orthopedics": "Orthopedics",
+    "ophthalmology": "Ophthalmology",
+    "dermatology": "Dermatology"
+  },
+  "qualification": {
+    "select": "Select qualification",
+    "mbbs": "MBBS",
+    "master": "Master",
+    "phd": "PhD",
+    "board": "Board",
+    "other": "Other"
+  },
+  "steps": {
+    "personalInfo": "Personal Information",
+    "profileAndSpecialty": "Profile & Specialty",
+    "location": "Location",
+    "experience": "Experience",
+    "reviewConfirm": "Review & Confirm",
+    "education": "Education",
+    "PaymentInsurance": "Payment & Insurance",
+    "makeSlots": "Generate Doctor Slots",
+    "shift": "Shift"
+  }
+
+,
+
+   "personalInfo": {
+    "title": "Basic Personal Information",
+    "fullName": {
+      "label": "Full Name",
+      "placeholder": "Enter your full name"
+    },
+    "email": {
+      "label": "Email Address",
+      "placeholder": "example@domain.com"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "05XXXXXXXX"
+    },
+    "nationalId": {
+      "label": "National ID",
+      "placeholder": "10 digits"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "At least 8 characters"
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Re-enter your password"
+    }
+  }
+
+
+
+  ,
+
+
+     "professionalInfo": {
+       "YearsOfExperience": {
+      "label": "Years of Experience",
+      "placeholder": "Enter your years of experience"
+    },
+    "Bio": {
+      "label": "Bio",
+      "placeholder": "Write a short bio about yourself"
+    },
+       "Specializations": {
+    "title": "Specializations",
+    "placeholder": "Enter your specialization",
+    "addBtnText": "Add Specialization"
+  },
+      "languages": {
+        "title": "Languages",
+        "placeholder": "Enter the languages you speak",
+        "addBtnText": "Add Language"
+      },
+    "title": "Professional Information",
+    "specialty": {
+      "label": "Specialty",
+      "placeholder": "Select your specialty"
+    },
+    "subspecialty": {
+      "label": "Subspecialty",
+      "placeholder": "Enter your subspecialty"
+    },
+    "licenseNumber": {
+      "label": "License Number",
+      "placeholder": "Enter your license number"
+    },
+    "languageSpoken": {
+      "label": "Languages Spoken",
+      "placeholder": "Enter the languages you speak"
+    },
+    "licenseFile": {
+      "label": "License File",
+      "hint": "Please upload an image or PDF file"
+    }
+  }
+
+  , "qualificationsInfo": {
+    "addNew": "Add New Qualification",
+    "title": "Qualifications & Certificates",
+    "qualification": {
+      "label": "Academic Qualification"
+    },
+    "university": {
+      "label": "University",
+      "placeholder": "University name"
+    },
+    "graduationYear": {
+      "label": "Graduation Year",
+      "placeholder": "Year of graduation"
+    },
+    "additionalCert": {
+      "label": "Additional Certificates",
+      "placeholder": "List of additional certificates"
+    },
+    "certificates": {
+      "label": "Certificates & Achievements Details",
+      "placeholder": "Mention important certificates, courses, and achievements"
+    },
+    "certFiles": {
+      "label": "Upload Certificates & Qualifications",
+      "hint": "Drag & drop files here or click to select (PDF, JPG)"
+    }
+  }
+
+  ,
+   "experienceInfo": {
+    "title": "Work Experience",
+    "addMore": "+ Add Another Company"
+  }
+
+  ,
+  "reviewInfo": {
+    "title": "Final Review & Confirmation",
+    "termsText": "I agree to the",
+    "termsOfUse": "Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "and": "and",
+    "confirm": "and confirm that the information is correct"
+  }
+
+
+  ,
+
+    "previous": "Previous",
+  "next": "Next",
+  "skip": "Skip",
+  "save": "Save",
+  "confirmRegistration": "Confirm Registration",
+  "validationError": "Validation Error",
+  "cancel": "Cancel"
+  
+ 
+
+
+  ,
+    "success": {
+    "title": "Registration Successful!",
+    "message1": "Your information has been successfully registered in MediPRO Elite system.",
+    "message2": "Your data will be reviewed by the administration and you will be contacted soon.",
+    "requestNumber": "Request Number",
+    "newRegister": "New Registration"
+ 
+  }
+,
+"paymentMethods": {
+    "title": "Payment & Insurance",
+    "infoBanner": "You must select at least one payment method to proceed with booking.",
+    "acceptedMethods": "Accepted Payment Methods",
+    "cash": {
+      "label": "Cash",
+      "description": "Pay directly at the clinic"
+    },
+    "card": {
+      "label": "Credit/Debit Card",
+      "description": "Pay using credit or debit card"
+    },
+    "bankTransfer": {
+      "label": "Bank Transfer",
+      "description": "Transfer the amount to the clinic's bank account"
+    },
+    "insurance": {
+      "label": "Health Insurance",
+      "description": "Pay through your insurance provider"
+    },
+    "insuranceCompanies": "Insurance Companies",
+    "insuranceDescription": "Select the insurance companies you accept in your clinic. Patients can filter clinics by their insurance provider.",
+    "searchPlaceholder": "Search insurance company...",
+    "noResults": "No insurance companies match your search.",
+    "addNewCompany": "Add New Company",
+    "addNewCompanyTitle": "Add a New Insurance Company",
+    "companyName": {
+      "label": "Company Name",
+      "placeholder": "Enter company name"
+    },
+    "companyCode": {
+      "label": "Company Code",
+      "placeholder": "Enter short code"
+    },
+    "companyType": {
+      "label": "Insurance Type",
+      "select": "Select insurance type",
+      "medical": "Medical Insurance",
+      "health": "Health Insurance",
+      "dental": "Dental Insurance"
+    },
+    "addCompanyButton": "Add Company",
+    "addCompanySuccess": "Company will be added:"
+  },
+  "common": {
+    "cancel": "Cancel"
+  }
+,
+ "Experience": {
+  "title": "Work Experience",
+  "companyName": "Company Name",
+  "startDate": "Start Date",
+  "endDate": "End Date",
+  "stillWorking": "I am still working here",
+  "removeCompany": "Remove Company"
+  },
+ "validation": {
+  "dynamic": {
+    "minItems": "⚠️ You must add at least {{minItems}} item(s)",
+    "required": "⚠️ This field cannot be empty"
+  },
+    "step1": {
+      "fullName": "Full name is required",
+      "email": "Invalid email address",
+      "phone": "Invalid phone number",
+      "nationalId": "Invalid national ID",
+      "password": "Password must be at least 8 characters",
+      "confirmPassword": "Passwords do not match"
+    },
+     "step2": {
+    "atLeastOne": "At least one qualification is required",
+    "qualification": "Qualification is required",
+    "university": "University name is required",
+    "graduationYearRequired": "Graduation year is required",
+    "graduationYear": "Graduation year must be between 1950 and {{year}}"
+  },
+    "step3": {
+      "Bio": "Bio is required",
+      "yearsOfExperience": "Years of experience is required",
+      "specialty": "Specialty is required",
+      "licenseNumber": "License number is required",
+      "languageSpoken": "Languages spoken are required",
+      "licenseFile": "License file is required"
+    },
+    "step4": {
+      "locationsRequired": "At least one location is required",
+      "locationNameRequired": "Location name is required",
+      "officialAddressRequired": "Official address is required",
+      "invalidCoordinates": "Invalid coordinates"
+    },
+    "step5": {
+      "shiftsRequired": "At least one shift is required",
+      "clinicRequired": "Clinic name is required",
+      "dayRequired": "Day is required",
+      "shiftTypeRequired": "Shift type is required",
+      "customFromRequired": "Start time is required",
+      "customToRequired": "End time is required",
+      "invalidTimeRange": "Start time must be before end time",
+      "breakFromRequired": "Break start time is required",
+      "breakToRequired": "Break end time is required",
+      "invalidBreakTimeRange": "Break end time must be after break start time"
+    },
+    "step6": {
+      "slotsRequired": "At least one slot is required",
+      "clinicRequired": "Clinic is required",
+      "startTimeRequired": "Start time is required",
+      "endTimeRequired": "End time is required",
+      "invalidTimeRange": "Start time must be before end time",
+      "invalidDuration": "Duration must be between 15 and 120 minutes",
+      "invalidDaysInAdvance": "Days in advance must be between 1 and 365",
+      "invalidPrice": "Price must be greater than or equal to zero",
+      "currencyRequired": "Currency is required",
+      "appointmentTypesRequired": "At least one appointment type is required"
+    },
+   "step7": {
+      "experiences": "At least one experience is required",
+    "companyTitle": "Company title is required",
+    "startingDate": "Starting date is required",
+    "invalidDate": "Starting date must be between 1900 and {{year}}",
+    "invalidEndDate": "Ending date must be after the starting date",
+    "jobTitle": "Job title is required",
+    "jobDescription": "Job description is required"
+  },
+    "step8": {
+      "paymentMethodsRequired": "At least one payment method must be selected",
+      "insuranceCompaniesRequired": "At least one insurance company must be selected"
+    }
+    ,
+    "step9": {
+  "terms": "You must agree to the terms and conditions before submission"
+}
+  }
+  ,
+  "popup": {
+  "skipToStep7": "By skipping this step, you won't be able to add shifts or time slot rules later unless you go back and complete this step."
+}
+
+
+,
+"uploadFile": "Upload File"
+  ,
+  "shifts":{
+    "title": "Shifts",
+    "addNew": "Add New Shift"
+  }
+  ,
+
+   "BasicInfo": "Patient basic info",
+  "Appointments": "Appointments",
+  "Notes": "Notes",
+  "Files": "Files and Attachments",
+  "TreatmentPlans": "Allergies",
+  "Notifications": "Notifications",
+  "MedicalHistory": "Medical History",
+  "Statistics": "Hospital"
+,  "patientsList": "Patients List",
+  "patientId": "Patient ID",
+  "name": "Name",
+  "age": "Age",
+  "address": "Address",
+  "phone": "Phone",
+  "lastVisit": "Last Visit",
+  "paid": "Paid",
+  "action": "Action",
+  "showing": "Showing",
+  "of": "of"
+  ,
+   "allPatients": "All Patients",
+  "activePatients": "Active Patients",
+  "treatmentCompleted": "Treatment Completed",
+  "stoppedTreatment": "Stopped Treatment" 
+,
+
+  "patientsReviews": "Patients Reviews",
+  "overallRating": "Overall Rating",
+  "appointmentType": "Appointment Type",
+  "rating": "Rating",
+  "review": "Review",
+  "reviewDate": "Review Date",
+  "action": "Action",
+  "viewBooking": "View Booking",
+  "showing": "Showing",
+  "to": "to",
+  "of": "of",
+  "entries": "entries",
+  "previous": "Previous",
+  "next": "Next"
+,
+"Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "DiagnosisMobileView": {
+    "table_title": "Diagnosis List",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis": "Diagnosis",
+    "note": "Note",
+    "status": "Status",
+    "view_all_details": "View All Details",
+    "no_diagnoses_found": "No Diagnoses Found",
+    "diagnosis_name": "Diagnosis Name",
+    "diagnosis_note": "Diagnosis Note",
+    "close": "Close",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "DiagnosisTable": {
+    "table_title": "Diagnosis list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis_name": "Diagnosis Name",
+    "note": "Note",
+    "status": "Status",
+    "view": "View",
+    "diagnosis_note": "Diagnosis Note",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "PrescriptionsMobileView": {
+    "table_title": "Prescriptions list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis": "Diagnosis",
+    "note": "Note",
+    "status": "Status",
+    "medications": "Medications",
+    "view_all_details": "View All Details",
+    "no_prescriptions_found": "No Prescriptions Found",
+    "diagnosis_name": "Diagnosis Name",
+    "prescription_note": "Prescription Note",
+    "close": "Close",
+    "medication_name": "Medication Name",
+    "medication": "Medication",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "instructions": "Instructions",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "PrescriptionsTable": {
+    "table_title": "Prescriptions list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "prescription_title": "Prescription Title",
+    "note": "Note",
+    "status": "Status",
+    "diagnosis_name": "Diagnosis Name",
+    "medication": "Medication",
+    "view": "View",
+    "prescription_note": "Prescription Note",
+    "medication_name": "Medication Name",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "instructions": "Instructions",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "Medications": {
+    "prescribed_medication": "Prescribed medication",
+    "other_medications": "Other medications"
+  },
+  "PrescribedMedicationMobileView": {
+    "table_title": "Prescribed Medication List",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis_name": "Diagnosis Name",
+    "prescribed_name": "Prescribed Name",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "status": "Status",
+    "instructions": "Instructions",
+    "view_all_details": "View All Details",
+    "no_medications_found": "No Prescribed Medications Found",
+    "close": "Close",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "PrescribedMedicationTable": {
+        "days": "Days",
+    "category": "Category",
+    "table_title": "Prescribed medication list",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "medication": "Medication",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "instructions": "Instructions",
+    "status": "Status",
+    "diagnosis_name": "Diagnosis Name",
+    "prescribed_name": "Prescribed Name",
+    "status_options": {
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }
+  },
+  "OtherMedicationMobileView": {
+    "table_title": "Other Medication List",
+    "dosage": "Dosage",
+    "duration": "Duration",
+    "status": "Status",
+    "instructions": "Instructions",
+    "view_all_details": "View All Details",
+    "no_medications_found": "No Other Medications Found",
+    "close": "Close"
+  },
+  "MedicalConditions": {
+    "tab_diagnosed_conditions": "Diagnosed Conditions",
+    "tab_other": "Other Conditions"
+  },
+  
+  "DiagnosedConditionsMobileView": {
+    "table_title": "Diagnosed Conditions List",
+    "diagnosis_name": "Diagnosis Name",
+    "severity": "Severity",
+    "status": "Status",
+    "diagnosed_date": "Diagnosed Date",
+    "notes": "Notes",
+    "view_all_details": "View All Details",
+    "no_conditions_found": "No Conditions Found",
+    "close": "Close",
+    "severity_options": {
+      "mild": "Mild",
+      "moderate": "Moderate",
+      "severe": "Severe"
+    }
+  },
+  "DiagnosedConditionsTable": {
+    "table_title": "Diagnosed Conditions List",
+    "medical_condition_name": "Medical Condition Name",
+    "severity": "Severity",
+    "diagnosis_name": "Diagnosis Name",
+    "diagnosed_date": "Diagnosed Date",
+    "status": "Status",
+    "notes": "Notes",
+    "severity_options": {
+      "mild": "Mild",
+      "moderate": "Moderate",
+      "severe": "Severe"
+    }
+  },
+ "OtherMedicalConditionsMobileView": {
+  "conditionType" : "Condition Type",
+  "category": "Category",
+  "condition_type": "Condition Type",
+    "table_title": "Other Medical Conditions",
+    "medical_condition_name": "Medical Condition Name",
+    "severity": "Severity",
+    "status": "Status",
+    "diagnosed_date": "Diagnosed Date",
+    "notes": "Notes",
+    "view_all_details": "View All Details",
+    "no_conditions_found": "No Conditions Found",
+    "close": "Close",
+    "severity_options": {
+      "mild": "Mild",
+      "moderate": "Moderate",
+      "severe": "Severe"
+    }
+        ,"condition_type_options":{
+      "chronic": "chronic",
+      "acute": "acute",
+      "External":"External"
+    }
+  }
+  ,
+  "Common": {
+    "table_subtitle": "أحمد محمد علي",
+    "status_options": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    }
+  }
+,
+"Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "PatientBasicInfo": {
+    "patient_image_alt": "Patient",
+    "full_name": "Full Name:",
+    "date_of_birth": "Date of Birth:",
+    "age": "Age",
+    "gender": "Gender:",
+    "phone": "Phone:",
+    "email": "Email:",
+    "address": "Address:",
+    "chronic_diseases": "Chronic Diseases:",
+    "allergies": "Allergies:",
+    "allergies_drug": "Drug",
+    "allergies_food": "Food",
+    "medications": "Medications:",
+    "last_visit": "Last Visit:",
+    "next_visit": "Next Visit:"
+  },
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "PatientReviewsCards": {
+    "table_title": "Patient Reviews",
+    "overall_rating": "Overall Rating",
+    "view_booking": "View Booking"
+  }
+  ,
+  "slotStatuses": {
+    "Pending":"Pending",
+    "all": "All",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "empty": "Empty",
+    "pending": "Pending"
+  }
+  ,
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    }}
+    ,
+    "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "AllergyMobileView": {
+    "is_active": "Is Active",
+    "table_title": "Allergies",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "add_allergen": "Add Allergen",
+    "edit_allergen": "Edit Allergen",
+    "allergen": "Allergen",
+    "severity": "Severity",
+    "select_severity": "Select Severity",
+    "active": "Status",
+    "select_active_status": "Select Status",
+    "date_noted": "Date Noted",
+    "select_date": "Select Date",
+    "reaction": "Reaction",
+    "enter_reaction": "Enter Reaction",
+    "notes": "Notes",
+    "enter_notes": "Enter Notes",
+    "manage": "Manage",
+    "no_records_found": "No Records Found",
+    "severity_options": {
+      "Mild": "Mild",
+      "Moderate": "Moderate",
+      "Severe": "Severe"
+    },
+    "active_options": {
+      "Active": "Active",
+      "Inactive": "Inactive"
+    }
+    
+  },
+   "last_updated":"Last Updated",
+     "created_at": "Created At"
+  ,
+  "AllergyTable": {
+    "last_updated":"Last Updated",
+     "created_at": "Created At",
+    "no_results_for_search": "No results found for '{{search}}'",
+    "loading_error": "Error loading allergies data",
+    "retry": "Try again",
+     "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete allergen '{{allergen}}'? This action cannot be undone.",
+    "table_title": "Allergies",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "add_allergen": "Add Allergen",
+    "edit_allergen": "Edit Allergen",
+    "allergen": "Allergen",
+    "severity": "Severity",
+    "select_severity": "Select Severity",
+    "active": "Status",
+    "select_active_status": "Select Status",
+    "date_noted": "Date Noted",
+    "select_date": "Select Date",
+    "reaction": "Reaction",
+    "enter_reaction": "Enter Reaction",
+    "notes": "Notes",
+    "enter_notes": "Enter Notes",
+    "actions": "Actions",
+    "manage": "Manage",
+    "no_records_found": "No Records Found",
+    "severity_options": {
+      "Mild": "Mild",
+      "Moderate": "Moderate",
+      "Severe": "Severe"
+    },
+    "active_options": {
+      "Active": "Active",
+      "Inactive": "Inactive"
+    }
+  },
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "DiagnosisMobileView": {
+    "table_title": "Diagnosis",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "symptoms": "Symptoms",
+    "conditions": "Conditions",
+    "notes": "Notes",
+    "prescription": "Prescription",
+    "view_all_details": "View All Details",
+    "no_diagnosis_found": "No Diagnosis Found",
+    "symptoms_description": "Symptoms Description",
+    "diagnosis_description": "Diagnosis Description",
+    "medical_condition": "Medical Condition",
+    "condition_type": "Condition Type",
+    "severity": "Severity",
+    "note": "Note",
+    "note_content": "Note Content",
+    "prescription_title": "Prescription Title",
+    "status": "Status",
+    "prescription_note": "Prescription Note",
+    "type": "Type",
+    "dosage": "Dosage",
+    "duration_days": "Duration (Days)",
+    "instructions": "Instructions",
+    "close": "Close"
+  } ,
+  "Common": {
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "DiagnosisTable": {
+    "table_title": "Diagnosis",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "diagnosis_name": "Diagnosis Name",
+    "symptoms_description": "Symptoms Description",
+    "diagnosis_description": "Diagnosis Description",
+    "conditions": "Conditions",
+    "notes": "Notes",
+    "prescription": "Prescription",
+    "view": "View",
+    "medical_condition": "Medical Condition",
+    "condition_type": "Condition Type",
+    "severity": "Severity",
+    "note": "Note",
+    "note_content": "Note Content",
+    "prescription_title": "Prescription Title",
+    "status": "Status",
+    "prescription_note": "Prescription Note",
+    "medication": "Medication",
+    "dosage": "Dosage",
+    "duration_days": "Duration (Days)",
+    "instructions": "Instructions"
+  }
+  ,
+  "MedicalHistoryMobileView": {
+    "table_title": "Medical History",
+    "table_subtitle": "Ahmed Mohamed Ali",
+    "add_condition": "Add Condition",
+    "add_medical_history": "Add Medical History",
+    "edit_medical_history": "Edit Medical History",
+    "hereditary_disease": "Hereditary Disease",
+    "description": "Description",
+    "related_person": "Related Person",
+    "notes": "Notes",
+    "date_of_event": "Date of Event",
+    "type": "Type",
+    "hereditary": "Hereditary",
+    "non_hereditary": "Non-Hereditary",
+    "manage": "Manage",
+    "no_records_found": "No Records Found",
+    "hereditary_diseases": {
+      "Diabetes": "Diabetes",
+      "Heart Disease": "Heart Disease",
+      "Cancer": "Cancer",
+      "Hypertension": "Hypertension",
+      "Asthma": "Asthma",
+      "Mental Health Disorders": "Mental Health Disorders",
+      "Other": "Other"
+    }
+  },
+    "confirmDeleteSlot": "Are you sure you want to delete \"{{slot}}\"? This action cannot be undone."
+,
+  "days": {
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday"
+  },
+   "Make Slots": "Make Slots"
+,
+"shifts": {
+    "manage_shifts": "Manage Shifts",
+    "add_shift": "Add Shift",
+    "clinic": "Clinic",
+    "day": "Day",
+    "shift_type": "Shift Type",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "select_clinic": "Select Clinic",
+    "select_day": "Select Day",
+    "select_shift_type": "Select Shift Type"
+  },
+  "clinics": {
+    "main": "Main Clinic",
+    "branch": "City Branch",
+    "children": "Pediatric Clinic"
+  },
+  "days": {
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday"
+  },
+  "shiftTypes": {
+    "morning": "Morning",
+    "evening": "Evening",
+    "night": "Night",
+    "custom": "Custom"
+  },
+  "breaks": {
+    "title": "Break Periods",
+    "add_break": "Add Break",
+    "start_time": "Start Time",
+    "end_time": "End Time",
+    "start": "Start",
+    "end": "End",
+    "no_breaks": "No break periods added"
+  },
+  "status": {
+    "new": "New"
+  },
+  "actions": {
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "popup": {
+    "delete_shift_title": "Delete Shift",
+    "delete_shift_confirm": "Are you sure you want to delete \"{{name}}\"?",
+      "delete_location_title": "Delete Location",
+    "delete_location_confirm": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
+  },
+   "userLocation": {
+    "addYourLocation": "Add Your Location",
+    "addNew": "Add New Location", 
+    "newLocation": "New Location",
+    "manageLocations": "Manage Locations"
+  },
+   "OtherMedication": {
+    "add_medication": "Add Medication",
+    "edit_medication": "Edit Medication",
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete '{{medication}}'? This action cannot be undone.",
+    "medication": "Medication",
+    "enter_medication": "Enter medication name",
+    "dosage": "Dosage",
+    "enter_dosage": "Enter dosage",
+    "duration": "Duration",
+    "enter_duration": "Enter duration",
+    "status": "Status",
+    "select_status": "Select status",
+    "instructions": "Instructions",
+    "enter_instructions": "Enter instructions"
+    }
+  ,
+    "Othermedications": {
+        "start_date": "Start Date",
+  "end_date": "End Date",
+  "medicationCategory": "Medication Category",
+    "add_medication": "Add Medication",
+    "edit_medication": "Edit Medication",
+    "manage": "Manage",
+    "actions": "Actions",
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_message": "Are you sure you want to delete '{{medication}}'? This action cannot be undone.",
+    "medication": "Medication",
+    "enter_medication": "Enter medication name",
+    "dosage": "Dosage",
+    "enter_dosage": "Enter dosage",
+    "duration": "Duration",
+    "enter_duration": "Enter duration",
+    "status": "Status",
+    "select_status": "Select status",
+    "instructions": "Instructions",
+    "enter_instructions": "Enter instructions",
+        "table_title": "Other Medication list"
+  },
+  "OtherMedicalConditions": {
+    "category": "Category",
+  "add_condition": "Add Condition",
+  "edit_condition": "Edit Condition",
+  "manage": "Manage",
+  "delete": "Delete",
+  "actions": "Actions",
+  "confirm_delete_title": "Confirm Deletion",
+  "confirm_delete_message": "Are you sure you want to delete '{{condition}}'? This action cannot be undone.",
+  "medical_condition_name": "Medical Condition Name",
+  "enter_condition_name": "Enter condition name",
+  "severity": "Severity",
+  "select_severity": "Select severity",
+  "severity_options": {
+    "Mild": "Mild",
+    "Moderate": "Moderate",
+    "Severe": "Severe"
+  },
+   "condition_type_options": {
+      "External": "External",
+      "Internal": "Internal",
+      "Chronic": "Chronic",
+      "Acute": "Acute"
+    },
+    "condition_type": "Condition Type",
+  "status": "Status",
+  "select_status": "Select status",
+  "diagnosed_date": "Diagnosed Date",
+  "select_date": "Select date",
+  "notes": "Notes",
+  "enter_notes": "Enter notes"
+},
+  "MedicalHistory": {
+    "add_history": "Add Medical History",
+    "edit_history": "Edit Medical History",
+    "history_type": "History Type",
+    "hereditary_disease": "Hereditary Disease", 
+    "description": "Description",
+    "date_of_event": "Date of Event",
+    "related_person": "Related Person",
+    "notes": "Notes",
+    "actions": "Actions",
+    "confirm_delete_title": "Delete Medical History",
+    "confirm_delete_message": "Are you sure you want to delete \"{{description}}\"?",
+    "no_records_found": "No medical history records found",
+    "no_results_for_search": "No results found for \"{{search}}\"",
+    "history_type_options": {
+      "Surgery": "Surgery",
+      "Family History": "Family History", 
+      "Hospitalization": "Hospitalization",
+      "Vaccination": "Vaccination",
+      "Accident": "Accident",
+      "Others": "Others"
+    }
+  },
+   "login": {
+    "title": "Login to",
+    "brand": "Doclisto",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me",
+    "loginWithOTP": "Login with OTP",
+    "button": "Login",
+    "or": "OR",
+    "google": "Sign in with Google",
+    "noAccount": "Don't have an account?",
+    "signupNow": "Sign up now",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "success": "Login successful",
+    "withEmail": "Email",
+    "withPhone": "Phone Number",
+    "phone": "Phone Number",
+    "enterPhone": "Enter your phone number",
+    "phoneRequired": "Phone number is required"
+    ,"with":"sign in with"
+    
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "verifyTitle": "Verify Code",
+    "emailRequired": "Email is required",
+    "phoneRequired": "Phone number is required",
+    "sendCode": "Send Code",
+    "codeSent": "Verification code sent to your email/phone",
+    "codeResent": "Code resent",
+    "codeSentTo": "Code sent to",
+    "didntReceive": "Didn't receive the code?",
+    "resendCode": "Resend",
+    "secs": "Seconds",
+    "verify": "Verify",
+    "otpRequired": "Please enter the complete code",
+    "passwordReset": "Password reset successfully",
+    "rememberPassword": "Remembered your password?",
+    "backToLogin": "Back to Login"
+
+  },
+    "actions": "Actions",
+    "updated_at": "Updated At"
+  }
+  
