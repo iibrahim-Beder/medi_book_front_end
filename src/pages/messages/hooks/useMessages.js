@@ -60,8 +60,8 @@ export const useMessages = () => {
   };
 
   const loadMore = () => {
-    console.log("==loadMore hasNextPage", messagesData.hasNextPage) ;
     if(!messagesData.hasNextPage||isFetching)return
+    console.log("==loadMore hasNextPage", messagesData.hasNextPage) ;
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: (prev[selectedChat] ?? 1) + 1,
@@ -106,16 +106,14 @@ export const useMessages = () => {
 const lastMarkedMessageIdRef = useRef(null);
 
 useEffect(() => {
- 
-
-  if (!isConnected) return;
+   if (!isConnected) return;
 
  const maxMessageId = currentMessages?.length
   ? Math.max(...currentMessages.map(msg => msg.id))
   : undefined;
 
   if (
-    selectedChat !== -1 &&
+    (selectedChat !== -1 ||selectedChat ===null) &&
     currentMessages?.length > 0 &&
     maxMessageId &&
     lastMarkedMessageIdRef.current !== maxMessageId
