@@ -80,6 +80,7 @@ export default function ConversationList() {
               lastMessageIsMine={chat.lastMessageIsMine}
               messeagesDotNotification={chat.unreadCount > 0 ? chat.unreadCount : undefined}
               status={chat.status}
+              isLastMessageRead={chat.isLastMessageRead}
             />
           ))
         )}

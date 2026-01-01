@@ -32,7 +32,8 @@ const transformChatsData = (response) => {
     lastMessageIsMine: chat.lastMessageIsMine,
     unreadCount: chat.unreadCount,
     isNew: chat.isNew,
-    relativeTime: formatTime(chat.lastMessageSentAtUtc)
+    relativeTime: formatTime(chat.lastMessageSentAtUtc),
+    isLastMessageRead: chat.isLastMessageRead
   }));
 
   return {
@@ -67,7 +68,7 @@ const transformMessagesData = (response,personId=1) => {
     chatId: message.chatId,
     content: message.content,
     sentAt: message.sentAt,
-    sentAtFormatted: formatTime(message.sentAt),
+    sentAtFormatted: message.sentAt,
     status: message.messageStatus,
     isMine: message.senderId === personId,
     isDelivered: message.isDelivered,

@@ -60,8 +60,8 @@ export const useMessages = () => {
   };
 
   const loadMore = () => {
-    console.log("==loadMore hasNextPage", messagesData.hasNextPage) ;
     if(!messagesData.hasNextPage||isFetching)return
+    console.log("==loadMore hasNextPage", messagesData.hasNextPage) ;
     setPageByChat((prev) => ({
       ...prev,
       [selectedChat]: (prev[selectedChat] ?? 1) + 1,
@@ -76,21 +76,63 @@ export const useMessages = () => {
       loadMore();
     }
   };
+
   console.log("===render===");
+
+
+ //mark all Messages As Read
+  const markMessagesAsRead = 
+    async () => {
+              dispatch(
+          doctorChatApi.util.updateQueryData(
+            'getDoctorChats',
+            undefined,
+            (draft) => {
+              if (!draft?.data) return;
+
+              const chat = draft.data.find(
+                c => c.chatId === selectedChat
+              );
+
+              if (chat) {
+                chat.lastMessageStatus =2;
+                chat.unreadCount = 0;
+                chat.isLastMessageRead = true;
+              }
+            }
+          )
+        );}
   // in selectedChat change
-  useEffect(() => {
-    setPageByChat((prev) => ({
-      ...prev,
-      [selectedChat]: 1,
-    }));
-    toLatestMessage();
-    if(!isConnected)return;
-    if(isConnected&& selectedChat!==-1&&  currentMessages?.length > 0 &&currentMessages[0]?.id){
-      console.log("==useEffect"  ,"loading",messagesLoading  ,"the condition" ,(isConnected&& selectedChat&&  currentMessages?.length > 0 &&currentMessages[0]?.id) );
-      InvokeMarkFromLastMessagesAsRead(selectedChat,currentMessages[0]?.id);
-      markMessagesAsRead();
-    }
-  }, [selectedChat,messagesLoading,isConnected]);
+const lastMarkedMessageIdRef = useRef(null);
+
+useEffect(() => {
+   if (!isConnected) return;
+
+ const maxMessageId = currentMessages?.length
+  ? Math.max(...currentMessages.map(msg => msg.id))
+  : undefined;
+
+  if (
+    (selectedChat !== -1 ||selectedChat ===null) &&
+    currentMessages?.length > 0 &&
+    maxMessageId &&
+    lastMarkedMessageIdRef.current !== maxMessageId
+  ) {
+    lastMarkedMessageIdRef.current = maxMessageId;
+
+    InvokeMarkFromLastMessagesAsRead(selectedChat, maxMessageId);
+    markMessagesAsRead();
+  }
+}, [selectedChat, messagesLoading, isConnected,markMessagesAsRead,InvokeMarkFromLastMessagesAsRead]);
+
+useEffect(() => {
+ setPageByChat((prev) => ({
+    ...prev,
+    [selectedChat]: 1,
+  }));
+
+  toLatestMessage();
+}, [selectedChat]);
   
   const sendMessage = useCallback(
     async (content, chatId = selectedChat) => {
@@ -164,7 +206,6 @@ export const useMessages = () => {
           }
         )
       );
-       audioService.play('sendMessage');
       try {
 
         const result = await sendMessageApi(tempMessage).unwrap();
@@ -187,7 +228,6 @@ export const useMessages = () => {
                   if (tempMessage.id === msg.id) {
                     msg.id = result.data.messageId;
                     msg.status = result.data.messageStatus;
-                    msg.sentAtFormatted = result.data.sentAt;
                     msg.isDelivered = result.data.isDelivered;
                   }
                 });
@@ -195,9 +235,7 @@ export const useMessages = () => {
             )
           );
         }
-
-        // console.log('Message sent successfully resalt:', result);
-
+          audioService.play('sendMessage');
         // return result;
       } catch (error) {
         console.error("Error sending message:", error);
@@ -274,6 +312,7 @@ const resendMessage = useCallback(
             }
           )
         );
+               audioService.play('sendMessage');
       }
     } catch (error) {
       dispatch(
@@ -298,29 +337,6 @@ const resendMessage = useCallback(
   },
   [sendMessageApi]
 );
-
-  //mark all Messages As Read
-  const markMessagesAsRead = 
-    async () => {
-              dispatch(
-          doctorChatApi.util.updateQueryData(
-            'getDoctorChats',
-            undefined,
-            (draft) => {
-              if (!draft?.data) return;
-
-              const chat = draft.data.find(
-                c => c.chatId === selectedChat
-              );
-
-              if (chat) {
-                chat.lastMessageStatus =2;
-                chat.unreadCount = 0;
-              }
-            }
-          )
-        );}
-
   return {
     messages: currentMessages,
     pageSizeMessage,

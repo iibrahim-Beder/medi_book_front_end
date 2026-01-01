@@ -17,7 +17,7 @@ export default function MessagesPage() {
 ) : (
 <section className="dc-haslayout dc-dbsectionspace dc-dbsectionspace-test messages-page">
 <div className="row dc-dbsectionspace-row">
-<div className="col-lg-8 col-xl-9">
+<div className="col-lg-8 col-xl-9 conversation-and-messages  ">
   <MessageList />
 </div>
 <div className="col-md-4 col-xl-3">

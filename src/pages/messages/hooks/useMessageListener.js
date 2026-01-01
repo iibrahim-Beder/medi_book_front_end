@@ -129,6 +129,7 @@ console.log("==isChatOpenRef.current", isChatOpenRef.current, "selectedChatRef.c
               selectedChatRef.current  !== message.chatId ||!isChatOpenRef.current
             ) {
               chat.unreadCount = (chat.unreadCount || 0) + 1;
+              chat.isLastMessageRead = false;
             }
           }
 

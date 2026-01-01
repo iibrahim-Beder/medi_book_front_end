@@ -3,7 +3,7 @@ import { useConversations } from "../hooks/useConversations";
 import {  useSelector } from 'react-redux';
 import { selectIsChatTyping } from '../slices/messagesSlice';
 
-export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime,lastMessageStatus }) {
+export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime,isLastMessageRead }) {
   const {changeChat ,selectedChat,setIsChatOpen} = useConversations();
   const active= (id===selectedChat)
   const istypingHere =  useSelector(selectIsChatTyping(id));
@@ -25,7 +25,7 @@ export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotN
       </figure>
       <div className="dc-adcontent">
         <h3> <span>{name}</span>  <span className={`${isOnline?"text-online ":""} text-lastseen `} > {isOnline ? "Online" : formatTime(lastSeen)}  </span></h3> 
-        {istypingHere ? <span className="dc-typing">Typing...</span>:<span className="text-ellipsis"style={{paddingRight:"18px"}} > {lastMessageIsMine && "you: "}{lastMsg}  <span className="dc-time">{formatChatDate(lastMessageTime)}</span>  </span>}
+        {istypingHere ? <span className="dc-typing">Typing...</span>:<span className={`text-ellipsis ${(!isLastMessageRead && !lastMessageIsMine )?"unread":"last-read"}`} style={{paddingRight:"18px"}} > {lastMessageIsMine && "you: "}{lastMsg}  <span className="dc-time">{formatChatDate(lastMessageTime)}</span>  </span>}
       </div>
     </div></div>
   );
