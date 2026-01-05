@@ -156,20 +156,20 @@ const MedicalHistoryTable = () => {
                             {t(`MedicalHistory.history_type_options.${history.historyType}`)}
                           </span>
                         </td>
-                        <td title={history.hereditaryDiseaseName}>
+                        <td title={history.hereditaryDisease.name}>
                           <div className="d-flex align-items-center">
                             <span
                               className="text-truncate"
                               style={{ maxWidth: "250px" }}
                             >
                               <HighlightText
-                                text={truncateText(history.hereditaryDiseaseName || "-", 50)}
+                                text={truncateText(history.hereditaryDisease.name || "-", 50)}
                                 searchTerm={medicalHistoryData.searchTerm}
                                 matchedFields={history.highlightInfo?.matchedFields || []}
                                 fieldName={fieldMapping.hereditaryDiseaseName}
                               />
                             </span>
-                            {needsExpand(history.hereditaryDiseaseName, 50) && (
+                            {needsExpand(history.hereditaryDisease.name, 50) && (
                               <Button
                                 className="view-btn ms-2"
                                 size="sm"
@@ -302,13 +302,13 @@ const MedicalHistoryTable = () => {
                       </tr>
 
                       {/* Expanded rows */}
-                      {expandedRow === `${history.id}-hereditary` && needsExpand(history.hereditaryDiseaseName, 50) && (
+                      {expandedRow === `${history.id}-hereditary` && needsExpand(history.hereditaryDisease.name, 50) && (
                         <tr className="table-active-content" style={{ backgroundColor: "transparent" }}>
                           <td colSpan="9" className="border-0 background-in-hover-none">
                             <div className="description-expanded-section">
                               <TextAreaField
                                 label={t("MedicalHistory.hereditary_disease")}
-                                value={history.hereditaryDiseaseName}
+                                value={history.hereditaryDisease.name}
                                 disabled={true}
                               />
                             </div>

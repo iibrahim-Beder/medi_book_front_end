@@ -1,7 +1,7 @@
-// hooks/useMedicalHistory.js
 import { useState, useMemo } from "react";
-import { useGetPatientMedicalHistoryQuery, useDeleteMedicalHistoryMutation, useUpdateMedicalHistoryMutation, useAddMedicalHistoryMutation } from "../../../../../api/medicalHistoryApi";
+import { useGetPatientMedicalHistoryQuery, useDeleteMedicalHistoryMutation, useUpdateMedicalHistoryMutation, useAddMedicalHistoryMutation } from "../../../../../api/PatientProfile/medicalHistoryApi";
 import toast from 'react-hot-toast';
+import { buildUpdatePayload, validateForm } from "./MedicalHistoryHelpers";
 
 const PATIENT_ID = 4;
 
@@ -152,63 +152,69 @@ export const useMedicalHistory = (isMobile = false) => {
     setExpandedRow(prev => prev === key ? null : key);
   };
 
-  const handleSave = async () => {
-    if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
-    if (selectedRecord.historyType === "") {
-      toast.error('Please select a medical history type.');
-      return;
-    }
-    console.log('Saving record:', selectedRecord);
-    const loadingToast = toast.loading('Saving...');
-    
-    if (isAddMode) {
-      try {
-        const addData = { ...selectedRecord };
-        console.log('Saving record:', selectedRecord,"Sending add data:",addData );
-        const res = await addMedicalHistory({ 
-          patientId: PATIENT_ID, 
-          ...addData 
-        }).unwrap();
-        
-        if (res?.succeeded) {
-          toast.success(res.message || "Added Successfully");
-          toast.dismiss(loadingToast);
-          setShowModal(false);
-          setSelectedRecord(null);
-          refetch();
-        } else {
-          toast.dismiss(loadingToast);
-          toast.error(res.message || "Failed to add");
-        }
-      } catch (error) {
+const handleSave = async () => {
+if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
+if(validateForm(selectedRecord)){
+ toast.error(validateForm(selectedRecord));
+ return;
+}
+  console.log('Saving record:', selectedRecord);
+  const loadingToast = toast.loading('Saving...');
+  
+  if (isAddMode) {
+    try {
+      const addData = { ...selectedRecord };
+      const res = await addMedicalHistory({ 
+        patientId: PATIENT_ID, 
+        ...addData 
+      }).unwrap();
+      
+      if (res?.succeeded) {
+        toast.success(res.message || "Added Successfully");
         toast.dismiss(loadingToast);
-        toast.error(error?.data?.message || "Error adding medical history record.");
-      }
-    } else {
-      try {
-        const updateData = { ...selectedRecord };
-        const res = await updateMedicalHistory({ 
-          historyId: selectedRecord.id, 
-          patientId: PATIENT_ID, 
-          updates: updateData 
-        }).unwrap();
-        
-        if (res?.succeeded) {
-          toast.success(res.message || "Updated Successfully");
-          toast.dismiss(loadingToast);
-          setShowModal(false);
-          setSelectedRecord(null);
-          refetch();
-        } else {
-          toast.dismiss(loadingToast);
-          toast.error(res.message || "Failed to update");
-        }
-      } catch (error) {
+        setShowModal(false);
+        setSelectedRecord(null);
+      } else {
         toast.dismiss(loadingToast);
-        toast.error(error?.data?.message || "Error updating medical history record.");
+        toast.error(res.message || "Failed to add");
       }
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error(error?.data?.message || "Error adding medical history record.");
     }
-  };
+  } else {
+
+  const originalRecord = medicalHistoryData?.data?.find(
+    r => r.id === selectedRecord.id
+  );
+
+  const updates = buildUpdatePayload(originalRecord, selectedRecord);
+
+  if (!Object.keys(updates).length) {
+    toast('No changes detected');
+    toast.dismiss(loadingToast);
+    setShowModal(false);
+    return;
+  }
+  
+  try {
+    await updateMedicalHistory({
+      historyId: selectedRecord.id,
+      updates
+    }).unwrap();
+
+    toast.success('Updated Successfully');
+    setShowModal(false);
+    setSelectedRecord(null);
+  } catch (e) {
+    // console.log(e);
+    toast.error('Update failed');
+  } finally {
+    toast.dismiss(loadingToast);
+  }
+}
+};
+
 
   const handleConfirmDelete = async () => {
     if (!recordToDelete) return;
@@ -226,7 +232,6 @@ export const useMedicalHistory = (isMobile = false) => {
         setShowPopup(false);
         setRecordToDelete(null);
         setShowModal(false);
-        refetch();
       } else {
         toast.error(res.message || "Failed to delete");
         toast.dismiss(loadingToast);

@@ -1,3 +1,5 @@
+import { transformHistoryTypeToAPI } from "../../../../../api/PatientProfile/medicalHistoryApi";
+
 export const medicalHistoryHelpers = (t) => {
   const truncateText = (text, maxLength = 70) => {
     if (!text) return "";
@@ -47,4 +49,47 @@ export const medicalHistoryHelpers = (t) => {
     fieldMapping,
     getTranslation
   };
+};
+export const validateForm = ( medicalHistory ) => {
+  console.log('Validating form:', medicalHistory);
+ if (!medicalHistory.historyType) {
+    return "Please select a history type.";
+  }
+  if (!medicalHistory.dateOfEvent) {
+    return "Please enter a date.";
+  }
+  if  ( medicalHistory.historyType === "Family History" && (!medicalHistory.hereditaryDisease?.id || !medicalHistory.hereditaryDisease?.name)) {
+    return "Please select a hereditary disease.";
+  }
+};
+
+// MedicalHistoryHelpers.js
+export const buildUpdatePayload = (original, updated) => {
+  const payload = {};
+
+  if (updated.historyType !== original.historyType) {
+    payload.historyType = transformHistoryTypeToAPI(updated.historyType);
+  }
+
+  if (updated.hereditaryDisease?.name !== original.hereditaryDisease?.name) {
+    payload.hereditaryDiseaseId = updated.hereditaryDisease?.id ?? null;
+  }
+
+  if (updated.description !== original.description) {
+    payload.description = updated.description || null;
+  }
+
+  if (updated.dateOfEvent !== original.dateOfEvent) {
+    payload.dateOfEvent = updated.dateOfEvent || null;
+  }
+
+  if (updated.relatedPerson !== original.relatedPerson) {
+    payload.relatedPerson = updated.relatedPerson || null;
+  }
+
+  if (updated.notes !== original.notes) {
+    payload.notes = updated.notes || null;
+  }
+
+  return payload;
 };

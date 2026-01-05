@@ -160,7 +160,7 @@ const MedicalHistoryMobileView = () => {
                   {history.createdAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(history.createdAt)}</small></div>)}
                     </div>
                     {/* Hereditary Disease */}
-                    {history.hereditaryDiseaseName && (
+                    {history.hereditaryDisease.name && (
                       <div className="mb-2">
                         <small className="text-muted d-block mb-1">
                           {t("MedicalHistory.hereditary_disease")}:
@@ -271,7 +271,7 @@ const MedicalHistoryMobileView = () => {
                       </div>
                       <div className="col-6">
                         <div className="fw-bold text-primary">
-                          {history.hereditaryDiseaseName
+                          {history.hereditaryDisease.name
                             ? t("MedicalHistory.hereditary")
                             : t("MedicalHistory.non_hereditary")}
                         </div>
