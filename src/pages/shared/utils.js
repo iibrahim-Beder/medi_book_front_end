@@ -154,3 +154,9 @@ export function formatChatDate(dateString) {
   // Jun 28, 2017 09:30 AM
   return `${month} ${day}, ${date.getFullYear()} ${time}`;
 }
+
+  export const formatDateForAPI = (date) => {
+    if (!date) return undefined;
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  };

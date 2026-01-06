@@ -1,4 +1,4 @@
-import { formatDate } from "../../../../../../shared/utils";
+import { formatDate, formatDateForAPI } from "../../../../../../shared/utils";
 
 export const otherMedicalConditionsHelpers = (t) => {
   // Form fields configuration for modal
@@ -52,7 +52,7 @@ export const otherMedicalConditionsHelpers = (t) => {
       placeholder: t('OtherMedicalConditions.select_date') 
     },
     { 
-      name: "note", 
+      name: "notes", 
       label: t('OtherMedicalConditions.notes'), 
       type: "textarea", 
       placeholder: t('OtherMedicalConditions.enter_notes') 
@@ -93,7 +93,7 @@ export const otherMedicalConditionsHelpers = (t) => {
   ];
 
   const translateSeverity = (severity) => {
-    return t(`OtherMedicalConditionsMobileView.severity_options.${severity?.toLowerCase()}`);
+    return t(`OtherMedicalConditionsMobileView.severity_options.${severity}`);
   };
 
   const translateConditionType = (conditionType) => {
@@ -113,4 +113,57 @@ export const otherMedicalConditionsHelpers = (t) => {
     translateConditionType,
     translateStatus
   };
+};
+
+// OtherMedicalConditionsHelpers.js
+
+export const validateOtherMedicalConditionForm = (condition) => {
+  // console.log('condition', condition);
+  if (!condition.medicalConditionName || condition.medicalConditionName === 0) {
+    return "Please select a medical condition.";
+  }
+
+  if (!condition.diagnosedDate) {
+    return "Please select diagnosed date.";
+  }
+
+  return null;
+};
+const getSeverityValue = (severityText) => {
+  const severityMap = {
+    "Mild": 0,
+    "Moderate": 1,
+    "Severe": 2
+  };
+  return severityMap[severityText] || 1;
+};
+export const buildOtherMedicalConditionUpdatePayload = (original, updated) => {
+  // console.log('===original', original, 'updated', updated);
+  const payload = {};
+
+  if (updated.medicalConditionName !== original.medicalConditionName) {
+    payload.medicalConditionId = updated.medicalConditionNameId;
+  }
+
+  if (updated.severity !== original.severity) {
+    payload.severity = getSeverityValue(updated.severity);
+  }
+
+  if (updated.isActive !== original.isActive) {
+    payload.isActive = updated.isActive;
+  }
+
+  if (updated.conditionType !== original.conditionType) {
+    payload.conditionType = updated.conditionType;
+  }
+
+  if (updated.notes !== original.notes) {
+    payload.notes = updated.notes || null;
+  }
+
+  if (formatDateForAPI(updated.diagnosedDate) !== formatDateForAPI(original.diagnosedDate)) {
+    payload.diagnosisDate = formatDateForAPI(updated.diagnosedDate) || null;
+  }
+
+  return payload;
 };

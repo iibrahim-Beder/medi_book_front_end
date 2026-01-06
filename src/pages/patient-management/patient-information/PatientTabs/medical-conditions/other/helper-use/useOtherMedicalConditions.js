@@ -1,11 +1,17 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { 
   useGetExternalPatientMedicalConditionsQuery,
-  useDeleteExternalPatientMedicalConditionMutation, // Fixed import
-  useUpdateExternalPatientMedicalConditionMutation, // Fixed import
-  useAddExternalPatientMedicalConditionMutation // Fixed import
+  useDeleteExternalPatientMedicalConditionMutation, 
+  useUpdateExternalPatientMedicalConditionMutation, 
+  useAddExternalPatientMedicalConditionMutation 
 } from "../../../../../../../api/patientOtherMedicalConditionsApi";
+import {
+  validateOtherMedicalConditionForm,
+  buildOtherMedicalConditionUpdatePayload
+} from "./otherMedicalConditionsHelpers";
+
 import toast from 'react-hot-toast';
+import { formatDateForAPI } from "../../../../../../shared/utils";
 
 const PATIENT_ID = 4;
 
@@ -38,13 +44,6 @@ export const useOtherMedicalConditions = () => {
 
   const pageSize = 5;
 
-  // Helper functions
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
-
   // RTK Query
   const queryArgs = useMemo(() => {
     const apiFilters = {
@@ -62,6 +61,7 @@ export const useOtherMedicalConditions = () => {
         delete apiFilters[key];
       }
     });
+    console.log("apiFilters", apiFilters);
 
     return {
       patientId: PATIENT_ID,
@@ -78,6 +78,43 @@ export const useOtherMedicalConditions = () => {
     error,
     refetch
   } = useGetExternalPatientMedicalConditionsQuery(queryArgs);
+const mappedMedicalConditionsData = useMemo(() => {
+  if (!medicalConditionsData?.data) return medicalConditionsData;
+
+  const allMatches =
+    medicalConditionsData.meta?.matches?.flatMap(m => m.matches) || [];
+
+  const mappedData = medicalConditionsData.data.map(item => ({
+    ...item,
+    highlightInfo: {
+      matchedFields: allMatches.filter(
+        match => match.itemId === item.id
+      )
+    }
+  }));
+  
+
+  return {
+    ...medicalConditionsData,
+    data: mappedData,
+    searchTerm: medicalConditionsData.meta?.keyword || ""
+  };
+}, [medicalConditionsData]);
+
+useEffect(() => {
+  if (!mappedMedicalConditionsData?.data?.length) return;
+
+  const firstMatchRow = mappedMedicalConditionsData.data.find(
+    item => item.highlightInfo?.matchedFields?.some(
+      match => match.field === "Notes"
+    )
+  );
+
+  if (!firstMatchRow) return;
+
+  setExpandedRow(firstMatchRow.id);
+}, [mappedMedicalConditionsData]);
+
   // Mutations - Fixed hook names
   const [deleteMedicalCondition, { isLoading: isDeleting }] = useDeleteExternalPatientMedicalConditionMutation();
   const [updateMedicalCondition, { isLoading: isUpdating }] = useUpdateExternalPatientMedicalConditionMutation();
@@ -90,7 +127,7 @@ export const useOtherMedicalConditions = () => {
     severity: "Mild",
     diagnosedDate: new Date().toISOString(),
     isActive: true,
-    note: "",
+    notes: "",
     conditionType: "External"
   };
 
@@ -147,71 +184,78 @@ export const useOtherMedicalConditions = () => {
     setExpandedRow(prev => prev === id ? null : id);
   };
 
-  // API Operations - Fixed parameter structure
-  const handleSave = async () => {
-    if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
-    if (!selectedRecord.medicalConditionNameId) {
-      console.log('Selected Record:', selectedRecord);
-      toast.error('Please select a medical condition.');
-      return;
-    }
-    
-    console.log('Selected Record:', selectedRecord);
+const handleSave = async () => {
+  if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
 
-    const loadingToast = toast.loading('Saving...');
+  const errorMessage = validateOtherMedicalConditionForm(selectedRecord);
+  if (errorMessage) {
+    toast.error(errorMessage);
+    return;
+  }
 
-    try {
-      if (isAddMode) {
-        const addData = {
-          patientId: PATIENT_ID,
-          conditionData: {
-            ...selectedRecord,
-            diagnosisDate: formatDateForAPI(selectedRecord.diagnosedDate), // Match API expected field name
-            MedicalConditionId: selectedRecord.medicalConditionNameId, // Ensure this is set
-            notes: selectedRecord.note || '' // Match API expected field name
-          }
-        };
+  const loadingToast = toast.loading("Saving...");
 
-        const res = await addMedicalCondition(addData).unwrap();
-        console.log( "addMedicalCondition", addData ,'API Response:', res);
-        
-        if (res.succeeded) {
-          toast.success(res.message || "Added Successfully");
-          setShowModal(false);
-          setSelectedRecord(null);
-          refetch();
-        } else {
-          toast.error(res.data.message || "Failed to add");
+  try {
+    if (isAddMode) {
+      const addData = {
+        patientId: PATIENT_ID,
+        conditionData: {
+          ...selectedRecord,
+          diagnosisDate: formatDateForAPI(selectedRecord.diagnosedDate),
+          medicalConditionId: selectedRecord.medicalConditionNameId,
+          notes: selectedRecord.notes || ""
         }
+      };
+
+      const res = await addMedicalCondition(addData).unwrap();
+
+      if (res?.succeeded) {
+        toast.success( "Added Successfully");
+        setShowModal(false);
+        setSelectedRecord(null);
       } else {
-        const updateData = {
-          conditionId: selectedRecord.id,
-          updates: {
-            ...selectedRecord,
-            diagnosisDate: formatDateForAPI(selectedRecord.diagnosedDate), // Match API expected field name
-            medicalConditionId: selectedRecord.medicalConditionId,
-            notes: selectedRecord.note || '' // Match API expected field name
-          }
-        };
-
-        const res = await updateMedicalCondition(updateData).unwrap();
-        console.log('API Response: res', res);
-        if (res?.succeeded) {
-          toast.success(res.message || "Updated Successfully");
-          setShowModal(false);
-          setSelectedRecord(null);
-          refetch();
-        } else {
-          toast.error(res.error || "Failed to update");
-        }
+        console.log(" res ",res);
+        toast.error( "Failed to add");
       }
-    } catch (error) {
-      console.error('Save error:', error);
-      toast.error(error.data?.message || `Error ${isAddMode ? 'adding' : 'updating'} medical condition.`);
-    } finally {
-      toast.dismiss(loadingToast);
+    } else {
+      const originalRecord = medicalConditionsData?.data?.find(
+        r => r.id === selectedRecord.id
+      );
+
+      const updates = buildOtherMedicalConditionUpdatePayload(
+        originalRecord,
+        {
+          ...selectedRecord,
+        }
+      );
+          
+      if (!Object.keys(updates).length) {
+        toast("No changes detected");
+        setShowModal(false);
+        return;
+      } 
+
+      console.log("===Updates:", updates);
+
+      await updateMedicalCondition({
+        conditionId: selectedRecord.id,
+        updates
+      }).unwrap();
+
+      toast.success("Updated Successfully");
+      setShowModal(false);
+      setSelectedRecord(null);
     }
-  };
+  } catch (error) {
+    console.error("Save error:", error);
+    toast.error(
+      `Error ${isAddMode ? "adding" : "updating"} medical condition.`
+    );
+  } finally {
+    toast.dismiss(loadingToast);
+  }
+};
+
 
   const handleConfirmDelete = async () => {
     if (!recordToDelete) return;
@@ -227,7 +271,6 @@ export const useOtherMedicalConditions = () => {
         setShowPopup(false);
         setRecordToDelete(null);
         setShowModal(false);
-        refetch();
       } else {
         toast.error(res.message || "Failed to delete");
       }
@@ -242,14 +285,14 @@ export const useOtherMedicalConditions = () => {
 
   // Utility functions
   const getSeverityColor = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case "mild":
+    switch (severity) {
+      case "Mild":
         return "#4BAE78";
-      case "moderate":
+      case "Moderate":
         return "#FFA500";
-      case "severe":
+      case "Severe":
         return "#D66A6A";
-      case "critical":
+      case "Critical":
         return "#DC3545";
       default:
         return "#6C757D";
@@ -280,7 +323,7 @@ export const useOtherMedicalConditions = () => {
     selectedRecord,
     recordToDelete,
     isAddMode,
-    medicalConditionsData,
+    medicalConditionsData:mappedMedicalConditionsData,
     isLoading,
     isFetching,
     error,

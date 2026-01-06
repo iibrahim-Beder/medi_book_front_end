@@ -196,22 +196,22 @@ const OtherMedicalConditions = () => {
                               {translateStatus(condition.isActive)}
                             </span>
                           </td>
-                          <td title={condition.note}>
+                          <td title={condition.notes}>
                             <div className="d-flex align-items-center">
                               <span
                                 className="text-truncate"
                                 style={{ maxWidth: "250px" }}
                               >
-                                {condition.note ? (
+                                {condition.notes ? (
                                   <HighlightText
-                                    text={truncateText(condition.note, 80)}
+                                    text={truncateText(condition.notes, 80)}
                                     searchTerm={medicalConditionsData.searchTerm}
                                     matchedFields={condition.highlightInfo?.matchedFields || []}
-                                    fieldName={fieldMapping.note}
+                                    fieldName={"Notes"}
                                   />
                                 ) : "-"}
                               </span>
-                              {condition.note && (
+                              {condition.notes.length > 80 && (
                                 <Button
                                   className="view-btn ms-2"
                                   size="sm"
@@ -255,7 +255,7 @@ const OtherMedicalConditions = () => {
                         </tr>
 
                         {/* Expanded row for Notes */}
-                        {expandedRow === condition.id && condition.note && (
+                        {expandedRow === condition.id && condition.notes && (
                           <tr
                             className="table-active-content"
                             style={{ backgroundColor: "transparent" }}
@@ -267,7 +267,7 @@ const OtherMedicalConditions = () => {
                               <div className="description-expanded-section">
                                 <TextAreaField
                                   label={t("OtherMedicalConditionsMobileView.notes")}
-                                  value={condition.note}
+                                  value={condition.notes}
                                   disabled={true}
                                 />
                               </div>

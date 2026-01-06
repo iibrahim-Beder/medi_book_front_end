@@ -2,18 +2,18 @@ import { baseApi } from './baseApi';
 
 const transformSeverityToAPI = (severity) => {
   const severityMap = {
-    'Mild': 1,
-    'Moderate': 2, 
-    'Severe': 3
+    'Mild': 0,
+    'Moderate': 1, 
+    'Severe': 2
   };
   return severityMap[severity] ?? null;
 };
 
 const transformSeverityToUI = (severity) => {
   const severityMap = {
-    1: 'Mild',
-    2: 'Moderate',
-    3: 'Severe'
+    0: 'Mild',
+    1: 'Moderate',
+    2: 'Severe'
   };
   return severityMap[severity] ?? 'Mild';
 };
@@ -63,7 +63,7 @@ const transformMedicalConditionsData = (response, searchTerm = "") => {
     severityValue: item.severity,
     diagnosedDate: item.diagnosedDate,
     isActive: item.isActive,
-    note: item.notes,
+    notes: item.notes,
     conditionType: transformConditionTypeToUI(item.conditionType),
     conditionTypeValue: item.conditionType,
     createdAt: item.createdAt,
@@ -99,7 +99,7 @@ const transformSingleMedicalCondition = (response) => {
       severityValue: response.data.severity,
       diagnosedDate: response.data.diagnosedDate,
       isActive: response.data.isActive,
-      note: response.data.note,
+      notes: response.data.notes,
       conditionType: transformConditionTypeToUI(response.data.conditionType),
       conditionTypeValue: response.data.conditionType,
       createdAt: response.data.createdAt,
@@ -162,76 +162,182 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
     }),
     
    // Add external patient medical condition - FIXED VERSION
-addExternalPatientMedicalCondition: builder.mutation({
-  query: (data) => {
-    console.log('Add External Patient Medical Condition Data:', data);
-    const params = {
-      PatientId: data.patientId, 
-      MedicalConditionId: data.conditionData.MedicalConditionId, 
-      Severity: transformSeverityToAPI(data.conditionData.severity),
-      DiagnosisDate: data.conditionData.diagnosisDate,
-      DiagnosedByName: data.conditionData.diagnosedByName || '',
-      IsActive: data.conditionData.isActive !== undefined ? data.conditionData.isActive : true,
-      Notes: data.conditionData.notes || ''
-    };
+    addExternalPatientMedicalCondition: builder.mutation({
+      query: ({ patientId, conditionData }) => (
+        console.log('API Request Params:', { patientId, conditionData }),
+        {
+        url: '/PatientMedicalConditions/AddExternalPatientMedicalConditions',
+        method: 'POST',
+        body: {
+          patientId,
+          medicalConditionId: conditionData.medicalConditionId,
+          severity: transformSeverityToAPI(conditionData.severity),
+          diagnosisDate: conditionData.diagnosisDate,
+          diagnosedByName: conditionData.diagnosedByName || '',
+          isActive: conditionData.isActive ?? true,
+          notes: conditionData.notes || ''
+        }
+      }),
 
-    console.log('Add External Patient Medical Condition Params:', params);
+      async onQueryStarted(
+        { patientId, conditionData },
+        { dispatch, queryFulfilled, getState }
+      ) {
+        const tempId = `temp-${Date.now()}`;
+        const state = getState();
+        const queries = state[baseApi.reducerPath]?.queries ?? [];
+        const patches = [];
 
-    return {
-      url: '/PatientMedicalConditions/AddExternalPatientMedicalConditions',
-      method: 'POST',
-      params: params
-    };
-  },
-  transformResponse: (response) => {
-    console.log('Add External Patient Medical Condition Response:', response);
-    return transformSingleMedicalCondition(response);
-  },
-  invalidatesTags: (result, error, data) => [
-    { type: 'PatientMedicalConditions', id: data.patientId }
-  ],
-}),
+        Object.values(queries).forEach(entry => {
+          if (entry?.endpointName === 'getExternalPatientMedicalConditions') {
+            patches.push(
+              dispatch(
+                patientMedicalConditionsApi.util.updateQueryData(
+                  'getExternalPatientMedicalConditions',
+                  entry.originalArgs,
+                  draft => {
+                    draft.data.unshift({
+                      id: tempId,
+                      medicalConditionId: tempId,
+                      medicalConditionName: conditionData.medicalConditionName,
+                      severity: conditionData.severity,
+                      diagnosedDate: conditionData.diagnosisDate,
+                      isActive: conditionData.isActive ?? true,
+                      notes: conditionData.notes,
+                      createdAt: new Date().toISOString(),
+                      optimistic: true
+                    });
+                    draft.totalCount += 1;
+                  }
+                )
+              )
+            );
+          }
+        });
+
+        try {
+          const { data } = await queryFulfilled;
+          patches.forEach(p => p.undo());
+
+          Object.values(queries).forEach(entry => {
+            if (entry?.endpointName === 'getExternalPatientMedicalConditions') {
+              dispatch(
+                patientMedicalConditionsApi.util.updateQueryData(
+                  'getExternalPatientMedicalConditions',
+                  entry.originalArgs,
+                  draft => {
+                    draft.data.unshift(data.data);
+                  }
+                )
+              );
+            }
+          });
+        } catch {
+          patches.forEach(p => p.undo());
+        }
+      }
+    }),
 
     // Update external patient medical condition
     updateExternalPatientMedicalCondition: builder.mutation({
-      query: (data) => { // Changed to accept single data object
-        const params = {
-          Id: data.conditionId,
-          MedicalConditionId: data.updates.medicalConditionId,
-          Severity: transformSeverityToAPI(data.updates.severity),
-          DiagnosisDate: data.updates.diagnosisDate,
-          DiagnosedByName: data.updates.diagnosedByName || '',
-          IsActive: data.updates.isActive,
-          Notes: data.updates.notes || ''
-        };
+  query: ({ conditionId, updates }) => (
+    console.log('API Request Params:', { conditionId, updates }),
+    {
+    url: '/PatientMedicalConditions/UpdateExternalPatientMedicalConditions',
+    method: 'PUT',
+    body: {
+      id: conditionId,
+      ...updates
+    }
+  }),
 
-        console.log('Update External Patient Medical Condition Params:', params);
+  async onQueryStarted(
+    { conditionId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
 
-        return {
-          url: '/PatientMedicalConditions/UpdateExternalPatientMedicalConditions',
-          method: 'PUT',
-          params: params
-        };
-      },
-      transformResponse: (response) => {
-        console.log('Update External Patient Medical Condition Response:', response);
-        return transformSingleMedicalCondition(response);
-      },
-      invalidatesTags: (result, error, { conditionId }) => [
-        { type: 'PatientMedicalConditions', id: conditionId }
-      ],
+    try {
+      const { data } = await queryFulfilled;
+      const updated = data?.data;
+      if (!updated) return;
+
+      Object.values(queries).forEach(entry => {
+        if (entry?.endpointName === 'getExternalPatientMedicalConditions') {
+          dispatch(
+            patientMedicalConditionsApi.util.updateQueryData(
+              'getExternalPatientMedicalConditions',
+              entry.originalArgs,
+              draft => {
+                const idx = draft.data.findIndex(
+                  r => r.id === updated.id
+                );
+                if (idx !== -1) {
+                  draft.data[idx] = {
+                    ...draft.data[idx],
+                    ...updated
+                  };
+                }
+              }
+            )
+          );
+        }
+      });
+    } catch {
+      // rollback handled automatically
+    }
+  }
     }),
+
 
     // Delete Medical Condition - Fixed parameter
     deleteExternalPatientMedicalCondition: builder.mutation({
-      query: (data) => ({ // Accept object with conditionId
-        url: `/PatientMedicalConditions/DeleteExternalPatientMedicalCondition?id=${data.conditionId}`,
-        method: 'DELETE'
-      }),
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'PatientMedicalConditions', id: patientId }
-      ],
-    })
+  query: ({ conditionId }) => ({
+    url: `/PatientMedicalConditions/DeleteExternalPatientMedicalCondition?id=${conditionId}`,
+    method: 'DELETE'
+  }),
+
+  async onQueryStarted(
+    { conditionId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
+
+    // Optimistic remove
+    Object.values(queries).forEach(entry => {
+      if (entry?.endpointName === 'getExternalPatientMedicalConditions') {
+        const patch = dispatch(
+          patientMedicalConditionsApi.util.updateQueryData(
+            'getExternalPatientMedicalConditions',
+            entry.originalArgs,
+            draft => {
+              const prevLength = draft.data.length;
+              draft.data = draft.data.filter(
+                item => item.id !== conditionId
+              );
+              if (draft.data.length !== prevLength) {
+                draft.totalCount -= 1;
+              }
+            }
+          )
+        );
+        patches.push(patch);
+      }
+    });
+
+    try {
+      await queryFulfilled;
+      // success → نسيب الحالة زي ما هي
+    } catch {
+      // rollback
+      patches.forEach(p => p.undo());
+    }
+  }
+}),
+
   }),
 });
 

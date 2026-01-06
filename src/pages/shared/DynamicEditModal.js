@@ -40,7 +40,7 @@ const DynamicEditModal = ({
     setRecord({ ...record, [name]: val });
   };
 
-  console.log("record", record);
+  // console.log("record", record);
   // Handle dropdown selection for medical conditions
   // const handleMedicalConditionChange = (selectedOption) => {
   //   if (selectedOption) {
