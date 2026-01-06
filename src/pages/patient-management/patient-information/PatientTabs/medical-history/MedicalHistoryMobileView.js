@@ -14,12 +14,16 @@ import HighlightText from "../../../../shared/HighlightText";
 import { useMedicalHistory } from "./useMedicalHistoryOperations";
 import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
 import { formatDate } from "../../../../shared/utils";
+import { useEffect } from "react";
 
 const MedicalHistoryMobileView = () => {
+
   const { t } = useTranslation();
   const {
     // State
-    currentFilters,
+    currentFilters,setExpandedNotes,
+    setExpandedDiscription,
+
     appliedFilters,
     currentPage,
     showModal,
@@ -60,7 +64,29 @@ const MedicalHistoryMobileView = () => {
     hereditaryDiseases,
     fieldMapping,
   } = medicalHistoryHelpers(t);
-
+  useEffect(() => {
+    if (!medicalHistoryData?.data?.length) return;
+  
+    medicalHistoryData.data.forEach(item => {
+      const fields = item.highlightInfo?.matchedFields || [];
+  
+      fields.forEach(match => {
+        if (match.field === "Description") {
+          setExpandedDiscription(prev => ({
+            ...prev,
+            [item.id]: true
+          }));
+        }
+  
+        if (match.field === "Notes") {
+          setExpandedNotes(prev => ({
+            ...prev,
+            [item.id]: true
+          }));
+        }
+      });
+    });
+  }, [medicalHistoryData]);
   // if (isLoading || isFetching) {
   //   return (
   //     <div className="table-container mobile-view-card p-3">
@@ -153,9 +179,15 @@ const MedicalHistoryMobileView = () => {
                     {/* Header with History Type and Manage Button */}
                     <div className="custom-card-title">
                       <h5 style={{ margin: 0 }}>
-                        {t(
+                        {/* {t(
                           `MedicalHistory.history_type_options.${history.historyType}`
-                        )}
+                        )} */}
+                      <HighlightText
+                      text={history.historyType}
+                      searchTerm={medicalHistoryData.searchTerm}
+                      matchedFields={history.highlightInfo?.matchedFields || []}
+                      fieldName={fieldMapping.historyType}
+                      />
                       </h5>
                   {history.createdAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(history.createdAt)}</small></div>)}
                     </div>

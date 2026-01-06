@@ -53,6 +53,7 @@ export const useMedicalHistory = (isMobile = false) => {
         delete apiFilters[key];
       }
     });
+    console.log("apiFilters", apiFilters);
 
     return {
       patientId: PATIENT_ID,
@@ -69,6 +70,28 @@ export const useMedicalHistory = (isMobile = false) => {
     error,
     refetch
   } = useGetPatientMedicalHistoryQuery(queryArgs);
+  const mappedMedicalHistoryData = useMemo(() => {
+  if (!medicalHistoryData?.data) return medicalHistoryData;
+
+  const allMatches =
+    medicalHistoryData.meta?.matches?.flatMap(m => m.matches) || [];
+
+  const mappedData = medicalHistoryData.data.map(item => ({
+    ...item,
+    highlightInfo: {
+      matchedFields: allMatches.filter(
+        match => match.itemId === item.id
+      )
+    }
+  }));
+
+  return {
+    ...medicalHistoryData,
+    data: mappedData,
+    searchTerm: medicalHistoryData.meta?.keyword || ""
+  };
+}, [medicalHistoryData]);
+
 
   const [deleteMedicalHistory, { isLoading: isDeleting }] = useDeleteMedicalHistoryMutation();
   const [updateMedicalHistory, { isLoading: isUpdating }] = useUpdateMedicalHistoryMutation();
@@ -151,6 +174,12 @@ export const useMedicalHistory = (isMobile = false) => {
     const key = `${id}-${field}`;
     setExpandedRow(prev => prev === key ? null : key);
   };
+  const FIELD_KEY_MAP = {
+  Notes: "notes",
+  Description: "description",
+  HereditaryDiseaseName: "hereditary",
+  RelatedPerson: "relatedPerson"
+};
 
 const handleSave = async () => {
 if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
@@ -253,7 +282,7 @@ if(validateForm(selectedRecord)){
     selectedRecord,
     recordToDelete,
     isAddMode,
-    medicalHistoryData,
+    medicalHistoryData: mappedMedicalHistoryData,
     isLoading,
     isFetching,
     error,
@@ -261,6 +290,11 @@ if(validateForm(selectedRecord)){
     pageSize,
     
     // State expanded  
+    setExpandedDiscription,
+    setExpandedNotes,
+    setExpandedRow,
+    FIELD_KEY_MAP,
+    
     expandedNotes,
     expandedDescription,
     expandedRow,

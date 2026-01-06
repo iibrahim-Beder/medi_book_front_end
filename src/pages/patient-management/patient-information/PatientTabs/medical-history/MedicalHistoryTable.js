@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import MedicalHistoryModal from "../component/MedicalHistoryModal";
@@ -36,6 +36,7 @@ const MedicalHistoryTable = () => {
     error,
     isDeleting,
     pageSize,
+    setExpandedRow,
     
     // Actions
     handleSearch,
@@ -51,7 +52,8 @@ const MedicalHistoryTable = () => {
     setCurrentFilters,
     setShowModal,
     setSelectedRecord,
-    refetch
+    refetch,
+    FIELD_KEY_MAP
   } = useMedicalHistory(false);
 
   const {
@@ -61,7 +63,24 @@ const MedicalHistoryTable = () => {
     hereditaryDiseases,
     fieldMapping,
   } = medicalHistoryHelpers(t);
+useEffect(() => {
+  if (!medicalHistoryData?.data?.length) return;
 
+  const firstMatchRow = medicalHistoryData.data.find(
+    item => item.highlightInfo?.matchedFields?.length
+  );
+
+  if (!firstMatchRow) return;
+
+  const firstMatchField =
+    firstMatchRow.highlightInfo.matchedFields[0]?.field;
+
+  const fieldKey = FIELD_KEY_MAP[firstMatchField];
+
+  if (!fieldKey) return;
+
+  setExpandedRow(`${firstMatchRow.id}-${fieldKey}`);
+}, [medicalHistoryData]);
    
 
   return (
@@ -153,7 +172,12 @@ const MedicalHistoryTable = () => {
                               fontSize: "14px",
                             }}
                           >
-                            {t(`MedicalHistory.history_type_options.${history.historyType}`)}
+                           <HighlightText
+                              text={history.historyType}
+                              searchTerm={medicalHistoryData.searchTerm}
+                              matchedFields={history.highlightInfo?.matchedFields || []}
+                              fieldName={fieldMapping.historyType}
+                            />
                           </span>
                         </td>
                         <td title={history.hereditaryDisease.name}>

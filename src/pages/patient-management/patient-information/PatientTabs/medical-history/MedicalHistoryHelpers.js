@@ -33,6 +33,7 @@ export const medicalHistoryHelpers = (t) => {
   ];
 
   const fieldMapping = {
+    historyType: "HistoryType",
     description: "Description",
     hereditaryDiseaseName: "HereditaryDiseaseName",
     relatedPerson: "RelatedPerson",
