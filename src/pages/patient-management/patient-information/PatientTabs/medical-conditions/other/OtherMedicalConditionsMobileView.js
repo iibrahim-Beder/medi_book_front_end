@@ -175,7 +175,7 @@ const OtherMedicalConditionsMobileView = () => {
                           matchedFields={
                             condition.highlightInfo?.matchedFields || []
                           }
-                          fieldName={fieldMapping.medicalConditionName}
+                          fieldName={"MedicalConditionName"}
                         />
                       </h5>
                       <small className="text-muted">
@@ -237,7 +237,7 @@ const OtherMedicalConditionsMobileView = () => {
                     </div>
 
                     {/* Notes */}
-                    {condition.note && (
+                    {condition.notes && (
                       <div className="mb-3">
                         <div className="text-muted d-flex align-items-center mb-1">
                           <small
@@ -265,12 +265,12 @@ const OtherMedicalConditionsMobileView = () => {
                           <div className="expandable-content ">
                             <p className="mb-0">
                             <HighlightText
-                              text={condition.note}
+                              text={condition.notes}
                               searchTerm={medicalConditionsData.searchTerm}
                               matchedFields={
                                 condition.highlightInfo?.matchedFields || []
                               }
-                              fieldName={fieldMapping.note}
+                              fieldName={"Notes"}
                             /></p>
                           </div>
                         )}
