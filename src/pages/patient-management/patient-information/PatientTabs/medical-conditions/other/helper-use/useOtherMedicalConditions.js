@@ -4,7 +4,7 @@ import {
   useDeleteExternalPatientMedicalConditionMutation, 
   useUpdateExternalPatientMedicalConditionMutation, 
   useAddExternalPatientMedicalConditionMutation 
-} from "../../../../../../../api/patientOtherMedicalConditionsApi";
+} from "../../../../../../../api/PatientProfile/patientOtherMedicalConditionsApi";
 import {
   validateOtherMedicalConditionForm,
   buildOtherMedicalConditionUpdatePayload
