@@ -1,5 +1,5 @@
 // patientMedicalConditionsApi.js
-import { baseApi } from './baseApi';
+import { baseApi } from '../baseApi';
 
 // Helper functions
 const getSeverityValue = (severityText) => {

@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useGetPatientMedicalConditionsQuery } from "../../../../../../api/patientMedicalConditionsApi";
+import { useGetPatientMedicalConditionsQuery } from "../../../../../../api/PatientProfile/patientMedicalConditionsApi";
 
 const PATIENT_ID = 4;
 
