@@ -149,10 +149,10 @@ const DiagnosedConditionsMobileView = () => {
                       <div className="custom-card-title">
                       <h5>
                         <HighlightText
-                          text={condition.medicalConditionName}
-                          searchTerm={appliedFilters.searchValue}
-                          matchedFields={condition.highlightInfo?.matchedFields || []}
-                          fieldName={fieldMapping.medicalConditionName}
+                        text={condition.medicalConditionName}
+                        searchTerm={medicalConditionsData.searchTerm}
+                        matchedFields={condition.highlightInfo?.matchedFields || []}
+                        fieldName="MedicalConditionName"
                         />
                       </h5>
                        {condition.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(condition.createdAt)}</small></div>)}
@@ -221,7 +221,7 @@ const DiagnosedConditionsMobileView = () => {
                                 text={condition.notes}
                                 searchTerm={appliedFilters.searchValue}
                                 matchedFields={condition.highlightInfo?.matchedFields || []}
-                                fieldName={fieldMapping.notes}
+                                fieldName={"Notes"}
                               />
                             </p>
                             </div>

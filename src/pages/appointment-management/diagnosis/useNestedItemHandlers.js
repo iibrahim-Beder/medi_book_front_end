@@ -7,7 +7,7 @@ import {
 } from "../../../api/patientPrescriptionApi";
 import {
   useAddInternalPatientMedicalConditionMutation,useDeletePatientMedicalConditionMutation,useUpdatePatientMedicalConditionMutation
-} from "../../../api/patientMedicalConditionsApi";
+} from "../../../api/PatientProfile/patientMedicalConditionsApi";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import toast from "react-hot-toast";
 export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ,setIsChange) => {
