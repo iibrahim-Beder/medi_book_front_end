@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useGetPatientMedicalConditionsQuery } from "../../../../../../api/patientMedicalConditionsApi";
 
 const PATIENT_ID = 4;
@@ -58,7 +58,7 @@ export const useMedicalConditions = (isMobile = false) => {
           delete apiFilters[key];
         }
       });
-  
+      console.log("apiFilters", apiFilters);
       return {
         patientId: PATIENT_ID,
         filter: apiFilters,
@@ -74,6 +74,67 @@ export const useMedicalConditions = (isMobile = false) => {
     error,
     refetch
   } = useGetPatientMedicalConditionsQuery(queryArgs);
+
+const mappedMedicalConditionsData = useMemo(() => {
+  if (!medicalConditionsData?.data) return medicalConditionsData;
+
+  const allMatches =
+    medicalConditionsData.meta?.matches?.flatMap(m => m.matches) || [];
+
+  const mappedData = medicalConditionsData.data.map(item => ({
+    ...item,
+    highlightInfo: {
+      matchedFields: allMatches.filter(
+        match => match.itemId === item.id
+      )
+    }
+  }));
+  
+
+  return {
+    ...medicalConditionsData,
+    data: mappedData,
+    searchTerm: medicalConditionsData.meta?.keyword || ""
+  };
+}, [medicalConditionsData]);
+
+useEffect(() => {
+  if (!mappedMedicalConditionsData?.data?.length) return;
+
+  mappedMedicalConditionsData.data.forEach(item => {
+    const fields = item.highlightInfo?.matchedFields || [];
+
+    fields.forEach(match => {
+      if (match.field === "Notes") {
+        setExpandedNotes(prev => ({
+          ...prev,
+          [item.id]: true
+        }));
+      }
+    });
+  });
+}, [mappedMedicalConditionsData]);
+useEffect(() => {
+  if (!mappedMedicalConditionsData?.data?.length) return;
+
+  const firstMatchRow = mappedMedicalConditionsData.data.find(
+    item => item.highlightInfo?.matchedFields?.length
+  );
+
+  if (!firstMatchRow) return;
+
+  setExpandedRow(firstMatchRow.id);
+
+  firstMatchRow.highlightInfo.matchedFields.forEach(match => {
+    if (match.field === "Notes") {
+      setExpandedNotes(prev => ({
+        ...prev,
+        [firstMatchRow.id]: true
+      }));
+    }
+  });
+}, [mappedMedicalConditionsData]);
+
 
   const handleSearch = (filters) => {
     setCurrentPage(1);
@@ -134,7 +195,7 @@ export const useMedicalConditions = (isMobile = false) => {
     appliedFilters,
     currentPage,
     expandedRow,
-    medicalConditionsData,
+    medicalConditionsData: mappedMedicalConditionsData,
     isLoading,
     isFetching,
     error,

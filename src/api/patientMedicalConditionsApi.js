@@ -4,18 +4,18 @@ import { baseApi } from './baseApi';
 // Helper functions
 const getSeverityValue = (severityText) => {
   const severityMap = {
-    "Mild": 1,
-    "Moderate": 2,
-    "Severe": 3
+    "Mild": 0,
+    "Moderate": 1,
+    "Severe": 2
   };
   return severityMap[severityText] || 1;
 };
 
 const getSeverityText = (severity) => {
   const severityMap = {
-    1: "Mild",
-    2: "Moderate", 
-    3: "Severe"
+    0: "Mild",
+    1: "Moderate", 
+    2: "Severe"
   };
   return severityMap[severity] || "Mild";
 };

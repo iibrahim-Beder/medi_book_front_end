@@ -12,6 +12,7 @@ import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { useMedicalConditions } from "./useMedicalConditions";
 import { medicalConditionsHelpers } from "./medicalConditionsHelpers";
 import { formatDate } from "../../../../../shared/utils";
+import HighlightText from "../../../../../shared/HighlightText";
 
 const DiagnosedConditionsTable = () => {
   const { t } = useTranslation();
@@ -140,7 +141,12 @@ const DiagnosedConditionsTable = () => {
                       <React.Fragment key={condition.id}>
                         <tr>
                           <td title={condition.medicalConditionName}>
-                            {condition.medicalConditionName}
+                            <HighlightText
+                              text={condition.medicalConditionName}
+                              searchTerm={medicalConditionsData.searchTerm}
+                              matchedFields={condition.highlightInfo?.matchedFields || []}
+                              fieldName="MedicalConditionName"
+                            />
                           </td>
                           <td>
                             <span
@@ -174,7 +180,14 @@ const DiagnosedConditionsTable = () => {
                                 className="text-truncate"
                                 style={{ maxWidth: "250px" }}
                               >
-                                {truncateText(condition.notes, 80)}
+                                {/* {truncateText(condition.notes, 80)} */}
+                                <HighlightText
+                                  text={truncateText(condition.notes, 80)}
+                                  searchTerm={medicalConditionsData.searchTerm}
+                                  matchedFields={condition.highlightInfo?.matchedFields || []}
+                                  fieldName="Notes"
+                                />
+
                               </span>
                               {condition.notes && condition.notes.length > 80 && (
                                 <Button

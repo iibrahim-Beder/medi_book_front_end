@@ -1,7 +1,7 @@
 export const medicalConditionsHelpers = (t) => {
   const conditionTypes = [
-    { key: "Chronic", label: t("Conditions.types.chronic") },
     { key: "Acute", label: t("Conditions.types.acute") },
+    { key: "Chronic", label: t("Conditions.types.chronic") },
     { key: "Genetic", label: t("Conditions.types.genetic") },
     { key: "Infectious", label: t("Conditions.types.infectious") },
     { key: "Autoimmune", label: t("Conditions.types.autoimmune") }
