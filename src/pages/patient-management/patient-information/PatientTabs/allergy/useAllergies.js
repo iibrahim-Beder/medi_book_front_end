@@ -4,7 +4,7 @@ import {
   useDeletePatientAllergyMutation,
   useUpdatePatientAllergyMutation,
   useAddPatientAllergyMutation 
-} from "../../../../../api/patientAllergiesApi";
+} from "../../../../../api/PatientProfile/patientAllergiesApi";
 import {
   validateAllergyForm,
   buildAllergyUpdatePayload
