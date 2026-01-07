@@ -1,10 +1,15 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { 
   useGetPatientAllergiesQuery,
   useDeletePatientAllergyMutation,
   useUpdatePatientAllergyMutation,
   useAddPatientAllergyMutation 
 } from "../../../../../api/patientAllergiesApi";
+import {
+  validateAllergyForm,
+  buildAllergyUpdatePayload
+} from "./allergyHelpers";
+
 import toast from 'react-hot-toast';
 
 const PATIENT_ID = 4;
@@ -30,6 +35,8 @@ export const useAllergies = () => {
   const [isAddMode, setIsAddMode] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null);
+  
 
   const pageSize = 5;
 
@@ -84,7 +91,7 @@ export const useAllergies = () => {
     allergenLabel: "",
     severity: "Mild",
     isActive: true,
-    dateNoted: "",
+    dateNoted: new Date().toISOString().split('T')[0],
     reaction: "",
     notes: ""
   };
@@ -136,101 +143,134 @@ export const useAllergies = () => {
       setShowPopup(true);
     }
   };
+    const handleExpandClick = (id) => {
+    setExpandedRow(prev => prev === id ? null : id);
+  };
 
   const handleClosePopup = () => {
     setShowPopup(false);
     setRecordToDelete(null);
   };
+  
+  const mappedAllergies = useMemo(() => {
+  if (!allergiesData?.data) return allergiesData;
+
+  const allMatches =
+    allergiesData.meta?.matches?.flatMap(m => m.matches) || [];
+
+  const mappedData = allergiesData.data.map(item => ({
+    ...item,
+    highlightInfo: {
+      matchedFields: allMatches.filter(
+        match => match.itemId === item.id
+      )
+    }
+  }));
+  
+
+  return {
+    ...allergiesData,
+    data: mappedData,
+    searchTerm: allergiesData.meta?.keyword || ""
+  };
+}, [allergiesData]);
+
+// Auto expand if there is a match on first row
+useEffect(() => {
+  if (!mappedAllergies?.data?.length) return;
+  const firstMatchRow = mappedAllergies.data.find(
+    item => item.highlightInfo?.matchedFields?.length
+  );
+  if (!firstMatchRow) return;
+  setExpandedRow(firstMatchRow.id);
+}, [mappedAllergies]);
+
 
   // API Operations
 const handleSave = async () => {
   if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
-  
-  console.log('Saving record:', selectedRecord);
-  
-  // Validation
-  
-  if (!selectedRecord.severity) {
-    toast.error('Please select severity.');
+
+  const errorMessage = validateAllergyForm(selectedRecord);
+  if (errorMessage) {
+    toast.error(errorMessage);
     return;
   }
-  if(!selectedRecord.dateNoted) {
-        toast.error('Please select a date noted.');
-        return;
-}
-  const loadingToast = toast.loading('Saving...');
   
-  
+
+  const loadingToast = toast.loading("Saving...");
+
   try {
     if (isAddMode) {
-      if (!selectedRecord.allergenNameId) {
-        toast.error('Please select an allergen.');
-        toast.dismiss(loadingToast);
-        return;
-      }
-      // ADD MODE
       const allergyData = {
         allergenId: selectedRecord.allergenNameId,
         severity: selectedRecord.severity,
-        isActive: selectedRecord.isActive !== undefined ? selectedRecord.isActive : true,
+        isActive: selectedRecord.isActive ?? true,
         dateNoted: selectedRecord.dateNoted,
-        reaction: selectedRecord.reaction || '',
-        notes: selectedRecord.notes || ''
-      };
+        reaction: selectedRecord.reaction || "",
+        notes: selectedRecord.notes || ""
+      }; 
 
-      console.log('Adding allergy data:', allergyData);
-
-      const res = await addPatientAllergy({ 
-        patientId: PATIENT_ID, 
-        allergyData: allergyData 
-      }).unwrap();
-      console.log('Add Patient Allergy Response:', res);
       
+      const res = await addPatientAllergy({
+        patientId: PATIENT_ID,
+        allergyData
+      }).unwrap();
+      console.log("res", res);
+
       if (res?.succeeded) {
-        toast.success(res.message || "Added Successfully");
-        toast.dismiss(loadingToast);
+        toast.success("Added Successfully");
         setShowModal(false);
         setSelectedRecord(null);
-        refetch();
       } else {
-        toast.dismiss(loadingToast);
-        toast.error(res.message || "Failed to add allergy");
+        console.log("error",res);
+        toast.error("Failed to add allergy");
       }
     } else {
-      // EDIT MODE
-      const updates = {
-        allergenId: selectedRecord.allergenNameId,
-        severity: selectedRecord.severity,
-        isActive: selectedRecord.isActive,
-        dateNoted: selectedRecord.dateNoted, 
-        reaction: selectedRecord.reaction || '',
-        notes: selectedRecord.notes || ''
-      };
+      const originalRecord = allergiesData?.data?.find(
+        r => r.id === selectedRecord.id
+      );
 
-      console.log('Updating allergy data:', updates);
+      const updates = buildAllergyUpdatePayload(
+        originalRecord,
+        selectedRecord
+      );
 
-      const res = await updatePatientAllergy({ 
-        allergyId: selectedRecord.id, 
-        updates: updates 
+      if (!Object.keys(updates).length) {
+        toast("No changes detected");
+        setShowModal(false);
+        return;
+      }
+      console.log("===updates", updates);
+
+     const res =   await updatePatientAllergy({
+        allergyId: selectedRecord.id,
+        updates
       }).unwrap();
-      
+            console.log("res", res);
+
       if (res?.succeeded) {
-        toast.success(res.message || "Updated Successfully");
-        toast.dismiss(loadingToast);
+        toast.success("Updated Successfully");
         setShowModal(false);
         setSelectedRecord(null);
-        refetch();
       } else {
-        toast.dismiss(loadingToast);
-        toast.error(res.message || "Failed to update allergy");
+        console.log("error",error);
+        toast.error("Failed to update allergy");
       }
+
+      toast.success("Updated Successfully");
+      setShowModal(false);
+      setSelectedRecord(null);
     }
   } catch (error) {
+    console.error(error);
+    toast.error(
+      `Error ${isAddMode ? "adding" : "updating"} allergy record.`
+    );
+  } finally {
     toast.dismiss(loadingToast);
-    console.error('Save error:', error);
-    toast.error(error?.data?.message || `Error ${isAddMode ? 'adding' : 'updating'} allergy record.`);
   }
 };
+
   const handleConfirmDelete = async () => {
     if (!recordToDelete) return;
     console.log("recordToDelete",recordToDelete);
@@ -248,7 +288,6 @@ const handleSave = async () => {
         setShowPopup(false);
         setRecordToDelete(null);
         setShowModal(false);
-        refetch();
       } else {
         console.error("Failed to delete", res);
         toast.error(res.message || "Failed to delete");
@@ -272,14 +311,16 @@ const handleSave = async () => {
     isAddMode,
     showPopup,
     recordToDelete,
-    allergiesData,
+    allergiesData:mappedAllergies,
     isLoading,
     isFetching,
     error,
     isDeleting,
     pageSize,
+    expandedRow,
     
     // Actions
+    handleExpandClick,
     handleSearch,
     handleResetFilters,
     handleAddNew,

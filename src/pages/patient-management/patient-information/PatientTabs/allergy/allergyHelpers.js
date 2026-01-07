@@ -104,3 +104,51 @@ export const allergyHelpers = (t) => {
     translateStatus
   };
 };
+
+
+const transformSeverityToAPI = (severity) => {
+  const severityMap = {
+    'Mild': 0,
+    'Moderate': 1, 
+    'Severe': 2
+  };
+  return severityMap[severity] ?? null;
+};
+export const validateAllergyForm = (record) => {
+  console.log("===record", record);
+  if (!record.allergenNameId && !record.allergenName ) return "Please select an allergen.";
+  if (!record.severity) return "Please select severity.";
+  if (!record.dateNoted) return "Please select date noted.";
+  return null;
+};
+
+export const buildAllergyUpdatePayload = (original, updated) => {
+  const payload = {};
+  console.log("===original", original, "updated", updated);
+
+  if (updated.allergenName !== original.allergenName) {
+    payload.allergenId = updated.allergenNameId;
+  }
+
+  if (updated.severity !== original.severity) {
+    payload.severity =transformSeverityToAPI(updated.severity);
+  }
+
+  if (updated.isActive !== original.isActive) {
+    payload.isActive = updated.isActive;
+  }
+
+  if (updated.reaction !== original.reaction) {
+    payload.reaction = updated.reaction || "";
+  }
+
+  if (updated.notes !== original.notes) {
+    payload.notes = updated.notes || "";
+  }
+
+  if (updated.dateNoted !== original.dateNoted) {
+    payload.dateNoted = updated.dateNoted;
+  }
+
+  return payload;
+};

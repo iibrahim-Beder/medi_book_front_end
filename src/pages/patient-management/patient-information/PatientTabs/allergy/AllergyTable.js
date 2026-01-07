@@ -13,6 +13,8 @@ import ErrorLoading from "../../../../shared/ErrorLoading";
 import { Toaster } from 'react-hot-toast';
 import { useAllergies } from "./useAllergies";
 import { allergyHelpers } from "./allergyHelpers";
+import { MdExpandMore } from "react-icons/md";
+import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 
 const AllergyTable = () => {
   const { t } = useTranslation();
@@ -33,8 +35,10 @@ const AllergyTable = () => {
     error,
     isDeleting,
     pageSize,
+    expandedRow,
     
     // Actions
+    handleExpandClick,
     handleSearch,
     handleResetFilters,
     handleAddNew,
@@ -139,7 +143,9 @@ const AllergyTable = () => {
                     </td>
                   </tr>
                 ) : allergiesData?.data && allergiesData.data.length > 0 ? (
+                  
                   allergiesData.data.map((entry) => (
+                    <React.Fragment key={entry.id}>
                     <tr key={entry.id}>
                       <td>
                         <HighlightText
@@ -168,16 +174,44 @@ const AllergyTable = () => {
                       </td>
                       <td>
                         {entry.notes ? (
-                          <HighlightText
-                            text={
-                              entry.notes.length > 50
-                                ? `${entry.notes.substring(0, 50)}...`
-                                : entry.notes
-                            }
-                            searchTerm={allergiesData.searchTerm}
-                            matchedFields={entry.highlightInfo?.matchedFields || []}
-                            fieldName={fieldMapping.notes}
-                          />
+                          <span>
+                            <HighlightText
+                              text={
+                                entry.notes.length > 50
+                                  ? `${entry.notes.substring(0, 50)}...`
+                                  : entry.notes
+                              }
+                              searchTerm={allergiesData.searchTerm}
+                              matchedFields={entry.highlightInfo?.matchedFields || []}
+                              fieldName={fieldMapping.notes}
+                            />
+                            
+                               {entry.notes && entry.notes.length > 80 && (
+                                <Button
+                                  className="view-btn ms-2"
+                                  size="sm"
+                                  style={{
+                                    backgroundColor: "transparent",
+                                    color: "#278fff",
+                                    padding: 0,
+                                    fontSize: "19px",
+                                    height: "20px",
+                                  }}
+                                  onClick={() => handleExpandClick(entry.id)}
+                                >
+                                  <MdExpandMore
+                                    style={{
+                                      transform:
+                                        expandedRow === entry.id
+                                          ? "rotate(180deg)"
+                                          : "rotate(0deg)",
+                                      transition: "transform 0.3s ease",
+                                    }}
+                                  />
+                                </Button>
+                              )}
+
+                          </span>
                         ) : (
                           "-"
                         )}
@@ -199,6 +233,27 @@ const AllergyTable = () => {
                         </Button>
                       </td>
                     </tr>
+                      {/* Expanded row for Notes */}
+                        {expandedRow === entry.id && entry.notes && entry.notes.length > 80 && (
+                          <tr
+                            className="table-active-content"
+                            style={{ backgroundColor: "transparent" }}
+                          >
+                            <td
+                              colSpan="6"
+                              className="border-0 background-in-hover-none"
+                            >
+                              <div className="description-expanded-section">
+                                <TextAreaField
+                                  label={t("DiagnosedConditionsTable.notes")}
+                                  value={entry.notes}
+                                  disabled={true}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                  </React.Fragment>
                   ))
                 ) : (
                   <tr>
@@ -211,6 +266,7 @@ const AllergyTable = () => {
                     </td>
                   </tr>
                 )}
+             
               </tbody>
             </Table>
           </div>
