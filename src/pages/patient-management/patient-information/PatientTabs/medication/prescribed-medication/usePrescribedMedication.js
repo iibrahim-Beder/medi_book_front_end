@@ -1,12 +1,15 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useGetPrescribedMedicationQuery } from "../../../../../../api/prescribedMedicationApi";
+import { formatDateForAPI } from "../../../../../shared/utils";
+import { hasMatchForField, shouldExpand } from "../../component/helpers";
 
 const PATIENT_ID = 4;
 
 export const usePrescribedMedication = (isMobile = false) => {
   // State 
-  const [expandedRow, setExpandedRow] = useState(null);
+  const [expandedRow, setExpandedRow] = useState({});
   const [expandedInstructions, setExpandedInstructions] = useState({});
+  const [expandedField, setExpandedField] = useState({});
   
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
@@ -30,13 +33,15 @@ export const usePrescribedMedication = (isMobile = false) => {
 
   const pageSize = isMobile ? 3 : 5;
 
-  // Helper functions
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
-
+const handleExpandClick = (id, field) => {
+  if (expandedRow === id && expandedField === field) {
+    setExpandedRow(null);
+    setExpandedField(null);
+  } else {
+    setExpandedRow(id);
+    setExpandedField(field);
+  }
+};
   // RTK Query
   const queryArgs = useMemo(() => {
     const apiFilters = {
@@ -67,6 +72,64 @@ export const usePrescribedMedication = (isMobile = false) => {
     error,
     refetch
   } = useGetPrescribedMedicationQuery(queryArgs);
+  
+  const mappedPrescribedMedicationData = useMemo(() => {
+    
+  if (!prescribedMedicationData?.data) return prescribedMedicationData;
+
+  const allMatches =
+    prescribedMedicationData.meta?.matches?.flatMap(m => m.matches) || [];
+
+  const mappedData = prescribedMedicationData.data.map(item => ({
+    ...item,
+    highlightInfo: {
+      matchedFields: allMatches.filter(
+        match => match.itemId === item.id
+      )
+    }
+  }));  
+
+  return {
+    ...prescribedMedicationData,
+    data: mappedData,
+    searchTerm: prescribedMedicationData.meta?.keyword || ""
+  };
+}, [prescribedMedicationData]);
+
+const searchTerm = appliedFilters.searchValue;
+
+useEffect(() => {
+  if (!mappedPrescribedMedicationData?.data?.length) return;
+  if (!searchTerm) return;
+
+  const MAX_LEN = 40;
+  const expandableFields = [
+    "instructions",
+    "diagnosisName",
+    "prescriptionName",
+  ];
+
+  const firstMatch = mappedPrescribedMedicationData.data.find(item =>
+    item.highlightInfo?.matchedFields?.length &&
+    expandableFields.some(field =>
+      hasMatchForField(item, field) &&
+      shouldExpand(item[field], MAX_LEN)
+    )
+  );
+
+  if (!firstMatch) return;
+
+  const matchedField = expandableFields.find(field =>
+    hasMatchForField(firstMatch, field) &&
+    shouldExpand(firstMatch[field], MAX_LEN)
+  );
+
+  if (!matchedField) return;
+
+  setExpandedRow(firstMatch.id);
+  setExpandedField(matchedField);
+}, [mappedPrescribedMedicationData, searchTerm]);
+
 
   // Actions 
   const handleSearch = (filters) => {
@@ -123,19 +186,18 @@ export const usePrescribedMedication = (isMobile = false) => {
     return text.substring(0, maxLength) + "...";
   };
 
-  // Get matched fields for highlighting
-  const getMatchedFields = (highlightInfo) => {
-    if (!highlightInfo || !highlightInfo.matchedFields) return [];
-    return highlightInfo.matchedFields.map(field => field.fieldName);
-  };
+  // // Get matched fields for highlighting
+  // const getMatchedFields = (highlightInfo) => {
+  //   if (!highlightInfo || !highlightInfo.matchedFields) return [];
+  //   return highlightInfo.matchedFields.map(field => field.fieldName);
+  // };
 
 
 
   // Data calculations
-  const currentData = prescribedMedicationData?.data || [];
+  const currentData = mappedPrescribedMedicationData?.data || [];
   const totalItems = prescribedMedicationData?.totalCount || 0;
   const totalPages = prescribedMedicationData?.totalPages || 1;
-  const searchTerm = appliedFilters.searchValue;
 
   return {
     // State
@@ -146,7 +208,7 @@ export const usePrescribedMedication = (isMobile = false) => {
     currentPage,
     showModal,
     selectedMedication,
-    prescribedMedicationData,
+    prescribedMedicationData:mappedPrescribedMedicationData,
     isLoading,
     isFetching,
     error,
@@ -155,6 +217,8 @@ export const usePrescribedMedication = (isMobile = false) => {
     totalItems,
     totalPages,
     searchTerm,
+    handleExpandClick,
+    expandedField,
     
     // Actions
     handleSearch,
@@ -170,6 +234,6 @@ export const usePrescribedMedication = (isMobile = false) => {
     
     // Utilities
     truncateText,
-    getMatchedFields,
+    // getMatchedFields,
   };
 };

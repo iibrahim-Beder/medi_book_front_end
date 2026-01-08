@@ -12,6 +12,7 @@ import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { usePrescribedMedication } from "./usePrescribedMedication";
 import { prescribedMedicationHelpers, TableSkeleton } from "./prescribedMedicationHelpers";
 import { formatDate } from "../../../../../shared/utils";
+import { shouldExpand } from "../../component/helpers";
 
 const PrescribedMedicationTable = () => {
   const { t } = useTranslation();
@@ -31,18 +32,18 @@ const PrescribedMedicationTable = () => {
     totalItems,
     totalPages,
     searchTerm,
+    handleExpandClick,
+    expandedField,
     
     // Actions
     handleSearch,
     handleResetFilters,
-    handleInstructionsClick,
     setCurrentPage,
     setCurrentFilters,
     refetch,
     
     // Utilities
     truncateText,
-    getMatchedFields
   } = usePrescribedMedication();
 
   const {
@@ -114,17 +115,17 @@ const PrescribedMedicationTable = () => {
                       <tr>
                         <td title={medication.medicationName}>
                           <HighlightText
-                            text={medication.medicationName}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName={fieldMapping.medicationName}
+                          text={medication.medicationName}
+                          searchTerm={searchTerm}
+                          matchedFields={medication.highlightInfo?.matchedFields || []}
+                          fieldName={"MedicationName"}
                           />
                         </td>
                         <td title={medication.dosage}>
                           <HighlightText
                             text={medication.dosage}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                           matchedFields={medication.highlightInfo?.matchedFields || []}
                             fieldName={fieldMapping.dosage}
                           />
                         </td>
@@ -133,15 +134,21 @@ const PrescribedMedicationTable = () => {
                         </td>
 
                         <td title={medication.instructions}>
-                          <div className="d-flex align-items-center">
+                          {!medication.instructions ? (
+                            "-"
+                            
+                          ):(
+
+                             <div className="d-flex align-items-center">
                             <span className="text-truncate" style={{ maxWidth: "250px" }}>
                               <HighlightText
-                                text={truncateText(medication.instructions, 80)}
+                                text={truncateText(medication.instructions, 40)}
                                 searchTerm={searchTerm}
-                                matchedFields={getMatchedFields(medication.highlightInfo)}
+                                matchedFields={medication.highlightInfo?.matchedFields || []}
                                 fieldName={fieldMapping.instructions}
                               />
                             </span>
+                            {shouldExpand(medication.instructions,40) &&
                             <Button
                               className="view-btn ms-2"
                               size="sm"
@@ -152,47 +159,122 @@ const PrescribedMedicationTable = () => {
                                 fontSize: "19px",
                                 height: "20px",
                               }}
-                              onClick={() => handleInstructionsClick(medication.id)}
+                              onClick={() => handleExpandClick(medication.id,"instructions")}
                             >
                               <MdExpandMore
                                 style={{
                                   transform:
-                                    expandedRow === medication.id
+                                    expandedRow === medication.id &&
+                                    expandedField === "instructions"
+
                                       ? "rotate(180deg)"
                                       : "rotate(0deg)",
                                   transition: "transform 0.3s ease",
                                 }}
                               />
-                            </Button>
+                            </Button>}
+                          </div>
+                          )
+                          }
+
+                         
+                        </td>
+                        <td title={medication.diagnosisName}>
+                          <div className="d-flex align-items-center">
+                            <span className="text-truncate">
+                              <HighlightText
+                                text={truncateText(medication.diagnosisName, 40)}
+                                searchTerm={searchTerm}
+                                matchedFields={medication.highlightInfo?.matchedFields || []}
+                                fieldName={fieldMapping.diagnosisName}
+                              />
+                            </span>
+
+                            {shouldExpand(medication.diagnosisName, 40) && (
+                              <Button
+                                className="view-btn ms-2"
+                                size="sm"
+                                style={{
+                                backgroundColor: "transparent",
+                                color: "#278fff",
+                                padding: 0,
+                                fontSize: "19px",
+                                height: "20px",
+                                }}
+                                onClick={() =>
+                                  handleExpandClick(medication.id, "diagnosisName")
+                                }
+                              >
+                                <MdExpandMore
+                                  style={{
+                                    transform:
+                                      expandedRow === medication.id &&
+                                      expandedField === "diagnosisName"
+                                        ? "rotate(180deg)"
+                                        : "rotate(0deg)",
+                                    transition: "0.3s",
+                                  }}
+                                />
+                              </Button>
+                            )}
                           </div>
                         </td>
 
-                        <td title={medication.diagnosisName}>
-                          <HighlightText
-                            text={medication.diagnosisName}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName={fieldMapping.diagnosisName}
-                          />
-                        </td>
                         <td title={medication.prescriptionName}>
-                          <HighlightText
-                            text={medication.prescriptionName}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName={fieldMapping.prescriptionName}
-                          />
+                          <div className="d-flex align-items-center">
+                            <span className="text-truncate">
+                              <HighlightText
+                                text={truncateText(medication.prescriptionName, 40)}
+                                searchTerm={searchTerm}
+                                matchedFields={medication.highlightInfo?.matchedFields || []}
+                                fieldName={fieldMapping.prescriptionName}
+                              />
+                            </span>
+
+                            {shouldExpand(medication.prescriptionName, 40) && (
+                              <Button
+                                className="view-btn ms-2"
+                                size="sm"
+                                style={{
+                                backgroundColor: "transparent",
+                                color: "#278fff",
+                                padding: 0,
+                                fontSize: "19px",
+                                height: "20px",
+                                }}
+                                onClick={() =>
+                                  handleExpandClick(medication.id, "prescriptionName")
+                                }
+                              >
+                                <MdExpandMore
+                                  style={{
+                                    transform:
+                                      expandedRow === medication.id &&
+                                      expandedField === "prescriptionName"
+                                        ? "rotate(180deg)"
+                                        : "rotate(0deg)",
+                                    transition: "0.3s",
+                                  }}
+                                />
+                              </Button>
+                            )}
+                          </div>
                         </td>
                         <td title={medication.medicationCategoryName}>
-                          {medication.medicationCategoryName}
+                          <HighlightText
+                            text={medication.medicationCategoryName}
+                            searchTerm={searchTerm}
+                            matchedFields={medication.highlightInfo?.matchedFields || []}
+                            fieldName={"MedicationCategoryName"}
+                          />
                         </td>
                         <td title={medication.createdAt}>
                           {formatDate(medication.createdAt)}
                         </td>
                       </tr>
 
-                      {/* Expanded row for Instructions */}
-                      {expandedRow === medication.id && (
+                {/* Expanded row */}
+                     {expandedRow === medication.id && (
                         <tr
                           className="table-active-content"
                           style={{ backgroundColor: "transparent" }}
@@ -203,8 +285,8 @@ const PrescribedMedicationTable = () => {
                           >
                             <div className="description-expanded-section">
                               <TextAreaField
-                                label={tableHeaders.instructions}
-                                value={medication.instructions}
+                                label={tableHeaders[expandedField]}
+                                value={medication[expandedField]}
                                 disabled={true}
                               />
                             </div>

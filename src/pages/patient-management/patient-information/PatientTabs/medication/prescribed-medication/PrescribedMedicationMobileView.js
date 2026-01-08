@@ -20,7 +20,7 @@ const PrescribedMedicationMobileView = () => {
   
   const {
     // State
-    expandedInstructions,
+    expandedRow,
     currentFilters,
     currentPage,
     showModal,
@@ -32,11 +32,12 @@ const PrescribedMedicationMobileView = () => {
     totalItems,
     totalPages,
     searchTerm,
+    expandedField,
     
     // Actions
+    handleExpandClick,
     handleSearch,
     handleResetFilters,
-    toggleInstructions,
     handleOpenModal,
     handleCloseModal,
     handleModalExited,
@@ -44,8 +45,6 @@ const PrescribedMedicationMobileView = () => {
     setCurrentFilters,
     refetch,
     
-    // Utilities
-    getMatchedFields,
   } = usePrescribedMedication(true); 
 
   const {
@@ -106,7 +105,7 @@ const PrescribedMedicationMobileView = () => {
                           <HighlightText
                             text={medication.medicationName}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                            matchedFields={medication.highlightInfo?.matchedFields || []}
                             fieldName="MedicationName"
                           />
                         </h5>
@@ -121,7 +120,7 @@ const PrescribedMedicationMobileView = () => {
                           <HighlightText
                             text={medication.diagnosisName}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                            matchedFields={medication.highlightInfo?.matchedFields || []}
                             fieldName="DiagnosisName"
                           />
                         </p>
@@ -135,7 +134,7 @@ const PrescribedMedicationMobileView = () => {
                           <HighlightText
                             text={medication.prescriptionName}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
+                            matchedFields={medication.highlightInfo?.matchedFields || []}
                             fieldName="PrescriptionName"
                           />
                         </p>
@@ -148,8 +147,8 @@ const PrescribedMedicationMobileView = () => {
                             <HighlightText
                               text={medication.dosage}
                               searchTerm={searchTerm}
-                              matchedFields={getMatchedFields(medication.highlightInfo)}
-                              fieldName="PrescriptionName"
+                              matchedFields={medication.highlightInfo?.matchedFields || []}
+                              fieldName="Dosage"
                             />
                           </p>
                         </div>
@@ -168,32 +167,42 @@ const PrescribedMedicationMobileView = () => {
                         <div className="text-muted d-flex align-items-center mb-1">
                         <small
                           className="text-muted"
-                          onClick={() => toggleInstructions(medication.id)}
+                          onClick={() => handleExpandClick(medication.id,"instructions")}
                           style={{ cursor: "pointer" }}
                         >
                           {mobileHeaders.instructions} :
                           </small>
-                            <MdExpandMore
-                            onClick={() => toggleInstructions(medication.id)}
+                           <MdExpandMore
+                            onClick={() => handleExpandClick(medication.id, "instructions")}
                                 style={{
-                                 transform: expandedInstructions[medication.id] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                 transform: expandedRow === medication.id && expandedField === "instructions"? 'rotate(180deg)' : 'rotate(0deg)',
                                  cursor: "pointer",
                                  fontSize: "22px",
                                  color: "#278fff",
                                 }}
                               />
-                          
                           </div>
-                        <div className={`expandable-content ${expandedInstructions[medication.id] ? '' : 'p-0'}`}>
+                            <div
+                              className={`expandable-content ${
+                                expandedRow === medication.id &&
+                                expandedField === "instructions"
+                                  ? ""
+                                  : "p-0"
+                              }`}
+                            >
                           <p
                             style={{
                               margin: "0",
-                              cursor: 'pointer',
                               transition: 'all 0.3s ease'
                             }}
-                            onClick={() => toggleInstructions(medication.id)}
                           >
-                            {expandedInstructions[medication.id] ? medication.instructions : ""}
+                            { expandedRow === medication.id&& expandedField === "instructions"?     
+                             <HighlightText
+                              text={medication.instructions}
+                              searchTerm={searchTerm}
+                              matchedFields={medication.highlightInfo?.matchedFields || []}
+                              fieldName="Instructions"
+                            />: ""}
                           </p>
                         </div>
                       </div>)}
@@ -227,7 +236,7 @@ const PrescribedMedicationMobileView = () => {
       <Pagination
         currentPage={currentPage}
         totalItems={totalItems}
-        rowsPerPage={5}
+        rowsPerPage={3}
         onPageChange={setCurrentPage}
         totalPages={totalPages}
       />
