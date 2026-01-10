@@ -6,6 +6,8 @@ import {
   useAddExternalPatientMedicationMutation 
 } from "../../../../../../api/ExternalPatientMedicationMutationApi";
 import toast from 'react-hot-toast';
+import { formatDateForAPI } from "../../../../../shared/utils";
+import { buildPatientMedicationUpdatePayload, validatePatientMedicationForm } from "./otherMedicationsHelpers";
 
 const PATIENT_ID = 4;
 
@@ -38,12 +40,6 @@ export const useOtherMedications = () => {
 
   const pageSize = 5;
 
-  // Helper functions
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
 
   // RTK Query
   const queryArgs = useMemo(() => {
@@ -78,6 +74,28 @@ export const useOtherMedications = () => {
     error,
     refetch
   } = useGetExternalPatientMedicationQuery(queryArgs);
+    const mappedPrescribedMedicationData = useMemo(() => {
+    
+  if (!medicationsData?.data) return medicationsData;
+
+  const allMatches =
+    medicationsData.meta?.matches?.flatMap(m => m.matches) || [];
+
+  const mappedData = medicationsData.data.map(item => ({
+    ...item,
+    highlightInfo: {
+      matchedFields: allMatches.filter(
+        match => match.itemId === item.id
+      )
+    }
+  }));  
+
+  return {
+    ...medicationsData,
+    data: mappedData,
+    searchTerm: medicationsData.meta?.keyword || ""
+  };
+}, [medicationsData]);
 
   // Mutations
   const [deleteMedication, { isLoading: isDeleting }] = useDeleteExternalPatientMedicationMutation();
@@ -88,14 +106,10 @@ export const useOtherMedications = () => {
   const emptyRecord = {
     medicationId: "",
     medicationName: "",
-    dosage: "",
-    frequency: "",
-    route: "",
-    instructions: "",
-    startDate: "",
-    endDate: "",
+    medicationCategory: "",
+    startDate: new Date(),
+    endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
     isActive: true,
-    prescribedByName: ""
   };
 
   // Actions 
@@ -155,77 +169,60 @@ export const useOtherMedications = () => {
   };
 
   // API Operations
-  const handleSave = async () => {
-    if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
-    
-    // if (!selectedRecord.startDate) {
-        //   toast.error('Please select start date.');
-        //   return;
-        // }
-        
-        const loadingToast = toast.loading('Saving...');
-        
-        if (isAddMode) {
-        console.log('Saving record:', selectedRecord);
-        if (!selectedRecord.medicationNameId) {
-          toast.error('Please select a medication.');
-          return;
-        }
-      try {
-        const addData = {
-          ...selectedRecord,
-          startDate: formatDateForAPI(selectedRecord.startDate),
-          endDate: formatDateForAPI(selectedRecord.endDate)
-        };
+const handleSave = async () => {
+  if (!selectedRecord || isDeleting || isUpdating || isAdding) return;
 
-        const res = await addMedication({ 
-          patientId: PATIENT_ID, 
-          medicationData: addData 
-        }).unwrap();
-        
-        if (res?.succeeded) {
-          toast.success(res.message || "Added Successfully");
-          toast.dismiss(loadingToast);
-          setShowModal(false);
-          setSelectedRecord(null);
-          refetch();
-        } else {
-          toast.dismiss(loadingToast);
-          toast.error(res.message || "Failed to add");
-        }
-      } catch (error) {
-        toast.dismiss(loadingToast);
-        toast.error(error?.data?.message || "Error adding medication.");
+  const error = validatePatientMedicationForm(selectedRecord);
+  if (error) {
+    toast.error(error);
+    return;
+  }
+
+  const loadingToast = toast.loading("Saving...");
+
+  try {
+    if (isAddMode) {
+      const res = await addMedication({
+        patientId: PATIENT_ID,
+        medicationData: selectedRecord
+      }).unwrap();
+
+      if (res?.succeeded) {
+        toast.success(res.message || "Added Successfully");
+        setShowModal(false);
+        setSelectedRecord(null);
       }
     } else {
-      try {
-        const updateData = {
-          ...selectedRecord,
-          startDate: formatDateForAPI(selectedRecord.startDate),
-          endDate: formatDateForAPI(selectedRecord.endDate)
-        };
+      const original = medicationsData?.data?.find(
+        r => r.id === selectedRecord.id
+      );
 
-        const res = await updateMedication({ 
-          medicationId: selectedRecord.id, 
-          updates: updateData 
-        }).unwrap();
-        
-        if (res?.succeeded) {
-          toast.success(res.message || "Updated Successfully");
-          toast.dismiss(loadingToast);
-          setShowModal(false);
-          setSelectedRecord(null);
-          refetch();
-        } else {
-          toast.dismiss(loadingToast);
-          toast.error(res.message || "Failed to update");
-        }
-      } catch (error) {
-        toast.dismiss(loadingToast);
-        toast.error(error?.data?.message || "Error updating medication.");
+      const updates = buildPatientMedicationUpdatePayload(
+        original,
+        selectedRecord
+      );
+
+      if (!Object.keys(updates).length) {
+        toast("No changes detected");
+        setShowModal(false);
+        return;
       }
+
+     await updateMedication({
+        medicationId: selectedRecord.id,
+        updates
+      }).unwrap();
+
+      toast.success("Updated Successfully");
+      setShowModal(false);
+      setSelectedRecord(null);
     }
-  };
+  } catch (e) {
+    toast.error( "Error saving medication.");
+  } finally {
+    toast.dismiss(loadingToast);
+  }
+};
 
   const handleConfirmDelete = async () => {
     if (!recordToDelete) return;
@@ -240,7 +237,6 @@ export const useOtherMedications = () => {
         setShowPopup(false);
         setRecordToDelete(null);
         setShowModal(false);
-        refetch();
       } else {
         toast.dismiss(loadingToast);
         toast.error(res.message || "Failed to delete");
@@ -271,7 +267,7 @@ export const useOtherMedications = () => {
   };
 
   // Data calculations
-  const currentData = medicationsData?.data || [];
+  const currentData = mappedPrescribedMedicationData?.data || [];
   const totalItems = medicationsData?.totalCount || 0;
   const totalPages = medicationsData?.totalPages || 1;
   const searchTerm = appliedFilters.searchValue;
@@ -287,7 +283,7 @@ export const useOtherMedications = () => {
     selectedRecord,
     recordToDelete,
     isAddMode,
-    medicationsData,
+    medicationsData:mappedPrescribedMedicationData,
     isLoading,
     isFetching,
     error,

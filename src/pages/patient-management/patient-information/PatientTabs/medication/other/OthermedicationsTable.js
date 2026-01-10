@@ -68,6 +68,7 @@ const Othermedications = () => {
     emptyStates,
     formatDate
   } = otherMedicationsHelpers(t);
+  console.log("medicationsData", medicationsData);
 
   return (
     <div className="table-container">
@@ -138,18 +139,18 @@ const Othermedications = () => {
                       <tr>
                         <td title={medication.medicationName}>
                           <HighlightText
-                            text={medication.medicationName}
-                            searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName={fieldMapping.medicationName}
+                          text={medication.medicationName}
+                          searchTerm={searchTerm}
+                          matchedFields={medication.highlightInfo?.matchedFields || []}
+                          fieldName={"MedicationName"}
                           />
                         </td>
                         <td title={medication.medicationCategory}>
                           <HighlightText
                             text={medication.medicationCategory}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(medication.highlightInfo)}
-                            fieldName={fieldMapping.medicationCategory}
+                            matchedFields={medication.highlightInfo?.matchedFields || []}
+                            fieldName={"MedicationCategory"}
                           />
                         </td>
                         <td>{formatDate(medication.startDate)}</td>

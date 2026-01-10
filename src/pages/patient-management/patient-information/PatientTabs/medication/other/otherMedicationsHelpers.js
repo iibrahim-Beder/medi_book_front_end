@@ -167,3 +167,38 @@ export const MobileSkeleton = () => {
     </>
   );
 };
+
+
+
+export const validatePatientMedicationForm = (record) => {
+  console.log("===record", record);
+  if (!record.medicationNameId && !record.medicationName) {
+    return "Please select a medication.";
+  }
+  if (!record.startDate) {
+    return "Please select start date.";
+  }
+  return null;
+};
+
+export const buildPatientMedicationUpdatePayload = (original, updated) => {
+  const payload = {};
+
+  if (updated.medicationNameId !== original.medicationId) {
+    payload.medicationNameId = updated.medicationNameId;
+  }
+
+  if (updated.startDate !== original.startDate) {
+    payload.startDate = updated.startDate || null;
+  }
+
+  if (updated.endDate !== original.endDate) {
+    payload.endDate = updated.endDate || null;
+  }
+
+  if (updated.isActive !== original.isActive) {
+    payload.isActive = updated.isActive;
+  }
+
+  return payload;
+};

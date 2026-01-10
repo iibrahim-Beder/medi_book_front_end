@@ -3,6 +3,7 @@ import { baseApi } from './baseApi';
 
 // Helper functions
 const transformMedicationData = (response, searchValue = "") => {
+  console.log('==External Patient Medication API Response:', response);
   if (!response || !response.succeeded) {
     return {
       data: [],
@@ -28,15 +29,7 @@ const transformMedicationData = (response, searchValue = "") => {
     startDate: item.startDate,
     endDate: item.endDate,
     isActive: item.isActive,
-    // Additional fields that might be present in other endpoints
     dosage: item.dosage,
-    frequency: item.frequency,
-    route: item.route,
-    instructions: item.instructions,
-    prescribedByName: item.prescribedByName,
-    sourceType: item.sourceType,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt
   }));
 
   return {
@@ -71,14 +64,6 @@ const transformSingleMedication = (response) => {
       startDate: response.data.startDate,
       endDate: response.data.endDate,
       isActive: response.data.isActive,
-      dosage: response.data.dosage,
-      frequency: response.data.frequency,
-      route: response.data.route,
-      instructions: response.data.instructions,
-      prescribedByName: response.data.prescribedByName,
-      sourceType: response.data.sourceType,
-      createdAt: response.data.createdAt,
-      updatedAt: response.data.updatedAt
     }
   };
 };
@@ -135,80 +120,156 @@ export const patientMedicationApi = baseApi.injectEndpoints({
       ],
     }),
     // Add external patient medication
-    addExternalPatientMedication: builder.mutation({
-      query: ({ patientId, medicationData }) => {
-        const params = {
-          PatientId: patientId,
-          MedicationId: medicationData.medicationNameId,
-          StartDate: medicationData.startDate,
-          EndDate: medicationData.endDate,
-          IsActive: medicationData.isActive !== undefined ? medicationData.isActive : true
-        };
+   addExternalPatientMedication: builder.mutation({
+  query: ({ patientId, medicationData }) => ({
+    url: '/PrescribedMedication/AddExternalPatientMedication',
+    method: 'POST',
+    body: {
+      PatientId: patientId,
+      MedicationId: medicationData.medicationNameId,
+      StartDate: medicationData.startDate,
+      EndDate: medicationData.endDate,
+      IsActive: medicationData.isActive ?? true
+    }
+  }),
 
-        console.log('Add External Patient Medication Params:', params);
+  async onQueryStarted(
+    { patientId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    try {
+      const { data } = await queryFulfilled;
 
-        return {
-          url: '/PrescribedMedication/AddExternalPatientMedication',
-          method: 'POST',
-          params: params
-        };
-      },
-      transformResponse: (response) => {
-        console.log('Add External Patient Medication Response:', response);
-        return transformSingleMedication(response);
-      },
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'ExternalPatientMedication', id: patientId }
-      ],
-    }),
+      const added = data?.data;
+      if (!added) return;
 
-    // Update external patient medication
-    updateExternalPatientMedication: builder.mutation({
-      query: ({ medicationId, updates }) => {
-        const params = {
-          Id: medicationId,
-          MedicationId: updates?.medicationNameId,
-          StartDate: updates.startDate,
-          EndDate: updates.endDate,
-          IsActive: updates.isActive
-        };
+      const state = getState();
+      const queries = state[baseApi.reducerPath]?.queries ?? {};
 
-        console.log('Update External Patient Medication Params:', params);
+      Object.values(queries).forEach(entry => {
+        if (entry?.endpointName === "getExternalPatientMedication") {
+          dispatch(
+            patientMedicationApi.util.updateQueryData(
+              "getExternalPatientMedication",
+              entry.originalArgs,
+              draft => {
+                draft.data.unshift({
+                  id: added.id,
+                  medicationName: added.medicationName,
+                  medicationCategory: added.medicationCategory,
+                  startDate: added.startDate,
+                  endDate: added.endDate,
+                  isActive: added.isActive,
+                });
 
-        return {
-          url: '/PrescribedMedication/UpdateExternalPatientMedication',
-          method: 'PUT',
-          params: params
-        };
-      },
-      transformResponse: (response) => {
-        console.log('Update External Patient Medication Response:', response);
-        return transformSingleMedication(response);
-      },
-      invalidatesTags: (result, error, { medicationId }) => [
-        { type: 'ExternalPatientMedication', id: medicationId }
-      ],
-    }),
+                draft.totalCount += 1;
+              }
+            )
+          );
+        }
+      });
+    } catch {
+    }
+  }
+}),
 
-    // Delete external patient medication
-    deleteExternalPatientMedication: builder.mutation({
-      query: (medicationId) => {
-        const params = {
-          Id: medicationId
-        };
 
-        console.log('Delete External Patient Medication Params:', params);
+updateExternalPatientMedication: builder.mutation({
+  query: ({ medicationId, updates }) => ({
+    url: '/PrescribedMedication/UpdateExternalPatientMedication',
+    method: 'PUT',
+    body: {
+      Id: medicationId,
+      medicationId: updates.medicationNameId,
+      startDate: updates.startDate,
+      endDate: updates.endDate,
+      isActive: updates.isActive
+    }
+  }),
 
-        return {
-          url: '/PrescribedMedication/DeleteExternalPatientMedication',
-          method: 'DELETE',
-          params: params
-        };
-      },
-      invalidatesTags: (result, error, medicationId) => [
-        { type: 'ExternalPatientMedication', id: medicationId }
-      ],
-    }),
+  async onQueryStarted(
+    { medicationId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+
+    try {
+      const { data } = await queryFulfilled;
+      const updated = data?.data;
+      if (!updated) return;
+      console.log("=======updated", updated);
+
+      Object.values(queries).forEach(entry => {
+        if (entry?.endpointName === "getExternalPatientMedication") {
+          dispatch(
+            patientMedicationApi.util.updateQueryData(
+              "getExternalPatientMedication",
+              entry.originalArgs,
+              draft => {
+                const idx = draft.data.findIndex(
+                  r => r.id === updated.id
+                );
+                if (idx !== -1) {
+                  draft.data[idx] = {
+                    ...draft.data[idx],
+                    ...updated
+                  };
+                }
+              }
+            )
+          );
+        }
+      });
+    } catch {
+      // rollback auto
+    }
+  }
+}),
+
+
+ deleteExternalPatientMedication: builder.mutation({
+  query: (medicationId) => ({
+    url: '/PrescribedMedication/DeleteExternalPatientMedication',
+    method: 'DELETE',
+    params: { Id: medicationId }
+  }),
+
+  async onQueryStarted(
+    medicationId,
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
+
+    Object.values(queries).forEach(entry => {
+      if (entry?.endpointName === "getExternalPatientMedication") {
+        patches.push(
+          dispatch(
+            patientMedicationApi.util.updateQueryData(
+              "getExternalPatientMedication",
+              entry.originalArgs,
+              draft => {
+                draft.data = draft.data.filter(
+                  item => item.id !== medicationId
+                );
+                draft.totalCount -= 1;
+              }
+            )
+          )
+        );
+      }
+    });
+
+    try {
+      await queryFulfilled;
+    } catch {
+      patches.forEach(p => p.undo());
+    }
+  }
+})
+
 
   }),
 });
