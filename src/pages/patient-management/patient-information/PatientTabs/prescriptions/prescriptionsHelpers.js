@@ -3,11 +3,12 @@ import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
 import { MdClose } from 'react-icons/md';
 import CustomAccordion from '../../../../shared/CustomAccordion';
+import { usePrescriptions } from "./usePrescriptions";
 export const prescriptionsHelpers = (t) => {
   // Field mapping for highlight
   const fieldMapping = {
     title: "Title",
-    note: "Note",
+    note: "Notes",
     diagnosisName: "DiagnosisName"
   };
 
@@ -212,6 +213,28 @@ export const MobileSkeleton = () => {
 };
 
 
+export const hasHiddenMatch = (prescription, field, value, searchTerm) => {
+  if (!prescription) return false; 
+  if (!value || value.length <= 45 || !searchTerm) return false;
+
+const hasFieldMatch = prescription.highlightInfo?.matchedFields?.some(
+  m => m.field.toLowerCase() === field.toLowerCase()
+);
+
+
+  if (!hasFieldMatch) return false;
+
+  const lowerValue = value.toLowerCase();
+  const lowerSearch = searchTerm.toLowerCase();
+
+  const matchIndex = lowerValue.indexOf(lowerSearch);
+
+  return matchIndex >= 45;
+};
+
+ export const hasMatch = (prescription, field) =>
+  prescription.highlightInfo?.matchedFields?.some(m => m.field === field);
+
 
 export const PrescriptionsModal = ({ 
   show, 
@@ -219,9 +242,29 @@ export const PrescriptionsModal = ({
   type, 
   data,
   formFields,
-  title 
+  title ,
+  searchTerm
 }) => {
-    console.log("PrescriptionsTable", data);
+const matchedFields = data?.flatMap(
+  item => item.highlightInfo?.matchedFields || []
+) || [];
+
+ const isHasMatched = ( fieldName, itemId) => {
+  if (!matchedFields?.length) return false;
+
+  if (
+    fieldName === "main" &&
+    matchedFields.some(m => m.itemId === itemId)
+  ) {
+    return true;
+  }
+
+  return matchedFields.some(
+    m =>
+      m.itemId === itemId &&
+      m.field?.toLowerCase() === fieldName.toLowerCase()
+  );
+};
 
   const { t } = useTranslation();
   
@@ -252,6 +295,8 @@ export const PrescriptionsModal = ({
             backgroundColor="var(--scbccolor)"
             data={data}
             formFields={formFields}
+            isHasMatched={isHasMatched}
+            searchTerm={searchTerm}
           />
         );
         
@@ -294,5 +339,55 @@ export const PrescriptionsModal = ({
         </button>
       </Modal.Footer>
     </Modal>
+  );
+};
+
+
+export const CustomAccordionToMobileexport = ({ 
+  selectedPrescription,
+  searchTerm
+}) => {
+  const { transformMedicationData } = usePrescriptions();
+  const { t } = useTranslation();
+  const { mobileHeaders, medicationFields } = prescriptionsHelpers(t);
+
+  const data = selectedPrescription?.prescribedMedications
+    ? transformMedicationData(selectedPrescription.prescribedMedications)
+    : [];
+
+  const matchedFields =
+    data?.flatMap(item => item.highlightInfo?.matchedFields || []) || [];
+
+  const isHasMatched = (fieldName, itemId) => {
+    if (!matchedFields.length) return false;
+
+    if (
+      fieldName === "main" &&
+      matchedFields.some(m => m.itemId === itemId)
+    ) {
+      return true;
+    }
+
+    return matchedFields.some(
+      m =>
+        m.itemId === itemId &&
+        m.field?.toLowerCase() === fieldName.toLowerCase()
+    );
+  };
+
+  return (
+    <CustomAccordion
+      getItemTitle={(medication) =>
+        medication.medicationName || "Medication"
+      }
+      titleBackgroundColor="var(--scbccolor)"
+      title={mobileHeaders.medications}
+      readOnly={true}
+      backgroundColor="var(--scbccolor)"
+      data={data}
+      formFields={medicationFields}
+      isHasMatched={isHasMatched}
+      searchTerm={searchTerm}
+    />
   );
 };

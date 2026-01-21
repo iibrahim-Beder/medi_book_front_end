@@ -816,7 +816,7 @@ background-color: transparent !important;
  .form-control:disabled, .form-control[readonly],input:disabled ,.input-with-icon textarea:disabled{
   font-size: 16px  !important ;
             background-color: #f2f2f2 !important;
-            color: #999 !important ;
+            /* color: #999 !important ; */
             /* cursor: not-allowed; */
 }
 .table-active-content tr:hover,
@@ -1135,7 +1135,7 @@ color: white;
   float: none !important;
 }
 .filters-container-search{padding-bottom: 10px;}
-.description-expanded-section{width: 80vw;}
+.description-expanded-section{width: 60vw;}
 
 .card   .text-muted{font-size: 12px;}
 .patintStats .stats-card-title {
@@ -1221,3 +1221,40 @@ color: var(--terthemecolor);
 .created-date small{white-space: nowrap ;}  
 .created-date.small{flex-direction: row; gap: 2px;}  
 .add-btn{color: var(--bluecolor);}
+
+/* Highlight css start */
+.readonly-textarea .text-highlight ,
+.readonly-field  .text-highlight{
+  font-weight: 500;
+}
+.readonly-field {
+  white-space: nowrap; 
+  overflow-x: auto;        
+  overflow-y: hidden;     
+  
+  scrollbar-width: none;   /* Firefox */
+  -ms-overflow-style: none;/* IE */
+}
+
+.readonly-field::-webkit-scrollbar {
+  display: none;           /* Chrome / Edge / Safari */
+}
+
+.readonly-field,.readonly-textarea{
+    background-color: #f2f2f2 !important;
+    height: 50px;
+    border-radius: 4px !important;
+    padding: 10px 20px;
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: middle;
+    border: 2px solid #eee;
+    width: 100%;
+}
+.readonly-textarea{
+    white-space: break-spaces;
+    min-height: 100px;
+    overflow-x: hidden;
+    overflow-y: auto; 
+}
+/* Highlight css end */

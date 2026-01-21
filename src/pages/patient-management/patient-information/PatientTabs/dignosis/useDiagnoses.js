@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useGetPatientDiagnosesQuery } from "../../../../../api/patientDiagnosesApi";
+import { formatDateForAPI } from "../../../../shared/utils";
 
 const PATIENT_ID = 4;
 
@@ -19,14 +20,6 @@ export const useDiagnoses = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
-
-  // Helper functions
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
-
   // RTK Query
   const queryArgs = useMemo(() => {
     const apiFilters = {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Table, Button } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import ConditionsFilters from "../component/ConditionsFilters";
@@ -9,8 +9,10 @@ import "react-loading-skeleton/dist/skeleton.css";
 import HighlightText from "../../../../shared/HighlightText";
 import ErrorLoading from "../../../../shared/ErrorLoading";
 import { usePrescriptions } from "./usePrescriptions";
-import { prescriptionsHelpers, PrescriptionsModal, TableSkeleton } from "./prescriptionsHelpers";
+import { hasHiddenMatch, hasMatch, prescriptionsHelpers, PrescriptionsModal, TableSkeleton } from "./prescriptionsHelpers";
 import { formatDate } from "../../../../shared/utils";
+import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
+import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
 
 const PrescriptionsTable = () => {
   const { t } = useTranslation();
@@ -49,7 +51,7 @@ const PrescriptionsTable = () => {
     // Utilities
     truncateText,
     getStatusColor,
-    getMatchedFields,
+    FIELD_KEY_MAP
   } = usePrescriptions(false);
 
   const {
@@ -60,8 +62,16 @@ const PrescriptionsTable = () => {
     medicationFields,
     emptyStates,
   } = prescriptionsHelpers(t);
-  console.log("PrescriptionsTable", prescriptionsData);
+useScrollToFirstMatch({
+  prescriptionsData,
+  searchTerm,
+  FIELD_KEY_MAP,
+  hasHiddenMatch,
+  handleViewClick,
+});
 
+const tableWrapperRef = React.useRef(null);
+useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
   return (
     <div className="table-container">
       {/* Modal Component */}
@@ -71,6 +81,7 @@ const PrescriptionsTable = () => {
         type={modalType}
         data={modalData}
         formFields={medicationFields}
+        searchTerm={searchTerm}
       />
 
       <div className="table-header">
@@ -101,7 +112,7 @@ const PrescriptionsTable = () => {
           </div>
 
           {/* Data Table */}
-          <div style={{ overflow: "auto" }}>
+          <div ref={tableWrapperRef} style={{ overflow: "auto" }}>
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
@@ -130,20 +141,22 @@ const PrescriptionsTable = () => {
                     <React.Fragment key={prescription.id}>
                       <tr>
                         {/* Prescription Title */}
-                        <td title={prescription.title}>
+                        <td title={prescription.title}
+                         data-has-match={hasMatch(prescription, fieldMapping.title)? "true": undefined}
+                        >
                           <HighlightText
                             text={truncateText(prescription.title, 50)}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(prescription.highlightInfo)}
+                            matchedFields={prescription.highlightInfo?.matchedFields || []}
                             fieldName={fieldMapping.title}
                           />
                            {prescription.title.length > 50 && (
                                 <Button
-                                  className="view-btn ms-2"
+                                  className={` ${hasHiddenMatch(prescription, fieldMapping.title, prescription.title, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"
                                   style={{
                                     backgroundColor: "transparent",
-                                    color: "#278fff",
+                                    // color: "#278fff",
                                     padding: 0,
                                     fontSize: "19px",
                                     height: "20px",
@@ -172,36 +185,36 @@ const PrescriptionsTable = () => {
                             <div className="d-flex align-items-center">
                               <span
                                 className="text-truncate"
-                                style={{ maxWidth: "200px" }}
+                                // style={{ maxWidth: "200px" }}
+                                data-has-match={hasMatch(prescription, fieldMapping.note)? "true": undefined}
                                 title={prescription.notes}
                               >
                                 <HighlightText
                                   text={truncateText(prescription.notes, 50)}
                                   searchTerm={searchTerm}
-                                  matchedFields={getMatchedFields(prescription.highlightInfo)}
+                                 matchedFields={prescription.highlightInfo?.matchedFields || []}
                                   fieldName={fieldMapping.note}
                                 />
                               </span>
                               {prescription.notes.length > 50 && (
                                 <Button
-                                  className="view-btn ms-2"
+                                  className={` ${hasHiddenMatch(prescription, fieldMapping.note, prescription.notes, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"
                                   style={{
                                     backgroundColor: "transparent",
-                                    color: "#278fff",
                                     padding: 0,
                                     fontSize: "19px",
                                     height: "20px",
                                   }}
                                   onClick={() =>
-                                    handleViewClick(prescription.id, "note")
+                                    handleViewClick(prescription.id, "notes")
                                   }
                                 >
                                   <MdExpandMore
                                     style={{
                                       transform:
                                         expandedRow === prescription.id &&
-                                        expandedField === "note"
+                                        expandedField === "notes"
                                           ? "rotate(180deg)"
                                           : "rotate(0deg)",
                                       transition: "transform 0.3s ease",
@@ -232,23 +245,23 @@ const PrescriptionsTable = () => {
                             <div className="d-flex align-items-center">
                               <span
                                 className="text-truncate"
-                                style={{ maxWidth: "200px" }}
                                 title={prescription.diagnosisName}
+                                 data-has-match={hasMatch(prescription, fieldMapping.diagnosisName)? "true": undefined}
+                                 data-right-has-match={hasMatch(prescription, fieldMapping.diagnosisName)? "true": undefined}
                               >
                                 <HighlightText
                                   text={truncateText(prescription.diagnosisName, 50)}
                                   searchTerm={searchTerm}
-                                  matchedFields={getMatchedFields(prescription.highlightInfo)}
+                                  matchedFields={prescription.highlightInfo?.matchedFields || []}
                                   fieldName={fieldMapping.diagnosisName}
                                 />
                               </span>
                               {prescription.diagnosisName.length > 50 && (
                                 <Button
-                                  className="view-btn ms-2"
+                                  className={` ${hasHiddenMatch(prescription, fieldMapping.diagnosisName, prescription.diagnosisName, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"
                                   style={{
                                     backgroundColor: "transparent",
-                                    color: "#278fff",
                                     padding: 0,
                                     fontSize: "19px",
                                     height: "20px",
@@ -279,6 +292,8 @@ const PrescriptionsTable = () => {
                             className="view-btn"
                             size="sm"
                             variant="outline-primary"
+                            data-has-match={prescription.hasMedicationMatch? "true": undefined}
+                            data-right-has-match={prescription.hasMedicationMatch? "true": undefined}
                             onClick={() =>
                               handleViewClick(prescription.id, "prescribedMedication")
                             }
@@ -286,7 +301,7 @@ const PrescriptionsTable = () => {
                           >
                             {tableHeaders.view}
                             {prescription.prescribedMedications && prescription.prescribedMedications.length > 0 && (
-                              <span className="num-item">
+                              <span className={`num-item ${prescription.hasMedicationMatch ? "has-match pulse" :""}`}>
                                 {prescription.prescribedMedications.length}
                               </span>
                             )}
@@ -298,16 +313,18 @@ const PrescriptionsTable = () => {
 
                       {/* Expanded row content for Note and Diagnosis Name */}
                       {expandedRow === prescription.id && 
-                       (expandedField === "note" || expandedField === "diagnosisName" || expandedField === "title" ) && (
+                       (expandedField === "notes" || expandedField === "diagnosisName" || expandedField === "title" ) && (
                         <tr className="table-active-content">
                           <td colSpan="6">
                             <div className="accordion-in-table">
-                              {expandedField === "note" && (
+                              {expandedField === "notes" && (
                                 <div className="description-expanded-section">
                                   <TextAreaField
                                     label={t("PrescriptionsTable.prescription_note")}
                                     value={prescription.notes}
                                     disabled
+                                    isHasMatched={hasMatch(prescription, fieldMapping.note)}
+                                    searchTerm={searchTerm}
                                   />
                                 </div>
                               )}
@@ -318,6 +335,8 @@ const PrescriptionsTable = () => {
                                     label={t("PrescriptionsTable.diagnosis_name")}
                                     value={prescription.diagnosisName}
                                     disabled
+                                    isHasMatched={hasMatch(prescription, fieldMapping.diagnosisName)}
+                                    searchTerm={searchTerm}
                                   />
                                 </div>
                               )}
@@ -327,6 +346,8 @@ const PrescriptionsTable = () => {
                                     label={t("PrescriptionsTable.prescription_title")}
                                     value={prescription.title}
                                     disabled
+                                    isHasMatched={hasMatch(prescription, fieldMapping.title)}
+                                    searchTerm={searchTerm}
                                   />
                                 </div>
                               )}

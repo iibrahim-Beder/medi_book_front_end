@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
 import CustomAccordion from "../../../../shared/CustomAccordion";
 import Field from "../../../../ui/form-fields/Field";
@@ -12,7 +12,7 @@ import HighlightText from "../../../../shared/HighlightText";
 import ErrorLoading from "../../../../shared/ErrorLoading";
 import "../../../Patient-management.css";
 import { usePrescriptions } from "./usePrescriptions";
-import { prescriptionsHelpers, MobileSkeleton } from "./prescriptionsHelpers";
+import { prescriptionsHelpers, MobileSkeleton, hasMatch, CustomAccordionToMobileexport } from "./prescriptionsHelpers";
 import { formatDate } from "../../../../shared/utils";
 
 const PrescriptionsMobileView = () => {
@@ -44,11 +44,8 @@ const PrescriptionsMobileView = () => {
     setCurrentPage,
     setCurrentFilters,
     refetch,
-    
     // Utilities
     getStatusColor,
-    getMatchedFields,
-    transformMedicationData
   } = usePrescriptions(true); 
 
   const {
@@ -56,8 +53,24 @@ const PrescriptionsMobileView = () => {
     mobileStatusOptions,
     filterConfigs,
     medicationFields,
-    emptyStates
+    emptyStates,
+    fieldMapping
+
+    
   } = prescriptionsHelpers(t);
+  useEffect(() => {
+    if (!prescriptionsData?.data?.length) return;
+  
+    prescriptionsData.data.forEach(item => {
+      const fields = item.highlightInfo?.matchedFields || [];
+  
+      fields.forEach(match => {
+        if (match.field === "Notes") {
+          toggleNotes(item.id);
+        }
+      });
+    });
+  }, [prescriptionsData]);
 
   return (
     <div className="table-container mobile-view-card">
@@ -113,7 +126,7 @@ const PrescriptionsMobileView = () => {
                           <HighlightText
                             text={prescription.title}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(prescription.highlightInfo)}
+                            matchedFields={prescription.highlightInfo?.matchedFields || []}
                             fieldName="Title"
                           />
                         </h5>
@@ -128,7 +141,7 @@ const PrescriptionsMobileView = () => {
                           <HighlightText
                             text={prescription.diagnosisName}
                             searchTerm={searchTerm}
-                            matchedFields={getMatchedFields(prescription.highlightInfo)}
+                            matchedFields={prescription.highlightInfo?.matchedFields || []}
                             fieldName="DiagnosisName"
                           />
                         </p>
@@ -147,7 +160,7 @@ const PrescriptionsMobileView = () => {
                           <div className="fw-bold text-primary">
                             {medicationCount}
                           </div>
-                          <small className="text-muted">{mobileHeaders.medications}</small>
+                          <small className={` ${prescription.hasMedicationMatch ? 'subtlePulse has-match-field' : 'text-muted'}`}>{mobileHeaders.medications}</small>
                         </div>
                       </div>
                
@@ -159,15 +172,17 @@ const PrescriptionsMobileView = () => {
                           style={{ cursor: "pointer" }}
                         >
                           {mobileHeaders.note} :
+                          <Button className={`${hasMatch(prescription, "Notes") ? 'has-match pulse' : ''} md-expandable view-btn ms-2 `}>
                               <MdExpandMore
                               style={{
                                   fontSize: '20px',
-                                  color: '#278fff',
+                                  // color: '#278fff',
                                   padding: "3px 0 0",
                                   transform: expandedNotes[prescription.id] ? 'rotate(180deg)' : 'rotate(0deg)',
                                   transition: 'transform 0.3s ease',
                                 }}
                               />
+                          </Button>
                         </small>
                           )}
                         <div className={`expandable-content ${expandedNotes[prescription.id] ? '' : 'p-0'}`}>
@@ -178,7 +193,14 @@ const PrescriptionsMobileView = () => {
                               transition: 'all 0.3s ease'
                             }}
                           >
-                            {expandedNotes[prescription.id] ? prescription.notes : ""}
+                            {expandedNotes[prescription.id] ?
+                            <HighlightText
+                              text={prescription.notes}
+                              searchTerm={searchTerm}
+                              matchedFields={prescription.highlightInfo?.matchedFields || []}
+                              fieldName="Notes"
+                            />
+                             : ""}
                           </p>
                         </div>
                       </div>
@@ -243,6 +265,8 @@ const PrescriptionsMobileView = () => {
             label={mobileHeaders.diagnosis_name}
             value={selectedPrescription?.diagnosisName || ""}
             disabled
+            isHasMatched={hasMatch(selectedPrescription || {}, fieldMapping.diagnosisName)}
+            searchTerm={searchTerm}
           />
 
           <Field
@@ -256,16 +280,13 @@ const PrescriptionsMobileView = () => {
             label={mobileHeaders.prescription_note}
             value={selectedPrescription?.notes || ""}
             disabled
+            isHasMatched={hasMatch(selectedPrescription|| {}, fieldMapping.note)}
+            // isHasMatched={true}
+            searchTerm={searchTerm}
           />
-
-          <CustomAccordion
-            getItemTitle={(medication) => medication.medicationName || "Medication"}
-            titleBackgroundColor="var(--scbccolor)"
-            title={mobileHeaders.medications}
-            readOnly={true}
-            backgroundColor="var(--scbccolor)"
-            data={selectedPrescription?.prescribedMedications ? transformMedicationData(selectedPrescription.prescribedMedications) : []}
-            formFields={medicationFields}
+          <CustomAccordionToMobileexport
+            selectedPrescription={selectedPrescription}
+            searchTerm={searchTerm}
           />
         </Modal.Body>
 

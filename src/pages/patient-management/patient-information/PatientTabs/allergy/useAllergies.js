@@ -40,13 +40,6 @@ export const useAllergies = () => {
 
   const pageSize = 5;
 
-  // Helper functions
-  // const formatDateForAPI = (date) => {
-  //   if (!date) return undefined;
-  //   const d = new Date(date);
-  //   return d.toISOString().split('T')[0];
-  // };
-
   // RTK Query
   const queryArgs = useMemo(() => {
     const apiFilters = {

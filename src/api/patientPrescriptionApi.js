@@ -4,22 +4,20 @@ import { baseApi } from './baseApi';
 // Helper functions
 const getStatusValue = (statusText) => {
   const statusMap = {
-    "Active": 0,
-    "Completed": 1, 
-    "Cancelled": 2,
-    "Pending": 3,
-    "Expired": 4
+    "Active": 1,
+    "Completed": 2, 
+    "Cancelled": 3,
+    "Expired": 4,
   };
   return statusMap[statusText] || 0;
 };
 
 const getStatusText = (status) => {
   const statusMap = {
-    0: "Active",
-    1: "Completed", 
-    2: "Cancelled",
-    3: "Pending",
-    4: "Expired"
+    1: "Active",
+    2: "Completed", 
+    3: "Cancelled",
+    4: "Expired",
   };
   return statusMap[status] || "Unknown";
 };

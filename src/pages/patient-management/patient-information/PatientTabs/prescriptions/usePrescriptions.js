@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { 
   useGetPatientPrescriptionsQuery 
 } from "../../../../../api/patientPrescriptionApi";
-
+import { formatDateForAPI } from "../../../../shared/utils";
 const PATIENT_ID = 4;
 
 export const usePrescriptions = (isMobile = false) => {
@@ -35,13 +35,6 @@ export const usePrescriptions = (isMobile = false) => {
 
   const pageSize = isMobile ? 5 : 5;
 
-  // Helper functions
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
-
   // RTK Query
   const queryArgs = useMemo(() => {
     const apiFilters = {
@@ -66,7 +59,7 @@ export const usePrescriptions = (isMobile = false) => {
       pageNumber: currentPage,
       pageSize: pageSize
     };
-  }, [appliedFilters, currentPage, pageSize]);
+  }, [appliedFilters, currentPage, pageSize,currentFilters]);
 
   const {
     data: prescriptionsData,
@@ -75,7 +68,65 @@ export const usePrescriptions = (isMobile = false) => {
     error,
     refetch
   } = useGetPatientPrescriptionsQuery(queryArgs);
+const mappedprescriptionsData = useMemo(() => {
+  if (!prescriptionsData?.data) return prescriptionsData;
 
+  const allMatches = prescriptionsData.meta?.matches?.flatMap(m => m.matches) || [];
+
+  const medicationMatchesMap = new Map();
+  const prescriptionMatchesMap = new Map();
+
+  for (const match of allMatches) {
+    if (match.entity === "PrescribedMedication") {
+      const list = medicationMatchesMap.get(match.itemId) || [];
+      list.push(match);
+      medicationMatchesMap.set(match.itemId, list);
+    }
+
+    if (match.entity === "Prescription") {
+      const list = prescriptionMatchesMap.get(match.itemId) || [];
+      list.push(match);
+      prescriptionMatchesMap.set(match.itemId, list);
+    }
+  }
+
+  const mappedData = prescriptionsData.data.map(prescription => {
+    const prescribedMedications =
+      prescription.prescribedMedications?.map(med => {
+        const matchedFields = medicationMatchesMap.get(med.id) || [];
+
+        return {
+          ...med,
+          highlightInfo: {
+            matchedFields
+          },
+          hasMatch: matchedFields.length > 0
+        };
+      }) || [];
+
+    const hasMedicationMatch = prescribedMedications.some(m => m.hasMatch);
+
+    return {
+      ...prescription,
+      prescribedMedications,
+      hasMedicationMatch,
+      highlightInfo: {
+        matchedFields: prescriptionMatchesMap.get(prescription.id) || []
+      }
+    };
+  });
+
+  return {
+    ...prescriptionsData,
+    data: mappedData,
+    searchTerm: prescriptionsData.meta?.keyword || ""
+  };
+}, [prescriptionsData]);
+  const FIELD_KEY_MAP = {
+  DiagnosisName: "diagnosisName",
+  Title: "title",
+  Notes: "notes",
+};
   // Actions 
   const handleSearch = (filters) => {
     setCurrentPage(1);
@@ -174,16 +225,16 @@ export const usePrescriptions = (isMobile = false) => {
       instructions: med.instructions,
       // Additional fields if needed
       startDate: med.startDate,
-      endDate: med.endDate
+      endDate: med.endDate,
+      highlightInfo: med.highlightInfo
     }));
   };
 
   // Data calculations
-  const currentData = prescriptionsData?.data || [];
+  const currentData = mappedprescriptionsData?.data || [];
   const totalItems = prescriptionsData?.totalCount || 0;
   const totalPages = prescriptionsData?.totalPages || 1;
-  const searchTerm = appliedFilters.searchValue;
-
+  const searchTerm = mappedprescriptionsData?.searchTerm || "";
 
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -205,7 +256,11 @@ export const usePrescriptions = (isMobile = false) => {
     setExpandedRow(null);
     setExpandedField(null);
   };
-    const handleViewClick = (prescriptionId, fieldType) => {
+    const handleViewClick = (prescriptionId, fieldType ,mustExpand=false) => {
+      if(prescriptionId===null){
+          setExpandedRow(null);
+          setExpandedField(null);
+      }
     const prescription = currentData.find(p => p.id === prescriptionId);
     if (!prescription) return;
     
@@ -217,7 +272,7 @@ export const usePrescriptions = (isMobile = false) => {
         
       case 'note':
       case 'diagnosisName':
-        if (expandedRow === prescriptionId && expandedField === fieldType) {
+        if (expandedRow === prescriptionId && expandedField === fieldType  && !mustExpand ) {
           setExpandedRow(null);
           setExpandedField(null);
         } else {
@@ -227,7 +282,7 @@ export const usePrescriptions = (isMobile = false) => {
         break;
         
       default:
-        if (expandedRow === prescriptionId && expandedField === fieldType) {
+        if (expandedRow === prescriptionId && expandedField === fieldType && !mustExpand ) {
           setExpandedRow(null);
           setExpandedField(null);
         } else {
@@ -246,7 +301,8 @@ export const usePrescriptions = (isMobile = false) => {
     currentPage,
     showModal,
     selectedPrescription,
-    prescriptionsData,
+    prescriptionsData:mappedprescriptionsData,
+    FIELD_KEY_MAP,
     isLoading,
     isFetching,
     error,

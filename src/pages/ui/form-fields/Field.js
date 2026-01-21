@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SelectDatePicker from "./SelectDatePicker";
-
+import HighlightedInput from "./HighlightedFild";
 const Field = ({
   label,
   name,
@@ -14,10 +14,13 @@ const Field = ({
   forceShowError = false,
   disabled = false,
   half = false,
-  required = false
+  required = false,
+  isHasMatched=false,
+  searchTerm="",
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
+
 
   const handleBlur = (e) => {
     setTouched(true);
@@ -45,7 +48,7 @@ if (type==="date") {
     <div className={`form-group ${half ? "form-group-half" : ""} ${showError ? "has-error" : ""}`}>
       {label && (
         <label htmlFor={name}>
-          {label}
+          <span  className={isHasMatched ? "has-match-field" : ""}>{label}</span>
           {required && <span className="required">*</span>}
         </label>
       )}
@@ -55,6 +58,17 @@ if (type==="date") {
             {icon}
           </span>
         )}
+        {isHasMatched ? (
+          <HighlightedInput
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          searchTerm={searchTerm}
+          isHasMatched={isHasMatched}
+          disabled={disabled}
+        />
+        ):(
         <input 
           disabled={disabled}
           id={name}
@@ -66,7 +80,7 @@ if (type==="date") {
           placeholder={placeholder}
           autoComplete="off"
           className={showError ? "input-error" : ""}
-        />
+        />)}
       </div>
       {showError && <span className="error-text">{error}</span>}
     </div>

@@ -34,6 +34,8 @@ const CustomAccordion = memo(({
   forceShowError = false,
   hint,
   errors = {},
+ isHasMatched = () => false,
+ searchTerm
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
@@ -127,10 +129,13 @@ const CustomAccordion = memo(({
       forceShowError,
       disabled: readOnly || field.readOnly,
       placeholder: field.placeholder,
+      searchTerm: searchTerm
     };
 
     if (field.type === "textarea") {
-      return <TextAreaField {...commonProps} onChange={(e) => onChange(index, field.name, e.target.value)} />;
+      return <TextAreaField
+       isHasMatched={isHasMatched(field.name ,item.id)||false}
+      {...commonProps} onChange={(e) => onChange(index, field.name, e.target.value)} />;
     } else if (field.type === "select") {
       return <SelectField {...commonProps} options={field.options} onChange={(e) => onChange(index, field.name, e.target.value)} />;
     } else if (field.type === "file") {
@@ -143,6 +148,7 @@ const CustomAccordion = memo(({
       />;
     } else {
       return <Field
+        isHasMatched={isHasMatched(field.name,item.id)||false}
         {...commonProps}
         type={field.type || "text"}
         min={field.min}
@@ -221,7 +227,7 @@ const CustomAccordion = memo(({
               <li key={item.id || index}>
                 {/* Accordion Title - Fixed Overflow */}
                 <div
-                  className={`dc-accordioninnertitle ${accordioninnertitleSize}`}
+                  className={`${isHasMatched("main",item.id) ? "has-match-inner" : ""}  dc-accordioninnertitle ${accordioninnertitleSize}`}
                   style={{
                     display: isSingle ? "none" : "",
                     backgroundColor: titleBackgroundColor,
