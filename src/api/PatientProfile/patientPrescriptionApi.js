@@ -1,5 +1,5 @@
 // patientPrescriptionApi.js
-import { baseApi } from './baseApi';
+import { baseApi } from '../baseApi';
 
 // Helper functions
 const getStatusValue = (statusText) => {

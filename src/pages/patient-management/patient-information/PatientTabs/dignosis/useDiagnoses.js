@@ -93,7 +93,6 @@ export const useDiagnoses = () => {
 
   // Transform API data to match component structure
   const transformDiagnosisData = (diagnosis) => {
-    console.log(' Original Diagnosis:', diagnosis);
     return {
       id: diagnosis.diagnosisId,
       diagnosisName: diagnosis.diagnosisName,

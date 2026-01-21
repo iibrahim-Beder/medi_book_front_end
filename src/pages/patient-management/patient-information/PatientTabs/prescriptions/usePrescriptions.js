@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { 
   useGetPatientPrescriptionsQuery 
-} from "../../../../../api/patientPrescriptionApi";
+} from "../../../../../api/PatientProfile/patientPrescriptionApi";
 import { formatDateForAPI } from "../../../../shared/utils";
 const PATIENT_ID = 4;
 

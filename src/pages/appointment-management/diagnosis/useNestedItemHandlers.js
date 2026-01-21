@@ -4,7 +4,7 @@ import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutati
 import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../api/patientDiagnosesApi";
 import {
   useAddPatientPrescriptionMutation, useUpdatePatientPrescriptionMutation, useDeletePatientPrescriptionMutation
-} from "../../../api/patientPrescriptionApi";
+} from "../../../api/PatientProfile/patientPrescriptionApi";
 import {
   useAddInternalPatientMedicalConditionMutation,useDeletePatientMedicalConditionMutation,useUpdatePatientMedicalConditionMutation
 } from "../../../api/PatientProfile/patientMedicalConditionsApi";
