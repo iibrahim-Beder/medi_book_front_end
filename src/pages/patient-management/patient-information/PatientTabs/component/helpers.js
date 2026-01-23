@@ -16,3 +16,16 @@ export const hasMatchForField = (item, field) => {
     match => match.field === apiField
   );
 };
+export const isHasMatched = (item , fieldName ) => {
+  const matchedFields = item?.highlightInfo?.matchedFields || [];
+
+  if (!matchedFields.length) return false;
+
+  if (fieldName === "main") {
+    return true;
+  }
+
+  return matchedFields.some(
+    m => m.field?.toLowerCase() === fieldName.toLowerCase()
+  );
+};

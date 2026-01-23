@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
 import CustomAccordion from "../../../../shared/CustomAccordion";
 import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
@@ -11,7 +11,10 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ErrorLoading from "../../../../shared/ErrorLoading";
 import { useDiagnoses } from "./useDiagnoses";
-import { formatDate } from "../../../../shared/utils";
+import { formatDate, truncateText } from "../../../../shared/utils";
+import HighlightText from "../../../../shared/HighlightText";
+import { diagnosisHelpers } from "./diagnosisHelpers";
+import { isHasMatched } from "../component/helpers";
 
 const DiagnosisMobileView = () => {
   const { t } = useTranslation();
@@ -27,31 +30,41 @@ const DiagnosisMobileView = () => {
     error,
     refetch,
     pageSize,
+    searchTerm,
+    currentData,
 
     // Actions
     handleSearch,
     handleResetFilters,
 
     // Utilities
-    truncateText,
+    expandedDescriptions,
+    openDescription,
+    toggleDescription,
     transformDiagnosisData,
     transformPrescriptionData,
   } = useDiagnoses();
+  const{diagnosedConditionsFields,prescriptionRecipeFields,notesFields,prescriptionFields} = diagnosisHelpers(t);
 
   const [selectedDiagnosis, setSelectedDiagnosis] = React.useState(null);
 
-  const [expandedDescriptions, setExpandedDescriptions] = React.useState({});
-
-  const toggleDescription = (diagnosisId) => {
-    setExpandedDescriptions((prev) => ({
-      ...prev,
-      [diagnosisId]: !prev[diagnosisId],
-    }));
-  };
+  useEffect(() => {
+      if (!currentData?.length) return;
+    
+      currentData.forEach(item => {
+        const fields = item.highlightInfo?.matchedFields || [];
+    
+        fields.forEach(match => {
+          if (match.field === "Description") {
+            openDescription(item.id);
+          }
+        });
+      });
+    }, [diagnosesData]);
 
   const totalItems = diagnosesData?.totalCount || 0;
   const currentItems =
-    diagnosesData?.data?.map(transformDiagnosisData) || [];
+    currentData?.map(transformDiagnosisData) || [];
 
   return (
     <div className="table-container mobile-view-card">
@@ -90,7 +103,7 @@ const DiagnosisMobileView = () => {
                 setCurrentPage(1);
                 handleSearch();
               }}
-              conditions={diagnosesData?.data || []}
+              conditions={currentData || []}
             />
           </div>
 
@@ -127,18 +140,29 @@ const DiagnosisMobileView = () => {
                   <Card key={disease.id} className="mobile-view-card">
                     <Card.Body style={{ padding: "15px" }}>
                       <div className="custom-card-title">
-                        <h5 style={{ margin: 0 }}>{disease.diagnosisName}</h5>
+                        <h5 style={{ margin: 0 }} title={disease.diagnosisName} >  
+                           <HighlightText
+                              text={truncateText(disease.diagnosisName, 100)}
+                                searchTerm={searchTerm}
+                                matchedFields={disease.highlightInfo?.matchedFields || []}
+                                fieldName="DiagnosisName"
+                              /></h5>
                         {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
                       </div>
 
-                      <div className="mb-3">
+                      {disease.symptomsDescription && <div className="mb-3">
                         <small className="text-muted d-block mb-1">
                           {t("DiagnosisMobileView.symptoms")}
                         </small>
-                        <p className="mb-2">
-                          {truncateText(disease.symptomsDescription, 80)}
+                        <p className="mb-2" title={disease.symptomsDescription} >        
+                             <HighlightText
+                              text={truncateText(disease.symptomsDescription, 80)}
+                              searchTerm={searchTerm}
+                              matchedFields={disease.highlightInfo?.matchedFields || []}
+                              fieldName="SymptomsDescription"
+                            />
                         </p>
-                      </div>
+                      </div>}
 
                       {/* Diagnosis (Conditions - Notes - Prescription) */}
                       <div className="row text-center mb-3">
@@ -147,7 +171,7 @@ const DiagnosisMobileView = () => {
                             <div className="fw-bold text-primary">
                               {disease.diagnosedConditions.length}
                             </div>
-                            <small className="text-muted">
+                            <small className={` ${disease.hasConditionMatch ? 'subtlePulse has-match-field' : 'text-muted'}`}>
                               {t("DiagnosisMobileView.conditions")}
                             </small>
                           </div>
@@ -157,7 +181,7 @@ const DiagnosisMobileView = () => {
                             <div className="fw-bold text-primary">
                               {disease.notes.length}
                             </div>
-                            <small className="text-muted">
+                            <small className={` ${disease.hasNoteMatch ? 'subtlePulse has-match-field' : 'text-muted'}`}>
                               {t("DiagnosisMobileView.notes")}
                             </small>
                           </div>
@@ -166,31 +190,31 @@ const DiagnosisMobileView = () => {
                           <div className="fw-bold text-primary">
                             {disease.prescription.length}
                           </div>
-                          <small className="text-muted">
+                            <small className={` ${disease.hasPrescriptionMatch ||disease.hasMedicationMatch? 'subtlePulse has-match-field' : 'text-muted'}`}>
                             {t("DiagnosisMobileView.prescription")}
                           </small>
                         </div>
                       </div>
 
                       {/* Diagnosis Description - Expand/Collapse */}
-                      <div className="mb-2">
+                      {disease.diagnosisDescription &&
+                        <div className="mb-2">
                         <small
                           className="text-muted d-flex mb-1"
                           style={{ cursor: "pointer" }}
                           onClick={() => toggleDescription(disease.id)}
                         >
                           {t("DiagnosisMobileView.diagnosis_description")} :
-                          {disease.symptomsDescription && (
                             <button
-                              className=""
-                              onClick={() => toggleDescription(disease.id)}
+                              className={`${isHasMatched(disease, "Description") ? 'has-match pulse' : ''} md-expandable view-btn ms-2 `}                              onClick={() => toggleDescription(disease.id)}
                               style={{
                                 fontSize: "20px",
-                                color: "#278fff",
+                                // color: "#278fff",
                                 padding: "3px 0 0",
                               }}
                             >
                               <MdExpandMore
+                                onClick={() => toggleDescription(disease.id)}
                                 style={{
                                   transform: isDescriptionExpanded
                                     ? "rotate(180deg)"
@@ -199,7 +223,6 @@ const DiagnosisMobileView = () => {
                                 }}
                               />
                             </button>
-                          )}
                         </small>
 
                         <div
@@ -210,17 +233,20 @@ const DiagnosisMobileView = () => {
                           <p
                             style={{
                               margin: 0,
-                              cursor: "pointer",
                               transition: "all 0.3s ease",
                             }}
-                            onClick={() => toggleDescription(disease.id)}
                           >
                             {isDescriptionExpanded
-                              ? disease.diagnosisDescription
+                              ?  <HighlightText
+                                    text={disease.diagnosisDescription}
+                                    searchTerm={searchTerm}
+                                    matchedFields={disease.highlightInfo?.matchedFields || []}
+                                    fieldName="Description"
+                                  />
                               : ""}
                           </p>
                         </div>
-                      </div>
+                      </div>}
 
                     {disease.updatedAt && (<div className="created-date small"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.updatedAt)}</small></div>)}
                       <div className="d-flex justify-content-between align-items-center">
@@ -275,7 +301,12 @@ const DiagnosisMobileView = () => {
           <Modal.Header closeButton className="border-bottom-0">
             <Modal.Title className="w-100">
               <div className="d-flex justify-content-between align-items-center">
-                <span>{selectedDiagnosis.diagnosisName}</span>
+                 <HighlightText
+                   text={(selectedDiagnosis.diagnosisName)}
+                   searchTerm={searchTerm}
+                   matchedFields={selectedDiagnosis.highlightInfo?.matchedFields || []}
+                   fieldName="DiagnosisName"
+                   />
               </div>
             </Modal.Title>
             <button
@@ -295,6 +326,8 @@ const DiagnosisMobileView = () => {
                 label={t("DiagnosisMobileView.symptoms_description")}
                 value={selectedDiagnosis.symptomsDescription}
                 disabled
+                isHasMatched={isHasMatched(selectedDiagnosis|| {}, "SymptomsDescription")}
+                searchTerm={searchTerm}
               />
             </div>
 
@@ -304,6 +337,9 @@ const DiagnosisMobileView = () => {
                 label={t("DiagnosisMobileView.diagnosis_description")}
                 value={selectedDiagnosis.diagnosisDescription}
                 disabled
+                isHasMatched={isHasMatched(selectedDiagnosis|| {}, "Description")}
+                searchTerm={searchTerm}
+
               />
             </div>
 
@@ -312,48 +348,28 @@ const DiagnosisMobileView = () => {
               <CustomAccordion
                 titleBackgroundColor="var(--scbccolor)"
                 title={t("DiagnosisMobileView.conditions")}
+                getItemTitle={(condition) => condition.medicalConditionName || "Condition"}
                 readOnly={true}
                 backgroundColor="var(--scbccolor)"
                 data={selectedDiagnosis.diagnosedConditions}
-                formFields={[
-                  {
-                    label: t("DiagnosisMobileView.medical_condition"),
-                    name: "MedicalCondition",
-                    placeholder: t("DiagnosisMobileView.condition_type"),
-                    half: true,
-                  },
-                  {
-                    label: t("DiagnosisMobileView.severity"),
-                    name: "Severity",
-                    placeholder: t("DiagnosisMobileView.severity"),
-                    half: true,
-                  },
-                  {
-                    label: t("DiagnosisMobileView.note"),
-                    name: "note",
-                    type: "textarea",
-                    placeholder: t("DiagnosisMobileView.note_content"),
-                  },
-                ]}
+                formFields={diagnosedConditionsFields}
+                isHasMatched={isHasMatched}
+                searchTerm={searchTerm}
               />
             </div>
 
             {/* Notes */}
             <div className="mb-4">
               <CustomAccordion
+                getItemTitle={(note) => note.note || "Note"}
                 titleBackgroundColor="var(--scbccolor)"
                 title={t("DiagnosisMobileView.notes")}
                 readOnly={true}
                 backgroundColor="var(--scbccolor)"
                 data={selectedDiagnosis.notes}
-                formFields={[
-                  {
-                    label: t("DiagnosisMobileView.note_content"),
-                    name: "content",
-                    type: "textarea",
-                    placeholder: t("DiagnosisMobileView.note_content"),
-                  },
-                ]}
+                formFields={notesFields}
+                isHasMatched={isHasMatched}
+                searchTerm={searchTerm}
               />
             </div>
 
@@ -365,53 +381,10 @@ const DiagnosisMobileView = () => {
                 backgroundColor="var(--scbccolor)"
                 titleBackgroundColor="var(--scbccolor)"
                 data={transformPrescriptionData(selectedDiagnosis.prescription)}
-                formFields={[
-                  {
-                    label: t("DiagnosisMobileView.prescription_title"),
-                    name: "title",
-                    type: "text",
-                    placeholder: t("DiagnosisMobileView.prescription_title"),
-                    half: true,
-                  },
-                  {
-                    label: t("DiagnosisMobileView.status"),
-                    name: "status",
-                    placeholder: t("DiagnosisMobileView.status"),
-                    half: true,
-                  },
-                  {
-                    label: t("DiagnosisMobileView.note"),
-                    name: "note",
-                    type: "textarea",
-                    placeholder: t("DiagnosisMobileView.prescription_note"),
-                  },
-                ]}
-                formFieldsRecipe={[
-                  {
-                    label: t("DiagnosisMobileView.type"),
-                    name: "type",
-                    placeholder: t("DiagnosisMobileView.type"),
-                  },
-                  {
-                    label: t("DiagnosisMobileView.dosage"),
-                    name: "dosage",
-                    placeholder: t("DiagnosisMobileView.dosage"),
-                    half: true,
-                  },
-                  {
-                    label: t("DiagnosisMobileView.duration_days"),
-                    name: "durationInDays",
-                    type: "number",
-                    placeholder: t("DiagnosisMobileView.duration_days"),
-                    half: true,
-                  },
-                  {
-                    label: t("DiagnosisMobileView.instructions"),
-                    name: "instructions",
-                    placeholder: t("DiagnosisMobileView.instructions"),
-                    type: "textarea",
-                  },
-                ]}
+                formFields={prescriptionFields}
+                formFieldsRecipe={prescriptionRecipeFields}
+                isHasMatched={isHasMatched}
+                searchTerm={searchTerm}
               />
             </div>
           </Modal.Body>

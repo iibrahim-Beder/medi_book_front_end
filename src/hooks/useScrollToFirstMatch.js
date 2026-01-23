@@ -1,14 +1,15 @@
 import { useEffect } from "react";
+import { lowerFirstChar } from "../pages/shared/utils";
 
 export const useScrollToFirstMatch = ({
-  prescriptionsData,
+  currentData,
   searchTerm,
   FIELD_KEY_MAP,
   hasHiddenMatch,
   handleViewClick,
 }) => {
   useEffect(() => {
-    if (!prescriptionsData?.data?.length) return;
+    if (!currentData?.length) return;
 
     const scrollToFirstMatch = () => {
       setTimeout(() => {
@@ -21,7 +22,7 @@ export const useScrollToFirstMatch = ({
       }, 0);
     };
 
-    const firstMatchRow = prescriptionsData.data.find(
+    const firstMatchRow = currentData.find(
       item => item.highlightInfo?.matchedFields?.length
     );
 
@@ -37,8 +38,12 @@ export const useScrollToFirstMatch = ({
       scrollToFirstMatch();
       return;
     }
-
-    const fieldKey = FIELD_KEY_MAP[firstMatchField];
+      let fieldKey;    
+      if (FIELD_KEY_MAP === null) {
+        fieldKey = lowerFirstChar(firstMatchField);
+      } else {
+        fieldKey = FIELD_KEY_MAP[firstMatchField];
+      }
     const fieldValue = firstMatchRow[fieldKey];
 
     const isHidden = hasHiddenMatch(
@@ -54,5 +59,5 @@ export const useScrollToFirstMatch = ({
       handleViewClick(null);
       scrollToFirstMatch();
     }
-  }, [prescriptionsData, searchTerm]);
+  }, [currentData, searchTerm]);
 };

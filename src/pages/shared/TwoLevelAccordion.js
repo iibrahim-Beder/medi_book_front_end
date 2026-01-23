@@ -27,7 +27,9 @@ const TwoLevelAccordion = memo(({
   onSaveRecipe,
   noHedarBefore = false,
   readOnly = false,
-  getItemTitleRecipe 
+  getItemTitleRecipe ,
+  isHasMatched = () => false,
+  searchTerm ="",
 }) => {
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
@@ -40,7 +42,7 @@ const TwoLevelAccordion = memo(({
   // === Delete Confirmation ===
   const handleShowDeleteConfirm = (index) => {
     const item = data[index] || dataRead[index];
-    const itemName = item.title || item.medication || item.type || "Prescription";
+    const itemName = item.title || item.MedicationName || item.type || "Prescription";
     setDeletePopup({ show: true, index, itemName });
   };
 
@@ -143,7 +145,7 @@ const TwoLevelAccordion = memo(({
           return (
             <li key={item.id || index}>
               <div
-                className={`dc-accordioninnertitle ${readOnly ? "" : "medium"}`}
+                className={` ${(isHasMatched(item,"main")) ||item.hasMedicationMatch ? "has-match-inner" : ""}  dc-accordioninnertitle ${readOnly ? "" : "medium"}`}
                 style={{
                   borderColor: "#eee",
                   borderLeft: item.isNew
@@ -245,6 +247,9 @@ const TwoLevelAccordion = memo(({
                             placeholder={field.placeholder}
                             icon={field.icon}
                             disabled={readOnly}
+                            isHasMatched={isHasMatched(item,field.name)||false}
+                            searchTerm={searchTerm}
+
                           />
                         ) : field.type === "select" ? (
                           <SelectField
@@ -254,6 +259,8 @@ const TwoLevelAccordion = memo(({
                             name={field.name}
                             options={field.options}
                             onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                            isHasMatched={isHasMatched(item,field.name)||false}
+                            searchTerm={searchTerm}
                           />
                         ) : field.type === "number" ? (
                           <input
@@ -274,6 +281,8 @@ const TwoLevelAccordion = memo(({
                             placeholder={field.placeholder}
                             value={item[field.name] || ""}
                             onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
+                            isHasMatched={isHasMatched(item,field.name)||false}
+                            searchTerm={searchTerm}
                           />
                         )}
                       </div>
@@ -322,6 +331,8 @@ const TwoLevelAccordion = memo(({
                     onSave={(recipeIndex, recipeData) =>
                       onSaveRecipe(index, recipeIndex, recipeData)
                     }
+                   isHasMatched={isHasMatched}
+                   searchTerm={searchTerm}
                   />
                 )}
               </div>

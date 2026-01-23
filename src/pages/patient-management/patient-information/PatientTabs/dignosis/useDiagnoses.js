@@ -8,14 +8,13 @@ export const useDiagnoses = () => {
   
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
-    diagnosisType: "",
-    dateFrom: null,
-    dateTo: null,
+    fromDate: null,
+    toDate: null,
   });
     const [appliedFilters, setAppliedFilters] = useState({
       searchValue: "",
-      dateFrom: null,
-      dateTo: null
+      fromDate: null,
+      toDate: null
     });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,8 +23,8 @@ export const useDiagnoses = () => {
   const queryArgs = useMemo(() => {
     const apiFilters = {
       ...appliedFilters,
-      dateFrom: formatDateForAPI(currentFilters.dateFrom),
-      dateTo: formatDateForAPI(currentFilters.dateTo),
+      fromDate: formatDateForAPI(currentFilters.fromDate),
+      toDate: formatDateForAPI(currentFilters.toDate),
     };
 
     // Remove undefined and empty values
@@ -52,16 +51,6 @@ export const useDiagnoses = () => {
   } = useGetPatientDiagnosesQuery(queryArgs);
 
   // // Actions 
-  // const handleViewClick = (id, field) => {
-  //   if (expandedRow === id && expandedField === field) {
-  //     setExpandedRow(null);
-  //     setExpandedField(null);
-  //   } else {
-  //     setExpandedRow(id);
-  //     setExpandedField(field);
-  //   }
-  // };
-
   const handleSearch = (filters) => {
     setCurrentPage(1);
     if (filters && typeof filters === "object") {
@@ -76,24 +65,33 @@ export const useDiagnoses = () => {
   const handleResetFilters = () => {
     const resetFilters = {
       searchValue: "",
-      diagnosisType: "",
-      dateFrom: null,
-      dateTo: null
+      fromDate: null,
+      toDate: null
     };
     setCurrentFilters(resetFilters);
+    setAppliedFilters(resetFilters);
     setCurrentPage(1);
   };
 
-  // Utility functions
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+  const toggleDescription = (diagnosisId) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [diagnosisId]: !prev[diagnosisId],
+    }));
+  };
+  const openDescription = (diagnosisId) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [diagnosisId]: true,
+    }));
   };
 
   // Transform API data to match component structure
   const transformDiagnosisData = (diagnosis) => {
     return {
+      ...diagnosis,
       id: diagnosis.diagnosisId,
       diagnosisName: diagnosis.diagnosisName,
       code: diagnosis.code,
@@ -102,21 +100,32 @@ export const useDiagnoses = () => {
       diagnosedConditions: diagnosis.patientInternalMedicalConditionLinkOverViews || [],
       notes: diagnosis.diagnosisNoteOverviews || [],
       prescription: diagnosis.prescriptionOverviews || [],
-      createdAt: diagnosis.createdAt
+      createdAt: diagnosis.createdAt,
+      hasDiagnosisMatch:diagnosis.hasDiagnosisMatch,
+      hasNoteMatch:diagnosis.hasNoteMatch,
+      hasPrescriptionMatch:diagnosis.hasPrescriptionMatch,
+      hasMedicationMatch:diagnosis.hasMedicationMatch,
+      hasConditionMatch:diagnosis.hasConditionMatch
     };
   };
 
   // Transform prescription data for TwoLevelAccordion
   const transformPrescriptionData = (prescriptions) => {
+    console.log('========Prescriptions:', prescriptions);
     return prescriptions.map(prescription => ({
+      ...prescription,
       id: prescription.id,
       title: prescription.title || "Prescription",
       status: prescription.status,
       note: prescription.notes,
       isExpanded: false,
-      recipes: prescription.prescribedMedications?.map(med => ({
+      recipes: prescription.prescribedMedicationOverviews?.map(med => ({  
+        title: med.medicationName,
+        highlightInfo: med.highlightInfo,
+        medicationCategoryName: med.medicationCategoryName,
+        id:med.id,
         type: "medication",
-        medication: med.medicationName,
+        medicationName: med.medicationName,
         dosage: med.dosage,
         durationInDays: med.durationInDays,
         instructions: med.instructions,
@@ -124,20 +133,6 @@ export const useDiagnoses = () => {
       })) || []
     }));
   };
-
-  // Helper function to get status text
-  const getStatusText = (status) => {
-    const statusMap = {
-      0: "Active",
-      1: "Completed", 
-      2: "Cancelled",
-      3: "Pending"
-    };
-    return statusMap[status] || "Unknown";
-  };
-
-
-
 
   // === Modal state ===
   const [expandedRow, setExpandedRow] = useState(null);
@@ -163,17 +158,22 @@ export const useDiagnoses = () => {
     setExpandedField(null);
   };
   
-  const handleViewClick = (diagnosisId, fieldType) => {
-    const diagnosis = diagnosesData?.data?.find(d => d.id === diagnosisId);
+  const handleViewClick = (diagnosisId, fieldType,mustExpand=false) => {
+         if(diagnosisId===null){
+          setExpandedRow(null);
+          setExpandedField(null);
+      }
+    // console.log('=====diagnosisId, fieldType', diagnosisId, fieldType);
+    const diagnosis = mappedDiagnosisData?.data?.find(d => d.id === diagnosisId);
     if (!diagnosis) return;
     
     const transformedDiagnosis = transformDiagnosisData(diagnosis);
     const transformedPrescriptions = transformPrescriptionData(transformedDiagnosis.prescription);
-    
+    // console.log('===diagnosis:', diagnosis);
     let data = null;
     switch(fieldType) {
       case 'diagnosedConditions':
-        data = transformedDiagnosis.diagnosedConditions;
+        data = transformedDiagnosis.patientInternalMedicalConditionLinkOverViews;
         break;
       case 'notes':
         data = transformedDiagnosis.notes;
@@ -183,7 +183,9 @@ export const useDiagnoses = () => {
         break;
       case 'symptomsDescription':
       case 'diagnosisDescription':
-        if (expandedRow === diagnosisId && expandedField === fieldType) {
+      case 'description':
+      case 'diagnosisName':
+        if (expandedRow === diagnosisId && expandedField === fieldType && !mustExpand) {
           setExpandedRow(null);
           setExpandedField(null);
         } else {
@@ -197,6 +199,149 @@ export const useDiagnoses = () => {
     
     handleOpenModal(diagnosisId, fieldType, data);
   };
+
+const mappedDiagnosisData = useMemo(() => {
+  if (!diagnosesData?.data) return diagnosesData;
+
+  const allMatches = diagnosesData.meta?.matches?.flatMap(m => m.matches) || [];
+
+// === Maps for all matching by ItemId for each Entity ===
+
+  const diagnosisMatchesMap = new Map();
+  const diagnosisNoteMatchesMap = new Map();
+  const prescriptionMatchesMap = new Map();
+  const medicationMatchesMap = new Map();
+  const conditionMatchesMap = new Map();
+
+  for (const match of allMatches) {
+    switch (match.entity) {
+      case "Diagnosis":
+        diagnosisMatchesMap.set(
+          match.itemId,
+          [...(diagnosisMatchesMap.get(match.itemId) || []), match]
+        );
+        break;
+
+      case "DiagnosisNote":
+        diagnosisNoteMatchesMap.set(
+          match.itemId,
+          [...(diagnosisNoteMatchesMap.get(match.itemId) || []), match]
+        );
+        break;
+
+      case "Prescription":
+        prescriptionMatchesMap.set(
+          match.itemId,
+          [...(prescriptionMatchesMap.get(match.itemId) || []), match]
+        );
+        break;
+
+      case "PrescribedMedication":
+      case "MedicationCategory": 
+        medicationMatchesMap.set(
+          match.itemId,
+          [...(medicationMatchesMap.get(match.itemId) || []), match]
+        );
+        break;
+
+      case "PatientInternalMedicalCondition":
+        conditionMatchesMap.set(
+          match.itemId,
+          [...(conditionMatchesMap.get(match.itemId) || []), match]
+        );
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  // === Mapping Diagnosis ===
+  const mappedData = diagnosesData.data.map(diagnosis => {
+    // 1)Diagnosis Notes
+    const diagnosisNotes =
+      diagnosis.diagnosisNoteOverviews?.map(note => {
+        const matchedFields = diagnosisNoteMatchesMap.get(note.id) || [];
+        return {
+          ...note,
+          highlightInfo: { matchedFields },
+          hasMatch: matchedFields.length > 0,
+        };
+      }) || [];
+
+    // 2)Patient Internal Conditions
+    const conditions =
+      diagnosis.patientInternalMedicalConditionLinkOverViews?.map(cond => {
+        const matchedFields = conditionMatchesMap.get(cond.id) || [];
+        return {
+          ...cond,
+          highlightInfo: { matchedFields },
+          hasMatch: matchedFields.length > 0,
+        };
+      }) || [];
+
+    // 3)Prescriptions → + medications
+    const prescriptionOverviews =
+      diagnosis.prescriptionOverviews?.map(prescription => {
+        const prescriptionMatchedFields =
+          prescriptionMatchesMap.get(prescription.id) || [];
+
+        // Prescribed Medications to be mapped in each Prescription
+       const prescribedMedications =
+       (prescription.prescribedMedicationOverviews || prescription.prescribedMedications || []).map(med => {
+         const matchedFields = medicationMatchesMap.get(med.id) || [];
+         return {
+           ...med,
+           highlightInfo: { matchedFields },
+           hasMatch: matchedFields.length > 0,
+         };
+       });
+
+
+        const hasMedicationMatch = prescribedMedications.some(m => m.hasMatch);
+
+        return {
+          ...prescription,
+          prescribedMedicationOverviews: prescribedMedications,
+          hasMedicationMatch,
+          highlightInfo: { matchedFields: prescriptionMatchedFields },
+          hasPrescriptionMatch: prescriptionMatchedFields.length > 0,
+        };
+      }) || [];
+
+    // === Boolean Flags to check if any match ===
+    const hasDiagnosisMatch = (diagnosisMatchesMap.get(diagnosis.diagnosisId) || []).length > 0;
+    const hasNoteMatch = diagnosisNotes.some(n => n.hasMatch);
+    const hasPrescriptionMatch = prescriptionOverviews.some(p => p.hasPrescriptionMatch);
+    const hasMedicationMatch = prescriptionOverviews.some(p => p.hasMedicationMatch);
+    const hasConditionMatch = conditions.some(c => c.hasMatch);
+
+    return {
+      ...diagnosis,
+      diagnosisNoteOverviews: diagnosisNotes,
+      prescriptionOverviews,
+      patientInternalMedicalConditionLinkOverViews: conditions,
+      highlightInfo: {
+        matchedFields: diagnosisMatchesMap.get(diagnosis.diagnosisId) || [],
+      },
+      hasDiagnosisMatch,
+      hasNoteMatch,
+      hasPrescriptionMatch,
+      hasMedicationMatch,
+      hasConditionMatch,
+    };
+  });
+
+  return {
+    ...diagnosesData,
+    data: mappedData,
+    searchTerm: diagnosesData.meta?.keyword || "",
+  };
+}, [diagnosesData]);
+  const currentData = mappedDiagnosisData?.data || [];
+console.log("mappedDiagnosisData", mappedDiagnosisData);
+  const searchTerm = mappedDiagnosisData?.searchTerm || "";
+
   
 
 
@@ -207,11 +352,13 @@ export const useDiagnoses = () => {
     expandedField,
     currentFilters,
     currentPage,
-    diagnosesData,
+    diagnosesData : mappedDiagnosisData,
+    currentData,
     isLoading,
     isFetching,
     error,
     pageSize,
+    searchTerm,
 
     // Actions
     handleViewClick,
@@ -222,10 +369,11 @@ export const useDiagnoses = () => {
     refetch,
 
     // Utilities
-    truncateText,
+    expandedDescriptions,
+    toggleDescription,
+    openDescription,
     transformDiagnosisData,
     transformPrescriptionData,
-    getStatusText,
 
     //modal
     modalOpen,

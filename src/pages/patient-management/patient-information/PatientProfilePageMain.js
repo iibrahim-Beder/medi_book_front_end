@@ -10,7 +10,7 @@ import MedicalConditions from "./PatientTabs/medical-conditions/MedicalCondition
 import Medications from "./PatientTabs/medication/Medications";
 import PatientReviewsCards from "./PatientTabs/PatientReviewsCards";
 import PatientNotificationsCards from "./PatientTabs/PatientNotificationsCards";
-import DiagnosisTable from "./PatientTabs/dignosis/DiagnosisTable";
+import DiagnosisTable from "./PatientTabs/dignosis/Diagnosis";
 import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
 import AllergyMobileView from "./PatientTabs/allergy/AllergyMobileView";

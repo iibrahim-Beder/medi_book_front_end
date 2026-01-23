@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import { MdClose } from 'react-icons/md';
 import TwoLevelAccordion from "../../../../shared/TwoLevelAccordion";
 import CustomAccordion from "../../../../shared/CustomAccordion";
+import { isHasMatched } from "../component/helpers";
 export const diagnosisHelpers = (t) => {
   // Diagnosis types for filters
   const diagnosisTypes = [
@@ -23,26 +24,22 @@ export const diagnosisHelpers = (t) => {
   const diagnosedConditionsFields = [
     {
       name: "medicalConditionName",
-      placeholder: t('Condition Type'),
       // half: true,
       label: t('Medical Condition'),
     },
     {
       name:"categoryName",
-      placeholder: t('Category'),
       half: true,
       label: t('Category'),
     },
     {
       name: "conditionType",
-      placeholder: t('Severity'),
       half: true,
       label: t('Severity'),
     },
     {
       name: "notes",
       type: "textarea",
-      placeholder: t('Note Content'),
       label: t('Note'),
     },
   ];
@@ -52,7 +49,6 @@ export const diagnosisHelpers = (t) => {
     {
       name: "note",
       type: "textarea",
-      placeholder: t('Note Content'),
       label: t('Note Content'),
     },
   ];
@@ -62,20 +58,17 @@ export const diagnosisHelpers = (t) => {
     {
       name: "title",
       type: "text",
-      placeholder: t('Prescription Title'),
       half: true,
       label: t('Prescription Title'),
     },
     {
       name: "status",
-      placeholder: t('Status'),
       half: true,
       label: t('Status'),
     },
     {
-      name: "note",
+      name: "notes",
       type: "textarea",
-      placeholder: t('Prescription Note'),
       label: t('Note'),
     },
   ];
@@ -83,26 +76,28 @@ export const diagnosisHelpers = (t) => {
   // Form fields for TwoLevelAccordion - Recipe
   const prescriptionRecipeFields = [
     {
-      name: "medication",
-      placeholder: t('Medication'),
+      name: "medicationName",
       label: t('Medication'),
+      half: true
+    },
+    {
+      name: "medicationCategoryName",
+      half: true,
+      label: t('Category'),
     },
     {
       name: "dosage",
-      placeholder: t('Dosage'),
       half: true,
       label: t('Dosage'),
     },
     {
       name: "durationInDays",
       type: "number",
-      placeholder: t('Duration (Days)'),
       half: true,
       label: t('Duration (Days)'),
     },
     {
       name: "instructions",
-      placeholder: t('Instructions'),
       type: "textarea",
       label: t('Instructions'),
     },
@@ -154,8 +149,10 @@ export const DiagnosisModal = ({
   data,
   formFields,
   formFieldsRecipe,
-  title 
+  title ,
+  searchTerm=""
 }) => {
+  console.log("===data", data);
   const { t } = useTranslation();
   
   const getModalTitle = () => {
@@ -172,6 +169,7 @@ export const DiagnosisModal = ({
   };
   
   const getModalContent = () => {
+
     if (!data || data.length === 0) {
       return (
         <div className="text-center py-4">
@@ -189,6 +187,8 @@ export const DiagnosisModal = ({
             backgroundColor="var(--scbccolor)"
             data={data}
             formFields={formFields}
+            isHasMatched={isHasMatched}
+            searchTerm={searchTerm}
           />
         );
         
@@ -200,6 +200,8 @@ export const DiagnosisModal = ({
             data={data}
             formFields={formFields}
             getItemTitle={(note) => note.note || "Note"}
+            isHasMatched={isHasMatched}
+            searchTerm={searchTerm}
 
           />
         );
@@ -213,6 +215,8 @@ export const DiagnosisModal = ({
             data={data}
             formFields={formFields}
             formFieldsRecipe={formFieldsRecipe}
+            isHasMatched={isHasMatched}
+            searchTerm={searchTerm}
           />
         );
         
@@ -256,4 +260,23 @@ export const DiagnosisModal = ({
       </Modal.Footer>
     </Modal>
   );
+};
+
+export const hasHiddenMatch = (diagnoses, field, value, searchTerm) => {
+  if (!diagnoses) return false; 
+  if (!value || value.length <= 45 || !searchTerm) return false;
+
+const hasFieldMatch = diagnoses.highlightInfo?.matchedFields?.some(
+  m => m.field.toLowerCase() === field.toLowerCase()
+);
+
+
+  if (!hasFieldMatch) return false;
+
+  const lowerValue = value.toLowerCase();
+  const lowerSearch = searchTerm.toLowerCase();
+
+  const matchIndex = lowerValue.indexOf(lowerSearch);
+
+  return matchIndex >= 45;
 };

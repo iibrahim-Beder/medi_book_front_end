@@ -160,3 +160,11 @@ export function formatChatDate(dateString) {
     const d = new Date(date);
     return d.toISOString().split('T')[0];
   };
+
+  export const lowerFirstChar = (str) =>
+    str.charAt(0).toLowerCase() + str.slice(1);
+
+  export const truncateText = (text, maxLength = 400) => {
+    if (!text) return "";
+    return text.length <= maxLength ? text : text.substring(0, maxLength) + "...";
+  };

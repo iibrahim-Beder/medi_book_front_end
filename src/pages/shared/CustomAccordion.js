@@ -37,6 +37,7 @@ const CustomAccordion = memo(({
  isHasMatched = () => false,
  searchTerm
 }) => {
+  console.log("data custom accordion", data);
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
@@ -134,7 +135,7 @@ const CustomAccordion = memo(({
 
     if (field.type === "textarea") {
       return <TextAreaField
-       isHasMatched={isHasMatched(field.name ,item.id)||false}
+       isHasMatched={isHasMatched(item,field.name)||false}
       {...commonProps} onChange={(e) => onChange(index, field.name, e.target.value)} />;
     } else if (field.type === "select") {
       return <SelectField {...commonProps} options={field.options} onChange={(e) => onChange(index, field.name, e.target.value)} />;
@@ -148,7 +149,7 @@ const CustomAccordion = memo(({
       />;
     } else {
       return <Field
-        isHasMatched={isHasMatched(field.name,item.id)||false}
+        isHasMatched={isHasMatched(item,field.name)||false}
         {...commonProps}
         type={field.type || "text"}
         min={field.min}
@@ -227,7 +228,7 @@ const CustomAccordion = memo(({
               <li key={item.id || index}>
                 {/* Accordion Title - Fixed Overflow */}
                 <div
-                  className={`${isHasMatched("main",item.id) ? "has-match-inner" : ""}  dc-accordioninnertitle ${accordioninnertitleSize}`}
+                  className={`${isHasMatched(item,"main") ? "has-match-inner" : ""}  dc-accordioninnertitle ${accordioninnertitleSize}`}
                   style={{
                     display: isSingle ? "none" : "",
                     backgroundColor: titleBackgroundColor,

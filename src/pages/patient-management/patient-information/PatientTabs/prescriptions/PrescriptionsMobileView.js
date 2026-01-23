@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Button, Modal, Card } from "react-bootstrap";
-import CustomAccordion from "../../../../shared/CustomAccordion";
 import Field from "../../../../ui/form-fields/Field";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { MdClose, MdExpandMore } from "react-icons/md";
@@ -12,8 +11,9 @@ import HighlightText from "../../../../shared/HighlightText";
 import ErrorLoading from "../../../../shared/ErrorLoading";
 import "../../../Patient-management.css";
 import { usePrescriptions } from "./usePrescriptions";
-import { prescriptionsHelpers, MobileSkeleton, hasMatch, CustomAccordionToMobileexport } from "./prescriptionsHelpers";
+import { prescriptionsHelpers, MobileSkeleton,  CustomAccordionToMobileexport } from "./prescriptionsHelpers";
 import { formatDate } from "../../../../shared/utils";
+import { isHasMatched } from "../component/helpers";
 
 const PrescriptionsMobileView = () => {
   const { t } = useTranslation();
@@ -52,7 +52,6 @@ const PrescriptionsMobileView = () => {
     mobileHeaders,
     mobileStatusOptions,
     filterConfigs,
-    medicationFields,
     emptyStates,
     fieldMapping
 
@@ -117,7 +116,6 @@ const PrescriptionsMobileView = () => {
             ) : currentData.length > 0 ? (
               currentData.map((prescription) => {
                 const medicationCount = prescription.prescribedMedications ? prescription.prescribedMedications.length : 0;
-                console.log("prescription", prescription);
                 return (
                   <Card key={prescription.id} className="mobile-view-card">
                     <Card.Body style={{ padding: "15px" }}>
@@ -172,7 +170,7 @@ const PrescriptionsMobileView = () => {
                           style={{ cursor: "pointer" }}
                         >
                           {mobileHeaders.note} :
-                          <Button className={`${hasMatch(prescription, "Notes") ? 'has-match pulse' : ''} md-expandable view-btn ms-2 `}>
+                          <Button className={`${isHasMatched(prescription, "Notes") ? 'has-match pulse' : ''} md-expandable view-btn ms-2 `}>
                               <MdExpandMore
                               style={{
                                   fontSize: '20px',
@@ -265,7 +263,7 @@ const PrescriptionsMobileView = () => {
             label={mobileHeaders.diagnosis_name}
             value={selectedPrescription?.diagnosisName || ""}
             disabled
-            isHasMatched={hasMatch(selectedPrescription || {}, fieldMapping.diagnosisName)}
+            isHasMatched={isHasMatched(selectedPrescription || {}, fieldMapping.diagnosisName)}
             searchTerm={searchTerm}
           />
 
@@ -280,8 +278,7 @@ const PrescriptionsMobileView = () => {
             label={mobileHeaders.prescription_note}
             value={selectedPrescription?.notes || ""}
             disabled
-            isHasMatched={hasMatch(selectedPrescription|| {}, fieldMapping.note)}
-            // isHasMatched={true}
+            isHasMatched={isHasMatched(selectedPrescription|| {}, fieldMapping.note)}
             searchTerm={searchTerm}
           />
           <CustomAccordionToMobileexport

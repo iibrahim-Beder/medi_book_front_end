@@ -9,10 +9,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 import HighlightText from "../../../../shared/HighlightText";
 import ErrorLoading from "../../../../shared/ErrorLoading";
 import { usePrescriptions } from "./usePrescriptions";
-import { hasHiddenMatch, hasMatch, prescriptionsHelpers, PrescriptionsModal, TableSkeleton } from "./prescriptionsHelpers";
+import { hasHiddenMatch, prescriptionsHelpers, PrescriptionsModal, TableSkeleton } from "./prescriptionsHelpers";
 import { formatDate } from "../../../../shared/utils";
 import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
 import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
+import { isHasMatched } from "../component/helpers";
 
 const PrescriptionsTable = () => {
   const { t } = useTranslation();
@@ -63,7 +64,7 @@ const PrescriptionsTable = () => {
     emptyStates,
   } = prescriptionsHelpers(t);
 useScrollToFirstMatch({
-  prescriptionsData,
+  currentData,
   searchTerm,
   FIELD_KEY_MAP,
   hasHiddenMatch,
@@ -142,7 +143,7 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
                       <tr>
                         {/* Prescription Title */}
                         <td title={prescription.title}
-                         data-has-match={hasMatch(prescription, fieldMapping.title)? "true": undefined}
+                         data-has-match={isHasMatched(prescription, fieldMapping.title)? "true": undefined}
                         >
                           <HighlightText
                             text={truncateText(prescription.title, 50)}
@@ -186,7 +187,7 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
                               <span
                                 className="text-truncate"
                                 // style={{ maxWidth: "200px" }}
-                                data-has-match={hasMatch(prescription, fieldMapping.note)? "true": undefined}
+                                data-has-match={isHasMatched(prescription, fieldMapping.note)? "true": undefined}
                                 title={prescription.notes}
                               >
                                 <HighlightText
@@ -246,8 +247,8 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
                               <span
                                 className="text-truncate"
                                 title={prescription.diagnosisName}
-                                 data-has-match={hasMatch(prescription, fieldMapping.diagnosisName)? "true": undefined}
-                                 data-right-has-match={hasMatch(prescription, fieldMapping.diagnosisName)? "true": undefined}
+                                 data-has-match={isHasMatched(prescription, fieldMapping.diagnosisName)? "true": undefined}
+                                 data-right-has-match={isHasMatched(prescription, fieldMapping.diagnosisName)? "true": undefined}
                               >
                                 <HighlightText
                                   text={truncateText(prescription.diagnosisName, 50)}
@@ -323,7 +324,7 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
                                     label={t("PrescriptionsTable.prescription_note")}
                                     value={prescription.notes}
                                     disabled
-                                    isHasMatched={hasMatch(prescription, fieldMapping.note)}
+                                    isHasMatched={isHasMatched(prescription, fieldMapping.note)}
                                     searchTerm={searchTerm}
                                   />
                                 </div>
@@ -335,7 +336,7 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
                                     label={t("PrescriptionsTable.diagnosis_name")}
                                     value={prescription.diagnosisName}
                                     disabled
-                                    isHasMatched={hasMatch(prescription, fieldMapping.diagnosisName)}
+                                    isHasMatched={isHasMatched(prescription, fieldMapping.diagnosisName)}
                                     searchTerm={searchTerm}
                                   />
                                 </div>
@@ -346,7 +347,7 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
                                     label={t("PrescriptionsTable.prescription_title")}
                                     value={prescription.title}
                                     disabled
-                                    isHasMatched={hasMatch(prescription, fieldMapping.title)}
+                                    isHasMatched={isHasMatched(prescription, fieldMapping.title)}
                                     searchTerm={searchTerm}
                                   />
                                 </div>

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
-import {DiagnosisModal} from "./diagnosisHelpers";
+import {DiagnosisModal, hasHiddenMatch} from "./diagnosisHelpers";
 import { MdExpandMore } from "react-icons/md";
 import ConditionsFilters from "../component/ConditionsFilters";
 import { useTranslation } from "react-i18next";
@@ -13,11 +13,13 @@ import HighlightText from "../../../../shared/HighlightText";
 import { useDiagnoses } from "./useDiagnoses";
 import { diagnosisHelpers } from "./diagnosisHelpers";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
-import { formatDate } from "../../../../shared/utils";
+import { formatDate, truncateText } from "../../../../shared/utils";
+import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
+import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
+import { isHasMatched } from "../component/helpers";
 
 const DiagnosisTable = () => {
   const { t } = useTranslation();
-  
   
   const {
     // State
@@ -30,6 +32,8 @@ const DiagnosisTable = () => {
     isFetching,
     error,
     pageSize,
+    searchTerm,
+    currentData,
 
     // Modal states
     modalOpen,
@@ -46,27 +50,36 @@ const DiagnosisTable = () => {
     refetch,
 
     // Utilities
-    truncateText,
     transformDiagnosisData,
     transformPrescriptionData,
   } = useDiagnoses();
 
   const {
-    filterConfigs,
     diagnosedConditionsFields,
     notesFields,
     prescriptionFields,
     prescriptionRecipeFields,
     translateTableHeaders,
-    translateEmptyStates
+    translateEmptyStates,
   } = diagnosisHelpers(t);
 
   const tableHeaders = translateTableHeaders();
   const emptyStates = translateEmptyStates();
+  const tableWrapperRef = React.useRef(null);
 
+useScrollToFirstMatch({
+  currentData,
+  searchTerm,
+  FIELD_KEY_MAP: null,
+  hasHiddenMatch,
+  handleViewClick,
+});
+
+useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
   return (
     <div className="table-container">
           <DiagnosisModal
+          searchTerm={searchTerm}
         show={modalOpen}
         onHide={handleCloseModal}
         type={modalType}
@@ -96,19 +109,19 @@ const DiagnosisTable = () => {
               setSearchTerm={(value) => setCurrentFilters(prev => ({ ...prev, searchValue: value }))}
               filterType={currentFilters.diagnosisType}
               setFilterType={(value) => setCurrentFilters(prev => ({ ...prev, diagnosisType: value }))}
-              filterDateFrom={currentFilters.dateFrom}
-              setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, dateFrom: date }))}
-              filterDateTo={currentFilters.dateTo}
-              setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, dateTo: date }))}
+              filterDateFrom={currentFilters.fromDate}
+              setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, fromDate: date }))}
+              filterDateTo={currentFilters.toDate}
+              setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, toDate: date }))}
               onReset={handleResetFilters}
               onSearch={handleSearch}
-              conditions={diagnosesData?.data || []}
-              filterConfigs={filterConfigs}
+              conditions={currentData || []}
+              showFilterDropdown={false}
             />
           </div>
 
           {/* Data Table */}
-          <div style={{ overflow: "auto" }}>
+          <div ref={tableWrapperRef} style={{ overflow: "auto" }}>
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
@@ -145,23 +158,50 @@ const DiagnosisTable = () => {
                       />
                     </td>
                   </tr>
-                ) : diagnosesData?.data && diagnosesData.data.length > 0 ? (
-                  diagnosesData.data.map((diagnosis) => {
+                ) : currentData && currentData.length > 0 ? (
+                  currentData.map((diagnosis) => {
                     const transformedDiagnosis = transformDiagnosisData(diagnosis);
-                    const transformedPrescriptions = transformPrescriptionData(transformedDiagnosis.prescription);
                     
                     return (
                       <React.Fragment key={transformedDiagnosis.id}>
                         <tr>
-                          <td>
-                            <strong>
+                          <td data-has-match={isHasMatched(transformedDiagnosis, "DiagnosisName")? "true": undefined}>
                               <HighlightText
-                                text={transformedDiagnosis.diagnosisName}
-                                searchTerm={diagnosesData.searchTerm}
+                              text={truncateText(transformedDiagnosis.diagnosisName, 50)}
+                                searchTerm={searchTerm}
                                 matchedFields={diagnosis.highlightInfo?.matchedFields || []}
                                 fieldName="DiagnosisName"
                               />
-                            </strong>
+                             { transformedDiagnosis.diagnosisName && 
+                               transformedDiagnosis.diagnosisName.length > 50 && (
+                                <Button
+                                  className={` ${hasHiddenMatch(transformedDiagnosis, "DiagnosisName", transformedDiagnosis.diagnosisName, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
+                                  size="sm"
+                                  style={{
+                                    backgroundColor: "transparent",
+                                    padding: 0,
+                                    fontSize: "19px",
+                                    height: "20px",
+                                  }}
+                                  onClick={() =>
+                                    handleViewClick(
+                                      transformedDiagnosis.id,
+                                      "diagnosisName"
+                                    )
+                                  }
+                                >
+                                  <MdExpandMore
+                                    style={{
+                                      transform:
+                                        expandedRow === transformedDiagnosis.id &&
+                                        expandedField === "diagnosisName"
+                                          ? "rotate(180deg)"
+                                          : "rotate(0deg)",
+                                      transition: "transform 0.3s ease",
+                                    }}
+                                  />
+                                </Button>
+                              )}
                           </td>
                           
                           <td>
@@ -174,12 +214,14 @@ const DiagnosisTable = () => {
                             <div className="d-flex align-items-center">
                               <span
                                 className="text-truncate"
-                                style={{ maxWidth: "200px" }}
+                                // style={{ maxWidth: "200px" }}
                                 title={transformedDiagnosis.symptomsDescription}
+                                data-has-match={isHasMatched(transformedDiagnosis, "SymptomsDescription")? "true": undefined}
+                                
                               >
-                                    <HighlightText
+                            <HighlightText
                               text={truncateText(transformedDiagnosis.symptomsDescription, 50)}
-                              searchTerm={diagnosesData.searchTerm}
+                              searchTerm={searchTerm}
                               matchedFields={diagnosis.highlightInfo?.matchedFields || []}
                               fieldName="SymptomsDescription"
                             />
@@ -188,11 +230,10 @@ const DiagnosisTable = () => {
                               {transformedDiagnosis.symptomsDescription && 
                                transformedDiagnosis.symptomsDescription.length > 50 && (
                                 <Button
-                                  className="view-btn ms-2"
+                                  className={` ${hasHiddenMatch(transformedDiagnosis, "SymptomsDescription", transformedDiagnosis.symptomsDescription, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"
                                   style={{
                                     backgroundColor: "transparent",
-                                    color: "#278fff",
                                     padding: 0,
                                     fontSize: "19px",
                                     height: "20px",
@@ -224,27 +265,28 @@ const DiagnosisTable = () => {
                               <div className="d-flex align-items-center">
                                 <span
                                   className="text-truncate"
-                                  style={{ maxWidth: "250px" }}
+                                  // style={{ maxWidth: "250px" }}
                                   title={transformedDiagnosis.diagnosisDescription}
+                                  data-has-match={isHasMatched(transformedDiagnosis, "Description")? "true": undefined}
                                 >
                                   <HighlightText
-                                    text={truncateText(transformedDiagnosis.diagnosisDescription, 60)}
-                                    searchTerm={diagnosesData.searchTerm}
+                                    text={truncateText(transformedDiagnosis.diagnosisDescription, 50)}
+                                    searchTerm={searchTerm}
                                     matchedFields={diagnosis.highlightInfo?.matchedFields || []}
-                                    fieldName="DiagnosisDescription"
+                                    fieldName="Description"
                                   />
                                 </span>
                                 {transformedDiagnosis.diagnosisDescription && 
-                                 transformedDiagnosis.diagnosisDescription.length > 60 && (
+                                 transformedDiagnosis.diagnosisDescription.length > 50 && (
                                   <Button
+                                   data-right-has-match={isHasMatched(transformedDiagnosis, "Description")? "true": undefined}
                                     style={{
                                       backgroundColor: "transparent",
-                                      color: "#278fff",
                                       padding: 0,
                                       fontSize: "19px",
                                       height: "20px",
                                     }}
-                                    className="view-btn ms-2"
+                                  className={` ${hasHiddenMatch(transformedDiagnosis, "Description", transformedDiagnosis.diagnosisDescription, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                     size="sm"
                                     onClick={() =>
                                       handleViewClick(
@@ -257,7 +299,7 @@ const DiagnosisTable = () => {
                                       style={{
                                         transform:
                                           expandedRow === transformedDiagnosis.id &&
-                                          expandedField === "diagnosisDescription"
+                                         ( expandedField === "diagnosisDescription" || expandedField === "description")
                                             ? "rotate(180deg)"
                                             : "rotate(0deg)",
                                         transition: "transform 0.3s ease",
@@ -271,6 +313,8 @@ const DiagnosisTable = () => {
                           {/* Diagnosed Conditions - Read Only Accordion */}
                           <td>
                             <Button
+                            data-has-match={transformedDiagnosis.hasConditionMatch? "true": undefined}
+                            data-right-has-match={transformedDiagnosis.hasConditionMatch? "true": undefined}
                               className="view-btn"
                               size="sm"
                               variant="outline-primary"
@@ -281,7 +325,7 @@ const DiagnosisTable = () => {
                             >
                               {t('View')}
                               {transformedDiagnosis.diagnosedConditions.length > 0 && (
-                                <span className="num-item">
+                              <span className={`num-item ${transformedDiagnosis.hasConditionMatch ? "has-match pulse" :""}`}>
                                   {transformedDiagnosis.diagnosedConditions.length}
                                 </span>
                               )}
@@ -291,6 +335,8 @@ const DiagnosisTable = () => {
                           {/* Notes - Button opens modal */}
                           <td>
                             <Button
+                            data-has-match={transformedDiagnosis.hasNoteMatch? "true": undefined}
+                            data-right-has-match={transformedDiagnosis.hasNoteMatch? "true": undefined}
                               className="view-btn"
                               size="sm"
                               variant="outline-primary"
@@ -301,7 +347,7 @@ const DiagnosisTable = () => {
                             >
                               {t('View')}
                               {transformedDiagnosis.notes.length > 0 && (
-                                <span className="num-item">
+                              <span className={`num-item ${transformedDiagnosis.hasNoteMatch ? "has-match pulse" :""}`}>
                                   {transformedDiagnosis.notes.length}
                                 </span>
                               )}
@@ -311,6 +357,8 @@ const DiagnosisTable = () => {
                           {/* Prescription - Button opens modal */}
                           <td>
                             <Button
+                            data-has-match={transformedDiagnosis.hasPrescriptionMatch || transformedDiagnosis.hasMedicationMatch? "true": undefined}
+                            data-right-has-match={transformedDiagnosis.hasPrescriptionMatch || transformedDiagnosis.hasMedicationMatch? "true": undefined}
                               className="view-btn"
                               size="sm"
                               variant="outline-primary"
@@ -321,7 +369,7 @@ const DiagnosisTable = () => {
                             >
                               {t('View')}
                               {transformedDiagnosis.prescription.length > 0 && (
-                                <span className="num-item">
+                              <span className={`num-item ${transformedDiagnosis.hasPrescriptionMatch ||transformedDiagnosis.hasMedicationMatch? "has-match pulse" :""}`}>
                                   {transformedDiagnosis.prescription.length}
                                 </span>
                               )}
@@ -333,9 +381,9 @@ const DiagnosisTable = () => {
                           </td>
                         </tr>
                             
-                        {/* Expanded row content فقط لـ symptomsDescription و diagnosisDescription */}
+                        {/* Expanded row content ـ symptomsDescription  ـ diagnosisDescription - diagnosisName */}
                         {expandedRow === transformedDiagnosis.id && 
-                         (expandedField === "symptomsDescription" || expandedField === "diagnosisDescription") && (
+                         (expandedField === "symptomsDescription" || expandedField === "diagnosisDescription"|| expandedField === "diagnosisName" || expandedField === "description") && (
                           <tr className="table-active-content">
                             <td colSpan="8">
                               <div className="accordion-in-table">
@@ -346,17 +394,33 @@ const DiagnosisTable = () => {
                                       value={transformedDiagnosis.symptomsDescription}
                                       type="textarea"
                                       disabled
+                                       isHasMatched={isHasMatched(transformedDiagnosis, "SymptomsDescription")}
+                                       searchTerm={searchTerm}
                                     />
                                   </div>
                                 )}
         
-                                {expandedField === "diagnosisDescription" && (
+                                {(expandedField === "diagnosisDescription" || expandedField === "description") && (
                                   <div className="description-expanded-section">
                                     <TextAreaField
                                       label={t('Diagnosis Description')}
                                       value={transformedDiagnosis.diagnosisDescription}
                                       type="textarea"
                                       disabled
+                                       isHasMatched={isHasMatched(transformedDiagnosis, "Description")}
+                                       searchTerm={searchTerm}
+                                    />
+                                  </div>
+                                )}
+                                {expandedField === "diagnosisName" && (
+                                  <div className="description-expanded-section">
+                                    <TextAreaField
+                                      label={t('Diagnosis Name')}
+                                      value={transformedDiagnosis.diagnosisName}
+                                      type="textarea"
+                                      disabled
+                                      isHasMatched={isHasMatched(transformedDiagnosis, "DiagnosisName")}
+                                      searchTerm={searchTerm}
                                     />
                                   </div>
                                 )}
@@ -370,7 +434,7 @@ const DiagnosisTable = () => {
                 ) : (
                           <tr>
                     <td colSpan="8" className="text-center text-muted">
-                      {emptyStates.noResults(currentFilters.searchValue)}
+                      {emptyStates.noResults(searchTerm)}
                     </td>
                   </tr>
                 )}
@@ -379,7 +443,7 @@ const DiagnosisTable = () => {
           </div>
 
           {/* Pagination */}
-          {diagnosesData && diagnosesData.data && diagnosesData.data.length > 0 && (
+          {diagnosesData && currentData && currentData.length > 0 && (
             <Pagination
               currentPage={currentPage}
               totalItems={diagnosesData.totalCount || 0}

@@ -122,6 +122,7 @@ const mappedprescriptionsData = useMemo(() => {
     searchTerm: prescriptionsData.meta?.keyword || ""
   };
 }, [prescriptionsData]);
+console.log("mappedprescriptionsData", mappedprescriptionsData);
   const FIELD_KEY_MAP = {
   DiagnosisName: "diagnosisName",
   Title: "title",
@@ -218,6 +219,7 @@ const mappedprescriptionsData = useMemo(() => {
     
     return prescribedMedications.map(med => ({
       id: med.id,
+      hasMatch: med.hasMatch,
       medicationName: med.medicationName,
       categoryName: med.medicationCategoryName,
       dosage: med.dosage,

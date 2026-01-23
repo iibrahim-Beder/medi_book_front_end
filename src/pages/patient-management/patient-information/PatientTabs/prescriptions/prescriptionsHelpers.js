@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { MdClose } from 'react-icons/md';
 import CustomAccordion from '../../../../shared/CustomAccordion';
 import { usePrescriptions } from "./usePrescriptions";
+import { isHasMatched } from "../component/helpers";
 export const prescriptionsHelpers = (t) => {
   // Field mapping for highlight
   const fieldMapping = {
@@ -232,10 +233,6 @@ const hasFieldMatch = prescription.highlightInfo?.matchedFields?.some(
   return matchIndex >= 45;
 };
 
- export const hasMatch = (prescription, field) =>
-  prescription.highlightInfo?.matchedFields?.some(m => m.field === field);
-
-
 export const PrescriptionsModal = ({ 
   show, 
   onHide, 
@@ -245,26 +242,6 @@ export const PrescriptionsModal = ({
   title ,
   searchTerm
 }) => {
-const matchedFields = data?.flatMap(
-  item => item.highlightInfo?.matchedFields || []
-) || [];
-
- const isHasMatched = ( fieldName, itemId) => {
-  if (!matchedFields?.length) return false;
-
-  if (
-    fieldName === "main" &&
-    matchedFields.some(m => m.itemId === itemId)
-  ) {
-    return true;
-  }
-
-  return matchedFields.some(
-    m =>
-      m.itemId === itemId &&
-      m.field?.toLowerCase() === fieldName.toLowerCase()
-  );
-};
 
   const { t } = useTranslation();
   
