@@ -152,7 +152,6 @@ export const DiagnosisModal = ({
   title ,
   searchTerm=""
 }) => {
-  console.log("===data", data);
   const { t } = useTranslation();
   
   const getModalTitle = () => {

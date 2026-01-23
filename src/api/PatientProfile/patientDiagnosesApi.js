@@ -1,5 +1,5 @@
 // patientDiagnosesApi.js
-import { baseApi } from './baseApi';
+import { baseApi } from '../baseApi';
 const getSeverityValue = (severityText) => {
   const severityMap = {
     "Mild": 1,

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutation , useDeletePrescribedMedicationMutation
 } from "../../../api/prescribedMedicationApi"; 
-import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../api/patientDiagnosesApi";
+import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../api/PatientProfile/patientDiagnosesApi";
 import {
   useAddPatientPrescriptionMutation, useUpdatePatientPrescriptionMutation, useDeletePatientPrescriptionMutation
 } from "../../../api/PatientProfile/patientPrescriptionApi";

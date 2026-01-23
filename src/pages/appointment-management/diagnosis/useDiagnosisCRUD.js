@@ -4,7 +4,7 @@ import {
   useAddPatientDiagnosisMutation,
   useUpdatePatientDiagnosisMutation,
   useDeletePatientDiagnosisMutation
-} from "../../../api/patientDiagnosesApi";
+} from "../../../api/PatientProfile/patientDiagnosesApi";
 import { removeNewChildren, transformDiagnosisData } from "./diagnosisUtils";
 
 const PATIENT_ID = 4;

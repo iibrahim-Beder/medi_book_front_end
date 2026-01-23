@@ -37,7 +37,6 @@ const CustomAccordion = memo(({
  isHasMatched = () => false,
  searchTerm
 }) => {
-  console.log("data custom accordion", data);
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });

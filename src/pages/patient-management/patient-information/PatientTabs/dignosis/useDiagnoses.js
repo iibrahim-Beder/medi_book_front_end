@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useGetPatientDiagnosesQuery } from "../../../../../api/patientDiagnosesApi";
+import { useGetPatientDiagnosesQuery } from "../../../../../api/PatientProfile/patientDiagnosesApi";
 import { formatDateForAPI } from "../../../../shared/utils";
 
 const PATIENT_ID = 4;
@@ -111,7 +111,6 @@ export const useDiagnoses = () => {
 
   // Transform prescription data for TwoLevelAccordion
   const transformPrescriptionData = (prescriptions) => {
-    console.log('========Prescriptions:', prescriptions);
     return prescriptions.map(prescription => ({
       ...prescription,
       id: prescription.id,

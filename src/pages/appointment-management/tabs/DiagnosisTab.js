@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Pagination from "../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import { useGetPatientDiagnosesQuery } from "../../../api/patientDiagnosesApi";
+import { useGetPatientDiagnosesQuery } from "../../../api/PatientProfile/patientDiagnosesApi";
 import DiagnosisList from "../diagnosis/DiagnosisList";
 import DiagnosisModal from "../diagnosis/DiagnosisModal";
 import DeleteConfirmationPopup from "../diagnosis/DeleteConfirmationPopup";
@@ -11,7 +11,7 @@ import { useDiagnosisCRUD } from "../diagnosis/useDiagnosisCRUD";
 import { transformDiagnosisData } from "../diagnosis/diagnosisUtils";
 import ErrorLoading from "../../shared/ErrorLoading";
 import { useDispatch } from "react-redux";
-import { patientDiagnosesApi } from "../../../api/patientDiagnosesApi";
+import { patientDiagnosesApi } from "../../../api/PatientProfile/patientDiagnosesApi";
 
 const DiagnosisMobileViewWithCRUD = () => {
   const { t } = useTranslation();
