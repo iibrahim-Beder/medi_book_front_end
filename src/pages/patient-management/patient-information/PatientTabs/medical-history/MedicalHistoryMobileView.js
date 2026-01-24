@@ -89,21 +89,6 @@ const MedicalHistoryMobileView = () => {
       });
     });
   }, [medicalHistoryData]);
-  // if (isLoading || isFetching) {
-  //   return (
-  //     <div className="table-container mobile-view-card p-3">
-  //       {Array.from({ length: 5 }).map((_, i) => (
-  //         <Card key={i} className="mb-3">
-  //           <Card.Body>
-  //             <Skeleton height={20} width="60%" />
-  //             <Skeleton height={15} count={4} className="mt-2" />
-  //           </Card.Body>
-  //         </Card>
-  //       ))}
-  //     </div>
-  //   );
-  // }
-
   if (error) {
     return (
       <div className="p-4 text-center">

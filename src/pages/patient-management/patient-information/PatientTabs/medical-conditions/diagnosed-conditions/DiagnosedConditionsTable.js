@@ -11,8 +11,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { useMedicalConditions } from "./useMedicalConditions";
 import { medicalConditionsHelpers } from "./medicalConditionsHelpers";
-import { formatDate } from "../../../../../shared/utils";
+import { formatDate, truncateText } from "../../../../../shared/utils";
 import HighlightText from "../../../../../shared/HighlightText";
+import { hasHiddenMatch, isHasMatched } from "../../component/helpers";
+import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMatchObserver";
+import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstMatch";
 
 const DiagnosedConditionsTable = () => {
   const { t } = useTranslation();
@@ -24,6 +27,8 @@ const DiagnosedConditionsTable = () => {
     currentPage,
     expandedRow,
     medicalConditionsData,
+    currentData,
+    searchTerm,
     isLoading,
     isFetching,
     error,
@@ -40,8 +45,8 @@ const DiagnosedConditionsTable = () => {
     // Utilities
     getSeverityColor,
     getStatusInfo,
-    truncateText,
   } = useMedicalConditions(false); 
+  console.log("expandedRow", expandedRow);
 
   const {
     conditionTypes,
@@ -69,6 +74,15 @@ const DiagnosedConditionsTable = () => {
       data: statusOptions,
     }
   ];
+  useScrollToFirstMatch({
+      currentData,
+      searchTerm,
+      FIELD_KEY_MAP:null,
+      hasHiddenMatch,
+      handleViewClick:handleExpandClick,
+    });
+    const tableWrapperRef = React.useRef(null);
+    useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
 
   return (
     <div className="table-container">
@@ -100,7 +114,7 @@ const DiagnosedConditionsTable = () => {
           </div>
 
           {/* Data Table */}
-          <div style={{ overflow: "auto" }}>
+          <div ref={tableWrapperRef} style={{ overflow: "auto" }}>
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
@@ -140,7 +154,7 @@ const DiagnosedConditionsTable = () => {
                     return (
                       <React.Fragment key={condition.id}>
                         <tr>
-                          <td title={condition.medicalConditionName}>
+                          <td data-has-match={isHasMatched(condition, "MedicalConditionName")? "true": undefined} title={condition.medicalConditionName}>
                             <HighlightText
                               text={condition.medicalConditionName}
                               searchTerm={medicalConditionsData.searchTerm}
@@ -174,28 +188,26 @@ const DiagnosedConditionsTable = () => {
                               {translateStatus(condition.isActive)}
                             </span>
                           </td>
-                          <td title={condition.notes}>
+                          <td 
+                            data-has-match={isHasMatched(condition, "Notes")? "true": undefined}
+                            data-right-has-match={isHasMatched(condition, "Notes")? "true": undefined} title={condition.notes}>
                             <div className="d-flex align-items-center">
                               <span
-                                className="text-truncate"
-                                style={{ maxWidth: "250px" }}
-                              >
-                                {/* {truncateText(condition.notes, 80)} */}
+                                className="text-truncate">
                                 <HighlightText
-                                  text={truncateText(condition.notes, 80)}
+                                  text={truncateText(condition.notes, 50)||"-"}
                                   searchTerm={medicalConditionsData.searchTerm}
                                   matchedFields={condition.highlightInfo?.matchedFields || []}
                                   fieldName="Notes"
                                 />
 
                               </span>
-                              {condition.notes && condition.notes.length > 80 && (
+                              {condition.notes && condition.notes.length > 50 && (
                                 <Button
-                                  className="view-btn ms-2"
+                                  className={` ${hasHiddenMatch(condition, "Notes", condition.notes, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"
                                   style={{
                                     backgroundColor: "transparent",
-                                    color: "#278fff",
                                     padding: 0,
                                     fontSize: "19px",
                                     height: "20px",
@@ -219,7 +231,7 @@ const DiagnosedConditionsTable = () => {
                         </tr>
 
                         {/* Expanded row for Notes */}
-                        {expandedRow === condition.id && condition.notes && condition.notes.length > 80 && (
+                        {expandedRow === condition.id && condition.notes && condition.notes.length > 50 && (
                           <tr
                             className="table-active-content"
                             style={{ backgroundColor: "transparent" }}
@@ -233,6 +245,8 @@ const DiagnosedConditionsTable = () => {
                                   label={t("DiagnosedConditionsTable.notes")}
                                   value={condition.notes}
                                   disabled={true}
+                                  isHasMatched={isHasMatched(condition, "Notes")}
+                                  searchTerm={searchTerm}
                                 />
                               </div>
                             </td>

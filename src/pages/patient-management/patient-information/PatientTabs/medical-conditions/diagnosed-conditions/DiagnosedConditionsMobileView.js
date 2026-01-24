@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
 import ConditionsFilters from "../../component/ConditionsFilters";
 import Pagination from "../../../../../shared/Pagination";
@@ -13,6 +13,7 @@ import HighlightText from "../../../../../shared/HighlightText";
 import { useMedicalConditions } from "./useMedicalConditions"; 
 import { medicalConditionsHelpers } from "./medicalConditionsHelpers";
 import { formatDate } from "../../../../../shared/utils";
+import { isHasMatched } from "../../component/helpers";
 
 const DiagnosedConditionsMobileView = () => {
   const { t } = useTranslation();
@@ -30,9 +31,11 @@ const DiagnosedConditionsMobileView = () => {
     handleSearch,
     handleResetFilters,
     refetch,
+    searchTerm,
 
     expandedNotes,
     toggleNotes,
+    setExpandedNotes,
 
     getSeverityColor,
     getStatusInfo,
@@ -45,6 +48,22 @@ const DiagnosedConditionsMobileView = () => {
       translateSeverity,
       translateStatus
     } = medicalConditionsHelpers(t);
+    useEffect(() => {
+      if (!medicalConditionsData?.data?.length) return;
+    
+      medicalConditionsData.data.forEach(item => {
+        const fields = item.highlightInfo?.matchedFields || [];
+    
+        fields.forEach(match => {
+          if (match.field === "Notes") {
+            setExpandedNotes(prev => ({
+              ...prev,
+              [item.id]: true
+            }));
+          }
+        });
+      });
+    }, [medicalConditionsData]);
 
   const [showModal, setShowModal] = React.useState(false);
   const [selectedCondition, setSelectedCondition] = React.useState(null);
@@ -150,7 +169,7 @@ const DiagnosedConditionsMobileView = () => {
                       <h5>
                         <HighlightText
                         text={condition.medicalConditionName}
-                        searchTerm={medicalConditionsData.searchTerm}
+                        searchTerm={searchTerm}
                         matchedFields={condition.highlightInfo?.matchedFields || []}
                         fieldName="MedicalConditionName"
                         />
@@ -166,7 +185,7 @@ const DiagnosedConditionsMobileView = () => {
                         <p className="mb-1">
                           <HighlightText
                             text={condition.diagnosisName}
-                            searchTerm={appliedFilters.searchValue}
+                            searchTerm={searchTerm}
                             matchedFields={condition.highlightInfo?.matchedFields || []}
                             fieldName={fieldMapping.diagnosisName}
                           />
@@ -205,9 +224,9 @@ const DiagnosedConditionsMobileView = () => {
                           >
                             {t("DiagnosedConditionsMobileView.notes")}:
                             <MdExpandMore
+                              className={` ${isHasMatched(condition, "Notes")? "has-match pulse": ""} md-expandable view-btn ms-2`}
                               style={{
                                 fontSize: "20px",
-                                color: "#278fff",
                                 marginLeft: "4px",
                                 transform: isNotesExpanded ? "rotate(180deg)" : "rotate(0deg)",
                                 transition: "transform 0.3s ease"
@@ -219,7 +238,7 @@ const DiagnosedConditionsMobileView = () => {
                             <p  style={{ margin: "0"}}>
                               <HighlightText
                                 text={condition.notes}
-                                searchTerm={appliedFilters.searchValue}
+                                searchTerm={searchTerm}
                                 matchedFields={condition.highlightInfo?.matchedFields || []}
                                 fieldName={"Notes"}
                               />

@@ -98,42 +98,27 @@ const mappedMedicalConditionsData = useMemo(() => {
   };
 }, [medicalConditionsData]);
 
-useEffect(() => {
-  if (!mappedMedicalConditionsData?.data?.length) return;
 
-  mappedMedicalConditionsData.data.forEach(item => {
-    const fields = item.highlightInfo?.matchedFields || [];
+// useEffect(() => {
+//   if (!mappedMedicalConditionsData?.data?.length) return;
 
-    fields.forEach(match => {
-      if (match.field === "Notes") {
-        setExpandedNotes(prev => ({
-          ...prev,
-          [item.id]: true
-        }));
-      }
-    });
-  });
-}, [mappedMedicalConditionsData]);
-useEffect(() => {
-  if (!mappedMedicalConditionsData?.data?.length) return;
+//   const firstMatchRow = mappedMedicalConditionsData.data.find(
+//     item => item.highlightInfo?.matchedFields?.length
+//   );
 
-  const firstMatchRow = mappedMedicalConditionsData.data.find(
-    item => item.highlightInfo?.matchedFields?.length
-  );
+//   if (!firstMatchRow) return;
 
-  if (!firstMatchRow) return;
+//   setExpandedRow(firstMatchRow.id);
 
-  setExpandedRow(firstMatchRow.id);
-
-  firstMatchRow.highlightInfo.matchedFields.forEach(match => {
-    if (match.field === "Notes") {
-      setExpandedNotes(prev => ({
-        ...prev,
-        [firstMatchRow.id]: true
-      }));
-    }
-  });
-}, [mappedMedicalConditionsData]);
+//   firstMatchRow.highlightInfo.matchedFields.forEach(match => {
+//     if (match.field === "Notes") {
+//       setExpandedNotes(prev => ({
+//         ...prev,
+//         [firstMatchRow.id]: true
+//       }));
+//     }
+//   });
+// }, [mappedMedicalConditionsData]);
 
 
   const handleSearch = (filters) => {
@@ -161,6 +146,7 @@ useEffect(() => {
   };
 
   const handleExpandClick = (id) => {
+    console.log("====id", id);
     setExpandedRow(prev => prev === id ? null : id);
   };
 
@@ -184,11 +170,8 @@ useEffect(() => {
     };
   };
 
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
+  const currentData = mappedMedicalConditionsData?.data || [];
+  const searchTerm = mappedMedicalConditionsData?.searchTerm || "";
   return {
     // State
     currentFilters,
@@ -196,6 +179,8 @@ useEffect(() => {
     currentPage,
     expandedRow,
     medicalConditionsData: mappedMedicalConditionsData,
+    currentData,
+    searchTerm,
     isLoading,
     isFetching,
     error,
@@ -208,7 +193,7 @@ useEffect(() => {
     setCurrentPage,
     setCurrentFilters,
     refetch,
-    
+    setExpandedNotes,
     expandedNotes,
     toggleNotes,
  
@@ -216,6 +201,5 @@ useEffect(() => {
     // Utilities
     getSeverityColor,
     getStatusInfo,
-    truncateText,
   };
 };
