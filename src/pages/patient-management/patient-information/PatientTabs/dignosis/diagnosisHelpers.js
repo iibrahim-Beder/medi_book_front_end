@@ -261,6 +261,7 @@ export const DiagnosisModal = ({
   );
 };
 
+
 export const hasHiddenMatch = (diagnoses, field, value, searchTerm) => {
   if (!diagnoses) return false; 
   if (!value || value.length <= 45 || !searchTerm) return false;

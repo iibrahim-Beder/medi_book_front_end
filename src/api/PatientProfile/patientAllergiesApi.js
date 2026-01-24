@@ -40,7 +40,8 @@ const transformSingleAllergy = (response) => {
       reaction: response.data.reaction,
       notes: response.data.notes,
       createdAt: response.data.createdAt,
-      updatedAt: response.data.updatedAt
+      updatedAt: response.data.updatedAt,
+      allergenCategory: response.data.allergenCategory
     }
   };
 };
@@ -61,7 +62,8 @@ const transformAllergiesData = (response, searchTerm = "") => {
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
     // highlight from meta  response
-    highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.id)
+    highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.id),
+    allergenCategory: item.allergenCategory
   }));
 
   return {

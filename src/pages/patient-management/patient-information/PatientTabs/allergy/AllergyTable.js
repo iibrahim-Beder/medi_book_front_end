@@ -15,6 +15,9 @@ import { useAllergies } from "./useAllergies";
 import { allergyHelpers } from "./allergyHelpers";
 import { MdExpandMore } from "react-icons/md";
 import TextAreaField from "../../../../ui/form-fields/TextAreaField";
+import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
+import {hasHiddenMatch, isHasMatched} from "../component/helpers";
+import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
 
 const AllergyTable = () => {
   const { t } = useTranslation();
@@ -30,6 +33,8 @@ const AllergyTable = () => {
     showPopup,
     recordToDelete,
     allergiesData,
+    currentData,
+    searchTerm,
     isLoading,
     isFetching,
     error,
@@ -63,7 +68,15 @@ const AllergyTable = () => {
     translateSeverity,
     translateStatus
   } = allergyHelpers(t);
-
+  useScrollToFirstMatch({
+    currentData,
+    searchTerm,
+    FIELD_KEY_MAP: null,
+    hasHiddenMatch,
+    handleViewClick:handleExpandClick,
+  });
+  const tableWrapperRef = React.useRef(null);
+  useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
   return (
     <div className="table-container">
       <div className="table-header" style={{ marginBottom: "10px" }}>
@@ -106,11 +119,12 @@ const AllergyTable = () => {
           />
         </div>
         <div className="p-3">
-          <div className="scrol patientTable" style={{ overflow: "auto" }}>
+          <div className="scrol patientTable" ref={tableWrapperRef} style={{ overflow: "auto" }}>
             <Table className="data-table align-middle table-hover">
               <thead>
                 <tr>
                   <th>{t("AllergyTable.allergen")}</th>
+                  <th>{t("AllergyTable.allergenCategory")}</th>
                   <th>{t("AllergyTable.severity")}</th>
                   <th>{t("AllergyTable.active")}</th>
                   <th>{t("AllergyTable.date_noted")}</th>
@@ -147,12 +161,20 @@ const AllergyTable = () => {
                   allergiesData.data.map((entry) => (
                     <React.Fragment key={entry.id}>
                     <tr key={entry.id}>
-                      <td>
+                      <td  data-has-match={isHasMatched(entry, fieldMapping.allergenName)? "true": undefined}>
                         <HighlightText
                           text={entry.allergenName}
-                          searchTerm={allergiesData.searchTerm}
+                          searchTerm={searchTerm}
                           matchedFields={entry.highlightInfo?.matchedFields || []}
                           fieldName={fieldMapping.allergenName}
+                        />
+                      </td>
+                      <td  data-has-match={isHasMatched(entry, "AllergenCategory")? "true": undefined}>
+                        <HighlightText
+                          text={entry.allergenCategory}
+                          searchTerm={searchTerm}
+                          matchedFields={entry.highlightInfo?.matchedFields || []}
+                          fieldName={"AllergenCategory"}
                         />
                       </td>
                       <td>
@@ -164,7 +186,7 @@ const AllergyTable = () => {
                         </span>
                       </td>
                       <td>{formatDate(entry.dateNoted)}</td>
-                      <td>
+                      <td data-has-match={isHasMatched(entry, fieldMapping.reaction)? "true": undefined}>
                         <HighlightText
                           text={entry.reaction}
                           searchTerm={allergiesData.searchTerm}
@@ -188,11 +210,12 @@ const AllergyTable = () => {
                             
                                {entry.notes && entry.notes.length > 80 && (
                                 <Button
-                                  className="view-btn ms-2"
+                                  data-has-match={isHasMatched(entry, fieldMapping.notes)? "true": undefined}
+                                  className={` ${hasHiddenMatch(entry, fieldMapping.notes, entry.notes, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"
                                   style={{
                                     backgroundColor: "transparent",
-                                    color: "#278fff",
+                                    // color: "#278fff",
                                     padding: 0,
                                     fontSize: "19px",
                                     height: "20px",
@@ -200,6 +223,7 @@ const AllergyTable = () => {
                                   onClick={() => handleExpandClick(entry.id)}
                                 >
                                   <MdExpandMore
+                                    data-right-has-match={isHasMatched(entry, fieldMapping.notes)? "true": undefined}
                                     style={{
                                       transform:
                                         expandedRow === entry.id
@@ -248,6 +272,8 @@ const AllergyTable = () => {
                                   label={t("DiagnosedConditionsTable.notes")}
                                   value={entry.notes}
                                   disabled={true}
+                                  isHasMatched={isHasMatched(entry, fieldMapping.notes)}
+                                  searchTerm={searchTerm}
                                 />
                               </div>
                             </td>

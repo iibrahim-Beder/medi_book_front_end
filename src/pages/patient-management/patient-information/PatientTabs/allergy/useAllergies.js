@@ -35,7 +35,7 @@ export const useAllergies = () => {
   const [isAddMode, setIsAddMode] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(null);
-  const [expandedRow, setExpandedRow] = useState(null);
+  const [expandedRow, setExpandedRow] = useState({});
   
 
   const pageSize = 5;
@@ -136,8 +136,13 @@ export const useAllergies = () => {
       setShowPopup(true);
     }
   };
-    const handleExpandClick = (id) => {
-    setExpandedRow(prev => prev === id ? null : id);
+    const handleExpandClick = (id ,open) => {
+      console.log("id", id,"open", open);
+      if (open) {
+        setExpandedRow(id);
+      } else {
+        setExpandedRow(prev => prev === id ? null : id);
+      }
   };
 
   const handleClosePopup = () => {
@@ -169,14 +174,20 @@ export const useAllergies = () => {
 }, [allergiesData]);
 
 // Auto expand if there is a match on first row
-useEffect(() => {
-  if (!mappedAllergies?.data?.length) return;
-  const firstMatchRow = mappedAllergies.data.find(
-    item => item.highlightInfo?.matchedFields?.length
-  );
-  if (!firstMatchRow) return;
-  setExpandedRow(firstMatchRow.id);
-}, [mappedAllergies]);
+// useEffect(() => {
+//   if (!mappedAllergies?.data?.length) return;
+//   const firstMatchRow = mappedAllergies.data.find(
+//     item => item.highlightInfo?.matchedFields?.length
+//   );
+//   if (!firstMatchRow) return;
+//   setExpandedRow(firstMatchRow.id);
+// }, [mappedAllergies]);
+const openNotes = (id) => {
+  setExpandedRow(prev => ({
+    ...prev,
+    [id]: true
+  }));
+};
 
 
   // API Operations
@@ -293,6 +304,9 @@ const handleSave = async () => {
       setShowPopup(false);
     }
   };
+  const currentData = mappedAllergies?.data || [];
+  const searchTerm = mappedAllergies?.searchTerm || "";
+
 
   return {
     // State
@@ -305,6 +319,8 @@ const handleSave = async () => {
     showPopup,
     recordToDelete,
     allergiesData:mappedAllergies,
+    currentData,
+    searchTerm,
     isLoading,
     isFetching,
     error,
@@ -312,7 +328,9 @@ const handleSave = async () => {
     pageSize,
     expandedRow,
     
-    // Actions
+    // Actions   
+    setExpandedRow,
+    openNotes,
     handleExpandClick,
     handleSearch,
     handleResetFilters,

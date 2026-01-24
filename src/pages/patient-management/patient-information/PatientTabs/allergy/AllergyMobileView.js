@@ -1,5 +1,5 @@
 // AllergyMobileView.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ import { useAllergies } from "./useAllergies";
 import { allergyHelpers } from "./allergyHelpers";
 
 import "../../../Patient-management.css";
+import { isHasMatched } from "../component/helpers";
 
 const AllergyMobileView = () => {
   const { t } = useTranslation();
@@ -36,8 +37,12 @@ const AllergyMobileView = () => {
     error,
     isDeleting,
     pageSize,
+    currentData,
+    searchTerm,
 
     // Actions
+    setExpandedRow,
+    expandedRow,
     handleSearch,
     handleResetFilters,
     handleAddNew,
@@ -51,6 +56,7 @@ const AllergyMobileView = () => {
     setShowModal,
     setSelectedRecord,
     refetch,
+    openNotes,
 
   } = useAllergies();
 
@@ -62,11 +68,28 @@ const AllergyMobileView = () => {
     translateSeverity,
     translateStatus,
   } = allergyHelpers(t);
-  const [expandedRow, setExpandedRow] = useState(null);
-  const handleNotesClick = (id) => {
-    setExpandedRow(prev => prev === id ? null : id);
-  };
+const handleNotesClick = (id) => {
+  setExpandedRow(prev => ({
+    ...prev,
+    [id]: !prev[id]
+  }));
+};
+
+// Auto expand if there is a match on first row
+useEffect(() => {
+if (!currentData?.length) return;
   
+    currentData.forEach(item => {
+     const fields = item.highlightInfo?.matchedFields || [];
+     console.log("fields", fields);
+      fields.forEach(match => {
+        if (match.field === "Notes") {
+          openNotes(item.id);
+        }
+      });
+    });
+  }, [currentData]);
+    
   const conditions = allergiesData?.data || [];
   const totalItems = allergiesData?.totalCount || 0;
   const totalPages = allergiesData?.totalPages || 1;
@@ -142,7 +165,7 @@ const AllergyMobileView = () => {
         {!isLoading && !isFetching && conditions.length > 0 && (
           <div className="space-y-3">
             {conditions.map((entry) => {
-              const isExpanded = expandedRow === entry.id;
+               const isExpanded = !!expandedRow[entry.id];
 
               return (
                 <Card key={entry.id} className="mobile-view-card shadow-sm">
@@ -152,7 +175,7 @@ const AllergyMobileView = () => {
                       <h5 className="mb-0 text-ellipsis flex-fill me-2">
                         <HighlightText
                           text={entry.allergenName}
-                          searchTerm={allergiesData.searchTerm}
+                          searchTerm={searchTerm}
                           matchedFields={entry.highlightInfo?.matchedFields || []}
                           fieldName={fieldMapping.allergenName}
                         />
@@ -161,13 +184,25 @@ const AllergyMobileView = () => {
                     </div>
 
                     {/* Reaction */}
+                      <div className="mb-2">
+                        <small className="text-muted">{t("AllergyMobileView.allergenCategory")}:</small>
+                        <p className="mb-1">
+                        <HighlightText
+                          text={entry.allergenCategory}
+                          searchTerm={searchTerm}
+                          matchedFields={entry.highlightInfo?.matchedFields || []}
+                          fieldName={"AllergenCategory"}
+                        />
+                        </p>
+                      </div>
+                    {/* Reaction */}
                     {entry.reaction && (
                       <div className="mb-2">
                         <small className="text-muted">{t("AllergyMobileView.reaction")}:</small>
                         <p className="mb-1">
                           <HighlightText
                             text={entry.reaction}
-                            searchTerm={allergiesData.searchTerm}
+                            searchTerm={searchTerm}
                             matchedFields={entry.highlightInfo?.matchedFields || []}
                             fieldName={fieldMapping.reaction}
                           />
@@ -201,6 +236,7 @@ const AllergyMobileView = () => {
                         <div className="text-muted d-flex align-items-center mb-1">
                           <small onClick={() => handleNotesClick(entry.id)} style={{cursor:"pointer"}} className="text-muted">{t("AllergyMobileView.notes")}</small>
                             <MdExpandMore
+                            className={` ${isHasMatched(entry, fieldMapping.notes)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                             onClick={() => handleNotesClick(entry.id)}
                               style={{
                               cursor: "pointer",
@@ -209,7 +245,6 @@ const AllergyMobileView = () => {
                                 ? "rotate(180deg)"
                                 : "rotate(0deg)",
                               transition: "transform 0.3s ease",
-                              color: "#278fff",
                             }}
                             />
                         </div>
@@ -218,7 +253,7 @@ const AllergyMobileView = () => {
                             <p className="mb-0">
                             <HighlightText
                               text={entry.notes}
-                              searchTerm={allergiesData.searchTerm}
+                              searchTerm={searchTerm}
                               matchedFields={entry.highlightInfo?.matchedFields || []}
                               fieldName={fieldMapping.notes}
                             />

@@ -29,3 +29,25 @@ export const isHasMatched = (item , fieldName ) => {
     m => m.field?.toLowerCase() === fieldName.toLowerCase()
   );
 };
+
+
+export const hasHiddenMatch = (diagnoses, field, value, searchTerm) => {
+  // console.log("diagnoses", diagnoses,"field", field,"value", value,"searchTerm", searchTerm);
+  if (!diagnoses) return false; 
+  if (!value || value.length <= 45 || !searchTerm) return false;
+
+const hasFieldMatch = diagnoses.highlightInfo?.matchedFields?.some(
+  m => m.field.toLowerCase() === field.toLowerCase()
+);
+
+
+  if (!hasFieldMatch) return false;
+
+  const lowerValue = value.toLowerCase();
+  const lowerSearch = searchTerm.toLowerCase();
+
+  const matchIndex = lowerValue.indexOf(lowerSearch);
+  console.log("matchIndex", matchIndex);
+
+  return matchIndex >= 45;
+};

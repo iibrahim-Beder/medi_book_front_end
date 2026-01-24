@@ -169,6 +169,12 @@ console.log("mappedprescriptionsData", mappedprescriptionsData);
       [prescriptionId]: !prev[prescriptionId]
     }));
   };
+  const openNotes = (prescriptionId) => {
+    setExpandedNotes(prev => ({
+      ...prev,
+      [prescriptionId]: true
+    }));
+  };
 
   const handleOpenModalMobile = (prescription) => {
     setSelectedPrescription(prescription);
@@ -326,6 +332,7 @@ console.log("mappedprescriptionsData", mappedprescriptionsData);
     handleViewClick,
     handleCloseModalMobile,
     toggleNotes,
+    openNotes,
     handleOpenModal,
     handleCloseModal,
     handleModalExited,

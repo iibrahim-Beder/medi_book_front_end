@@ -38,6 +38,7 @@ const PrescriptionsMobileView = () => {
     handleSearch,
     handleResetFilters,
     toggleNotes,
+    openNotes,
     handleOpenModalMobile,
     handleCloseModalMobile,
     handleModalExited,
@@ -65,7 +66,7 @@ const PrescriptionsMobileView = () => {
   
       fields.forEach(match => {
         if (match.field === "Notes") {
-          toggleNotes(item.id);
+          openNotes(item.id);
         }
       });
     });
