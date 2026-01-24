@@ -15,6 +15,7 @@ import { useMedicalHistory } from "./useMedicalHistoryOperations";
 import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
 import { formatDate } from "../../../../shared/utils";
 import { useEffect } from "react";
+import { isHasMatched } from "../component/helpers";
 
 const MedicalHistoryMobileView = () => {
 
@@ -37,6 +38,7 @@ const MedicalHistoryMobileView = () => {
     error,
     isDeleting,
     pageSize,
+    searchTerm,
 
     // Actions
     handleSearch,
@@ -249,6 +251,7 @@ const MedicalHistoryMobileView = () => {
                             }}
                           >
                             <MdExpandMore
+                              className={` ${isHasMatched(history, fieldMapping.description)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                               onClick={() => toggleDescription(history.id)}
                               style={{
                                 transform: expandedDescription[history.id]
@@ -327,11 +330,11 @@ const MedicalHistoryMobileView = () => {
                             onClick={() => toggleNotes(history.id)}
                             style={{
                               fontSize: "20px",
-                              color: "#278fff",
                               padding: "3px 0 0",
                             }}
                           >
                             <MdExpandMore
+                              className={` ${isHasMatched(history, fieldMapping.notes)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                               onClick={() => toggleNotes(history.id)}
                               style={{
                                 transform: expandedNotes[history.id]

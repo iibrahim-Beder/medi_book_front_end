@@ -170,9 +170,16 @@ export const useMedicalHistory = (isMobile = false) => {
     }));
   };
 
+
   const handleExpandClick = (id, field) => {
+    console.log("===id", id, "field", field);
     const key = `${id}-${field}`;
     setExpandedRow(prev => prev === key ? null : key);
+  };
+  const expanded = (id, field) => {
+    console.log("===id", id, "field", field);
+    const key = `${id}-${field}`;
+    setExpandedRow(key);
   };
   const FIELD_KEY_MAP = {
   Notes: "notes",
@@ -271,7 +278,8 @@ if(validateForm(selectedRecord)){
       setShowPopup(false);
     }
   };
-
+  const currentData = mappedMedicalHistoryData?.data || [];
+  const searchTerm = mappedMedicalHistoryData?.searchTerm || "";
   return {
     // State 
     currentFilters,
@@ -283,6 +291,9 @@ if(validateForm(selectedRecord)){
     recordToDelete,
     isAddMode,
     medicalHistoryData: mappedMedicalHistoryData,
+    currentData,
+    searchTerm,
+    expanded,
     isLoading,
     isFetching,
     error,

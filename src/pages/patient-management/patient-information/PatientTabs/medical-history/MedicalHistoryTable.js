@@ -15,6 +15,9 @@ import ErrorLoading from "../../../../shared/ErrorLoading";
 import { useMedicalHistory } from "./useMedicalHistoryOperations";
 import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
 import { formatDate } from "../../../../shared/utils";
+import { hasHiddenMatch, isHasMatched } from "../component/helpers";
+import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
+import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
 
 const MedicalHistoryTable = () => {
   const { t } = useTranslation();
@@ -31,6 +34,8 @@ const MedicalHistoryTable = () => {
     recordToDelete,
     isAddMode,
     medicalHistoryData,
+    currentData,
+    searchTerm,
     isLoading,
     isFetching,
     error,
@@ -46,6 +51,7 @@ const MedicalHistoryTable = () => {
     handleDeleteInModal,
     handleClosePopup,
     handleExpandClick,
+    expanded,
     handleSave,
     handleConfirmDelete,
     setCurrentPage,
@@ -63,25 +69,16 @@ const MedicalHistoryTable = () => {
     hereditaryDiseases,
     fieldMapping,
   } = medicalHistoryHelpers(t);
-useEffect(() => {
-  if (!medicalHistoryData?.data?.length) return;
+  useScrollToFirstMatch({
+    currentData,
+    searchTerm,
+    FIELD_KEY_MAP: FIELD_KEY_MAP,
+    hasHiddenMatch,
+    handleViewClick:expanded,
+  });
+  const tableWrapperRef = React.useRef(null);
+  useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
 
-  const firstMatchRow = medicalHistoryData.data.find(
-    item => item.highlightInfo?.matchedFields?.length
-  );
-
-  if (!firstMatchRow) return;
-
-  const firstMatchField =
-    firstMatchRow.highlightInfo.matchedFields[0]?.field;
-
-  const fieldKey = FIELD_KEY_MAP[firstMatchField];
-
-  if (!fieldKey) return;
-
-  setExpandedRow(`${firstMatchRow.id}-${fieldKey}`);
-}, [medicalHistoryData]);
-   
 
   return (
     <div className="table-container">
@@ -122,7 +119,7 @@ useEffect(() => {
             />
           </div>
           {/* Data Table */}
-          <div style={{ overflow: "auto" }}>
+          <div ref={tableWrapperRef} style={{ overflow: "auto" }}>
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
@@ -180,11 +177,11 @@ useEffect(() => {
                             />
                           </span>
                         </td>
-                        <td title={history.hereditaryDisease.name}>
+                        <td title={history.hereditaryDisease.name}data-has-match={isHasMatched(history, fieldMapping.hereditaryDiseaseName)? "true": undefined}>
                           <div className="d-flex align-items-center">
                             <span
                               className="text-truncate"
-                              style={{ maxWidth: "250px" }}
+                              // style={{ maxWidth: "250px" }}
                             >
                               <HighlightText
                                 text={truncateText(history.hereditaryDisease.name || "-", 50)}
@@ -219,11 +216,11 @@ useEffect(() => {
                             )}
                           </div>
                         </td>
-                        <td title={history.description}>
+                        <td title={history.description}data-has-match={isHasMatched(history, fieldMapping.description)? "true": undefined}>
                           <div className="d-flex align-items-center">
                             <span
                               className="text-truncate"
-                              style={{ maxWidth: "250px" }}
+                              // style={{ maxWidth: "250px" }}
                             >
                               <HighlightText
                                 text={truncateText(history.description || "-", 50)}
@@ -234,7 +231,7 @@ useEffect(() => {
                             </span>
                             {needsExpand(history.description, 50) && (
                               <Button
-                                className="view-btn ms-2"
+                                className={` ${hasHiddenMatch(history, fieldMapping.description, history.description, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                 size="sm"
                                 style={{
                                   backgroundColor: "transparent",
@@ -259,7 +256,7 @@ useEffect(() => {
                           </div>
                         </td>
                         <td>{formatDate(history.dateOfEvent)}</td>
-                        <td>
+                        <td data-has-match={isHasMatched(history, fieldMapping.relatedPerson)? "true": undefined} title={history.relatedPerson} data-right-has-match={isHasMatched(history, fieldMapping.relatedPerson)? "true": undefined}>
                           <HighlightText
                             text={history.relatedPerson || "-"}
                             searchTerm={medicalHistoryData.searchTerm}
@@ -269,26 +266,27 @@ useEffect(() => {
                         </td>
                         <td title={history.notes}>
                           <div className="d-flex align-items-center">
-                            <span
+                            <span 
+                              data-has-match={isHasMatched(history, fieldMapping.notes)? "true": undefined}
+                              data-right-has-match={isHasMatched(history, fieldMapping.notes)? "true": undefined}
                               className="text-truncate"
-                              style={{ maxWidth: "250px" }}
+                              // style={{ maxWidth: "250px" }}
                             >
                               {history.notes ? (
                                 <HighlightText
-                                  text={truncateText(history.notes, 80)}
+                                  text={truncateText(history.notes, 50)}
                                   searchTerm={medicalHistoryData.searchTerm}
                                   matchedFields={history.highlightInfo?.matchedFields || []}
                                   fieldName={fieldMapping.notes}
                                 />
                               ) : "-"}
                             </span>
-                            {needsExpand(history.notes, 80) && (
+                            {needsExpand(history.notes, 50) && (
                               <Button
-                                className="view-btn ms-2"
+                                className={` ${hasHiddenMatch(history, fieldMapping.notes, history.notes, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                 size="sm"
                                 style={{
                                   backgroundColor: "transparent",
-                                  color: "#278fff",
                                   padding: 0,
                                   fontSize: "19px",
                                   height: "20px",
@@ -334,6 +332,8 @@ useEffect(() => {
                                 label={t("MedicalHistory.hereditary_disease")}
                                 value={history.hereditaryDisease.name}
                                 disabled={true}
+                                isHasMatched={isHasMatched(history, fieldMapping.hereditaryDiseaseName)}
+                                searchTerm={searchTerm}
                               />
                             </div>
                           </td>
@@ -348,13 +348,15 @@ useEffect(() => {
                                 label={t("MedicalHistory.description")}
                                 value={history.description}
                                 disabled={true}
+                                isHasMatched={isHasMatched(history, fieldMapping.description)}
+                                searchTerm={searchTerm}
                               />
                             </div>
                           </td>
                         </tr>
                       )}
 
-                      {expandedRow === `${history.id}-notes` && needsExpand(history.notes, 80) && (
+                      {expandedRow === `${history.id}-notes` && needsExpand(history.notes, 50) && (
                         <tr className="table-active-content" style={{ backgroundColor: "transparent" }}>
                           <td colSpan="9" className="border-0 background-in-hover-none">
                             <div className="description-expanded-section">
@@ -362,6 +364,8 @@ useEffect(() => {
                                 label={t("MedicalHistory.notes")}
                                 value={history.notes}
                                 disabled={true}
+                                isHasMatched={isHasMatched(history, fieldMapping.notes)}
+                                searchTerm={searchTerm}
                               />
                             </div>
                           </td>

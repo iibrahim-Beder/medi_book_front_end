@@ -52,7 +52,7 @@ export const useScrollToFirstMatch = ({
       fieldValue,
       searchTerm
     );
-    console.log("isHidden", isHidden);
+    console.log("==isHidden", isHidden);
 
     if (isHidden) {
       handleViewClick(firstMatchRow.id, fieldKey, true);
