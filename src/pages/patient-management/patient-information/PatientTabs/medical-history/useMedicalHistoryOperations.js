@@ -100,7 +100,7 @@ export const useMedicalHistory = (isMobile = false) => {
   // Template for new record
   const emptyRecord = {
     historyType: "",
-    hereditaryDiseaseName: "",
+    hereditaryDisease: {id: null, name: null},
     description: "",
     dateOfEvent: "",
     relatedPerson: "",

@@ -59,7 +59,7 @@ export const validateForm = ( medicalHistory ) => {
   if (!medicalHistory.dateOfEvent) {
     return "Please enter a date.";
   }
-  if  ( medicalHistory.historyType === "Family History" && (!medicalHistory.hereditaryDisease?.id || !medicalHistory.hereditaryDisease?.name)) {
+  if  ( medicalHistory.historyType === "Family History" && (!medicalHistory.hereditaryDisease?.id && !medicalHistory.hereditaryDisease?.name)) {
     return "Please select a hereditary disease.";
   }
 };
@@ -72,7 +72,7 @@ export const buildUpdatePayload = (original, updated) => {
     payload.historyType = transformHistoryTypeToAPI(updated.historyType);
   }
 
-  if (updated.hereditaryDisease?.name !== original.hereditaryDisease?.name) {
+  if (updated.hereditaryDisease.name !== original.hereditaryDisease.name) {
     payload.hereditaryDiseaseId = updated.hereditaryDisease?.id ?? null;
   }
 

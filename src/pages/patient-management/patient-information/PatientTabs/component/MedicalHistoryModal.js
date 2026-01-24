@@ -47,15 +47,15 @@ const MedicalHistoryModal = ({
     if (record?.historyType === "Family History") {
       setRecord(prev => ({
         ...prev,
-        hereditaryDisease: prev.hereditaryDisease || "",
-        relatedPerson: prev.relatedPerson || ""
+        hereditaryDisease: prev.hereditaryDisease || null,
+        relatedPerson: prev.relatedPerson || null
       }));
     } else {
       // if not FamilyHistory, clear these fields
       setRecord(prev => ({
         ...prev,
-        hereditaryDisease: "",
-        relatedPerson: ""
+        hereditaryDisease: {name:null},
+        relatedPerson: null
       }));
     }
   }, [record?.historyType]);

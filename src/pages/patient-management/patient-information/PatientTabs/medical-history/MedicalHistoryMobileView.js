@@ -200,7 +200,7 @@ const MedicalHistoryMobileView = () => {
                         <div className="d-flex align-items-start">
                           <p className="mb-1 flex-grow-1">
                             <HighlightText
-                              text={history.hereditaryDiseaseName}
+                              text={history.hereditaryDisease.name}
                               searchTerm={medicalHistoryData.searchTerm}
                               matchedFields={
                                 history.highlightInfo?.matchedFields || []
