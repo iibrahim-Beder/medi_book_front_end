@@ -14,7 +14,9 @@ import TextAreaField from "../../../../../ui/form-fields/TextAreaField";
 import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { useOtherMedicalConditions } from "./helper-use/useOtherMedicalConditions";
 import { otherMedicalConditionsHelpers } from "./helper-use/otherMedicalConditionsHelpers";
-
+import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstMatch";
+import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMatchObserver";
+import {hasHiddenMatch, isHasMatched} from "../../component/helpers";
 const OtherMedicalConditions = () => {
   const { t } = useTranslation();
   
@@ -51,6 +53,8 @@ const OtherMedicalConditions = () => {
     setShowModal,
     setSelectedRecord,
     refetch,
+    currentData,
+    searchTerm,
     
     // Utilities
     getSeverityColor,
@@ -67,6 +71,15 @@ const OtherMedicalConditions = () => {
     translateConditionType,
     translateStatus
   } = otherMedicalConditionsHelpers(t);
+  useScrollToFirstMatch({
+      currentData,
+      searchTerm,
+      FIELD_KEY_MAP:null,
+      hasHiddenMatch,
+      handleViewClick:handleNotesClick,
+    });
+    const tableWrapperRef = React.useRef(null);
+    useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
 
   return (
     <div className="table-container">
@@ -107,7 +120,7 @@ const OtherMedicalConditions = () => {
           </div>
 
           {/* Data Table */}
-          <div style={{ overflow: "auto" }}>
+          <div ref={tableWrapperRef} style={{ overflow: "auto" }}>
             <Table className="data-table align-middle mb-0 table-hover">
               <thead>
                 <tr>
@@ -154,7 +167,7 @@ const OtherMedicalConditions = () => {
                     return (
                       <React.Fragment key={condition.id}>
                         <tr>
-                          <td title={condition.medicalConditionName}>
+                          <td title={condition.medicalConditionName} data-has-match={isHasMatched(condition, fieldMapping.medicalConditionName)? "true": undefined}>
                             <HighlightText
                               text={condition.medicalConditionName}
                               searchTerm={medicalConditionsData.searchTerm}
@@ -162,7 +175,7 @@ const OtherMedicalConditions = () => {
                               fieldName={fieldMapping.medicalConditionName}
                             />
                           </td>
-                          <td>
+                          <td data-has-match={isHasMatched(condition, fieldMapping.categoryName)? "true": undefined}>
                             <HighlightText
                               text={condition.categoryName}
                               searchTerm={medicalConditionsData.searchTerm}
@@ -196,28 +209,30 @@ const OtherMedicalConditions = () => {
                               {translateStatus(condition.isActive)}
                             </span>
                           </td>
-                          <td title={condition.notes}>
+                          <td title={condition.notes}
+                           data-has-match={isHasMatched(condition, "Notes")? "true": undefined}
+                           data-right-has-match={isHasMatched(condition, "Notes")? "true": undefined}>
+                          
                             <div className="d-flex align-items-center">
                               <span
                                 className="text-truncate"
-                                style={{ maxWidth: "250px" }}
+                                // style={{ maxWidth: "250px" }}
                               >
                                 {condition.notes ? (
                                   <HighlightText
-                                    text={truncateText(condition.notes, 80)}
+                                    text={truncateText(condition.notes, 50)}
                                     searchTerm={medicalConditionsData.searchTerm}
                                     matchedFields={condition.highlightInfo?.matchedFields || []}
                                     fieldName={"Notes"}
                                   />
                                 ) : "-"}
                               </span>
-                              {condition.notes.length > 80 && (
+                              {condition.notes.length > 50 && (
                                 <Button
-                                  className="view-btn ms-2"
+                                  className={` ${hasHiddenMatch(condition, "Notes", condition.notes, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"
                                   style={{
                                     backgroundColor: "transparent",
-                                    color: "#278fff",
                                     padding: 0,
                                     fontSize: "19px",
                                     height: "20px",
@@ -269,6 +284,8 @@ const OtherMedicalConditions = () => {
                                   label={t("OtherMedicalConditionsMobileView.notes")}
                                   value={condition.notes}
                                   disabled={true}
+                                  isHasMatched={isHasMatched(condition, "Notes")}
+                                  searchTerm={searchTerm}
                                 />
                               </div>
                             </td>

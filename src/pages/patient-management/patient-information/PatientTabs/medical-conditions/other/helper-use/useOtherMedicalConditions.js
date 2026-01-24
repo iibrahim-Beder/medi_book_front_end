@@ -16,7 +16,7 @@ import { formatDateForAPI } from "../../../../../../shared/utils";
 const PATIENT_ID = 4;
 
 export const useOtherMedicalConditions = () => {
-  const [expandedRow, setExpandedRow] = useState(null);
+  const [expandedRow, setExpandedRow] = useState({});
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
     isActive: "All",
@@ -101,19 +101,19 @@ const mappedMedicalConditionsData = useMemo(() => {
   };
 }, [medicalConditionsData]);
 
-useEffect(() => {
-  if (!mappedMedicalConditionsData?.data?.length) return;
+// useEffect(() => {
+//   if (!mappedMedicalConditionsData?.data?.length) return;
 
-  const firstMatchRow = mappedMedicalConditionsData.data.find(
-    item => item.highlightInfo?.matchedFields?.some(
-      match => match.field === "Notes"
-    )
-  );
+//   const firstMatchRow = mappedMedicalConditionsData.data.find(
+//     item => item.highlightInfo?.matchedFields?.some(
+//       match => match.field === "Notes"
+//     )
+//   );
 
-  if (!firstMatchRow) return;
+//   if (!firstMatchRow) return;
 
-  setExpandedRow(firstMatchRow.id);
-}, [mappedMedicalConditionsData]);
+//   setExpandedRow(firstMatchRow.id);
+// }, [mappedMedicalConditionsData]);
 
   // Mutations - Fixed hook names
   const [deleteMedicalCondition, { isLoading: isDeleting }] = useDeleteExternalPatientMedicalConditionMutation();
@@ -180,8 +180,9 @@ useEffect(() => {
     setRecordToDelete(null);
   };
 
-  const handleNotesClick = (id) => {
-    setExpandedRow(prev => prev === id ? null : id);
+  const handleNotesClick = (id,open) => {
+    if(open) setExpandedRow(id);
+    else setExpandedRow(prev => prev === id ? null : id);
   };
 
 const handleSave = async () => {
@@ -311,6 +312,8 @@ const handleSave = async () => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
+  const currentData = mappedMedicalConditionsData?.data || [];
+  const searchTerm = mappedMedicalConditionsData?.searchTerm || "";
 
   return {
     // State
@@ -329,7 +332,8 @@ const handleSave = async () => {
     error,
     isDeleting,
     pageSize,
-    
+    currentData,
+    searchTerm,
     // Actions
     handleSearch,
     handleResetFilters,
@@ -345,7 +349,7 @@ const handleSave = async () => {
     setShowModal,
     setSelectedRecord,
     refetch,
-    
+    setExpandedRow,
     // Utilities
     getSeverityColor,
     getStatusInfo,

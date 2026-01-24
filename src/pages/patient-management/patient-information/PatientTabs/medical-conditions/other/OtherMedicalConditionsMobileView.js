@@ -14,6 +14,8 @@ import { otherMedicalConditionsHelpers } from "./helper-use/otherMedicalConditio
 
 import "../../../../Patient-management.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useEffect } from "react";
+import { isHasMatched } from "../../component/helpers";
 
 const OtherMedicalConditionsMobileView = () => {
   const { t } = useTranslation();
@@ -51,6 +53,7 @@ const OtherMedicalConditionsMobileView = () => {
     setShowModal,
     setSelectedRecord,
     refetch,
+    setExpandedRow,
 
     // Utilities
     getSeverityColor,
@@ -66,6 +69,22 @@ const OtherMedicalConditionsMobileView = () => {
     translateConditionType,
     translateStatus,
   } = otherMedicalConditionsHelpers(t);
+  useEffect(() => {
+        if (!medicalConditionsData?.data?.length) return;
+      
+        medicalConditionsData.data.forEach(item => {
+          const fields = item.highlightInfo?.matchedFields || [];
+      
+          fields.forEach(match => {
+            if (match.field === "Notes") {
+              setExpandedRow(prev => ({
+                ...prev,
+                [item.id]: true
+              }));
+            }
+          });
+        });
+      }, [medicalConditionsData]);
 
   const conditions = medicalConditionsData?.data || [];
   const totalItems = medicalConditionsData?.totalCount || 0;
@@ -161,7 +180,7 @@ const OtherMedicalConditionsMobileView = () => {
           <div className="space-y-3">
             {conditions.map((condition) => {
               const statusInfo = getStatusInfo(condition.isActive);
-              const isExpanded = expandedRow === condition.id;
+              const isExpanded = !!expandedRow[condition.id];
 
               return (
                 <Card key={condition.id} className="mobile-view-card shadow-sm">
@@ -248,6 +267,7 @@ const OtherMedicalConditionsMobileView = () => {
                             {t("OtherMedicalConditionsMobileView.notes")}
                           </small>
                           <MdExpandMore
+                            className={` ${isHasMatched(condition, "Notes")? "has-match pulse": ""} md-expandable view-btn ms-2`}
                             onClick={() => handleNotesClick(condition.id)}
                             style={{
                               cursor: "pointer",
@@ -256,7 +276,6 @@ const OtherMedicalConditionsMobileView = () => {
                                 ? "rotate(180deg)"
                                 : "rotate(0deg)",
                               transition: "transform 0.3s ease",
-                              color: "#278fff",
                             }}
                           />
                         </div>
