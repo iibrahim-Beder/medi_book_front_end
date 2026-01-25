@@ -33,8 +33,8 @@ export const usePrescribedMedication = (isMobile = false) => {
 
   const pageSize = isMobile ? 3 : 5;
 
-const handleExpandClick = (id, field) => {
-  if (expandedRow === id && expandedField === field) {
+const handleExpandClick = (id, field,open=false) => {
+  if (expandedRow === id && expandedField === field&&!open) {
     setExpandedRow(null);
     setExpandedField(null);
   } else {
@@ -98,37 +98,37 @@ const handleExpandClick = (id, field) => {
 
 const searchTerm = appliedFilters.searchValue;
 
-useEffect(() => {
-  if (!mappedPrescribedMedicationData?.data?.length) return;
-  if (!searchTerm) return;
+// useEffect(() => {
+//   if (!mappedPrescribedMedicationData?.data?.length) return;
+//   if (!searchTerm) return;
 
-  const MAX_LEN = 40;
-  const expandableFields = [
-    "instructions",
-    "diagnosisName",
-    "prescriptionName",
-  ];
+//   const MAX_LEN = 40;
+//   const expandableFields = [
+//     "instructions",
+//     "diagnosisName",
+//     "prescriptionName",
+//   ];
 
-  const firstMatch = mappedPrescribedMedicationData.data.find(item =>
-    item.highlightInfo?.matchedFields?.length &&
-    expandableFields.some(field =>
-      hasMatchForField(item, field) &&
-      shouldExpand(item[field], MAX_LEN)
-    )
-  );
+//   const firstMatch = mappedPrescribedMedicationData.data.find(item =>
+//     item.highlightInfo?.matchedFields?.length &&
+//     expandableFields.some(field =>
+//       hasMatchForField(item, field) &&
+//       shouldExpand(item[field], MAX_LEN)
+//     )
+//   );
 
-  if (!firstMatch) return;
+//   if (!firstMatch) return;
 
-  const matchedField = expandableFields.find(field =>
-    hasMatchForField(firstMatch, field) &&
-    shouldExpand(firstMatch[field], MAX_LEN)
-  );
+//   const matchedField = expandableFields.find(field =>
+//     hasMatchForField(firstMatch, field) &&
+//     shouldExpand(firstMatch[field], MAX_LEN)
+//   );
 
-  if (!matchedField) return;
+//   if (!matchedField) return;
 
-  setExpandedRow(firstMatch.id);
-  setExpandedField(matchedField);
-}, [mappedPrescribedMedicationData, searchTerm]);
+//   setExpandedRow(firstMatch.id);
+//   setExpandedField(matchedField);
+// }, [mappedPrescribedMedicationData, searchTerm]);
 
 
   // Actions 

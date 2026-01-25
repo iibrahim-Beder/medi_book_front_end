@@ -146,7 +146,6 @@ const mappedMedicalConditionsData = useMemo(() => {
   };
 
   const handleExpandClick = (id) => {
-    console.log("====id", id);
     setExpandedRow(prev => prev === id ? null : id);
   };
 

@@ -46,7 +46,6 @@ const DiagnosedConditionsTable = () => {
     getSeverityColor,
     getStatusInfo,
   } = useMedicalConditions(false); 
-  console.log("expandedRow", expandedRow);
 
   const {
     conditionTypes,

@@ -33,7 +33,8 @@ export const prescribedMedicationHelpers = (t) => {
     status: t("PrescribedMedicationMobileView.status"),
     instructions: t("PrescribedMedicationMobileView.instructions"),
     view_all_details: t("PrescribedMedicationMobileView.view_all_details"),
-    close: t("PrescribedMedicationMobileView.close")
+    close: t("PrescribedMedicationMobileView.close"),
+    MedicationCategoryName: t("category"),
   };
 
   // Empty states translation

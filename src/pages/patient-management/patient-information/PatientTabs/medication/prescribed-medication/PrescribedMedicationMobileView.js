@@ -13,6 +13,8 @@ import ErrorLoading from "../../../../../shared/ErrorLoading";
 import { usePrescribedMedication } from "./usePrescribedMedication";
 import { MobileSkeleton, prescribedMedicationHelpers } from "./prescribedMedicationHelpers";
 import { formatDate } from "../../../../../shared/utils";
+import { useEffect } from "react";
+import { isHasMatched } from "../../component/helpers";
 
 
 const PrescribedMedicationMobileView = () => {
@@ -51,7 +53,16 @@ const PrescribedMedicationMobileView = () => {
     mobileHeaders,
     emptyStates,
   } = prescribedMedicationHelpers(t);
+  useEffect(() => {
+   if (!currentData?.length) return;
+      const firstMatchRow = currentData.find(item => item.highlightInfo?.matchedFields?.length);
+   if(!firstMatchRow) return;
+   const fields = firstMatchRow.highlightInfo?.matchedFields || []; 
+   if(fields.some(match => match.field === "Instructions")) {
+     handleExpandClick(firstMatchRow.id, "instructions",true)
+   }
 
+   }, [currentData]);
   return (
     <div className="table-container mobile-view-card">
       <div className="table-header">
@@ -114,6 +125,19 @@ const PrescribedMedicationMobileView = () => {
 
                       <div className="mb-2">
                         <small className="text-muted d-block mb-1">
+                          {mobileHeaders.MedicationCategoryName}:
+                        </small>
+                        <p>
+                          <HighlightText
+                            text={medication.medicationCategoryName}
+                            searchTerm={searchTerm}
+                            matchedFields={medication.highlightInfo?.matchedFields || []}
+                            fieldName="MedicationCategoryName"
+                          />
+                        </p>
+                      </div>
+                      <div className="mb-2">
+                        <small className="text-muted d-block mb-1">
                           {mobileHeaders.diagnosis_name}:
                         </small>
                         <p>
@@ -173,12 +197,12 @@ const PrescribedMedicationMobileView = () => {
                           {mobileHeaders.instructions} :
                           </small>
                            <MdExpandMore
+                            className={` ${isHasMatched(medication, "instructions")? "has-match pulse": ""} md-expandable view-btn ms-2`}
                             onClick={() => handleExpandClick(medication.id, "instructions")}
                                 style={{
                                  transform: expandedRow === medication.id && expandedField === "instructions"? 'rotate(180deg)' : 'rotate(0deg)',
                                  cursor: "pointer",
                                  fontSize: "22px",
-                                 color: "#278fff",
                                 }}
                               />
                           </div>
@@ -252,7 +276,12 @@ const PrescribedMedicationMobileView = () => {
         scrollable
       >
         <Modal.Header className="border-bottom-0">
-          <Modal.Title>{selectedMedication?.medicationName}</Modal.Title>
+          <Modal.Title><HighlightText
+          text={selectedMedication?.medicationName}
+          searchTerm={searchTerm}
+          matchedFields={selectedMedication?.highlightInfo?.matchedFields || []}
+          fieldName="MedicationName"
+          /></Modal.Title>
           <button className="btn-modal-close" onClick={handleCloseModal}>
             <MdClose />
           </button>
@@ -263,18 +292,24 @@ const PrescribedMedicationMobileView = () => {
             label={mobileHeaders.diagnosis_name}
             value={selectedMedication?.diagnosisName}
             disabled
+            isHasMatched={isHasMatched(selectedMedication, "DiagnosisName")}
+            searchTerm={searchTerm}
           />
 
           <Field
             label={mobileHeaders.prescribed_name}
             value={selectedMedication?.prescriptionName}
             disabled
+            isHasMatched={isHasMatched(selectedMedication, "PrescriptionName")}
+            searchTerm={searchTerm}
           />
 
           <Field
             label={mobileHeaders.dosage}
             value={selectedMedication?.dosage}
             disabled
+            isHasMatched={isHasMatched(selectedMedication, "Dosage")}
+            searchTerm={searchTerm}
           />
 
           <Field
@@ -283,10 +318,13 @@ const PrescribedMedicationMobileView = () => {
             disabled
           />
           {console.log(selectedMedication)}
-        { selectedMedication?.instructions && <TextAreaField
+        { selectedMedication?.instructions &&
+         <TextAreaField
             label={mobileHeaders.instructions}
             value={selectedMedication?.instructions || ""}
             disabled
+            isHasMatched={isHasMatched(selectedMedication, "Instructions")}
+            searchTerm={searchTerm}
           />  }
         </Modal.Body>
 
