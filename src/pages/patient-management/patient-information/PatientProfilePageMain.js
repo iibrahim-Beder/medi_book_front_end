@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import PatientBasicInfo from "./PatientTabs/PatientBasicInfo";
+import PatientBasicInfo from "./PatientTabs/patientBasicInfo/PatientBasicInfo";
 import DoctorPatientNotes from "./PatientTabs/doctor-patient-notes-list/DoctorPatientNotes";
 import AppointmentsTable from "./PatientTabs/AppointmentsTable";
 import AllergyTable from "./PatientTabs/allergy/AllergyTable";
