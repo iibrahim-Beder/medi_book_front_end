@@ -16,6 +16,7 @@ import { medicalHistoryHelpers } from "./MedicalHistoryHelpers";
 import { formatDate } from "../../../../shared/utils";
 import { useEffect } from "react";
 import { isHasMatched } from "../component/helpers";
+import PatientName from "../component/PatientName";
 
 const MedicalHistoryMobileView = () => {
 
@@ -105,7 +106,7 @@ const MedicalHistoryMobileView = () => {
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("Medical History")}</h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>

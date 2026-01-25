@@ -18,6 +18,7 @@ import { formatDate } from "../../../../shared/utils";
 import { hasHiddenMatch, isHasMatched } from "../component/helpers";
 import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
 import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
+import PatientName from "../component/PatientName";
 
 const MedicalHistoryTable = () => {
   const { t } = useTranslation();
@@ -85,7 +86,7 @@ const MedicalHistoryTable = () => {
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("Medical History")}</h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>

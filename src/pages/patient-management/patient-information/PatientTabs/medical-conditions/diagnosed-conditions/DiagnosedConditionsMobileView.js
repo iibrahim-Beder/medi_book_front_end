@@ -14,6 +14,7 @@ import { useMedicalConditions } from "./useMedicalConditions";
 import { medicalConditionsHelpers } from "./medicalConditionsHelpers";
 import { formatDate } from "../../../../../shared/utils";
 import { isHasMatched } from "../../component/helpers";
+import PatientName from "../../component/PatientName";
 
 const DiagnosedConditionsMobileView = () => {
   const { t } = useTranslation();
@@ -118,7 +119,7 @@ const DiagnosedConditionsMobileView = () => {
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("DiagnosedConditionsMobileView.table_title")}</h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
       </div>
 

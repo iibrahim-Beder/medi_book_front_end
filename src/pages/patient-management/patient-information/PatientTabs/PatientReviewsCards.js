@@ -9,6 +9,7 @@ import Pagination from "../../../shared/Pagination";
 import { useGetPatientReviewsQuery } from "../../../../api/patientReviewsApi";
 import Skeleton from "react-loading-skeleton";
 import ErrorLoading from "../../../shared/ErrorLoading";
+import PatientName from "./component/PatientName";
 
 const ShimmerCard = () => (
   <div className="mb-4 table-card card">
@@ -85,7 +86,7 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("PatientReviewsCards.table_title")}</h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"style={{fontWeight:"700"}} ><PatientName/></h6>
         </div>
         <div className="review-content">
           <div className="review-rate">

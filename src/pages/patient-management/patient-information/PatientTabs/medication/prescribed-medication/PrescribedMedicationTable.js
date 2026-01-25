@@ -15,6 +15,7 @@ import { formatDate } from "../../../../../shared/utils";
 import { hasHiddenMatch, isHasMatched, shouldExpand } from "../../component/helpers";
 import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstMatch";
 import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMatchObserver";
+import PatientName from "../../component/PatientName";
 
 const PrescribedMedicationTable = () => {
   const { t } = useTranslation();
@@ -69,7 +70,7 @@ const PrescribedMedicationTable = () => {
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("PrescribedMedicationTable.table_title")}</h3>
-          <h6 className="table-subtitle">{t("PrescribedMedicationTable.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
       </div>
 

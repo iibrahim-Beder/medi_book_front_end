@@ -24,6 +24,7 @@ import {
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
 } from "../../../../api/patientNotificationsApi";
+import PatientName from "./component/PatientName";
 
 const PatientNotificationsCards = ({ patientId=4 }) => {
   const { t } = useTranslation();
@@ -161,7 +162,7 @@ const PatientNotificationsCards = ({ patientId=4 }) => {
         <div className="table-header">
           <div>
             <h3 className="table-title">{t("Patient Notifications")}</h3>
-            <h6 className="table-subtitle">Ahmed Mohamed Ali</h6>
+          <h6 className="table-subtitle"style={{fontWeight:"700"}} ><PatientName/></h6>
           </div>
           {/* {totalCount > 0 && !isLoading && (
             <button

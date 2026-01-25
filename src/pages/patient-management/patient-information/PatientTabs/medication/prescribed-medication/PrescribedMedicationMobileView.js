@@ -15,6 +15,7 @@ import { MobileSkeleton, prescribedMedicationHelpers } from "./prescribedMedicat
 import { formatDate } from "../../../../../shared/utils";
 import { useEffect } from "react";
 import { isHasMatched } from "../../component/helpers";
+import PatientName from "../../component/PatientName";
 
 
 const PrescribedMedicationMobileView = () => {
@@ -68,7 +69,7 @@ const PrescribedMedicationMobileView = () => {
       <div className="table-header">
         <div>
           <h3 className="table-title">{mobileHeaders.table_title}</h3>
-          <h6 className="table-subtitle">{mobileHeaders.table_subtitle}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
       </div>
 

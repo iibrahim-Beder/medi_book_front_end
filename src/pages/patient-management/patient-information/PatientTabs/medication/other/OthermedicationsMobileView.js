@@ -10,6 +10,7 @@ import "../../../../Patient-management.css";
 import { useOtherMedications } from "./useOtherMedications";
 import { MobileSkeleton, otherMedicationsHelpers, TableSkeleton } from "./otherMedicationsHelpers";
 import {formatDate} from "../../../../../shared/utils";
+import PatientName from "../../component/PatientName";
 const OtherMedicationsMobileView = () => {
   const { t } = useTranslation();
 
@@ -61,7 +62,7 @@ const OtherMedicationsMobileView = () => {
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("Othermedications.table_title")}</h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>

@@ -12,6 +12,7 @@ import { transformDiagnosisData } from "../diagnosis/diagnosisUtils";
 import ErrorLoading from "../../shared/ErrorLoading";
 import { useDispatch } from "react-redux";
 import { patientDiagnosesApi } from "../../../api/PatientProfile/patientDiagnosesApi";
+import PatientName from "../../patient-management/patient-information/PatientTabs/component/PatientName";
 
 const DiagnosisMobileViewWithCRUD = () => {
   const { t } = useTranslation();
@@ -124,9 +125,7 @@ if (error) {
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("Diagnosis")}</h3>
-          <h6 className="table-subtitle">
-            {t("Manage patient diagnoses and related information")}
-          </h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <button
           onClick={handleAddDiagnosis}

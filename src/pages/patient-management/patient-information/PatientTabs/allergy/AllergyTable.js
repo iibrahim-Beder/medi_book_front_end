@@ -18,6 +18,7 @@ import TextAreaField from "../../../../ui/form-fields/TextAreaField";
 import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
 import {hasHiddenMatch, isHasMatched} from "../component/helpers";
 import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
+import PatientName from "../component/PatientName";
 
 const AllergyTable = () => {
   const { t } = useTranslation();
@@ -82,7 +83,7 @@ const AllergyTable = () => {
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("AllergyTable.table_title")}</h3>
-          <h6 className="table-subtitle">{t("AllergyTable.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>

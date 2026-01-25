@@ -17,6 +17,7 @@ import { allergyHelpers } from "./allergyHelpers";
 
 import "../../../Patient-management.css";
 import { isHasMatched } from "../component/helpers";
+import PatientName from "../component/PatientName";
 
 const AllergyMobileView = () => {
   const { t } = useTranslation();
@@ -102,7 +103,7 @@ if (!currentData?.length) return;
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("AllergyMobileView.table_title")}</h3>
-          <h6 className="table-subtitle">{t("AllergyMobileView.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>

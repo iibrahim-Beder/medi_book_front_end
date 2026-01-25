@@ -14,6 +14,7 @@ import { usePrescriptions } from "./usePrescriptions";
 import { prescriptionsHelpers, MobileSkeleton,  CustomAccordionToMobileexport } from "./prescriptionsHelpers";
 import { formatDate } from "../../../../shared/utils";
 import { isHasMatched } from "../component/helpers";
+import PatientName from "../component/PatientName";
 
 const PrescriptionsMobileView = () => {
   const { t } = useTranslation();
@@ -77,7 +78,7 @@ const PrescriptionsMobileView = () => {
       <div className="table-header">
         <div>
           <h3 className="table-title">{mobileHeaders.table_title}</h3>
-          <h6 className="table-subtitle">{mobileHeaders.table_subtitle}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
       </div>
 

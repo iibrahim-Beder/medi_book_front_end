@@ -17,6 +17,7 @@ import { otherMedicalConditionsHelpers } from "./helper-use/otherMedicalConditio
 import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstMatch";
 import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMatchObserver";
 import {hasHiddenMatch, isHasMatched} from "../../component/helpers";
+import PatientName from "../../component/PatientName";
 const OtherMedicalConditions = () => {
   const { t } = useTranslation();
   
@@ -86,7 +87,7 @@ const OtherMedicalConditions = () => {
       <div className="table-header" style={{ marginBottom: "10px" }}>
         <div>
           <h3 className="table-title">{t("OtherMedicalConditionsMobileView.table_title")}</h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>

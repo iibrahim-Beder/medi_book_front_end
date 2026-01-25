@@ -15,6 +15,7 @@ import { formatDate, truncateText } from "../../../../shared/utils";
 import HighlightText from "../../../../shared/HighlightText";
 import { diagnosisHelpers } from "./diagnosisHelpers";
 import { isHasMatched } from "../component/helpers";
+import PatientName from "../component/PatientName";
 
 const DiagnosisMobileView = () => {
   const { t } = useTranslation();
@@ -71,9 +72,7 @@ const DiagnosisMobileView = () => {
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("DiagnosisMobileView.table_title")}</h3>
-          <h6 className="table-subtitle">
-            {t("DiagnosisMobileView.table_subtitle")}
-          </h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
       </div>
 

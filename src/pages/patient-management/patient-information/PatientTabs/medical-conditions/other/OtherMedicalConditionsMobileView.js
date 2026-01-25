@@ -16,6 +16,7 @@ import "../../../../Patient-management.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useEffect } from "react";
 import { isHasMatched } from "../../component/helpers";
+import PatientName from "../../component/PatientName";
 
 const OtherMedicalConditionsMobileView = () => {
   const { t } = useTranslation();
@@ -100,7 +101,7 @@ const OtherMedicalConditionsMobileView = () => {
           <h3 className="table-title">
             {t("OtherMedicalConditionsMobileView.table_title")}
           </h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
         <div>
           <button className="add-btn" onClick={handleAddNew}>

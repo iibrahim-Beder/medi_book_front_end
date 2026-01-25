@@ -16,6 +16,7 @@ import HighlightText from "../../../../../shared/HighlightText";
 import { hasHiddenMatch, isHasMatched } from "../../component/helpers";
 import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMatchObserver";
 import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstMatch";
+import PatientName from "../../component/PatientName";
 
 const DiagnosedConditionsTable = () => {
   const { t } = useTranslation();
@@ -88,7 +89,7 @@ const DiagnosedConditionsTable = () => {
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("DiagnosedConditionsTable.table_title")}</h3>
-          <h6 className="table-subtitle">{t("Common.table_subtitle")}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
       </div>
 

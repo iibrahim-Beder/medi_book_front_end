@@ -17,6 +17,7 @@ import { formatDate, truncateText } from "../../../../shared/utils";
 import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
 import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatch";
 import { isHasMatched } from "../component/helpers";
+import PatientName from "../component/PatientName";
 
 const DiagnosisTable = () => {
   const { t } = useTranslation();
@@ -96,7 +97,7 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
       <div className="table-header">
         <div>
           <h3 className="table-title">{t('Diagnosis')}</h3>
-          <h6 className="table-subtitle">{t('Manage patient diagnoses and related information')}</h6>
+          <h6 className="table-subtitle"><PatientName/></h6>
         </div>
       </div>
 
