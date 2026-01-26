@@ -1258,3 +1258,19 @@ color: var(--terthemecolor);
     overflow-y: auto; 
 }
 /* Highlight css end */
+.payment-page .payment-card p{
+font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+}
+/* cher */
+.payment-page .chart-container .css-1nicq6v-MuiStack-root>:not(style):not(style) {
+    margin: 0;
+    background-color: #fff;
+    padding: 7px 10px;
+    border-radius: 23px;
+    box-shadow: 0 0 10px #eee;
+}
+
+.payment-page .chart-container .css-1nicq6v-MuiStack-root {justify-content: center ;}
+.payment-page .chart-container .css-1nicq6v-MuiStack-root>:not(style)~:not(style) {
+    margin-left: 10px ;
+}

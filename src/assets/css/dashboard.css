@@ -5780,6 +5780,7 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.payment-page{padding-top: 10px;}
 	.DateRangePicker{margin: 10px 0;}
 	        .dc-offersmessages ul li:first-child{border-right: none;}
 	.login-container{margin: 15px 0;}

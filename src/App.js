@@ -58,14 +58,14 @@ const { i18n } = useTranslation();
   }, [i18n.language]);
 
 //this loading for preloader 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 20);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 20);
+  //   return () => clearTimeout(timer);
+  // }, []);
   
 // signalR chat connection
   //  useEffect(() => {
