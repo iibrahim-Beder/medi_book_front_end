@@ -78,7 +78,7 @@ const PatientsTable = () => {
 
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1); 
-  const patientsPerPage = 3;
+  const patientsPerPage = 5;
 
   // Filter
   const filteredPatients = patientsData.filter(
@@ -124,11 +124,6 @@ const PatientsTable = () => {
   return (
     <div>
          
-        <div className="d-flex justify-content-between ">
-          <h3 className="table-title"  >
-            <PiUsersThreeLight /> {t("patientsList")}
-          </h3>
-        </div>
       <div
       className=""
       style={{ border: "none", borderRadius: "12px" }}
@@ -136,6 +131,11 @@ const PatientsTable = () => {
       
      
       <div className="table-card">
+        <div className="d-flex justify-content-between ">
+          <h3 className="table-title"  >
+            <PiUsersThreeLight /> {t("patientsList")}
+          </h3>
+        </div>
         
          <div 
          className="filters-container-search" 

@@ -44,9 +44,9 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';export default f
 
         <Divider sx={{ mb: 2}} />
         <Stack direction="column" justifyContent="space-between" mb={0.5}>
-          <Typography fontSize={14}> • Earnings charts and summaries are aggregated for analytics purposes.</Typography>
-          <Typography fontSize={14}> • Transaction records reflect real Stripe payment events.     </Typography>
-          <Typography fontSize={14}> • Payouts and refunds are managed outside this screen. .</Typography>
+          <Typography fontSize={14} mb={1} > • Earnings charts and summaries are aggregated for analytics purposes.</Typography>
+          <Typography fontSize={14} mb={1} > • Transaction records reflect real Stripe payment events.     </Typography>
+          <Typography fontSize={14} mb={1}> • Payouts and refunds are managed outside this screen. .</Typography>
         </Stack>
       </Card>
     </div>

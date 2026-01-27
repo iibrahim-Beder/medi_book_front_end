@@ -1,21 +1,33 @@
+
 import {
   Card,
   Box,
   Typography,
   Stack,
   Divider,
-  LinearProgress,
 } from "@mui/material";
-import BarChartIcon from "@mui/icons-material/BarChart";
-
-export default function EarningsSummaryCard() {
+import EventNoteIcon from "@mui/icons-material/EventNote";
+function Stat({ label, value }) {
   return (
-    <div className="payment-card" >
+    <Box display={"flex" } gap={1} alignItems={"center"} >
+      <Typography fontSize={14} color="text.secondary">
+        {label}:
+      </Typography>
+      <Typography fontSize={20} fontWeight={400}>
+        {value}
+      </Typography>
+    </Box>
+  );
+}
+export default function AppointmentsCard() {
+  return (
+    <div className="payment-card mb-3">
       <Card
+    className="card-mu"
         elevation={0}
         sx={{
           borderRadius: "18px",
-          border: "2px solid #cceedd",
+          border: "2px solid #eee",
           backgroundColor: "transparent",
           px: 3,
           py: 2.5,
@@ -35,11 +47,11 @@ export default function EarningsSummaryCard() {
               justifyContent: "center",
             }}
           >
-            <BarChartIcon sx={{ fontSize: 24, color: "#16a34a" }} />
+            <EventNoteIcon sx={{ fontSize: 24, color: "#646262" }} />
           </Box>
 
           <Typography fontWeight={700} fontSize={20} letterSpacing={0.4}>
-            EARNINGS SUMMARY
+            Appointments Overview (Last 30 Days)
           </Typography>
         </Stack>
 
@@ -48,36 +60,40 @@ export default function EarningsSummaryCard() {
         {/* Stats */}
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto 1fr auto 1fr",
+            display: "flex",
             alignItems: "center",
             mb: 3,
             gap: 2,
-            justifyItems: "center",
+            justifyContent: "space-around",
+            textAlign: "center",
+            flexWrap: "wrap",
           }}
         >
-          <Stat label="Lifetime Earnings" value="$18,420" />
+          <Stat label="Completed" value="420" />
 
-          <Divider orientation="vertical" flexItem />
+          {/* <Divider orientation="vertical" flexItem /> */}
 
-          <Stat label="This Month" value="$1,280" />
+          <Stat label="Cancelled" value="20" />
 
-          <Divider orientation="vertical" flexItem />
+          {/* <Divider orientation="vertical" flexItem /> */}
 
-          <Stat label="This Week" value="$320" />
+          <Stat label="Rescheduled" value="29" />
+
+          {/* <Divider orientation="vertical" flexItem /> */}
+
+          <Stat label=" Missed" value="18" />
         </Box>
-
-        {/* Breakdown */}
-        <Typography
-          fontSize={14}
-          color="text.secondary"
-          fontWeight={600}
-          mb={1}
-        >
-          By Appointment Type
+      <Stack direction="row" justifyContent="space-around" className="word-footer" mt={2}>
+        <Typography fontSize={14} color="text.secondary">
+          No-show Rate: <h6 style={{ display: "inline" }}> 12% </h6> 
+        </Typography>
+        <Typography fontSize={14} color="text.secondary">
+           Avg Booking Lead Time:{" "}
+          <h6 style={{ display: "inline" }}> 3.4 days </h6>{" "}
         </Typography>
 
-        <Stack direction="row" justifyContent="space-between" mb={0.5}>
+        </Stack>
+         {/* <Stack direction="row" justifyContent="space-between" mb={0.5}>
           <Typography fontSize={14}>
             • In Person <b>$13,000</b>
           </Typography>
@@ -120,21 +136,8 @@ export default function EarningsSummaryCard() {
               background: "linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%)",
             },
           }}
-        />
+        /> */}
       </Card>
     </div>
-  );
-}
-
-function Stat({ label, value }) {
-  return (
-    <Box>
-      <Typography fontSize={16} color="text.secondary">
-        {label}
-      </Typography>
-      <Typography fontSize={26} fontWeight={600}>
-        {value}
-      </Typography>
-    </Box>
   );
 }

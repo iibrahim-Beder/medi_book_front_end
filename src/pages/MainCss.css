@@ -1258,7 +1258,7 @@ color: var(--terthemecolor);
     overflow-y: auto; 
 }
 /* Highlight css end */
-.payment-page .payment-card p{
+.payment-page .payment-card p,.css-alqkii-MuiTypography-root{
 font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 }
 /* cher */
@@ -1273,4 +1273,29 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 .payment-page .chart-container .css-1nicq6v-MuiStack-root {justify-content: center ;}
 .payment-page .chart-container .css-1nicq6v-MuiStack-root>:not(style)~:not(style) {
     margin-left: 10px ;
+}
+.payment-page .table-card {
+  box-shadow: none;
+  border-radius: 20px;
+  border-width: 2px  ;
+}
+.payment-page .card-mu {background-color: white;  }
+
+.payment-page .p-0{padding: 0 !important;}
+@media (max-width: 991px) {
+.reviews-communication-card{display: flex;}
+.reviews-communication-card .one{padding-right: 5px !important;}
+.reviews-communication-card .two{padding-left: 5px !important;}
+}
+@media (max-width: 668px) {
+  .reviews-communication-card {
+    display: block;
+  }
+  .reviews-communication-card .one{padding-right: 0 !important;}
+  .reviews-communication-card .two{padding-left: 0  !important;}
+}
+@media (max-width: 500px) {
+  .word-footer{
+    flex-direction: column !important ;  
+  }
 }

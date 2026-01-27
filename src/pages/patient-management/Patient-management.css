@@ -347,8 +347,8 @@ border-bottom: 1px solid #dee2e670 !important;
   /* border-top: 1px solid #eee; */
 }
 .small-search.normal-search{
-      max-height: 45px !important;
-    width: 300px !important ;
+      max-height: 35px !important;
+    width: 195px !important ;
     border-color: #b5b5b575;
 }
 .patient-management-container .pt-0{
