@@ -29,6 +29,7 @@ import NotificationsPage from "./pages/notifications/NotificationsPageMain";
 import { audioService } from "./pages/notifications/audioService";
 import { signalRService } from "./api/chat/ChatSignalRService";
 import { useMessageListener } from "./pages/messages/hooks/useMessageListener";
+import ReviewsPage from "./pages/reviews/ReviewsPage";
 
 
 function App() {
@@ -115,7 +116,7 @@ const { i18n } = useTranslation();
                     />
                     <Route path="Messages" element={<MessagesPage />} />
                     <Route
-                      path="manage-patients"
+                      path="patients"
                       element={<PatientManagement />}
                     />
                     <Route path="how-v1" element={<Test />} />
@@ -143,6 +144,10 @@ const { i18n } = useTranslation();
                     <Route
                       path="notifications"
                       element={<NotificationsPage />}
+                    />
+                    <Route
+                      path="reviews"
+                      element={<ReviewsPage />}
                     />
                   </Routes>
                 </div>

@@ -6,10 +6,12 @@ import {
   Divider,
   LinearProgress,
 } from "@mui/material";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';export default function Notes() {
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+export default function Notes() {
   return (
     <div className="payment-card mb-3" >
       <Card
+        className="card-mu-notes"
         elevation={0}
         sx={{
           borderRadius: "22px",

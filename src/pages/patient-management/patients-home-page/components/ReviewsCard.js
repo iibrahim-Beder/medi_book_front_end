@@ -8,6 +8,7 @@ import {
 import StarRating from "../../../shared/StarRating";
 import { Button } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
+import { Link } from "react-router-dom";
 export default function ReviewsCard() {
   return (
     <div className="payment-card mb-3" >
@@ -71,11 +72,12 @@ export default function ReviewsCard() {
             </Stack>
 
             <Typography color="text.secondary" fontSize={15}>
-              Average Rating:  <h6 display="inline" style={{display:'inline-block', fontWeight:"600"}}>4.6</h6>  <StarRating rating={4}  style={{display:"inline-block"}} />
+              Average Rating:  <h6 display="inline" style={{display:'inline-block', fontWeight:"600"}}>4.6</h6>  <StarRating rating={4.6}  style={{display:"inline-block"}} />
             </Typography>
           </Stack>
         </Box>
         <Stack direction="row" spacing={1.5} mt={1}>
+          <Link to="/reviews" style={{textDecoration:"none"}}>
           <Button
             variant="contained"
             sx={{
@@ -88,6 +90,7 @@ export default function ReviewsCard() {
           >
             View Reviews
           </Button>
+          </Link>
         </Stack>
       </Card>
     </div>

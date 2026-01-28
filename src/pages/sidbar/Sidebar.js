@@ -121,7 +121,7 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/manage-patients">
+              <Link to="/patients">
                 <PiUsersThreeLight className="icon" />
                 <span>{t("sidebar.managePatients")}</span>
               </Link>

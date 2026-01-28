@@ -1,19 +1,25 @@
 import React from "react";
-import { FaStar, FaRegStar } from "react-icons/fa"; 
+import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 
-const StarRating = ({ rating ,style}) => {
+const StarRating = ({ rating = 0, style }) => {
   const totalStars = 5;
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating - fullStars >= 0.5;
 
   return (
-    <td style={{borderTop:"none", padding:"0" ,...style }}>
+    <span style={{ display: "inline-flex", ...style }}>
       {[...Array(totalStars)].map((_, index) => {
-        return index < rating ? (
-          <FaStar key={index} className="text-warning me-1" />
-        ) : (
-          <FaRegStar key={index} className="text-secondary me-1" />
-        );
+        if (index < fullStars) {
+          return <FaStar key={index} className="text-warning me-1" />;
+        }
+
+        if (index === fullStars && hasHalfStar) {
+          return <FaStarHalfAlt key={index} className="text-warning me-1" />;
+        }
+
+        return <FaRegStar key={index} className="text-secondary me-1" />;
       })}
-    </td>
+    </span>
   );
 };
 
