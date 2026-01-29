@@ -9,7 +9,6 @@ import DashboardMain from './pages/dashbord/DashboardMain';
 import Acco from './pages/profile-settings/ProfileSettings';
 import LocationMain from "./pages/location-settings/LocationMain";
 import SecuritySettings from "./pages/securty/MainSecuritySettings";
-import MainAppointtmentList2 from "./pages/appointmentList/MainAppointmentList";
 import MakeSlostMain from "./pages/making-slots/MakeSlostMain";
 import { useTranslation } from "react-i18next";
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
@@ -18,6 +17,7 @@ import AppointmentManagementMain from "./pages/appointment-management/Appointmen
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 import Test from './not used/Test';
+import Test2 from './not used/Test2';
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -30,6 +30,7 @@ import { audioService } from "./pages/notifications/audioService";
 import { signalRService } from "./api/chat/ChatSignalRService";
 import { useMessageListener } from "./pages/messages/hooks/useMessageListener";
 import ReviewsPage from "./pages/reviews/ReviewsPage";
+import AppointmentsPage from "./pages/appointmentList/AppointmentsPage";
 
 
 function App() {
@@ -107,8 +108,8 @@ const { i18n } = useTranslation();
                   <Routes>
                     <Route path="dashboard" element={<DashboardMain />} />
                     <Route
-                      path="appointment-list"
-                      element={<MainAppointtmentList2 />}
+                      path="appointments"
+                      element={<AppointmentsPage />}
                     />
                     <Route
                       path="appointment-location"
@@ -120,6 +121,7 @@ const { i18n } = useTranslation();
                       element={<PatientManagement />}
                     />
                     <Route path="how-v1" element={<Test />} />
+                    <Route path="how-v2" element={<Test2 />} />
                     <Route
                       path="manage-financial"
                       element={<DoctorFinancialDashboard />}

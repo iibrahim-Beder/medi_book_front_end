@@ -5,6 +5,9 @@ import CancellationDetails from "./cards/4-CancellationDetails";
 import PatientDetails from "./cards/3-PatientDetails";
 import PationtCard from "./cards/1-PationtCard";
 import TimeSlotInformationCard from "./cards/2-TimeSlotInformationCard";
+import { Button, Divider, Stack } from "@mui/material";
+import { Link } from "react-router-dom";
+import { t } from "i18next";
 
 
 export default function MainAppointtmentList2(){
@@ -69,7 +72,7 @@ export default function MainAppointtmentList2(){
                   userImg={"/images/avt/patient-avt.png"}
                   userLocation={"Egypt"}      
                 />
-                <div className="dc-user-details">
+                <div className="dc-user-details" style={{borderColor:"#eee"}} >
                   <TimeSlotInformationCard slot={slot} />
                   
                   <PatientDetails
@@ -89,6 +92,26 @@ export default function MainAppointtmentList2(){
                       financialStatus: "Refunded",
                     }}
                   />
+                </div>
+             <div className="">
+                  <div className="appointmentinfo-footer">
+                    <Divider orientation="vertical" flexItem />
+
+                      <Link to="/appointment-management" >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          borderRadius: "10px",
+                          textTransform: "none",
+                          px: 3,
+                          backgroundColor: "#60a5fa",
+                          boxShadow: "none",
+                        }}
+                      >
+                        Appointment Details
+                      </Button>
+                      </Link>
+                  </div>
                 </div>
               </div>{" "}
             </div>{" "}

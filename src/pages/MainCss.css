@@ -1259,7 +1259,7 @@ color: var(--terthemecolor);
 }
 /* Highlight css end */
 .payment-page .payment-card p,
- .reviews-page .payment-card p,.css-4chq23-MuiTypography-root{
+ .reviews-page .payment-card p,.css-4chq23-MuiTypography-root,.mu-titil{
 font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 }
 /* cher */
@@ -1299,4 +1299,28 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
   .word-footer{
     flex-direction: column !important ;  
   }
+}
+
+.button-elment{
+  font-size: 30px;
+  margin-top: 2px;
+  color: var(--terthemecolor);
+  transition: all ease .6s;
+  max-width: fit-content;
+}
+.button-elment:hover{
+  color:var(--blue);
+}
+.appointmentinfo-footer{
+  text-align: right;
+ margin: 10px;  
+}
+
+.date-range-picker-container{ 
+    display: flex;
+    justify-content: flex-end;
+  }
+.payment-page .dc-dashboardbox{
+  box-shadow: none;
+    border: 2px solid #eee;
 }

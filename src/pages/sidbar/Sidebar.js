@@ -97,7 +97,7 @@ let iconSize=20;
               </Link>
             </li>
             <li className="dc-notificationicon">
-              <Link to="/appointment-list">
+              <Link to="/appointments">
                 <BsList className="icon" />
                 <span>{t("sidebar.appointmentList")}</span>
               </Link>
