@@ -213,11 +213,11 @@ const SelectDatePicker = ({
         </label>
       )}
       <div className="input-with-icon">
-        {icon && (
+        {/* {icon && (
           <span className={`input-icon ${showError ? "icon-error" : ""}`}>
             {icon}
           </span>
-        )}
+        )} */}
         <div className="DateRangePicker datepicker" style={{ position: "relative", width }} ref={dropdownRef}>
           <div style={{ position: "relative", width: "100%" }}>
             <CiCalendar

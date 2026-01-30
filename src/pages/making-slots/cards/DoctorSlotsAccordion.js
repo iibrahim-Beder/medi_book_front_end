@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 const DoctorSlotsAccordion = memo(({
   title,
   titleIcon,
-  addNewLabel = "Add Slot",
+  addNewLabel = "Add New Slot",
   data = [],
   clinics = [],
   appointmentTypes = [],
@@ -281,26 +281,37 @@ const DoctorSlotsAccordion = memo(({
     <div className="dc-userexperience custom-accordion w-100">
       {/* Title Section */}
       {title && (
-        <div
-          className={`${titleIcon ? "title-with-icon" : "dc-tabscontenttitle dc-addnew"} ${noHedarBefore ? "no-before" : ""}`}
-        >
-          {titleIcon ? (
-            <SectionTitle icon={titleIcon} title={title} />
-          ) : (
-            <h3>{title}</h3>
-          )}
-          {onAdd && (
-            <a
-              href="#!"
-              onClick={(e) => {
-                e.preventDefault();
-                onAdd();
-              }}
-            >
-              {addNewLabel}
-            </a>
-          )}
+        // <div
+        //   className={`${titleIcon ? "title-with-icon" : "dc-tabscontenttitle dc-addnew"} ${noHedarBefore ? "no-before" : ""}`}
+        // >
+        //   {titleIcon ? (
+        //     <SectionTitle icon={titleIcon} title={title} />
+        //   ) : (
+        //     <h3>{title}</h3>
+        //   )}
+        //   {onAdd && (
+        //     <a
+        //       href="#!"
+        //       onClick={(e) => {
+        //         e.preventDefault();
+        //         onAdd();
+        //       }}
+        //     >
+        //       {addNewLabel}
+        //     </a>
+        //   )}
+        // </div>
+      <div className="table-header" style={{ marginBottom: "10px" }}>
+        <div>
+          <h3 className="table-title">{title}</h3>
         </div>
+        <div>
+          <button className="add-btn"    onClick={(e) => {e.preventDefault();onAdd();}}>
+            {addNewLabel}
+          </button>
+        </div>
+      </div>
+        
       )}
 
       {/* Global Error */}
@@ -312,7 +323,7 @@ const DoctorSlotsAccordion = memo(({
       {dataRead.length === 0 && noDataMessage ? (
         <div className="alert alert-info">{noDataMessage}</div>
       ) : (
-        <ul className="dc-experienceaccordion accordion">
+        <ul style={{padding:'30px'}} className=" table-card  dc-experienceaccordion accordion">
           {dataRead.map((item, index) => {
             const isSingle = false; // We don't need single accordion mode here
             const collapseClass = `dc-collapseexp ${item.isExpanded ? "show" : "hide"}`;

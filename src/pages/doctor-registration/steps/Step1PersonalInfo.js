@@ -36,7 +36,7 @@ export default function Step1PersonalInfo({
   return (
     <>
       <SectionTitle icon={<FaRegUser />} title={t("personalInfo.title")} />
-
+      <div className="table-card">
       <div className="form-grid">
         <Field
           label={t("personalInfo.fullName.label")}
@@ -102,6 +102,8 @@ export default function Step1PersonalInfo({
           forceShowError={forceShowError}
         />
       </div>
+      </div>
+
     </>
   );
 }

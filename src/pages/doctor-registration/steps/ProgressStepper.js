@@ -1,28 +1,36 @@
 import React from "react";
 
-const ProgressStepper = ({ currentStep, stepsMeta, progressPct }) => {
+const ProgressStepper = ({ currentStep, stepsMeta }) => {
+  console.log("stepsMeta", stepsMeta,"currentStep", currentStep);
+  const progressPct = ((currentStep - 1) / (stepsMeta.length )) * 100;
+
   return (
-    <div className="progress-container">
+    <div className="table-card progress-container">
       <div className="progress-steps">
-        {/* <div
-          className="progress-bar"
-          style={{ width: `${progressPct}%` }}
-        /> */}
         {stepsMeta.map((s, i) => {
-          const n = i + 1;
-          const state =
-            currentStep === n
-              ? "active"
-              : currentStep > n
-              ? "completed"
-              : "";
+          const stepNumber = i + 1;
+          const isActive = currentStep === stepNumber;
+          const isCompleted = currentStep > stepNumber;
+
           return (
-            <div key={n} className={`step ${state}`}>
-              <span className="step-icon">{s.icon}</span>
+            <div
+              key={stepNumber}
+              className={`step ${isActive ? "active" : ""} ${
+                isCompleted ? "completed" : ""
+              }`}
+            >
+              <span className="step-circle">{stepNumber}</span>
               <span className="step-label">{s.label}</span>
             </div>
           );
         })}
+      </div>
+
+      <div className="progress-line">
+        <div
+          className="progress-fill"
+          style={{ width: `${progressPct}%` }}
+        ></div>
       </div>
     </div>
   );

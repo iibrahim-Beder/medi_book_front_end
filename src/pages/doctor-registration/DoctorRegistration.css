@@ -22,8 +22,20 @@
 
 /* * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif !important; } */
 
-.doctor-registration {     min-height: 100vh; background-color: #f1f7fc; padding: 40px 20px; position: relative; }
-
+.doctor-registration .dc-experienceaccordion li .dc-accordioninnertitle, .doctor-registration .dc-collapseexp.show {background-color:var(--badybkcolor);}
+.doctor-registration .table-card {
+  box-shadow: 0px 0px 8px 3px var(--shado2color);
+  border-radius: 10px;
+}
+.doctor-registration {
+   min-height: 100vh;  padding: 40px 20px; position: relative; }  
+.doctor-registration .dc-experienceaccordion { 
+    padding: 30px;
+    border: 1px solid #f0f0f0;
+    background-color: var(--cardcolor);
+    box-shadow: 0px 0px 8px 3px var(--shado3color);
+    border-radius: 6px; 
+  }  
 .container {
     html[dir="rtl"] & {
    direction: rtl;
@@ -34,16 +46,20 @@
   } 
   width: 100%;
   max-width: 1200px;
-  margin: 30px auto 20px;
+  /* margin: 30px auto 20px; */
     background: var(--cardcolor);
   border-radius: var(--radius);
   /* box-shadow: var(--shadow-lg); */
-  border: var(--themecolor) solid 1px;
+  /* border: var(--themecolor) solid 1px; */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 10;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 20px rgba
+#0000000d
+(0, 0, 0, 0.05);
 }
 
 /* Header */
@@ -70,7 +86,7 @@
 .header p { opacity: .95; max-width: 640px; margin: 0 auto; }
 
 /* Progress */
-.progress-container {padding: 22px 0 55px 0; }
+/* .progress-container {padding: 22px 0 55px 0; }
 .progress-steps {  
       position: relative;
     margin: 0 auto;
@@ -104,14 +120,14 @@
   transition: var(--tr);
 }
 .step .step-icon svg { width: 22px; height: 22px; color: var(--gray); }
-.step .step-label { position: absolute; top: 58px; font-size: 14px;  font-weight: 600;   white-space: nowrap;  }
 .step.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 0 3px rgba(78,84,200,.18); transform: scale(1.05); }
-.step.active .step-icon svg { color: #fff; }
-.step.active .step-label { color: var(--primary); }
-.step.completed {    background: #9e9e9e80; }
-.step.completed .step-icon svg { color: #fff; }
+.step.active .step-icon svg { color: #fff; }*/
+/* .step.active .step-label { color: var(--primary); } */
+/* .step.completed .step-circle {    background: #9e9e9e80; } */
+/* .step.completed .step-icon svg { color: #fff; }  */
 /* .step.completed .step-label { color: var(--success); } */
 
+.step .step-label {  top: 58px; font-size: 14px;  font-weight: 600;   white-space: nowrap;  }
 :lang(ar) { .step .step-label ,.form-title{ font-family: "Tajawal", "Cairo", sans-serif;} }
 :lang(en) { .step .step-label ,.form-title{ font-family: "Cairo", "Tajawal", sans-serif; }} 
 
@@ -122,8 +138,8 @@
 
 
 .form-container { display: flex;    flex-direction: column;
-  padding: 40px; }
-  .form-title .title-icon { font-size: 24px;}  
+  padding: 30px; }
+  /* .form-title .title-icon { font-size: 24px;}   */
   .form-title {  
    html[dir="rtl"] & {
    direction: rtl;
@@ -133,7 +149,7 @@
   }
   font-size: clamp(18px, 2vw, 24px);
  display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-.form-title .title-icon {
+/* .form-title .title-icon {
      html[dir="rtl"] & {
    direction: rtl !important;
   }
@@ -142,7 +158,7 @@
   }
   display: inline-grid; place-items: center; width: 44px; height: 44px;
   background: var(--themecolor); color: #fff; border-radius: 12px; 
-}
+} */
 .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
 .form-group { position: relative; }
 .form-group.full-width { grid-column: 1 / -1; }
@@ -283,7 +299,7 @@ body .form-group label{
   font-family: "Poppins", sans-serif;
 }
 .doctor-registration .input-with-icon input{
-  padding-left: 25px;
+  /* padding-left: 25px; */
   color:var(--text-tertiary);
 }
 
@@ -312,3 +328,87 @@ display: inline-flex;
     .section-title{
     margin: 10px 0; ;
     }
+
+
+
+    .progress-container {
+  /* width: 100%;
+  padding: 25px 30px;
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.05); */
+  margin: 20px 10px 0;
+    border-radius: 6px;
+}
+    /* background: #0050a7;
+    color: white;
+    border-color: #003d80; */
+
+:root {
+  --progress-color: #0050a7;
+  --progress-bg: #dfe3f0;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.step-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  /* background: #dfe3f0; */
+  border: 1px solid var(--progress-color);
+  color: var(--progress-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.step-label {
+  font-size: 14px;
+  color: #5a5a5a;
+  font-weight: 500;
+}
+
+/* active */
+.step.active .step-circle {
+  background: var(--progress-color);
+  color: white;
+}
+
+/* completed */
+.step.completed .step-circle {
+  color: #fff;
+  background: var(--progress-color);
+}
+
+/* progress line */
+.progress-line {
+  width: 100%;
+  height: 6px;
+  background: #e8ebf5;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--progress-color);
+  border-radius: 10px;
+  transition: width 0.35s ease;
+}

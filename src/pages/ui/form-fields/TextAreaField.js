@@ -25,9 +25,9 @@ const TextAreaField = ({
         <span  className={isHasMatched ? "has-match-field" : ""}>{label}</span>
       </label>
       <div className="input-with-icon">
-        <span className={`input-icon ${showError ? "icon-error" : ""}`}>
+        {/* <span className={`input-icon ${showError ? "icon-error" : ""}`}>
           {icon}
-        </span>
+        </span> */}
           {isHasMatched ? (
           <HighlightedTextArea
           name={name}

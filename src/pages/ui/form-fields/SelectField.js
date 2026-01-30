@@ -22,9 +22,9 @@ const SelectField = ({
       <label htmlFor={name}>{label}</label>
 
       <div className="input-with-icon select-wrapper">
-        <span className={`input-icon ${showError ? "icon-error" : ""}`}>
+        {/* <span className={`input-icon ${showError ? "icon-error" : ""}`}>
           {icon}
-        </span>
+        </span> */}
         <select
           id={name}
           name={name}

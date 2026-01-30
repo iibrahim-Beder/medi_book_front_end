@@ -378,11 +378,11 @@ const SelectTimePicker = ({
         </label>
       )}
       <div className="input-with-icon">
-        {icon && (
+        {/* {icon && (
           <span className={`input-icon ${showError ? "icon-error" : ""}`}>
             {icon}
           </span>
-        )}
+        )} */}
         <div
           className="TimePicker timepicker"
           style={{ position: "relative", width }}

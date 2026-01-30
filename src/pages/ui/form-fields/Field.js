@@ -53,11 +53,11 @@ if (type==="date") {
         </label>
       )}
       <div className="input-with-icon">
-        {icon && (
+        {/* {icon && (
           <span className={`input-icon ${showError ? "icon-error" : ""}`}>
             {icon}
           </span>
-        )}
+        )} */}
         {isHasMatched ? (
           <HighlightedInput
           name={name}

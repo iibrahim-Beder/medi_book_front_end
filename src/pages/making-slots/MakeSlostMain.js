@@ -151,7 +151,7 @@ export default function MakeSlotsMain({ header = true, formData, onSlotsChange, 
               <DoctorSlotsAccordion
                 accordioninnertitleSize="slots-accordion-title"
                 title={`${t("Slots")} ${activeTab}`}
-                addNewLabel={t("Add Slot")}
+                addNewLabel={t("Add New Slot")}
                 data={slots[activeTab] || []}
                 clinics={CLINICS}
                 appointmentTypes={APPOINTMENT_TYPES}

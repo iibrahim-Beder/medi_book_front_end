@@ -30,6 +30,7 @@ import {setProfessionalInfo} from "../../redux/Slices/doctor-information/profess
 import {setPersonalInfo} from "../../redux/Slices/doctor-information/personalInfoSlice";
 import {setQualifications} from "../../redux/Slices/doctor-information/qualificationsSlice";
 import {setLocations} from "../../redux/Slices/doctor-information/locationsSlice";
+import ButtonPrevious from "../ui/form-fields/ButtonPrevious";
 
 export default function DoctorRegistration() {
 
@@ -283,27 +284,27 @@ setPopupErrors(t("popup.skipToStep7"));
             }
           />
         );
+      // case 6:
+      //   return (
+      //     <>
+      //       <SectionTitle
+      //         icon={<CiClock1 />}
+      //         title={t("Management slots")}
+      //       />
+      //       <MakeSlotsMain
+      //         header={false}
+      //         formData={formData}
+      //         onSlotsChange={(updatedSlots) => handleInputChange({
+      //           target: {
+      //             name: 'slots',
+      //             value: updatedSlots
+      //           }
+      //         })}
+      //         errors={validationErrors}
+      //       />
+      //     </>
+      //   );
       case 6:
-        return (
-          <>
-            <SectionTitle
-              icon={<CiClock1 />}
-              title={t("Management slots")}
-            />
-            <MakeSlotsMain
-              header={false}
-              formData={formData}
-              onSlotsChange={(updatedSlots) => handleInputChange({
-                target: {
-                  name: 'slots',
-                  value: updatedSlots
-                }
-              })}
-              errors={validationErrors}
-            />
-          </>
-        );
-      case 7:
         
         return (
           <Step4Experience
@@ -318,7 +319,7 @@ setPopupErrors(t("popup.skipToStep7"));
              forceShowError={isSaveClicked}  />
     
         );
-      case 8:
+      case 7:
         return (
           <PaymentInsuranceStep
             formData={formData}
@@ -328,7 +329,7 @@ setPopupErrors(t("popup.skipToStep7"));
             setErrors={handleSetErrors}
           />
         );
-      case 9:
+      case 8:
         return (
           <Step5Review
             formData={formData}
@@ -360,14 +361,16 @@ setPopupErrors(t("popup.skipToStep7"));
               }}
             >
               {currentStep !== 1 && (
-                <button
-                  type="button"
-                  className="btn prev"
-                  disabled={currentStep === 1}
-                  onClick={prevStep}
-                >
-                  {t("previous")}
-                </button>
+                <ButtonPrevious onClick={prevStep} />
+                
+                // <button
+                //   type="button"
+                //   className="btn prev"
+                //   disabled={currentStep === 1}
+                //   onClick={prevStep}
+                // >
+                //   {t("previous")}
+                // </button>
               )}
 
               {currentStep < TOTAL_STEPS ? (
@@ -386,7 +389,7 @@ setPopupErrors(t("popup.skipToStep7"));
                       {t("skip")}
                     </button>
                   )}
-                  <button type="button" className="dc-btn" onClick={nextStep}>
+                  <button type="button" className="second-btn" onClick={nextStep}>
                     {t("save")} 
                   </button>
                 </div>

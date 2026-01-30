@@ -13,7 +13,7 @@ import { PiCertificateThin } from "react-icons/pi";
 import { FaUserMd } from "react-icons/fa";
 
 
-export const TOTAL_STEPS = 9;
+export const TOTAL_STEPS = 8;
 
 
 const specialtyKeys = [
@@ -43,9 +43,9 @@ const stepsKeys = [
   { key: "steps.profileAndSpecialty", icon: <MdOutlineFolderSpecial /> },
   { key: "steps.location", icon: <CiLocationOn /> },
   { key: "steps.shift", icon: <PiCalendarCheckLight /> },
-  { key: "steps.makeSlots", icon: <CiClock1 /> },
+  // { key: "steps.makeSlots", icon: <CiClock1 /> },
   { key: "steps.experience", icon: <LuUserCog /> },
-  { key: "steps.PaymentInsurance", icon: <PiMoneyWavyLight /> }, 
+  // { key: "steps.PaymentInsurance", icon: <PiMoneyWavyLight /> }, 
 ];
 
 // this function returns the specialty options for the select input

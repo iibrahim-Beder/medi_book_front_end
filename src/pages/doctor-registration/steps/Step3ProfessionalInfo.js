@@ -50,7 +50,7 @@ export default function Step2ProfessionalInfo({
         icon={<MdOutlineFolderSpecial />}
         title={t("professionalInfo.title")}
       />
-
+      <div className="table-card">
       <div className="form-grid profile-form ">
         {/* Specialty */}
         <SelectField
@@ -165,6 +165,7 @@ export default function Step2ProfessionalInfo({
           />
         </FullWidth>
       </div>
+     </div>
     </>
   );
 }
