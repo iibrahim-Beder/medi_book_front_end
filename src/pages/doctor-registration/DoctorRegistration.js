@@ -374,7 +374,7 @@ setPopupErrors(t("popup.skipToStep7"));
               )}
 
               {currentStep < TOTAL_STEPS ? (
-                <div style={{ display: "flex", gap: "12px" }}>
+                <div style={{ display: "flex", gap: "12px",justifyContent:"flex-end" }}>
                   {currentStep !== 1 && (
                     <button
                       type="button"
