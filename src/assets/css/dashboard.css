@@ -5246,6 +5246,7 @@ top: 50%;
 	position: relative;
 	display: flex;
     flex-direction: column-reverse; 
+	overscroll-behavior: contain;
 }
 .dc-offersmessages ul li .dc-messages:before{
 	top: 0;

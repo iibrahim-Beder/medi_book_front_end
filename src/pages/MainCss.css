@@ -1328,3 +1328,6 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
   box-shadow: none;
     border: 2px solid #eee;
 }
+.shadow-0{
+  box-shadow: none !important;
+}

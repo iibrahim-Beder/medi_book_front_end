@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { IoSunnyOutline } from "react-icons/io5";
 import { CiDark } from "react-icons/ci";
 import { useTheme } from "../../context/ThemeContext";
-import NotificationButton from "./NotificationButton";
+import NotificationButton from "./Notifications/NotificationButton";
 function UserMenu() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();

@@ -1,16 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { signalRService } from './signalRService';
 import toast from 'react-hot-toast';
-import { useMarkNotificationAsReadMutation } from "../../api/doctorNotificationsApi";
 import { getNotificationIcon } from '../../pages/shared/utils';
 
 
-export const useSignalRNotifications = (userId, options = {}) => {
+export const useSignalRNotifications = ({ userId, enableToast=true, onMessage }) => {
   const [connectionStatus, setConnectionStatus] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [realtimeNotifications, setRealtimeNotifications] = useState([]);
-  const { enableToast = true } = options;
-  const [markNotificationAsRead] = useMarkNotificationAsReadMutation();
   useEffect(() => {
     if (!userId) return;
     const initConnection = async () => {
@@ -23,25 +18,8 @@ export const useSignalRNotifications = (userId, options = {}) => {
             });
           }
         };
-
         signalRService.onNotificationReceived = (notification) => {
-          console.log("New notification in hook:", notification);
-          
-          if (notification) {
-            const newNotification = {
-              id: notification.id || Date.now(), 
-              title: notification.title,
-              message: notification.message,
-              createdAt: notification.createdAt || new Date().toISOString(),
-              isRead: false,
-              relatedEntityType: notification.type
-            };
-            
-            setRealtimeNotifications(prev => [newNotification, ...prev]);
-          }
-          
-          setUnreadCount(prev => prev + 1);
-          
+            onMessage?.(notification);
           if (enableToast && notification) {
           toast.custom(
             (t) => (
@@ -112,60 +90,9 @@ export const useSignalRNotifications = (userId, options = {}) => {
     };
   }, [userId, enableToast]);
 
-  const updateUnreadCount = useCallback((count) => {
-    setUnreadCount(count);
-  }, []);
-
-  const markAsRead = useCallback(async (notificationId) => {
-    try {
-      const result = await markNotificationAsRead(notificationId).unwrap();
-      console.log("result", result);
-      
-      if (result.data) {
-        setRealtimeNotifications(prev => 
-          prev.map(notif => 
-            notif.id === notificationId 
-              ? { ...notif, isRead: true }
-              : notif
-          )
-        );
-        
-        setUnreadCount(prev => Math.max(0, prev - 1));
-        
-        return result;
-      }
-    } catch (error) {
-      console.log("Error marking notification as read:", error);
-      return error;
-    }
-  }, [markNotificationAsRead]);
-
-  const markAllAsRead = useCallback(() => {
-    signalRService.markAllAsRead();
-    setRealtimeNotifications(prev => 
-      prev.map(notif => ({ ...notif, isRead: true }))
-    );
-    setUnreadCount(0);
-  }, []);
-
-  const addNotification = useCallback((notification) => {
-    setRealtimeNotifications(prev => [notification, ...prev]);
-    setUnreadCount(prev => prev + 1);
-  }, []);
-
-  const clearRealtimeNotifications = useCallback(() => {
-    setRealtimeNotifications([]);
-  }, []);
 
   return {
     connectionStatus,
-    unreadCount,
-    realtimeNotifications,
-    updateUnreadCount,
-    markAsRead,
-    markAllAsRead,
-    addNotification,
-    clearRealtimeNotifications,
     isConnected: signalRService.isConnected(),
   };
 };

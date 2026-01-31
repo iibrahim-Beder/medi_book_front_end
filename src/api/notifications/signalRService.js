@@ -1,4 +1,3 @@
-// services/signalRService.js
 import * as signalR from '@microsoft/signalr';
 import { audioService } from '../../pages/notifications/audioService';
 
@@ -71,7 +70,7 @@ class SignalRService {
 
       return this.connection;
     } catch (error) {
-      console.error("SignalR Connection Error:", error);
+      console.error("SignalR notefication Connection Error:", error);
       // throw error;
     }
   };
@@ -81,21 +80,6 @@ class SignalRService {
       await this.connection.stop();
       this.connection = null;
       console.log("SignalR connection stopped");
-    }
-  };
-
-  markAsRead = (notificationId) => {
-    console.log("Marking notification as read:", notificationId);
-    if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
-      this.connection.invoke("MarkNotificationAsRead", notificationId)
-        .catch(err => console.error("Error marking as read:", err));
-    }
-  };
-
-  markAllAsRead = () => {
-    if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
-      this.connection.invoke("MarkAllAsRead")
-        .catch(err => console.error("Error marking all as read:", err));
     }
   };
 
