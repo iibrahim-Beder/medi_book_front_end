@@ -10,6 +10,8 @@ import FileField from "../ui/form-fields/FileField";
 import SectionTitle from "./SectionTitle";
 import PopupMessage from "./PopupMessage";
 import { useTranslation } from "react-i18next";
+import TimeRangePicker from "../making-slots/TimeRange/TimeRangePicker";
+import { renderCheckboxes } from "../making-slots/cards/renderCheckboxes";
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
@@ -35,7 +37,8 @@ const CustomAccordion = memo(({
   hint,
   errors = {},
  isHasMatched = () => false,
- searchTerm
+ searchTerm,
+ timeline,
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
@@ -90,6 +93,8 @@ const CustomAccordion = memo(({
   };
 
   const handleFieldChange = (index, field, value) => {
+    console.log("index, field, value", index, field, value);
+    if (value === undefined) return;
     if (onUpdate) {
       onUpdate(index, field, value);
     }
@@ -146,6 +151,17 @@ const CustomAccordion = memo(({
         hint={field.hint}
         onChange={(e) => onChange(index, field.name, e.target.files)}
       />;
+    } else if (field.type === "timeRange") {
+      return <TimeRangePicker
+      timeline={timeline}
+        {...commonProps}
+        accept={field.accept}
+        buttonIcon={field.buttonIcon}
+        hint={field.hint}
+        onChange={(e) => onChange(index, field.name, e)}
+      />;
+    } else if (field.type === "checkboxes") {
+      return renderCheckboxes(field, index, onChange, item, errors, forceShowError, readOnly,t);
     } else {
       return <Field
         isHasMatched={isHasMatched(item,field.name)||false}

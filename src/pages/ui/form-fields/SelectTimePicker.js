@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CiClock2 } from "react-icons/ci";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import {formatTimeForDisplay,parseManualInput} from '../../shared/utils';
 // import './TimePicker.css';
 
 const SelectTimePicker = ({
@@ -123,72 +124,6 @@ const SelectTimePicker = ({
 
     initializeFromValue();
   }, [value]);
-
-  const formatTimeForDisplay = (time) => {
-    if (!time || typeof time !== 'string') return '';
-    
-    try {
-      const [hours, minutes] = time.split(':');
-      const hourNum = parseInt(hours, 10);
-      if (isNaN(hourNum)) return '';
-      
-      const hour12 = hourNum % 12 || 12;
-      const period = hourNum < 12 ? 'AM' : 'PM';
-      
-      return `${hour12.toString().padStart(2, '0')}:${minutes} ${period}`;
-    } catch (error) {
-      return '';
-    }
-  };
-
-  const parseManualInput = (input) => {
-    if (!input.trim()) return null;
-
-    // Patterns for different time formats
-    const patterns = [
-      /^(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)$/i,    // 02:30 PM
-      /^(\d{1,2})\s*(AM|PM|am|pm)$/i,            // 2 PM
-      /^(\d{1,2}):(\d{2})$/i,                    // 14:30
-      /^(\d{1,2})$/i                             // 14
-    ];
-
-    for (const pattern of patterns) {
-      const match = input.match(pattern);
-      if (match) {
-        let hours = parseInt(match[1], 10);
-        let minutes = match[2] ? parseInt(match[2], 10) : 0;
-        let period = match[3] ? match[3].toUpperCase() : (hours >= 12 ? 'PM' : 'AM');
-
-        // Validate input
-        if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
-          return null;
-        }
-
-        // Convert to 24-hour format if 12-hour format is used
-        if (period === 'PM' && hours < 12) {
-          hours += 12;
-        } else if (period === 'AM' && hours === 12) {
-          hours = 0;
-        }
-
-        // Handle 12-hour format without period (assume PM if > 12)
-        if (!match[3] && hours > 12) {
-          period = 'PM';
-        } else if (!match[3] && hours <= 12) {
-          period = hours >= 12 ? 'PM' : 'AM';
-        }
-
-        return {
-          time24: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`,
-          hour: (hours % 12 || 12).toString().padStart(2, '0'),
-          minute: minutes.toString().padStart(2, '0'),
-          period: period
-        };
-      }
-    }
-    
-    return null;
-  };
 
   const handleTimeSelect = () => {
     const hour24 = activePeriod === 'PM' 

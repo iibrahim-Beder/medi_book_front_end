@@ -9,7 +9,6 @@ import DashboardMain from './pages/dashbord/DashboardMain';
 import Acco from './pages/profile-settings/ProfileSettings';
 import LocationMain from "./pages/location-settings/LocationMain";
 import SecuritySettings from "./pages/securty/MainSecuritySettings";
-import MakeSlostMain from "./pages/making-slots/MakeSlostMain";
 import { useTranslation } from "react-i18next";
 import DoctorRegistration from './pages/doctor-registration/DoctorRegistration';
 import MessagesPage from "./pages/messages/MessagesPage";
@@ -31,6 +30,7 @@ import { signalRService } from "./api/chat/ChatSignalRService";
 import { useMessageListener } from "./pages/messages/hooks/useMessageListener";
 import ReviewsPage from "./pages/reviews/ReviewsPage";
 import AppointmentsPage from "./pages/appointmentList/AppointmentsPage";
+import WeeklyTimeSlots from "./pages/making-slots/WeeklyTimeSlot";
 
 
 function App() {
@@ -128,7 +128,7 @@ const { i18n } = useTranslation();
                     />
                     <Route
                       path="Generate-Doctor-Slots"
-                      element={<MakeSlostMain />}
+                      element={<WeeklyTimeSlots />}
                     />
                     <Route
                       path="security-settings"

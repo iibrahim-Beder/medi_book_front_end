@@ -22,7 +22,7 @@
 
 /* * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif !important; } */
 
-.doctor-registration .dc-experienceaccordion li .dc-accordioninnertitle, .doctor-registration .dc-collapseexp.show {background-color:var(--badybkcolor);}
+.doctor-registration .dc-experienceaccordion li .dc-accordioninnertitle,.accordion-table-card .dc-experienceaccordion li .dc-accordioninnertitle , .doctor-registration .dc-collapseexp.show, .accordion-table-card .dc-collapseexp.show {background-color:var(--badybkcolor);}
 .doctor-registration .table-card {
   box-shadow: 0px 0px 8px 3px var(--shado2color);
   border-radius: 10px;
@@ -426,7 +426,7 @@ display: inline-flex;
 }
 }
 @media (max-width: 468px) {
-.doctor-registration .dc-experienceaccordion {
+.doctor-registration .dc-experienceaccordion ,.accordion-table-card .dc-experienceaccordion{
             padding: 20px 10px !important;
 }
 }

@@ -1,19 +1,72 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import DoctorSlotsAccordion from "./cards/DoctorSlotsAccordion";
+import CustomAccordion from "../shared/CustomAccordion";
 
-const CLINICS = [
-  { id: 1, name: "Clinic A" },
-  { id: 2, name: "Clinic B" },
-  { id: 3, name: "Clinic C" }
+
+export const timeline = [
+  { id: 2,start: 2, end: 3, type: "free"  },
+  { id: 3,start: 3, end: 3.5, type: "busy",price: 50 },
+  { id: 4,start: 3.5, end: 6, type: "free", },
+  { id: 5,start: 6, end: 6.5, type: "busy", price: 50},
+  { id: 6,start: 6.5, end: 8, type: "free", },
+  { id: 7, start: 8, end: 8.5, type: "break", },
+  { id: 8,start: 8.5, end: 13, type: "free", },
+  { id: 9,start: 13, end: 13.5, type: "busy",price: 50 },
+  { id: 10,start: 13.5, end: 14, type: "free", },
+  { id: 11,start: 14, end: 15, type: "busy",price: 50 },
+  { id: 12,start: 15, end: 17, type: "free", },
+  { id: 13,start: 17, end: 20, type: "busy",price: 50 },
+  { id: 14,start: 20, end: 21, type: "free", },
 ];
-
 const APPOINTMENT_TYPES = ["Consultation", "Follow-up", "Check-up", "Emergency"];
 const CURRENCIES = ["EGP", "USD", "EUR", "GBP"];
 
 export default function MakeSlotsMain({ header = true, formData, onSlotsChange, errors }) {
   const { t } = useTranslation();
-  
+    // Form Fields definition for slots
+  const formFields = [
+    {
+      name: "SlotDurationInMinutes",
+      label: t("slotDurationMinutes"),
+      type: "number",
+      min: 5,
+      step: 5,
+      half: true
+    },
+    {
+      name: "DaysInAdvance",
+      label: t("daysInAdvance"),
+      type: "number",
+      min: 1,
+      half: true
+    },
+    {
+      name: "rangeTime",
+      label: t("Select time Range"),
+      type: "timeRange",
+      half: false
+    },
+    {
+      name: "Price",
+      label: t("price"),
+      type: "number",
+      min: 0,
+      half: true
+    },
+    {
+      name: "Currency",
+      label: t("currency"),
+      type: "select",
+      options: [{ value: "", label: t("selectCurrency") }, ...CURRENCIES.map(c => ({ value: c, label: c }))],
+      half: true
+    },
+    {
+      name: "AllowedAppointmentTypes",
+      label: t("allowedAppointmentTypes"),
+      type: "checkboxes",
+      options: APPOINTMENT_TYPES
+    }
+  ];
   const DAYS = [
     t("days.saturday"),
     t("days.sunday"), 
@@ -28,18 +81,27 @@ export default function MakeSlotsMain({ header = true, formData, onSlotsChange, 
   const [slots, setSlots] = useState({
     [t("days.saturday")]: [
       {
-        id: 1,
-        clinic: "1",
+        id: 2,
         SlotDurationInMinutes: 30,
         DaysInAdvance: 7,
-        startTime: "09:00",
-        endTime: "17:00",
+        rangeTime: {start: "09:00", end: "17:00" },
         Price: 200,
-        Currency: "EGP",
+        Currency: "USD",
         AllowedAppointmentTypes: ["Consultation", "Follow-up"],
         isExpanded: false,
         isNew: false
-      }
+      },
+      {
+        id: 3,
+        SlotDurationInMinutes: 30,
+        DaysInAdvance: 7,
+        rangeTime: {start: "09:00", end: "17:00" },
+        Price: 200,
+        Currency: "USD",
+        AllowedAppointmentTypes: ["Consultation", "Follow-up"],
+        isExpanded: false,
+        isNew: false
+      },
     ],
     [t("days.sunday")]: [],
     [t("days.monday")]: [],
@@ -50,6 +112,7 @@ export default function MakeSlotsMain({ header = true, formData, onSlotsChange, 
   });
 
   const handleUpdateSlots = (updated) => {
+    // console.log("updated",updated)
     setSlots(updated);
     if (onSlotsChange) {
       onSlotsChange(updated);
@@ -66,8 +129,7 @@ export default function MakeSlotsMain({ header = true, formData, onSlotsChange, 
           clinic: "",
           SlotDurationInMinutes: 30,
           DaysInAdvance: 7,
-          startTime: "09:00",
-          endTime: "17:00",
+          rangeTime: {start: "09:00", end: "17:00" },
           Price: 0,
           Currency: "EGP",
           AllowedAppointmentTypes: [],
@@ -113,47 +175,17 @@ export default function MakeSlotsMain({ header = true, formData, onSlotsChange, 
 
   // Get title for slot item
   const getSlotItemTitle = (slot) => {
-    const clinicName = CLINICS.find(c => c.id.toString() === slot.clinic?.toString())?.name || t("selectClinic");
-    return `${clinicName} - ${slot.startTime || "00:00"} to ${slot.endTime || "00:00"}`;
+    return `${slot.rangeTime.start || "00:00"} to ${slot.rangeTime.end || "00:00"}  -${slot.Price} ${slot.Currency}`;
   };
 
   return (
-    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <div className="dc-haslayout dc-dbsectionspace">
-        <div className={`dc-dashboardbox dc-dashboardtabsholder ${header ? "NewShado" : "table-card noneshadow"}`}>
-          {header && (
-            <div className="dc-dashboardboxtitle">
-              <h2>{t("Make Slots")}</h2>
-            </div>
-          )}
-          
-          <div className="divtoconvert">
-            <div className="dc-dashboardtabs">
-              <ul className="dc-tabstitle nav navbar-nav">
-                {DAYS.map(day => (
-                  <li key={day} className="nav-item">
-                    <a
-                      href="#"
-                      className={activeTab === day ? "active" : ""}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setActiveTab(day);
-                      }}
-                    >
-                      {day}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="dc-tabscontent tab-content accordion-table"style={{minHeight:"550px"}}>
-              <DoctorSlotsAccordion
+            <div className= "w-100 border-0  dc-tabscontent tab-content accordion-table accordion-table-card " style={{minHeight:"550px"}}>
+              <CustomAccordion
                 accordioninnertitleSize="slots-accordion-title"
                 title={`${t("Slots")} ${activeTab}`}
                 addNewLabel={t("Add New Slot")}
                 data={slots[activeTab] || []}
-                clinics={CLINICS}
+                formFields={formFields}
                 appointmentTypes={APPOINTMENT_TYPES}
                 currencies={CURRENCIES}
                 onAdd={() => handleAddSlot(activeTab)}
@@ -163,13 +195,11 @@ export default function MakeSlotsMain({ header = true, formData, onSlotsChange, 
                 getItemTitle={getSlotItemTitle}
                 // noDataMessage={t("noSlotsMessage")}
                 errors={errors}
-                allowMultipleOpen={true}
+                // allowMultipleOpen={false}
                 noHedarBefore={true}
+                timeline={timeline}
               />
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
   );
 }

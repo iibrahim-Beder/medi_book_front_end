@@ -1,0 +1,79 @@
+/* wrapper */
+.sp-wrap {
+  display: block;
+  width: 100%;
+}
+
+/* continuous rail: no gaps, joined segments */
+.sp-rail {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  background: #f1f5f9; /* neutral rail (free color) */
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+/* continuous inner segments: no gap, each part is flush to next */
+.sp-seg {
+  min-width: 6px;
+  transition: transform 160ms ease, filter 160ms ease, filter 0.3s ease;
+}
+
+/* segmented pills: with gaps */
+.sp-pills {
+  height:auto !important;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  overflow: hidden;
+  padding: 4px 2px;
+  background: transparent;
+}
+
+/* each pill */
+.sp-pill {
+  min-width: 16px; /* keep visible when very small */
+  transition: transform 140ms ease, box-shadow 140ms ease, border ease 0.6s,filter 0.3s ease;
+}
+
+/* hover effect */
+.sp-pill:hover,
+.sp-seg:hover {
+  filter: brightness(0.9);
+  /* transform: translateY(-2px); */
+  /* box-shadow: 0 6px 18px rgba(16, 24, 40, 0.08); */
+}
+.sp-pill.active,
+.sp-seg.active {
+  border: 1px solid var(--blue);
+  background-color: rgb(230, 244, 255) !important;
+  opacity: 1 !important;
+  filter:none
+  
+}
+.segmented-progress-container{
+  overflow: auto;
+}
+.sp-wrap{
+  min-width: 650px;
+  padding: 0 20px;
+}
+/* responsive: reduce min width on narrow screens */
+@media (max-width: 480px) {
+  .sp-seg { min-width: 4px; }
+  .sp-pill { min-width: 8px; }
+}
+
+.segmented-progress-container {
+  white-space: nowrap; 
+  overflow-x: auto;        
+  overflow-y: hidden;     
+  
+  scrollbar-width: none;   /* Firefox */
+  -ms-overflow-style: none;/* IE */
+}
+
+.segmented-progress-container::-webkit-scrollbar {
+  display: none;           /* Chrome / Edge / Safari */
+}

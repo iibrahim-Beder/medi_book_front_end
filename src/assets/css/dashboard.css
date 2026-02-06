@@ -2802,6 +2802,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent; 
 	    box-shadow: 5px 0px 0px 0px var(--shado2color);
+		z-index: 2;
 }
 .dc-tabstitle li:first-child a{border-top: 0;}
 .dc-tabstitle li:first-child a.active{box-shadow: inset 0px -13px 10px -18px var(--shado1color) !important}
@@ -2846,6 +2847,7 @@ body.dc-userlogin .dc-loginarea{display: none;}
     background: #f8f9fa;
     visibility: hidden;
     position: absolute;
+	z-index: 1;
 }
 .dc-tabstitle li a.active:after {
     opacity: 1;
@@ -5770,7 +5772,7 @@ padding: 0 10px;
     flex-direction: column;
     gap: 10px;
 }
-.dc-tabscontent ,.table-card,.doctor-registration .dc-experienceaccordion{
+.dc-tabscontent ,.table-card,.doctor-registration .dc-experienceaccordion, .accordion-table-card .dc-experienceaccordion{
 	padding: 20px;
 }	
 .edit-mode{
