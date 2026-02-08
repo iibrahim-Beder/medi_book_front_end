@@ -1,5 +1,5 @@
-// patientPrescriptionApi.js
 import { baseApi } from '../baseApi';
+import { patientDiagnosesApi } from './patientDiagnosesApi';
 
 // Helper functions
 const getStatusValue = (statusText) => {
@@ -12,7 +12,7 @@ const getStatusValue = (statusText) => {
   return statusMap[statusText] || 0;
 };
 
-const getStatusText = (status) => {
+export  const getStatusText = (status) => {
   const statusMap = {
     1: "Active",
     2: "Completed", 
@@ -156,6 +156,46 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
           body: body
         };
       },
+      async onQueryStarted(
+    { diagnosisId },
+    { dispatch, getState, queryFulfilled }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
+
+    try {
+      const { data } = await queryFulfilled;
+      const addedPrescription = data.data;
+
+      // Apply REAL data
+      Object.values(queries).forEach(entry => {
+        if (entry?.endpointName === "getPatientDiagnoses") {
+          dispatch(
+            patientDiagnosesApi.util.updateQueryData(
+              "getPatientDiagnoses",
+              entry.originalArgs,
+              draft => {
+                const diag = draft.data.find(d => d.diagnosisId === diagnosisId);
+                if (!diag) return;
+
+                // remove optimistic item
+                diag.prescriptionOverviews = diag.prescriptionOverviews.filter(
+                  p => !p.optimistic
+                );
+
+                // add real item
+                diag.prescriptionOverviews.unshift(addedPrescription);
+              }
+            )
+          );
+        }
+      });
+
+    } catch (err) {
+      patches.forEach(p => p.undo());
+    }
+  },
       invalidatesTags: (result, error, { patientId }) => [
         { type: 'PatientPrescription', id: patientId }
       ],
@@ -166,9 +206,7 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
       query: ({ prescriptionId, updates }) => {
         const body = {
           prescriptionId: prescriptionId,
-          title: updates.title,
-          notes: updates.notes,
-          prescriptionStatus: getStatusValue(updates.status)
+          ...updates
         };
 
         console.log('Update Patient Prescription Body:', body);
@@ -179,6 +217,83 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
           body: body
         };
       },
+      async onQueryStarted(
+    { diagnosisId, prescriptionId, updates },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+
+    const patches = [];
+
+    // Loop through all cached getPatientDiagnoses queries
+    Object.values(queries).forEach(entry => {
+      if (entry?.endpointName === "getPatientDiagnoses") {
+
+        const patch = dispatch(
+          patientDiagnosesApi.util.updateQueryData(
+            "getPatientDiagnoses",
+            entry.originalArgs,
+            draft => {
+              if (!draft?.data) return;
+
+              // Find diagnosis
+              const diagnosis = draft.data.find(d => d.diagnosisId === diagnosisId);
+              if (!diagnosis) return;
+
+              // Find prescription
+              const presIndex = diagnosis.prescriptionOverviews
+                .findIndex(p => p.id === prescriptionId);
+
+              if (presIndex !== -1) {
+                // Optimistically update fields
+                diagnosis.prescriptionOverviews[presIndex] = {
+                  ...diagnosis.prescriptionOverviews[presIndex],
+                  ...updates,
+                  updatedAt: new Date().toISOString(),
+                };
+              }
+            }
+          )
+        );
+
+        patches.push(patch);
+      }
+    });
+
+    try {
+      const { data } = await queryFulfilled;
+
+      const newPrescription = data?.data; // returned new object from backend
+
+      // Replace with server data (after success)
+      Object.values(queries).forEach(entry => {
+        if (entry?.endpointName === "getPatientDiagnoses") {
+          dispatch(
+            patientDiagnosesApi.util.updateQueryData(
+              "getPatientDiagnoses",
+              entry.originalArgs,
+              draft => {
+                const diagnosis = draft.data.find(d => d.diagnosisId === diagnosisId);
+                if (!diagnosis) return;
+
+                const presIndex = diagnosis.prescriptionOverviews.findIndex(
+                  p => p.id === newPrescription.id
+                );
+
+                if (presIndex !== -1) {
+                  diagnosis.prescriptionOverviews[presIndex] = newPrescription;
+                }
+              }
+            )
+          );
+        }
+      });
+
+    } catch {
+      patches.forEach(p => p.undo());
+    }
+  },
       invalidatesTags: (result, error, { patientId }) => [
         { type: 'PatientPrescription', id: patientId }
       ],
@@ -186,16 +301,52 @@ export const patientPrescriptionApi = baseApi.injectEndpoints({
 
 // Delete patient prescription
 deletePatientPrescription: builder.mutation({
-  query: (prescriptionId) => {
-    console.log('Delete Patient Prescription ID:', prescriptionId);
+query: ({ prescriptionId }) => ({
+  url: '/PatientPrescription/DeletePatientPrescription',
+  method: 'DELETE',
+  body: { prescriptionId }
+}),
+   async onQueryStarted(
+    { prescriptionId, diagnosisId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
 
-    return {
-      url: '/PatientPrescription/DeletePatientPrescription',
-      method: 'DELETE',
-      body: {
-        prescriptionId: prescriptionId
+    // Loop through all queries of getPatientDiagnoses
+    Object.values(queries).forEach(entry => {
+      if (entry?.endpointName === "getPatientDiagnoses") {
+        const patch = dispatch(
+          patientDiagnosesApi.util.updateQueryData(
+            "getPatientDiagnoses",
+            entry.originalArgs,
+            draft => {
+              if (!draft?.data) return;
+
+              const diag = draft.data.find(
+                d => d.diagnosisId === diagnosisId
+              );
+              if (!diag) return;
+
+              diag.prescriptionOverviews =
+                diag.prescriptionOverviews.filter(
+                  p => p.id !== prescriptionId
+                );
+            }
+          )
+        );
+
+        patches.push(patch);
       }
-    };
+    });
+
+    // If request fails → rollback
+    try {
+      await queryFulfilled;
+    } catch (err) {
+      patches.forEach(p => p.undo());
+    }
   },
   invalidatesTags: (result, error, prescriptionId) => [
     { type: 'PatientPrescription', id: 'LIST' }

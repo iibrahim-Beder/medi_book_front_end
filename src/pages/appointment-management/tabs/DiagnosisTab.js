@@ -16,12 +16,9 @@ import PatientName from "../../patient-management/patient-information/PatientTab
 
 const DiagnosisMobileViewWithCRUD = () => {
   const { t } = useTranslation();
-  const PATIENT_ID = 4;
 
   const dispatch = useDispatch();
   // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
   const [showRowsPerPage, setshowRowsPerPage] = useState(3);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -46,13 +43,14 @@ const DiagnosisMobileViewWithCRUD = () => {
     isUpdating,
     handleUpdateDiagnosis,
     diagnosesData,
-      isLoading,
-      error,
-      isFetching,
-      refetch
-
-
-  } = useDiagnosisCRUD(rowsPerPage,currentPage, setCurrentItems,checkAndRefetch,setIsChange);
+    isLoading,
+    error,
+    isFetching,
+    refetch,
+    setCurrentPage,
+    setRowsPerPage,
+    currentPage
+  } = useDiagnosisCRUD(setCurrentItems,checkAndRefetch,setIsChange);
   const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
     if (diagnosesData?.data) {

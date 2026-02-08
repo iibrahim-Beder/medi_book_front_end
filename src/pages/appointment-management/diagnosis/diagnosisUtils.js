@@ -1,16 +1,8 @@
 
 
 // diagnosisUtils.js
-// Helper function to get status text
-export const getStatusText = (status) => {
-  const statusMap = {
-    0: "Active",
-    1: "Completed",
-    2: "Cancelled",
-    3: "Pending"
-  };
-  return statusMap[status] || "Unknown";
-};
+
+import { getStatusText } from "../../../api/PatientProfile/patientPrescriptionApi";
 
 // Transform API data to match component structure
 export const transformDiagnosisData = (diagnosis) => {

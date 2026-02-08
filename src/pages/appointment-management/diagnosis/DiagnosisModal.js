@@ -8,6 +8,7 @@ import TwoLevelAccordion from "../../shared/TwoLevelAccordion";
 import { useNestedItemHandlers } from "./useNestedItemHandlers";
 import { createIndexBasedHandlers, createTwoLevelHandlers } from "./handlerUtils";
 import { is } from "date-fns/locale/is";
+import { usePrescriptions } from "./hooks/usePrescriptions";
 
 const DiagnosisModal = ({
   editingDiagnosis,
@@ -29,10 +30,6 @@ const DiagnosisModal = ({
     handleDeleteNote,
     handleUpdateNote,
     handleSaveNote,
-    handleAddPrescription,
-    handleDeletePrescription,
-    handleUpdatePrescription,
-    handleSavePrescription,
     handleAddRecipe,
     handleDeleteRecipe,
     handleUpdateRecipe,
@@ -41,7 +38,10 @@ const DiagnosisModal = ({
     isUpdating = false,
     handleCancelNestedItem
   } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis,setIsChange);
-
+  const {    handleAddPrescription,
+    handleDeletePrescription,
+    handleUpdatePrescription,
+    handleSavePrescription}=usePrescriptions(editingDiagnosis, setEditingDiagnosis,setIsChange);
   if (!editingDiagnosis) return null;
 
   return (

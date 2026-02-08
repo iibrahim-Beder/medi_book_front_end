@@ -1,3 +1,4 @@
+import { getStatusText } from "../../../api/PatientProfile/patientPrescriptionApi";
 
 export const createIndexBasedHandlers = (items, handlers) => {
   return {
@@ -116,6 +117,27 @@ export const buildDiagnosisUpdatePayload = (original, updated) => {
 
   if (updated.code !== original.code) {
     payload.code = updated.code || "";
+  }
+  return payload;
+};
+export const buildPrescriptionsUpdatePayload = (original, updated) => {
+  const payload = {};
+  console.log("buildPrescriptionsUpdatePayload","===original", original, "updated", updated);
+
+  if (updated.title !== original.title) {
+    payload.title = updated.title || null;
+  }
+
+  if (updated.symptomsDescription !== original.symptomsDescription) {
+    payload.symptomsDescription = updated.symptomsDescription || null;
+  }
+
+  if (updated.status !== getStatusText(original.status)) {
+    payload.status =   updated.status  || null;
+  }
+
+  if (updated.notes !== original.notes) {
+    payload.notes = updated.notes|| null;
   }
   return payload;
 };

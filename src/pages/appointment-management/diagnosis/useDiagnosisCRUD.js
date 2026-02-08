@@ -12,9 +12,11 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 
 const PATIENT_ID = 4;
 
-export const useDiagnosisCRUD = (rowsPerPage,currentPage,setCurrentItems) => {
+export const useDiagnosisCRUD = (setCurrentItems) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(3);
   const [deletePopup, setDeletePopup] = useState({
     show: false,
     diagnosisId: null,
@@ -132,7 +134,7 @@ export const useDiagnosisCRUD = (rowsPerPage,currentPage,setCurrentItems) => {
       console.log("diagnosesData",diagnosesData,'===originalRecord:', originalRecord);
       if (!originalRecord) {
         console.error('Original record not found');
-        toast.error('Original record not found');
+        toast.error('error saving diagnosis');
         toast.dismiss(loadingToast);
         return false;
       }
@@ -342,10 +344,13 @@ export const useDiagnosisCRUD = (rowsPerPage,currentPage,setCurrentItems) => {
     handleDeleteDiagnosis,
     handleUpdateDiagnosis,
     diagnosesData,
-      isLoading,
-      error,
-      isFetching,
-      refetch
+    isLoading,
+    error,
+    isFetching,
+    refetch, 
+    setCurrentPage,
+    currentPage,
+    setRowsPerPage
   };
   
 };

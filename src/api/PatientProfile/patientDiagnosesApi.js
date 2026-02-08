@@ -70,7 +70,7 @@ const transformDiagnosesData = (response, searchValue = "") => {
     currentPage: response.currentPage || 1,
     totalPages: response.totalPages || 1,
     totalCount: response.totalCount || 0,
-    pageSize: response.pageSize || 10,
+    pageSize: response.pageSize || 3,
     hasPreviousPage: response.hasPreviousPage || false,
     hasNextPage: response.hasNextPage || false,
     searchValue: searchValue
@@ -85,7 +85,7 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
         filter = {}, 
         orderBy=1, 
         pageNumber = 1, 
-        pageSize = 10 
+        pageSize = 3
       }) => {
         const params = {
           PatientId: patientId,
