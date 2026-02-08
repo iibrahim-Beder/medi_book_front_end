@@ -89,3 +89,33 @@ export const createTwoLevelHandlers = (prescriptions, handlers) => {
     }
   };
 };
+
+
+      //   const diagnosisPayload = {
+      //   patientId: PATIENT_ID,
+      //   diagnosisName: diagnosisData.diagnosisName,
+      //   symptomsDescription: diagnosisData.symptomsDescription,
+      //   description: diagnosisData.description,
+      //   code: diagnosisData.code || "0000",
+      // };
+export const buildDiagnosisUpdatePayload = (original, updated) => {
+  const payload = {};
+  console.log("===original", original, "updated", updated);
+
+  if (updated.diagnosisName !== original.diagnosisName) {
+    payload.diagnosisName = updated.diagnosisName;
+  }
+
+  if (updated.symptomsDescription !== original.symptomsDescription) {
+    payload.symptomsDescription = updated.symptomsDescription;
+  }
+
+  if (updated.description !== original.description) {
+    payload.description = updated.description || "";
+  }
+
+  if (updated.code !== original.code) {
+    payload.code = updated.code || "";
+  }
+  return payload;
+};

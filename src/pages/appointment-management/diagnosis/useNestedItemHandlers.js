@@ -752,16 +752,16 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
         toast.success(result?.message || "Saved Successfully");
         success = true;
       
-        const accepted = result?.meta?.acceptedItems || [];
-        const rejected = result?.meta?.rejectedItems || [];
+        
+        const accepted = result?.meta?.results?.PrescribedMedications.accepted || [];
+        const rejected = result?.meta?.results?.PrescribedMedications.rejectedItems || [];
       
         const filteredPrescriptions = (prescriptionData.recipes || []).filter(
           med => accepted.includes(med.medication.id)
         );
-        console.log('Filtered Prescriptions:', filteredPrescriptions, "Accepted",accepted, "Rejected", rejected);
-      
-      if (rejected.length > 0) {
-      
+        if (result?.meta?.hasRejections) {
+          
+          console.log('Filtered Prescriptions:', filteredPrescriptions, "Accepted",accepted, "Rejected", rejected);
         rejected.forEach(item => {
           const rejectedMed = (prescriptionData.recipes || []).find(
             med => med.medication.id === item.itemId

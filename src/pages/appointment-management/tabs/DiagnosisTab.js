@@ -26,17 +26,6 @@ const DiagnosisMobileViewWithCRUD = () => {
   const [totalCount, setTotalCount] = useState(0);
 
   // API Call
-  const {
-    data: diagnosesData,
-    isLoading,
-    error,
-    isFetching,
-    refetch
-  } = useGetPatientDiagnosesQuery({
-    patientId: PATIENT_ID,
-    pageNumber: currentPage,
-    pageSize: rowsPerPage
-  });
 
   const [currentItems, setCurrentItems] = useState([]);
   const [isChange, setIsChange] = useState(false);
@@ -55,10 +44,15 @@ const DiagnosisMobileViewWithCRUD = () => {
     handleDeleteDiagnosis,
     isAdding,
     isUpdating,
-    handleUpdateDiagnosis
+    handleUpdateDiagnosis,
+    diagnosesData,
+      isLoading,
+      error,
+      isFetching,
+      refetch
 
 
-  } = useDiagnosisCRUD(refetch, setCurrentItems,checkAndRefetch,setIsChange);
+  } = useDiagnosisCRUD(rowsPerPage,currentPage, setCurrentItems,checkAndRefetch,setIsChange);
   const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
     if (diagnosesData?.data) {
@@ -89,7 +83,7 @@ useEffect(() => {
   return () => {
     if (isChange) {
       console.log("Component unmounted → invalidate");
-      dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]));
+      // dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]));
     }
   };
 }, [isChange]);

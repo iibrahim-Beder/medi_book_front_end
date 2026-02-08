@@ -3,13 +3,16 @@ import toast from "react-hot-toast";
 import {
   useAddPatientDiagnosisMutation,
   useUpdatePatientDiagnosisMutation,
-  useDeletePatientDiagnosisMutation
+  useDeletePatientDiagnosisMutation,
+  useGetPatientDiagnosesQuery
 } from "../../../api/PatientProfile/patientDiagnosesApi";
 import { removeNewChildren, transformDiagnosisData } from "./diagnosisUtils";
+import { buildDiagnosisUpdatePayload } from "./handlerUtils";
+import { BsFillInfoCircleFill } from "react-icons/bs";
 
 const PATIENT_ID = 4;
 
-export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsChange) => {
+export const useDiagnosisCRUD = (rowsPerPage,currentPage,setCurrentItems) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [deletePopup, setDeletePopup] = useState({
@@ -17,6 +20,17 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
     diagnosisId: null,
     diagnosisName: ""
   });
+    const {
+      data: diagnosesData,
+      isLoading,
+      error,
+      isFetching,
+      refetch
+    } = useGetPatientDiagnosesQuery({
+      patientId: PATIENT_ID,
+      pageNumber: currentPage,
+      pageSize: rowsPerPage
+    });
   
   // API Mutations
   const [addDiagnosis, { isLoading: isAdding }] = useAddPatientDiagnosisMutation(); 
@@ -46,16 +60,56 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
             console.log("Add Diagnosis Result:",result);
     
     if (result?.succeeded) {
-      setIsChange(true);
       toast.success("Diagnosis saved successfully");
       toast.dismiss(loadingToast);
+      if(result?.meta?.hasRejections){
+        
+        if (result?.meta?.hasRejections) {
+          const rejectedC = result?.meta?.results?.PatientMedicalConditionLinks.rejected || [];
+        rejectedC.forEach(item => {
+          const rejectedMed = (diagnosisData.conditions || []).find(
+            med => med.medicalCondition.id === item.itemId
+          );
       
-      if (setCurrentItems) {
-        const newDiagnosis = transformDiagnosisData(result.data);
-        setCurrentItems(prev => [newDiagnosis, ...prev]);
+          const medName = rejectedMed ? rejectedMed.medicalCondition.name : "therapy medical condition";
+      
+          toast(
+            `${medName}, failed: ${item.reason}`,
+            {
+              icon: <BsFillInfoCircleFill style={{ fontSize: "large" }} />,
+              duration: 15000,
+            }
+          );
+        });
+
+           const prescriptions = diagnosisData?.prescriptions||[];
+          //  const prescriptions = prescriptionData || [];
+                const rejectedM = result?.meta?.results?.PrescribedMedications.rejected || [];
+              
+                if (result?.meta?.hasRejections) {
+                    const allRecipes = prescriptions.flatMap(p => p.recipes || []);
+                    console.log(  "diagnosisData",diagnosisData, "allRecipes", allRecipes, "prescriptions", prescriptions,);
+                                  
+                    rejectedM.forEach(item => {
+                      const rejectedMed = allRecipes.find(
+                        med => med.medication.id === item.itemId
+                      );
+                                
+                  const medName = rejectedMed ? rejectedMed.medication.name : "therapy medication";
+              
+                  toast(
+                    `${medName}, failed: ${item.reason}`,
+                    {
+                      icon: <BsFillInfoCircleFill style={{ fontSize: "large" }} />,
+                      duration: 15000,
+                    }
+                  );
+                });
+              
+              }
+      
       }
-      
-        checkAndRefetch(true);      
+      }      
       return true;
     } else {
       console.log("Failed to save diagnosis:", result);
@@ -72,16 +126,25 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
     
   }else
     {
+      const originalRecord = diagnosesData?.data?.find(
+        r => r.diagnosisId === diagnosisData.diagnosisId
+      );
+      console.log("diagnosesData",diagnosesData,'===originalRecord:', originalRecord);
+      if (!originalRecord) {
+        console.error('Original record not found');
+        toast.error('Original record not found');
+        toast.dismiss(loadingToast);
+        return false;
+      }
+        const diagnosisPayload = buildDiagnosisUpdatePayload(originalRecord, diagnosisData);
+        // console.log('===diagnosisPayload:', diagnosisPayload);
+     if (!Object.keys(diagnosisPayload).length) {
+            toast.dismiss(loadingToast);
+            toast("No changes detected");
+            return true;
+          }
       try {
         let result;
-        const diagnosisPayload = {
-        patientId: PATIENT_ID,
-        diagnosisName: diagnosisData.diagnosisName,
-        symptomsDescription: diagnosisData.symptomsDescription,
-        description: diagnosisData.description,
-        code: diagnosisData.code || "0000",
-      };
-       console.log('Sending update data:', diagnosisPayload, "Diagnosis ID:", diagnosisData.diagnosisId);
           result = await updateDiagnosis({
           diagnosisId: diagnosisData.diagnosisId,
           patientId: PATIENT_ID,
@@ -89,18 +152,9 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
         }).unwrap();
 
         if (result?.succeeded) {
-          setIsChange(true);
           toast.success("Diagnosis updated successfully");
           toast.dismiss(loadingToast);
-          
-          if (setCurrentItems) {
-            setCurrentItems(prev => prev.map(item => 
-              item.diagnosisId === diagnosisData.diagnosisId 
-                ? { ...item, ...diagnosisData }
-                : item
-            ));
-          }
-          
+                   
           return true;
         } else {
           toast.error(result.message || "Failed to update diagnosis");
@@ -115,7 +169,7 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
       return false;
     }
     }
-  }, [addDiagnosis, updateDiagnosis, setCurrentItems,isAdding,isUpdating]);
+  }, [addDiagnosis, updateDiagnosis,isAdding,isUpdating,diagnosesData]);
 
   const handleAddDiagnosis = useCallback(() => {
     const newDiagnosis = {
@@ -176,15 +230,12 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
           setEditingDiagnosis(null);
           setSelectedDiagnosis(null);
         } else {
-          const result = await deleteDiagnosis(deletePopup.diagnosisId).unwrap();
+          const result = await deleteDiagnosis({ diagnosisId:deletePopup.diagnosisId, patientId:  PATIENT_ID}).unwrap();
           if (result?.succeeded) {
-            setIsChange(true);
             toast.success("Diagnosis deleted successfully");
             setEditingDiagnosis(null);
             setSelectedDiagnosis(null);            
             toast.dismiss(loadingToast);
-            setCurrentItems(prev => prev.filter(item => item.diagnosisId !== deletePopup.diagnosisId));
-            checkAndRefetch();
           } else {
             toast.error(result.message || "Failed to delete diagnosis");
           }
@@ -289,7 +340,12 @@ export const useDiagnosisCRUD = (refetch,setCurrentItems,checkAndRefetch,setIsCh
     handleCloseDeleteConfirm,
     handleConfirmDelete,
     handleDeleteDiagnosis,
-    handleUpdateDiagnosis
+    handleUpdateDiagnosis,
+    diagnosesData,
+      isLoading,
+      error,
+      isFetching,
+      refetch
   };
   
 };

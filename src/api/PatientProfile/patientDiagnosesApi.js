@@ -1,4 +1,3 @@
-// patientDiagnosesApi.js
 import { baseApi } from '../baseApi';
 const getSeverityValue = (severityText) => {
   const severityMap = {
@@ -9,30 +8,13 @@ const getSeverityValue = (severityText) => {
   return severityMap[severityText] || 1;
 };
 
-// Helper function to convert medical condition name to ID
-const getMedicalConditionId = (conditionName) => {
-  const conditionMap = {
-    "Diabetes": 1,
-    "Hypertension": 2,
-    "Asthma": 3,
-    "Heart Disease": 4,
-    "Cancer": 5,
-    "Mental Health Disorders": 6,
-    "Other": 7,
-    "Rheumatic tricuspid insufficiency": 8,
-    "Seasonal allergies": 9
-    // Add more conditions as needed
-  };
-  return conditionMap[conditionName] || 1;
-};
 
 // Helper function to convert status text to number
 const getStatusValue = (statusText) => {
   const statusMap = {
-    "Active": 0,
-    "Completed": 1, 
-    "Cancelled": 2,
-    "Pending": 3,
+    "Active": 1,
+    "Completed": 2, 
+    "Cancelled": 3,
     "Expired": 4
   };
   return statusMap[statusText] || 0;
@@ -204,6 +186,37 @@ addPatientDiagnosis: builder.mutation({
       body: body
     };
   },
+    async onQueryStarted(
+      { patientId },
+      { dispatch, queryFulfilled, getState }
+    ) {
+      const state = getState();
+      const queries = state[baseApi.reducerPath]?.queries ?? {};
+  
+      try {
+        const { data } = await queryFulfilled;
+        const added = data?.data;
+        if (!added) return
+
+        console.log("added$$$",added)
+
+        Object.values(queries).forEach(entry => {
+          if (entry?.endpointName === "getPatientDiagnoses") {
+            dispatch(
+              patientDiagnosesApi.util.updateQueryData(
+                "getPatientDiagnoses",
+                entry.originalArgs,
+                draft => {
+                  draft.data.unshift(added);
+                }
+              )
+            );
+          }
+        });
+      } catch {
+        // rollback handled by RTK
+      }
+    },
   transformErrorResponse: (response, meta, args) => {
     console.error('Add Patient Diagnosis API Error:', response);
 
@@ -216,44 +229,119 @@ addPatientDiagnosis: builder.mutation({
 }),
 
     // Update patient diagnosis - UPDATED
-     updatePatientDiagnosis: builder.mutation({
-  query: ({ diagnosisId, patientId, updates }) => { 
-    const params = {
-      DiagnosisId: diagnosisId,
-      PatientId: patientId, 
-      DiagnosisName: updates.diagnosisName,
-      code: updates.code,
-      symptomsDescription: updates.symptomsDescription,
-      description: updates.description
-    };
-
-    console.log('Update Diagnosis Params:', params);
+updatePatientDiagnosis: builder.mutation({
+  query: ({ diagnosisId, updates, patientId }) => { 
+    console.log('Update Diagnosis Params:', updates);
 
     return {
       url: '/PatientDiagnoses/UpdatePatientDiagnosis',
       method: 'PATCH',
-      params: params
+      body: {
+        diagnosisId: diagnosisId,
+        ...updates
+      },
     };
   },
-  invalidatesTags: (result, error, { patientId }) => [
-    { type: '', id: patientId }
-  ],
+  async onQueryStarted(
+    { diagnosisId, updates, patientId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    // Find all queries with this patientId and update them
+    const patchResults = [];
+    
+    // Get all query cache entries for getPatientDiagnoses
+    const queryCache = patientDiagnosesApi.util.selectInvalidatedBy(getState(), [
+      { type: 'PatientDiagnoses', id: patientId }
+    ]);
+    
+    for (const { endpointName, originalArgs } of queryCache) {
+      if (endpointName === 'getPatientDiagnoses') {
+        const patch = dispatch(
+          patientDiagnosesApi.util.updateQueryData(
+            'getPatientDiagnoses',
+            originalArgs,
+            (draft) => {
+              if (!draft || !draft.data) return;
+              
+              const diagnosisIndex = draft.data.findIndex(
+                d => d.diagnosisId === diagnosisId
+              );
+              
+              if (diagnosisIndex !== -1) {
+                console.log("Updating diagnosis optimistically:", diagnosisId);
+                // Update the specific diagnosis
+                draft.data[diagnosisIndex] = {
+                  ...draft.data[diagnosisIndex],
+                  ...updates,
+                  updatedAt: new Date().toISOString()
+                };
+              }
+            }
+          )
+        );
+        patchResults.push(patch);
+      }
+    }
+
+    try {
+      await queryFulfilled;
+      // console.log("Update successful!");
+    } catch (error) {
+      // console.error("Update failed, rolling back:", error);
+      // Revert all optimistic updates
+      patchResults.forEach(patch => patch.undo());
+    }
+  },
 }),
 
-    deletePatientDiagnosis: builder.mutation({
-  query: (diagnosisId) => {
+deletePatientDiagnosis: builder.mutation({
+  query: ({ diagnosisId }) => {
     console.log('Deleting diagnosis with ID:', diagnosisId);
-    
+
     return {
       url: '/PatientDiagnoses/DeletePatientDiagnosis',
       method: 'DELETE',
       params: { diagnosisId }
     };
   },
-  invalidatesTags: (result, error, diagnosisId) => [
-    { type: 'PatientDiagnoses', id: 'LIST' },
-    { type: 'PatientDiagnoses', id: diagnosisId }
-  ],
+  async onQueryStarted(
+    { diagnosisId, patientId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const cacheEntries = patientDiagnosesApi.util.selectInvalidatedBy(
+      getState(),
+      [{ type: 'PatientDiagnoses', id: patientId }]
+    );
+
+    const patches = [];
+
+    for (const { endpointName, originalArgs } of cacheEntries) {
+      if (endpointName === 'getPatientDiagnoses') {
+        const patch = dispatch(
+          patientDiagnosesApi.util.updateQueryData(
+            'getPatientDiagnoses',
+            originalArgs,
+            draft => {
+              if (!draft?.data) return;
+
+              draft.data = draft.data.filter(
+                d => d.diagnosisId !== diagnosisId
+              );
+
+              draft.totalCount = Math.max(0, draft.totalCount - 1);
+            }
+          )
+        );
+        patches.push(patch);
+      }
+    }
+
+    try {
+      await queryFulfilled;
+    } catch {
+      patches.forEach(p => p.undo());
+    }
+  },
 }),
  // Add diagnosis note 
     addDiagnosisNote: builder.mutation({
