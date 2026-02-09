@@ -9,6 +9,7 @@ import { useNestedItemHandlers } from "./useNestedItemHandlers";
 import { createIndexBasedHandlers, createTwoLevelHandlers } from "./handlerUtils";
 import { is } from "date-fns/locale/is";
 import { usePrescriptions } from "./hooks/usePrescriptions";
+import { usePrescribedMedication } from "./hooks/usePrescribedMedication";
 
 const DiagnosisModal = ({
   editingDiagnosis,
@@ -30,10 +31,6 @@ const DiagnosisModal = ({
     handleDeleteNote,
     handleUpdateNote,
     handleSaveNote,
-    handleAddRecipe,
-    handleDeleteRecipe,
-    handleUpdateRecipe,
-    handleSaveRecipe,
     isAdding=false,
     isUpdating = false,
     handleCancelNestedItem
@@ -41,7 +38,11 @@ const DiagnosisModal = ({
   const {    handleAddPrescription,
     handleDeletePrescription,
     handleUpdatePrescription,
-    handleSavePrescription}=usePrescriptions(editingDiagnosis, setEditingDiagnosis,setIsChange);
+    handleSavePrescription}=usePrescriptions(editingDiagnosis, setEditingDiagnosis);
+    const {    handleAddRecipe,
+    handleDeleteRecipe,
+    handleUpdateRecipe,
+    handleSaveRecipe, }= usePrescribedMedication(editingDiagnosis, setEditingDiagnosis);
   if (!editingDiagnosis) return null;
 
   return (

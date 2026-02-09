@@ -92,37 +92,29 @@ export const createTwoLevelHandlers = (prescriptions, handlers) => {
 };
 
 
-      //   const diagnosisPayload = {
-      //   patientId: PATIENT_ID,
-      //   diagnosisName: diagnosisData.diagnosisName,
-      //   symptomsDescription: diagnosisData.symptomsDescription,
-      //   description: diagnosisData.description,
-      //   code: diagnosisData.code || "0000",
-      // };
 export const buildDiagnosisUpdatePayload = (original, updated) => {
   const payload = {};
   console.log("===original", original, "updated", updated);
 
   if (updated.diagnosisName !== original.diagnosisName) {
-    payload.diagnosisName = updated.diagnosisName;
+    payload.diagnosisName = updated.diagnosisName || null;
   }
 
   if (updated.symptomsDescription !== original.symptomsDescription) {
-    payload.symptomsDescription = updated.symptomsDescription;
+    payload.symptomsDescription = updated.symptomsDescription || null;
   }
 
   if (updated.description !== original.description) {
-    payload.description = updated.description || "";
+    payload.description = updated.description || null;
   }
 
   if (updated.code !== original.code) {
-    payload.code = updated.code || "";
+    payload.code = updated.code|| null;
   }
   return payload;
 };
 export const buildPrescriptionsUpdatePayload = (original, updated) => {
   const payload = {};
-  console.log("buildPrescriptionsUpdatePayload","===original", original, "updated", updated);
 
   if (updated.title !== original.title) {
     payload.title = updated.title || null;
@@ -138,6 +130,34 @@ export const buildPrescriptionsUpdatePayload = (original, updated) => {
 
   if (updated.notes !== original.notes) {
     payload.notes = updated.notes|| null;
+  }
+  return payload;
+};
+export const buildprescribedMedicationUpdatePayload = (original, updated) => {
+  const payload = {};
+  // console.log("&&&&original", original, "updated", updated);
+
+  if (updated.dosage !== original.dosage) {
+    payload.dosage = updated.dosage || null;
+  }
+  if (updated.instructions !== original.instructions) {
+    payload.instructions = updated.instructions || null;
+  }
+
+  if (updated.durationInDays !== original.durationInDays) {
+    payload.durationInDays = updated.durationInDays || null;
+  }
+
+  if (updated.endDate !== original.endDate) {
+    payload.endDate =   updated.endDate  || null;
+  }
+
+  if (updated.startDate !== original.startDate) {
+    payload.startDate =   updated.startDate  || null;
+  }
+
+  if (updated.medication.name !== original.medicationName) {
+    payload.medicationId = updated.medication.id|| null;
   }
   return payload;
 };
