@@ -10,6 +10,7 @@ import { createIndexBasedHandlers, createTwoLevelHandlers } from "./handlerUtils
 import { is } from "date-fns/locale/is";
 import { usePrescriptions } from "./hooks/usePrescriptions";
 import { usePrescribedMedication } from "./hooks/usePrescribedMedication";
+import { useMedicalCondition } from "./hooks/useMedicalCondition";
 
 const DiagnosisModal = ({
   editingDiagnosis,
@@ -23,10 +24,6 @@ const DiagnosisModal = ({
   t
 }) => {
   const {
-    handleAddCondition,
-    handleDeleteCondition,
-    handleUpdateCondition,
-    handleSaveCondition,
     handleAddNote,
     handleDeleteNote,
     handleUpdateNote,
@@ -35,6 +32,12 @@ const DiagnosisModal = ({
     isUpdating = false,
     handleCancelNestedItem
   } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis,setIsChange);
+  const {
+    handleAddCondition,
+    handleDeleteCondition,
+    handleUpdateCondition,
+    handleSaveCondition,
+  } = useMedicalCondition(editingDiagnosis, setEditingDiagnosis);
   const {    handleAddPrescription,
     handleDeletePrescription,
     handleUpdatePrescription,
@@ -142,7 +145,7 @@ const DiagnosisModal = ({
                 label: t("Category"),
                 name: "category",
                 type: "text",
-                half: true,
+                // half: true,
                 disabled: true
               },
               {
@@ -151,6 +154,14 @@ const DiagnosisModal = ({
                 placeholder: t("Select severity"),
                 type: "select",
                 options: ["Mild", "Moderate", "Severe"],
+                half: true,
+              },
+              {
+                label: t("Status"),
+                name: "isActive",
+                type: "select",
+                placeholder: t("Select status"),
+                options: ["Active", "Inactive"],
                 half: true,
               },
               {

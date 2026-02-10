@@ -34,6 +34,7 @@ export const transformDiagnosisData = (diagnosis) => {
       severity: condition.severity,
       notes: condition.notes,
       isNew: false,
+      isActive: condition.isActive,
       isExpanded: false
     })),
   

@@ -161,3 +161,24 @@ export const buildprescribedMedicationUpdatePayload = (original, updated) => {
   }
   return payload;
 };
+
+export const buildMedicalConditionUpdatePayload = (original, updated) => {
+  const payload = {};
+  console.log("&&&&original", original, "updated", updated);
+
+  if (updated.isActive !== original.isActive && (updated.isActive==="Active") !== original.isActive) {
+    payload.isActive = updated.isActive || null;
+  }
+  if (updated.notes !== original.notes) {
+    payload.notes = updated.notes || null;
+  }
+
+  if (updated.severity !== getStatusText(original.severity)&& updated.severity !== original.severity) {
+    payload.severity =   updated.severity  || null;
+  }
+  if (updated.medicalCondition.name !== original.medicalConditionName) {
+    payload.medicationId = updated.medication.id|| null;
+  }
+  console.log("&&&&payload", payload);
+  return payload;
+};

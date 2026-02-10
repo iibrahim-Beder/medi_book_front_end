@@ -1,5 +1,6 @@
 // patientMedicalConditionsApi.js
 import { baseApi } from '../baseApi';
+import { patientDiagnosesApi } from './patientDiagnosesApi';
 
 // Helper functions
 const getSeverityValue = (severityText) => {
@@ -122,11 +123,11 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
     addInternalPatientMedicalCondition: builder.mutation({
       query: ({ diagnosisId, conditionData }) => {
         const params = {
-          DiagnosisId: diagnosisId,
-          MedicalConditionId: conditionData.medicalConditionId,
-          Severity: getSeverityValue(conditionData.severity),
-          IsActive: conditionData.isActive !== undefined ? conditionData.isActive : true,
-          Notes: conditionData.notes || ''
+          diagnosisId: diagnosisId,
+          medicalConditionId: conditionData.medicalConditionId,
+          severity: getSeverityValue(conditionData.severity),
+          isActive: conditionData.isActive !== undefined ? conditionData.isActive : true,
+          notes: conditionData.notes || ''
         };
 
         console.log('Add Internal Patient Medical Condition Params:', params);
@@ -134,9 +135,47 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
         return {
           url: '/PatientMedicalConditions/AddInternalPatientMedicalConditions',
           method: 'POST',
-          params: params
+          body: params
         };
       },
+        async onQueryStarted(
+    { diagnosisId, payload },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+
+    const patches = [];
+    try {
+      const { data } = await queryFulfilled;
+      const realCond = data.data;
+
+      Object.values(queries).forEach(entry => {
+        if (entry?.endpointName === "getPatientDiagnoses") {
+          dispatch(
+            patientDiagnosesApi.util.updateQueryData(
+              "getPatientDiagnoses",
+              entry.originalArgs,
+              draft => {
+                const diag = draft.data.find(d => d.diagnosisId === diagnosisId);
+                if (!diag) return;
+
+                diag.patientInternalMedicalConditionLinkOverViews =
+                  diag.patientInternalMedicalConditionLinkOverViews.filter(
+                    c => !c.optimistic
+                  );
+
+                diag.patientInternalMedicalConditionLinkOverViews.unshift(realCond);
+              }
+            )
+          );
+        }
+      });
+
+    } catch (err) {
+      patches.forEach(p => p.undo());
+    }
+  },
       invalidatesTags: (result, error, { patientId }) => [
         { type: 'PatientMedicalCondition', id: patientId }
       ],
@@ -158,16 +197,65 @@ updatePatientMedicalCondition: builder.mutation({
     return {
       url: '/PatientMedicalConditions/UpdateInternalPatientMedicalConditions', 
       method: 'PUT', 
-      params: params
+      body: params
     };
   },
+async onQueryStarted(
+  { conditionId, diagnosisId, updates },
+  { dispatch, queryFulfilled, getState }
+) {
+  const state = getState();
+  const queries = state[baseApi.reducerPath]?.queries ?? {};
+  const patches = [];
+
+  Object.values(queries).forEach(entry => {
+    if (entry?.endpointName === "getPatientDiagnoses") {
+      const patch = dispatch(
+        patientDiagnosesApi.util.updateQueryData(
+          "getPatientDiagnoses",
+          entry.originalArgs,
+          draft => {
+            const diag = draft.data.find(
+              d => d.diagnosisId === diagnosisId
+            );
+            if (!diag) return;
+
+            const idx =
+              diag.patientInternalMedicalConditionLinkOverViews
+                .findIndex(c => c.id === conditionId);
+
+            if (idx !== -1) {
+              Object.assign(
+                diag.patientInternalMedicalConditionLinkOverViews[idx],
+                {
+                  medicalConditionId: updates.medicalConditionId,
+                  severity: updates.severity,
+                  notes: updates.notes,
+                  isActive: updates.isActive
+                }
+              );
+            }
+          }
+        )
+      );
+
+      patches.push(patch);
+    }
+  });
+
+  try {
+    await queryFulfilled;
+  } catch {
+    patches.forEach(p => p.undo());
+  }
+},
   invalidatesTags: (result, error, { conditionId }) => [
     { type: 'PatientMedicalCondition', id: conditionId }
   ],
 }),
    // Delete patient medical condition 
     deletePatientMedicalCondition: builder.mutation({
-      query: (conditionId) => {
+      query: ({conditionId}) => {
         const params = {
           Id: conditionId 
         };
@@ -180,6 +268,42 @@ updatePatientMedicalCondition: builder.mutation({
           params: params
         };
       },
+      
+  async onQueryStarted(
+    { diagnosisId, conditionId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
+
+    Object.values(queries).forEach(entry => {
+      if (entry?.endpointName === "getPatientDiagnoses") {
+        const patch = dispatch(
+          patientDiagnosesApi.util.updateQueryData(
+            "getPatientDiagnoses",
+            entry.originalArgs,
+            draft => {
+              const diag = draft.data.find(d => d.diagnosisId === diagnosisId);
+              if (!diag) return;
+
+              diag.patientInternalMedicalConditionLinkOverViews =
+                diag.patientInternalMedicalConditionLinkOverViews.filter(
+                  c => c.id !== conditionId
+                );
+            }
+          )
+        );
+        patches.push(patch);
+      }
+    });
+
+    try {
+      await queryFulfilled;
+    } catch (err) {
+      patches.forEach(p => p.undo());
+    }
+  },
       invalidatesTags: (result, error, conditionId) => [
         { type: 'PatientMedicalCondition', id: conditionId }
       ],
