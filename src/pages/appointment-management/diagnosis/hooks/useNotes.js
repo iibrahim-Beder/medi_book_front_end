@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../api/PatientProfile/patientDiagnosesApi";
+import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../../api/PatientProfile/patientDiagnosesApi";
 import toast from "react-hot-toast";
-import { useDiagnosisCRUD } from "./useDiagnosisCRUD";
-export const useNestedItemHandlers = (editingDiagnosis, setEditingDiagnosis ) => {
+import { useDiagnosisCRUD } from "../useDiagnosisCRUD";
+export const useNotes = (editingDiagnosis, setEditingDiagnosis ) => {
   const { diagnosesData } = useDiagnosisCRUD();
   const [addDiagnosisNote, { isLoading: isAddingNote }] = useAddDiagnosisNoteMutation();
   const [updateDiagnosisNote, { isLoading: isUpdatingNote }] = useUpdateDiagnosisNoteMutation();
@@ -117,9 +117,9 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
         toast.dismiss(loadingToast);
       }
     } else {
-      const originalnotes = diagnosesData.diagnosisNoteOverviews?.find(n => n.id === noteId);
+      const originalnotes = diagnosesData?.data?.find(d => d.diagnosisId === editingDiagnosis.diagnosisId)?.diagnosisNoteOverviews?.find(n => n.id === noteId);
       console.log("originalnotes", originalnotes ,diagnosesData);
-      if(note.note===noteData.note){
+      if(originalnotes.note===noteData.note){
         toast.dismiss(loadingToast);
         toast('No changes');
         closeEditingNotesDiagnosis();
@@ -162,36 +162,11 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
           )
         }));
  })
-  // Handle cancel for nested items
-  const handleCancelNestedItem = useCallback((itemType, itemId) => {
-    if (!editingDiagnosis) return;
-   
-    const item = editingDiagnosis[itemType]?.find(item => item.id === itemId);
-   
-    if (item?.isNew) {
-      // Remove new item
-      const updatedItems = editingDiagnosis[itemType].filter(item => item.id !== itemId);
-      setEditingDiagnosis(prev => ({
-        ...prev,
-        [itemType]: updatedItems
-      }));
-    } else {
-      // Collapse existing item
-      const updatedItems = editingDiagnosis[itemType].map(item =>
-        item.id === itemId ? { ...item, isExpanded: false } : item
-      );
-      setEditingDiagnosis(prev => ({
-        ...prev,
-        [itemType]: updatedItems
-      }));
-    }
-  }, [editingDiagnosis, setEditingDiagnosis]);
 
   return {
     handleAddNote,
     handleDeleteNote,
     handleUpdateNote,
     handleSaveNote,
-    handleCancelNestedItem
   };
 };

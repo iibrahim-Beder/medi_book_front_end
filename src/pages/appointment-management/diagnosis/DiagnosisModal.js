@@ -7,10 +7,10 @@ import TwoLevelAccordion from "../../shared/TwoLevelAccordion";
 
 import { useNestedItemHandlers } from "./useNestedItemHandlers";
 import { createIndexBasedHandlers, createTwoLevelHandlers } from "./handlerUtils";
-import { is } from "date-fns/locale/is";
 import { usePrescriptions } from "./hooks/usePrescriptions";
 import { usePrescribedMedication } from "./hooks/usePrescribedMedication";
 import { useMedicalCondition } from "./hooks/useMedicalCondition";
+import { useNotes } from "./hooks/useNotes";
 
 const DiagnosisModal = ({
   editingDiagnosis,
@@ -19,19 +19,17 @@ const DiagnosisModal = ({
   onCancel,
   onSave,
   onDelete,
-  setCurrentItems,
-  setIsChange,
   t
 }) => {
+  const {
+    handleCancelNestedItem
+  } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis);
   const {
     handleAddNote,
     handleDeleteNote,
     handleUpdateNote,
     handleSaveNote,
-    isAdding=false,
-    isUpdating = false,
-    handleCancelNestedItem
-  } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis,setIsChange);
+  } = useNotes(editingDiagnosis, setEditingDiagnosis);
   const {
     handleAddCondition,
     handleDeleteCondition,
@@ -316,7 +314,7 @@ const DiagnosisModal = ({
             {t("Delete")}
           </button>
         )}
-        <button className="second-btn" onClick={onSave} disabled={isUpdating}>
+        <button className="second-btn" onClick={onSave}>
           {t("Save")}
         </button>
       </Modal.Footer>

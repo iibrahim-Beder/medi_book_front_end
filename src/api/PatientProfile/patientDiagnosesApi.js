@@ -346,19 +346,55 @@ deletePatientDiagnosis: builder.mutation({
  // Add diagnosis note 
     addDiagnosisNote: builder.mutation({
       query: ({ diagnosisId, content }) => {
-        const params = {
-          DiagnosisId: diagnosisId,
-          Content: content
+        const body = {
+          diagnosisId: diagnosisId,
+          content: content
         };
 
-        console.log('Add Diagnosis Note Params:', params);
+        console.log('Add Diagnosis Note Params:', body);
 
         return {
           url: '/PatientDiagnoses/AddDiagnosisNote',
           method: 'POST',
-          params: params
+          body: body
         };
       },
+       async onQueryStarted(
+    { diagnosisId, content },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
+
+    try {
+      const { data } = await queryFulfilled;
+      const realNote = data.data;
+
+      // replace optimistic with actual
+      Object.values(queries).forEach(entry => {
+        if (entry?.endpointName === "getPatientDiagnoses") {
+          dispatch(
+            patientDiagnosesApi.util.updateQueryData(
+              "getPatientDiagnoses",
+              entry.originalArgs,
+              draft => {
+                const diag = draft.data.find(d => d.diagnosisId === diagnosisId);
+                if (!diag) return;
+
+                diag.diagnosisNoteOverviews =
+                  diag.diagnosisNoteOverviews.filter(n => !n.optimistic);
+
+                diag.diagnosisNoteOverviews.unshift(realNote);
+              }
+            )
+          );
+        }
+      });
+    } catch (err) {
+      patches.forEach(p => p.undo());
+    }
+  },
       invalidatesTags: (result, error, { diagnosisId }) => [
         { type: 'PatientDiagnoses', id: diagnosisId }
       ],
@@ -368,8 +404,8 @@ deletePatientDiagnosis: builder.mutation({
     updateDiagnosisNote: builder.mutation({
       query: ({ diagnosisNoteId, noteContent }) => {
         const params = {
-          DiagnosisNoteId: diagnosisNoteId,
-          NoteContent: noteContent
+          diagnosisNoteId: diagnosisNoteId,
+          noteContent: noteContent
         };
 
         console.log('Update Diagnosis Note Params:', params);
@@ -377,9 +413,47 @@ deletePatientDiagnosis: builder.mutation({
         return {
           url: '/PatientDiagnoses/UpdateDiagnosisNote',
           method: 'PATCH',
-          params: params
+          body: params
         };
       },
+      async onQueryStarted(
+    { diagnosisId, diagnosisNoteId, noteContent },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
+
+
+    try {
+      const { data } = await queryFulfilled;
+      const updatedNote = data.data;
+
+      // replace optimistic with real data
+      Object.values(queries).forEach(entry => {
+        if (entry.endpointName === "getPatientDiagnoses") {
+          dispatch(
+            patientDiagnosesApi.util.updateQueryData(
+              "getPatientDiagnoses",
+              entry.originalArgs,
+              draft => {
+                const diag = draft.data.find(d => d.diagnosisId === diagnosisId);
+                if (!diag) return;
+
+                const index = diag.diagnosisNoteOverviews.findIndex(n => n.id === diagnosisNoteId);
+                if (index !== -1) {
+                  diag.diagnosisNoteOverviews[index] = updatedNote;
+                }
+              }
+            )
+          );
+        }
+      });
+
+    } catch (err) {
+      patches.forEach(p => p.undo());
+    }
+  },
       invalidatesTags: (result, error, { diagnosisId }) => [
         { type: 'PatientDiagnoses', id: diagnosisId }
       ],
@@ -387,7 +461,7 @@ deletePatientDiagnosis: builder.mutation({
 
     // Delete diagnosis note 
     deleteDiagnosisNote: builder.mutation({
-      query: (diagnosisNoteId) => {
+      query: ({diagnosisNoteId}) => {
         const params = {
           diagnosisNoteId: diagnosisNoteId
         };
@@ -400,6 +474,40 @@ deletePatientDiagnosis: builder.mutation({
           params: params
         };
       },
+       async onQueryStarted(
+    { diagnosisId, diagnosisNoteId },
+    { dispatch, queryFulfilled, getState }
+  ) {
+    const state = getState();
+    const queries = state[baseApi.reducerPath]?.queries ?? {};
+    const patches = [];
+
+    Object.values(queries).forEach(entry => {
+      if (entry.endpointName === "getPatientDiagnoses") {
+        const patch = dispatch(
+          patientDiagnosesApi.util.updateQueryData(
+            "getPatientDiagnoses",
+            entry.originalArgs,
+            draft => {
+              const diag = draft.data.find(d => d.diagnosisId === diagnosisId);
+              if (!diag) return;
+
+              diag.diagnosisNoteOverviews =
+                diag.diagnosisNoteOverviews.filter(n => n.id !== diagnosisNoteId);
+            }
+          )
+        );
+
+        patches.push(patch);
+      }
+    });
+
+    try { 
+      await queryFulfilled;
+    } catch (err) {
+      patches.forEach(p => p.undo());
+    }
+  },
       invalidatesTags: (result, error, diagnosisNoteId) => [
         { type: 'PatientDiagnoses', id: 'LIST' }
       ],
