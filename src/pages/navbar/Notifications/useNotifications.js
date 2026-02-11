@@ -3,7 +3,7 @@ import {
   useGetDoctorNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
-} from "../../../api/doctorNotificationsApi";
+} from "../../../api/notifications/doctorNotificationsApi";
 import { useSignalRNotifications } from "../../../api/notifications/useSignalR";
 
 const PAGE_SIZE = 10;

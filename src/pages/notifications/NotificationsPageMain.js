@@ -10,7 +10,7 @@ import {
   useMarkNotificationAsReadwithoutInvalidateMutation,
   useMarkAllNotificationsAsReadwithoutInvalidateMutation,
   doctorNotificationsApi,
-} from "../../api/doctorNotificationsApi"; 
+} from "../../api/notifications/doctorNotificationsApi"; 
 import {  formatTime, getNotificationIcon, getRandomNumber } from "../shared/utils";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
