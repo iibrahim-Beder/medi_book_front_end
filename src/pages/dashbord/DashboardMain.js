@@ -2,15 +2,12 @@ import { useTranslation } from "react-i18next";
 
 import FeedbackSlider from "./components/FeedbackSlider";
 import JobChart from "./components/JobChart";
-import AlertCard from "./components/AlertMessage";
 import DashboardBoxTitle from "./components/DashboardBoxTitle";
 import LatestAppointments from "./components/LatestAppointments";
 import StatsSidebar from "./components/StatsSidebar";
 import DashboardInsights from "./components/DashboardInsights";
-import AlertMessage from "./components/AlertMessage";
-import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { Row } from "react-bootstrap";
+
+import AlertMessages from "./components/AlertMessage";
 
 export default function DashboardMain() {
   const { t } = useTranslation();
@@ -36,36 +33,10 @@ export default function DashboardMain() {
     { img: "/images/thumbnail/img-22.png", title: t("dashboard.viewSavedItems"), link: "#" }
   ];
 
-  const  [ alerts , setAlerts]=useState ([
-    { id: 1, type: "success", title: "Success Alert", message: "This is a success alert.", actionText: "Take Action", onActionClick: () => {} },
-    { id: 2, type: "error", title: "Error Alert", message: "This is an error alert.", actionText: "Take Action", onActionClick: () => {} },
-    { id: 3, type: "warning", title: "Warning Alert", message: "This is a warning alert.", actionText: "Take Action", onActionClick: () => {} },
-    { id: 4, type: "info", title: "Info Alert", message: "This is an info alert.", actionText: "Take Action", onActionClick: () => {} },
-  ]);
-
-  const removeAlert = (id) => {
-    setAlerts(alerts.filter((alert) => alert.id !== id));
-  };
   return (
     <div className="">
       {/* Alert Boxss start */}
-      <div className="dc-haslayout dc-jobalertsdashboard">
-        <Row>
-  <AnimatePresence mode="popLayout">
-  {alerts.map((alert) => (
-    <AlertMessage
-      key={alert.id}                    
-      type={alert.type}
-      title={alert.title}
-      message={alert.message}
-      actionText={alert.actionText}
-      onActionClick={alert.onActionClick}
-      onClose={() => removeAlert(alert.id)} 
-    />
-  ))}
-</AnimatePresence>
-        </Row>
-      </div>
+     <AlertMessages />
       {/* Alert Boxss end */}
 
       {/* Dashboard Box Section Start */}

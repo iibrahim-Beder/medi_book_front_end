@@ -16,6 +16,7 @@ export const useNotifications = (userId) => {
   const { data, isFetching , isLoading, refetch} = useGetDoctorNotificationsQuery({
     pageNumber: page,
     pageSize: PAGE_SIZE,
+    
   });
 
   const [markAsReadApi] = useMarkNotificationAsReadMutation();

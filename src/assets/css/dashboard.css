@@ -4500,7 +4500,7 @@ input[type="button"]:focus{outline: none;}
 .dc-repostjob .dc-title h3{color: #d9534f;}
 .dc-hiredfreelance .dc-userlistinghold {
     padding: 20px;
-    background: var(--bkcolor);
+    background: var(--badybkcolor);
 }
 .dc-hiredfreelance .dc-userlistinghold .dc-userlistingimg{
 	width: 60px;
