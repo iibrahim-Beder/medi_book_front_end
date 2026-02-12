@@ -33,7 +33,6 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
       pageNumber: currentPage,
       pageSize: rowsPerPage
     });
-  
   // API Mutations
   const [addDiagnosis, { isLoading: isAdding }] = useAddPatientDiagnosisMutation(); 
   const [updateDiagnosis, { isLoading: isUpdating }] = useUpdatePatientDiagnosisMutation();
@@ -131,7 +130,7 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
       const originalRecord = diagnosesData?.data?.find(
         r => r.diagnosisId === diagnosisData.diagnosisId
       );
-      console.log("diagnosesData",diagnosesData,'===originalRecord:', originalRecord);
+      // console.log("diagnosesData",diagnosesData,'===originalRecord:', originalRecord);
       if (!originalRecord) {
         console.error('Original record not found');
         toast.error('error saving diagnosis');
@@ -286,7 +285,6 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
 
   const handleCancelEdit = useCallback(() => {
      const cleanedDiagnosis = removeNewChildren(editingDiagnosis);
-     console.log(  "normal", editingDiagnosis ,  'Cleaned Diagnosis:', cleanedDiagnosis);
      setCurrentItems(prev =>
        prev.map(item =>
          item.diagnosisId === editingDiagnosis.diagnosisId

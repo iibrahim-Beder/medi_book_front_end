@@ -6,9 +6,7 @@ import {
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import toast from "react-hot-toast";
 import { buildPrescriptionsUpdatePayload } from "../handlerUtils";
-import { useDiagnosisCRUD } from "../useDiagnosisCRUD";
-export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis) => {
- const {diagnosesData} = useDiagnosisCRUD();
+export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis,diagnosesData) => {
   const [addPatientPrescription, { isLoading: isAddingPrescription }] = useAddPatientPrescriptionMutation();
   const [updatePatientPrescription, { isLoading: isUpdatingPrescription  }] =  useUpdatePatientPrescriptionMutation();
   const [deletePatientPrescription, { isLoading: isDeletingPrescription }] = useDeletePatientPrescriptionMutation(); 

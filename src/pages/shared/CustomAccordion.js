@@ -79,9 +79,9 @@ const CustomAccordion = memo(({
         );
         return;
       } else if (onUpdate) {
-        const currentData = data || [];
+        const currentData = dataRead || [];
         currentData.forEach((_, i) => {
-          if (currentData[index]?.isExpanded === true && !readOnly) {currentData[index]._initialTitle = renderItemTitle(currentData[index]);}
+        currentData[index]._initialTitle = renderItemTitle(currentData[index]);
           if (i === index) {
             onUpdate(i, "isExpanded", !currentData[index]?.isExpanded);
           } else if (!allowMultipleOpen) {
@@ -92,23 +92,23 @@ const CustomAccordion = memo(({
     }, 0);
   };
 
-  const handleFieldChange = (index, field, value) => {
-    console.log("index, field, value", index, field, value);
-    if (value === undefined) return;
-    if (onUpdate) {
-      onUpdate(index, field, value);
-    }
-  };
+const handleFieldChange = (index, field, value) => {
+  setDataRead(prev =>
+    prev.map((item, i) =>
+      i === index ? { ...item, [field]: value } : item
+    )
+  );
+};
 
   const handleSave = (index, e) => {
     e.preventDefault();
-    const currentData = data || [];
+    const currentData = dataRead || [];
     const itemData = currentData[index];
-     if (itemData && !readOnly&& itemData.isExpanded===false) {
-    itemData._initialTitle = renderItemTitle(itemData);
-  }
+  //    if (itemData && !readOnly&& itemData.isExpanded===false) {
+  //   itemData._initialTitle = renderItemTitle(itemData);
+  // }
     if (onSave && itemData) {
-      onSave(index, itemData);
+      onSave(index, dataRead[index]);
     }
   };
 

@@ -13,6 +13,7 @@ import { useMedicalCondition } from "./hooks/useMedicalCondition";
 import { useNotes } from "./hooks/useNotes";
 
 const DiagnosisModal = ({
+  diagnosesData,
   editingDiagnosis,
   setEditingDiagnosis,
   onUpdateDiagnosis,
@@ -23,28 +24,29 @@ const DiagnosisModal = ({
 }) => {
   const {
     handleCancelNestedItem
-  } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis);
+  } = useNestedItemHandlers(editingDiagnosis, setEditingDiagnosis,diagnosesData);
   const {
     handleAddNote,
     handleDeleteNote,
     handleUpdateNote,
     handleSaveNote,
-  } = useNotes(editingDiagnosis, setEditingDiagnosis);
+  } = useNotes(editingDiagnosis, setEditingDiagnosis,diagnosesData);
   const {
     handleAddCondition,
     handleDeleteCondition,
     handleUpdateCondition,
     handleSaveCondition,
-  } = useMedicalCondition(editingDiagnosis, setEditingDiagnosis);
+  } = useMedicalCondition(editingDiagnosis, setEditingDiagnosis,diagnosesData);
   const {    handleAddPrescription,
     handleDeletePrescription,
     handleUpdatePrescription,
-    handleSavePrescription}=usePrescriptions(editingDiagnosis, setEditingDiagnosis);
+    handleSavePrescription}=usePrescriptions(editingDiagnosis, setEditingDiagnosis,diagnosesData);
     const {    handleAddRecipe,
     handleDeleteRecipe,
     handleUpdateRecipe,
-    handleSaveRecipe, }= usePrescribedMedication(editingDiagnosis, setEditingDiagnosis);
+    handleSaveRecipe, }= usePrescribedMedication(editingDiagnosis, setEditingDiagnosis,diagnosesData);
   if (!editingDiagnosis) return null;
+console.log("DiagnosisModal render");
 
   return (
     <Modal

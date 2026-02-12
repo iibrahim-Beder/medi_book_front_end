@@ -150,7 +150,8 @@ if (error) {
       {/* Edit/Manage Modal */}
       {(selectedDiagnosis || editingDiagnosis) && (
         <DiagnosisModal
-        setIsChange={setIsChange}
+          diagnosesData={diagnosesData}
+          setIsChange={setIsChange}
           editingDiagnosis={editingDiagnosis}
           setEditingDiagnosis={setEditingDiagnosis}
           setCurrentItems={setCurrentItems}

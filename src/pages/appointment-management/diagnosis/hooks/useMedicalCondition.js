@@ -3,11 +3,9 @@ import {
   useAddInternalPatientMedicalConditionMutation,useDeletePatientMedicalConditionMutation,useUpdatePatientMedicalConditionMutation
 } from "../../../../api/PatientProfile/patientMedicalConditionsApi";
 import toast from "react-hot-toast";
-import { useDiagnosisCRUD } from "../useDiagnosisCRUD";
 import { buildMedicalConditionUpdatePayload } from "../handlerUtils";
-export const useMedicalCondition = (editingDiagnosis, setEditingDiagnosis) => {
+export const useMedicalCondition = (editingDiagnosis, setEditingDiagnosis,diagnosesData) => {
  
-  const {diagnosesData}=useDiagnosisCRUD();
    const [addInternalPatientMedicalCondition, { isLoading: isAddingCondition }] = useAddInternalPatientMedicalConditionMutation();
    const [updatePatientMedicalCondition, { isLoading: isUpdatingCondition }] = useUpdatePatientMedicalConditionMutation(); 
  const [deletePatientMedicalCondition, { isLoading: isDeletingCondition }] = useDeletePatientMedicalConditionMutation(); 
@@ -75,6 +73,7 @@ const handleDeleteCondition = useCallback(async (conditionId) => {
 }, [editingDiagnosis, setEditingDiagnosis, deletePatientMedicalCondition]);
 
   const handleUpdateCondition = useCallback((conditionId, field, value) => {
+    console.log('Updating condition:', conditionId, field, value);
     if (!editingDiagnosis) return;
     setEditingDiagnosis(prev => ({
       ...prev,

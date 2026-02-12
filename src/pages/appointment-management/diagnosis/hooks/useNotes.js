@@ -1,9 +1,7 @@
 import { useCallback } from "react";
 import { useAddDiagnosisNoteMutation, useUpdateDiagnosisNoteMutation, useDeleteDiagnosisNoteMutation } from "../../../../api/PatientProfile/patientDiagnosesApi";
 import toast from "react-hot-toast";
-import { useDiagnosisCRUD } from "../useDiagnosisCRUD";
-export const useNotes = (editingDiagnosis, setEditingDiagnosis ) => {
-  const { diagnosesData } = useDiagnosisCRUD();
+export const useNotes = (editingDiagnosis, setEditingDiagnosis ,diagnosesData) => {
   const [addDiagnosisNote, { isLoading: isAddingNote }] = useAddDiagnosisNoteMutation();
   const [updateDiagnosisNote, { isLoading: isUpdatingNote }] = useUpdateDiagnosisNoteMutation();
   const [deleteDiagnosisNote, { isLoading: isDeletingNote }] = useDeleteDiagnosisNoteMutation();
@@ -138,8 +136,8 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
         toast.success(result?.message || 'Saved Successfully');
         toast.dismiss(loadingToast);
         success = true;
+        setEditingDiagnosis(prev => ({...prev,notes: (prev.notes || []).map(note =>note.id === noteId ? { ...note,note: noteData.note,isExpanded: false } : note)}));
 
-      closeEditingNotesDiagnosis();
       } else {
         toast.error(result?.message || 'Failed to save');
         toast.dismiss(loadingToast);
@@ -153,7 +151,7 @@ const handleSaveNote = useCallback(async (noteId, noteData) => {
     toast.dismiss(loadingToast);
     return false;
   }
-}, [editingDiagnosis, setEditingDiagnosis, addDiagnosisNote, updateDiagnosisNote]);
+}, [editingDiagnosis, setEditingDiagnosis, addDiagnosisNote, updateDiagnosisNote,diagnosesData]);
  const closeEditingNotesDiagnosis = useCallback(() => {
           setEditingDiagnosis(prev => ({
           ...prev,

@@ -3,9 +3,7 @@ import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutati
 } from "../../../../api/prescribedMedicationApi"; 
 import toast from "react-hot-toast";
 import { buildprescribedMedicationUpdatePayload } from "../handlerUtils";
-import { useDiagnosisCRUD } from "../useDiagnosisCRUD";
-export const usePrescribedMedication = (editingDiagnosis, setEditingDiagnosis) => {
-  const {diagnosesData} = useDiagnosisCRUD();
+export const usePrescribedMedication = (editingDiagnosis, setEditingDiagnosis,diagnosesData) => {
   const [addPrescribedMedication, { isLoading: isAddingPrescriptionMedication }] = useAddPrescribedMedicationMutation();
   const [updatePrescribedMedication, { isLoading: isUpdatingPrescriptionMedication }] = useUpdatePrescribedMedicationMutation();
   const [deletePrescribedMedication, { isLoading: isDeletingPrescriptionMedication }] = useDeletePrescribedMedicationMutation();
@@ -278,7 +276,7 @@ const handleSaveRecipe = useCallback(
     } finally {
       toast.dismiss(loadingToast);
     }
-  },[editingDiagnosis,isAddingPrescriptionMedication,isUpdatingPrescriptionMedication,setEditingDiagnosis,addPrescribedMedication,updatePrescribedMedication]
+  },[editingDiagnosis,isAddingPrescriptionMedication,isUpdatingPrescriptionMedication,setEditingDiagnosis,addPrescribedMedication,updatePrescribedMedication,diagnosesData]
 );
   return {
     handleAddRecipe,
