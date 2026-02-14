@@ -4570,6 +4570,10 @@ input[type="button"]:focus{outline: none;}
 	max-width: 55px;
 	margin: 0 auto 20px;
 }
+.dc-insightsitem .dc-userlistingimg.big{
+	max-width: 70px;
+    margin: 0 auto 5px;
+}
 .dc-addnew h2{display: inline-block;}
 .dc-addnew a ,.dc-addnew button, .dc-addbrack{
     float: right;
@@ -4590,7 +4594,7 @@ input[type="button"]:focus{outline: none;}
     font-weight: 400;
     line-height: 18px;
 }
-.dc-insightdetails .dc-title a{
+.dc-insightdetails .dc-title button{
 	color: #55acee;
 	font-size: 14px;
 	line-height: 14px;

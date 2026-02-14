@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import "./DashboardInsights.scss";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 //  dashboard insights component to show insights data in the dashboard
-export default function DashboardInsights({ insights }) {
+export default function DashboardInsights() { 
+   const { t } = useTranslation();
+  const insights = [
+    {title: t("Messages"), img: '/images/card-icon/chat.png',     link: "/Messages",isNotIcon:true },
+    {title: t("financial dashboard"), img: "/images/thumbnail/img-20.png", link: "/manage-financial",ToBigImg:true  },
+    {title: t("Next appointment"), img: "/images/thumbnail/img-21.png",   link: "/appointment-management", countdown: "2026-02-20T20:20:22" },
+    {title: t("patient dashboard"), img: "/images/thumbnail/img-22.png",   link: "/patients",ToBigImg:true  }
+  ];
   return (
     <section className="dc-haslayout dc-jobpostedholder dc-dbsectionspace">
       <div className="row m-0 ">
@@ -17,14 +26,17 @@ export default function DashboardInsights({ insights }) {
                 <CountdownTimer targetDate={item.countdown} />
               )}
 
-              <figure className="dc-userlistingimg">
+              <figure className={`dc-userlistingimg ${item.ToBigImg?"big":""}`}>
                 <img src={item.img} alt={item.title} />
               </figure>
 
               <div className="dc-insightdetails">
                 <div className="dc-title">
                   <h3>{item.title}</h3>
-                  <a href={item.link}>Click To View</a>
+                  
+                  <Link to={item.link} >
+                  <button >Click To View</button>
+                  </Link>
                 </div>
               </div>
             </div>

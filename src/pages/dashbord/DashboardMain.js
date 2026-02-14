@@ -26,13 +26,6 @@ export default function DashboardMain() {
     { img: "/images/card-icon/img-18.png", count: "334", title: t("dashboard.followupAppointments") }
   ];
 
-  const insightsData = [
-    { img: '/images/card-icon/chat.png', title: t("dashboard.newMessages"), link: "#",isNotIcon:true },
-    { img: "/images/thumbnail/img-20.png", title: t("dashboard.latestProposals"), link: "#" },
-    { img: "/images/thumbnail/img-21.png", title: t("dashboard.checkPackageExpiry"), link: "#", countdown: "2025-08-20T20:20:22" },
-    { img: "/images/thumbnail/img-22.png", title: t("dashboard.viewSavedItems"), link: "#" }
-  ];
-
   return (
     <div className="">
       {/* Alert Boxss start */}
@@ -64,7 +57,7 @@ export default function DashboardMain() {
             <StatsSidebar stats={statsData} />
           </div>
 
-          <DashboardInsights insights={insightsData} />
+          <DashboardInsights />
         </div>
       </section>
     </div>
