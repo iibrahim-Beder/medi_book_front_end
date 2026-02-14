@@ -15,8 +15,8 @@ import MessagesPage from "./pages/messages/MessagesPage";
 import AppointmentManagementMain from "./pages/appointment-management/AppointmentmanagementMain";
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
-import Test from './not used/Test';
-import Test2 from './not used/Test2';
+import Test from './test/Test';
+import Test2 from './test/Test2';
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -31,6 +31,7 @@ import { useMessageListener } from "./pages/messages/hooks/useMessageListener";
 import ReviewsPage from "./pages/reviews/ReviewsPage";
 import AppointmentsPage from "./pages/appointmentList/AppointmentsPage";
 import WeeklyTimeSlots from "./pages/making-slots/WeeklyTimeSlot";
+import ScrollToTop from "./context/ScrollToTop";
 
 
 function App() {
@@ -92,6 +93,7 @@ const { i18n } = useTranslation();
         </div>
       )} */}
       {/* {!loading && ( */}
+        <ScrollToTop />              
         <Routes>
           <Route path="/registration" element={<DoctorRegistration />} />
           <Route path="/Login" element={<Login />} />
