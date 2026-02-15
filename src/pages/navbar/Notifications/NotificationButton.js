@@ -12,6 +12,7 @@ import {
 } from "../../shared/utils";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { isNewNotification, useNotifications } from "./useNotifications";
+import Loader from "../../shared/Loader";
 
 const NotificationDropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -123,11 +124,16 @@ const NotificationDropdown = () => {
 
           <div
             className="noti-content"
-            style={{ maxHeight: "300px", overflowY: "auto"   ,overscrollBehavior: 'contain',}}
+            style={{
+              maxHeight: "300px",
+              overflowY: "auto",
+              overscrollBehavior: "contain",
+            }}
             onScroll={handleScroll}
           >
-            {isLoading  ? (
-              <div className=""
+            {isLoading ? (
+              <div
+                className=""
                 style={{
                   minHeight: "200px",
                   display: "flex",
@@ -220,15 +226,18 @@ const NotificationDropdown = () => {
                     </div>
                   </li>
                 ))}
-                { isFetching  &&
-                 <div className="m-4 ">
-          <div className="wt-preloader-holder shadow-0">
-            <div className="wt-loader"></div>
-          </div>   
-          </div>   
-                
-                    
-                }
+                <li
+                  style={{
+                    minHeight: "50px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: isFetching ? 1 : 0,
+                    transition: "opacity 0.2s ease",
+                  }}
+                >
+                  {Loader("loading-in-side")}
+                </li>
               </ul>
             )}
           </div>

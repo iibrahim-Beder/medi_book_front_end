@@ -49,8 +49,8 @@ useEffect(() => {
         loading={isChatTyping}
         size={8}
       />
-      {messagesLoading || isLoadingNewerMessages ? (
-       Loader("messages")
+      { messagesLoading || isLoadingNewerMessages? (
+      Loader("loading-in-side")
       ) : (
 
         <>         
@@ -94,7 +94,7 @@ useEffect(() => {
                 />         
             );
           })}
-          {isLoadingOlderMessages && Loader("loading-in-chat")}
+          {isLoadingOlderMessages && Loader("loading-in-side")}
         </>
       )}
     </div>

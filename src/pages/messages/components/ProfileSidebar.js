@@ -1,4 +1,9 @@
+import { Link } from "react-router-dom";
+import { useConversations } from "../hooks/useConversations";
+
 export default function ProfileSidebar() {
+      const {currentChat} =useConversations();
+
   return (
     <div className="dc-dashboardbox dc-messagebox">
       <div className="dc-dashboardboxcontent">
@@ -8,18 +13,21 @@ export default function ProfileSidebar() {
           </figure>
           <div className="dc-title">
             <h3>
-              <i className="fa fa-check-circle"></i> Valentine Mehring
+              <i className="fa fa-check-circle"></i>
+              {currentChat?.patientName}
             </h3>
             <span>
-              Member since May 30, 2013 <br />
+              Member since May 30, 2025 <br />
               <a href="javascript:void(0);">@valentine20658</a>
             </span>
           </div>
         </div>
         <div className="dc-applyfilters">
-          <a href="javascript:void(0);" className="dc-btn">
+          <Link to="/pationt-information" className="dc-btn" >
+          {/* <a  className="dc-btn"> */}
             View Profile
-          </a>
+          {/* </a> */}
+          </Link>
         </div>
       </div>
     </div>

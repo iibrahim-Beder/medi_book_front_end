@@ -10,15 +10,20 @@
 }
 /* end dark */
 
-.loading-in-chat.preloader-outer {
+.loading-in-side.preloader-outer {
     top: 9px;
     left: 0;
     width: 85%;
     height: 100%;
-    z-index: 9999;
+    z-index: 2;
     position: relative;
     margin: 20px;
-    /* background: #fff; */
+
+}
+.loading-in-side.preloader-outer .wt-loader:after{background-color: var(--cardcolor);}
+.loading-in-side.preloader-outer .wt-preloader-holder{
+        background: transparent;
+    box-shadow: none;
 }
 .preloader-outer.messages{position: absolute !important;}
 
