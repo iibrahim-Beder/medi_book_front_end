@@ -1,9 +1,8 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./FeedbackSlider.scss";
+import "./AppointmentsSlider.scss";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Placeholder } from "react-bootstrap";
 
 const NextArrow = ({ onClick }) => (
   <div className="custom-arrow next" onClick={onClick}>
@@ -17,27 +16,31 @@ const PrevArrow = ({ onClick }) => (
   </div>
 );
 
-const FeedbackSlider = () => {
-  const feedbacks = [
+const AppointmentsSlider = () => {
+  const appointments = [
     {
       img: "/images/avt/patient-avt.png",
-      title: "Internal Braces on mo...",
-      date: "Jun 27, 2018",
+      name: "Ayesha Khan",
+      type: "Video Call",
+      date: "12:00 PM",
     },
     {
       img: "/images/avt/patient-avt.png",
-      title: "Sleeping Noise from H...",
-      date: "Jun 27, 2018",
+      name: "Smith Doe",
+      type: "In-Person",
+      date: "11:00 PM",
     },
     {
       img: "/images/avt/patient-avt.png",
-      title: "Visited For Conservative",
-      date: "Jun 27, 2018",
+      name: "Smith Doe",
+      type: "In-Person",
+      date: "10:30 PM",
     },
     {
       img: "/images/avt/patient-avt.png",
-      title: "Another Feedback Example",
-      date: "Jul 15, 2018",
+      name: "mark joe",
+      type: "Video Call",
+      date: "10:00 PM",
     },
   ];
 
@@ -45,13 +48,25 @@ const FeedbackSlider = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
     // autoplay: true,
     // autoplaySpeed: 2000,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
+      {
+        breakpoint: 1400,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
       {
         breakpoint: 992,
         settings: {
@@ -70,15 +85,20 @@ const FeedbackSlider = () => {
   return (
     <div className="dc-postedsilder">
       <Slider {...settings}>
-        {feedbacks.map((item, index) => (
+        {appointments.map((item, index) => (
           <div className="item" key={index}>
             <div className="dc-postedsilderitem">
-              <figure className="dc-consultation-img">
-                <img  style={{maxHeight:"40px"}} src={item.img} alt={item.title} />
-              </figure>
+      <div className="consultation-item">
+        {/* <div className="left"> */}
+          <figure className="dc-consultation-img">
+            <img style={{ maxHeight: "40px" }} src={item.img} alt="img" />
+          </figure>
+          <h6>{item.name}</h6>
+        {/* </div> */}
+      </div>
               <div className="dc-consultation-title">
-                <h5>
-                  <a href="#">{item.title}</a>
+                <h5 style={{ fontSize: "14px", color:"var(--text-sub)" }}>
+                  <a href="#">{item.type}</a>
                   <em>{item.date}</em>
                 </h5>
               </div>
@@ -90,4 +110,4 @@ const FeedbackSlider = () => {
   );
 };
 
-export default FeedbackSlider;
+export default AppointmentsSlider;

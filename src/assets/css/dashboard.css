@@ -4326,7 +4326,7 @@ input[type="button"]:focus{outline: none;}
 .dc-postedsilder .item{
 	float: left;
 	width: 100%;
-	padding: 10px 5px;
+	padding: 10px 9px;
 }
 .dc-postedsilder .owl-stage-outer{margin: -10px -5px;}
 .dc-posteditem{
@@ -5473,11 +5473,7 @@ width: 36px;
 	left: auto;
 }
 .navbar-toggler {margin: 21px 0 21px 20px;}
-.dc-postedsilderitem .dc-consultation-title h5 a{
-	overflow: hidden;
-	/* white-space: nowrap; */
-	text-overflow: ellipsis;
-}
+
 .dc-dashboardbox-mt{margin-top:30px; }
 /* Dashbord Styling */
 .dc-card-tags{

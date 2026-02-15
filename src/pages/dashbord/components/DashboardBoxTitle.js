@@ -1,8 +1,7 @@
 import { useState } from "react";
 import "./DashboardBoxTitle.scss";
 
-export default function DashboardBoxTitle({ title, tags }) {
-  const [activeTag, setActiveTag] = useState(tags[0]); // Default to the first tag
+export default function DashboardBoxTitle({ title, tags,activeTag ,setActiveTag}) {
 
   return (
     <div className="dc-dashboardboxtitle dc-yeartag">

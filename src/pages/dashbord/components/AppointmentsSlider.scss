@@ -21,13 +21,13 @@
     }
 
     .dc-consultation-img {
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
     }
 
     .dc-consultation-title {
       h5 {
-        font-size: 16px;
-        font-weight: 600;
+        // font-size: 16px;
+        // font-weight: 600;
         margin: 0;
         a {
 
@@ -44,7 +44,7 @@
     }
   }
 
-  // الأسهم
+  // 
   .custom-arrow {
     position: absolute;
     top: 50%;
@@ -75,4 +75,30 @@
       right: -15px;
     }
   }
+}
+.consultation-item {
+display: flex;
+    align-items: center;
+
+}
+
+.consultation-item .left {
+  display: flex;
+  align-items: center;
+  // gap: 10px; 
+}
+
+.dc-consultation-img {
+  margin: 0;
+}
+.consultation-item h6{
+  font-size: 16px;
+  font-weight: 500;
+}
+.consultation-item em  {
+      display: block;
+    font-style: normal;
+    color: #999;
+    font-size: 14px;
+    font-weight: 400;
 }

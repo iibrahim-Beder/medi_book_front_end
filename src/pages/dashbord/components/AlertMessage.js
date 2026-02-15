@@ -54,7 +54,7 @@ export function AlertMessage({
       style={{ overflow: "hidden" }}
       className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6"
     >
-      <div className="table-card alert-neutral dc-jobalerts p-3 mb-2">
+      <div className="table-card alert-neutral dc-jobalerts p-3 mb-3">
         <button className="alert-close" onClick={onClose}>
           <RiCloseLargeLine />
         </button>
@@ -67,7 +67,7 @@ export function AlertMessage({
 
         <p className="alert-message text-ellipsis">{message}</p>
 
-        <div className="alert-actions">
+        {/* <div className="alert-actions">
           <button
             className="alert-button"
             style={buttonStyle}
@@ -75,7 +75,7 @@ export function AlertMessage({
           >
             {actionText}
           </button>
-        </div>
+        </div> */}
       </div>
     </motion.div>
   );
