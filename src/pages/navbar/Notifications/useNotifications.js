@@ -101,6 +101,7 @@ export const useNotifications = (userId) => {
     isLoading, 
     refetch,
     isConnected,
+    hasMore,
   };
 };
 

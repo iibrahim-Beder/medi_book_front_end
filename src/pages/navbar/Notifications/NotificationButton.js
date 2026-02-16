@@ -26,6 +26,7 @@ const NotificationDropdown = () => {
     isConnected,
     isLoading,
     refetch,
+    hasMore,
   } = useNotifications(1);
 
   const handleScroll = (e) => {
@@ -47,7 +48,7 @@ const NotificationDropdown = () => {
         onToggle={(isOpen) => {
           setIsDropdownOpen(isOpen);
           if (isOpen) {
-            if (!isConnected) {
+            if (!isConnected||!notifications) {
               refetch();
             }
           }
@@ -140,9 +141,7 @@ const NotificationDropdown = () => {
                   alignItems: "center",
                 }}
               >
-                <div className="wt-preloader-holder">
-                  <div className="wt-loader"></div>
-                </div>
+                  {Loader("loading-in-side")}
               </div>
             ) : notifications.length === 0 ? (
               <div className="text-center p-4">
@@ -226,7 +225,7 @@ const NotificationDropdown = () => {
                     </div>
                   </li>
                 ))}
-                <li
+              {hasMore &&  <li
                   style={{
                     minHeight: "50px",
                     display: "flex",
@@ -237,7 +236,7 @@ const NotificationDropdown = () => {
                   }}
                 >
                   {Loader("loading-in-side")}
-                </li>
+                </li>}
               </ul>
             )}
           </div>

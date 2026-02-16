@@ -117,6 +117,7 @@ useEffect(() => {
     currentMessages?.length > 0 &&
     maxMessageId &&
     lastMarkedMessageIdRef.current !== maxMessageId
+    && isChatOpen
   ) {
     lastMarkedMessageIdRef.current = maxMessageId;
 
