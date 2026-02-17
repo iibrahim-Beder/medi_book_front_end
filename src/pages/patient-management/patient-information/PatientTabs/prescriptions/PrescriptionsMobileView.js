@@ -130,8 +130,8 @@ const PrescriptionsMobileView = () => {
                             fieldName="Title"
                           />
                         </h5>
-                        {prescription.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(prescription.createdAt)}</small></div>)}
                       </div>
+                        {prescription.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(prescription.createdAt)}</small></div>)}
 
                       <div className="mb-2">
                         <small className="text-muted d-block mb-1">

@@ -195,19 +195,19 @@ const DiagnosedConditionsMobileView = () => {
 
                       {/* Severity + Status + Date */}
                       <div className="row text-center mb-3">
-                        <div className="col-4 border-end">
+                        <div className="col-4 p-0 border-end">
                           <div className="fw-bold" style={{ color: getSeverityColor(condition.severity) }}>
                             {t(`DiagnosedConditionsMobileView.severity_options.${condition.severity?.toLowerCase()}`)}
                           </div>
                           <small className="text-muted">{t("DiagnosedConditionsMobileView.severity")}</small>
                         </div>
-                        <div className="col-4 border-end">
+                        <div className="col-4 p-0 border-end">
                           <div className="fw-bold" style={{ color: statusInfo.color }}>
                             {statusInfo.text}
                           </div>
                           <small className="text-muted">{t("DiagnosedConditionsMobileView.status")}</small>
                         </div>
-                        <div className="col-4">
+                        <div className="col-4 p-0">
                           <div className="fw-bold text-secondary">
                             {formatDate(condition.diagnosedDate)}
                           </div>

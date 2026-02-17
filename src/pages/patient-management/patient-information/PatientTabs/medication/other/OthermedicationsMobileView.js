@@ -146,11 +146,11 @@ const OtherMedicationsMobileView = () => {
 
                       {/* Dates and Status */}
                       <div className="row text-center mb-3">
-                        <div className="col-4 border-end">
+                        <div className="col-4 p-0 border-end">
                           <div className="fw-bold text-primary">{formatDate(med.startDate)}</div>
                           <small className="text-muted">{tableHeaders.startDate}</small>
                         </div>  
-                         <div className="col-4">
+                         <div className="col-4 p-0">
                           <div className="fw-bold"
                            style={{
                             color: getStatusColor(med.isActive),
@@ -162,7 +162,7 @@ const OtherMedicationsMobileView = () => {
                             </div>
                           <small className="text-muted" >{tableHeaders.status}</small>
                         </div>
-                        <div className="col-4">
+                        <div className="col-4 p-0">
                           <div className="fw-bold text-primary">{formatDate(med.endDate) || "-"}</div>
                           <small className="text-muted">{tableHeaders.endDate}</small>
                         </div>

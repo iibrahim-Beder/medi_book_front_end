@@ -154,13 +154,13 @@ const OtherMedicalConditionsMobileView = () => {
                 <Skeleton height={15} width="20%"  className="mb-2" />
                 <Skeleton height={15}  className="mb-2" />
                 <div className="row text-center mb-3">
-                  <div className="col-4">
+                  <div className="col-4 p-0">
                     <Skeleton height={30} />
                   </div>
-                  <div className="col-4">
+                  <div className="col-4 p-0">
                     <Skeleton height={30} />
                   </div>
-                  <div className="col-4">
+                  <div className="col-4 p-0">
                     <Skeleton height={30} />
                   </div>
                 </div>
@@ -222,7 +222,7 @@ const OtherMedicalConditionsMobileView = () => {
 
                     {/* Severity | Status | Type */}
                     <div className="row text-center mb-3 g-2">
-                      <div className="col-4 border-end">
+                      <div className="col-4 p-0 border-end">
                         <div
                           className="fw-bold"
                           style={{
@@ -235,7 +235,7 @@ const OtherMedicalConditionsMobileView = () => {
                           {t("OtherMedicalConditionsMobileView.severity")}
                         </small>
                       </div>
-                      <div className="col-4 border-end">
+                      <div className="col-4 p-0 border-end">
                         <div
                           className="fw-bold"
                           style={{ color: statusInfo.color }}
@@ -246,7 +246,7 @@ const OtherMedicalConditionsMobileView = () => {
                           {t("OtherMedicalConditionsMobileView.status")}
                         </small>
                       </div>
-                      <div className="col-4">
+                      <div className="col-4 p-0">
                         <div className="fw-bold text-secondary">
                           {translateConditionType(condition.conditionType)}
                         </div>

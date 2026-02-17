@@ -110,13 +110,29 @@ const DiagnosisMobileView = () => {
           {(isLoading || isFetching) && (
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
-                <Card key={i} className="mobile-view-card">
-                  <Card.Body style={{ padding: "15px" }}>
-                    <Skeleton height={20} width="70%" />
-                    <Skeleton height={60} className="mt-2" />
-                    <Skeleton height={20} width="40%" className="mt-3" />
-                  </Card.Body>
-                </Card>
+          <Card key={i} className="mobile-view-card">
+           <Card.Body style={{ padding: "15px" }}>
+             <Skeleton height={20} width="60%" className="mb-2" />
+             <Skeleton height={15} count={2} className="mb-2" />
+             <Skeleton height={15} width="80%" className="mb-3" />
+             <div className="row text-center mb-3">
+               <div className="col-4">
+                 <Skeleton height={30} />
+               </div>
+               <div className="col-4">
+                 <Skeleton height={30} />
+               </div>
+               <div className="col-4">
+                 <Skeleton height={30} />
+               </div>
+             </div>
+             <Skeleton
+               height={35}
+               width="100px"
+               style={{ float: "right" }}
+             />
+           </Card.Body>
+         </Card>
               ))}
             </div>
           )}
@@ -146,8 +162,8 @@ const DiagnosisMobileView = () => {
                                 matchedFields={disease.highlightInfo?.matchedFields || []}
                                 fieldName="DiagnosisName"
                               /></h5>
-                        {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
                       </div>
+                        {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
 
                       {disease.symptomsDescription && <div className="mb-3">
                         <small className="text-muted d-block mb-1">
@@ -165,7 +181,7 @@ const DiagnosisMobileView = () => {
 
                       {/* Diagnosis (Conditions - Notes - Prescription) */}
                       <div className="row text-center mb-3">
-                        <div className="col-4">
+                        <div className="col-4 p-0">
                           <div className="border-end">
                             <div className="fw-bold text-primary">
                               {disease.diagnosedConditions.length}
@@ -175,7 +191,7 @@ const DiagnosisMobileView = () => {
                             </small>
                           </div>
                         </div>
-                        <div className="col-4">
+                        <div className="col-4 p-0">
                           <div className="border-end">
                             <div className="fw-bold text-primary">
                               {disease.notes.length}
@@ -185,7 +201,7 @@ const DiagnosisMobileView = () => {
                             </small>
                           </div>
                         </div>
-                        <div className="col-4">
+                        <div className="col-4 p-0">
                           <div className="fw-bold text-primary">
                             {disease.prescription.length}
                           </div>

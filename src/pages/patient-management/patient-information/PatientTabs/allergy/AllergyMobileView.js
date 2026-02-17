@@ -212,19 +212,19 @@ if (!currentData?.length) return;
                     )}
                     {/* Severity | Status | Date */}
                     <div className="row text-center mb-3 g-2">
-                      <div className="col-4 border-end">
+                      <div className="col-4 p-0 border-end">
                         <div className="fw-bold" style={{ color: "#d66a6a" }}>
                           {translateSeverity(entry.severity)}
                         </div>
                         <small className="text-muted">{t("AllergyMobileView.severity")}</small>
                       </div>
-                      <div className="col-4 border-end">
+                      <div className="col-4 p-0 border-end">
                         <div className="fw-bold" style={{ color: entry.isActive ? "#3fabf3" : "#7A8B97" }}>
                           {translateStatus(entry.isActive)}
                         </div>
                         <small className="text-muted">{t("AllergyMobileView.is_active")}</small>
                       </div>
-                      <div className="col-4">
+                      <div className="col-4 p-0">
                         <div className="fw-bold text-secondary">
                           {formatDate(entry.dateNoted)}
                         </div>

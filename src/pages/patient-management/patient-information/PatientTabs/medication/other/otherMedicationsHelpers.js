@@ -137,19 +137,19 @@ export const MobileSkeleton = () => {
         </div>
         {/* Duration */}
         <div className="row text-center mb-3">
-          <div className="col-4">
+          <div className="col-4 p-0">
             <Skeleton width={60} height={18} />
             <small className="text-muted d-block mt-1">
               <Skeleton width={100} height={12} />
             </small>
           </div>
-          <div className="col-4">
+          <div className="col-4 p-0">
             <Skeleton width={60} height={18} />
             <small className="text-muted d-block mt-1">
               <Skeleton width={100} height={12} />
             </small>
           </div>
-          <div className="col-4">
+          <div className="col-4 p-0">
             <Skeleton width={60} height={18} />
             <small className="text-muted d-block mt-1">
               <Skeleton width={100} height={12} />

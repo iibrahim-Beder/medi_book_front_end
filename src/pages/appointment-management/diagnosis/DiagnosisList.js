@@ -15,11 +15,6 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
     }));
   };
 
-  const truncateText = (text, maxLength = 70) => {
-    if (!text) return "";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + "...";
-  };
 
   if (isLoading) {
     return Array.from({ length: 3 }).map((_, index) => (
@@ -69,8 +64,8 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
           <Card.Body style={{ padding: "15px" }}>
             <div className="custom-card-title">
               <h5 className="">{disease.diagnosisName}</h5>
-              {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
             </div>
+              {disease.createdAt && (<div className="created-date"><small>Created:</small><small className="text-muted d-block">{formatDate(disease.createdAt)}</small></div>)}
               {disease.code && (
                 <small className="text-muted">Code: {disease.code}</small>
               )}
@@ -81,7 +76,7 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
               </small>
               <div className="expandable-content">
                 <p title={disease.symptomsDescription} className="mb-0">
-                  {truncateText(disease.symptomsDescription, 180)}
+                  {disease.symptomsDescription}
                 </p>
               </div>
             </div>}
