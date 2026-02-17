@@ -65,13 +65,13 @@ export default function AppointmentsStatusCard() {
   if (!stats) return null;
 
   return (
-    <div className="payment-card mb-3">
+    <div className="payment-card">
       <Card
         elevation={0}
         sx={{
           borderRadius: "18px",
           border: "2px solid #eee",
-          backgroundColor: "#fff",
+          backgroundColor: "var(--cardcolor)",
           px: 3,
           py: 2.5,
           overflow: "visible",
@@ -115,10 +115,10 @@ export default function AppointmentsStatusCard() {
           }}
         >
           <Stack direction="row" flexDirection={"column"} mt={2}>
-            <Typography fontSize={14} color="text.secondary">
+            <Typography fontSize={14} color="var(--text-sub)">
               No-show Rate: <h6 style={{ display: "inline" }}> 12% </h6>
             </Typography>
-            <Typography fontSize={14} color="text.secondary">
+            <Typography fontSize={14} color="var(--text-sub)">
               Avg Booking Lead Time:{" "}
               <h6 style={{ display: "inline" }}> 3.4 days </h6>{" "}
             </Typography>
@@ -128,7 +128,7 @@ export default function AppointmentsStatusCard() {
             <Typography fontSize={28} fontWeight={600}>
               {stats.total}
             </Typography>
-            <Typography fontSize={16} fontWeight={500} color="text.secondary">
+            <Typography fontSize={16} fontWeight={500} color="var(--text-sub)">
               All bookings
             </Typography>
           </Stack>

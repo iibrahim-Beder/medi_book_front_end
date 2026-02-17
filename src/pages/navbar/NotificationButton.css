@@ -39,7 +39,7 @@ header.inner-header .header-nav .header-navbar-rht li.noti-nav > a.active-dot::b
 .dropdown-menu-end.list-date-option.open:before{border-bottom-color: #ccc;}
 .dropdown-menu-end.list-date-option.open:after{top:-5px}
 .media-body h6{ font-size:clamp(12px, 13px ,13px);}
-.notification-message:hover{ background-color: #f1f1f191; } 
+.notification-message:hover{ background-color: #c7dbfc33; } 
 .dropdown-menu-end.notifications  .add-btn{font-size: 13px; } 
 .dropdown-menu-end.notifications  .topnav-dropdown-header {  
     display: flex;

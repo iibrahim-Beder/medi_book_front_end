@@ -1284,7 +1284,7 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
   border-radius: 20px;
   border-width: 2px  ;
 }
-.payment-page .card-mu,.reviews-page .card-mu , .reviews-page .card-mu-notes {background-color: white;  }
+.payment-page .card-mu,.reviews-page .card-mu , .reviews-page .card-mu-notes {background-color: var(--cardcolor);  }
 
 .payment-page .p-0{padding: 0 !important;}
 @media (max-width: 991px) {

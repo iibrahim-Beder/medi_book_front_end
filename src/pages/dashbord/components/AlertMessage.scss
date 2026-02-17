@@ -25,12 +25,12 @@ position: relative;
   background: transparent;
   border: none;
   font-size: 18px;
-    color: #333;
+    color: var(--terthemecolor);
   cursor: pointer;
 
-  &:hover {
-    color: #333;
-  }
+  // &:hover {
+  //   // color: var(--terthemecolor);
+  // }
 }
 
 .alert-title {

@@ -29,7 +29,7 @@ export function getMockAppointmentsTypeStats(dateRange) {
 function Stat({ label, subtitle, value }) {
   return (
     <Box textAlign={"center"}>
-      <Typography fontSize={16} color="text.secondary">
+      <Typography fontSize={16} color="var(--text-sub)">
         {label} <h6 style={{ display: "inline" }}>: {subtitle} </h6>
       </Typography>
       <Typography fontSize={26} fontWeight={600}>
@@ -78,6 +78,8 @@ export default function AppointmentsTypeCard() {
         px: 3,
         py: 2.5,
         overflow: "visible",
+        backgroundColor: "var(--cardcolor)",
+        color: "var(--themecolor)",
       }}
     >
       <Header />

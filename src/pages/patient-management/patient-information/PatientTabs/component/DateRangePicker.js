@@ -265,7 +265,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
                   style={{
                     margin: "0 2px",
                     backgroundColor: selectedOption === key ? "#3fabf3" : "",
-                    color: selectedOption === key ? "#fff" : "",
+                    color: selectedOption === key ? "#fff" : "var(--terthemecolor)",
                     padding: "4px 12px",
                     cursor: "pointer",
                     whiteSpace: "nowrap",

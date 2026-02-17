@@ -11,7 +11,7 @@ export default function AppointmentsPage() {
         <Appointments  />
         <AppointmentsTypeCard  />
       </div>
-      <div className="col-lg-6  mb-3 col-md-12">
+      <div className="col-lg-6 col-md-12">
       <AppointmentsStatusCard />
         </div>
         <div style={{padding:"0 16px"}} >

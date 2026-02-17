@@ -67,7 +67,7 @@ const JobChart = ({ period = "Week" }) => {
     responsive: true,
     plugins: {
       legend: {
-        display: false, // إخفاء الليجند
+        display: false,
       },
       tooltip: {
         backgroundColor: "#333",
@@ -77,12 +77,15 @@ const JobChart = ({ period = "Week" }) => {
     },
     scales: {
         x: {
+       ticks: {
+          color: "#adacac", 
+        },
         grid: { display: false },
       },
     y: {
       beginAtZero: true,
       grid: {
-        color: "#ddd", // لون خطوط الشبكة للمحور Y
+        color: "#ddd" ,
       },
       ticks: {
         stepSize: period==="Month"?20 : period==="Week"?10: 5

@@ -10,7 +10,7 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 function Stat({ label, value}) {
   return (
     <Box >
-      <Typography fontSize={16} color="text.secondary">
+      <Typography fontSize={16} color="var(--text-sub)">
         {label}
       </Typography>
       <Typography fontSize={26} fontWeight={600}>
@@ -21,7 +21,7 @@ function Stat({ label, value}) {
 }
 export function Appointments() {
   return (
-    <div className="payment-card mb-3">
+    <div className="payment-card mb-3 appointments-dashboard">
       <Card
     className="card-mu"
         elevation={0}
@@ -76,7 +76,7 @@ export function Appointments() {
 
           <Stat label="Upcoming (7 days)" value="64" />
 
-          <Divider orientation="vertical" flexItem />
+          <Divider className="divider-vertical" orientation="vertical" flexItem />
 
           <Stat label="Pending Requests" value="3" />
 

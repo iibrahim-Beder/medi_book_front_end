@@ -28,6 +28,7 @@ export default function StatsSection() {
         direction="row"
         justifyContent={"space-around"}
         spacing={1.5}
+        m={1}
         mt={1}
         mb={3}
       >

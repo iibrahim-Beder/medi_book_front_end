@@ -4812,7 +4812,7 @@ a.dc-back:hover{color: #55acee;}
 }
 .dc-contenthead .dc-title a {
     display: block;
-    color: #323232;
+    color: var(--terthemecolor);
     margin: 0 0 9px;
     font: 400 14px/16px 'Poppins', Arial, Helvetica, sans-serif;
 }
@@ -5744,6 +5744,18 @@ html[dir="rtl"]  {
 }
 /* <<< */
 @media (max-width: 720px){
+/* dashboards page */
+.divider-vertical{
+	display: none;
+}
+.appointments-dashboard .css-1onbm1g{
+display: grid;
+grid-template-columns: auto auto auto;
+
+}
+
+
+
 .created-date{
   display: flex;
   flex-direction: column;

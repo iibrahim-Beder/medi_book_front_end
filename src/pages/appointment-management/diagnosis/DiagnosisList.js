@@ -87,7 +87,7 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
             </div>}
             {/* row */}
             <div className="row text-center mb-3">
-              <div className="col-4">
+              <div className="col-4 p-0" style={{whiteSpace:"nowrap"}}>
                 <div className="border-end">
                   <div className="fw-bold text-primary">
                     {disease.conditions?.length || 0}
@@ -95,7 +95,7 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
                   <small className="text-muted">{t("Conditions")}</small>
                 </div>
               </div>
-              <div className="col-4">
+              <div className="col-4 p-0" style={{whiteSpace:"nowrap"}}>
                 <div className="border-end">
                   <div className="fw-bold text-primary">
                     {disease.notes?.length || 0}
@@ -103,7 +103,7 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
                   <small className="text-muted">{t("Notes")}</small>
                 </div>
               </div>
-              <div className="col-4">
+              <div className="col-4 p-0" style={{whiteSpace:"nowrap"}}>
                 <div className="fw-bold text-primary">
                   {disease.prescriptions?.length || 0}
                 </div>
