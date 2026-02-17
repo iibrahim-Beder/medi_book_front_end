@@ -65,12 +65,12 @@ export default function CommunicationCard() {
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography color="text.secondary" fontSize={15}>
+              <Typography color="var(--text-sub)" fontSize={15}>
                Patients with Unread Messages:    <h6 display="inline" style={{display:'inline-block', fontWeight:"600"}}>12</h6> 
               </Typography>
             </Stack>
 
-            <Typography color="text.secondary" fontSize={15}>
+            <Typography color="var(--text-sub)" fontSize={15}>
              Active Conversations Today:        <h6 display="inline" style={{display:'inline-block', fontWeight:"600"}}>7</h6>
             </Typography>
           </Stack>

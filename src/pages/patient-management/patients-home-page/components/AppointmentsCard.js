@@ -10,7 +10,7 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 function Stat({ label, value }) {
   return (
     <Box display={"flex" } gap={1} alignItems={"center"} >
-      <Typography fontSize={14} color="text.secondary">
+      <Typography fontSize={14} color="var(--text-sub)">
         {label}:
       </Typography>
       <Typography fontSize={20} fontWeight={400}>
@@ -84,10 +84,10 @@ export default function AppointmentsCard() {
           <Stat label=" Missed" value="18" />
         </Box>
       <Stack direction="row" justifyContent="space-around" className="word-footer" mt={2}>
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
           No-show Rate: <h6 style={{ display: "inline" }}> 12% </h6> 
         </Typography>
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
            Avg Booking Lead Time:{" "}
           <h6 style={{ display: "inline" }}> 3.4 days </h6>{" "}
         </Typography>
@@ -97,7 +97,7 @@ export default function AppointmentsCard() {
           <Typography fontSize={14}>
             • In Person <b>$13,000</b>
           </Typography>
-          <Typography fontSize={14} color="text.secondary">
+          <Typography fontSize={14} color="var(--text-sub)">
             70% ($5,390)
           </Typography>
         </Stack>
@@ -119,7 +119,7 @@ export default function AppointmentsCard() {
           <Typography fontSize={14}>
             • vedio call <b>$10,200</b>
           </Typography>
-          <Typography fontSize={14} color="text.secondary">
+          <Typography fontSize={14} color="var(--text-sub)">
             30% ($2,190)
           </Typography>
         </Stack>

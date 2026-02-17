@@ -70,7 +70,7 @@ export default function EarningsSummaryCard() {
         {/* Breakdown */}
         <Typography
           fontSize={14}
-          color="text.secondary"
+          color="var(--text-sub)"
           fontWeight={600}
           mb={1}
         >
@@ -81,7 +81,7 @@ export default function EarningsSummaryCard() {
           <Typography fontSize={14}>
             • In Person <b>$13,000</b>
           </Typography>
-          <Typography fontSize={14} color="text.secondary">
+          <Typography fontSize={14} color="var(--text-sub)">
             70% ($5,390)
           </Typography>
         </Stack>
@@ -103,7 +103,7 @@ export default function EarningsSummaryCard() {
           <Typography fontSize={14}>
             • vedio call <b>$10,200</b>
           </Typography>
-          <Typography fontSize={14} color="text.secondary">
+          <Typography fontSize={14} color="var(--text-sub)">
             30% ($2,190)
           </Typography>
         </Stack>
@@ -129,7 +129,7 @@ export default function EarningsSummaryCard() {
 function Stat({ label, value }) {
   return (
     <Box>
-      <Typography fontSize={16} color="text.secondary">
+      <Typography fontSize={16} color="var(--text-sub)">
         {label}
       </Typography>
       <Typography fontSize={26} fontWeight={600}>

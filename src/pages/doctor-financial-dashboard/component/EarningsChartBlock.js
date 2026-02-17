@@ -76,7 +76,7 @@ ChartJS.register(
       </Card>
         <Typography
           fontSize={12}
-          color="text.secondary"
+          color="var(--text-sub)"
           textAlign="center"
           mt={1}
         >
@@ -128,7 +128,7 @@ const ranges = ["Daily", "Weekly", "Monthly"];
             <Typography
               fontSize={13}
               fontWeight={active ? 600 : 400}
-              color={ "text.secondary"}
+              color={ "var(--text-sub)"}
             >
               {label}
             </Typography>

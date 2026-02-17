@@ -10,7 +10,7 @@ import Groups2Icon from "@mui/icons-material/Groups2";
 function Stat({ label, value}) {
   return (
     <Box >
-      <Typography fontSize={16} color="text.secondary">
+      <Typography fontSize={16} color="var(--text-sub)">
         {label}
       </Typography>
       <Typography fontSize={26} fontWeight={600}>
@@ -85,10 +85,10 @@ export default function AllPatientsCard() {
           <Stat label=" Inactive" value="220" />
         </Box>
               <Stack direction="row" justifyContent="space-around" mt={2}>
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
          Today: <h6 style={{ display: "inline" }}> Seen 12 </h6> 
         </Typography>
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
           Upcoming:{" "}
           <h6 style={{ display: "inline" }}> 9 </h6>{" "}
         </Typography>

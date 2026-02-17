@@ -66,12 +66,12 @@ export default function ReviewsCard() {
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography color="text.secondary" fontSize={15}>
+              <Typography color="var(--text-sub)" fontSize={15}>
                 Total Reviews: <h6 display="inline" style={{display:'inline-block', fontWeight:"600"}}>128</h6> 
               </Typography>
             </Stack>
 
-            <Typography color="text.secondary" fontSize={15}>
+            <Typography color="var(--text-sub)" fontSize={15}>
               Average Rating:  <h6 display="inline" style={{display:'inline-block', fontWeight:"600"}}>4.6</h6>  <StarRating rating={4.6}  style={{display:"inline-block"}} />
             </Typography>
           </Stack>

@@ -47,7 +47,7 @@ export default function OneSummary() {
         {/* Breakdown */}
         <Typography
           fontSize={14}
-          color="text.secondary"
+          color="var(--text-sub)"
           fontWeight={600}
           mb={1}
         >
@@ -56,7 +56,7 @@ export default function OneSummary() {
 
         <Stack direction="row" justifyContent="space-between" mb={0.5}>
           <Typography fontSize={14}>• leasson</Typography>
-          <Typography fontSize={14} color="text.secondary">
+          <Typography fontSize={14} color="var(--text-sub)">
             70 Ls
           </Typography>
         </Stack>
@@ -75,7 +75,7 @@ export default function OneSummary() {
             },
           }}
         />
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
           Breakdowns are aggregated — mock allowed
         </Typography>
       </Card>

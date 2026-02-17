@@ -94,7 +94,7 @@ export default  function PatientBehavior() {
           <Typography fontSize={32} fontWeight={800}>
             {VALUE}%
           </Typography>
-          <Typography fontSize={12} color="text.secondary">
+          <Typography fontSize={12} color="var(--text-sub)">
             Repeat Rate
           </Typography>
         </Box>
@@ -130,7 +130,7 @@ export default  function PatientBehavior() {
           <Typography fontSize={32} fontWeight={800}>
             {VALUE2}%
           </Typography>
-          <Typography fontSize={12} color="text.secondary">
+          <Typography fontSize={12} color="var(--text-sub)">
             Repeat Rate
           </Typography>
         </Box>
@@ -140,12 +140,12 @@ export default  function PatientBehavior() {
       {/* Chart */}
       {/* Footer Stats */}
       <Stack direction="row" gap={1.5} mt={2}>
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
           Avg Visits / Patient: <strong>2.1</strong> 
         </Typography>
           <Divider orientation="vertical" flexItem />
         
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
           Avg Days Between Visits: <strong>27</strong>
         </Typography>
       </Stack>

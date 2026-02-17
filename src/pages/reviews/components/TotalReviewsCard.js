@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 function Stat({  label, subValue, value }) {
   return (
     <Box>
-      <Typography fontSize={16} color="text.secondary">
+      <Typography fontSize={16} color="var(--text-sub)">
         {label}<h6 style={{ display: "inline" }}>{subValue}</h6>
       </Typography>
       <Typography fontSize={26} fontWeight={600}>
@@ -87,7 +87,7 @@ export default function TotalReviewsCard() {
             }
           />
         </Box>
-          <Typography fontSize={14} textAlign={"center"} color="text.secondary">
+          <Typography fontSize={14} textAlign={"center"} color="var(--text-sub)">
             Patient feedback from completed appointments
           </Typography>
                 

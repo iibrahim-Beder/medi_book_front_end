@@ -57,24 +57,24 @@ export default function PaymentsStripeCard() {
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography color="text.secondary" fontSize={15}>
+              <Typography color="var(--text-sub)" fontSize={15}>
                 Stripe Status:
               </Typography>
 
               <CheckCircleIcon sx={{ fontSize: 16, color: "#22c55e" }} />
 
-              <Typography  color="text.secondary"
+              <Typography  color="var(--text-sub)"
             //   fontWeight={600} 
               fontSize={15}>
                 Connected & Active
               </Typography>
             </Stack>
 
-            <Typography color="text.secondary" fontSize={15}>
+            <Typography color="var(--text-sub)" fontSize={15}>
               Wallet Balance
             </Typography>
 
-            <Typography color="text.secondary" fontSize={15}>
+            <Typography color="var(--text-sub)" fontSize={15}>
               Last Payout:{" "}
               <Box component="span"
             //    fontWeight={600}
@@ -90,7 +90,7 @@ export default function PaymentsStripeCard() {
             <Typography fontSize={28}fontWeight={600}>
               $1,340
             </Typography>
-            <Typography fontSize={13} color="text.secondary">
+            <Typography fontSize={13} color="var(--text-sub)">
               Pending Payout
             </Typography>
           </Stack>

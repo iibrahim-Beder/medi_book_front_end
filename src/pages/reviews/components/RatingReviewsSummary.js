@@ -64,7 +64,7 @@ export function ProgressStat({
         <Typography display={"flex"} gap={1} fontSize={14}>
          {label} <b>{count}</b>
         </Typography>
-        <Typography fontSize={14} color="text.secondary">
+        <Typography fontSize={14} color="var(--text-sub)">
           {percentage}%
         </Typography>
       </Stack>
