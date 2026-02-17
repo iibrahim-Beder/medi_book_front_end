@@ -1526,7 +1526,10 @@
 "Error loading reviews" :"خطأ في تحميل البيانات",
 "Retry":"إعادة المحاولة",
 "Check the internet connection":" تحقق من اتصال الانترنت",
-"updated_at":"اخر تحديث"
+"updated_at":"اخر تحديث",
+      "mild": "خفيف",
+      "moderate": "متوسط",
+      "severe": "شديد"
 }
 
 

@@ -1,6 +1,6 @@
 import MessageHeader from "./MessageHeader";
 import ConversationHeader from "./ConversationHeader";
-import ConversationList from "../chat-ui/ConversationList";
+import ConversationList from "../components/ConversationList";
 import ChatBox from "./ChatBox";
 import { useSelector } from "react-redux";
 

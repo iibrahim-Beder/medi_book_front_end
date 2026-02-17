@@ -1408,6 +1408,9 @@
 
   },
     "actions": "Actions",
-    "updated_at": "Updated At"
+    "updated_at": "Updated At",
+   "mild": "Mild",
+    "moderate": "Moderate",
+    "severe": "Severe"
   }
   

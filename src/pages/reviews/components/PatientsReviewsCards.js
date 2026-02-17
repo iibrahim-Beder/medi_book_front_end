@@ -3,7 +3,7 @@ import { Card, Button } from "react-bootstrap";
 import { MdOutlineArrowForward } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
-import { useGetReviewsQuery } from "../../../api/reviewsApi";
+import { useGetReviewsQuery } from "../../../api/doctor-information/reviewsApi";
 import StarRating from "../../shared/StarRating";
 import FilterDropdown from "../../patient-management/patient-information/PatientTabs/component/FilterDropdown";
 import DateRangePicker from "../../patient-management/patient-information/PatientTabs/component/DateRangePicker";

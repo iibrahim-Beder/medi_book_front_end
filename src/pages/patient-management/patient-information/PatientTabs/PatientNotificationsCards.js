@@ -23,7 +23,7 @@ import {
   useGetPatientDoctorNotificationsQuery,
   useMarkNotificationAsReadMutation,
   useMarkAllNotificationsAsReadMutation,
-} from "../../../../api/patientNotificationsApi";
+} from "../../../../api/PatientProfile/patientNotificationsApi";
 import PatientName from "./component/PatientName";
 
 const PatientNotificationsCards = ({ patientId=4 }) => {

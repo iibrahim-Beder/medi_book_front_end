@@ -4,7 +4,7 @@ import {
   useAddDoctorPatientNoteMutation,
   useUpdateDoctorPatientNoteMutation,
   useDeleteDoctorPatientNoteMutation 
-} from '../../../../../api/doctorNotesApi';
+} from '../../../../../api/PatientProfile/doctorNotesApi';
 import toast from 'react-hot-toast';
 
 const PATIENT_ID = 4;

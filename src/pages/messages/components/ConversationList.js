@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 export default function ConversationList() {
   const {
     conversations,
-    hasNextPage,
+    pagination,
     isLoading,
     isError,
     isSearching,
@@ -30,7 +30,7 @@ export default function ConversationList() {
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    if (scrollHeight - scrollTop <= clientHeight + 50 && hasNextPage && !isLoading) {
+    if (scrollHeight - scrollTop <= clientHeight + 50 && pagination.hasMore && !isLoading) {
       loadMore();
     }
   };
@@ -79,7 +79,8 @@ export default function ConversationList() {
               lastMessageTime={chat.lastMessageTime}
               lastMessageIsMine={chat.lastMessageIsMine}
               messeagesDotNotification={chat.unreadCount > 0 ? chat.unreadCount : undefined}
-              lastMessageStatus={chat.lastMessageStatus}
+              status={chat.status}
+              isLastMessageRead={chat.isLastMessageRead}
             />
           ))
         )}

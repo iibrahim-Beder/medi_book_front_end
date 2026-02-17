@@ -1,8 +1,8 @@
-import { baseApi } from './baseApi';
-import { ENDPOINTS } from './endpoints';
+import { baseApi } from '../baseApi';
+import { ENDPOINTS } from '../endpoints';
 
 // transformers
-import {transformPatientData} from './transformers';
+import {transformPatientData} from '../transformers';
 
 export const patientApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

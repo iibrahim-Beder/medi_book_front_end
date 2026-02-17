@@ -1,5 +1,5 @@
 // patientMedicationApi.js
-import { baseApi } from './baseApi';
+import { baseApi } from '../baseApi';
 
 // Helper functions
 const transformMedicationData = (response, searchValue = "") => {

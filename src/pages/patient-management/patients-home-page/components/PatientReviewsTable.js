@@ -8,7 +8,7 @@ import TextAreaField from "../../../ui/form-fields/TextAreaField";
 import StarRating from "../../../shared/StarRating";
 import FilterDropdown from "../../patient-information/PatientTabs/component/FilterDropdown";
 import DateRangePicker from "../../patient-information/PatientTabs/component/DateRangePicker";
-import { useGetReviewsQuery } from "../../../../api/reviewsApi"; 
+import { useGetReviewsQuery } from "../../../../api/doctor-information/reviewsApi"; 
 import Skeleton from "react-loading-skeleton";
 import ErrorLoading from "../../../shared/ErrorLoading";
 

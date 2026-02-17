@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGetPatientBasicInfoQuery } from "../../../../../api/patientApi";
+import { useGetPatientBasicInfoQuery } from "../../../../../api/PatientProfile/patientApi";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 export const PATIENT_ID = 4;

@@ -1,5 +1,5 @@
 // patientNotificationsApi.js
-import { baseApi } from './baseApi';
+import { baseApi } from '../baseApi';
 
 // Transform related entity type
 const transformEntityTypeToAPI = (entityType) => {

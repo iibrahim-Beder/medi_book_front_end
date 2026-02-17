@@ -1,5 +1,5 @@
-import { baseApi } from './baseApi';
-import { patientDiagnosesApi } from './PatientProfile/patientDiagnosesApi';
+import { baseApi } from '../baseApi';
+import { patientDiagnosesApi } from './patientDiagnosesApi';
 
 // Transform functions for medication data if needed
 const transformMedicationData = (response, searchTerm = "") => {

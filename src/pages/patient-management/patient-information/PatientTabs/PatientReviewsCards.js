@@ -6,7 +6,7 @@ import StarRating from "../../../shared/StarRating";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
 import Pagination from "../../../shared/Pagination";
-import { useGetPatientReviewsQuery } from "../../../../api/patientReviewsApi";
+import { useGetPatientReviewsQuery } from "../../../../api/PatientProfile/patientReviewsApi";
 import Skeleton from "react-loading-skeleton";
 import ErrorLoading from "../../../shared/ErrorLoading";
 import PatientName from "./component/PatientName";

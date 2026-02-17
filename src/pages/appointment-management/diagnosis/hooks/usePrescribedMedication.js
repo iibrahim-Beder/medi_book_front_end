@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useAddPrescribedMedicationMutation, useUpdatePrescribedMedicationMutation , useDeletePrescribedMedicationMutation
-} from "../../../../api/prescribedMedicationApi"; 
+} from "../../../../api/PatientProfile/prescribedMedicationApi"; 
 import toast from "react-hot-toast";
 import { buildprescribedMedicationUpdatePayload } from "../handlerUtils";
 export const usePrescribedMedication = (editingDiagnosis, setEditingDiagnosis,diagnosesData) => {

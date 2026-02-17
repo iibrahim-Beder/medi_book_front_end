@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useGetPrescribedMedicationQuery } from "../../../../../../api/prescribedMedicationApi";
+import { useGetPrescribedMedicationQuery } from "../../../../../../api/PatientProfile/prescribedMedicationApi";
 import { formatDateForAPI } from "../../../../../shared/utils";
 import { hasMatchForField, shouldExpand } from "../../component/helpers";
 

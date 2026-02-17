@@ -4,7 +4,7 @@ import {
   useDeleteExternalPatientMedicationMutation,
   useUpdateExternalPatientMedicationMutation,
   useAddExternalPatientMedicationMutation 
-} from "../../../../../../api/ExternalPatientMedicationMutationApi";
+} from "../../../../../../api/PatientProfile/ExternalPatientMedicationMutationApi";
 import toast from 'react-hot-toast';
 import { formatDateForAPI } from "../../../../../shared/utils";
 import { buildPatientMedicationUpdatePayload, validatePatientMedicationForm } from "./otherMedicationsHelpers";
