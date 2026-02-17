@@ -3,21 +3,17 @@ import { useTranslation } from "react-i18next";
 import Pagination from "../../shared/Pagination";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import { useGetPatientDiagnosesQuery } from "../../../api/PatientProfile/patientDiagnosesApi";
 import DiagnosisList from "../diagnosis/DiagnosisList";
 import DiagnosisModal from "../diagnosis/DiagnosisModal";
 import DeleteConfirmationPopup from "../diagnosis/DeleteConfirmationPopup";
 import { useDiagnosisCRUD } from "../diagnosis/useDiagnosisCRUD";
 import { transformDiagnosisData } from "../diagnosis/diagnosisUtils";
 import ErrorLoading from "../../shared/ErrorLoading";
-import { useDispatch } from "react-redux";
-import { patientDiagnosesApi } from "../../../api/PatientProfile/patientDiagnosesApi";
 import PatientName from "../../patient-management/patient-information/PatientTabs/component/PatientName";
 
-const DiagnosisMobileViewWithCRUD = () => {
+const DiagnosisMobileView = () => {
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
   // Pagination state
   const [showRowsPerPage, setshowRowsPerPage] = useState(3);
   const [totalCount, setTotalCount] = useState(0);
@@ -25,7 +21,6 @@ const DiagnosisMobileViewWithCRUD = () => {
   // API Call
 
   const [currentItems, setCurrentItems] = useState([]);
-  const [isChange, setIsChange] = useState(false);
 
   const {
     selectedDiagnosis,
@@ -50,23 +45,17 @@ const DiagnosisMobileViewWithCRUD = () => {
     setCurrentPage,
     setRowsPerPage,
     currentPage
-  } = useDiagnosisCRUD(setCurrentItems,checkAndRefetch,setIsChange);
+  } = useDiagnosisCRUD(setCurrentItems,checkAndRefetch);
   const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
     if (diagnosesData?.data) {
       const transformedData = diagnosesData.data.map(transformDiagnosisData);
       setTotalCount(diagnosesData.totalCount);
       setCurrentItems(transformedData);
-      console.log("Current Data:", currentItems, "isChange", isChange);
-      setIsChange(false);
     }
   }, [diagnosesData]);  
 // Case 1: When page changes
 useEffect(() => {
-  if (isChange) {
-    console.log("Page changed → invalidate");
-    dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]));
-  }
   if(lastPage!==currentPage){
     if((showRowsPerPage>3&&totalCount>6) || 
     (showRowsPerPage<3&&totalCount<6 && currentPage>lastPage)
@@ -75,17 +64,6 @@ useEffect(() => {
     setLastPage(currentPage);
   }
 }, [currentPage]);
-
-// Case 2: When component unmounts
-useEffect(() => {
-  return () => {
-    if (isChange) {
-      console.log("Component unmounted → invalidate");
-      // dispatch(patientDiagnosesApi.util.invalidateTags(["PatientDiagnoses"]));
-    }
-  };
-}, [isChange]);
-
 
   function checkAndRefetch(isAdding=false) {
     if (isAdding) {
@@ -151,7 +129,6 @@ if (error) {
       {(selectedDiagnosis || editingDiagnosis) && (
         <DiagnosisModal
           diagnosesData={diagnosesData}
-          setIsChange={setIsChange}
           editingDiagnosis={editingDiagnosis}
           setEditingDiagnosis={setEditingDiagnosis}
           setCurrentItems={setCurrentItems}
@@ -178,4 +155,4 @@ if (error) {
   );
 };
 
-export default DiagnosisMobileViewWithCRUD;
+export default DiagnosisMobileView;
