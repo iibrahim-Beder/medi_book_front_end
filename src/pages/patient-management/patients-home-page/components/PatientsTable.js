@@ -167,7 +167,7 @@ const PatientsTable = () => {
              <div className=" review-filters ">
              
              <FilterDropdown small/>
-             <DateRangePicker/>
+             <DateRangePicker className={"right"}/>
           </div>
        </div>
 

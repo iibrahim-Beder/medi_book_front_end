@@ -98,8 +98,8 @@ export default function AppointmentsStatusCard() {
             </Box>
             Appointments Status
           </Typography>
-          <div style={{ flexGrow: "1", direction: "rtl", textAlign: "right" }}>
-            <DateRangePicker width="fit-content" onChange={setDateRange} />
+          <div style={{width:"100%" }}>
+            <DateRangePicker className={"right"} width="fit-content" onChange={setDateRange} />
           </div>
         </Stack>
         <Divider sx={{ mb: 1 }} />

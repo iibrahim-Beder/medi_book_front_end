@@ -21,7 +21,7 @@ function Stat({ label, value}) {
 }
 export function Appointments() {
   return (
-    <div className="payment-card mb-3 appointments-dashboard">
+    <div className="payment-card mb-3 dashboard-page">
       <Card
     className="card-mu"
         elevation={0}

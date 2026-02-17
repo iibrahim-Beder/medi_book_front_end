@@ -60,7 +60,7 @@ export const useMessages = () => {
   };
 
   const loadMore = () => {
-    if(!messagesData.hasNextPage||isFetching)return
+    if(!messagesData?.hasNextPage||isFetching)return
     console.log("==loadMore hasNextPage", messagesData.hasNextPage) ;
     setPageByChat((prev) => ({
       ...prev,

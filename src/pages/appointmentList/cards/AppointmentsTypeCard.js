@@ -46,8 +46,8 @@ function Header() {
           <PeopleIcon sx={{ mr: 1 }} />
           Appointments Type
         </Typography>
-        <div style={{ flexGrow:"1",direction:"rtl" ,textAlign:'right'}}>
-        <DateRangePicker width="fit-content" />
+        <div style={{ width:"100%"}}>
+        <DateRangePicker className={"left"} width="fit-content" />
         </div>
       </Stack>
       <Divider sx={{ mb: 2 }} />

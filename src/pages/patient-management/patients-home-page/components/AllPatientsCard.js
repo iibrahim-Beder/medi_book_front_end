@@ -21,7 +21,7 @@ function Stat({ label, value}) {
 }
 export default function AllPatientsCard() {
   return (
-    <div className="payment-card mb-3">
+    <div className="payment-card mb-3 dashboard-page">
       <Card
     className="card-mu"
         elevation={0}
@@ -76,7 +76,7 @@ export default function AllPatientsCard() {
 
           <Stat label="Active" value="280" />
 
-          <Divider orientation="vertical" flexItem />
+          <Divider className="divider-vertical" orientation="vertical" flexItem />
 
           <Stat label=" Recently Seen" value="320" />
 

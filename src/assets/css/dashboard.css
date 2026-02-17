@@ -5691,7 +5691,12 @@ margin-right: 15px ;
 	.list-date-option.custom{
 		left: -70% ;
 	}
-	
+	/* .dashboards-pages .list-date-option.custom {
+	  left: -200%;
+    }
+	.dashboards-pages .list-date-option:after,.dashboards-pages .list-date-option:before {
+    left: 430px;
+	} */
 @media (min-width: 820px) {
 html[dir="rtl"]  {
 	.list-date-option.custom{
@@ -5748,7 +5753,7 @@ html[dir="rtl"]  {
 .divider-vertical{
 	display: none;
 }
-.appointments-dashboard .css-1onbm1g{
+.dashboard-page .css-1onbm1g,.dashboard-page .css-sv72os,.dashboard-page .css-1alcsw8{
 display: grid;
 grid-template-columns: auto auto auto;
 
@@ -5908,6 +5913,7 @@ padding: 0 10px;
     }
 	/* date range picker css end */
 	@media (max-width: 400px) {
+		.css-1cg0cz5{grid-template-columns: auto !important;justify-items: center;}
 		.filter-dropdown-menu{max-width: 310px}
 		/* .login-right{padding: 10px;} */
 		/* .login-right > div{padding: 0px !important;} */
@@ -6015,6 +6021,12 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 }
 .css-1wk5iqf-MuiPaper-root{
 	box-shadow: 0px 11px 12px 0px var(--scshadocolor);
+}
+.dc-offersmessages .dc-ad span.last-read {
+    color: var(--text-sub);
+}
+.dc-offersmessages .dc-ad span.unread {
+    color: #fff;
 }
 }
 /* RTL direction start */

@@ -62,7 +62,7 @@ export default function EarningsSummaryCard() {
 
           <Stat label="This Month" value="$1,280" />
 
-          <Divider orientation="vertical" flexItem />
+          <Divider className="divider-vertical" orientation="vertical" flexItem />
 
           <Stat label="This Week" value="$320" />
         </Box>

@@ -5,7 +5,7 @@ import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
 import { t } from 'i18next';
 
-const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
+const DateRangePicker = ({ onChange, initialRange, width = 'auto', className }) => {
   // State for main date range and UI control
   const [startDate, setStartDate] = useState(
     initialRange?.start || startOfDay(subDays(new Date(), 6))
@@ -172,7 +172,7 @@ const DateRangePicker = ({ onChange, initialRange, width = 'auto' }) => {
 
   return (
     <div
-      className="DateRangePicker"
+      className={`DateRangePicker ${className}`}
       style={{ position: "relative", width }}
       ref={dropdownRef}
     >

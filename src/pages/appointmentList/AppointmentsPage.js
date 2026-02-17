@@ -6,7 +6,7 @@ import MainAppointtmentList2 from "./MainAppointmentList";
 export default function AppointmentsPage() {
   return (
     <div>
-    <div className="row payment-page">
+    <div className="row payment-page dashboards-pages">
       <div className="col-lg-6  mb-3 col-m-d12">
         <Appointments  />
         <AppointmentsTypeCard  />

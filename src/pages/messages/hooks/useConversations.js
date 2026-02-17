@@ -74,7 +74,7 @@ export const useConversations = () => {
     setSearchTerm,
     loadMore,
     refetch: refetchConversations,
-    hasNextPage: chatsData?.hasNextPage,
+    hasNextPage: chatsData?.hasNextPage ?? false,
     // chat selection
     selectedChat,
     changeChat,

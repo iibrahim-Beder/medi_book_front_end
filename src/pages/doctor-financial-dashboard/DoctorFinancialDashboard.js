@@ -8,7 +8,7 @@ import PaymentsStripeCard from "./component/PaymentsStripeCard";
 export default function DoctorFinancialDashboard() {
   return (
   <div>
-    <div className="row payment-page ">
+    <div className="row payment-page dashboard-page ">
       <div className="col-md-12 col-lg-6 mb-2">
       <PaymentsStripeCard />
       <EarningsSummaryCard /> 

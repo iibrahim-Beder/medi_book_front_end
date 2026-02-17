@@ -143,9 +143,7 @@ export default  function PatientBehavior() {
         <Typography fontSize={14} color="text.secondary">
           Avg Visits / Patient: <strong>2.1</strong> 
         </Typography>
-        <Typography fontSize={14} color="">
-          |
-        </Typography>
+          <Divider orientation="vertical" flexItem />
         
         <Typography fontSize={14} color="text.secondary">
           Avg Days Between Visits: <strong>27</strong>
