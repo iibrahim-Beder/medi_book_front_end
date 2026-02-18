@@ -5990,7 +5990,17 @@ input:disabled,
     opacity: 0.85;
 }
 
-
+	.react-loading-skeleton{
+		--base-color: #30425c;
+		--highlight-color: #243247;
+	}
+	 .text-highlight {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffdd57;
+  border: 1px solid rgba(255, 193, 7, 0.35);
+}
+.readonly-field,.readonly-textarea{
+          background-color: #0b1b35 !important;}
 
 .expandable-content {
 background-color: var(--bcticolor);	
