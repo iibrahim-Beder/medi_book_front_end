@@ -249,10 +249,11 @@ content: "";
   }
   .toast-custom-box  .content{
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 2px;
-    width: 100%;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    /* align-items: flex-end; */
+    /* gap: 2px; */
+    /* width: 100%; */
   }
 
 .dc-offersmessages .dc-ad h3{display: flex !important;justify-content: space-between;}

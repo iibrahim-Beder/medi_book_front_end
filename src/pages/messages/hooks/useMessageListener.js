@@ -45,16 +45,19 @@ console.log("==isChatOpenRef.current", isChatOpenRef.current, "selectedChatRef.c
   const { isMobile } = useDevice();
   const chatToastsRef = useRef({});
   
-  useEffect(() => {
-    if (!selectedChat) return;
+useEffect(() => {
+  if (!selectedChat || !isChatOpen) return;
 
-    const toasts = chatToastsRef.current[selectedChat];
+  const existingToast = chatToastsRef.current[selectedChat];
 
-    if (toasts && toasts.length) {
-      toasts.forEach((id) => toast.dismiss(id));
-      chatToastsRef.current[selectedChat] = [];
-    }
-  }, [selectedChat, isChatOpen]);
+  if (existingToast?.toastId) {
+    toast.dismiss(existingToast.toastId);
+
+    // cleanup
+    delete chatToastsRef.current[selectedChat];
+  }
+}, [selectedChat, isChatOpen]);
+
 
   // new message received from WebSocket listener
   const handleNewMessage = (message) => {
@@ -73,19 +76,45 @@ console.log("==isChatOpenRef.current", isChatOpenRef.current, "selectedChatRef.c
         MessageStatus.Delivered
       );
       audioService.play("messageArrived");
-      const toastId = toast.custom(
-        (t) => <ToastMessage t={t} message={message} />,
-        {
-          duration: 600000,
-          position: isMobile ? "top-right" : "bottom-right",
-        }
-      );
+        const chatId = message.chatId;
+     const existingToast = chatToastsRef.current[chatId];
 
-      if (!chatToastsRef.current[message.chatId]) {
-        chatToastsRef.current[message.chatId] = [];
+  if (existingToast) {
+    // Add message to existing toast
+    existingToast.messages.push(message);
+
+    toast.custom(
+      (t) => (
+        <ToastMessage
+          t={t}
+          messages={existingToast.messages}
+        />
+      ),
+      {
+        id: existingToast.toastId,
       }
-      chatToastsRef.current[message.chatId].push(toastId);
-    }
+    );
+  } else {
+    const messages = [message];
+
+    const toastId = toast.custom(
+      (t) => (
+        <ToastMessage
+          t={t}
+          messages={messages}
+        />
+      ),
+      {
+        duration: 600000,
+        position: isMobile ? "top-right" : "bottom-right",
+      }
+    );
+
+    chatToastsRef.current[chatId] = {
+      toastId,
+      messages,
+    };
+  }}
     // ===== (RTK Query) =====
     dispatch(
       doctorChatApi.util.updateQueryData(

@@ -138,8 +138,7 @@ position: absolute;
     .notifications .text-ellipsis{max-width: 170px;}
     .notifications li > div{gap: 5px !important;}
     /* notification main page */
-    .dc-dbsectionspace.notifications-main-page .icon-content{flex-direction: column;align-items: center;}
-    .notifications-main-page .date-time{position: absolute; top: 10px;right: 10px;}
+    .notifications-main-page .date-time{position: absolute;top: 0px;right: -20px;}
     .notifications-main-page .notification-card{position:relative}
 
   }

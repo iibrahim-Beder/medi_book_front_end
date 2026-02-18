@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Dropdown, Badge } from "react-bootstrap";
 import { Bell } from "lucide-react";
+import { VscBellSlash } from "react-icons/vsc";
 import "../../patient-management/patient-information/PatientTabs/component/DateRangePicker.css";
-import "../NotificationButton.css";
+import "./NotificationButton.css";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
 import {
@@ -27,6 +28,8 @@ const NotificationDropdown = () => {
     isLoading,
     refetch,
     hasMore,
+    mutemut,
+    setMutemut
   } = useNotifications(1);
 
   const handleScroll = (e) => {
@@ -70,7 +73,11 @@ const NotificationDropdown = () => {
             position: "relative",
           }}
         >
+          { 
+          mutemut ?
+          <VscBellSlash size={18} />:
           <Bell size={18} />
+          }
           {unreadCount > 0 && (
             <Badge
               pill
@@ -109,9 +116,17 @@ const NotificationDropdown = () => {
           }}
         >
           <div className="topnav-dropdown-header p-2 border-bottom">
-            <span className="fw-bold" style={{ color: "var(--terthemecolor)" }}>
+            <span className="fw-bold" style={{ display: "flex", color: "var(--terthemecolor)" }}>
               Notifications
-            </span>
+              <button
+                className="add-btn"
+                onClick={() => setMutemut(prev => !prev)}
+                title={mutemut ? "Unmute notifications" : "Mute notifications"}
+              >
+                {mutemut ? <Bell size={16} /> : <VscBellSlash size={16} />}
+              </button>
+           </span>
+
 
             {notifications.filter((n) => !n.isRead).length > 0 && (
               <div className="d-flex align-items-center gap-2">

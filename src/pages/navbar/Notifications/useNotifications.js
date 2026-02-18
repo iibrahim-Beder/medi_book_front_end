@@ -5,11 +5,13 @@ import {
   useMarkAllNotificationsAsReadMutation,
 } from "../../../api/notifications/doctorNotificationsApi";
 import { useSignalRNotifications } from "../../../api/notifications/useSignalR";
+import { audioService } from "../../notifications/audioService";
 
 const PAGE_SIZE = 10;
 
 export const useNotifications = (userId) => {
   const [page, setPage] = useState(1);
+  const [mutemut, setMutemut] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [notifications, setNotifications] = useState([]);
 
@@ -89,6 +91,9 @@ export const useNotifications = (userId) => {
     markAsRead(notificationId);
   };
 
+  useEffect(() => {
+  audioService.setMuted(mutemut);
+  }, [mutemut]);
 
   return {
     notifications,
@@ -102,6 +107,8 @@ export const useNotifications = (userId) => {
     refetch,
     isConnected,
     hasMore,
+    mutemut,
+    setMutemut
   };
 };
 
