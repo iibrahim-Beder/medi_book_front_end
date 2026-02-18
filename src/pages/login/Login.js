@@ -205,7 +205,7 @@ export default function Login() {
                 <div className="account-signup">
                   <p>
                     {t("login.noAccount")}{" "}
-                    <Link to="/registration">{t("login.signupNow")}</Link>
+                    <Link to="/Authentication">{t("login.signupNow")}</Link>
                   </p>
                 </div>
               </fieldset>

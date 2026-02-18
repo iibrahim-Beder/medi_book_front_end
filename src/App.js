@@ -32,6 +32,7 @@ import ReviewsPage from "./pages/reviews/ReviewsPage";
 import AppointmentsPage from "./pages/appointmentList/AppointmentsPage";
 import WeeklyTimeSlots from "./pages/making-slots/WeeklyTimeSlot";
 import ScrollToTop from "./context/ScrollToTop";
+import Authentication from "./pages/login/Authentication";
 
 
 function App() {
@@ -97,6 +98,7 @@ const { i18n } = useTranslation();
         <Routes>
           <Route path="/registration" element={<DoctorRegistration />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/Authentication" element={<Authentication />} />
           <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 

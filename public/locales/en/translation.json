@@ -1413,7 +1413,24 @@
     "moderate": "Moderate",
     "severe": "Severe",
     "Mild": "Mild",
-    "Category": "Category"
+    "Category": "Category",
+  "register": {
+    "title": "Create Account",
+    "brand": "Medi Book",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "button": "Sign Up",
+    "haveAccount": "Already have an account?",
+    "loginNow": "Login",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "passwordMismatch": "Passwords do not match",
+    "success": "Account created successfully",
+    "passwordWeak": "Password must be at least 6 characters and include uppercase, lowercase and a special character (#$%&)"
 
+  }
   }
   
