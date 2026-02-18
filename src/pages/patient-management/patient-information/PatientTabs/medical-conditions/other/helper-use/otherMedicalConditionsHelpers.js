@@ -16,7 +16,7 @@ export const otherMedicalConditionsHelpers = (t) => {
       type: "select", 
       options: [
         { value: "Mild", label: t('OtherMedicalConditions.severity_options.Mild') },
-        { value: "Moderate", label: t('OtherMedicalConditions.severity_options.Moderate') }, 
+        { value: "Moderate", label: t('Moderate') }, 
         { value: "Severe", label: t('OtherMedicalConditions.severity_options.Severe') },
         { value: "Critical", label: t('OtherMedicalConditions.severity_options.Critical') }
       ], 
@@ -67,14 +67,6 @@ export const otherMedicalConditionsHelpers = (t) => {
 
   const filterConfigs = [
     {
-      name: "isActive",
-      label: "Status",
-      data: ["All", "Active", "Inactive"].map((opt) => ({
-        key: opt,
-        label: opt,
-      })),
-    },
-    {
       name: "conditionType",
       label: "Condition Type",
       data: ["External", "Acute", "Chronic", "Internal"].map((opt) => ({
@@ -85,7 +77,15 @@ export const otherMedicalConditionsHelpers = (t) => {
     {
       name: "severity",
       label: "Severity",
-      data: ["Mild", "Moderate", "Severe"].map((opt) => ({
+      data: [ t("mild"), t("Moderate"), t("Severe")].map((opt) => ({
+        key: opt,
+        label: opt,
+      })),
+    },
+    {
+      name: "isActive",
+      label: "Status",
+      data: [t("All"), t("Active"), t("Inactive")].map((opt) => ({
         key: opt,
         label: opt,
       })),
@@ -93,7 +93,7 @@ export const otherMedicalConditionsHelpers = (t) => {
   ];
 
   const translateSeverity = (severity) => {
-    return t(`OtherMedicalConditionsMobileView.severity_options.${severity}`);
+    return t(`${severity}`);
   };
 
   const translateConditionType = (conditionType) => {

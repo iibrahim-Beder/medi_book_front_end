@@ -232,7 +232,7 @@ const OtherMedicalConditionsMobileView = () => {
                           {translateSeverity(condition.severity)}
                         </div>
                         <small className="text-muted">
-                          {t("OtherMedicalConditionsMobileView.severity")}
+                          {t("severity")}
                         </small>
                       </div>
                       <div className="col-4 p-0 border-end">

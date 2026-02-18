@@ -125,7 +125,7 @@ const AllergyTable = () => {
               <thead>
                 <tr>
                   <th>{t("AllergyTable.allergen")}</th>
-                  <th>{t("AllergyTable.allergenCategory")}</th>
+                  <th>{t("Category")}</th>
                   <th>{t("AllergyTable.severity")}</th>
                   <th>{t("AllergyTable.active")}</th>
                   <th>{t("AllergyTable.date_noted")}</th>

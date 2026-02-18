@@ -1411,6 +1411,9 @@
     "updated_at": "Updated At",
    "mild": "Mild",
     "moderate": "Moderate",
-    "severe": "Severe"
+    "severe": "Severe",
+    "Mild": "Mild",
+    "Category": "Category"
+
   }
   

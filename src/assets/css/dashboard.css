@@ -6038,6 +6038,9 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 .dc-offersmessages .dc-ad span.unread {
     color: #fff;
 }
+.DateRangePicker svg{
+	color: var(--terthemecolor) !important;
+}
 }
 /* RTL direction start */
 

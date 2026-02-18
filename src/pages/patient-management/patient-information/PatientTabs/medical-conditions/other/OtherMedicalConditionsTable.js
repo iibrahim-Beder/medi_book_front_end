@@ -127,7 +127,7 @@ const OtherMedicalConditions = () => {
                 <tr>
                   <th>{t("OtherMedicalConditionsMobileView.medical_condition_name")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.category")}</th>
-                  <th>{t("OtherMedicalConditionsMobileView.severity")}</th>
+                  <th>{t("severity")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.diagnosed_date")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.condition_type")}</th>
                   <th>{t("OtherMedicalConditionsMobileView.status")}</th>

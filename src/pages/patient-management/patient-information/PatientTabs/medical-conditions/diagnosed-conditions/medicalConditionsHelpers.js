@@ -1,16 +1,16 @@
 export const medicalConditionsHelpers = (t) => {
   const conditionTypes = [
-    { key: "Acute", label: t("Conditions.types.acute") },
-    { key: "Chronic", label: t("Conditions.types.chronic") },
-    { key: "Genetic", label: t("Conditions.types.genetic") },
-    { key: "Infectious", label: t("Conditions.types.infectious") },
-    { key: "Autoimmune", label: t("Conditions.types.autoimmune") }
+    { key: "Acute", label: t("acute") },
+    { key: "Chronic", label: t("chronic") },
+    { key: "Genetic", label: t("genetic") },
+    { key: "Infectious", label: t("infectious") },
+    { key: "Autoimmune", label: t("autoimmune") }
   ];
 
   const severityLevels = [
-    { key: "Mild", label: t("Conditions.severity.mild") },
-    { key: "Moderate", label: t("Conditions.severity.moderate") },
-    { key: "Severe", label: t("Conditions.severity.severe") }
+    { key: "Mild", label: t("mild") },
+    { key: "Moderate", label: t("moderate") },
+    { key: "Severe", label: t("severe") }
   ];
 
   const statusOptions = [
@@ -26,7 +26,7 @@ export const medicalConditionsHelpers = (t) => {
   ];
 
   const translateSeverity = (severity) => {
-    return t(`Conditions.severity.${severity?.toLowerCase()}`);
+    return t(`${severity?.toLowerCase()}`);
   };
 
   const translateStatus = (isActive) => {

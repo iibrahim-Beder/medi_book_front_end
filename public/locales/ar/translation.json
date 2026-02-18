@@ -1527,9 +1527,13 @@
 "Retry":"إعادة المحاولة",
 "Check the internet connection":" تحقق من اتصال الانترنت",
 "updated_at":"اخر تحديث",
-      "mild": "خفيف",
-      "moderate": "متوسط",
-      "severe": "شديد"
+"mild": "خفيف",
+"moderate": "متوسط",
+"severe": "شديد",
+"Category":"الفئة",
+"Code":"الكود"
+
+
 }
 
 

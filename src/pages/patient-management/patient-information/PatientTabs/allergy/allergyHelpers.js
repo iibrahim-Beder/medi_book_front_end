@@ -19,7 +19,7 @@ export const allergyHelpers = (t) => {
         { value: "Mild", label: t("AllergyTable.severity_options.Mild") },
         {
           value: "Moderate",
-          label: t("AllergyTable.severity_options.Moderate"),
+          label: t("Moderate"),
         },
         {
           value: "Severe",

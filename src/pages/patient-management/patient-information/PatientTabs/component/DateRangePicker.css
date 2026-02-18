@@ -239,7 +239,7 @@
   top: initial;
   top: -5px;
   border-top: initial;
-  border-bottom: 6px solid #fff;
+  border-bottom: 6px solid var(--cardcolor);
 }
 /* .list-date-option div:hover{
     background-color: #3fabf3;
