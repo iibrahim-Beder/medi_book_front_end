@@ -818,7 +818,7 @@ background-color: transparent !important;
  .two-tabs .nav-tabs .nav-link ,.table-container .form-group label{
   color: #999;
  }
- .form-control:disabled, .form-control[readonly],input:disabled ,.input-with-icon textarea:disabled{
+ .form-control:disabled, .form-control[readonly],input:disabled ,.input-with-icon textarea:disabled,select:disabled{
   font-size: 16px  !important ;
             background-color: #f2f2f2 !important;
             /* color: #999 !important ; */

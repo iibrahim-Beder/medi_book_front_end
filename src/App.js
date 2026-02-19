@@ -101,6 +101,7 @@ const { i18n } = useTranslation();
           <Route path="/Authentication" element={<Authentication />} />
           <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="how-v1" element={<Test />} />
 
           <Route
             path="/*"
@@ -124,7 +125,6 @@ const { i18n } = useTranslation();
                       path="patients"
                       element={<PatientManagement />}
                     />
-                    <Route path="how-v1" element={<Test />} />
                     <Route path="how-v2" element={<Test2 />} />
                     <Route
                       path="manage-financial"

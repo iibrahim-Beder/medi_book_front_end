@@ -106,7 +106,7 @@ export default function Authentication() {
                 className="btn-primary-gradient w-100 dc-btn mt-3"
                 disabled={isLoading}
               >
-                {isLoading ? t('register.loading') : t('register.button')}
+                {isLoading ? t('loading') : t('register.button')}
               </button>
 
               <div className="account-signup mt-3">

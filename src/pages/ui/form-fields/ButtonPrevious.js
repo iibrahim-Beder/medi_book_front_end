@@ -16,7 +16,7 @@ export default function ButtonPrevious({ onClick }) {
         fontSize: "15px",
         fontWeight: 500,
         borderColor: "rgba(0, 0, 0, 0.15)",
-        color: "#444",
+        color: "var(--terthemecolor)",
         "&:hover": {
           borderColor: "var(--blue)",
           backgroundColor: "rgba(21, 54, 198, 0.06)",

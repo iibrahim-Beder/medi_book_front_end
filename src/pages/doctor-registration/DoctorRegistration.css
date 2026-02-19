@@ -431,3 +431,10 @@ display: inline-flex;
 }
 }
 /* progress steper css end */
+.preloader-outer.form-loader{
+  position: absolute;
+    background: #a5a5a545;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(1px);
+    border-radius: 30px;
+}

@@ -258,7 +258,7 @@ const SelectDatePicker = ({
               }}
             />
 
-            {(inputError || showError) && (
+            {/* {(inputError || showError) && (
               <div style={{
                 position: "absolute",
                 top: "100%",
@@ -269,7 +269,7 @@ const SelectDatePicker = ({
               }}>
                 {inputError || error}
               </div>
-            )}
+            )} */}
           </div>
 
           {showDropdown && !disabled && (

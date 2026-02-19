@@ -359,7 +359,7 @@ address { font-style: italic; }
 	background: var(--themecolor);
 }
 .wt-loader:after {
-	background: #fff;
+	background: var(--cardcolor);
 	width: 75%;
 	height: 75%;
 	border-radius: 50%;
@@ -378,7 +378,7 @@ address { font-style: italic; }
 	height: 30px;
 	border-radius: 50%;
 	position: relative;
-	background: #fff;
+	background: var(--cardcolor);
 	margin: -15px 0 0 -15px;
 	-webkit-box-shadow: 0 0 20px 0 rgba(0,0,0,0.25);
 	box-shadow: 0 0 20px 0 rgba(0,0,0,0.25);
@@ -5978,11 +5978,10 @@ padding: 0 10px;
   --hovcolor:#00092963;
   --shado2color:#00000017;
   --shado1color:#000000e6;
-
   .form-control:disabled,
 .form-control[readonly],
 input:disabled,
-.input-with-icon textarea:disabled {
+.input-with-icon textarea:disabled ,select:disabled{
     font-size: 16px;
     background-color: #0b1b35 !important; 
     color: #7f8a9a !important; 
@@ -6005,6 +6004,7 @@ input:disabled,
 .expandable-content {
 background-color: var(--bcticolor);	
 }
+.wt-preloader-holder{box-shadow: 0 0 20px  var(--shado1color);}
 .doctor-registration{background: var(--bkcolor);}
 .container{border-color: #334c99;}
 .text-muted{color :#ededede6 !important;}

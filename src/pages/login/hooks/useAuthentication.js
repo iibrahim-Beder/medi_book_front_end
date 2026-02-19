@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCreateUserAccountMutation } from '../../../api/doctor-information/AuthenticationApi'; 
+import { useCreateUserAccountMutation } from '../../../api/doctor-information/authenticationsApi'; 
 import toast from 'react-hot-toast';
 
 export const useAuthentication = () => {

@@ -10,7 +10,8 @@ const SelectField = ({
   icon,
   error,
   forceShowError = false,
-  isAllWidth = false
+  isAllWidth = false,
+  disabled=false,
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = error && (touched || forceShowError);
@@ -32,6 +33,7 @@ const SelectField = ({
           onChange={onChange}
           onBlur={() => setTouched(true)}
           className={showError ? "input-error" : ""}
+          disabled={disabled}
         >
         {options && options.map((option) => {
   const value = typeof option === 'string' ? option : option.value;
