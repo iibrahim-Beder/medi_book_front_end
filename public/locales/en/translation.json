@@ -96,6 +96,7 @@
   "saveUpdate": "Save & Update"
 },
 "yourDetails": {
+  "gender":"Gender",
   "title": "Your Details",
   "firstName": "First Name",
   "lastName": "Last Name",
@@ -1364,7 +1365,7 @@
   },
    "login": {
     "title": "Login to",
-    "brand": "Doclisto",
+    "brand": "Medi Book",
     "email": "Email",
     "enterEmail": "Enter your email",
     "password": "Password",

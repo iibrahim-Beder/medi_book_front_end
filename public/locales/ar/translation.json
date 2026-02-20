@@ -89,6 +89,7 @@
   "saveUpdate": "حفظ وتحديث"
 }
 ,"yourDetails": {
+  "gender":"الجنس",
   "title": "تفاصيلك",
   "firstName": "الاسم الأول",
   "lastName": "اسم العائلة",
@@ -1469,7 +1470,7 @@
 "Apply":"تطبيق",
  "login": {
     "title": "تسجيل الدخول",
-    "brand": "Doclisto",
+    "brand": "Medi book",
     "email": "البريد الإلكتروني",
     "enterEmail": "ادخل بريدك الإلكتروني",
     "password": "كلمة المرور",

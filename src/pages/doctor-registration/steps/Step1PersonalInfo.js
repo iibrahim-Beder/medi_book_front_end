@@ -49,86 +49,100 @@ const Step1PersonalInfo = forwardRef(
 
         <div className="table-card" style={{position: "relative"}}>
           {isLoading  && Loader("form-loader")}
-          <div className="form-grid">
+    <form className="dc-formtheme dc-userform">
+        <fieldset>
+          {isLoading && Loader("form-loader")}
+
+          {/* First Name */}
+          <div className="form-group-half form-group">
             <Field
-              label={t("personalInfo.firstName.label")}
+              label={t("yourDetails.firstName")}
+              type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
-              placeholder={t("personalInfo.firstName.placeholder")}
-              icon={<FaRegUser />}
-              error={errors?.firstName}
-              forceShowError={forceShowError}
+              error={errors.firstName}
+              className="form-control"
+              placeholder={t("yourDetails.firstName")}
             />
+          </div>
 
+          {/* Last Name */}
+          <div className="form-group form-group-half">
             <Field
-              label={t("personalInfo.lastName.label")}
+              label={t("yourDetails.lastName")}
+              type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleInputChange}
-              placeholder={t("personalInfo.lastName.placeholder")}
-              icon={<FaRegUser />}
-              error={errors?.lastName}
-              forceShowError={forceShowError}
+              error={errors.lastName}
+              className="form-control"
+              placeholder={t("yourDetails.lastName")}
             />
+          </div>
 
+          {/* Date of Birth */}
+          <div className="form-group form-group-half">
             <Field
-              label={t("personalInfo.dateOfBirth.label")}
+              label={t("yourDetails.dob")}
               type="date"
               name="dateOfBirth"
               value={formData.dateOfBirth}
               onChange={handleInputChange}
-              placeholder={t("personalInfo.dateOfBirth.placeholder")}
-              icon={<FaEnvelope />}
-              error={errors?.dateOfBirth}
-              forceShowError={forceShowError}
+              error={errors.dateOfBirth}
+              className="form-control"
             />
+          </div>
 
+          {/* Gender */}
+          <div className="form-group-half form-group">
             <SelectField
-              label={t("gender")}
+              label={t("yourDetails.gender")}
               name="gender"
               value={
                 formData.gender === 0
-                  ? "male"
+                  ? "Male"
                   : formData.gender === 1
-                  ? "female"
-                  : ""
+                    ? "Female"
+                    : ""
               }
               onChange={handleInputChange}
-              placeholder={t("personalInfo.gender.placeholder")}
-              icon={<FaPhone />}
-              error={errors?.gender}
-              forceShowError={forceShowError}
+              error={errors.gender}
+              className="form-control"
               options={[
-                { value: "", label: t("Select your gender") },
-                { value: "male", label: t("male") },
-                { value: "female", label: t("female") },
+                { label: t("Male"), value: "Male" },
+                { label: t("Female"), value: "Female" },
               ]}
             />
+          </div>
 
+          {/* License Number */}
+          <div className="form-group form-group-half">
             <Field
-              label={t("personalInfo.licenseNumber.label")}
+              label={t("yourDetails.license")}
+              type="text"
               name="licenseNumber"
               value={formData.licenseNumber}
               onChange={handleInputChange}
-              placeholder={t("personalInfo.licenseNumber.placeholder")}
-              icon={<FaIdCard />}
-              error={errors?.licenseNumber}
-              forceShowError={forceShowError}
+              error={errors.licenseNumber}
+              className="form-control"
+              placeholder={t("yourDetails.license")}
             />
+          </div>
 
+          {/* Phone Number */}
+          <div className="form-group form-group-half">
             <Field
-              label={t("personalInfo.phoneNumber.label")}
+              label={t("yourDetails.phone")}
+              type="text"
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleInputChange}
-              placeholder={t("personalInfo.phoneNumber.placeholder")}
-              icon={<FaIdCard />}
-              error={errors?.phoneNumber}
-              forceShowError={forceShowError}
+              error={errors.phoneNumber}
+              className="form-control"
+              placeholder={t("yourDetails.phone")}
             />
-
-            <div style={{ gridColumn: "span 2" }}>
+          </div>
               <FileField
                 label={t("personalInfo.licenseImage.label")}
                 name="licenseImage"
@@ -138,8 +152,8 @@ const Step1PersonalInfo = forwardRef(
                 error={errors?.licenseImage}
                 forceShowError={forceShowError}
               />
-            </div>
-          </div>
+        </fieldset>
+      </form>
         </div>
       </>
     );

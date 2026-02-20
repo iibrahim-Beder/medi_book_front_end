@@ -1,7 +1,6 @@
 import React from "react";
 
 const ProgressStepper = ({ currentStep, stepsMeta }) => {
-  console.log("stepsMeta", stepsMeta,"currentStep", currentStep);
   const progressPct = ((currentStep - 1) / (stepsMeta.length )) * 100;
 
   return (

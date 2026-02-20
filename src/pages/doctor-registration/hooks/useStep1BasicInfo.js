@@ -45,7 +45,7 @@ export const useStep1PersonalInfo = (isNew, doctorId = null) => {
         dateOfBirth: apiData.dateOfBirth
           ? apiData.dateOfBirth.split("T")[0]
           : "",
-        gender: apiData.gender ?? "",
+        gender: apiData.gender=== "Male" ? 0 : 1 ?? "",
         licenseNumber: apiData.licenseNumber || "",
         phoneNumber: apiData.phoneNumber || "",
         imagePath: apiData.imagePath || "",
@@ -63,7 +63,7 @@ export const useStep1PersonalInfo = (isNew, doctorId = null) => {
         licenseImage: files?.[0] || null,
       }));
     } else if (name === "gender") {
-      const genderValue = value === "male" ? 0 : 1;
+      const genderValue = value === "Male" ? 0 : 1;
       setFormData((prev) => ({ ...prev, gender: genderValue }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -115,22 +115,35 @@ export const useStep1PersonalInfo = (isNew, doctorId = null) => {
     const loader = toast.loading(t("loading"));
 
     try {
-      const payload = {
-        doctorId,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        dateOfBirth: formData.dateOfBirth
+      console.log("formData", formData);
+      if(isNew){
+       const  payload = {
+          doctorId,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          dateOfBirth: formData.dateOfBirth
           ? new Date(formData.dateOfBirth).toISOString()
           : null,
-        gender: formData.gender,
-        licenseNumber: formData.licenseNumber,
-        phoneNumber: formData.phoneNumber,
-        imagePath: formData.imagePath || "",
-      };
+          gender: formData.gender==="Male" ? 0 : 1,
+          licenseNumber: formData.licenseNumber,
+          phoneNumber: formData.phoneNumber,
+          // imagePath: formData.imagePath || "",
+        };
+          const response =await addDoctorBasicInfo(payload).unwrap()
+           if (response.succeeded) {
+        toast.success(t("personalInfo.success"));
+        return true;
+      }
+      }else{
+    const payload = buildPayload(fetchedData?.data ,formData)
+     if (!Object.keys(payload).length) {
+                toast("No changes detected");
+                return true;
+              }
+      
+      console.log("=========payload", payload);
 
-      const response = isNew
-        ? await addDoctorBasicInfo(payload).unwrap()
-        : await updateDoctorBasicInfo(payload).unwrap();
+      const response = await updateDoctorBasicInfo({ doctorId:doctorId, ...payload}).unwrap();
 
       if (response.succeeded) {
         toast.success(t("personalInfo.success"));
@@ -139,6 +152,7 @@ export const useStep1PersonalInfo = (isNew, doctorId = null) => {
 
       toast.error(response.message || t("personalInfo.error"));
       return false;
+    }
     } catch (error) {
       toast.error(error?.data?.message || t("personalInfo.error"));
       return false;
@@ -156,4 +170,33 @@ export const useStep1PersonalInfo = (isNew, doctorId = null) => {
     refetch, 
     error
   };
+};
+
+
+
+
+export const buildPayload = (original, updated) => {
+  const payload = {};
+  console.log("=======original", original, "updated", updated);
+
+  if (updated.dateOfBirth !==  original.dateOfBirth.split("T")[0]) {
+    payload.dateOfBirth = updated.dateOfBirth || null;
+  }
+  if (updated.firstName !== original.firstName) {
+    payload.firstName = updated.firstName || null;
+  }
+  if ((updated.gender )!== (original.gender=== "Male"? 0 : 1)) {
+    payload.gender = updated.gender ;
+  }
+  if (updated.lastName !== original.lastName) {
+    payload.lastName = updated.lastName|| null;
+  }
+  if (updated.licenseNumber !== original.licenseNumber) {
+    payload.licenseNumber = updated.licenseNumber || null;
+  }
+  if (updated.phoneNumber !== original.phoneNumber) {
+    payload.phoneNumber = updated.phoneNumber || null;
+  }
+console.log("payload======", payload,(updated.gender ),(( original.gender=== "Male"? 0 : 1)));
+  return payload;
 };

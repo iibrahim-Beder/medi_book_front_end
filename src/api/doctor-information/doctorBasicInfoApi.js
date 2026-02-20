@@ -31,14 +31,16 @@ export const doctorApi = baseApi.injectEndpoints({
     }),
 
     // Update doctor basic info
-    updateDoctorBasicInfo: builder.mutation({
-      query: ({ doctorId, ...data }) => ({
-        url: '/Doctors/UpdateDoctorBasicInfo',
-        method: 'PUT',
-        body: { doctorId, ...data },
-      }),
-      invalidatesTags: (result, error, { doctorId }) => [{ type: 'Doctor', id: doctorId }],
-    }),
+  updateDoctorBasicInfo: builder.mutation({
+  query: ({ doctorId, ...data }) => ({
+    url: '/Doctors/UpdateDoctorBasicInfo',
+    method: 'PUT',
+    body: { doctorId, ...data },
+  }),
+  invalidatesTags: (result, error, { doctorId }) => [
+    { type: 'Doctor', id: doctorId }
+  ],
+}),
   }),
 });
 
