@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import PersonalDetails from "./Profile-card/PersonalDetails";
 import ExperienceEducation from "./Profile-card/Education";
-import ProfileAndSpecialties from "./Profile-card/ProfileAndSpecialties";
 import Experience from "./2-Experans & Edition/ExperienceList";
+import Step2ProfessionalInfo from "../../test/Step2ProfessionalInfo";
 
 export default function ProfileSettings() {
   const [activeTab, setActiveTab] = useState("DoctorBasicInfo");
@@ -13,12 +13,12 @@ export default function ProfileSettings() {
 
   return (
     
-    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+    // <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
       <div className="dc-haslayout dc-dbsectionspace">
         <div className="dc-dashboardbox dc-dashboardtabsholder NewShado">
-          <div className="dc-dashboardboxtitle">
+          {/* <div className="dc-dashboardboxtitle">
             <h2>{t("profileSettings.title")}</h2>
-          </div>
+          </div> */}
                <div className="divtoconvert">
           {/* Tabs Navigation */}
           <div className="dc-dashboardtabs">
@@ -78,20 +78,20 @@ export default function ProfileSettings() {
           <div className="dc-tabscontent tab-content">
             {activeTab === "DoctorBasicInfo" && <PersonalDetails />}
             {activeTab === "Education" && <ExperienceEducation />}
-            {activeTab === "ProfileAndSpecialties" && <ProfileAndSpecialties />}
+            {activeTab === "ProfileAndSpecialties" && <Step2ProfessionalInfo insideUi={true} isNew={false} />}
             {activeTab === "Experience" && <Experience />}
           </div>
         </div>
 
-        <div className="dc-updatall">
+        {/* <div className="dc-updatall">
           <FaBullhorn />
           <span>{t("profileSettings.updateNote")}</span>
           <a className="dc-btn" href="#!">
             {t("profileSettings.saveUpdate")}
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
-    </div>
+    // </div>
   );
 }

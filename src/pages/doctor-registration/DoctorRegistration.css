@@ -438,3 +438,9 @@ display: inline-flex;
     backdrop-filter: blur(1px);
     border-radius: 30px;
 }
+
+.dc-rightarea.small{
+  float: right !important;
+  width: fit-content !important;
+  margin: 0 !important;
+}

@@ -636,7 +636,7 @@
   },
  "validation": {
   "dynamic": {
-    "minItems": "⚠️ You must add at least {{minItems}} item(s)",
+    "minItems": "You must add at least {{minItems}} {{title}}",
     "required": "⚠️ This field cannot be empty"
   },
     "step1": {

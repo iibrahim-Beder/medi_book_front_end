@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGetSpecialtiesQuery } from "../api/doctor-information/specialtiesApi";
 import SelectField from "../pages/ui/form-fields/SelectField";
+import EditableList from "./EditableList";
 
 export default function Test2() {
   const { data: specialties, isLoading } = useGetSpecialtiesQuery();
@@ -9,21 +10,24 @@ export default function Test2() {
     value: s.specialtyID,
     label: s.specialtyName
   })) || [];
+  
 
   const [selectedSpecialty, setSelectedSpecialty] = useState("");
-  console.log("selectedSpecialty",selectedSpecialty);
+const ids = selectedSpecialty?.specialty?.map(s => s.value);
+  console.log("selectedSpecialty",selectedSpecialty,ids);
 
   return (
     <div>
-      <SelectField
-        value={selectedSpecialty}
-        name="specialty"
-        label="Specialty"
-        options={mappedOptions}
-        onChange={(e) => setSelectedSpecialty(e.target.value)}
-      />
-
-      <h1>Test2</h1>
+<EditableList
+  title="Specialties"
+  options={mappedOptions}
+  isLoading={isLoading}
+  selectName="specialty"
+  selectLabel="Specialty"
+  fieldKey="value"
+  onChange={(items) =>
+  setSelectedSpecialty((prev) => ({ ...prev, specialty: items }))
+  }/>
     </div>
   );
 }

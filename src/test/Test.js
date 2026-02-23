@@ -5,6 +5,7 @@ import ButtonPrevious from "../pages/ui/form-fields/ButtonPrevious";
 import Step1PersonalInfo from "../pages/doctor-registration/steps/Step1PersonalInfo";
 import { useDoctorRegistration } from "./useDoctorRegistration";
 import SuccessMessage from "../pages/doctor-registration/steps/SuccessMessage";
+import Step2ProfessionalInfo from "./Step2ProfessionalInfo";
 
 export default function DoctorRegistration() {
   const { t } = useTranslation();
@@ -33,6 +34,13 @@ export default function DoctorRegistration() {
                 ref={stepRef}
                 doctorId={103}
                 isNew={!completedSteps.includes(1)}
+              />
+            )}
+            {currentStep === 2 && (
+              <Step2ProfessionalInfo
+                ref={stepRef}
+                doctorId={103}
+                isNew={!completedSteps.includes(2)}
               />
             )}
             <div

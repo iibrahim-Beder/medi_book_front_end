@@ -144,7 +144,7 @@ const Step1PersonalInfo = forwardRef(
             />
           </div>
               <FileField
-                label={t("personalInfo.licenseImage.label")}
+                label={t("Select your image")}
                 name="licenseImage"
                 accept="image/*"
                 onChange={handleInputChange}

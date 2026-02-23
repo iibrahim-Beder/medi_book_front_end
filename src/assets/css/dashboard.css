@@ -3014,7 +3014,7 @@ background-color: var(--scbccolor);
 }
 .dc-skillsform fieldset .form-group{
 	margin: 0;
-	padding-right:170px;
+	padding-right:80px;
 }
 .dc-skillsform fieldset .form-group.dc-btnarea{
 	top: 0;
@@ -3119,7 +3119,8 @@ background-color: var(--scbccolor);
 	min-height:fit-content;
 	display: flex;
 }
- .dc-experienceaccordion li .dc-accordioninnertitle{border-bottom: 0;}
+ .dc-experienceaccordion li .dc-accordioninnertitle,.dc-myskills li{border-bottom: 0;}
+ .dc-myskills li:last-child{border-bottom: 1px solid #eee;}
 .dc-experienceaccordion li:last-child .dc-accordioninnertitle{border-bottom: 1px solid #ddd;}
 .dc-accordioninnertitle .dc-rightarea a {
     width: 30px;
@@ -4896,10 +4897,10 @@ a.dc-back:hover{color: #55acee;}
     line-height: 50px;
     font-family: 'Linearicons-Free';
 }
-.dc-userform fieldset .form-group {
+/* .dc-userform fieldset .form-group {
     margin: 0;
     padding: 5px;
-}
+} */
 .form-disabeld .form-control:disabled, .form-control[readonly] {
     background: var(--cardcolor);
     padding: 10px 40px 10px 20px;
