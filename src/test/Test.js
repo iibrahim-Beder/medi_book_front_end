@@ -6,6 +6,7 @@ import Step1PersonalInfo from "../pages/doctor-registration/steps/Step1PersonalI
 import { useDoctorRegistration } from "./useDoctorRegistration";
 import SuccessMessage from "../pages/doctor-registration/steps/SuccessMessage";
 import Step2ProfessionalInfo from "./Step2ProfessionalInfo";
+import StepLocation from "./StepLocation";
 
 export default function DoctorRegistration() {
   const { t } = useTranslation();
@@ -36,11 +37,18 @@ export default function DoctorRegistration() {
                 isNew={!completedSteps.includes(1)}
               />
             )}
-            {currentStep === 2 && (
+            {currentStep === 3 && (
               <Step2ProfessionalInfo
                 ref={stepRef}
                 doctorId={103}
-                isNew={!completedSteps.includes(2)}
+                isNew={!completedSteps.includes(3)}
+              />
+            )}
+            {currentStep === 4 && (
+              <StepLocation
+                ref={stepRef}
+                doctorId={103}
+                isNew={!completedSteps.includes(4)}
               />
             )}
             <div

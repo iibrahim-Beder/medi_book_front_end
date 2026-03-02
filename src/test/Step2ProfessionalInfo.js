@@ -60,7 +60,7 @@ const Step2ProfessionalInfo = forwardRef(
 
     return (
       <>
-      <div className={`${insideUi ? "table-card insideUi" : ""}`}>
+      <div className={`${insideUi ||true? "table-card insideUi" : ""}`}>
         {insideUi ? (
           <div className="dc-tabscontenttitle">
             <h3>{t("professionalInfo.title")}</h3>
@@ -70,7 +70,6 @@ const Step2ProfessionalInfo = forwardRef(
         )}
 
         <div
-          className={` ${!insideUi ? "table-card" : ""} `}
           style={{ position: "relative" }}
         >
           <form className="dc-formtheme dc-userform">

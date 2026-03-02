@@ -1,25 +1,30 @@
 import React, { memo, useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { FaPlus, FaMapMarkerAlt } from "react-icons/fa";
+import { FaPlus, FaMapMarkerAlt, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { MdLocationOff } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import BlueMapPicker from "./MapSearch";
 import PopupMessage from "../../shared/PopupMessage";
+
 
 const LocationsAccordion = memo(({
   titlebackgroundColor = "var(--cardcolor)",
   locations = [],
   onAddLocation,
   onDeleteLocation,
-  onUpdateLocation,
   onSaveLocation,
+  onToggleActive, // new prop
   ComponentProp = null,
   header = true,
   allowMultipleOpen = false,
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState([]);
+  const [draftData, setDraftData] = useState({});
   const [deletePopup, setDeletePopup] = useState({ show: false, id: null, itemName: "" });
+  // new state for activation confirmation
+  const [activePopup, setActivePopup] = useState({ show: false, id: null, newActive: false, locationName: "" });
 
   useEffect(() => {
     const formattedData = locations.map(location => ({
@@ -29,6 +34,7 @@ const LocationsAccordion = memo(({
       isNew: location.isNew || false,
     }));
     setDataRead(formattedData);
+    setDraftData({});
   }, [locations]);
 
   const getLocationTitle = (location) => {
@@ -56,23 +62,85 @@ const LocationsAccordion = memo(({
     handleCloseDeleteConfirm();
   };
 
-  const handleEditClick = (id) => {
-    const updatedData = dataRead.map((item) => ({
-      ...item,
-      isExpanded: item.id === id ? !item.isExpanded : (allowMultipleOpen ? item.isExpanded : false)
-    }));
-   
-    setDataRead(updatedData);
-    updatedData.forEach((item) => {
-      if (onUpdateLocation && item.id) {
-        onUpdateLocation(item.id, "isExpanded", item.isExpanded);
-      }
-    });
+  // Handle active toggle confirmation
+  const handleShowActiveConfirm = (id, newActive, locationName) => {
+    setActivePopup({ show: true, id, newActive, locationName });
   };
 
-  const handleSave = (id, locationData) => {
+  const handleCloseActiveConfirm = () => {
+    setActivePopup({ show: false, id: null, newActive: false, locationName: "" });
+  };
+
+  const handleConfirmActiveToggle = () => {
+    if (activePopup.id !== null && onToggleActive) {
+      onToggleActive(activePopup.id, activePopup.newActive);
+    }
+    handleCloseActiveConfirm();
+  };
+
+
+  const handleEditClick = (id) => {
+    setDataRead(prev =>
+      prev.map(item => ({
+        ...item,
+        isExpanded: item.id === id
+          ? !item.isExpanded
+          : allowMultipleOpen
+          ? item.isExpanded
+          : false,
+      }))
+    );
+
+    const item = dataRead.find(i => i.id === id);
+    if (item && !item.isExpanded) {
+      setDraftData(prev => ({
+        ...prev,
+        [id]: {
+          lat: item.lat,
+          lng: item.lng,
+          displayName: item.displayName,
+          officialName: item.officialName,
+          isPrimary: item.isPrimary,
+          isActive: item.isActive, // include isActive in draft (optional)
+        },
+      }));
+    } else {
+      setDraftData(prev => {
+        const newDraft = { ...prev };
+        delete newDraft[id];
+        return newDraft;
+      });
+    }
+  };
+
+  const handleDraftChange = (id, field, value) => {
+    setDraftData(prev => ({
+      ...prev,
+      [id]: {
+        ...(prev[id] || dataRead.find(i => i.id === id) || {}),
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleSave = async (id) => {
+    const draft = draftData[id];
+    if (!draft) return;
+
     if (onSaveLocation) {
-      onSaveLocation(id, locationData);
+      const success = await onSaveLocation(id, draft);
+      if (success) {
+        setDataRead(prev =>
+          prev.map(item =>
+            item.id === id ? { ...item, isExpanded: false } : item
+          )
+        );
+        setDraftData(prev => {
+          const newDraft = { ...prev };
+          delete newDraft[id];
+          return newDraft;
+        });
+      }
     }
   };
 
@@ -83,7 +151,16 @@ const LocationsAccordion = memo(({
         onDeleteLocation(id);
       }
     } else {
-      handleEditClick(id);
+      setDataRead(prev =>
+        prev.map(item =>
+          item.id === id ? { ...item, isExpanded: false } : item
+        )
+      );
+      setDraftData(prev => {
+        const newDraft = { ...prev };
+        delete newDraft[id];
+        return newDraft;
+      });
     }
   };
 
@@ -93,7 +170,8 @@ const LocationsAccordion = memo(({
   };
 
   return (
-    <div className="dc-locationsmanager dc-tabsinfo two-level-accordion locations">
+    <div className="dc-userexperience custom-accordion">
+      {/* Header section (unchanged) */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         {ComponentProp}
         {header && (
@@ -120,95 +198,180 @@ const LocationsAccordion = memo(({
       </div>
 
       <ul className="dc-experienceaccordion accordion">
-        {dataRead.map((item) => (
-          <li key={item.id}>
-            <div
-              className="dc-accordioninnertitle"
-              style={{
-                borderColor: "#eee",
-                borderLeft: item.isNew
-                  ? "2px solid #ffa500"
-                  : "",
-                borderBottomLeftRadius: item.isExpanded ? "0" : "",
-                backgroundColor: `${titlebackgroundColor}`,
-              }}
-            >
-              <span
+        {dataRead.map((item) => {
+          const primaryCheckboxId = `primary-${item.id}`;
+          const activeCheckboxId = `active-${item.id}`;
+          const displayData = draftData[item.id] || item;
+
+          return (
+            <li key={item.id}>
+              {/* Accordion title (unchanged) */}
+              <div
+                className="dc-accordioninnertitle"
                 style={{
-                  flex: 1,
-                  minWidth: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  cursor: "pointer"
+                  borderColor: "#eee",
+                  borderLeft: item.isNew
+                    ? "2px solid #ffa500"
+                    : "",
+                  borderBottomLeftRadius: item.isExpanded ? "0" : "",
+                  backgroundColor: `${titlebackgroundColor}`,
                 }}
-                onClick={() => handleEditClick(item.id)}
               >
-                <FaMapMarkerAlt style={{ color: "var(--themecolor)" }} />
                 <span
                   style={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "inline-block",
+                    flex: 1,
+                    minWidth: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer"
                   }}
-                  title={getLocationTitle(item)}
+                  onClick={() => handleEditClick(item.id)}
                 >
-                  {truncateTitle(getLocationTitle(item), 60)}
-                </span>
-                {item.isNew && (
-                  <span style={{ color: "#ffa500", fontWeight: "bold", fontSize: "0.9em" }}>
-                    ({t("status.new")})
+                  {item.isPrimary && (
+                    <FaMapMarkerAlt style={{ color: "var(--themecolor)" }} />
+                  )}
+                  <span
+                    style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "inline-block",
+                    }}
+                    title={getLocationTitle(item)}
+                  >
+                    {truncateTitle(getLocationTitle(item), 60)}
+                  { item.isActive ? (
+                    <FaCheckCircle style={{
+                            color: "var(--green)",
+                            marginLeft: "8px",
+                            fontSize: "1em",
+                          }} />
+                  ) : (
+                    <FaTimesCircle style={{
+                            color: "var(--red)",
+                            marginLeft: "8px",
+                            fontSize: "1em",
+                          }} />
+                  )}
                   </span>
-                )}
-              </span>
+                  {item.isNew && (
+                    <span style={{ color: "#ffa500", fontWeight: "bold", fontSize: "0.9em" }}>
+                      ({t("status.new")})
+                    </span>
+                  )}
+                </span>
 
-              <div className="dc-rightarea" onClick={(e) => e.stopPropagation()}>
-                <a
-                  href="#!"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleEditClick(item.id);
-                  }}
-                  className="dc-addinfo dc-skillsaddinfo"
-                >
-                  <FiEdit2 />
-                </a>
-                {onDeleteLocation && (
+                <div className="dc-rightarea" onClick={(e) => e.stopPropagation()}>
                   <a
                     href="#!"
                     onClick={(e) => {
                       e.preventDefault();
-                      e.stopPropagation();
-                      handleShowDeleteConfirm(item.id, getLocationTitle(item));
+                      handleEditClick(item.id);
                     }}
-                    className="dc-deleteinfo"
-                    style={{ marginLeft: "8px" }}
+                    className="dc-addinfo dc-skillsaddinfo"
                   >
-                    <IoTrashOutline />
+                  <FiEdit2 />
                   </a>
-                )}
+                  {onDeleteLocation && (
+                    <a
+                      href="#!"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleShowDeleteConfirm(item.id, getLocationTitle(item));
+                      }}
+                      className="dc-deleteinfo"
+                      style={{ marginLeft: "8px" }}
+                    >
+                      <IoTrashOutline />
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div
-              style={{
-                backgroundColor: "var(--cardcolor)",
-              }}
-              className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
-            >
-              <div style={{ padding: "20px" }}>
-                <BlueMapPicker
-                  initial={item}
-                  onSave={(newLocation) => handleSave(item.id, newLocation)}
-                  handleCancel={() => handleCancel(item.id)}
-                />
+              {/* Expanded content */}
+              <div
+                style={{
+                  backgroundColor: "var(--cardcolor)",
+                }}
+                className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
+              >
+                <div>
+                  <BlueMapPicker
+                    value={displayData}
+                    onChange={(loc) => {
+                      handleDraftChange(item.id, "lat", loc.lat);
+                      handleDraftChange(item.id, "lng", loc.lng);
+                      handleDraftChange(item.id, "officialName", loc.officialName);
+                      handleDraftChange(item.id, "displayName", loc.displayName);
+                    }}
+                  />
+                  <div style={{ marginTop: "15px", display: "flex", gap: "20px", flexWrap: "wrap" }}>
+                    {/* Primary checkbox (draft-based) */}
+                    <div className="dc-on-off">
+                      <input style={{margin:"0 10px"}}
+                        type="checkbox"
+                        id={primaryCheckboxId}
+                        checked={!!displayData.isPrimary}
+                        onChange={(e) =>
+                          handleDraftChange(item.id, "isPrimary", e.target.checked)
+                        }
+                      />
+                      <label style={{margin:"0 8px"}} htmlFor={primaryCheckboxId}>
+                        <i></i>
+                      </label>
+                      <span>{t("Is Primary")}</span>
+                    </div>
+
+                    {/* Active checkbox (direct API call with confirmation) */}
+                    <div className="dc-on-off">
+                      <input
+                        type="checkbox"
+                        id={activeCheckboxId}
+                        checked={!!displayData.isActive}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          const newActive = e.target.checked;
+                          handleShowActiveConfirm(
+                            item.id,
+                            newActive,
+                            getLocationTitle(item)
+                          );
+                        }}
+                      />
+                      <label  style={{margin:"0 8px"}} htmlFor={activeCheckboxId}>
+                        <i></i>
+                      </label>
+                      <span>{t("Active")}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="dc-btnarea d-flex">
+                  <button
+                    type="button"
+                    style={{ margin: '0 5px' }}
+                    className="simple-btn"
+                    onClick={() => handleCancel(item.id)}
+                  >
+                    {t("Cancel")}
+                  </button>
+                  <button
+                    type="submit"
+                    className="second-btn"
+                    style={{ minWidth: "100px" }}
+                    onClick={() => handleSave(item.id)}
+                  >
+                    {t("Save")}
+                  </button>
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
 
+      {/* Delete confirmation popup (unchanged) */}
       {deletePopup.show && (
         <PopupMessage
           type="danger"
@@ -227,6 +390,33 @@ const LocationsAccordion = memo(({
             }
           ]}
           onClose={handleCloseDeleteConfirm}
+        />
+      )}
+
+      {/* Active toggle confirmation popup */}
+      {activePopup.show && (
+        <PopupMessage
+          type="warning"
+          title={t("popup.change_active_title")}
+          message={t(
+            activePopup.newActive
+              ? "popup.activate_location_confirm"
+              : "popup.deactivate_location_confirm",
+            { name: activePopup.locationName }
+          )}
+          buttons={[
+            {
+              text: t("actions.cancel"),
+              onClick: handleCloseActiveConfirm,
+              variant: "secondary"
+            },
+            {
+              text: t("actions.confirm"),
+              onClick: handleConfirmActiveToggle,
+              variant: "primary"
+            }
+          ]}
+          onClose={handleCloseActiveConfirm}
         />
       )}
     </div>

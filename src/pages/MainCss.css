@@ -1452,3 +1452,9 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 .table-card.insideUi textarea, select, input,.dc-myskills li{
   background-color: var(--badybkcolor) !important;
 }
+
+.loading-in-side.loading-in-right{
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+}
