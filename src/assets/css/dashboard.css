@@ -5750,6 +5750,7 @@ html[dir="rtl"]  {
 }
 /* <<< */
 @media (max-width: 720px){
+	.shift-form .dc-on-off{margin-top: 10px !important;	}
 /* dashboards page */
 .divider-vertical{
 	display: none;

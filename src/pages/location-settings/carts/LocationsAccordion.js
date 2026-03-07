@@ -6,6 +6,7 @@ import { MdLocationOff } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import BlueMapPicker from "./MapSearch";
 import PopupMessage from "../../shared/PopupMessage";
+import { FaMapLocationDot } from "react-icons/fa6";
 
 
 const LocationsAccordion = memo(({
@@ -229,7 +230,7 @@ const LocationsAccordion = memo(({
                   onClick={() => handleEditClick(item.id)}
                 >
                   {item.isPrimary && (
-                    <FaMapMarkerAlt style={{ color: "var(--themecolor)" }} />
+                    <FaMapLocationDot style={{ color: "var(--themecolor)" }} />
                   )}
                   <span
                     style={{

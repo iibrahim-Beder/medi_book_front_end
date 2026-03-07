@@ -7,6 +7,7 @@ import { useDoctorRegistration } from "./useDoctorRegistration";
 import SuccessMessage from "../pages/doctor-registration/steps/SuccessMessage";
 import Step2ProfessionalInfo from "./Step2ProfessionalInfo";
 import StepLocation from "./StepLocation";
+import ShiftStep from "./ShiftStep";
 
 export default function DoctorRegistration() {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ export default function DoctorRegistration() {
   console.log("currentStep", currentStep);
   return (
     <div className="doctor-registration">
-      <div className="container" style={{ maxWidth: "1150px" }}>
+      <div className="container" style={{ maxWidth: "1150px", overflow: "visible" }}>
         <ProgressStepper
           currentStep={currentStep}
           completedSteps={completedSteps}
@@ -46,6 +47,13 @@ export default function DoctorRegistration() {
             )}
             {currentStep === 4 && (
               <StepLocation
+                ref={stepRef}
+                doctorId={103}
+                isNew={!completedSteps.includes(4)}
+              />
+            )}
+            {currentStep === 5 && (
+              <ShiftStep
                 ref={stepRef}
                 doctorId={103}
                 isNew={!completedSteps.includes(4)}

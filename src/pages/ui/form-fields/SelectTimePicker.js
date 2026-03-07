@@ -301,13 +301,7 @@ const SelectTimePicker = ({
   return (
     <div className={`form-group ${half ? "form-group-half" : ""} ${showError ? "has-error" : ""}`}>
       {label && (
-        <label htmlFor={name} style={{
-          display: 'block',
-          marginBottom: '8px',
-          fontSize: '14px',
-          fontWeight: '500',
-          color: '#012047'
-        }}>
+        <label htmlFor={name}>
           {label}
           {required && <span className="required">*</span>}
         </label>
@@ -410,8 +404,7 @@ const SelectTimePicker = ({
                     }}>
                       Hour
                     </div>
-                    <button
-                      onClick={scrollHourUp}
+                    <button type="button" onClick={scrollHourUp}
                       style={{
                         width: '40px',
                         height: '32px',
@@ -452,6 +445,7 @@ const SelectTimePicker = ({
                       {selectedHour}
                     </div>
                     <button
+                    type="button" 
                       onClick={scrollHourDown}
                       style={{
                         width: '40px',
@@ -505,6 +499,7 @@ const SelectTimePicker = ({
                       Min
                     </div>
                     <button
+                    type="button" 
                       onClick={scrollMinuteUp}
                       style={{
                         width: '40px',
@@ -546,6 +541,7 @@ const SelectTimePicker = ({
                       {selectedMinute}
                     </div>
                     <button
+                    type="button" 
                       onClick={scrollMinuteDown}
                       style={{
                         width: '40px',
@@ -589,6 +585,7 @@ const SelectTimePicker = ({
                       AM/PM
                     </div>
                     <button
+                    type="button" 
                       onClick={togglePeriod}
                       style={{
                         borderRadius: '8px',
@@ -613,10 +610,10 @@ const SelectTimePicker = ({
                   gap: '12px',
                   justifyContent: 'flex-end'
                 }}>
-                  <button className='simple-btn'onClick={handleCancel}>
+                  <button type="button"  className='simple-btn'onClick={handleCancel}>
                     Cancel
                   </button>
-                  <button className='second-btn p-0'onClick={handleTimeSelect}>
+                  <button  type="button" className='second-btn p-0'onClick={handleTimeSelect}>
                     Set Time
                   </button>
                 </div>

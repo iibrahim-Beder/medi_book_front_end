@@ -1,13 +1,12 @@
-// components/WeeklyShift.jsx
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import SiftForm from "./SiftForm";
-import ShiftStep from "./ShiftStep";
-import useShift from "./useShift";
 import { Modal } from "react-bootstrap";
 import { MdClose } from 'react-icons/md';
-
-export default function WeeklyShift({ doctorId=103 }) {
+import useShift from "./hooks/useShift";
+import SiftForm from "./components/ShiftForm";
+import ShiftStep from "../../test/ShiftStep";
+import Loader from "../shared/Loader";
+export default function ShiftsManagement({ doctorId=103 }) {
   const [activeTab, setActiveTab] = useState("Sunday");
   const { t } = useTranslation();
 
@@ -21,16 +20,10 @@ export default function WeeklyShift({ doctorId=103 }) {
     { key: "Saturday", label: t("Saturday"), dayIndex: 6 },
   ];
 
-  const { shiftsByDay, isLoading, addShifts, updateShift,locations } = useShift(doctorId=103);
+  const { shiftsByDay, isLoading, addShifts, updateShift,locations,templates,toggleActiveStatus } = useShift(doctorId=103);
  const [openModal, setOpenModal] = useState(false);
-  // templates اللي اعطيتهم
-  const templates = [
-    { templateId: 0, name: "Select time template", startTime: "", endTime: "" },
-    { templateId: 7, name: "Morning", startTime: "08:00", endTime: "12:00" },
-    { templateId: 8, name: "Afternoon", startTime: "12:00", endTime: "16:00" },
-    { templateId: 9, name: "Evening", startTime: "16:00", endTime: "20:00" },
-    { templateId: 11, name: "Night Shift", startTime: "20:00", endTime: "23:59" },
-  ];
+
+
 
   return (
     <div className="col-12">
@@ -68,12 +61,11 @@ export default function WeeklyShift({ doctorId=103 }) {
           </button>
             </div>
 
-            {isLoading ? (
-              <div>Loading...</div>
-            ) : (
+            {isLoading  ? (Loader("loading-in-side loadin-in-tab-content")) : (
               tabs.map((tab) =>
                 activeTab === tab.key ? (
                   <SiftForm
+                    onToggleActive={toggleActiveStatus}
                     key={tab.key}
                     dayIndex={tab.dayIndex}
                     shifts={shiftsByDay[tab.dayIndex] || []}
@@ -97,44 +89,6 @@ export default function WeeklyShift({ doctorId=103 }) {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export const AddModal = ({ 
   show, 
   onHide, 
@@ -163,7 +117,7 @@ export const AddModal = ({
         </button>
       </Modal.Header>
       <Modal.Body className="p-0">
-        <div className="modal-content-custom">
+        <div className="modal-content-custom" style={{overflowY:"visible"}} >
         <ShiftStep insidUi={true}/>
         </div>
       </Modal.Body>

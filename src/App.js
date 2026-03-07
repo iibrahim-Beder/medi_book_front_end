@@ -33,6 +33,7 @@ import AppointmentsPage from "./pages/appointmentList/AppointmentsPage";
 import WeeklyTimeSlots from "./pages/making-slots/WeeklyTimeSlot";
 import ScrollToTop from "./context/ScrollToTop";
 import Authentication from "./pages/login/Authentication";
+import ShiftsManagement from "./pages/shifts-management/ShiftsManagement";
 
 
 function App() {
@@ -150,6 +151,10 @@ const { i18n } = useTranslation();
                     <Route
                       path="notifications"
                       element={<NotificationsPage />}
+                    />
+                    <Route
+                      path="shifts-management"
+                      element={<ShiftsManagement />}
                     />
                     <Route
                       path="reviews"

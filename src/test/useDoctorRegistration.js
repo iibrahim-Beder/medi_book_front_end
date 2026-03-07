@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 
 
 export function useDoctorRegistration() {
-  const [currentStep, setCurrentStep] = useState(4)
+  const [currentStep, setCurrentStep] = useState(5)
   const [completedSteps, setCompletedSteps] = useState([1,3,4])
   const stepRef = useRef(null)
 

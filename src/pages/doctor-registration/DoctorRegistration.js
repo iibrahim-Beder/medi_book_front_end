@@ -15,7 +15,6 @@ import PopupMessage from "../shared/PopupMessage";
 import LocationField from "../location-settings/carts/LocationField";
 import SectionTitle from "../shared/SectionTitle";
 import { CiLocationOn } from "react-icons/ci";
-import ShiftsManager from "../shift-settings/ShiftsManager";
 import { PiCalendarCheckLight } from "react-icons/pi";
 import MakeSlotsMain from "../making-slots/MakeSlostMain";
 import { CiClock1 } from "react-icons/ci";
@@ -261,27 +260,6 @@ setPopupErrors(t("popup.skipToStep7"));
                 },
               });
             }}
-          />
-        );
-      case 5:
-        return (
-          <ShiftsManager
-            regist={true}
-            header={false}
-            formData={formData}
-            onShiftsChange={(updatedShifts) => handleInputChange({
-              target: {
-                name: 'shifts',
-                value: updatedShifts
-              }
-            })}
-            errors={validationErrors}
-            ComponentProp={
-              <SectionTitle
-                icon={<PiCalendarCheckLight />}
-                title={t("shifts.title")}
-              />
-            }
           />
         );
       // case 6:

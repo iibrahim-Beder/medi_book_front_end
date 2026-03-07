@@ -1458,3 +1458,97 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
     display: flex;
     align-items: center;
 }
+
+.days-availability-checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.day-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.day-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.day-label.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.day-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.day-label.disabled .day-checkbox {
+  cursor: not-allowed;
+}
+
+.day-name {
+  min-width: 100px;
+  font-weight: 500;
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-icon {
+  font-size: 1.1rem;
+}
+
+.status-icon.active {
+  color: #4caf50;
+}
+
+.status-icon.reactivate {
+  color: #ff9800;
+}
+
+.status-text {
+  font-size: 0.85rem;
+  color: #666;
+  margin-left: 4px;
+}
+
+@media (max-width: 768px) {
+  .day-label {
+    flex-wrap: wrap;
+  }
+  .day-name {
+    min-width: 80px;
+  }
+}
+
+.dc-tabscontenttitle.title-card{
+  background-color: var(--cardcolor);
+    border: 1px solid #eee;
+    border-left: none;
+    border-radius: 6px;
+    width: 37%;
+    min-width: 260px;
+}
+.dc-tabscontenttitle.title-card h3{
+      font-weight: 500;
+    font-size: 17px;
+}
+.loadin-in-tab-content{
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    display: block;
+}

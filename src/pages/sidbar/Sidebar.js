@@ -5,6 +5,7 @@ import { PiClockUserThin } from "react-icons/pi";
 
 
 // import icons 
+import { SlCalender } from "react-icons/sl";
 import DashboardIcon from "../../assets/icons/DashboardIcon";
 import { BsList } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
@@ -148,6 +149,12 @@ let iconSize=20;
               <Link to="/account-settings">
                 <LiaUserCogSolid className="icon" />
                 <span>{t("sidebar.accountSettings")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/shifts-management">
+                <SlCalender className="icon" />
+                <span>{t("Shifts Management")}</span>
               </Link>
             </li>
             <li>
