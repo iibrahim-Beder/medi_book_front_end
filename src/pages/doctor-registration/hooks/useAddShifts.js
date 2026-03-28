@@ -34,7 +34,7 @@ const useAddShifts = (doctorId) => {
     { templateId: 7, name: "Morning", startTime: "08:00", endTime: "12:00" },
     { templateId: 8, name: "Afternoon", startTime: "12:00", endTime: "16:00" },
     { templateId: 9, name: "Evening", startTime: "16:00", endTidme: "20:00" },
-    { templateId: 11, name: "Night Shift", startTime: "20:00", endTime: "23:59" },
+    { templateId: 11, name: "Night", startTime: "20:00", endTime: "23:59" },
   ];
 
   const [addShifts, { isLoading: isAdding }] = useAddShiftsStepToDoctorMutation();

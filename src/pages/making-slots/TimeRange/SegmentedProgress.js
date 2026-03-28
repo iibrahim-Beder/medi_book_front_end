@@ -38,23 +38,54 @@ export function formatHour(hour, short = true) {
   } else
     return `${String(displayHour).padStart(2, "0")}:${String(m).padStart(2, "0")} ${period}`;
 }
+function timeStringToNumber(timeStr) {
+  if (!timeStr) return 0;
+  const [h, m] = timeStr.split(":").map(Number);
+  return h + m / 60;
+}
+const isInActiveRange = (seg, activeRange) => {
+  if (!activeRange) return false;
+
+  const start = timeStringToNumber(activeRange.start);
+  const end = timeStringToNumber(activeRange.end);
+
+  return seg.start < end && seg.end > start;
+};
 export default function SegmentedProgress({
-  segments,
+  segments = [],
   mode = "continuous",
   showTimeline = true,
   height = 16,
   gap = 8,
   colors = {
-    busy: "#1e90ff", // blue
-    free: "#e6f4ff", // light
-    break: "#ffc107", // neutral
+    busy: "#1e90ff",
+    free: "#e6f4ff",
+    break: "#ffc107",
+
+    "active-busy": "#86efac",
+    // "active-free": "#86efac",
+    "active-free": "#e6f4ff",
+    "active-alone": "#bbf7d0",
+
     other: "#cbd5e1",
   },
   showTooltips = true,
   className = "",
   handleSelectRange,
   activeRange,
+  activeRangeValue,
+  lastActiveId,
 }) {
+  const parsedActiveRange = activeRangeValue
+    ? {
+        start: timeStringToNumber(activeRangeValue.start),
+        end: timeStringToNumber(activeRangeValue.end),
+      }
+    : null;
+
+  const processedSegments = useMemo(() => {
+    return splitSegmentsByActiveRange(segments, parsedActiveRange);
+  }, [segments, parsedActiveRange]);
   // normalize to ratios (0..1)
   const [hoverInfo, setHoverInfo] = useState(null);
   const { normalized, min, max, total } = useMemo(() => {
@@ -64,17 +95,92 @@ export default function SegmentedProgress({
     const max = Math.max(...segments.map((s) => s.end));
     const total = Math.max(0.0001, max - min);
 
-    const normalized = segments.map((s, i) => ({
-      ...s,
-      key: i,
-      ratio: (s.end - s.start) / total,
-      display: getTimelineLabel(s),
-    }));
+    const normalized = processedSegments.map((s, i, arr) => {
+      console.log("===s", s);
+      const isActive = isInActiveRange(s, activeRangeValue);
+      const prev = arr[i - 1];
+      const next = arr[i + 1];
 
+      const prevIsFree =
+        prev &&
+        (prev.type === "free" || isInActiveRange(prev, activeRangeValue));
+
+      const nextIsFree =
+        next &&
+        (next.type === "free" || isInActiveRange(next, activeRangeValue));
+
+      let visualType = s.type;
+      let grouped = false;
+
+      if (isActive) {
+        visualType = "active-busy";
+        grouped = true;
+      }
+      if (s.ruleId === lastActiveId && !isActive) {
+        s.type = "free";
+        visualType = "free";
+      } else if (
+        s.type === "free" &&
+        ((prev && isInActiveRange(prev, activeRangeValue)) ||
+          (next && isInActiveRange(next, activeRangeValue)))
+      ) {
+        visualType = "free";
+        grouped = true;
+      }
+      console.log("===s after", s, visualType);
+
+      return {
+        ...s,
+        type: isActive ? "free" : s.type,
+        key: i,
+        ratio: (s.end - s.start) / total,
+        display: getTimelineLabel(s),
+        visualType,
+        grouped,
+      };
+    });
     return { normalized, min, max, total };
   }, [segments]);
+  const mergedSegments = useMemo(() => {
+    if (!normalized.length) return [];
 
-  const ticks = useMemo(() => buildTicks(min, max, 1), [min, max]);
+    const result = [];
+    for (let i = 0; i < normalized.length; i++) {
+      const groupStartIndex = i;
+      const current = normalized[i];
+
+      if (current.grouped || current.visualType === "active-alone") {
+        let start = current.start;
+        let end = current.end;
+        let ratio = current.ratio;
+
+        let visualType = current.visualType;
+
+        while (i + 1 < normalized.length && normalized[i + 1].type === "free") {
+          const next = normalized[i + 1];
+          end = next.end;
+          ratio += next.ratio;
+          i++;
+        }
+
+        result.push({
+          ...current,
+          start,
+          end,
+          ratio,
+          merged: true,
+          visualType,
+          children: normalized.slice(groupStartIndex, i + 1),
+        });
+      } else {
+        result.push(current);
+      }
+    }
+
+    return result;
+  }, [normalized]);
+
+  const ticks = useMemo(() => buildTicks(min, max, 0.5), [min, max]);
   const Ruler = (
     <div style={{ position: "relative", height: 20, marginBottom: 6 }}>
       {ticks.map((t, i) => {
@@ -89,7 +195,7 @@ export default function SegmentedProgress({
               transform: "translateX(-50%)",
               textAlign: "center",
               fontSize: 11,
-              color: "#475569",
+              color: "var(--terthemecolor)",
               zIndex: 1,
               paddingLeft: `${gap}px`,
             }}
@@ -143,11 +249,10 @@ export default function SegmentedProgress({
                 }}
                 onClick={() => handleSelectRange(seg)}
                 onMouseEnter={(e) => {
-                  const rect = e.target.getBoundingClientRect();
                   setHoverInfo({
                     seg,
-                    x: rect.left + rect.width / 2,
-                    y: rect.bottom,
+                    x: e.clientX,
+                    y: e.clientY,
                   });
                 }}
                 onMouseLeave={() => setHoverInfo(null)}
@@ -172,32 +277,85 @@ export default function SegmentedProgress({
             gap: `${gap}px`,
           }}
         >
-          {normalized.map((seg, idx) => (
-            <div
-              onClick={() => handleSelectRange(seg)}
-              onMouseEnter={(e) => {
-                const rect = e.target.getBoundingClientRect();
-                setHoverInfo({
-                  seg,
-                  x: rect.left + rect.width / 2,
-                  y: rect.bottom,
-                });
-              }}
-              onMouseLeave={() => setHoverInfo(null)}
-              key={seg.key}
-              className={`sp-pill ${activeRange === seg.id ? "active" : ""} `}
-              style={{
-                flex: seg.ratio,
-                background:
-                  seg.type && colors[seg.type]
-                    ? colors[seg.type]
-                    : colors.other,
-                height,
-                borderRadius: 6, // pill shape
-                cursor: "pointer",
-              }}
-            />
-          ))}
+          {mergedSegments.map((seg, idx) => {
+            const isMerged = seg.merged;
+            const mergedChildren = seg.children;
+
+            return (
+              <div
+                key={seg.key}
+                className={`sp-pill ${activeRange === seg.id ? "active" : ""}`}
+                style={{
+                  flex: seg.ratio,
+                  height,
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  overflow: "hidden", // ensures children stay inside rounded corners
+                }}
+                onClick={() => handleSelectRange(seg)}
+                // onClick={() =>
+                //   handleSelectRange({
+                //     start: seg.start,
+                //     end: seg.end,
+                //     isMerged: seg.merged,
+                //     type: seg.visualType || seg.type,
+                //   })
+                // }
+                onMouseEnter={(e) => {
+                  setHoverInfo({
+                    seg,
+                    x: e.clientX,
+                    y: e.clientY,
+                  });
+                }}
+                onMouseLeave={() => setHoverInfo(null)}
+              >
+                {isMerged ? (
+                  // Render children side by side with no gaps
+                  <div
+                    style={{ display: "flex", height: "100%", width: "100%" }}
+                  >
+                    {mergedChildren.map((child) => {
+                      // Compute width of child inside this merged pill
+                      const childRatio =
+                        (child.end - child.start) / (seg.end - seg.start);
+                      const bgColor =
+                        child.visualType && colors[child.visualType]
+                          ? colors[child.visualType]
+                          : child.type && colors[child.type]
+                            ? colors[child.type]
+                            : colors.other;
+
+                      return (
+                        <div
+                          key={child.key}
+                          style={{
+                            flex: childRatio,
+                            background: bgColor,
+                            height: "100%",
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                ) : (
+                  // Single segment: just background color
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        seg.visualType && colors[seg.visualType]
+                          ? colors[seg.visualType]
+                          : seg.type && colors[seg.type]
+                            ? colors[seg.type]
+                            : colors.other,
+                    }}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
         {hoverInfo && (
           <div
@@ -208,7 +366,7 @@ export default function SegmentedProgress({
               left: hoverInfo.x,
               transform: "translateX(-50%)",
               padding: "6px 10px",
-              background: "#fff",
+              background: "var(--cardcolor)",
               border: "1px solid #e2e8f0",
               borderRadius: 6,
               boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
@@ -219,31 +377,60 @@ export default function SegmentedProgress({
           >
             <div className="d-flex justify-content-between">
               <strong>{hoverInfo.seg.type.toUpperCase()}</strong>
-              <strong>{hoverInfo.seg.end-hoverInfo.seg.start}h</strong>
+              <strong>{hoverInfo.seg.end - hoverInfo.seg.start}h</strong>
             </div>
             <div>Start: {formatHour(hoverInfo.seg.start, false)}</div>
             <div>End: {formatHour(hoverInfo.seg.end, false)}</div>
-            {hoverInfo.seg.price && <div className="d-flex justify-content-between">Slot Price: <strong>{hoverInfo.seg.price}</strong></div>}
+            {hoverInfo.seg.price && (
+              <div className="d-flex justify-content-between">
+                Slot Price: <strong>{hoverInfo.seg.price}</strong>
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 }
+function splitSegmentsByActiveRange(segments, activeRange) {
+  if (!activeRange) return segments;
 
-// SegmentedProgress.propTypes = {
-//   segments: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       start: PropTypes.number.isRequired,
-//       end: PropTypes.number.isRequired,
-//       type: PropTypes.string,
-//       label: PropTypes.string,
-//     }),
-//   ).isRequired,
-//   mode: PropTypes.oneOf(["continuous", "segmented"]),
-//   height: PropTypes.number,
-//   gap: PropTypes.number,
-//   colors: PropTypes.object,
-//   showTooltips: PropTypes.bool,
-//   className: PropTypes.string,
-// };
+  const result = [];
+
+  segments.forEach((seg) => {
+    const overlapStart = Math.max(seg.start, activeRange.start);
+    const overlapEnd = Math.min(seg.end, activeRange.end);
+
+    const hasOverlap = overlapStart < overlapEnd;
+
+    if (!hasOverlap) {
+      result.push(seg);
+      return;
+    }
+
+    if (seg.start < overlapStart) {
+      result.push({
+        ...seg,
+        end: overlapStart,
+      });
+    }
+
+    result.push({
+      ...seg,
+      start: overlapStart,
+      end: overlapEnd,
+      type: "free",
+      visualType: "active-busy",
+      isActivePart: true,
+    });
+
+    if (seg.end > overlapEnd) {
+      result.push({
+        ...seg,
+        start: overlapEnd,
+      });
+    }
+  });
+
+  return result;
+}

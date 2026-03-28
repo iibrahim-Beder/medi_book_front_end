@@ -22,6 +22,7 @@ const TimeRangePicker = ({
   required = false,
   width = "auto",
   timeline = [],
+  lastActiveId,
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
@@ -67,10 +68,12 @@ const TimeRangePicker = ({
     toggleStartPeriod,
     toggleEndPeriod,
 
+    validationError,
+
     setManualStartInput,
     setManualEndInput,
     setShowTimePickerUI,
-  } = useTimeRangePicker(value?.start || "", value?.end || "", onChange, name);
+  } = useTimeRangePicker(value?.start || "", value?.end || "", onChange, name,setShowDropdown);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -78,10 +81,12 @@ const TimeRangePicker = ({
         setTouched(true);
         if (onBlur) {
           const syntheticEvent = {
-            target: {
+            // target: {farge
               name: name,
-              value: { start: startTime, end: endTime },
-            },
+              // value: {
+                 start: startTime, end: endTime 
+                // },
+            // },
           };
           onBlur(syntheticEvent);
         }
@@ -203,13 +208,14 @@ const TimeRangePicker = ({
               autoComplete="off"
               style={{
                 padding: "10px 40px 10px 16px",
+                color:"var(--terthemecolor)",
                 width: "100%",
                 borderRadius: "8px",
                 border:
                   inputError || showError
                     ? "1px solid #ff4d4f"
                     : "1px solid #d0d5dd",
-                color: "#012047",
+                // color: "#012047",
                 fontSize: "14px",
                 fontWeight: "500",
                 boxSizing: "border-box",
@@ -227,7 +233,7 @@ const TimeRangePicker = ({
               <div
                 className="time-picker-dropdown list-date-option open"
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: "var(--badybkcolor)",
                   border: "1px solid #e2e8f0",
                   borderRadius: "12px",
                   boxShadow:
@@ -237,7 +243,7 @@ const TimeRangePicker = ({
                   marginTop: "8px",
                   padding: "20px",
                   width: "100%",
-                  minWidth: "700px",
+                  minWidth: "250px",
                   right: 0,
                 }}
               >
@@ -249,6 +255,8 @@ const TimeRangePicker = ({
                     gap={3}
                     handleSelectRange={handleSelectRange}
                     activeRange={activeRange}
+                    activeRangeValue={value}
+                    lastActiveId={lastActiveId}
                   />
                 </div>
 
@@ -272,6 +280,20 @@ const TimeRangePicker = ({
                         }}
                       >
                         <div>
+                          <div>
+                            Selected Time :
+                            <b
+                              style={{
+                                fontSize: "14px",
+                                fontWeight: "600",
+                                // color: "#0369a1",
+                                marginLeft: "4px",
+                              }}
+                            >
+                              {" "}
+                              {formatTimeForDisplay(value.start)} - {formatTimeForDisplay(value.end)}
+                            </b>
+                          </div>
                           <div>
                             Available Range:
                             <b
@@ -298,6 +320,18 @@ const TimeRangePicker = ({
                             {endTime &&
                               ` | End: ${formatTimeForDisplay(endTime)}`}
                           </div>
+                          {validationError && (
+  <div
+    style={{
+      fontSize: "12px",
+      color: "#ff4d4f",
+      marginTop: "4px",
+      fontWeight: 500,
+    }}
+  >
+    {validationError}
+  </div>
+)}
                         </div>
                       </div>
                     </div>

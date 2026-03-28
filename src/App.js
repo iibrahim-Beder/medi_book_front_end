@@ -102,7 +102,6 @@ const { i18n } = useTranslation();
           <Route path="/Authentication" element={<Authentication />} />
           <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="how-v1" element={<Test />} />
 
           <Route
             path="/*"
@@ -112,6 +111,7 @@ const { i18n } = useTranslation();
                 <Sidebar />
                 <div className="contentdiv">
                   <Routes>
+                <Route path="how-v1" element={<Test />} />
                     <Route path="dashboard" element={<DashboardMain />} />
                     <Route
                       path="appointments"

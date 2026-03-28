@@ -350,7 +350,7 @@ const SelectTimePicker = ({
                 width: "100%",
                 borderRadius: "8px",
                 border: inputError || showError ? "1px solid #ff4d4f" : "1px solid #d0d5dd",
-                color: "#012047",
+                // color: "#012047",
                 fontSize: "14px",
                 fontWeight: "500",
                 boxSizing: "border-box",

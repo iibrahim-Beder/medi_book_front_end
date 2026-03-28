@@ -1,180 +1,179 @@
-// components/WeeklyShift.jsx
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import SiftForm from "./SiftForm";
-import ShiftStep from "./ShiftStep";
-import useShift from "./useShift";
-import { Modal } from "react-bootstrap";
-import { MdClose } from 'react-icons/md';
 
-export default function WeeklyShift({ doctorId=103 }) {
-  const [activeTab, setActiveTab] = useState("Sunday");
-  const { t } = useTranslation();
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
+import { useGetDoctorShiftRulesQuery } from '../api/doctor-information/generationRulesApi';
+import { FaChevronDown } from "react-icons/fa";
 
-  const tabs = [
-    { key: "Sunday", label: t("Sunday"), dayIndex: 0 },
-    { key: "Monday", label: t("Monday"), dayIndex: 1 },
-    { key: "Tuesday", label: t("Tuesday"), dayIndex: 2 },
-    { key: "Wednesday", label: t("Wednesday"), dayIndex: 3 },
-    { key: "Thursday", label: t("Thursday"), dayIndex: 4 },
-    { key: "Friday", label: t("Friday"), dayIndex: 5 },
-    { key: "Saturday", label: t("Saturday"), dayIndex: 6 },
-  ];
-
-  const { shiftsByDay, isLoading, addShifts, updateShift,locations } = useShift(doctorId=103);
- const [openModal, setOpenModal] = useState(false);
-  // templates اللي اعطيتهم
-  const templates = [
-    { templateId: 0, name: "Select time template", startTime: "", endTime: "" },
-    { templateId: 7, name: "Morning", startTime: "08:00", endTime: "12:00" },
-    { templateId: 8, name: "Afternoon", startTime: "12:00", endTime: "16:00" },
-    { templateId: 9, name: "Evening", startTime: "16:00", endTime: "20:00" },
-    { templateId: 11, name: "Night Shift", startTime: "20:00", endTime: "23:59" },
-  ];
+export function StatusToggle() {
+  const [status, setStatus] = useState("active");
 
   return (
-    <div className="col-12">
-      <div className="dc-haslayout dc-dbsectionspace accordion-table ">
-        <div className="dc-dashboardbox dc-dashboardtabsholder setting">
-          <div className="dc-dashboardtabs" style={{ width: "20%" }}>
-            <ul className="dc-tabstitle nav navbar-nav">
-              {tabs.map((tab) => (
-                <li className="nav-item" key={tab.key}>
-                  <a
-                    href={`#${tab.key}`}
-                    className={`${activeTab === tab.key ? "active" : ""}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActiveTab(tab.key);
-                    }}
-                  >
-                    {tab.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <div className="toggle-wrapper">
+      <button
+        className={`toggle-btn ${status === "active" ? "active" : ""}`}
+        onClick={() => setStatus("active")}
+      >
+        Active
+      </button>
 
-          <div className={`dc-tabscontent`} style={{ width: "80%", justifyContent: "center" }}>
-            <div className="table-header" style={{ marginBottom: "10px" }}>
-              <div>
-                <h3 className="table-title">{`Shift ${activeTab}`}</h3>
-                {/* <h6 className="table-subtitle">subtitle</h6> */}
-              </div>
-                  <button className="add-btn" 
-                  onClick={() => setOpenModal(true)}
-                  >
-            {t('Add Shift')}
-          </button>
-            </div>
-
-            {isLoading ? (
-              <div>Loading...</div>
-            ) : (
-              tabs.map((tab) =>
-                activeTab === tab.key ? (
-                  <SiftForm
-                    key={tab.key}
-                    dayIndex={tab.dayIndex}
-                    shifts={shiftsByDay[tab.dayIndex] || []}
-                    templates={templates}
-                    locations={locations}
-                    onAdd={addShifts}
-                    onUpdate={updateShift}
-                    t={t}
-                  />
-                ) : null
-              )
-            )}
-          </div>
-        </div>
-      </div>
- 
- <AddModal show={openModal} onHide={() => setOpenModal(false)}  >
- </AddModal>
-
-
+      <button
+        className={`toggle-btn ${status === "inactive" ? "inactive" : ""}`}
+        onClick={() => setStatus("inactive")}
+      >
+        Inactive
+      </button>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export const AddModal = ({ 
-  show, 
-  onHide, 
-}) => {
+export default function Doctor() {
   const { t } = useTranslation();
- 
-  
+
+  const [activeTab, setActiveTab] = useState("active");
   return (
-    <Modal 
-      show={show} 
-      onHide={onHide} 
-      size="lg"
-      centered
-      className="diagnosis-modal pr-0"
-    >
-      <Modal.Header className="modal-header-custom">
-        <Modal.Title className="modal-title-custom">
-          Add Shift
-        </Modal.Title>
-        <button
-          type="button"
-          className="btn-close-custom"
-          onClick={onHide}
-        >
-          <MdClose size={24} />
-        </button>
-      </Modal.Header>
-      <Modal.Body className="p-0">
-        <div className="modal-content-custom">
-        <ShiftStep insidUi={true}/>
-        </div>
-      </Modal.Body>
-      <Modal.Footer className="modal-footer-custom">
-        <button 
-          onClick={onHide}
-          className="dc-btn dc-cancel-btn"
-        >
-          {t('Close')}
-        </button>
-      </Modal.Footer>
-    </Modal>
+    <div className="">
+      <h1>Doctor generation rules</h1>
+
+      <StatusToggle />
+
+      <ActiveTabs activeCount={2} inactiveCount={3} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <AppointmentToggle activeCount={2} inactiveCount={3} />
+      <StatusSelect />
+ 
+    </div>
   );
-};
+}
+export  function ActiveTabs({
+  activeCount = 0,
+  inactiveCount = 0,
+  activeTab,
+  setActiveTab
+}) {
+
+  const tabs = [
+    { key: "active", label: "Active", count: activeCount },
+    { key: "inactive", label: "InActive", count: inactiveCount },
+  ];
+
+  const visibleTabs = tabs.filter((tab) => tab.count > 0);
+
+  if (visibleTabs.length === 0) return null;
+
+  return (
+    <div className="active-tabs">
+      <ul className="nav nav-pills inner-tab">
+        {visibleTabs.map((tab) => (
+          <li className="nav-item" key={tab.key}>
+            <button
+              className={`nav-link ${
+                activeTab === tab.key ? "active" : ""
+              }`}
+              onClick={() => setActiveTab(tab.key)}
+              type="button"
+            >
+              {tab.label}
+              <span className='num-item' style={{lineHeight:1.5}}>{tab.count}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Content */}
+      {/* <div className="tab-content mt-3">
+        {activeTab === "active" && (
+          <div>Active Content</div>
+        )}
+        {activeTab === "inactive" && (
+          <div>Inactive Content</div>
+        )}
+      </div> */}
+    </div>
+  );
+}
+export  function AppointmentToggle({
+  activeCount = 0,
+  inactiveCount = 0,
+  activeTab, setActiveTab
+}) {
+  // const [selected, setSelected] = useState("active");
+
+  const tabs = [
+    { key: "active", label: "Active", count: activeCount },
+    { key: "inactive", label: "InActive", count: inactiveCount },
+  ];
+
+  // if (options.length === 0) return null;
+
+  return (
+    <div className="toggle-container">
+      {tabs.map((tab) => (
+        <div
+          key={tab.key}
+          className="toggle-item"
+              onClick={() => setActiveTab(tab.key)}
+        >
+          <span
+            className={`dot ${
+              activeTab === tab.key ? "active" : ""
+            }`}
+          ></span>
+
+          <span className="label">
+            {tab.label} <span className="count">{tab.count}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+export  function StatusSelect({selected, setSelected}) {
+  const [isOpen, setIsOpen] = useState(false);
+  // const [selected, setSelected] = useState("Active");
+
+  const ref = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const options = ["Active", "Inactive"];
+
+  return (
+    <div className="select-container" ref={ref}>
+      <button
+        className="select-btn"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {selected}
+    <FaChevronDown />
+      </button>
+
+      {isOpen && (
+        <div className="tooltip-arrow mt-2" style={{    position: "absolute",zIndex: 3,width:" 100%"}}>
+        <div className="dropdown">
+          {options.map((opt) => (
+            <div
+              key={opt}
+              className={`option ${
+                selected === opt ? "active" : ""
+              }`}
+              onClick={() => {
+                setSelected(opt);
+                setIsOpen(false);
+              }}
+            >
+              {opt}
+            </div>
+          ))}
+        </div>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -71,7 +71,7 @@ const TimeRangePickerUI = ({
           }}>
             Hour
           </div>
-          <button
+          <button type="button"
             onClick={isStart ? scrollStartHourUp : scrollEndHourUp}
             disabled={!canScrollHourUp}
             style={{
@@ -107,7 +107,7 @@ const TimeRangePickerUI = ({
           }}>
             {hour}
           </div>
-          <button
+          <button type="button"
             onClick={isStart ? scrollStartHourDown : scrollEndHourDown}
             disabled={!canScrollHourDown}
             style={{
@@ -155,7 +155,7 @@ const TimeRangePickerUI = ({
           }}>
             Min
           </div>
-          <button
+          <button type="button"
             onClick={isStart ? scrollStartMinuteUp : scrollEndMinuteUp}
             disabled={!canScrollMinuteUp}
             style={{
@@ -191,7 +191,7 @@ const TimeRangePickerUI = ({
           }}>
             {minute}
           </div>
-          <button
+          <button type="button"
             onClick={isStart ? scrollStartMinuteDown : scrollEndMinuteDown}
             disabled={!canScrollMinuteDown}
             style={{
@@ -229,7 +229,7 @@ const TimeRangePickerUI = ({
           }}>
             AM/PM
           </div>
-          <button
+          <button type="button"
             onClick={isStart ? toggleStartPeriod : toggleEndPeriod}
             style={{
               borderRadius: '8px',
@@ -253,11 +253,7 @@ const TimeRangePickerUI = ({
   return (
     <div>
       {/* Time Pickers */}
-      <div style={{
-        display: 'flex',
-        gap: '40px',
-        justifyContent: 'center',
-      }}>
+      <div className='time-pickers-container'>
         {/* Start Time Picker */}
         <div style={{
           opacity: isSelectingStart ? 1 : 0.6,
@@ -283,12 +279,7 @@ const TimeRangePickerUI = ({
           justifyContent: 'center',
           padding: '0 20px',
         }}>
-          <div style={{
-            width: '2px',
-            height: '100px',
-            backgroundColor: '#e2e8f0',
-            margin: '10px 0',
-          }} />
+          <div className='right-line'/>
           <div className='second-btn'
           onClick={isSelectingStart?handleTimeSelect:handleEditStartTime}
            style={{
@@ -330,10 +321,10 @@ const TimeRangePickerUI = ({
         justifyContent: 'flex-end',
         marginTop: '24px',
       }}>
-        <button className='simple-btn' onClick={handleCancel}>
+        <button type="button" className='simple-btn' onClick={handleCancel}>
           Cancel
         </button>
-        <button 
+        <button type="button" 
           className='second-btn p-0' 
           onClick={handleTimeSelect}
           style={{

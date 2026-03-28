@@ -8,7 +8,7 @@ import StepLocation from "./steps/StepLocation";
 import ShiftStep from "./steps/ShiftStep";
 import ButtonPrevious from "../ui/form-fields/ButtonPrevious";
 import SuccessMessage from "./steps/SuccessMessage";
-
+import './DoctorRegistration.css';
 
 export default function DoctorRegistration() {
   const { t } = useTranslation();

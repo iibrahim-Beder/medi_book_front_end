@@ -376,6 +376,7 @@ border-bottom: 1px solid #dee2e670 !important;
 }
 
 /* modal css start */
+.diagnosis-modal.small-modal .modal-dialog  {  max-width: 830px;}
 .diagnosis-modal .modal-dialog {
   max-width: 900px;
   min-height: 500px;

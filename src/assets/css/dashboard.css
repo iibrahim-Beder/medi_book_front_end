@@ -5750,6 +5750,7 @@ html[dir="rtl"]  {
 }
 /* <<< */
 @media (max-width: 720px){
+		.div-container-tabs.shift{margin: 10px !important;}
 	.shift-form .dc-on-off{margin-top: 10px !important;	}
 /* dashboards page */
 .divider-vertical{
@@ -5793,6 +5794,9 @@ padding: 0 10px;
 }
 /* <<< */
 @media (max-width: 568px) {
+	.div-container-tabs.shift .nav-link {
+    padding: .5rem 0.5rem;
+	}
 	.payment-page{padding-top: 10px;}
 	.DateRangePicker{margin: 10px 0;}
 	        .dc-offersmessages ul li:first-child{border-right: none;}
@@ -5915,6 +5919,10 @@ padding: 0 10px;
     }
 	/* date range picker css end */
 	@media (max-width: 400px) {
+			.div-container-tabs.shift .nav-link {
+    padding: .5rem 0.2rem;
+    FONT-SIZE: 14px;
+	}
 		.css-1cg0cz5{grid-template-columns: auto !important;justify-items: center;}
 		.filter-dropdown-menu{max-width: 310px}
 		/* .login-right{padding: 10px;} */
@@ -6042,6 +6050,12 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 }
 .DateRangePicker svg{
 	color: var(--terthemecolor) !important;
+}
+.time-picker-dropdown.list-date-option {
+	box-shadow: rgb(0 0 0 / 59%) 0px 10px 25px, rgb(0 0 0 / 78%) 0px 4px 6px;
+}
+.modal-header-custom{
+	background-color: var(--badybkcolor);
 }
 }
 /* RTL direction start */

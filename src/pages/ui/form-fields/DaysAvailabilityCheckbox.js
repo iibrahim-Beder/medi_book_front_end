@@ -1,17 +1,17 @@
 import { IoMdRefresh } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import { CiFilter } from "react-icons/ci";
+import { MdOutlineCheckCircle } from "react-icons/md";
 import { FaCheckCircle, FaChevronDown } from "react-icons/fa";
+import { CgUnavailable } from "react-icons/cg";
 
 const DaysAvailabilityCheckbox = ({
-  availability=[], // مصفوفة { dayOfWeek, state, shiftId }
+  availability=[],
   selectedDays=[],
   onToggle,
-  dayNames = null, // يمكن تمرير أسماء مخصصة للأيام
+  dayNames = null, 
   readOnly = false,
-  disabled = false,
+  disabled: MainInputdisabled = false,
   loading = false,
 }) => {
   const { t } = useTranslation();
@@ -29,7 +29,6 @@ const DaysAvailabilityCheckbox = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  // أسماء الأيام الافتراضية (يمكن تمريرها من الخارج)
   const defaultDayNames = {
     0: t("days.sunday"),
     1: t("days.monday"),
@@ -43,7 +42,6 @@ const DaysAvailabilityCheckbox = ({
   const getDayName = (dayOfWeek) =>
     (dayNames ? dayNames[dayOfWeek] : defaultDayNames[dayOfWeek]) || dayOfWeek;
 
-  // تحديد حالة اليوم
   const getStatusInfo = (item) => {
     const { state, shiftId } = item;
     if (state === "Active") {
@@ -58,17 +56,29 @@ const DaysAvailabilityCheckbox = ({
         icon: <IoMdRefresh className="status-icon reactivate" />,
         label: t("day will reactivated"),
       };
-    } else {
-      // NotExist أو Inactive بدون shiftId (يعني جديد)
+    } else if (state === "NoShift") {
       return {
+        disabled: true,
+        icon: <CgUnavailable   className="status-icon reactivate" />,
+        label: t("day has no shift"),
+        Conflict: true,
+      };
+    } else if (state === "Conflict") {
+      return {
+        disabled: true,
+        icon: <CgUnavailable   className="status-icon reactivate" />,
+        label: t("day conflict"),
+        Conflict: true,
+      };
+    } else {
+      return {
+        icon: <MdOutlineCheckCircle   className="status-icon active " />,
         disabled: false,
-        icon: null,
-        label: "",
+        label: "Available",
       };
     }
   };
 
-  // ترتيب الأيام حسب dayOfWeek (0 الأحد - 6 السبت) أو حسب الترتيب الطبيعي
   const sortedAvailability = [...availability].sort(
     (a, b) => a.dayOfWeek - b.dayOfWeek,
   );
@@ -82,15 +92,16 @@ const DaysAvailabilityCheckbox = ({
       <label> {t("Days")} </label>
       <div
         className="input-with-icon select-wrapper"
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        style={{cursor:"pointer"}}
+        onClick={() => !MainInputdisabled && setIsOpen(!isOpen)}
       >
         <select
           // className="form-control"
           value=""
-          disabled={disabled}
+          disabled={MainInputdisabled}
           style={{ pointerEvents: "none" }}
         >
-          <option>{  loading ? t("Loading...") :  disabled ? t("Blocked Select Template for days") : t("Select days")}</option>
+          <option>{  loading ? t("Loading...") :  MainInputdisabled ? t("Blocked Select Template for days") : t("Select days")}</option>
         </select>
 
         <FaChevronDown className="select-arrow" />
@@ -121,8 +132,9 @@ const DaysAvailabilityCheckbox = ({
               {sortedAvailability.map((item, index) => {
                 const dayOfWeek = item.dayOfWeek;
                 const status = getStatusInfo(item);
+                const Conflict = status.Conflict || false;
                 const disabled = status.disabled || readOnly;
-                const isChecked = (selectedDays.includes(dayOfWeek))||(disabled);
+                const isChecked = ((selectedDays.includes(dayOfWeek))||(disabled)) && !Conflict;
 
                 return (
                   <span key={dayOfWeek} className="dc-checkbox">
@@ -135,11 +147,13 @@ const DaysAvailabilityCheckbox = ({
                       value={dayOfWeek}
                     />
                     <label
-                      className={`day-label ${disabled ? "disabled" : ""}`}
+                      className={`day-label ${disabled ? "disabled" : "enabled"}`}
                       htmlFor={`${getDayName(dayOfWeek)}-type-${index}`}
                     >
                       <div className="d-flex " style={{ gap: "4px" }}>
+                        <span style={{width:"30%", minWidth:"fit-content"}} >
                         {getDayName(dayOfWeek)}
+                        </span>
                         {status.icon && (
                           <span className="status-indicator">
                             {status.icon}

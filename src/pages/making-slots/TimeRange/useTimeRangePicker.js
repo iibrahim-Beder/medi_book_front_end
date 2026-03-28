@@ -1,7 +1,8 @@
 // useTimeRangePicker.js
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { toDecimal } from '../helper/helper';
 
-export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', onChange, name) => {
+export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', onChange, name,setShowDropdown) => {
   // State for both times
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -26,6 +27,8 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
   const [activeRange, setActiveRange] = useState(-1);
   const [isSelectingStart, setIsSelectingStart] = useState(true);
   const [isStartTimeSelected, setIsStartTimeSelected] = useState(false);
+
+  const [validationError, setValidationError] = useState("");
 
   const hours = Array.from({ length: 12 }, (_, i) => 
     (i + 1).toString().padStart(2, '0')
@@ -170,61 +173,108 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
   }, []);
 
   // Handle time selection
-  const handleTimeSelect = useCallback(() => {
-    if (isSelectingStart) {
-      // Save start time
-      const hour24 = startPeriod === 'PM' 
-        ? (parseInt(startHour, 10) === 12 ? 12 : parseInt(startHour, 10) + 12)
-        : (parseInt(startHour, 10) === 12 ? 0 : parseInt(startHour, 10));
-      
-      const timeValue = `${hour24.toString().padStart(2, '0')}:${startMinute}`;
-      setStartTime(timeValue);
-      setIsStartTimeSelected(true);
-      setIsSelectingStart(false);
-      
-      // Initialize end time to next available slot
-      const nextMinute = startMinute === '45' ? '00' : minutes[minutes.indexOf(startMinute) + 1];
-      const nextHour = startMinute === '45' 
-        ? (parseInt(startHour) === 12 ? '01' : (parseInt(startHour) + 1).toString().padStart(2, '0'))
-        : startHour;
-      
-      setEndHour(nextHour);
-      setEndMinute(nextMinute);
-      setEndPeriod(startPeriod);
-    } else {
-      // Save end time and finalize
-      const hour24 = endPeriod === 'PM' 
-        ? (parseInt(endHour, 10) === 12 ? 12 : parseInt(endHour, 10) + 12)
-        : (parseInt(endHour, 10) === 12 ? 0 : parseInt(endHour, 10));
-      
-      const timeValue = `${hour24.toString().padStart(2, '0')}:${endMinute}`;
-      setEndTime(timeValue);
-      
-      // Call onChange with both times
-      const startHour24 = startPeriod === 'PM' 
-        ? (parseInt(startHour, 10) === 12 ? 12 : parseInt(startHour, 10) + 12)
-        : (parseInt(startHour, 10) === 12 ? 0 : parseInt(startHour, 10));
-      
-      const startTimeValue = `${startHour24.toString().padStart(2, '0')}:${startMinute}`;
-      
-      if (onChange) {
-        const syntheticEvent = {
-          target: {
-            name: name,
-            value: {
-              start: startTimeValue,
-              end: timeValue
-            }
-          }
-        };
-        console.log("syntheticEvent", syntheticEvent);
-        onChange(syntheticEvent);
-      }
-      
-      setShowTimePickerUI(false);
-    }
-  }, [isSelectingStart, startHour, startMinute, startPeriod, endHour, endMinute, endPeriod, onChange, name, minutes]);
+const handleTimeSelect = useCallback(() => {
+  setValidationError("");
 
+  if (!selectedRange) return;
+
+  if (isSelectingStart) {
+    const startVal = toDecimal(startHour, startMinute, startPeriod);
+
+    if (startVal < selectedRange.start || startVal > selectedRange.end) {
+      setValidationError("Start time must be within selected range.");
+      return;
+    }
+
+    const hour24 =
+      startPeriod === "PM"
+        ? parseInt(startHour, 10) === 12
+          ? 12
+          : parseInt(startHour, 10) + 12
+        : parseInt(startHour, 10) === 12
+        ? 0
+        : parseInt(startHour, 10);
+
+    const timeValue = `${hour24.toString().padStart(2, "0")}:${startMinute}`;
+    setStartTime(timeValue);
+    setIsStartTimeSelected(true);
+    setIsSelectingStart(false);
+
+    const nextMinute =
+      startMinute === "45"
+        ? "00"
+        : minutes[minutes.indexOf(startMinute) + 1];
+
+    const nextHour =
+      startMinute === "45"
+        ? parseInt(startHour) === 12
+          ? "01"
+          : (parseInt(startHour) + 1).toString().padStart(2, "0")
+        : startHour;
+
+    setEndHour(nextHour);
+    setEndMinute(nextMinute);
+    setEndPeriod(startPeriod);
+  } else {
+    const endVal = toDecimal(endHour, endMinute, endPeriod);
+    const startVal = toDecimal(startHour, startMinute, startPeriod);
+
+    if (endVal > selectedRange.end || endVal < selectedRange.start) {
+      setValidationError("End time must be within selected range.");
+      return;
+    }
+
+    if (endVal <= startVal) {
+      setValidationError("End time must be after Start");
+      return;
+    }
+
+    const hour24 =
+      endPeriod === "PM"
+        ? parseInt(endHour, 10) === 12
+          ? 12
+          : parseInt(endHour, 10) + 12
+        : parseInt(endHour, 10) === 12
+        ? 0
+        : parseInt(endHour, 10);
+
+    const timeValue = `${hour24.toString().padStart(2, "0")}:${endMinute}`;
+    setEndTime(timeValue);
+
+    const startHour24 =
+      startPeriod === "PM"
+        ? parseInt(startHour, 10) === 12
+          ? 12
+          : parseInt(startHour, 10) + 12
+        : parseInt(startHour, 10) === 12
+        ? 0
+        : parseInt(startHour, 10);
+
+    const startTimeValue = `${startHour24
+      .toString()
+      .padStart(2, "0")}:${startMinute}`;
+
+    if (onChange) {
+      onChange({
+        name,
+        start: startTimeValue,
+        end: timeValue,
+      });
+    }
+
+    setShowTimePickerUI(false);
+    setShowDropdown(false);
+  }
+}, [
+  isSelectingStart,
+  startHour,
+  startMinute,
+  startPeriod,
+  endHour,
+  endMinute,
+  endPeriod,
+  selectedRange,
+]);
   // Handle edit start time
   const handleEditStartTime = useCallback(() => {
     setIsSelectingStart(true);
@@ -338,6 +388,8 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
     activeRange,
     isSelectingStart,
     isStartTimeSelected,
+
+    validationError,
     
     // Getters
     getFilteredHours,

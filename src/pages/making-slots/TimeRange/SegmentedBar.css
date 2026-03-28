@@ -1,3 +1,15 @@
+.time-pickers-container{
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.right-line{
+    width: 2px;
+    height: 100px;
+    background-color: rgb(226, 232, 240);
+    margin: 10px 0px;
+}
 /* wrapper */
 .sp-wrap {
   display: block;
@@ -63,6 +75,17 @@
 @media (max-width: 480px) {
   .sp-seg { min-width: 4px; }
   .sp-pill { min-width: 8px; }
+}
+@media (max-width: 992px) {
+  .time-pickers-container{
+    gap: 20px;
+    flex-direction: column;
+  }
+  .right-line{
+        height: 2px;
+    width: 160px;
+  }
+
 }
 
 .segmented-progress-container {

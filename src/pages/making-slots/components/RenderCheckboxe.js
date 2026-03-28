@@ -1,12 +1,24 @@
+// components/RenderCheckboxes.jsx
 
-  // Custom field renderer for checkboxes
-  export const renderCheckboxes = (field, index, onChange, item, errors, forceShowError, readOnly,t) => {
-    const value = item[field.name] || [];
-    const errorKey = `${field.name}_${index}`;
-    const error = errors[errorKey];
+import React from "react";
 
-    return (<>
-        {field.label && <label>{field.label}</label>}
+export default function RenderCheckboxes({
+  field,
+  index,
+  onChange,
+  item,
+  errors = {},
+  forceShowError = false,
+  readOnly = false,
+}) {
+  const value = item?.[field.name ] || [];
+  const errorKey = `${field.name}_${index}`;
+  const error = errors?.[errorKey];
+
+  return (
+    <>
+      {field.label && <label>{field.label}</label>}
+
       <div className="form-group">
         <div className="dc-checkboxgroup">
           {field.options.map((option, optIndex) => (
@@ -20,20 +32,25 @@
                 onChange={(e) => {
                   const newValue = e.target.checked
                     ? [...value, option]
-                    : value.filter(item => item !== option);
-                  onChange(index, field.name, newValue);
+                    : value.filter((v) => v !== option);
+                    index===null?onChange(field.name,newValue):onChange(index,field.name,newValue);
+
+                  // onChange(index,field.name, newValue);
                 }}
                 disabled={readOnly}
               />
+
               <label htmlFor={`${field.name}_${index}_${optIndex}`}>
-                {t(`appointmentTypes.${option}`)}
+                {(option)}
               </label>
             </span>
           ))}
         </div>
+
         {forceShowError && error && (
           <div className="text-danger small">{error}</div>
         )}
-      </div></>
-    );
-  };
+      </div>
+    </>
+  );
+}

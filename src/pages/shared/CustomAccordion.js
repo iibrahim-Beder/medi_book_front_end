@@ -11,7 +11,7 @@ import SectionTitle from "./SectionTitle";
 import PopupMessage from "./PopupMessage";
 import { useTranslation } from "react-i18next";
 import TimeRangePicker from "../making-slots/TimeRange/TimeRangePicker";
-import { renderCheckboxes } from "../making-slots/cards/renderCheckboxes";
+import RenderCheckboxes  from "../making-slots/components/RenderCheckboxe";
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
@@ -31,7 +31,7 @@ const CustomAccordion = memo(({
   liveUpdate = false,
   allowMultipleOpen = false,
   getItemTitle = null,
-  noDataMessage = null,
+  noDataMessage = "No Data Found",
   globalError = null,
   forceShowError = false,
   hint,
@@ -39,6 +39,9 @@ const CustomAccordion = memo(({
  isHasMatched = () => false,
  searchTerm,
  timeline,
+ hedarClassName="",
+ handleToggle,
+ applyRule,
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
@@ -159,9 +162,18 @@ const handleFieldChange = (index, field, value) => {
         buttonIcon={field.buttonIcon}
         hint={field.hint}
         onChange={(e) => onChange(index, field.name, e)}
+        lastActiveId={item.ruleId}
       />;
     } else if (field.type === "checkboxes") {
-      return renderCheckboxes(field, index, onChange, item, errors, forceShowError, readOnly,t);
+      return <RenderCheckboxes 
+      field={field}
+        accept={field.accept}
+        buttonIcon={field.buttonIcon}
+        hint={field.hint}
+        onChange={onChange}
+        index={index}
+        item={item}
+      />
     } else {
       return <Field
         isHasMatched={isHasMatched(item,field.name)||false}
@@ -202,7 +214,7 @@ const handleFieldChange = (index, field, value) => {
       {/* Title Section */}
       {title && (
         <div
-          className={`${titleIcon ? "title-with-icon" : "dc-tabscontenttitle dc-addnew"} ${noHedarBefore ? "no-before" : ""}`}
+          className={`${titleIcon ? "title-with-icon" : "dc-tabscontenttitle dc-addnew"} ${noHedarBefore ? "no-before" : ""} ${hedarClassName}`}
           style={{ backgroundColor: titleBackgroundColor }}
         >
           {titleIcon ? (
@@ -231,7 +243,7 @@ const handleFieldChange = (index, field, value) => {
 
       {/* No Data */}
       {dataRead.length === 0 && noDataMessage ? (
-        <div className="alert alert-info">{noDataMessage}</div>
+        <div className="dc-experienceaccordion accordion">{noDataMessage}</div>
       ) : (
         <ul className="dc-experienceaccordion accordion">
           {dataRead.map((item, index) => {
@@ -360,6 +372,22 @@ const handleFieldChange = (index, field, value) => {
                           </button>
                         </div>
                       )}
+                     {handleToggle &&
+                      <button
+                            type="button"
+                            onClick={() => handleToggle(item)}
+                            className={`dc-btn ${item.isActive ? "deactivate-btn" : ""}`}
+                            style={{ margin: "11px 4px",  minWidth:"fit-content" }}
+                          >
+                            {item.isActive ? t("Deactivate"): t("Activate")}
+                      </button>}
+             {applyRule &&   <button
+                type="button"
+                className="add-btn "
+                onClick={() => applyRule(item)}
+              >
+                {t("Apply Rule")}
+              </button>}
                     </fieldset>
                   </form>
                 </div>
