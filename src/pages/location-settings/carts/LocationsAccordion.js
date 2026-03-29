@@ -19,6 +19,7 @@ const LocationsAccordion = memo(({
   header = true,
   allowMultipleOpen = false,
   title = "Locations",
+  noDataMessage = "No locations found",
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState([]);
@@ -197,7 +198,11 @@ const LocationsAccordion = memo(({
           </a>
         )}
       </div>
-
+      {dataRead.length===0?(
+        <div className="dc-experienceaccordion accordion">
+          <span>{noDataMessage}</span>
+        </div>
+      ):(
       <ul className="dc-experienceaccordion accordion">
         {dataRead.map((item) => {
           const primaryCheckboxId = `primary-${item.id}`;
@@ -344,6 +349,8 @@ const LocationsAccordion = memo(({
           );
         })}
       </ul>
+      )
+      }
 
       {/* Delete confirmation popup (unchanged) */}
       {deletePopup.show && (
