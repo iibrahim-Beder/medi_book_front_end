@@ -34,7 +34,7 @@ export default function LocationMain() {
           </div>
 
           {/* Tabs Content */}
-          <div className="dc-tabscontent tab-content">
+          <div className="dc-tabscontent tab-content accordion-table-card">
             {activeTab === "AddLocation" && <LocationField />}
           </div>
         </div>

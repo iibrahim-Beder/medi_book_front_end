@@ -1600,6 +1600,7 @@ color: var(--terthemecolor);
 }
  .active-tabs  .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
   background-color: var(--bluecolor);
+      opacity: 1 !important;
   }
   .active-tabs ul li .nav-link:hover{
     background-color: var(--bluecolor);

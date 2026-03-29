@@ -1,8 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { FaPlus, FaMapMarkerAlt, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { MdLocationOff } from "react-icons/md";
+import { FaPlus} from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import BlueMapPicker from "./MapSearch";
 import PopupMessage from "../../shared/PopupMessage";
@@ -10,15 +9,16 @@ import { FaMapLocationDot } from "react-icons/fa6";
 
 
 const LocationsAccordion = memo(({
-  titlebackgroundColor = "var(--cardcolor)",
+  titlebackgroundColor = "var(--badybkcolor)",
   locations = [],
   onAddLocation,
   onDeleteLocation,
   onSaveLocation,
-  onToggleActive, // new prop
+  onToggleActive, 
   ComponentProp = null,
   header = true,
   allowMultipleOpen = false,
+  title = "Locations",
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState([]);
@@ -173,11 +173,11 @@ const LocationsAccordion = memo(({
   return (
     <div className="dc-userexperience custom-accordion">
       {/* Header section (unchanged) */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="">
         {ComponentProp}
         {header && (
-          <div className="dc-tabscontenttitle dc-addnew">
-            <h3>{t("userLocation.addYourLocation")}</h3>
+          <div className="dc-tabscontenttitle dc-addnew  title-card">
+            <h3>{title}</h3>
             {onAddLocation && (
               <a href="#!" onClick={(e) => {
                 e.preventDefault();
@@ -242,19 +242,6 @@ const LocationsAccordion = memo(({
                     title={getLocationTitle(item)}
                   >
                     {truncateTitle(getLocationTitle(item), 60)}
-                  { item.isActive ? (
-                    <FaCheckCircle style={{
-                            color: "var(--green)",
-                            marginLeft: "8px",
-                            fontSize: "1em",
-                          }} />
-                  ) : (
-                    <FaTimesCircle style={{
-                            color: "var(--red)",
-                            marginLeft: "8px",
-                            fontSize: "1em",
-                          }} />
-                  )}
                   </span>
                   {item.isNew && (
                     <span style={{ color: "#ffa500", fontWeight: "bold", fontSize: "0.9em" }}>
@@ -294,7 +281,7 @@ const LocationsAccordion = memo(({
               {/* Expanded content */}
               <div
                 style={{
-                  backgroundColor: "var(--cardcolor)",
+                  backgroundColor: "var(--badybkcolor)",
                 }}
                 className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
               >
@@ -324,31 +311,17 @@ const LocationsAccordion = memo(({
                       </label>
                       <span>{t("Is Primary")}</span>
                     </div>
-
-                    {/* Active checkbox (direct API call with confirmation) */}
-                    <div className="dc-on-off">
-                      <input
-                        type="checkbox"
-                        id={activeCheckboxId}
-                        checked={!!displayData.isActive}
-                        onChange={(e) => {
-                          e.preventDefault();
-                          const newActive = e.target.checked;
-                          handleShowActiveConfirm(
-                            item.id,
-                            newActive,
-                            getLocationTitle(item)
-                          );
-                        }}
-                      />
-                      <label  style={{margin:"0 8px"}} htmlFor={activeCheckboxId}>
-                        <i></i>
-                      </label>
-                      <span>{t("Active")}</span>
-                    </div>
                   </div>
                 </div>
-                <div className="dc-btnarea d-flex">
+                <div className="dc-btnarea d-flex align-items-end">
+                {!item.isNew &&<button
+                    type="button"
+                    onClick={() => handleShowActiveConfirm(item.id, !item.isActive, getLocationTitle(item))}
+                    className={`dc-btn ${item.isActive ? "deactivate-btn" : ""}`}
+                    style={{   minWidth:"fit-content" }}
+                    >
+                    {item.isActive ? t("Deactivate"): t("Activate")}
+                </button>}
                   <button
                     type="button"
                     style={{ margin: '0 5px' }}

@@ -96,7 +96,6 @@ export default function SegmentedProgress({
     const total = Math.max(0.0001, max - min);
 
     const normalized = processedSegments.map((s, i, arr) => {
-      console.log("===s", s);
       const isActive = isInActiveRange(s, activeRangeValue);
       const prev = arr[i - 1];
       const next = arr[i + 1];
@@ -127,7 +126,6 @@ export default function SegmentedProgress({
         visualType = "free";
         grouped = true;
       }
-      console.log("===s after", s, visualType);
 
       return {
         ...s,

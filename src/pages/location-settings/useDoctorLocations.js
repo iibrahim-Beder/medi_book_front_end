@@ -52,6 +52,7 @@ export const useDoctorLocationsManager = (doctorId = 103) => {
 
   // ==================== Add new location ====================
   const addNewLocation = () => {
+    if (locations?.[0]?.isNew) {toast.error('Please save the previous prescription first'); return;}
     const newId = Date.now();
     setLocations((prev) => [
       {

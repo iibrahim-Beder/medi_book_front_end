@@ -61,7 +61,7 @@ export default function ShiftsManagement({ doctorId=103 }) {
           </button>
             </div>
 
-            {isLoading  ? (Loader("loading-in-side loadin-in-tab-content")) : (
+            {isLoading  ?  Loader("loading-in-side loadin-in-tab-content m-lg-auto") : (
               tabs.map((tab) =>
                 activeTab === tab.key ? (
                   <SiftForm
