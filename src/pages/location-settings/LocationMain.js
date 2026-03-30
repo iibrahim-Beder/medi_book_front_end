@@ -27,7 +27,7 @@ export default function LocationMain() {
                     setActiveTab("AddLocation");
                   }}
                 >
-                  {t("addLocation")}
+                  {t("Locations")}
                 </a>
               </li>
             </ul>

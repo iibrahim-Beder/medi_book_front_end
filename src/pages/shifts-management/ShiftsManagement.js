@@ -117,18 +117,18 @@ export const AddModal = ({
         </button>
       </Modal.Header>
       <Modal.Body className="p-0">
-        <div className="modal-content-custom" style={{overflowY:"visible"}} >
+        <div className="modal-content-custom table-insideUi" style={{overflowY:"visible"}} >
         <ShiftStep insidUi={true}/>
         </div>
       </Modal.Body>
-      <Modal.Footer className="modal-footer-custom">
+      {/* <Modal.Footer className="modal-footer-custom">
         <button 
           onClick={onHide}
           className="dc-btn dc-cancel-btn"
         >
           {t('Close')}
         </button>
-      </Modal.Footer>
+      </Modal.Footer> */}
     </Modal>
   );
 };

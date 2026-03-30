@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { CiClock2 } from "react-icons/ci";
-import {
-  formatTimeForDisplay,
-  parseManualInput,
-} from "../../shared/utils";
+import { formatTimeForDisplay, parseManualInput } from "../../shared/utils";
 import SegmentedProgress from "./SegmentedProgress";
 import TimeRangePickerUI from "./TimeRangePickerUI";
 import { useTimeRangePicker } from "./useTimeRangePicker";
@@ -73,7 +70,13 @@ const TimeRangePicker = ({
     setManualStartInput,
     setManualEndInput,
     setShowTimePickerUI,
-  } = useTimeRangePicker(value?.start || "", value?.end || "", onChange, name,setShowDropdown);
+  } = useTimeRangePicker(
+    value?.start || "",
+    value?.end || "",
+    onChange,
+    name,
+    setShowDropdown,
+  );
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -82,10 +85,11 @@ const TimeRangePicker = ({
         if (onBlur) {
           const syntheticEvent = {
             // target: {farge
-              name: name,
-              // value: {
-                 start: startTime, end: endTime 
-                // },
+            name: name,
+            // value: {
+            start: startTime,
+            end: endTime,
+            // },
             // },
           };
           onBlur(syntheticEvent);
@@ -208,7 +212,7 @@ const TimeRangePicker = ({
               autoComplete="off"
               style={{
                 padding: "10px 40px 10px 16px",
-                color:"var(--terthemecolor)",
+                color: "var(--terthemecolor)",
                 width: "100%",
                 borderRadius: "8px",
                 border:
@@ -265,7 +269,7 @@ const TimeRangePicker = ({
                     <div
                       style={{
                         marginTop: "16px",
-                        marginBottom: '20px',
+                        marginBottom: "20px",
                         padding: "12px",
                         // backgroundColor: '#f0f9ff',
                         borderRadius: "8px",
@@ -291,7 +295,8 @@ const TimeRangePicker = ({
                               }}
                             >
                               {" "}
-                              {formatTimeForDisplay(value.start)} - {formatTimeForDisplay(value.end)}
+                              {formatTimeForDisplay(value.start)} -{" "}
+                              {formatTimeForDisplay(value.end)}
                             </b>
                           </div>
                           <div>
@@ -321,17 +326,17 @@ const TimeRangePicker = ({
                               ` | End: ${formatTimeForDisplay(endTime)}`}
                           </div>
                           {validationError && (
-  <div
-    style={{
-      fontSize: "12px",
-      color: "#ff4d4f",
-      marginTop: "4px",
-      fontWeight: 500,
-    }}
-  >
-    {validationError}
-  </div>
-)}
+                            <div
+                              style={{
+                                fontSize: "12px",
+                                color: "#ff4d4f",
+                                marginTop: "4px",
+                                fontWeight: 500,
+                              }}
+                            >
+                              {validationError}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

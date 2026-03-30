@@ -355,7 +355,7 @@ const SelectTimePicker = ({
                 fontWeight: "500",
                 boxSizing: "border-box",
                 opacity: disabled ? 0.6 : 1,
-                backgroundColor: disabled ? "#f8f9fa" : "#fff",
+                backgroundColor: disabled ? "#f8f9fa" : "",
                 transition: "all 0.2s ease",
                 height: "40px"
               }}

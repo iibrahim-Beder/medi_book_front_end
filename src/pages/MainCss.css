@@ -1451,7 +1451,7 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
   flex-direction: column;
   box-shadow: 0px 0px 8px 3px var(--shado2color);
 }
-.table-card.insideUi textarea, select, input,.dc-myskills li{
+.table-card.insideUi textarea,.table-card.insideUi  select,.table-card.insideUi input,.dc-myskills li ,.table-insideUi textarea,.table-insideUi  select,.table-insideUi input{
   background-color: var(--badybkcolor) !important;
 }
 

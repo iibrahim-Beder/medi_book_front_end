@@ -34,12 +34,7 @@ export default function ShiftForm({
   );
 }
 
-function SingleShiftFourm({
-  shift,
-  locations,
-  onUpdate,
-  onToggleActive,
-}) {
+function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive }) {
   useEffect(() => {
     setisActive(shift.isActive);
   }, [shift]);
@@ -107,7 +102,7 @@ function SingleShiftFourm({
         <h3>{shift.shiftTemplateName} Shift</h3>
       </div>
       <div
-        className="table-card"
+        className="table-card insideUi"
         style={{ position: "relative", display: "flex", marginBottom: 20 }}
       >
         {/* {isLoading  && Loader("form-loader")} */}
@@ -140,33 +135,22 @@ function SingleShiftFourm({
                 onChange={(e) => setSelectedLocationId(Number(e.target.value))}
               />
             </div>
-
-            {/* <div className="form-group-half form-group"> */}
-
-            {/* Active checkbox (direct API call with confirmation) */}
-            <div className="dc-on-off " style={{ marginTop: "45px" }}>
-              <input
-                type="checkbox"
-                id={activeCheckboxId}
-                checked={!!isActive}
-                onChange={(e) => {
+            <div className="form-group dc-btnarea mt-3">
+              <button
+                type="button"
+                onClick={(e) => {
                   e.preventDefault();
-                  const newActive = e.target.checked;
                   handleShowActiveConfirm(
                     shift.shiftId,
-                    newActive,
+                    !isActive,
                     shift.locationName,
                   );
                 }}
-              />
-              <label style={{ margin: "0 8px" }} htmlFor={activeCheckboxId}>
-                <i></i>
-              </label>
-              <span>{"Active"}</span>
-            </div>
-            {/* </div> */}
-
-            <div className="form-group dc-btnarea mt-3">
+                className={`dc-btn m-0 ${isActive ? "deactivate-btn" : ""}`}
+                style={{ margin: "11px 4px", minWidth: "fit-content" }}
+              > 
+                {isActive ? t("Deactivate") : t("Activate")}
+              </button>
               <button
                 style={{ float: "inline-end" }}
                 type="button"
@@ -183,7 +167,9 @@ function SingleShiftFourm({
       {activePopup.show && (
         <PopupMessage
           type={activePopup.newActive ? "success" : "danger"}
-          title={ activePopup.newActive ? t("activate shift") : t("deactivate shift")}
+          title={
+            activePopup.newActive ? t("activate shift") : t("deactivate shift")
+          }
           message={t(
             activePopup.newActive
               ? "are you sure you want to activate this shift?"
