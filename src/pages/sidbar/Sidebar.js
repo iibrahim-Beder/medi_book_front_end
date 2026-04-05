@@ -27,7 +27,35 @@ import { useTranslation } from "react-i18next";
 import './Sidebar.scss';
 import { IoNotificationsOutline } from "react-icons/io5";
 
+
 const Sidebar = () => {
+  const stepCompleted = {
+      personal: true,
+      education: true,
+      profile: true,
+      location: true,
+      shift: false,
+      experience: true,
+  };
+
+  const canAccess = (requiredSteps = []) => {
+    return requiredSteps.every((step) => stepCompleted[step]);
+  };
+
+    // 🔒 reusable props
+  const getLinkProps = (steps) => ({
+    className: !canAccess(steps) ? "disabled-link" : "",
+    onClick: (e) => {
+      if (!canAccess(steps)) e.preventDefault();
+    },
+  });
+
+  
+    ({...getLinkProps(["personal", "shift"])})?console.log("trueeeeeeeeee"):console.log("falseeeeeeeeee")
+  
+  console.log("canAccess",({...getLinkProps(["personal"])}));
+
+
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { t } = useTranslation();
 
@@ -112,7 +140,7 @@ let iconSize=20;
             <li>
               <Link to="/appointment-location">
                 <CiLocationOn className="icon" />
-                <span>{t("sidebar.appointmentLocation")}</span>
+                <span>{t("Locations")}</span>
               </Link>
             </li>
             <li>
@@ -152,7 +180,7 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/shifts-management">
+              <Link to="/shifts-management" {...getLinkProps(["personal", "shift"])}>
                 <SlCalender className="icon" />
                 <span>{t("Shifts Management")}</span>
               </Link>

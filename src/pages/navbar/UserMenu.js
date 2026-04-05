@@ -56,7 +56,7 @@ function UserMenu() {
       </figure>
 
       <div className="dc-username" onClick={toggleMenu}>
-        <h4>Dr. Micheal</h4>
+        <h4>Dr. John Doe</h4>
         <span>{t("userMenu.doctor")}</span>
       </div>
       <i className="after fas fa-angle-down" onClick={toggleMenu}></i>

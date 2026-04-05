@@ -228,7 +228,7 @@ export default function WeeklyTimeSlots() {
               </div>
 
               <AddModal show={openModal} onHide={() => setOpenModal(false)}>
-                <form className="dc-formtheme dc-userform">
+                <form className="dc-formtheme dc-userform table-insideUi">
                   <fieldset>
                     <TimeRangePicker
                       timeline={segments}
