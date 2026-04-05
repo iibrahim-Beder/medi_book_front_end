@@ -50,12 +50,6 @@ const Sidebar = () => {
     },
   });
 
-  
-    ({...getLinkProps(["personal", "shift"])})?console.log("trueeeeeeeeee"):console.log("falseeeeeeeeee")
-  
-  console.log("canAccess",({...getLinkProps(["personal"])}));
-
-
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { t } = useTranslation();
 
@@ -86,7 +80,6 @@ let iconSize=20;
         setScrolled(false);
       }
     };   
-    console.log("scrolled", + scrolled, "scrolled" + window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

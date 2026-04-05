@@ -75,7 +75,7 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
           accordioninnertitleSize=""
           noHedarBefore={true}
           showSingleSaveButton={true}
-          getItemTitle={(note) => note.content ? `${note.noteType}: ${note.content.substring(0, 50)}${note.content.length > 50 ? '...' : ''}` : "New Note"}
+          getItemTitle={(note) => note.content ? `${note.noteType}: ${note.content}` : "New Note"}
         />
       </div>
      )}

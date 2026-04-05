@@ -133,7 +133,8 @@ export const doctorNotesApi = baseApi.injectEndpoints({
       ],
     }),
 
-addDoctorPatientNote: builder.mutation({
+  // ADD NOTE
+    addDoctorPatientNote: builder.mutation({
       query: ({ patientId, noteData }) => {
         const params = {
           PatientId: patientId,
@@ -141,24 +142,49 @@ addDoctorPatientNote: builder.mutation({
           Content: noteData.content || ''
         };
 
-        console.log('Add Doctor Patient Note Params:', params);
-
         return {
           url: '/DoctorNote/AddDoctorPatientNote',
           method: 'POST',
-          params: params
+          params
         };
       },
-      transformResponse: (response) => {
-        console.log('Add Doctor Patient Note Response:', response);
-        return transformSingleDoctorNote(response);
-      },
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNote', id: patientId }
-      ],
+
+      transformResponse: (response) => transformSingleDoctorNote(response),
+    async onQueryStarted(
+      { patientId },
+      { dispatch, queryFulfilled, getState }
+    ) {
+      const state = getState();
+      const queries = state[baseApi.reducerPath]?.queries ?? {};
+
+      try {
+        const { data } = await queryFulfilled;
+
+        const newNote = data.data; 
+
+        Object.values(queries).forEach(entry => {
+          if (entry?.endpointName === "getDoctorPatientNotes") {
+            dispatch(
+              doctorNotesApi.util.updateQueryData(
+                "getDoctorPatientNotes",
+                entry.originalArgs,
+                (draft) => {
+                  if (!draft?.data) return;
+
+                  draft.data.unshift(newNote);
+                }
+              )
+            );
+          }
+        });
+
+      } catch (err) {
+        console.error("Add note failed", err);
+      }
+    }
     }),
 
-    // Update doctor patient note
+    // UPDATE NOTE
     updateDoctorPatientNote: builder.mutation({
       query: ({ noteId, updates }) => {
         const params = {
@@ -167,41 +193,87 @@ addDoctorPatientNote: builder.mutation({
           Content: updates.content || ''
         };
 
-        console.log('Update Doctor Patient Note Params:', params);
-
         return {
           url: '/DoctorNote/UpdateDoctorPatientNote',
           method: 'PUT',
-          params: params
+          params
         };
       },
-      transformResponse: (response) => {
-        console.log('Update Doctor Patient Note Response:', response);
-        return transformSingleDoctorNote(response);
+
+      transformResponse: (response) => transformSingleDoctorNote(response),
+
+      async onQueryStarted(
+        { noteId },
+        { dispatch, queryFulfilled, getState }
+      ) {
+        const state = getState();
+        const queries = state[baseApi.reducerPath]?.queries ?? {};
+
+        try {
+          const { data } = await queryFulfilled;
+          const updatedNote = data;
+
+          Object.values(queries).forEach(entry => {
+            if (entry?.endpointName === "getDoctorPatientNotes") {
+              dispatch(
+                doctorNotesApi.util.updateQueryData(
+                  "getDoctorPatientNotes",
+                  entry.originalArgs,
+                  (draft) => {
+                    if (!draft?.data) return;
+
+                    const note = draft.data.find(n => n.id === noteId);
+                    if (note) Object.assign(note, updatedNote);
+                  }
+                )
+              );
+            }
+          });
+
+        } catch (err) {
+          console.error("Update failed", err);
+        }
       },
-      invalidatesTags: (result, error,  { patientId }) => [
-        { type: 'DoctorNote', id: patientId }
-      ],
     }),
 
-    // Delete doctor patient note
+    // DELETE NOTE
     deleteDoctorPatientNote: builder.mutation({
-      query: (noteId) => {
-        const params = {
-          Id: noteId
-        };
+      query: (noteId) => ({
+        url: '/DoctorNote/DeleteDoctorPatientNote',
+        method: 'DELETE',
+        params: { Id: noteId }
+      }),
 
-        console.log('Delete Doctor Patient Note Params:', params);
+      async onQueryStarted(
+        noteId,
+        { dispatch, queryFulfilled, getState }
+      ) {
+        const state = getState();
+        const queries = state[baseApi.reducerPath]?.queries ?? {};
 
-        return {
-          url: '/DoctorNote/DeleteDoctorPatientNote',
-          method: 'DELETE',
-          params: params
-        };
+        try {
+          await queryFulfilled;
+
+          Object.values(queries).forEach(entry => {
+            if (entry?.endpointName === "getDoctorPatientNotes") {
+              dispatch(
+                doctorNotesApi.util.updateQueryData(
+                  "getDoctorPatientNotes",
+                  entry.originalArgs,
+                  (draft) => {
+                    if (!draft?.data) return;
+
+                    draft.data = draft.data.filter(n => n.id !== noteId);
+                  }
+                )
+              );
+            }
+          });
+
+        } catch (err) {
+          console.error("Delete failed", err);
+        }
       },
-      invalidatesTags: (result, error, { patientId }) => [
-        { type: 'DoctorNote', id: patientId }
-      ],
     }),
   }),
 });

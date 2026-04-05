@@ -1,6 +1,6 @@
 import Skeleton from "react-loading-skeleton";
 
-export const noteTypeOptions = ["Consultation", "Administrative", "Reminder"];
+export const noteTypeOptions = ["Communication", "Administrative", "Reminder"];
 
 export const patientNotesHelpers = (t) => {
   // Fields used inside the accordion
@@ -28,7 +28,9 @@ export const patientNotesHelpers = (t) => {
       type: "text",
       placeholder: t("Created date"),
       half: true,
-      readOnly: true
+      readOnly: true,
+      disabled: true
+
     },
     {
       name: "displayLastModifiedAt",
@@ -36,7 +38,8 @@ export const patientNotesHelpers = (t) => {
       type: "text",
       placeholder: t("Last modified date"),
       half: true,
-      readOnly: true
+      readOnly: true,
+      disabled: true
     }
   ];
   // Filter configurations

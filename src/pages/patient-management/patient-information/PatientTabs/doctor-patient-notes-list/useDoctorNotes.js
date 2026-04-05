@@ -132,15 +132,15 @@ export const usePatientNotes = (isMobile = false) => {
 
     const newNote = {
       id: `temp-${Date.now()}`,
-      noteType: "Consultation",
+      noteType: "Communication",
       content: "",
       createdAt: new Date().toISOString(),
-      lastModifiedAt: new Date().toISOString(),
+      lastModifiedAt:"",
       isExpanded: true, // Expanded by default for new notes
       isNew: true,
       isTemp: true,
       displayCreatedAt: formatDateForDisplay(new Date().toISOString()),
-      displayLastModifiedAt: formatDateForDisplay(new Date().toISOString()),
+      displayLastModifiedAt: "",
       hasUnsavedChanges: true
     };
 
@@ -267,9 +267,6 @@ export const usePatientNotes = (isMobile = false) => {
           }
           return note;
         }));
-
-        // Refetch to get updated data from server
-        await refetch();
       }
 
     } catch (error) {

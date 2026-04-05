@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import AppointmentInformation from "./tabs/AppointmentInformation";
 import DiagnosisMobileViewWithCRUD from "./tabs/DiagnosisTab";
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("Diagnoses");
+  const [activeTab, setActiveTab] = useState("AppointmentInformation");
   const { t } = useTranslation();
 
   const tabs = [
