@@ -53,7 +53,7 @@ const transformAllergiesData = (response, searchTerm = "") => {
     allergenId: item.id,
     allergenLabel: item.allergenName,
     allergenName: item.allergenName,
-    severity: transformSeverityToUI(item.severity),
+    severity: item.severity,
     severityValue: item.severity,
     isActive: item.isActive,
     dateNoted: item.dateNoted,

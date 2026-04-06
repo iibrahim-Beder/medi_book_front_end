@@ -261,7 +261,6 @@ const handleSave = async () => {
         toast.error("Failed to update allergy");
       }
 
-      toast.success("Updated Successfully");
       setShowModal(false);
       setSelectedRecord(null);
     }
