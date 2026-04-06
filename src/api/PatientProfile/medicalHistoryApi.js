@@ -7,7 +7,7 @@ export const transformHistoryTypeToAPI = (historyType) => {
     'Surgery': 1,
     'Accident': 2,
     'Hospitalization': 3,
-    'FamilyHistory': 4,
+    'Family History': 4,
     'Vaccination': 5,
     'Others': 6
   };

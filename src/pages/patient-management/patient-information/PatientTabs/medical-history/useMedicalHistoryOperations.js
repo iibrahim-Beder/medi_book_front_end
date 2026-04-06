@@ -200,6 +200,7 @@ if(validateForm(selectedRecord)){
   if (isAddMode) {
     try {
       const addData = { ...selectedRecord };
+      console.log("addData", addData);
       const res = await addMedicalHistory({ 
         patientId: PATIENT_ID, 
         ...addData 
@@ -212,9 +213,10 @@ if(validateForm(selectedRecord)){
         setSelectedRecord(null);
       } else {
         toast.dismiss(loadingToast);
-        toast.error(res.message || "Failed to add");
+        toast.error(res.Message || "Failed to add");
       }
     } catch (error) {
+      console.error("Failed to add", error);
       toast.dismiss(loadingToast);
       toast.error(error?.data?.message || "Error adding medical history record.");
     }

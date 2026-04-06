@@ -44,7 +44,7 @@ const transformMedicalConditionData = (response, searchValue = "") => {
     medicalConditionId: item.id,
     medicalConditionName: item.medicalConditionName,
     categoryName: item.categoryName,
-    severity: getSeverityText(item.severity),
+    severity: item.severity,
     severityValue: item.severity,
     isActive: item.isActive,
     notes: item.notes,

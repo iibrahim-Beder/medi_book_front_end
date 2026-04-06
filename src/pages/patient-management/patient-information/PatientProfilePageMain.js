@@ -33,9 +33,6 @@ export default function PatientProfilePageMain() {
    { key: "Medications", label: t("medications") },
    { key: "PrescriptionsTable", label: t("Prescriptions") },
    { key: "DoctorPatientNotes", label: t("Notes") },
-   { key: "Files", label: t("Files and Attachments") },
-   { key: "PatientAdministrativeSettings", label: t("Patient Administrative Settings") },
-   { key: "Test", label: t("Test") },
 
   ];
 
