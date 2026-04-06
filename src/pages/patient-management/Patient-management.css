@@ -421,3 +421,6 @@ border-bottom: 1px solid #dee2e670 !important;
   min-width: 100px;
 }
 /* modal css end */
+.filter-set-view div:first-child{
+    border-top: none !important;
+}
