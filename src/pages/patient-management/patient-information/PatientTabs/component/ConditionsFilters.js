@@ -21,7 +21,8 @@ const ConditionsFilters = ({
   showDateRange = true,
   showFilterDropdown = true,
   filterConfigs = [],
-  conditions = []
+  conditions = [],
+  oneOption=true
 }) => {
     const placeholder = searchPlaceholder || t("Search ...");
 
@@ -128,6 +129,7 @@ const ConditionsFilters = ({
             conditions={conditions}
             onFilter={handleFilterChange}
             onReset={onReset}
+            oneOption={oneOption}
           />
         )}
       </div>

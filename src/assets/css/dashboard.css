@@ -188,7 +188,7 @@ textarea.form-control{
 input:focus,
 .select select:focus,
 .form-control:focus {
-	/* color: #999; */
+	color: var(--terthemecolor);
 	border-color: #eee;
 	-webkit-box-shadow:none !important;
 			box-shadow:none !important;

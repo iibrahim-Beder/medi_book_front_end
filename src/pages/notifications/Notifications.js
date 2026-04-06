@@ -220,6 +220,7 @@ const Notifications = () => {
                 value={dateRange}
               />
               <FilterDropdown
+                oneOption={true}
                 small
                 filters={[
                   {

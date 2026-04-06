@@ -13,7 +13,9 @@ const FilterDropdown = ({
   customCheckbox = false, 
   customCheckboxLabel = "Enable Custom Filter",
   small = false, 
-  conditions = []
+  conditions = [],
+  oneOption = false,
+  FiltersOneOption = [],
 }) => {
   // Initialize defaultValues for each filter to prevent undefined errors
   const initialSelectedFilters = filters.reduce((acc, filter) => ({
@@ -32,6 +34,25 @@ const FilterDropdown = ({
   const dropdownRef = useRef(null); 
 
   const handleFilterChange = (filterName, key) => {
+    if (oneOption) {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [filterName]: {
+          [key]: !prev[filterName][key],
+        },
+      }));
+      return;
+    }
+        if (FiltersOneOption.includes(filterName)) {
+      setSelectedFilters((prev) => ({
+        ...prev,
+        [filterName]: {
+          [key]: !prev[filterName][key],
+        },
+      }));
+      return;
+      
+    }
     setSelectedFilters((prev) => ({
       ...prev,
       [filterName]: {

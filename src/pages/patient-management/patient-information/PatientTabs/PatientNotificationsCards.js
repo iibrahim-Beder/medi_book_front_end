@@ -179,6 +179,7 @@ const PatientNotificationsCards = ({ patientId=4 }) => {
         {/* Filters */}
         <div className="review-filters">
           <FilterDropdown
+            oneOption={true}
             small
             filters={[
               {

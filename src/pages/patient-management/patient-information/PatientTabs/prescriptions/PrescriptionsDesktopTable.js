@@ -93,7 +93,7 @@ useHiddenRightMatchObserver({ tableWrapperRef, currentData, searchTerm });
         </div>
       </div>
 
-      <div className="p-3">
+      <div className="">
         <div className="table-card">
           {/* Filters Section */}
           <div className="mb-3 p-3">

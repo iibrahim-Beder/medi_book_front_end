@@ -103,6 +103,7 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
       <div className="review-filters d-flex gap-3 align-items-center flex-wrap">
 
       <FilterDropdown
+      FiltersOneOption={["type"]}
     small
     filters={[
       {
