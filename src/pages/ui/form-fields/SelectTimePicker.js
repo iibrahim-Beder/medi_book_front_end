@@ -327,7 +327,7 @@ const SelectTimePicker = ({
                 right: "12px",
                 color: showError ? "#ff4d4f" : "#012047",
                 cursor: disabled ? "not-allowed" : "pointer",
-                zIndex: 2,
+                zIndex: 1,
                 opacity: disabled ? 0.5 : 1
               }}
               size={20}

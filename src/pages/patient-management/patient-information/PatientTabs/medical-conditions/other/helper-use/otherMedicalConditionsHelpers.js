@@ -28,10 +28,10 @@ export const otherMedicalConditionsHelpers = (t) => {
       label: t('OtherMedicalConditions.condition_type'), 
       type: "select", 
       options: [
-        { value: "External", label: t('OtherMedicalConditions.condition_type_options.External') },
-        { value: "Internal", label: t('OtherMedicalConditions.condition_type_options.Internal') },
-        { value: "Chronic", label: t('OtherMedicalConditions.condition_type_options.Chronic') },
-        { value: "Acute", label: t('OtherMedicalConditions.condition_type_options.Acute') }
+        { value: "Genetic", label: t('Genetic') },
+        { value: "Chronic", label: t('Chronic') },
+        { value: "Acute", label: t('Acute') },
+        { value: "Other", label: t('Other') },
       ], 
       placeholder: t('OtherMedicalConditions.select_condition_type') 
     },
@@ -69,7 +69,7 @@ export const otherMedicalConditionsHelpers = (t) => {
     {
       name: "conditionType",
       label: "Condition Type",
-      data: ["External", "Acute", "Chronic", "Internal"].map((opt) => ({
+      data: [ "Acute", "Chronic","Genetic", "Other"].map((opt) => ({
         key: opt,
         label: opt,
       })),
@@ -97,7 +97,7 @@ export const otherMedicalConditionsHelpers = (t) => {
   };
 
   const translateConditionType = (conditionType) => {
-    return t(`OtherMedicalConditionsMobileView.condition_type_options.${conditionType}`);
+    return t(`${conditionType}`);
   };
 
   const translateStatus = (isActive) => {
