@@ -46,7 +46,7 @@ const transformPrescriptionData = (response, searchValue = "") => {
     title: item.title,
     notes: item.notes,
     diagnosisName: item.diagnosisName,
-    status: getStatusText(item.status),
+    status: item.status,
     statusValue: item.status,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,

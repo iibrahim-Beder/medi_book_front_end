@@ -332,26 +332,6 @@ export const CustomAccordionToMobileexport = ({
     ? transformMedicationData(selectedPrescription.prescribedMedications)
     : [];
 
-  const matchedFields =
-    data?.flatMap(item => item.highlightInfo?.matchedFields || []) || [];
-
-  const isHasMatched = (fieldName, itemId) => {
-    if (!matchedFields.length) return false;
-
-    if (
-      fieldName === "main" &&
-      matchedFields.some(m => m.itemId === itemId)
-    ) {
-      return true;
-    }
-
-    return matchedFields.some(
-      m =>
-        m.itemId === itemId &&
-        m.field?.toLowerCase() === fieldName.toLowerCase()
-    );
-  };
-
   return (
     <CustomAccordion
       getItemTitle={(medication) =>

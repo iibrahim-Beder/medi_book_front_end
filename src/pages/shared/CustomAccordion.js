@@ -252,10 +252,10 @@ const handleFieldChange = (index, field, value) => {
             const collapseClass = isSingle ? "dc-collapseexp show" : `dc-collapseexp ${item.isExpanded ? "show" : "hide"}`;
 
             return (
-              <li key={item.id || index}>
+              <li key={item.id || index} className={`${item.isExpanded ? "show" : ""}`}>
                 {/* Accordion Title - Fixed Overflow */}
                 <div
-                  className={`${isHasMatched(item,"main") ? "has-match-inner" : ""}  dc-accordioninnertitle ${accordioninnertitleSize}`}
+                  className={`${isHasMatched(item,"main") || item.hasMatch ? "has-match-inner" : ""}  dc-accordioninnertitle ${accordioninnertitleSize}`}
                   style={{
                     display: isSingle ? "none" : "",
                     backgroundColor: titleBackgroundColor,
