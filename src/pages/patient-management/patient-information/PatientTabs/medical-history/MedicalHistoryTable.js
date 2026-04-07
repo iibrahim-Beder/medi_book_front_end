@@ -20,7 +20,7 @@ import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatc
 import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
 import PatientName from "../component/PatientName";
 
-const MedicalHistoryTable = () => {
+const MedicalHistoryTable = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -61,7 +61,7 @@ const MedicalHistoryTable = () => {
     setSelectedRecord,
     refetch,
     FIELD_KEY_MAP
-  } = useMedicalHistory(false);
+  } = useMedicalHistory(false,patientId);
 
   const {
     truncateText,

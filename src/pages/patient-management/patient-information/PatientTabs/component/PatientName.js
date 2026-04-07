@@ -1,7 +1,10 @@
+import { useParams } from "react-router-dom";
 import usePatientBasicInfo from "../patientBasicInfo/usePatientBasicInfo";
 
 export default function PatientName() {
-  const { patient, isLoading } = usePatientBasicInfo();
+    const { patientId } = useParams();
+    const numericPatientId = Number(patientId);
+  const { patient, isLoading } = usePatientBasicInfo(numericPatientId);
 
   if (isLoading) {
     return <span>loading...</span>;

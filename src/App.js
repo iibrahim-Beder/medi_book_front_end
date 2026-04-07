@@ -141,7 +141,7 @@ const { i18n } = useTranslation();
                     />
                     <Route path="account-settings" element={<Acco />} />
                     <Route
-                      path="pationt-information"
+                      path="pationt-information/:patientId"
                       element={<PatientProfilePageMain />}
                     />
                     <Route

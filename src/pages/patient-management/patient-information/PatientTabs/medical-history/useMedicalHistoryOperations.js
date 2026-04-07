@@ -3,9 +3,9 @@ import { useGetPatientMedicalHistoryQuery, useDeleteMedicalHistoryMutation, useU
 import toast from 'react-hot-toast';
 import { buildUpdatePayload, validateForm } from "./MedicalHistoryHelpers";
 
-const PATIENT_ID = 4;
 
-export const useMedicalHistory = (isMobile = false) => {
+export const useMedicalHistory = (isMobile = false,patientId) => {
+  console.log("patientId from useMedicalHistory ", patientId);
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
     historyType: "",
@@ -56,7 +56,7 @@ export const useMedicalHistory = (isMobile = false) => {
     console.log("apiFilters", apiFilters);
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
@@ -202,7 +202,7 @@ if(validateForm(selectedRecord)){
       const addData = { ...selectedRecord };
       console.log("addData", addData);
       const res = await addMedicalHistory({ 
-        patientId: PATIENT_ID, 
+        patientId: patientId, 
         ...addData 
       }).unwrap();
       
@@ -261,7 +261,7 @@ if(validateForm(selectedRecord)){
     try {
       const res = await deleteMedicalHistory({ 
         historyId: recordToDelete.id, 
-        patientId: PATIENT_ID 
+        patientId: patientId 
       }).unwrap();
       
       if (res?.succeeded) {

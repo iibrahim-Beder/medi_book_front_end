@@ -3,9 +3,8 @@ import { useGetPrescribedMedicationQuery } from "../../../../../../api/PatientPr
 import { formatDateForAPI } from "../../../../../shared/utils";
 import { hasMatchForField, shouldExpand } from "../../component/helpers";
 
-const PATIENT_ID = 4;
 
-export const usePrescribedMedication = (isMobile = false) => {
+export const usePrescribedMedication = ({isMobile = false,patientId}) => {
   // State 
   const [expandedRow, setExpandedRow] = useState({});
   const [expandedInstructions, setExpandedInstructions] = useState({});
@@ -58,7 +57,7 @@ const handleExpandClick = (id, field,open=false) => {
     });
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize

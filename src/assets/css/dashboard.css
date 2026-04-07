@@ -3148,6 +3148,7 @@ background-color: var(--scbccolor);
 	font-style: normal;
 	line-height: inherit;
 	display: inline-block;
+	margin-left: 10px;
 }
 .dc-collapseexp{
 	float: left;

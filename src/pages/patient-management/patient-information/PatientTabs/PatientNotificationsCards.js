@@ -26,7 +26,7 @@ import {
 } from "../../../../api/PatientProfile/patientNotificationsApi";
 import PatientName from "./component/PatientName";
 
-const PatientNotificationsCards = ({ patientId=4 }) => {
+const PatientNotificationsCards = ({ patientId }) => {
   const { t } = useTranslation();
 
   // Filter states

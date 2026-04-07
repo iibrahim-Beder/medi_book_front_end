@@ -13,9 +13,8 @@ import {
 import toast from 'react-hot-toast';
 import { formatDateForAPI } from "../../../../../../shared/utils";
 
-const PATIENT_ID = 4;
 
-export const useOtherMedicalConditions = () => {
+export const useOtherMedicalConditions = (patientId) => {
   const [expandedRow, setExpandedRow] = useState({});
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
@@ -64,7 +63,7 @@ export const useOtherMedicalConditions = () => {
     console.log("apiFilters", apiFilters);
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
@@ -199,7 +198,7 @@ const handleSave = async () => {
   try {
     if (isAddMode) {
       const addData = {
-        patientId: PATIENT_ID,
+        patientId: patientId,
         conditionData: {
           ...selectedRecord,
           diagnosisDate: formatDateForAPI(selectedRecord.diagnosedDate),

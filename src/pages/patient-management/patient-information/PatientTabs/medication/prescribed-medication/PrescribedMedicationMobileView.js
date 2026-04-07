@@ -18,7 +18,7 @@ import { isHasMatched } from "../../component/helpers";
 import PatientName from "../../component/PatientName";
 
 
-const PrescribedMedicationMobileView = () => {
+const PrescribedMedicationMobileView = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -48,7 +48,7 @@ const PrescribedMedicationMobileView = () => {
     setCurrentFilters,
     refetch,
     
-  } = usePrescribedMedication(true); 
+  } = usePrescribedMedication({isMobile: true, patientId}); 
 
   const {
     mobileHeaders,

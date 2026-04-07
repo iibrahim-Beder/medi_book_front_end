@@ -1,9 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { useGetPatientMedicalConditionsQuery } from "../../../../../../api/PatientProfile/patientMedicalConditionsApi";
 
-const PATIENT_ID = 4;
 
-export const useMedicalConditions = (isMobile = false) => {
+export const useMedicalConditions = (isMobile = false,patientId) => {
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
     conditionType: "",
@@ -60,7 +59,7 @@ export const useMedicalConditions = (isMobile = false) => {
       });
       console.log("apiFilters", apiFilters);
       return {
-        patientId: PATIENT_ID,
+        patientId: patientId,
         filter: apiFilters,
         pageNumber: currentPage,
         pageSize: pageSize

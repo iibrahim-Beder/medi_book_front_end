@@ -17,7 +17,7 @@ import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstM
 import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMatchObserver";
 import PatientName from "../../component/PatientName";
 
-const PrescribedMedicationTable = () => {
+const PrescribedMedicationTable = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -47,7 +47,7 @@ const PrescribedMedicationTable = () => {
     
     // Utilities
     truncateText,
-  } = usePrescribedMedication();
+  } = usePrescribedMedication({patientId});
 
   const {
     fieldMapping,

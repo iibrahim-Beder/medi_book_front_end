@@ -3,12 +3,12 @@ import OtherMedicalConditionsTable from "./OtherMedicalConditionsTable";
 import OtherMedicalConditionsMobileView from "./OtherMedicalConditionsMobileView";
 import { useDevice } from "../../../../../../context/useIsMobile";
 
-const OtherMedicalConditions = () => {
+const OtherMedicalConditions = ({patientId}) => {
   const {isMobile} = useDevice();
 
   return (
     <div>
-      {isMobile ? <OtherMedicalConditionsMobileView /> : <OtherMedicalConditionsTable />}
+      {isMobile ? <OtherMedicalConditionsMobileView patientId={patientId} /> : <OtherMedicalConditionsTable patientId={patientId} />}
     </div>
   );
 };

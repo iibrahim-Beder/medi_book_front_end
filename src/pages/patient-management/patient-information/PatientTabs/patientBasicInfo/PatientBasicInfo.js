@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import ErrorLoading from '../../../../shared/ErrorLoading';
 import usePatientBasicInfo, { patientSkeletonTheme } from './usePatientBasicInfo';
 
-export default function PatientBasicInfo() {
+export default function PatientBasicInfo({patientId}) {
   const { t } = useTranslation();
 
   const { 
@@ -12,7 +12,7 @@ export default function PatientBasicInfo() {
     error,
     refetch,
     longLoading,
-  } = usePatientBasicInfo(); 
+  } = usePatientBasicInfo(patientId); 
   if (isLoading ) {
     return (
       patientSkeletonTheme(longLoading)
@@ -44,11 +44,12 @@ export default function PatientBasicInfo() {
       <div className="dc-user-header">
         <div>
           <figure className="dc-user-img">
-            <img 
-              src={patient.image} 
-              alt={t("PatientBasicInfo.patient_image_alt")} 
+            <img
+              src={patient?.image || "/images/feedback/user-img.jpg"}
+              alt={t("PatientBasicInfo.patient_image_alt")}
               onError={(e) => {
-                e.target.src = 'images/feedback/user-img.jpg';
+                e.currentTarget.onerror = null; 
+                e.currentTarget.src = "/images/feedback/user-img.jpg";
               }}
             />
           </figure>
@@ -121,12 +122,12 @@ export default function PatientBasicInfo() {
               <span style={{ font: "14px / 20px 'Open Sans', sans-serif" }}>
                 {patient.chronic && patient.chronic.length > 0 ? (
                   patient.chronic.map((d, i) => (
-                    <div style={{ whiteSpace: "pre" }} className="mb-2" key={i}>
+                    <div s className="mb-2" key={i}>
                       • {d}
                     </div>
                   ))
                 ) : (
-                  <div style={{ whiteSpace: "pre" }} className="mb-2">
+                  <div  className="mb-2">
                     • No chronic diseases
                   </div>
                 )}
@@ -152,12 +153,12 @@ export default function PatientBasicInfo() {
               <span style={{ font: "14px / 20px 'Open Sans', sans-serif" }}>
                 {patient.medicines && patient.medicines.length > 0 ? (
                   patient.medicines.map((m, i) => (
-                    <div style={{ whiteSpace: "pre" }} className="mb-2" key={i}>
+                    <div  className="mb-2" key={i}>
                       • {m}
                     </div>
                   ))
                 ) : (
-                  <div style={{ whiteSpace: "pre" }} className="mb-2">
+                  <div  className="mb-2">
                     • No medications
                   </div>
                 )}

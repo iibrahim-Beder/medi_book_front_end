@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { isHasMatched } from "../component/helpers";
 import PatientName from "../component/PatientName";
 
-const MedicalHistoryMobileView = () => {
+const MedicalHistoryMobileView = ({patientId}) => {
 
   const { t } = useTranslation();
   const {
@@ -60,7 +60,7 @@ const MedicalHistoryMobileView = () => {
     toggleNotes,
     expandedDescription,
     toggleDescription
-  } = useMedicalHistory(true);
+  } = useMedicalHistory(true,patientId);
 
   const {
     historyTypes,

@@ -3,9 +3,8 @@ import {
   useGetPatientPrescriptionsQuery 
 } from "../../../../../api/PatientProfile/patientPrescriptionApi";
 import { formatDateForAPI } from "../../../../shared/utils";
-const PATIENT_ID = 4;
 
-export const usePrescriptions = (isMobile = false) => {
+export const usePrescriptions = (isMobile = false,patientId) => {
   // State 
   const [expandedRow, setExpandedRow] = useState(null);
   const [expandedField, setExpandedField] = useState(null);
@@ -54,7 +53,7 @@ export const usePrescriptions = (isMobile = false) => {
     });
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize

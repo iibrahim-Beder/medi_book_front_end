@@ -17,7 +17,7 @@ import { diagnosisHelpers } from "./diagnosisHelpers";
 import { isHasMatched } from "../component/helpers";
 import PatientName from "../component/PatientName";
 
-const DiagnosisMobileView = () => {
+const DiagnosisMobileView = ({patientId}) => {
   const { t } = useTranslation();
 
   const {
@@ -44,7 +44,7 @@ const DiagnosisMobileView = () => {
     toggleDescription,
     transformDiagnosisData,
     transformPrescriptionData,
-  } = useDiagnoses();
+  } = useDiagnoses(patientId);
   const{diagnosedConditionsFields,prescriptionRecipeFields,notesFields,prescriptionFields} = diagnosisHelpers(t);
 
   const [selectedDiagnosis, setSelectedDiagnosis] = React.useState(null);
@@ -103,6 +103,7 @@ const DiagnosisMobileView = () => {
                 handleSearch();
               }}
               conditions={currentData || []}
+              showFilterDropdown={false}
             />
           </div>
 

@@ -12,9 +12,8 @@ import {
 
 import toast from 'react-hot-toast';
 
-const PATIENT_ID = 4;
 
-export const useAllergies = () => {
+export const useAllergies = (patientId) => {
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
     isActive: "All",
@@ -58,7 +57,7 @@ export const useAllergies = () => {
     });
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
@@ -216,7 +215,7 @@ const handleSave = async () => {
 
       
       const res = await addPatientAllergy({
-        patientId: PATIENT_ID,
+        patientId: patientId,
         allergyData
       }).unwrap();
       console.log("res", res);
@@ -282,7 +281,7 @@ const handleSave = async () => {
     try {
       const res = await deletePatientAllergy({ 
         allergyId: recordToDelete.allergenId, 
-        patientId: PATIENT_ID 
+        patientId: patientId 
       }).unwrap();
       
       if (res?.succeeded) {

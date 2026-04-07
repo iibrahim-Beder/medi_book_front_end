@@ -20,7 +20,7 @@ import {hasHiddenMatch, isHasMatched} from "../component/helpers";
 import { useHiddenRightMatchObserver } from "../../../../../hooks/useRightMatchObserver";
 import PatientName from "../component/PatientName";
 
-const AllergyTable = () => {
+const AllergyTable = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -58,7 +58,7 @@ const AllergyTable = () => {
     setShowModal,
     setSelectedRecord,
     refetch
-  } = useAllergies();
+  } = useAllergies(patientId);
 
   const {
     allergenOptions,

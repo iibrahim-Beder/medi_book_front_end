@@ -9,9 +9,8 @@ import toast from 'react-hot-toast';
 import { formatDateForAPI } from "../../../../../shared/utils";
 import { buildPatientMedicationUpdatePayload, validatePatientMedicationForm } from "./otherMedicationsHelpers";
 
-const PATIENT_ID = 4;
 
-export const useOtherMedications = () => {
+export const useOtherMedications = (patientId) => {
   // State 
   const [expandedRow, setExpandedRow] = useState(null);
   
@@ -60,7 +59,7 @@ export const useOtherMedications = () => {
     });
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
@@ -183,7 +182,7 @@ const handleSave = async () => {
   try {
     if (isAddMode) {
       const res = await addMedication({
-        patientId: PATIENT_ID,
+        patientId: patientId,
         medicationData: selectedRecord
       }).unwrap();
 

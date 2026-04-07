@@ -11,7 +11,7 @@ import { useOtherMedications } from "./useOtherMedications";
 import { MobileSkeleton, otherMedicationsHelpers, TableSkeleton } from "./otherMedicationsHelpers";
 import {formatDate} from "../../../../../shared/utils";
 import PatientName from "../../component/PatientName";
-const OtherMedicationsMobileView = () => {
+const OtherMedicationsMobileView = ({patientId}) => {
   const { t } = useTranslation();
 
   const {
@@ -53,7 +53,7 @@ const OtherMedicationsMobileView = () => {
     // Utilities
     getStatusColor,
     getMatchedFields,
-  } = useOtherMedications();
+  } = useOtherMedications(patientId);
 
   const { fieldMapping, tableHeaders, fields, filterConfigs, emptyStates } = otherMedicationsHelpers(t);
   return (

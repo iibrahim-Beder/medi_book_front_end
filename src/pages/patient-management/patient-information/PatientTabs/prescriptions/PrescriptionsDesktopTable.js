@@ -16,7 +16,7 @@ import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatc
 import { isHasMatched } from "../component/helpers";
 import PatientName from "../component/PatientName";
 
-const PrescriptionsTable = () => {
+const PrescriptionsTable = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -54,7 +54,7 @@ const PrescriptionsTable = () => {
     truncateText,
     getStatusColor,
     FIELD_KEY_MAP
-  } = usePrescriptions(false);
+  } = usePrescriptions(false,patientId);
 
   const {
     fieldMapping,

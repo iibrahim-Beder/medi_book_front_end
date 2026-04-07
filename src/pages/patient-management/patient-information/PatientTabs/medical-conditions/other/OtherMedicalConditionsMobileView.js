@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { isHasMatched } from "../../component/helpers";
 import PatientName from "../../component/PatientName";
 
-const OtherMedicalConditionsMobileView = () => {
+const OtherMedicalConditionsMobileView = ({patientId}) => {
   const { t } = useTranslation();
 
   const {
@@ -59,7 +59,7 @@ const OtherMedicalConditionsMobileView = () => {
     // Utilities
     getSeverityColor,
     getStatusInfo,
-  } = useOtherMedicalConditions();
+  } = useOtherMedicalConditions(patientId);
 
   const {
     fields,

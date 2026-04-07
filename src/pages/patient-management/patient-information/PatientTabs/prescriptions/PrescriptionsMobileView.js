@@ -16,7 +16,7 @@ import { formatDate } from "../../../../shared/utils";
 import { isHasMatched } from "../component/helpers";
 import PatientName from "../component/PatientName";
 
-const PrescriptionsMobileView = () => {
+const PrescriptionsMobileView = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -48,7 +48,7 @@ const PrescriptionsMobileView = () => {
     refetch,
     // Utilities
     getStatusColor,
-  } = usePrescriptions(true); 
+  } = usePrescriptions(true,patientId); 
 
   const {
     mobileHeaders,

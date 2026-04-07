@@ -7,9 +7,8 @@ import {
 } from '../../../../../api/PatientProfile/doctorNotesApi';
 import toast from 'react-hot-toast';
 
-const PATIENT_ID = 4;
 
-export const usePatientNotes = (isMobile = false) => {
+export const usePatientNotes = (isMobile = false,patientId) => {
 
   const [localNotes, setLocalNotes] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -65,7 +64,7 @@ export const usePatientNotes = (isMobile = false) => {
     });
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize
@@ -220,7 +219,7 @@ export const usePatientNotes = (isMobile = false) => {
       if (noteToSave.isTemp) {
         // Create new note
         result = await addNoteMutation({
-          patientId: PATIENT_ID,
+          patientId: patientId,
           noteData: {
             noteType: noteData.noteType,
             content: noteData.content

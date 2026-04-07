@@ -18,7 +18,7 @@ import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstM
 import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMatchObserver";
 import {hasHiddenMatch, isHasMatched} from "../../component/helpers";
 import PatientName from "../../component/PatientName";
-const OtherMedicalConditions = () => {
+const OtherMedicalConditions = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -61,7 +61,7 @@ const OtherMedicalConditions = () => {
     getSeverityColor,
     getStatusInfo,
     truncateText
-  } = useOtherMedicalConditions();
+  } = useOtherMedicalConditions(patientId);
 
   const {
     fields,

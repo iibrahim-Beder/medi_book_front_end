@@ -19,7 +19,7 @@ import { useScrollToFirstMatch } from "../../../../../hooks/useScrollToFirstMatc
 import { isHasMatched } from "../component/helpers";
 import PatientName from "../component/PatientName";
 
-const DiagnosisTable = () => {
+const DiagnosisTable = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -53,7 +53,7 @@ const DiagnosisTable = () => {
     // Utilities
     transformDiagnosisData,
     transformPrescriptionData,
-  } = useDiagnoses();
+  } = useDiagnoses(patientId);
 
   const {
     diagnosedConditionsFields,

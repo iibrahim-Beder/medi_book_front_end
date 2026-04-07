@@ -30,7 +30,7 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
     setCurrentFilters,
 
     isFetching
-  } = usePatientNotes(isMobile);
+  } = usePatientNotes(isMobile,patientId);
 
   const {
     notesFormFields,

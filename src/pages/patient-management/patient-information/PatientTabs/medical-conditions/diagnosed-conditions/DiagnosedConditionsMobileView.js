@@ -16,7 +16,7 @@ import { formatDate } from "../../../../../shared/utils";
 import { isHasMatched } from "../../component/helpers";
 import PatientName from "../../component/PatientName";
 
-const DiagnosedConditionsMobileView = () => {
+const DiagnosedConditionsMobileView = ({patientId}) => {
   const { t } = useTranslation();
   const {
     currentFilters,
@@ -40,7 +40,7 @@ const DiagnosedConditionsMobileView = () => {
 
     getSeverityColor,
     getStatusInfo,
-  } = useMedicalConditions(true); // true = mobile view
+  } = useMedicalConditions(true,patientId); // true = mobile view
    const {
       conditionTypes,
       severityLevels,

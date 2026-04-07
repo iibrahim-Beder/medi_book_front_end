@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 import { useGetPatientBasicInfoQuery } from "../../../../../api/PatientProfile/patientApi";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
-export const PATIENT_ID = 4;
 
-export default function usePatientBasicInfo() {
+export default function usePatientBasicInfo(patientId) {
   const [longLoading, setLongLoading] = useState(false);
-
   const {
     data: patient,
     isLoading,
     isError,
     error,
     refetch,
-  } = useGetPatientBasicInfoQuery(PATIENT_ID, {
+  } = useGetPatientBasicInfoQuery(patientId, {
     refetchOnMountOrArgChange: true,
+skip: !patientId || isNaN(patientId),
   });
+  console.log("patientId", patientId,error);
 
   // Long Loading Logic
   useEffect(() => {

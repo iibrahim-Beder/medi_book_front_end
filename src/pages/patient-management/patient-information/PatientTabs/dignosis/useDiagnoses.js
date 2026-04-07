@@ -2,9 +2,8 @@ import { useState, useMemo } from "react";
 import { useGetPatientDiagnosesQuery } from "../../../../../api/PatientProfile/patientDiagnosesApi";
 import { formatDateForAPI } from "../../../../shared/utils";
 
-const PATIENT_ID = 4;
 
-export const useDiagnoses = () => {
+export const useDiagnoses = (patientId) => {
   
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
@@ -35,7 +34,7 @@ export const useDiagnoses = () => {
     });
 
     return {
-      patientId: PATIENT_ID,
+      patientId: patientId,
       filter: apiFilters,
       pageNumber: currentPage,
       pageSize: pageSize

@@ -3,12 +3,12 @@ import DiagnosisMobileView from "./DiagnosisMobileView";
 import DiagnosisDesktopTable from "./DiagnosisDesktopTable";
 import { useDevice } from "../../../../../context/useIsMobile";
 
-const DiagnosisTable = () => {
+const DiagnosisTable = ({patientId}) => {
   const {isMobile} = useDevice();
 
   return (
     <div>
-      {isMobile ? <DiagnosisMobileView /> : <DiagnosisDesktopTable />}
+      {isMobile ? <DiagnosisMobileView patientId={patientId}/> : <DiagnosisDesktopTable patientId={patientId} />}
     </div>
   );
 };

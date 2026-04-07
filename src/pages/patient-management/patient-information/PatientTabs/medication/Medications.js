@@ -7,7 +7,7 @@ import { useDevice } from "../../../../../context/useIsMobile";
 import PrescribedMedicationMobileView from "./prescribed-medication/PrescribedMedicationMobileView";
 import OtherMedicationMobileView from "./other/OthermedicationsMobileView";
 
-export default function Medications() {
+export default function Medications({patientId}) {
   const [activeTab, setActiveTab] = useState("PrescribedMedicationTable");
   const { t } = useTranslation();
   const { isMobile } = useDevice();
@@ -46,13 +46,13 @@ export default function Medications() {
         >
           {activeTab === "PrescribedMedicationTable" && (
             <div className="">
-              {isMobile ? <PrescribedMedicationMobileView /> : <PrescribedMedicationTable />}
+              {isMobile ? <PrescribedMedicationMobileView patientId={patientId} /> : <PrescribedMedicationTable patientId={patientId}/>}
             </div>
           )}
 
           {activeTab === "Othermedications" && (
             <div className="">
-              {isMobile ? <OtherMedicationMobileView /> : <Othermedications />}
+              {isMobile ? <OtherMedicationMobileView patientId={patientId} /> : <Othermedications patientId={patientId}/>}
             </div>
           )}
         </div>

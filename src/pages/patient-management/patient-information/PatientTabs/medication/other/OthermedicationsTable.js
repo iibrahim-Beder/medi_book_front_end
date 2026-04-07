@@ -14,7 +14,7 @@ import { useOtherMedications } from "./useOtherMedications";
 import { otherMedicationsHelpers, TableSkeleton } from "./otherMedicationsHelpers";
 import PatientName from "../../component/PatientName";
 
-const Othermedications = () => {
+const Othermedications = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -59,7 +59,7 @@ const Othermedications = () => {
     truncateText,
     getStatusColor,
     getMatchedFields
-  } = useOtherMedications();
+  } = useOtherMedications(patientId);
 
   const {
     fieldMapping,

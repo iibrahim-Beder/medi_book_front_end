@@ -18,7 +18,7 @@ import { useHiddenRightMatchObserver } from "../../../../../../hooks/useRightMat
 import { useScrollToFirstMatch } from "../../../../../../hooks/useScrollToFirstMatch";
 import PatientName from "../../component/PatientName";
 
-const DiagnosedConditionsTable = () => {
+const DiagnosedConditionsTable = ({patientId}) => {
   const { t } = useTranslation();
   
   const {
@@ -46,7 +46,7 @@ const DiagnosedConditionsTable = () => {
     // Utilities
     getSeverityColor,
     getStatusInfo,
-  } = useMedicalConditions(false); 
+  } = useMedicalConditions(false,patientId); 
 
   const {
     conditionTypes,

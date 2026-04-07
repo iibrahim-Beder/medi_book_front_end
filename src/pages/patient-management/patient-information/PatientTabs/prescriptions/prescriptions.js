@@ -4,12 +4,12 @@ import PrescriptionsTable from "./PrescriptionsDesktopTable";
 import PrescriptionsMobileView from "./PrescriptionsMobileView";
 
 
-const Prescriptions = () => {
+const Prescriptions = ({patientId}) => {
   const {isMobile} = useDevice();
 
   return (
     <div>
-      {isMobile ? <PrescriptionsMobileView /> : <PrescriptionsTable />}
+      {isMobile ? <PrescriptionsMobileView patientId={patientId} /> : <PrescriptionsTable patientId={patientId}/>}
     </div>
   );
 };

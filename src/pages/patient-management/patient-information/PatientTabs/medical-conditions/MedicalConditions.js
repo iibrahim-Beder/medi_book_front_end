@@ -5,7 +5,7 @@ import DiagnosedConditions from "./diagnosed-conditions/DiagnosedConditions";
 import OtherMedicalConditions from "./other/OtherMedicalConditions";
 import { useDevice } from "../../../../../context/useIsMobile";
 
-export default function MedicalConditions() {
+export default function MedicalConditions({patientId}) {
   const [activeTab, setActiveTab] = useState("DiagnosedConditionsTable");
   const { t } = useTranslation();
   const { isMobile } = useDevice();
@@ -44,13 +44,13 @@ export default function MedicalConditions() {
         >
           {activeTab === "DiagnosedConditionsTable" && (
             <div className="">
-              <DiagnosedConditions />
+              <DiagnosedConditions patientId={patientId} />
             </div>
           )}
 
           {activeTab === "OtherMedicalConditions" && (
             <div className="">
-              <OtherMedicalConditions />
+              <OtherMedicalConditions patientId={patientId} />
             </div>
           )}
         </div>

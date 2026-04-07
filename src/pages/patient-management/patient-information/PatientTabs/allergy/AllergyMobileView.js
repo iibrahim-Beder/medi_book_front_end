@@ -19,7 +19,7 @@ import "../../../Patient-management.css";
 import { isHasMatched } from "../component/helpers";
 import PatientName from "../component/PatientName";
 
-const AllergyMobileView = () => {
+const AllergyMobileView = ({patientId}) => {
   const { t } = useTranslation();
 
   const {
@@ -59,7 +59,7 @@ const AllergyMobileView = () => {
     refetch,
     openNotes,
 
-  } = useAllergies();
+  } = useAllergies(patientId);
 
   const {
     fields,
