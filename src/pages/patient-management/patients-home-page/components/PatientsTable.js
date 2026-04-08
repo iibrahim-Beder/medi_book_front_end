@@ -8,13 +8,14 @@ import MainSearch from "../../../shared/MainSearch";
 import DateRangePicker from "../../patient-information/PatientTabs/component/DateRangePicker";
 import FilterDropdown from "../../patient-information/PatientTabs/component/FilterDropdown";
 import { CiSearch } from "react-icons/ci";
+import { Link } from "react-router-dom";
 
 const PatientsTable = () => {
   const { t } = useTranslation();
 
   const patientsData = [
     {
-      patientId: "#PT001",
+      patientId: "1",
       name: "Charlene Reed",
       age: 29,
       address: "4417 Goosetown Drive, Taylorsville, NC",
@@ -24,7 +25,7 @@ const PatientsTable = () => {
       avatar: "/images/avt/patient-avt.png",
     },
     {
-      patientId: "#PT002",
+      patientId: "2",
       name: "Travis Trimble",
       age: 23,
       address: "4026 Fantages Way, Brunswick, Maine",
@@ -34,7 +35,7 @@ const PatientsTable = () => {
       avatar: "/images/avt/patient-avt.png",
     },
     {
-      patientId: "#PT003",
+      patientId: "3",
       name: "Carl Kelly",
       age: 29,
       address: "2037 Pearcy Avenue, Decatur, Indiana",
@@ -44,7 +45,7 @@ const PatientsTable = () => {
       avatar: "/images/avt/patient-avt.png",
     },
     {
-      patientId: "#PT004",
+      patientId: "4",
       name: "Michelle Fairfax",
       age: 25,
       address: "2037 Pearcy Avenue, Decatur, Indiana",
@@ -55,7 +56,7 @@ const PatientsTable = () => {
       
  },
     {
-      patientId: "#PT005",
+      patientId: "5",
       name: "John Doe",
       age: 35,
       address: "123 Main Street, New York, NY",
@@ -65,7 +66,7 @@ const PatientsTable = () => {
       avatar: "/images/avt/patient-avt.png",
     },
     {
-      patientId: "#PT006",
+      patientId: "6",
       name: "Jane Smith",
       age: 28,
       address: "456 Oak Avenue, Los Angeles, CA",
@@ -179,7 +180,7 @@ const PatientsTable = () => {
           >
             <thead className="table-light">
               <tr>
-                <th className="border-0">{t("patientId")}</th>
+                {/* <th className="border-0">{t("patientId")}</th> */}
                 <th className="border-0">{t("name")}</th>
                 <th className="border-0">{t("age")}</th>
                 <th className="border-0">{t("address")}</th>
@@ -192,7 +193,7 @@ const PatientsTable = () => {
             <tbody>
               {currentPatients.map((patient) => (
                 <tr key={patient.patientId}>
-                  <td className="border-0">{patient.patientId}</td>
+                  {/* <td className="border-0">{patient.patientId}</td> */}
                   <td className="border-0">
                     <div className="d-flex align-items-center justify-content-start cont-img-name">
                       <img
@@ -212,6 +213,7 @@ const PatientsTable = () => {
                     ${patient.paid}
                   </td>
                   <td className="border-0">
+                    <Link to={`/pationt-information/${patient.patientId}`}>
                     <Button
                       variant="outline-primary"
                       size="sm"
@@ -219,6 +221,7 @@ const PatientsTable = () => {
                     >
                    {  t("View profile") }<MdOutlineArrowForward className="ms-1 arrow-icon-view-table" />
                     </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}

@@ -14,7 +14,8 @@ export const useNotifications = (userId) => {
   const [mutemut, setMutemut] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [notifications, setNotifications] = useState([]);
-
+  const [expandedMessageId, setExpandedMessageId] = useState(null);
+console.log("expandedMessageId", expandedMessageId);
   const { data, isFetching , isLoading, refetch} = useGetDoctorNotificationsQuery({
     pageNumber: page,
     pageSize: PAGE_SIZE,
@@ -86,6 +87,7 @@ export const useNotifications = (userId) => {
   };
     const handleNotificationClick = async (notificationId) => {
     const notification = notifications.find(n => n.id === notificationId);
+     expandedMessageId===notificationId ? setExpandedMessageId(null) : setExpandedMessageId(notificationId)
     
     if (!notification || notification.isRead) return;
     markAsRead(notificationId);
@@ -108,7 +110,8 @@ export const useNotifications = (userId) => {
     isConnected,
     hasMore,
     mutemut,
-    setMutemut
+    setMutemut,
+    expandedMessageId,
   };
 };
 

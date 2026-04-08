@@ -13,6 +13,7 @@ export default function LatestReviews() {
       name: "Elvis Presley",
       date: "Jun 27, 2018",
       rate: 5,
+      patientId:4,
     },
     {
       id: 2,
@@ -21,6 +22,7 @@ export default function LatestReviews() {
       title: "Sleeping Noise from H",
       date: "Jun 27, 2018",
       rate: 3,
+      patientId:5
     },
     {
       id: 3,
@@ -29,6 +31,7 @@ export default function LatestReviews() {
       title: "Visited For Conservative",
       date: "Jun 27, 2018",
       rate: 4,
+      patientId:6
     },
     {
       id: 4,
@@ -37,6 +40,7 @@ export default function LatestReviews() {
       title: "Another Feedback Example",
       date: "Jul 15, 2018",
       rate: 3,
+      patientId:7
     },
   ];
   return (
@@ -69,7 +73,9 @@ const FeedbackItem = ({ appointment, index }) => {
       <img src={appointment.img} alt={appointment.name} />
     </figure>
     <div className="dc-userlistingcontent2">
-      <h6 className="mt-2">{appointment.name}</h6>
+      <Link to={`/pationt-information/${appointment.patientId}`} className="button-elment"title="pationt profile" >
+      <h6 className="mt-2 button-elment">{appointment.name}</h6>
+      </Link>
       <StarRating rating={appointment.rate|| 4} 
       //  style={{marginBottom: "10px",marginTop: "auto"}}
        />
@@ -82,7 +88,7 @@ const FeedbackItem = ({ appointment, index }) => {
             <span ref={textRef} className={`${isOverflowing ? "overflowing" : ""}`} >{appointment.title}</span>
             {/* <span>Booking on: {appointment.date}</span> */}
           {/* </h3> */}
-          <Link to={`/appointment-management/${appointment.id}`} className="btn-link" >
+          <Link to={`/appointment-management/${appointment.id}`} className="btn-link" title="view appointment" >
           <a href="#" className="dc-hiredarrow">
             <MdArrowForwardIos />
           </a>

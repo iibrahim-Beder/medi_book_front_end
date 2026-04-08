@@ -29,7 +29,8 @@ const NotificationDropdown = () => {
     refetch,
     hasMore,
     mutemut,
-    setMutemut
+    setMutemut,
+    expandedMessageId
   } = useNotifications(1);
 
   const handleScroll = (e) => {
@@ -214,7 +215,7 @@ const NotificationDropdown = () => {
                         <p
                           title={n.message}
                           className="mb-0 small text-ellipsis"
-                          style={{ direction: "inherit", maxWidth: "230px" }}
+                          style={{ direction: "inherit", maxWidth: "230px", whiteSpace:expandedMessageId ===n.id ?"normal":"",  }}
                         >
                           {n.message}
                         </p>

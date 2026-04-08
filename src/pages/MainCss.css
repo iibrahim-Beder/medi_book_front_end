@@ -1311,6 +1311,7 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
   color: var(--terthemecolor);
   transition: all ease .6s;
   max-width: fit-content;
+  cursor: pointer;
 }
 .button-elment:hover{
   color:var(--blue);
