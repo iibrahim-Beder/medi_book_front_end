@@ -31,7 +31,7 @@ const CustomAccordion = memo(({
   liveUpdate = false,
   allowMultipleOpen = false,
   getItemTitle = null,
-  noDataMessage = "No Data Found",
+  noDataMessage = "",
   globalError = null,
   forceShowError = false,
   hint,

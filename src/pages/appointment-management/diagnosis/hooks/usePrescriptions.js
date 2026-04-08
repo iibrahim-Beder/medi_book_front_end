@@ -144,7 +144,7 @@ export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis,diagnoses
       
         
         const accepted = result?.meta?.results?.PrescribedMedications.accepted || [];
-        const rejected = result?.meta?.results?.PrescribedMedications.rejectedItems || [];
+        const rejected = result?.meta?.results?.PrescribedMedications.rejected || [];
       
         const filteredPrescriptions = (prescriptionData.recipes || []).filter(
           med => accepted.includes(med.medication.id)

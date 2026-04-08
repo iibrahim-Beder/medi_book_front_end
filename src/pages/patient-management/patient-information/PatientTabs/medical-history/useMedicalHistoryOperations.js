@@ -5,7 +5,6 @@ import { buildUpdatePayload, validateForm } from "./MedicalHistoryHelpers";
 
 
 export const useMedicalHistory = (isMobile = false,patientId) => {
-  console.log("patientId from useMedicalHistory ", patientId);
   const [currentFilters, setCurrentFilters] = useState({
     searchValue: "",
     historyType: "",

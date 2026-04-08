@@ -63,7 +63,6 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
     if (result?.succeeded) {
       toast.success("Diagnosis saved successfully");
       toast.dismiss(loadingToast);
-      if(result?.meta?.hasRejections){
         
         if (result?.meta?.hasRejections) {
           const rejectedC = result?.meta?.results?.PatientMedicalConditionLinks.rejected || [];
@@ -110,7 +109,7 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
               }
       
       }
-      }      
+          
       return true;
     } else {
       console.log("Failed to save diagnosis:", result);

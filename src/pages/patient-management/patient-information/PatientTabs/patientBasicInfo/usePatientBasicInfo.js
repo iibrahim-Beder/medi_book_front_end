@@ -15,7 +15,6 @@ export default function usePatientBasicInfo(patientId) {
     refetchOnMountOrArgChange: true,
 skip: !patientId || isNaN(patientId),
   });
-  console.log("patientId", patientId,error);
 
   // Long Loading Logic
   useEffect(() => {
