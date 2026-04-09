@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 export default function DashboardInsights() { 
    const { t } = useTranslation();
   const insights = [
-    {title: t("Messages"), img: '/images/card-icon/chat.png',     link: "/Messages",isNotIcon:true },
+    {title: t("Messages"), img: '/images/card-icon/chat.png',     link: "/chat",isNotIcon:true },
     {title: t("financial dashboard"), img: "/images/thumbnail/img-20.png", link: "/manage-financial",ToBigImg:true  },
     {title: t("Next appointment"), img: "/images/thumbnail/img-21.png",   link: "/appointment-management", countdown: "2026-02-20T20:20:22" ,ToBigImg:true  },
     {title: t("patients dashboard"), img: "/images/thumbnail/img-22.png",   link: "/patients",ToBigImg:true  }

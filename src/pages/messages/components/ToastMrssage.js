@@ -1,8 +1,12 @@
 import toast from "react-hot-toast";
 import { formatChatDate, truncateTitle } from "../../shared/utils";
 import { MdClose } from "react-icons/md";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { BsArrowRightCircleFill } from "react-icons/bs";
 
 export default function ToastMessage({ t, messages }) {
+  const[expandedMessage, setExpandedMessage] = useState([]);
   return (
     <div
       className={`toast-box toast-custom-box shadow bg-white border p-2 d-flex align-items-start
@@ -33,9 +37,13 @@ export default function ToastMessage({ t, messages }) {
 
               <div className="content w-100">
                 {messages.map((msg) => (
-                  <div key={msg.messageId} className="d-flex align-items-center justify-content-between">
-                    <p className="m-0">
-                      {truncateTitle(msg.content, 90)}
+                  <div key={msg.messageId} className="d-flex align-items-center justify-content-between pb-2" onClick={() => expandedMessage.includes(msg.messageId) ? setExpandedMessage(expandedMessage.filter((id) => id !== msg.messageId)) : setExpandedMessage([...expandedMessage, msg.messageId])} >
+                    <p className={`m-0 ${expandedMessage.includes(msg.messageId) ? "expanded" : ""}`}>
+                      {
+                        expandedMessage.includes(msg.messageId) ?
+                        msg.content:
+                            truncateTitle(msg.content, 90) 
+                      }
                     </p>
                     <time className="text-muted">
                       {formatChatDate(msg.sentAt)}
@@ -47,7 +55,6 @@ export default function ToastMessage({ t, messages }) {
           </div>
         </div>
       </div>
-
       <button
         className="alert-close"
         style={{ top: "0", right: "0" }}
@@ -55,6 +62,12 @@ export default function ToastMessage({ t, messages }) {
       >
         <MdClose />
       </button>
+
+      <Link to={`/chat/${messages[0].chatId}`} className="w-100" >
+       <button title="open chat" className='button-elment'>
+        <BsArrowRightCircleFill/>
+       </button>
+      </Link>
     </div>
   );
 }

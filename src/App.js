@@ -121,7 +121,8 @@ const { i18n } = useTranslation();
                       path="appointment-location"
                       element={<LocationMain />}
                     />
-                    <Route path="Messages" element={<MessagesPage />} />
+                    <Route path="chat" element={<MessagesPage />} />
+                    <Route path="chat/:chatId" element={<MessagesPage />} />
                     <Route
                       path="patients"
                       element={<PatientManagement />}

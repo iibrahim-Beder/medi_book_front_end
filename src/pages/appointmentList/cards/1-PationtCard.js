@@ -4,7 +4,7 @@ import { BsFillChatTextFill } from "react-icons/bs";
 import { BsWechat } from "react-icons/bs";
 
 
-export default function PationtCard({userName,userImg,userType,userLocation}){
+export default function PationtCard({userName,userImg,userType,userLocation,chatId,patientId}) {
     return (
       <div className="dc-user-header">
         <div>
@@ -14,13 +14,13 @@ export default function PationtCard({userName,userImg,userType,userLocation}){
         </div>
         <div className="dc-title">
           <a href="#!">{userType}</a>
-          <Link className='button-elment' to={"/pationt-information"}>
+          <Link className='button-elment' to={`/pationt-information/${patientId}`}>
           <h3 className='button-elment' title="open profile" >
             {userName} <i className="fa fa-check-circle"></i>
           </h3>
             </Link>
           <span>{userLocation}</span>
-          <Link className='button-elment' to={"/Messages"}>
+          <Link className='button-elment' to={`/chat/${chatId}`}>
           <button style={{fontSize:"40px"}} title="open chat" className='button-elment'>
         <BsWechat/>
           </button>

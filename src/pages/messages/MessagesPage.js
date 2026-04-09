@@ -1,11 +1,13 @@
 import MessageList from "./components/MessageList";
 import ProfileSidebar from "./components/ProfileSidebar";
 import { useConversations } from "./hooks/useConversations";
+import { useSyncChatWithUrl } from "./hooks/useSyncChatWithUrl";
 import "./messages.css";
 
 export default function MessagesPage() {
   const{isLoading}=useConversations();
-  console.log("isLoading",isLoading);
+    useSyncChatWithUrl();
+    
   return (<>
   
   {isLoading ? (

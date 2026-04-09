@@ -54,8 +54,8 @@ root.render(
           <App />
         </DeviceProvider>
       </ThemeProvider>
-    </BrowserRouter>
     <Toaster position="top-right" reverseOrder />
+    </BrowserRouter>
   </Provider>
 );
 

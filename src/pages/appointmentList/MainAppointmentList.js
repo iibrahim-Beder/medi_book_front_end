@@ -68,9 +68,12 @@ export default function MainAppointtmentList2(){
             <div className="dc-haslayout dc-dbsectionspace dc-dbsectionspacetest">
               <div className="dc-dashboardbox ">
                 <PationtCard
-                  userName={"Ibrahem makhasi"}
+                  userName={"Bob Brown"}
                   userImg={"/images/avt/patient-avt.png"}
-                  userLocation={"Egypt"}      
+                  userLocation={"Egypt"}     
+                  chatId={1}
+                  patientId={4}
+ 
                 />
                 <div className="dc-user-details" style={{borderColor:"#eee"}} >
                   <TimeSlotInformationCard slot={slot} />

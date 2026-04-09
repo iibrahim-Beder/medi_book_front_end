@@ -8,6 +8,8 @@ import ToastMessage from "../components/ToastMrssage";
 import { useMessages } from "./useMessages";
 import { doctorChatApi } from "../../../api/chat/doctorChatApi";
 import { updateTyping } from "../slices/messagesSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { selectChat } from "../slices/chatsSlice";
 const MessageStatus = {
   Sent: 0,
   Delivered: 1,

@@ -239,17 +239,32 @@ content: "";
 
 
 /* toast css start */
+.toast-custom-box .button-elment {
+        font-size: 25px;
+    float: right;
+    padding: 0;
+    width: 100%;
+    position: absolute;
+    right: 4px;
+    bottom: -4px;
+    margin: 0;
+}
 .toast-messsage-img{width: 40px; font-size: 12px;}
-  .toast-custom-box  .content time{white-space: nowrap;}
-  .toast-custom-box  .content p{
-        display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  .toast-custom-box .content time{white-space: nowrap;}
+  .toast-custom-box .content p{
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .toast-custom-box .content p.expanded{
+        -webkit-line-clamp: unset;
+    }
   .toast-custom-box  .content{
     display: flex;
     flex-direction: column;
+    cursor: pointer;
+    /* flex-direction: row; */
     /* justify-content: space-between; */
     /* align-items: flex-end; */
     /* gap: 2px; */

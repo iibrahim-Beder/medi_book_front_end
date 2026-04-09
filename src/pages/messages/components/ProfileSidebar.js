@@ -23,7 +23,7 @@ export default function ProfileSidebar() {
           </div>
         </div>
         <div className="dc-applyfilters">
-          <Link to="/pationt-information" className="dc-btn" >
+          <Link to={`/pationt-information/${currentChat?.patientId}`} className="dc-btn" >
           {/* <a  className="dc-btn"> */}
             View Profile
           {/* </a> */}

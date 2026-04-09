@@ -76,7 +76,7 @@ export default function CommunicationCard() {
           </Stack>
         </Box>
         <Stack direction="row" spacing={1.5} mt={1}>
-          <Link to="/messages" >
+          <Link to="/chat" >
           <Button
             variant="contained"
             sx={{

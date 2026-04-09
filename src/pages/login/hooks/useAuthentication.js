@@ -60,7 +60,7 @@ const passwordRegex =
       }
 
     } catch (error) {
-      const errorMessage = error?.data?.message || t('register.error');
+      const errorMessage = error?.data?.Message || t('register.error');
       toast.error(errorMessage);
     }finally {
       toast.dismiss(loader);

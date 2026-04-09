@@ -155,7 +155,7 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="Messages">
+              <Link to="chat">
                 <HiOutlineChatBubbleOvalLeft className="icon" />
                 <span>{t("sidebar.messages")}</span>
               </Link>

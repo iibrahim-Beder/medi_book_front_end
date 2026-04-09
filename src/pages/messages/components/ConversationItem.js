@@ -2,14 +2,16 @@ import { formatChatDate, formatTime } from "../../shared/utils";
 import { useConversations } from "../hooks/useConversations";
 import {  useSelector } from 'react-redux';
 import { selectIsChatTyping } from '../slices/messagesSlice';
+import { useNavigate } from "react-router-dom";
 
 export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotNotification ,lastMessageIsMine,isOnline, lastSeen,lastMessageTime,isLastMessageRead }) {
-  const {changeChat ,selectedChat,setIsChatOpen} = useConversations();
+  const {selectedChat} = useConversations();
   const active= (id===selectedChat)
   const istypingHere =  useSelector(selectIsChatTyping(id));
+        const navigate = useNavigate();
   return (
     
-    <div onClick={() =>   {document.documentElement.setAttribute("isConversationOpen", "true"); changeChat(id);setIsChatOpen(true)} }
+    <div onClick={() =>   {navigate(`/chat/${id}`)}}
       className={`dc-ad dc-dotnotification `}
       //If there are no new messages, no notification will appear
         style={

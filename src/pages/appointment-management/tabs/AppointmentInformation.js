@@ -28,9 +28,12 @@ const AppointmentInformation = () => {
             <div className="dc-haslayout dc-dbsectionspace dc-dbsectionspacetest">  
               <div className="dc-dashboardbox pl-4 pr-4">
                 <PationtCard
-                  userName={"Ibrahem makhasi"}
+                  userName={"Bob Brown"}
                   userImg={"/images/avt/patient-avt.png"}
-                  userLocation={"Egypt"}      
+                  userLocation={"Egypt"}
+                  chatId={1}      
+                  patientId={4}
+
                 />
                 <div className="dc-user-details">
                   <TimeSlotInformationCard slot={slot} />

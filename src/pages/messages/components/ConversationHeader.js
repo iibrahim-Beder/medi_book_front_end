@@ -2,14 +2,16 @@ import { t } from "i18next";
 import { VscArrowLeft } from "react-icons/vsc";
 import { useConversations } from "../hooks/useConversations";
 import { formatTime } from "../../shared/utils";
+import {  Link, useNavigate } from "react-router-dom";
 
 export default function ConversationHeader() {
-    const {currentChat ,setIsChatOpen} =useConversations();
+    const {currentChat} =useConversations();
+    const navigate = useNavigate();
 
 
   return (
     <div className="dc-dashboardboxtitle dc-titlemessages">
-      <button onClick={() =>  { document.documentElement.setAttribute("isConversationOpen", "false") ; setIsChatOpen(false);  }}  className="dc-back">
+      <button onClick={() =>  {navigate("/chat")}}  className="dc-back">
         <VscArrowLeft/>
       </button>
       <div className="dc-userlogedin-gird chat-header">
@@ -25,9 +27,11 @@ export default function ConversationHeader() {
           { <span>{currentChat?.isOnline?"online" :formatTime(currentChat?.lastSeen)}</span>}
           </div>
         </div>
-        <a href="javascript:void(0);" className="dc-viewprofile">
+        <Link to={`/pationt-information/${currentChat?.patientId}`} className="dc-viewprofile">
+        <a  href="!"  className="dc-viewprofile">
           {t("View Profile")}
         </a>
+        </Link>
       </div>
     </div>
   );
