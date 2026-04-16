@@ -3,14 +3,17 @@ import ProfileSidebar from "./components/ProfileSidebar";
 import { useConversations } from "./hooks/useConversations";
 import { useSyncChatWithUrl } from "./hooks/useSyncChatWithUrl";
 import "./messages.css";
-
+import ErrorLoading from "../shared/ErrorLoading";
 export default function MessagesPage() {
-  const{isLoading}=useConversations();
+  const{isLoading,isError,refetch,conversations}=useConversations();
     useSyncChatWithUrl();
     
+    if(isError){
+         return   <ErrorLoading isError={isError} refetch={refetch} />
+    }
   return (<>
-  
-  {isLoading ? (
+    
+  {isLoading || (!isError && conversations.length === 0) ? (
 <div className="preloader-outer">
   <div className="wt-preloader-holder">
     <div className="wt-loader"></div>

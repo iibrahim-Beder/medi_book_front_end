@@ -4,12 +4,15 @@ import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useGetDoctorShiftRulesQuery } from '../api/doctor-information/generationRulesApi';
 import { FaChevronDown } from "react-icons/fa";
+import { Progress } from './Test';
 
 export function StatusToggle() {
   const [status, setStatus] = useState("active");
 
   return (
+    
     <div className="toggle-wrapper">
+      <Progress/>
       <button
         className={`toggle-btn ${status === "active" ? "active" : ""}`}
         onClick={() => setStatus("active")}

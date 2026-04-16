@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import { useConversations } from "../hooks/useConversations";
 
 export default function ProfileSidebar() {
-      const {currentChat} =useConversations();
+      const {currentChat,isLoading} =useConversations();
+      if(isLoading){
+        return<></>
+      }
 
   return (
     <div className="dc-dashboardbox dc-messagebox">

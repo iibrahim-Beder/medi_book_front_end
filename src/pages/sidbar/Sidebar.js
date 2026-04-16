@@ -26,9 +26,10 @@ import {
 import { useTranslation } from "react-i18next";
 import './Sidebar.scss';
 import { IoNotificationsOutline } from "react-icons/io5";
+import { Progress } from "../../test/Test";
 
 
-const Sidebar = () => {
+const Sidebar = ({setOpenStepRegister}) => {
   const stepCompleted = {
       personal: true,
       education: true,
@@ -105,6 +106,8 @@ let iconSize=20;
                 <Link to="#">Dr. Michael Mattioli</Link>
               </h2>
               <span>@michael20769 <FaClone className="clone-icon" /></span>
+              {/* <a>@michael20769 <FaClone className="clone-icon" /></a> */}
+              <Progress setOpenStepRegister={setOpenStepRegister}/>
             </div>
           </div>
         </div>

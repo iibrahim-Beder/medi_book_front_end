@@ -6,6 +6,7 @@ import {  useMessages } from "../hooks/useMessages";
 import Loader from "../../shared/Loader";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import ErrorLoading from "../../shared/ErrorLoading";
 
 export default function ChatMessages() {
     const selectedChat = useSelector((state) => state.chats.selectedChatId);
@@ -18,7 +19,9 @@ export default function ChatMessages() {
     isLoadingOlderMessages,
     isLoadingNewerMessages,
     messagesLoading,
-    resendMessage
+    resendMessage,
+    isError,
+    refetchMessages,
   } = useMessages();
   console.log("messages", messages);
 useEffect(() => {
@@ -31,7 +34,9 @@ useEffect(() => {
     console.log("unmount");
   }
 }, [])
-
+if(isError){
+  return <ErrorLoading isError={isError} refetch={refetchMessages} />;
+}
 
 
   return (

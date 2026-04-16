@@ -34,10 +34,15 @@ import WeeklyTimeSlots from "./pages/making-slots/WeeklyTimeSlot";
 import ScrollToTop from "./context/ScrollToTop";
 import Authentication from "./pages/login/Authentication";
 import ShiftsManagement from "./pages/shifts-management/ShiftsManagement";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 
 function App() {
-window.addEventListener("click", () => {
+
+  const [openStepRegister, setOpenStepRegister] = useState(false);
+  console.log("openStepRegister currentStep", openStepRegister);
+
+  window.addEventListener("click", () => {
   audioService.init();
 }, { once: true });
 const soundsConfig = {
@@ -61,39 +66,20 @@ const { i18n } = useTranslation();
       document.documentElement.dir = "ltr";
     }
   }, [i18n.language]);
+  useEffect(() => {
+  if (openStepRegister) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
 
-//this loading for preloader 
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 20);
-  //   return () => clearTimeout(timer);
-  // }, []);
-  
-// signalR chat connection
-  //  useEffect(() => {
-  //     // if (userId) {
-  //       signalRService.startConnection(1);
-  //     // }
-  
-  //     return () => {
-  //       signalRService.stopConnection();
-  //     };
-  //   // }, [userId]);
-  //   }, []);
-      console.log('SignalR Connection State:', signalRService.connection ? signalRService.connection.state : 'Disconnected');
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+}, [openStepRegister]);
 
   return (
     <div className="dc-userlogin">
-      {/* {loading && (
-        <div className="preloader-outer">
-          <div className="wt-preloader-holder">
-            <div className="wt-loader"></div>
-          </div>
-        </div>
-      )} */}
       {/* {!loading && ( */}
         <ScrollToTop />              
         <Routes>
@@ -108,10 +94,26 @@ const { i18n } = useTranslation();
             element={
               <div>
                 <Navbar />
-                <Sidebar />
+                <Sidebar setOpenStepRegister={setOpenStepRegister} />
+                {openStepRegister && (
+                    <div className=" custom-modal-overlay registration-popup d-flex justify-content-center align-items-center  fade-in" onClick={() => setOpenStepRegister(false)}>
+                      
+                      <div className="custom-modal-content position-relative scale-in"    onClick={(e) => e.stopPropagation()}>
+                        
+                        <button
+                          className="btn-close custom-close-btn"
+                          onClick={() => setOpenStepRegister(false)}
+                        ><IoIosCloseCircleOutline/></button>
+
+                        <DoctorRegistration currentStepFromParent={openStepRegister} />
+
+                      </div>
+
+                    </div>
+                )}            
                 <div className="contentdiv">
                   <Routes>
-                <Route path="how-v1" element={<Test />} />
+                <Route path="how-v1" element={<Test setOpenStepRegister={setOpenStepRegister} />} />
                     <Route path="dashboard" element={<DashboardMain />} />
                     <Route
                       path="appointments"

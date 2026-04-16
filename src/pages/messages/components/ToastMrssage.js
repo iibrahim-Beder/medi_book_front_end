@@ -9,7 +9,7 @@ export default function ToastMessage({ t, messages }) {
   const[expandedMessage, setExpandedMessage] = useState([]);
   return (
     <div
-      className={`toast-box toast-custom-box shadow bg-white border p-2 d-flex align-items-start
+      className={`toast-box toast-custom-box shadow  border p-2 d-flex align-items-start
         ${t.visible ? "opacity-100" : "opacity-0"}
         transition-opacity`}
     >

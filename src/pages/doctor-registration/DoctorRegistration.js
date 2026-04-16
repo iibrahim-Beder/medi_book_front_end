@@ -10,7 +10,7 @@ import ButtonPrevious from "../ui/form-fields/ButtonPrevious";
 import SuccessMessage from "./steps/SuccessMessage";
 import './DoctorRegistration.css';
 
-export default function DoctorRegistration() {
+export default function DoctorRegistration({currentStepFromParent=null}) {
   const { t } = useTranslation();
   const {
     currentStep,
@@ -19,7 +19,8 @@ export default function DoctorRegistration() {
     handleSave,
     handlePrevious,
     setCurrentStep,
-  } = useDoctorRegistration();
+  } = useDoctorRegistration(currentStepFromParent);
+
   console.log("currentStep", currentStep);
   return (
     <div className="doctor-registration">

@@ -1631,7 +1631,7 @@ color: var(--terthemecolor);
   z-index: 1050; /* فوق Bootstrap */
 }
 
-.custom-modal-content .doctor-registration{padding: 20px;}
+.custom-modal-content .doctor-registration{padding: 40px 10px 15px;}
 .custom-modal-content {
   background: #fff;
   border-radius: 16px;
@@ -1649,15 +1649,17 @@ color: var(--terthemecolor);
 }
 
 .custom-close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 10;
-  color: #9b9b9b;
-  position: fixed;
-    top: 10px;
-    right: 15px;
+color: #9b9b9b;
+    position: fixed;
+    /* top: 10px; */
+    right: 0;
     z-index: 10;
+    font-size: 30px;
+}
+.completed{
+  font-size: 12px;
+    font-weight: 500;
+    color: var(--bluecolor);
 }
 
 
@@ -1670,3 +1672,59 @@ color: var(--terthemecolor);
   pointer-events: none;
   cursor: not-allowed;
 }
+
+.dc-sidebarwrapper.collapsed .progress-card-container{
+display: none;
+}
+/* pop up register start */
+.custom-modal-overlay .doctor-registration{
+  min-height:fit-content;
+}
+.text-center-small-bold{
+    width: 100%;
+    display: block;
+    color: var(--text-sub) !important;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+.text-suptext{
+  color: var(--text-sub) !important;
+}
+/* .registration-popup .custom-modal-content{
+  scrollbar-width: none;
+}
+.registration-popup .custom-modal-content:hover{
+  scrollbar-width: thin
+} */
+
+/* overlay fade */
+.fade-in {
+  animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* modal scale */
+.scale-in {
+  animation: scaleIn 0.25s ease forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* pop up register end */

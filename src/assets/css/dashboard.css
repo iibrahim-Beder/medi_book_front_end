@@ -5028,8 +5028,7 @@ a.dc-back:hover{color: #55acee;}
 }
 .dc-offersmessages ul li:nth-child(2){
 	width: 70%;
-	padding: 30px;
-	padding-top:0;
+	padding: 0 30px;
 }
 .dc-offersmessages ul li .dc-dashboardscrollbar{
 	float: left;

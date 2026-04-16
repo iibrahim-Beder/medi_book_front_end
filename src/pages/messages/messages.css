@@ -239,6 +239,7 @@ content: "";
 
 
 /* toast css start */
+.toast-custom-box {background-color: var(--cardcolor);}
 .toast-custom-box .button-elment {
         font-size: 25px;
     float: right;
