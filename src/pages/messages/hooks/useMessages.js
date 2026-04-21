@@ -7,13 +7,6 @@ import { useSignalR } from "../../../api/chat/chatUseSignalR";
 import { doctorChatApi } from "../../../api/chat/doctorChatApi";
 import { useDispatch, useSelector } from "react-redux";
 import { audioService } from "../../notifications/audioService";
-const MessageStatus = {
-  "Sent":0,
-  "Delivered":1,
-  "Read":2,
-  "Failed":3,
-  "Sending":4
-};
 export const useMessages = () => {
   const dispatch = useDispatch();
 
@@ -144,7 +137,7 @@ useEffect(() => {
         content: content,
         sentAt: new Date().toISOString(),
         isMine: true,
-        status: 4,
+        status: "Sending",
         messageId: new Date().toISOString(),
       };
 
@@ -189,7 +182,7 @@ useEffect(() => {
               chat.lastMessageTime =
                 tempMessage.sentAt || new Date().toISOString();
               chat.lastMessageIsMine = true;
-              chat.lastMessageStatus = MessageStatus.Sending || 4;
+              chat.lastMessageStatus = "Sending";
 
               if (
                 tempMessage.senderId !== tempMessage.currentUserId &&
@@ -253,7 +246,7 @@ useEffect(() => {
                 if (!draft?.data) return;
                 draft.data.forEach((msg) => {
                   if (tempMessage.id === msg.id) {
-                    msg.status = MessageStatus.Failed;
+                    msg.status = "Failed";
                   }
                 });
               }
@@ -282,7 +275,7 @@ const resendMessage = useCallback(
           if (!draft?.data) return;
           const msg = draft.data.find((m) => m.id === message.id);
           if (msg) {
-            msg.status = MessageStatus.Sending;
+            msg.status = "Sending";
           }
         }
       )
@@ -329,7 +322,7 @@ const resendMessage = useCallback(
             if (!draft?.data) return;
             const msg = draft.data.find((m) => m.id === message.id);
             if (msg) {
-              msg.status = MessageStatus.Failed;
+              msg.status = "Failed";
             }
           }
         )

@@ -29,6 +29,9 @@
         // font-size: 16px;
         // font-weight: 600;
         margin: 0;
+        display: flex;
+    gap: 10px;
+    justify-content: center;
         a {
 
           text-decoration: none;
@@ -94,6 +97,7 @@ display: flex;
 .consultation-item h6{
   font-size: 16px;
   font-weight: 500;
+  margin: 0;
 }
 .consultation-item em  {
       display: block;

@@ -5378,7 +5378,7 @@ width: 36px;
     align-items: center;
     justify-content: center;
 }
-.dc-iconbox > i:hover {background: #f7f7f7;}
+.dc-iconbox > i:hover {background:var(--headcolor);}
 .mCSB_inside > .mCSB_container{margin: 0;}
 .dc-settingscontent .dc-description p {
     margin: 0;

@@ -134,6 +134,7 @@ useEffect(() => {
 
           if (!exists) {
             message.id = message.messageId;
+            message.isMine = false;
             draft.data.unshift(message);
           }
         }
@@ -301,7 +302,7 @@ useEffect(() => {
 
             draft.data.forEach((msg) => {
               if (MessageMark.lastReadMessageId >= msg.id) {
-                msg.status = MessageStatus.Read;
+                msg.status = "Read";
               }
             });
           }
