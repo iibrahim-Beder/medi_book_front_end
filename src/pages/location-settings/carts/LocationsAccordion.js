@@ -210,12 +210,11 @@ const LocationsAccordion = memo(({
           const displayData = draftData[item.id] || item;
 
           return (
-            <li key={item.id}>
+            <li key={item.id} className={`${item.isExpanded?"show":""}`}>
               {/* Accordion title (unchanged) */}
               <div
                 className="dc-accordioninnertitle"
                 style={{
-                  borderColor: "#eee",
                   borderLeft: item.isNew
                     ? "2px solid #ffa500"
                     : "",

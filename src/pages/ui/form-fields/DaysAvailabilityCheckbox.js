@@ -101,7 +101,7 @@ const DaysAvailabilityCheckbox = ({
           disabled={MainInputdisabled}
           style={{ pointerEvents: "none" }}
         >
-          <option>{  loading ? t("Loading...") :  MainInputdisabled ? t("Blocked Select Template for days") : t("Select days")}</option>
+          <option>{  loading ? t("Loading...") :  MainInputdisabled ? t("Blocked Select Template For Days") : t("Select days")}</option>
         </select>
 
         <FaChevronDown className="select-arrow" />

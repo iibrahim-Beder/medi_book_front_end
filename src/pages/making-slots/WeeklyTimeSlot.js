@@ -26,7 +26,7 @@ export default function WeeklyTimeSlots() {
   const formFields = [
     {
       name: "rangeTime",
-      label: t("Select time Range"),
+      label: t("Select Time Range"),
       type: "timeRange",
     },
     {
@@ -265,8 +265,8 @@ export default function WeeklyTimeSlots() {
                         <Field
                           type="number"
                           name="SlotDurationInMinutes"
-                          placeholder={t("slot duration")}
-                          label={t("duration (minutes)")}
+                          placeholder={t("Slot Duration")}
+                          label={t("Duration (Minutes)")}
                           value={addSlotData.SlotDurationInMinutes}
                           onChange={(e) =>
                             handleUpdateAddSlot(

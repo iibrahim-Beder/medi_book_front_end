@@ -11,7 +11,7 @@ const TimeRangePicker = ({
   value = {},
   onChange,
   onBlur,
-  placeholder = "Select time range",
+  placeholder = "Select Time Range",
   error,
   forceShowError = false,
   disabled = false,
@@ -211,22 +211,10 @@ const TimeRangePicker = ({
               // disabled={disabled}
               autoComplete="off"
               style={{
-                padding: "10px 40px 10px 16px",
-                color: "var(--terthemecolor)",
-                width: "100%",
-                borderRadius: "8px",
                 border:
                   inputError || showError
                     ? "1px solid #ff4d4f"
                     : "1px solid #d0d5dd",
-                // color: "#012047",
-                fontSize: "14px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                // opacity: disabled ? 0.6 : 1,
-                // backgroundColor: disabled ? "#f8f9fa" : "#fff",
-                transition: "all 0.2s ease",
-                height: "40px",
               }}
               placeholder={placeholder}
             />

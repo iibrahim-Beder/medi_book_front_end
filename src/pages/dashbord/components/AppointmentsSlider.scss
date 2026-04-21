@@ -8,7 +8,7 @@
   .dc-postedsilderitem {
         align-items: center;
     display: flex;
-    background: var(--badybkcolor);
+    background: #fafafa;
     /* border-radius: 4px; */
     text-align: center;
     padding: 15px;
@@ -63,7 +63,7 @@
     transition: background 0.3s;
 
     &:hover {
-      background: #007bff;
+      background: var(--secthemecolor);
       color: #fff;
     }
 

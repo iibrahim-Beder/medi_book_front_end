@@ -43,8 +43,8 @@ const colors = {
   bg: "#f5f6fa",
   card: "#ffffff",
   border: "#eee",
-  text: "#1a2332",
-  muted: "#7b8794",
+  text: "var(--terthemecolor)",
+  muted: "var(--text-sub)",
   track: "#eef0f4",
   accent: "#247CFF",
 };

@@ -4502,7 +4502,7 @@ input[type="button"]:focus{outline: none;}
 .dc-repostjob .dc-title h3{color: #d9534f;}
 .dc-hiredfreelance .dc-userlistinghold {
     padding: 20px;
-    background: var(--badybkcolor);
+    background: #fafafa;
 }
 .dc-hiredfreelance .dc-userlistinghold .dc-userlistingimg{
 	width: 60px;
@@ -6064,10 +6064,16 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 .subtlePulse{
 	    color: #e6ac02;
 }
+.dc-postedsilder .dc-postedsilderitem,.dc-hiredfreelance .dc-userlistinghold{
+	background-color: var(--badybkcolor);
 }
+}
+
+
+
+
+
 /* RTL direction start */
-
-
 
 html[dir="rtl"]  {
 .dc-rightarea{margin-left: unset;margin-right: 10px;}

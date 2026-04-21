@@ -9,8 +9,8 @@ export default function LatestReviews() {
       id: 1,
       img: "/images/avt/patient-avt.png",
       title:
-        "Internal Braces on month 2 of treatment was very helpful for my child. , he is now able to eat and sleep without pain. and Internal Braces on month 2 of treatment was very helpful for my child. , he is now able to eat and sleep without pain.",
-      name: "Elvis Presley",
+        "The working of the doctor was very good, I was very satisfied with the treatment. The working of the dentist was very good, I was very satisfied with the treatment.",
+      name: "Bob Brown",
       date: "Jun 27, 2018",
       rate: 5,
       patientId:4,
@@ -19,7 +19,7 @@ export default function LatestReviews() {
       id: 2,
       img: "/images/avt/patient-avt.png",
       name: "Terrence Tynan",
-      title: "Sleeping Noise from H",
+      title: "Internal Braces on month 2 of treatment was very helpful for my child. , he is now able to eat and sleep without pain. and Internal Braces on month 2 of treatment was very helpful for my child. , he is now able to eat and sleep without pain.",
       date: "Jun 27, 2018",
       rate: 3,
       patientId:5

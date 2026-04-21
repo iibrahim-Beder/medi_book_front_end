@@ -7,18 +7,18 @@
 
     a {
       font-size: 14px;
-      color: #999;
+      color: #767676;
       text-decoration: none;
-      padding: 5px 12px;
-      border-radius: 8px;;
+      // padding: 5px 12px;
+      border-radius: 20px;;
       transition: all 0.3s ease;
 
       &:hover {
-        background-color:var(--themecolor);
+        background-color:var(--secthemecolor);
       }
 
       &.dc-tagactive {
-        background-color: #007bff;
+        background-color: var(--secthemecolor);
         color: #fff;
       }
     }
