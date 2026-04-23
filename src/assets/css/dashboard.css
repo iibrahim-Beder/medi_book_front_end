@@ -5973,6 +5973,7 @@ padding: 0 10px;
 	--gray:#8c98a5;
 	--text-tertiary:#B8D0FF;
 	--text-sub:#B8C4E2;
+	--dc-muted-foreground:var(--text-sub);
 	--len2color:#858585;
 	--shado3color:#00000040;
 	--headcolor:#1e182e;
@@ -5992,6 +5993,7 @@ padding: 0 10px;
   --hovcolor:#00092963;
   --shado2color:#00000017;
   --shado1color:#000000e6;
+  --dc-secondary:var(--scbccolor);
   .form-control:disabled,
 .form-control[readonly],
 input:disabled,

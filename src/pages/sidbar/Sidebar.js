@@ -103,9 +103,9 @@ let iconSize=20;
             </figure>
             <div className="dc-title">
               <h2>
-                <Link to="#">Dr. Michael Mattioli</Link>
+                <Link to="#">Dr. john doe</Link>
               </h2>
-              <span>@michael20769 <FaClone className="clone-icon" /></span>
+              <span>@john20769 <FaClone className="clone-icon" /></span>
               {/* <a>@michael20769 <FaClone className="clone-icon" /></a> */}
               <Progress setOpenStepRegister={setOpenStepRegister}/>
             </div>
