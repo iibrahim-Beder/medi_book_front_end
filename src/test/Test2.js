@@ -6,7 +6,7 @@ import { useGetDoctorShiftRulesQuery } from '../api/doctor-information/generatio
 import { FaChevronDown } from "react-icons/fa";
 import { Progress } from './Test';
 import React from "react";
-import "./Dashboard.scss";
+import "./dashboard.css";
 import {
   AlertCircle,
   ArrowRight,
