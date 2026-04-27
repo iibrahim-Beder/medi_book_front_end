@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import PersonalDetails from "./Profile-card/PersonalDetails";
 import ExperienceEducation from "./Profile-card/Education";
 import Experience from "./2-Experans & Edition/ExperienceList";
-import Step2ProfessionalInfo from "../../test/Step2ProfessionalInfo";
+import Step3ProfessionalInfo from "../doctor-registration/steps/Step3ProfessionalInfo";
 
 export default function ProfileSettings() {
   const [activeTab, setActiveTab] = useState("DoctorBasicInfo");
@@ -78,7 +78,7 @@ export default function ProfileSettings() {
           <div className="dc-tabscontent tab-content">
             {activeTab === "DoctorBasicInfo" && <PersonalDetails />}
             {activeTab === "Education" && <ExperienceEducation />}
-            {activeTab === "ProfileAndSpecialties" && <Step2ProfessionalInfo insideUi={true} isNew={false} />}
+            {activeTab === "ProfileAndSpecialties" && <Step3ProfessionalInfo insideUi={true} isNew={false} />}
             {activeTab === "Experience" && <Experience />}
           </div>
         </div>

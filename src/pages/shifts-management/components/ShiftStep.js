@@ -1,9 +1,9 @@
 import React, { forwardRef, useImperativeHandle } from "react";
-import SelectTimePicker from "../pages/ui/form-fields/SelectTimePicker";
+import SelectTimePicker from "../../ui/form-fields/SelectTimePicker";
 import { useTranslation } from "react-i18next";
-import useAddShifts from "../pages/doctor-registration/hooks/useAddShifts";
-import SelectField from "../pages/ui/form-fields/SelectField";
-import DaysAvailabilityCheckbox from "../pages/ui/form-fields/DaysAvailabilityCheckbox";
+import useAddShifts from "../../doctor-registration/hooks/useAddShifts";
+import SelectField from "../../ui/form-fields/SelectField";
+import DaysAvailabilityCheckbox from "../../ui/form-fields/DaysAvailabilityCheckbox";
 
 const ShiftStep = forwardRef(
   (

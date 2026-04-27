@@ -1,171 +1,186 @@
-import React, { useState, useEffect } from "react";
-import SectionTitle from "../../shared/SectionTitle";
-import SelectField from "../../ui/form-fields/SelectField";
+// Step2ProfessionalInfo.jsx
+import React, { useEffect, forwardRef, useImperativeHandle } from "react";
+import { useTranslation } from "react-i18next";
+import Loader from "../../shared/Loader";
 import Field from "../../ui/form-fields/Field";
+import SectionTitle from "../../shared/SectionTitle";
+import ErrorLoading from "../../shared/ErrorLoading";
+import { useStep2ProfessionalInfo } from "../hooks/useStep2ProfessionalInfo";
+import EditableList from "../utils/EditableList";
 import TextAreaField from "../../ui/form-fields/TextAreaField";
-import FileField from "../../ui/form-fields/FileField";
-import FullWidth from "../../shared/FullWidth";
-import { getSpecialtyOptions } from "../../../constants/formOptions";
-import { GrLanguage } from "react-icons/gr";
-import { MdOutlineFolderSpecial } from "react-icons/md";
-import { FaStethoscope, FaClipboardCheck, FaCloudUploadAlt, FaUpload } from "react-icons/fa";
-import { t } from "i18next";
-import EditableList from "../../shared/EditableList";
+import SelectField from "../../ui/form-fields/SelectField";
 
-export default function Step2ProfessionalInfo({
-  errors = {},
-  forceShowError = true,
-  initialData = {},     // ← Comes from Redux or parent
-  onChange = () => {},  // ← Send updates back to parent
-}) {
-  // Local state for form data
-  const [formData, setFormData] = useState({
-    specialty: "",
-    yearsOfExperience: "",
-    licenseNumber: "",
-    bio: "",
-    licenseFile: null,
-    languages: ["English"],
-    specializations: [],
-    ...initialData, // Merge any data passed from parent
-  });
+const Step3ProfessionalInfo = forwardRef(
+  (
+    {
+       insideUi = false,
+      isNew,
+      doctorId =103,
+      currencyOptions = [
+        { label: "AOA", value: 45 },
+        { label: "EGP", value: 47 },
+        { label: "USD", value: 46 },
+      ],
+      onChange = () => {},
+      forceShowError = true,
+    },
+    ref,
+  ) => {
+    const { t } = useTranslation();
 
-  // Whenever formData changes, send it back to parent
-  useEffect(() => {
-    onChange(formData);
-  }, [formData]);
+    const {
+      formData,
+      errors,
+      isLoading,
+      handleInputChange,
+      handleSpecialtyChange,
+      handleSubmit,
+      refetch,
+      error,
+      specialtiesOptions,
+      specialtiesLoading,
+      handlePrimaryChange,
+    } = useStep2ProfessionalInfo(isNew, doctorId);
 
-  // Handle input fields change
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
+    useImperativeHandle(ref, () => ({
+      submit: handleSubmit,
     }));
-  };
 
-  return (
-    <>
-      <SectionTitle
-        icon={<MdOutlineFolderSpecial />}
-        title={t("professionalInfo.title")}
-      />
-      <div className="table-card">
-      <div className="form-grid profile-form ">
-        {/* Specialty */}
-        <SelectField
-          label={t("professionalInfo.specialty.label")}
-          name="specialty"
-          value={formData.specialty}
-          onChange={handleInputChange}
-          options={getSpecialtyOptions(t)}
-          icon={<FaStethoscope />}
-          error={errors?.specialty}
-          forceShowError={forceShowError}
-        />
+    useEffect(() => {
+      onChange(formData);
+    }, [formData, onChange]);
 
-        {/* Years of Experience */}
-        <Field
-          label={t("professionalInfo.YearsOfExperience.label")}
-          name="yearsOfExperience"
-          value={formData.yearsOfExperience}
-          onChange={handleInputChange}
-          placeholder={t("professionalInfo.YearsOfExperience.placeholder")}
-          icon={<FaStethoscope />}
-          error={errors?.yearsOfExperience}
-          forceShowError={forceShowError}
-        />
+    if (error) {
+      return (
+        <div className="table-card">
+          <ErrorLoading error={error} refetch={refetch} />
+        </div>
+      );
+    }
 
-        {/* License Number */}
-        <Field
-          label={t("professionalInfo.licenseNumber.label")}
-          name="licenseNumber"
-          value={formData.licenseNumber}
-          onChange={handleInputChange}
-          placeholder={t("professionalInfo.licenseNumber.placeholder")}
-          icon={<FaClipboardCheck />}
-          error={errors?.licenseNumber}
-          forceShowError={forceShowError}
-        />
-        <Field
-          label={t("professionalInfo.language.label")}
-          name="language"
-          value={formData.languages}
-          onChange={handleInputChange}
-          placeholder={t("professionalInfo.language.placeholder")}
-          icon={<GrLanguage />}
-          error={errors?.language}
-          forceShowError={forceShowError}
-        />
+    return (
+      <>
+      <div className={`${insideUi ||true? "table-card insideUi" : ""}`}>
+        {insideUi ? (
+          <div className="dc-tabscontenttitle">
+            <h3>{t("professionalInfo.title")}</h3>
+          </div>
+        ) : (
+          <SectionTitle title={t("professionalInfo.title")} />
+        )}
 
-        {/* Bio */}
-        <TextAreaField
-          label={t("professionalInfo.Bio.label")}
-          name="bio"
-          value={formData.bio}
-          onChange={handleInputChange}
-          placeholder={t("professionalInfo.Bio.placeholder")}
-          icon={<GrLanguage />}
-          error={errors?.bio}
-          forceShowError={forceShowError}
-        />
+        <div
+          style={{ position: "relative" }}
+        >
+          <form className="dc-formtheme dc-userform">
+            <fieldset>
+          {isLoading && Loader("form-loader")}
+              {/* years of experience */}
+              <div className="form-group form-group-half">
+                <Field
+                  label={t("years of experience")}
+                  type="number"
+                  name="yearsOfExperience"
+                  value={formData.yearsOfExperience}
+                  onChange={handleInputChange}
+                  error={errors.yearsOfExperience}
+                  className="form-control"
+                  placeholder={t("years of experience")}
+                  min="0"
+                  forceShowError={true}
+                />
+              </div>
 
-        {/* Languages List
-        <FullWidth>
-          <EditableList
-            headerComponent={
-              <SectionTitle
-                icon={<GrLanguage />}
-                title={t("professionalInfo.languages.title")}
+              {/* price */}
+              <div className="form-group form-group-half">
+                <Field
+                  label={t("default Price")}
+                  type="number"
+                  name="defaultPricePerSession"
+                  value={formData.defaultPricePerSession}
+                  onChange={handleInputChange}
+                  error={errors.defaultPricePerSession}
+                  className="form-control"
+                  placeholder={t("defaultPrice")}
+                  //   min="0"
+                  //   step="0.01"
+                  forceShowError={true}
+                />
+              </div>
+
+              {/* currency */}
+              <div className="form-group form-group-half">
+                <SelectField
+                  label={t("currency")}
+                  name="defaultCurrencyId"
+                  value={formData.defaultCurrencyId}
+                  onChange={handleInputChange}
+                  error={errors.defaultCurrencyId}
+                  className="form-control"
+                  options={currencyOptions}
+                  forceShowError={true}
+                />
+              </div>
+
+              {/* languages */}
+              <div className="form-group form-group-half">
+                <Field
+                  label={t("languages")}
+                  name="languagesSpoken"
+                  value={formData.languagesSpoken}
+                  onChange={handleInputChange}
+                  error={errors.languagesSpoken}
+                  placeholder={t("languages")}
+                  forceShowError={true}
+                />
+              </div>
+
+              {/* bio */}
+              <div className="form-group form-group-full">
+                <TextAreaField
+                  label={t("bio")}
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleInputChange}
+                  error={errors.bio}
+                  className="form-control"
+                  rows={4}
+                  placeholder={t("professionalInfo.bio.placeholder")}
+                  forceShowError={true}
+                />
+              </div>
+
+              {/* specialties */}
+              <EditableList
+                // headerComponent={ insideUi? false : <SectionTitle title="Specialties" />}
+                title="Specialties"
+                initialItems={formData?.specialties || []}
+                options={specialtiesOptions}
+                isLoading={specialtiesLoading}
+                selectName="specialty"
+                selectLabel="Specialty"
+                fieldKey="value"
+                onChange={(items) => handleSpecialtyChange(items)}
+                primarySpecialtyId={formData.primarySpecialtyId}
+                onPrimaryChange={handlePrimaryChange}
+                forceShowError={true}
               />
-            }
-            title={t("professionalInfo.languages.title")}
-            placeholder={t("professionalInfo.languages.placeholder")}
-            addBtnText={t("professionalInfo.languages.addBtnText")}
-            initialItems={formData.languages}
-            minItems={0}
-            onChange={(items) =>
-              setFormData((prev) => ({ ...prev, languages: items }))
-            }
-          />
-        </FullWidth> */}
-
-        {/* License File Upload */}
-        <FullWidth>
-          <FileField
-            label={t("professionalInfo.licenseFile.label")}
-            name="licenseFile"
-            accept=".jpg,.jpeg,.png,.pdf"
-            onChange={handleInputChange}
-            icon={<FaCloudUploadAlt />}
-            buttonIcon={<FaUpload />}
-            hint={t("professionalInfo.licenseFile.hint")}
-            error={errors?.licenseFile}
-            forceShowError={forceShowError}
-          />
-        </FullWidth>
-
-        {/* Specializations List */}
-        <FullWidth>
-          <EditableList
-            headerComponent={
-              <SectionTitle
-                icon={<FaStethoscope />}
-                title={t("professionalInfo.Specializations.title")}
-              />
-            }
-            title={t("professionalInfo.Specializations.title")}
-            placeholder={t("professionalInfo.Specializations.placeholder")}
-            addBtnText={t("professionalInfo.Specializations.addBtnText")}
-            initialItems={formData.specializations}
-            minItems={0}
-            onChange={(items) =>
-              setFormData((prev) => ({ ...prev, specializations: items }))
-            }
-          />
-        </FullWidth>
+            </fieldset>
+             {  insideUi && <button
+            style={{ float: "inline-end" }}
+            type="button"
+            className="second-btn mt-3"
+            onClick={handleSubmit}
+            disabled={ isLoading }
+          >
+            {isLoading ? t("loading") : t("save")}
+          </button>}
+          </form>
+        </div>
       </div>
-     </div>
-    </>
-  );
-}
+      </>
+    );
+  },
+);
+
+export default Step3ProfessionalInfo;

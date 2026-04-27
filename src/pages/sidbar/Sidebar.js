@@ -35,7 +35,7 @@ const Sidebar = ({setOpenStepRegister}) => {
       education: true,
       profile: true,
       location: true,
-      shift: false,
+      shift: true,
       experience: true,
   };
 

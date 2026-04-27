@@ -40,7 +40,6 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 function App() {
 
   const [openStepRegister, setOpenStepRegister] = useState(false);
-  console.log("openStepRegister currentStep", openStepRegister);
 
   window.addEventListener("click", () => {
   audioService.init();

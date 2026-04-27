@@ -3,12 +3,12 @@ import { useDoctorRegistration } from "./hooks/useDoctorRegistration";
 import ProgressStepper from "./steps/ProgressStepper";
 import { getStepsMeta } from "../../constants/formOptions";
 import Step1PersonalInfo from "./steps/Step1PersonalInfo";
-import Step2ProfessionalInfo from "../../test/Step2ProfessionalInfo";
 import StepLocation from "./steps/StepLocation";
 import ShiftStep from "./steps/ShiftStep";
 import ButtonPrevious from "../ui/form-fields/ButtonPrevious";
 import SuccessMessage from "./steps/SuccessMessage";
 import './DoctorRegistration.css';
+import Step3ProfessionalInfo from "./steps/Step3ProfessionalInfo";
 
 export default function DoctorRegistration({currentStepFromParent=null}) {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export default function DoctorRegistration({currentStepFromParent=null}) {
               />
             )}
             {currentStep === 3 && (
-              <Step2ProfessionalInfo
+              <Step3ProfessionalInfo
                 ref={stepRef}
                 doctorId={103}
                 isNew={!completedSteps.includes(3)}
