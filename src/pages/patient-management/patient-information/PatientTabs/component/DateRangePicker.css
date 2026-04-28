@@ -252,6 +252,9 @@
     /* color: white; */
     cursor: pointer;
 }
+.dropdown-date-options div:last-child {
+    border-top: 1px solid #ddd ;
+}
 .DateRangePicker  table > tbody > tr > td:hover {
     background-color: #eee ;
     /* border-radius: 50% !important; */
