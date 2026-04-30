@@ -137,6 +137,8 @@ const Notifications = () => {
   }, [markAsRead]);
 
   const handleMarkAllAsRead = useCallback(async () => {
+    if(!totalCount > 0 || isLoading || isFetching )
+      return;
     
     const originalNotifications = [...localNotifications];
     
@@ -256,7 +258,7 @@ const Notifications = () => {
                 onFilter={handleFilterChange}
                 onReset={resetFilters}
               />
-              {totalCount > 0 && !isLoading && !isFetching && (
+              {(
                 <button
                   onClick={handleMarkAllAsRead}
                   className="text-decoration-none"

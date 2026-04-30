@@ -3,7 +3,8 @@ import ConditionsFilters from "../component/ConditionsFilters";
 import Pagination from "../../../../shared/Pagination";
 import { useTranslation } from "react-i18next";
 import { usePatientNotes } from "./useDoctorNotes";
-import { patientNotesHelpers, createIndexBasedHandlers, PatientNotesSkeleton } from "./doctorNotesHelpers";
+import { patientNotesHelpers, createIndexBasedHandlers } from "./doctorNotesHelpers";
+import CustomAccordionSkeleton from "../../../../shared/CustomAccordionSkeleton";
 
 const PatientNotes = ({ patientId = 4, isMobile = false }) => {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
           filterConfigs={filterConfigs}
         />
       </div>
-     { (isLoading||isFetching)?(PatientNotesSkeleton()):(
+     { (isLoading||isFetching)?(CustomAccordionSkeleton()):(
       <div className="table-card flex-grow-1">
         <CustomAccordion
           title={t("Patient Notes")}

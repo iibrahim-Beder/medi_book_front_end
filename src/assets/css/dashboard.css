@@ -59,7 +59,7 @@
 :root {--shadowcolor:rgba(63,171,243,0.5);}
 body {
 	background: var(--badybkcolor);
-	
+	overflow: unset !important;
 	color: var(--terthemecolor);
 	font:400 14px/26px 'Poppins', sans-serif;
 }

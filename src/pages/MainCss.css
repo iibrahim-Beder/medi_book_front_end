@@ -17,7 +17,9 @@ top: 0;
 .dc-select:after{
     display: none !important;
 }
-
+.d-grid{
+  display: grid !important;
+}
 hr{border-color: var(--lencolor) !important ;}
 .dc-tabstitle {
   display: flex;
