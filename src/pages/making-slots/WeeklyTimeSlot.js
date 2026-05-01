@@ -12,6 +12,7 @@ import Field from "../ui/form-fields/Field";
 import SegmentedProgress from "./TimeRange/SegmentedProgress";
 import ActiveTabs from "./components/ActiveTabs";
 import Loader from "../shared/Loader";
+import {getTimeSlotTitle} from "./helper/helper";
 
 export default function WeeklyTimeSlots() {
   const APPOINTMENT_TYPES = ["InPerson", "Follow-up", "Check-up", "Emergency"];
@@ -181,11 +182,9 @@ export default function WeeklyTimeSlots() {
                     <ActiveTabs activeCount={activeRules.length} inactiveCount={inactiveRules.length} activeTab={activeTab} setActiveTab={setActiveTab} />
 
                     {/* Active Slots */}
-                  {activeTab === "Active" &&  <CustomAccordion
-                      getItemTitle={(slot) =>
-                        `${slot.rangeTime.start} - ${slot.rangeTime.end}` ||
-                        "00:00 - 00:00"
-                      }
+                  {activeTab === "Active" &&
+                    <CustomAccordion
+                      getItemTitle={getTimeSlotTitle}
                       accordioninnertitleSize="slots-accordion-title"
                       title={`${t("Active Slots")}`}
                       data={activeRules}
@@ -203,11 +202,9 @@ export default function WeeklyTimeSlots() {
                     />}
 
                     {/* Inactive Slots */}
-                    {activeTab === "Inactive" && <CustomAccordion
-                      getItemTitle={(slot) =>
-                        `${slot.rangeTime.start} - ${slot.rangeTime.end}` ||
-                        "00:00 - 00:00"
-                      }
+                   {activeTab === "Inactive" &&
+                    <CustomAccordion
+                      getItemTitle={getTimeSlotTitle}
                       accordioninnertitleSize="slots-accordion-title"
                       title={`${t("Inactive Slots")}`}
                       data={inactiveRules}
