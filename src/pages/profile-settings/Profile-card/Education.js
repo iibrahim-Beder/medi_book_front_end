@@ -50,6 +50,7 @@ const AcademicQualifications = () => {
       label: "Degree",
       type: "select",
       options: [
+        "select degree",
         "MBBS",
         "MD",
         "DO",
@@ -101,10 +102,12 @@ const AcademicQualifications = () => {
   ];
 
   const getAcademicTitle = (item) => {
-    if (item.institutionName && item.graduationYear && item.degree) {
+    if (item.institutionName && item.graduationYear && item.degree && item.major) {
       return `${item.institutionName} - ${item.major} - ${item.degree}  - ${item.graduationYear}`;
-    } else if (item.institutionName) {
-      return item.institutionName;
+    } else if (item.institutionName && item.graduationYear && item.degree) {
+      return `${item.institutionName} - ${item.degree}  - ${item.graduationYear}`;
+    }else if (item.institutionName && item.graduationYear) {
+      return `${item.institutionName} - ${item.graduationYear}`;
     }
     return "New Academic Qualification";
   };
@@ -125,7 +128,6 @@ const AcademicQualifications = () => {
         noDataMessage="No academic qualifications added yet. Click 'Add New Qualification' to get started."
         // backgroundColor="#f8f9fa"
         // titleBackgroundColor="#e3f2fd"
-        hint="Please fill in all required fields and upload supporting documents for verification."
         // allowMultipleOpen={true}
       />
     </div>

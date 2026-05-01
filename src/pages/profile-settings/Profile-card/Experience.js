@@ -1,16 +1,90 @@
-import EducationAccordion from "../2-Experans & Edition/EducationAccordion";
-import ExperienceList from "../2-Experans & Edition/ExperienceList";
+import React from "react";
+import CustomAccordion from "../../shared/CustomAccordion";
+import { useDoctorExperience } from "../hooks/useDoctorExperience";
+import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
+import ErrorLoading from "../../shared/ErrorLoading";
 
-const Experience = () => {
+const DoctorExperience = () => {
+  const doctorId = 103;
+
+  const [experienceData, setExperienceData] = React.useState([]);
+
+  const {
+    handleAddExperience,
+    handleDeleteExperience,
+    handleUpdateExperience,
+    handleSaveExperience,
+    isLoading,
+    error,
+    refetch,
+  } = useDoctorExperience(doctorId, experienceData, setExperienceData);
+
+  if (isLoading)
+    return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
+
+  if (error) return <ErrorLoading error={error} refetch={refetch} />;
+
+  const formFields = [
+    {
+      name: "workplace",
+      label: "Workplace",
+      type: "text",
+      placeholder: "Enter workplace name",
+      half: true,
+    },
+    {
+      name: "jobTitle",
+      label: "Job Title",
+      type: "text",
+      placeholder: "Enter job title",
+      half: true,
+    },
+    {
+      name: "startDate",
+      label: "Start Date",
+      type: "date",
+      half: true,
+    },
+    {
+      name: "endDate",
+      label: "End Date",
+      type: "date",
+      half: true,
+    },
+    {
+      name: "description",
+      label: "Description",
+      type: "textarea",
+      placeholder: "Describe your role and responsibilities",
+    },
+  ];
+
+  const getExperienceTitle = (item) => {
+    if (item.workplace && item.jobTitle) {
+      return `${item.jobTitle} - ${item.workplace}`;
+    } else if (item.workplace) {
+      return item.workplace;
+    }
+    return "New Experience";
+  };
+
   return (
-
-   	<div>
-                 <ExperienceList />
-                
+    <div className="doctor-experience-section accordion-table-card">
+      <CustomAccordion
+        oneAccordion={true}
+        title="Professional Experience"
+        addNewLabel="Add New Experience"
+        data={experienceData}
+        formFields={formFields}
+        onAdd={handleAddExperience}
+        onDelete={handleDeleteExperience}
+        onUpdate={handleUpdateExperience}
+        onSave={handleSaveExperience}
+        getItemTitle={getExperienceTitle}
+        noDataMessage="No experience added yet. Click 'Add New Experience' to get started."
+      />
     </div>
- 
-
   );
 };
 
-export default Experience;
+export default DoctorExperience;

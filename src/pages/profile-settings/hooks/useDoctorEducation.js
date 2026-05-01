@@ -99,8 +99,17 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
     async (index, data) => {
       if (isAdding || isUpdating) return false;
 
-      if (!data.institutionName || !data.degree) {
-        toast.error("Required fields missing");
+       console.log("===========data",data);
+      if (!data.institutionName) {
+        toast.error("institution name is required");
+        return false;
+      }
+      if (!data.graduationYear) {
+        toast.error("graduation year is required");
+        return false;
+      }
+      if (!data.degree || (data.degree==="select degree")) {
+        toast.error("degree is required");
         return false;
       }
 
@@ -161,7 +170,8 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
         }
 
         return success;
-      } catch {
+      } catch(error){ 
+        console.log("=======error",error);
         toast.error("Save failed");
         return false;
       } finally {

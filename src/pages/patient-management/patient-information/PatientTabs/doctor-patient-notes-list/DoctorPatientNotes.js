@@ -59,7 +59,7 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
           filterConfigs={filterConfigs}
         />
       </div>
-     { (isLoading||isFetching)?(CustomAccordionSkeleton()):(
+     { (isLoading||isFetching)?(<CustomAccordionSkeleton/>):(
       <div className="table-card flex-grow-1">
         <CustomAccordion
           title={t("Patient Notes")}

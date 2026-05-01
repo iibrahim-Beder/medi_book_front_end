@@ -1,10 +1,9 @@
-import { FaBullhorn } from "react-icons/fa";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import PersonalDetails from "./Profile-card/PersonalDetails";
 import ExperienceEducation from "./Profile-card/Education";
-import Experience from "./2-Experans & Edition/ExperienceList";
+import Experience from "./Profile-card/Experience";
 import Step3ProfessionalInfo from "../doctor-registration/steps/Step3ProfessionalInfo";
 
 export default function ProfileSettings() {
@@ -82,14 +81,6 @@ export default function ProfileSettings() {
             {activeTab === "Experience" && <Experience />}
           </div>
         </div>
-
-        {/* <div className="dc-updatall">
-          <FaBullhorn />
-          <span>{t("profileSettings.updateNote")}</span>
-          <a className="dc-btn" href="#!">
-            {t("profileSettings.saveUpdate")}
-          </a>
-        </div> */}
       </div>
     </div>
     // </div>

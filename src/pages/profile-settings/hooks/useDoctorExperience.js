@@ -1,0 +1,231 @@
+// hooks/useDoctorExperience.js
+import { useCallback, useEffect } from "react";
+import {
+  useAddDoctorExperienceMutation,
+  useUpdateDoctorExperienceMutation,
+  useDeleteDoctorExperienceMutation,
+  useGetDoctorExperiencesQuery,
+} from "../../../api/doctor-information/ExperienceApi";
+import toast from "react-hot-toast";
+
+export const useDoctorExperience = (doctorId, experienceData, setExperienceData) => {
+  const {
+    data: experiences,
+    isLoading,
+    error,
+    refetch,
+  } = useGetDoctorExperiencesQuery({ doctorId }, { skip: !doctorId });
+
+  useEffect(() => {
+    if (experiences) {
+      setExperienceData(
+        experiences?.data?.map(transformDoctorExperience) || []
+      );
+    }
+  }, [experiences, setExperienceData]);
+
+  const [addExperience, { isLoading: isAdding }] =
+    useAddDoctorExperienceMutation();
+  const [updateExperience, { isLoading: isUpdating }] =
+    useUpdateDoctorExperienceMutation();
+  const [deleteExperience] = useDeleteDoctorExperienceMutation();
+
+  // ADD
+  const handleAddExperience = useCallback(() => {
+    if (experienceData?.[0]?.isNew) {
+      toast.error("Save previous first");
+      return;
+    }
+
+    const newItem = {
+      id: `temp-${Date.now()}`,
+      workplace: "",
+      jobTitle: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+      isExpanded: true,
+      isNew: true,
+    };
+
+    setExperienceData((prev) => [newItem, ...prev]);
+  }, [experienceData]);
+
+  // UPDATE LOCAL
+  const handleUpdateExperience = useCallback((index, field, value) => {
+    setExperienceData((prev) =>
+      prev.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      )
+    );
+  }, []);
+
+  // DELETE
+  const handleDeleteExperience = useCallback(
+    async (index) => {
+      const loading = toast.loading("Deleting...");
+
+      try {
+        const item = experienceData[index];
+        if (!item) return;
+
+        if (!item.isNew) {
+          const res = await deleteExperience({
+            doctorId,
+            doctorExperienceId: item.id,
+          }).unwrap();
+
+          if (!res?.succeeded) {
+            toast.error(res?.message);
+            return;
+          }
+        }
+
+        setExperienceData((prev) =>
+          prev.filter((_, i) => i !== index)
+        );
+        toast.success("Deleted");
+      } catch {
+        toast.error("Delete failed");
+      } finally {
+        toast.dismiss(loading);
+      }
+    },
+    [experienceData, doctorId]
+  );
+
+  // SAVE
+  const handleSaveExperience = useCallback(
+    async (index, data) => {
+      if (isAdding || isUpdating) return false;
+      
+            if (!data.workplace ) {
+              toast.error(" workplace is required");
+              return false;
+            }
+      
+            if (!data.jobTitle) {
+              toast.error("job title is required");
+              return false;
+            }
+      if(!data.startDate) {
+        toast.error("Start date is required");
+        return false;
+      }
+
+      const loading = toast.loading("Saving...");
+
+      try {
+        let success = false;
+
+        if (data.isNew) {
+          const res = await addExperience({
+            doctorId,
+            experiences: [data],
+          }).unwrap();
+
+          if (res?.succeeded) {
+            const created = res.data?.[0];
+
+            setExperienceData((prev) =>
+              prev.map((item, i) =>
+                i === index
+                  ? {
+                      ...created,
+                      id: created.doctorExperienceId,
+                      isNew: false,
+                      isExpanded: false,
+                    }
+                  : item
+              )
+            );
+
+            toast.success("Added Successfully");
+            success = true;
+          }
+        } else {
+          const original =
+            experiences?.data?.find(
+              (item) => item.doctorExperienceId === data.id
+            ) || {};
+
+          const updates = buildExperienceUpdatePayload(original, data);
+          if (!Object.keys(updates).length) {
+            toast("No changes found");
+            return;
+          }
+
+          const res = await updateExperience({
+            doctorId,
+            doctorExperienceId: data.id,
+            updates,
+          }).unwrap();
+
+          if (res?.succeeded) {
+            setExperienceData((prev) =>
+              prev.map((item, i) =>
+                i === index
+                  ? { ...data, isExpanded: false }
+                  : item
+              )
+            );
+
+            toast.success("Updated");
+            success = true;
+          } else {
+            toast.error(res?.message);
+          }
+        }
+
+        return success;
+      } catch {
+        toast.error("Save failed");
+        return false;
+      } finally {
+        toast.dismiss(loading);
+      }
+    },
+    [doctorId, isAdding, isUpdating]
+  );
+
+  return {
+    handleAddExperience,
+    handleDeleteExperience,
+    handleUpdateExperience,
+    handleSaveExperience,
+    isLoading,
+    error,
+    refetch,
+    experiences: experiences?.data?.map(transformDoctorExperience) || [],
+  };
+};
+
+// TRANSFORM
+const transformDoctorExperience = (exp) => ({
+  ...exp,
+  isNew: false,
+  isExpanded: false,
+});
+
+// DIFF PAYLOAD
+export const buildExperienceUpdatePayload = (original, updated) => {
+  const payload = {};
+
+  if (updated.workplace !== original.workplace) {
+    payload.workplace = updated.workplace || null;
+  }
+  if (updated.jobTitle !== original.jobTitle) {
+    payload.jobTitle = updated.jobTitle || null;
+  }
+  if (updated.startDate !== original.startDate) {
+    payload.startDate = updated.startDate || null;
+  }
+  if (updated.endDate !== original.endDate) {
+    payload.endDate = updated.endDate || null;
+  }
+  if (updated.description !== original.description) {
+    payload.description = updated.description || null;
+  }
+
+  return payload;
+};

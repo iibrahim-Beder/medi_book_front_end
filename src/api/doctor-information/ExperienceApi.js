@@ -1,4 +1,4 @@
-// doctorEducationApi.js
+// doctorExperienceApi.js
 import { baseApi } from "../baseApi";
 
 const processField = (value) => {
@@ -6,68 +6,57 @@ const processField = (value) => {
   return value === "" ? null : value;
 };
 
-const transformDoctorEducationData = (response) => {
+const transformDoctorExperienceData = (response) => {
   if (!response || !response.succeeded) {
-    return {
-      data: [],
-      succeeded: false,
-    };
+    return { data: [], succeeded: false };
   }
 
   return {
     ...response,
     data: (response.data || []).map((item) => ({
-      id: item.doctorEducationId,
-      doctorEducationId: item.doctorEducationId,
-      institutionName: item.institutionName,
-      degree: item.degree,
-      degreeDisplayName: item.degreeDisplayName,
-      major: item.major,
-      graduationYear: item.graduationYear,
+      id: item.doctorExperienceId,
+      doctorExperienceId: item.doctorExperienceId,
+      workplace: item.workplace,
+      jobTitle: item.jobTitle,
       startDate: item.startDate,
       endDate: item.endDate,
-      notes: item.notes,
-      isVerified: item.isVerified,
-      certificateFileUrl: item.certificateFileUrl,
+      description: item.description,
     })),
   };
 };
 
-export const doctorEducationApi = baseApi.injectEndpoints({
+export const doctorExperienceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // GET
-    getDoctorEducations: builder.query({
+    getDoctorExperiences: builder.query({
       query: ({ doctorId }) => ({
-        url: "/Doctors/GetDoctorEducations",
+        url: "/Doctors/GetDoctorExperiences",
         params: { DoctorID: doctorId },
       }),
-      transformResponse: (res) => transformDoctorEducationData(res),
+      transformResponse: transformDoctorExperienceData,
       transformErrorResponse: (res) => ({
         data: [],
         succeeded: false,
         error: res?.data,
       }),
-      providesTags: (result, error, { doctorId }) => [
-        { type: "DoctorEducation", id: doctorId },
+      providesTags: (r, e, { doctorId }) => [
+        { type: "DoctorExperience", id: doctorId },
       ],
     }),
 
     // ADD
-    addDoctorEducation: builder.mutation({
-      query: ({ doctorId, educations }) => ({
-        url: "/Doctors/AddDoctorEducations",
+    addDoctorExperience: builder.mutation({
+      query: ({ doctorId, experiences }) => ({
+        url: "/Doctors/AddDoctorExperiences",
         method: "POST",
         body: {
           doctorId,
-          educations: educations.map((e) => ({
-            institutionName: processField(e.institutionName),
-            degree: processField(e.degree),
-            major: processField(e.major),
-            graduationYear: e.graduationYear,
+          experiences: experiences.map((e) => ({
+            workplace: processField(e.workplace),
+            jobTitle: processField(e.jobTitle),
             startDate: processField(e.startDate),
             endDate: processField(e.endDate),
-            notes: processField(e.notes),
-            certificateFileUrl: processField(e.certificateFileUrl),
+            description: processField(e.description),
           })),
         },
       }),
@@ -82,10 +71,10 @@ export const doctorEducationApi = baseApi.injectEndpoints({
           const queries = state[baseApi.reducerPath]?.queries ?? {};
 
           Object.values(queries).forEach((entry) => {
-            if (entry?.endpointName === "getDoctorEducations") {
+            if (entry?.endpointName === "getDoctorExperiences") {
               dispatch(
-                doctorEducationApi.util.updateQueryData(
-                  "getDoctorEducations",
+                doctorExperienceApi.util.updateQueryData(
+                  "getDoctorExperiences",
                   entry.originalArgs,
                   (draft) => {
                     draft.data.unshift(...added);
@@ -99,13 +88,13 @@ export const doctorEducationApi = baseApi.injectEndpoints({
     }),
 
     // UPDATE
-    updateDoctorEducation: builder.mutation({
-      query: ({ doctorId, doctorEducationId, updates }) => ({
-        url: "/Doctors/UpdateDoctorEducations",
-        method: "POST",
+    updateDoctorExperience: builder.mutation({
+      query: ({ doctorId, doctorExperienceId, updates }) => ({
+        url: "/Doctors/UpdateDoctorExperiences",
+        method: "PUT",
         body: {
           doctorId,
-          doctorEducationId,
+          doctorExperienceId,
           ...Object.fromEntries(
             Object.entries(updates).map(([k, v]) => [
               k,
@@ -125,21 +114,21 @@ export const doctorEducationApi = baseApi.injectEndpoints({
           const queries = state[baseApi.reducerPath]?.queries ?? {};
 
           Object.values(queries).forEach((entry) => {
-            if (entry?.endpointName === "getDoctorEducations") {
+            if (entry?.endpointName === "getDoctorExperiences") {
               dispatch(
-                doctorEducationApi.util.updateQueryData(
-                  "getDoctorEducations",
+                doctorExperienceApi.util.updateQueryData(
+                  "getDoctorExperiences",
                   entry.originalArgs,
                   (draft) => {
                     const idx = draft.data.findIndex(
-                      (r) => r.id === updated.doctorEducationId,
+                      (r) => r.id === updated.doctorExperienceId,
                     );
 
                     if (idx !== -1) {
                       draft.data[idx] = {
                         ...draft.data[idx],
                         ...updated,
-                        id: updated.doctorEducationId,
+                        id: updated.doctorExperienceId,
                       };
                     }
                   },
@@ -152,15 +141,15 @@ export const doctorEducationApi = baseApi.injectEndpoints({
     }),
 
     // DELETE
-    deleteDoctorEducation: builder.mutation({
-      query: ({ doctorId, doctorEducationId }) => ({
-        url: "/Doctors/DeleteDoctorEducations",
+    deleteDoctorExperience: builder.mutation({
+      query: ({ doctorId, doctorExperienceId }) => ({
+        url: "/Doctors/DeleteDoctorExperiences",
         method: "DELETE",
-        body: { doctorId, doctorEducationId },
+        body: { doctorId, doctorExperienceId },
       }),
 
       async onQueryStarted(
-        { doctorEducationId },
+        { doctorExperienceId },
         { dispatch, queryFulfilled, getState },
       ) {
         const state = getState();
@@ -169,15 +158,15 @@ export const doctorEducationApi = baseApi.injectEndpoints({
         const patches = [];
 
         Object.values(queries).forEach((entry) => {
-          if (entry?.endpointName === "getDoctorEducations") {
+          if (entry?.endpointName === "getDoctorExperiences") {
             patches.push(
               dispatch(
-                doctorEducationApi.util.updateQueryData(
-                  "getDoctorEducations",
+                doctorExperienceApi.util.updateQueryData(
+                  "getDoctorExperiences",
                   entry.originalArgs,
                   (draft) => {
                     draft.data = draft.data.filter(
-                      (item) => item.id !== doctorEducationId,
+                      (item) => item.id !== doctorExperienceId,
                     );
                   },
                 ),
@@ -197,8 +186,8 @@ export const doctorEducationApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useGetDoctorEducationsQuery,
-  useAddDoctorEducationMutation,
-  useUpdateDoctorEducationMutation,
-  useDeleteDoctorEducationMutation,
-} = doctorEducationApi;
+  useGetDoctorExperiencesQuery,
+  useAddDoctorExperienceMutation,
+  useUpdateDoctorExperienceMutation,
+  useDeleteDoctorExperienceMutation,
+} = doctorExperienceApi;
