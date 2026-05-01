@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import PersonalDetails from "./Profile-card/PersonalDetails";
-import ExperienceEducation from "./Profile-card/Education";
+import Education from "./Profile-card/Education";
 import Experience from "./Profile-card/Experience";
 import Step3ProfessionalInfo from "../doctor-registration/steps/Step3ProfessionalInfo";
 
@@ -62,7 +62,7 @@ export default function ProfileSettings() {
               <Step3ProfessionalInfo insideUi={true} isNew={false} />
             )}
 
-            {activeTab === "Education" && <ExperienceEducation />}
+            {activeTab === "Education" && <Education />}
 
             {activeTab === "Experience" && <Experience />}
           </div>

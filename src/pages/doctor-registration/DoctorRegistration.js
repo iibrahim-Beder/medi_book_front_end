@@ -9,6 +9,8 @@ import ButtonPrevious from "../ui/form-fields/ButtonPrevious";
 import SuccessMessage from "./steps/SuccessMessage";
 import './DoctorRegistration.css';
 import Step3ProfessionalInfo from "./steps/Step3ProfessionalInfo";
+import AcademicQualifications from "../profile-settings/Profile-card/Education";
+import DoctorExperience from "../profile-settings/Profile-card/Experience";
 
 export default function DoctorRegistration({currentStepFromParent=null}) {
   const { t } = useTranslation();
@@ -40,6 +42,13 @@ export default function DoctorRegistration({currentStepFromParent=null}) {
                 isNew={!completedSteps.includes(1)}
               />
             )}
+            {currentStep === 2 && (
+              <AcademicQualifications
+                ref={stepRef}
+                doctorId={103}
+                isNew={!completedSteps.includes(1)}
+              />
+            )}
             {currentStep === 3 && (
               <Step3ProfessionalInfo
                 ref={stepRef}
@@ -56,6 +65,13 @@ export default function DoctorRegistration({currentStepFromParent=null}) {
             )}
             {currentStep === 5 && (
               <ShiftStep
+                ref={stepRef}
+                doctorId={103}
+                isNew={!completedSteps.includes(4)}
+              />
+            )}
+            {currentStep === 6 && (
+              <DoctorExperience
                 ref={stepRef}
                 doctorId={103}
                 isNew={!completedSteps.includes(4)}
