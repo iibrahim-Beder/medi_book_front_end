@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+// ProfileSettings.jsx
+import React from "react";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import PersonalDetails from "./Profile-card/PersonalDetails";
@@ -7,82 +9,65 @@ import Experience from "./Profile-card/Experience";
 import Step3ProfessionalInfo from "../doctor-registration/steps/Step3ProfessionalInfo";
 
 export default function ProfileSettings() {
-  const [activeTab, setActiveTab] = useState("DoctorBasicInfo");
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
 
+  const defaultTab = "DoctorBasicInfo";
+  const activeTab = searchParams.get("tab") || defaultTab;
+
+  const setActiveTab = (tabKey) => {
+    setSearchParams({ tab: tabKey });
+  };
+
+  const tabs = [
+    { key: "DoctorBasicInfo", label: t("profileSettings.basicInfo") },
+    { key: "ProfileAndSpecialties", label: t("profileSettings.specializations") },
+    { key: "Education", label: t("profileSettings.education") },
+    { key: "Experience", label: t("profileSettings.experience") },
+  ];
+
   return (
-    
-    // <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
-      <div className="dc-haslayout dc-dbsectionspace">
-        <div className="dc-dashboardbox dc-dashboardtabsholder NewShado">
-          {/* <div className="dc-dashboardboxtitle">
-            <h2>{t("profileSettings.title")}</h2>
-          </div> */}
-               <div className="divtoconvert">
-          {/* Tabs Navigation */}
-          <div className="dc-dashboardtabs">
+    <div className="col-12">
+      <div className="dc-haslayout dc-dbsectionspace accordion-table">
+        <div className="dc-dashboardbox dc-dashboardtabsholder setting">
+
+          {/* Tabs */}
+          <div className="dc-dashboardtabs" style={{ width: "20%" }}>
             <ul className="dc-tabstitle nav navbar-nav">
-              <li className="nav-item">
-                <a
-                  href="#dc-skills"
-                  className={`${activeTab === "DoctorBasicInfo" ? "active" : ""}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveTab("DoctorBasicInfo");
-                  }}
-                >
-                  {t("profileSettings.basicInfo")}
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#dc-skills"
-                  className={`${activeTab === "ProfileAndSpecialties" ? "active" : ""}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveTab("ProfileAndSpecialties");
-                  }}
-                >
-                  {t("profileSettings.specializations")}
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#dc-education"
-                  className={`${activeTab === "Education" ? "active" : ""}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveTab("Education");
-                  }}
-                >
-                  {t("profileSettings.education")}
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#dc-awards"
-                  className={`${activeTab === "Experience" ? "active" : ""}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveTab("Experience");
-                  }}
-                >
-                  {t("profileSettings.experience")}
-                </a>
-              </li>
+              {tabs.map((tab) => (
+                <li className="nav-item" key={tab.key}>
+                  <a
+                    href={`?tab=${tab.key}`}
+                    className={activeTab === tab.key ? "active" : ""}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveTab(tab.key);
+                    }}
+                  >
+                    {tab.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Tabs Content */}
-          <div className="dc-tabscontent tab-content">
+          {/* Content */}
+          <div
+            className="dc-tabscontent tab-content table-container-style"
+            style={{ width: "80%", justifyContent: "center" }}
+          >
             {activeTab === "DoctorBasicInfo" && <PersonalDetails />}
+
+            {activeTab === "ProfileAndSpecialties" && (
+              <Step3ProfessionalInfo insideUi={true} isNew={false} />
+            )}
+
             {activeTab === "Education" && <ExperienceEducation />}
-            {activeTab === "ProfileAndSpecialties" && <Step3ProfessionalInfo insideUi={true} isNew={false} />}
+
             {activeTab === "Experience" && <Experience />}
           </div>
         </div>
       </div>
     </div>
-    // </div>
   );
 }
