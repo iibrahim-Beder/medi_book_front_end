@@ -6,7 +6,6 @@ import ErrorLoading from "../../shared/ErrorLoading";
 const AcademicQualifications = () => {
   const doctorId = 103;
 
-  const [academicData, setAcademicData] = React.useState([]);
 
   const {
     handleAddAcademic,
@@ -16,7 +15,8 @@ const AcademicQualifications = () => {
     isLoading,
     error,
     refetch,
-  } = useDoctorEducation(doctorId, academicData, setAcademicData);
+    educations
+  } = useDoctorEducation(doctorId);
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
   if (error) return <ErrorLoading error={error} refetch={refetch} />;
@@ -118,7 +118,7 @@ const AcademicQualifications = () => {
         oneAccordion={true}
         title="Academic Qualifications"
         addNewLabel="Add New Qualification"
-        data={academicData}
+        data={educations}
         formFields={formFields}
         onAdd={handleAddAcademic}
         onDelete={handleDeleteAcademic}

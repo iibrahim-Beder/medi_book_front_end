@@ -1,5 +1,5 @@
 // hooks/useDoctorEducation.js
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   useAddDoctorEducationMutation,
   useUpdateDoctorEducationMutation,
@@ -9,20 +9,20 @@ import {
 import toast from "react-hot-toast";
 
 
-export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
+export const useDoctorEducation = (doctorId) => {
   const {
-    data: educations,
+    data: educationsData,
     isLoading,
     error,
     refetch
   } = useGetDoctorEducationsQuery({ doctorId }, { skip: !doctorId });
-
+  const [educations, setEducations] = useState(educationsData?.data?.map(transformDoctorEducation) || []);
 
   useEffect(() => {
-    if (educations) {
-      setAcademicData(educations?.data?.map(transformDoctorEducation) || []);
+    if (educationsData) {
+      setEducations(educationsData?.data?.map(transformDoctorEducation) || []);
     }
-  }, [educations, setAcademicData]);
+  }, [educationsData, setEducations]);
 
   const [addEducation, { isLoading: isAdding }] =
     useAddDoctorEducationMutation();
@@ -32,7 +32,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
 
   // ADD
   const handleAddAcademic = useCallback(() => {
-    if (academicData?.[0]?.isNew) {
+    if (educations?.[0]?.isNew) {
       toast.error("Save previous first");
       return;
     }
@@ -51,13 +51,13 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
       isNew: true,
     };
 
-    setAcademicData((prev) => [newItem, ...prev]);
-  }, [academicData]);
+    setEducations((prev) => [newItem, ...prev]);
+  }, [educations]);
   // hooks/useDoctorEducation.js
 
   // UPDATE LOCAL
   const handleUpdateAcademic = useCallback((index, field, value) => {
-    setAcademicData((prev) =>
+    setEducations((prev) =>
       prev.map((item, i) => (i === index ? { ...item, [field]: value } : item)),
     );
   }, []);
@@ -68,7 +68,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
       const loading = toast.loading("Deleting...");
 
       try {
-        const item = academicData[index];
+        const item = educations[index];
         if (!item) return;
 
         if (!item.isNew) {
@@ -83,7 +83,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
           }
         }
 
-        setAcademicData((prev) => prev.filter((_, i) => i !== index));
+        setEducations((prev) => prev.filter((_, i) => i !== index));
         toast.success("Deleted");
       } catch {
         toast.error("Delete failed");
@@ -91,7 +91,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
         toast.dismiss(loading);
       }
     },
-    [academicData, doctorId],
+    [educations, doctorId],
   );
 
   // SAVE
@@ -127,7 +127,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
           if (res?.succeeded) {
             const created = res.data?.[0];
 
-            setAcademicData((prev) =>
+            setEducations((prev) =>
               prev.map((item, i) =>
                 i === index
                   ? {
@@ -144,7 +144,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
             success = true;
           }
         } else {
-          const original =  educations?.data?.find((item) => item.doctorEducationId === data.id) || {};
+          const original =  educationsData?.data?.find((item) => item.doctorEducationId === data.id) || {};
 
           const updates = buildEducationUpdatePayload(original, data);
           if (!Object.keys(updates).length){toast("No changes found");return;}
@@ -156,7 +156,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
           }).unwrap();
 
           if (res?.succeeded) {
-            setAcademicData((prev) =>
+            setEducations((prev) =>
               prev.map((item, i) =>
                 i === index ? { ...data, isExpanded: false } : item,
               ),
@@ -188,7 +188,7 @@ export const useDoctorEducation = (doctorId, academicData, setAcademicData) => {
     isLoading,
     error,
     refetch,
-    educations: educations?.data?.map(transformDoctorEducation) || [],
+    educations
   };
 };
 

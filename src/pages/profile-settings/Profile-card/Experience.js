@@ -7,7 +7,6 @@ import ErrorLoading from "../../shared/ErrorLoading";
 const DoctorExperience = () => {
   const doctorId = 103;
 
-  const [experienceData, setExperienceData] = React.useState([]);
 
   const {
     handleAddExperience,
@@ -17,7 +16,8 @@ const DoctorExperience = () => {
     isLoading,
     error,
     refetch,
-  } = useDoctorExperience(doctorId, experienceData, setExperienceData);
+    experiences
+  } = useDoctorExperience(doctorId);
 
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
@@ -74,7 +74,7 @@ const DoctorExperience = () => {
         oneAccordion={true}
         title="Professional Experience"
         addNewLabel="Add New Experience"
-        data={experienceData}
+        data={experiences}
         formFields={formFields}
         onAdd={handleAddExperience}
         onDelete={handleDeleteExperience}

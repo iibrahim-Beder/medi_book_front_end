@@ -1,5 +1,5 @@
 // hooks/useDoctorExperience.js
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   useAddDoctorExperienceMutation,
   useUpdateDoctorExperienceMutation,
@@ -8,21 +8,22 @@ import {
 } from "../../../api/doctor-information/ExperienceApi";
 import toast from "react-hot-toast";
 
-export const useDoctorExperience = (doctorId, experienceData, setExperienceData) => {
+export const useDoctorExperience = (doctorId) => { 
   const {
-    data: experiences,
+    data: experiencesData,
     isLoading,
     error,
     refetch,
   } = useGetDoctorExperiencesQuery({ doctorId }, { skip: !doctorId });
+  const [experiences, setExperience] = useState( experiencesData?.data?.map(transformDoctorExperience) || []);
 
   useEffect(() => {
-    if (experiences) {
-      setExperienceData(
-        experiences?.data?.map(transformDoctorExperience) || []
+    if (experiencesData) {
+      setExperience(
+        experiencesData?.data?.map(transformDoctorExperience) || []
       );
     }
-  }, [experiences, setExperienceData]);
+  }, [experiencesData]);
 
   const [addExperience, { isLoading: isAdding }] =
     useAddDoctorExperienceMutation();
@@ -32,7 +33,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
 
   // ADD
   const handleAddExperience = useCallback(() => {
-    if (experienceData?.[0]?.isNew) {
+    if (experiences?.[0]?.isNew) {
       toast.error("Save previous first");
       return;
     }
@@ -48,12 +49,12 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
       isNew: true,
     };
 
-    setExperienceData((prev) => [newItem, ...prev]);
-  }, [experienceData]);
+    setExperience((prev) => [newItem, ...prev]);
+  }, [experiences]);
 
   // UPDATE LOCAL
   const handleUpdateExperience = useCallback((index, field, value) => {
-    setExperienceData((prev) =>
+    setExperience((prev) =>
       prev.map((item, i) =>
         i === index ? { ...item, [field]: value } : item
       )
@@ -66,7 +67,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
       const loading = toast.loading("Deleting...");
 
       try {
-        const item = experienceData[index];
+        const item = experiences[index];
         if (!item) return;
 
         if (!item.isNew) {
@@ -81,7 +82,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
           }
         }
 
-        setExperienceData((prev) =>
+        setExperience((prev) =>
           prev.filter((_, i) => i !== index)
         );
         toast.success("Deleted");
@@ -91,7 +92,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
         toast.dismiss(loading);
       }
     },
-    [experienceData, doctorId]
+    [experiences, doctorId]
   );
 
   // SAVE
@@ -127,7 +128,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
           if (res?.succeeded) {
             const created = res.data?.[0];
 
-            setExperienceData((prev) =>
+            setExperience((prev) =>
               prev.map((item, i) =>
                 i === index
                   ? {
@@ -145,7 +146,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
           }
         } else {
           const original =
-            experiences?.data?.find(
+            experiencesData?.data?.find(
               (item) => item.doctorExperienceId === data.id
             ) || {};
 
@@ -162,7 +163,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
           }).unwrap();
 
           if (res?.succeeded) {
-            setExperienceData((prev) =>
+            setExperience((prev) =>
               prev.map((item, i) =>
                 i === index
                   ? { ...data, isExpanded: false }
@@ -196,7 +197,7 @@ export const useDoctorExperience = (doctorId, experienceData, setExperienceData)
     isLoading,
     error,
     refetch,
-    experiences: experiences?.data?.map(transformDoctorExperience) || [],
+    experiences,
   };
 };
 

@@ -6,7 +6,6 @@ export const toDecimal = (hour, minute, period) => {
 };
 
   export const getTimeSlotTitle = (item) => {
-    console.log("item", item);
     if (item.rangeTime && item.Price && item.Currency && item.AllowedAppointmentTypes) {
       return `${item.rangeTime.start} - ${item.rangeTime.end} - ${item.AllowedAppointmentTypes} - ${item.Price} ${item.Currency}`;
     }
