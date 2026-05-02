@@ -109,6 +109,8 @@
     align-items: center;
     gap: 6px;
     align-items: flex-end;
+    flex-wrap: wrap;
+    /* justify-content: flex-end; */
 }
 .dc-messagecontent time{width: fit-content !important;}
 .online::after {

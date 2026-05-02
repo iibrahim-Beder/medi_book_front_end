@@ -5214,6 +5214,7 @@ top: 50%;
 	background: var(--themecolor);
     color: white;
 	padding: 10px;
+	justify-content: flex-end;
 }
 .dc-offerermessage .dc-description p a,
 .dc-memessage .dc-description p a{
