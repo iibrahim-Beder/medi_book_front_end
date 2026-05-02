@@ -1626,11 +1626,11 @@ color: var(--terthemecolor);
   width: 100%;
   height: 100%;
   
-  background: rgba(255, 255, 255, 0.3); /* خلفية فاتحة */
+  background: rgba(255, 255, 255, 0.3); 
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
-  z-index: 1050; /* فوق Bootstrap */
+  z-index: 1050;
 }
 
 .custom-modal-content .doctor-registration{padding: 40px 10px 15px;}
@@ -1643,7 +1643,7 @@ color: var(--terthemecolor);
   max-width: 80vw;
   max-height: 90vh;
 
-  overflow-y: auto; /* scroll جوه بس */
+  overflow-y: auto; /* scroll */
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 .custom-modal-content {
@@ -1728,5 +1728,37 @@ display: none;
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.custom-modal-content {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+/* Chrome, Edge, Safari */
+.custom-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-modal-content::-webkit-scrollbar-thumb {
+  background-color: transparent; 
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+
+
+/* Firefox */
+.custom-modal-content {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.custom-modal-content:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.131) transparent ;
+  transition: scrollbar-color 0.4s ease;
 }
 /* pop up register end */

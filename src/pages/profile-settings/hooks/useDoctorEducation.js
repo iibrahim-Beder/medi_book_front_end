@@ -22,7 +22,7 @@ export const useDoctorEducation = (doctorId) => {
     if (educationsData) {
       setEducations(educationsData?.data?.map(transformDoctorEducation) || []);
     }
-  }, [educationsData, setEducations]);
+  }, [educationsData]);
 
   const [addEducation, { isLoading: isAdding }] =
     useAddDoctorEducationMutation();
