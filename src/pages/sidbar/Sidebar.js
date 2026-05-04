@@ -182,9 +182,9 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/security-settings">
+              <Link to="/settings">
                 <LiaUserShieldSolid className="icon" />
-                <span>{t("sidebar.securitySettings")}</span>
+                <span>{t("Settings")}</span>
               </Link>
             </li>
             <li>

@@ -64,74 +64,57 @@ function UserMenu() {
       <nav className="dc-usernav">
         <ul className={`User-sub-menu ${menuOpen ? "show" : ""}`}>
           <li>
-            <Link to="/dashboard-insights">
+            <Link to="/dashboard">
               <i className="ti-dashboard"></i>
               <span>{t("userMenu.insights")}</span>
             </Link>
           </li>
           <li>
-            <Link to="/dashboard-appointmentlist">
+            <Link to="/appointments">
               <i className="ti-align-justify"></i>
               <span>{t("userMenu.appointmentList")}</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/dashboard-appointmentsetting">
               <i className="ti-settings"></i>
               <span>{t("userMenu.appointmentSetting")}</span>
             </Link>
-          </li>
+          </li> */}
           <li>
-            <Link to="/dashboard-appointmentlocation">
+            <Link to="/appointment-location">
               <i className="ti-location-arrow"></i>
               <span>{t("userMenu.appointmentLocation")}</span>
             </Link>
           </li>
           <li>
-            <Link to="/dashboard-manageservices">
+            <Link to="/Generate-Doctor-Slots">
               <i className="ti-shopping-cart"></i>
-              <span>{t("userMenu.manageServices")}</span>
+              <span>{t("sidebar.makeSlots")}</span>
             </Link>
           </li>
           <li>
-            <Link to="/dashboard-manageteam">
-              <i className="ti-user"></i>
-              <span>{t("userMenu.manageTeam")}</span>
+            <Link to="/chat">
+              <i className="ti-shopping-cart"></i>
+              <span>{t("chats")}</span>
             </Link>
-          </li>
-          <li className="menu-item-has-children">
-            <Link to="/dashboard-messages">
-              <i className="ti-email"></i>
-              <span>{t("userMenu.messages")}</span>
-            </Link>
-            <ul className="sub-menu">
-              <li>
-                <Link to="/messages/inbox">{t("userMenu.inbox")}</Link>
-              </li>
-              <li>
-                <Link to="/messages/send">{t("userMenu.send")}</Link>
-              </li>
-              <li>
-                <Link to="/messages/trash">{t("userMenu.trash")}</Link>
-              </li>
-            </ul>
           </li>
           <li>
-            <Link to="/dashboard-managearticle">
+            <Link to="/manage-financial">
               <i className="ti-bookmark"></i>
-              <span>{t("userMenu.manageArticles")}</span>
+              <span>{t("sidebar.manageFinancial")}</span>
             </Link>
           </li>
           <li>
-            <Link to="/dashboard-accountsettings">
+            <Link to="/account-settings">
               <i className="ti-settings"></i>
               <span>{t("userMenu.accountSettings")}</span>
             </Link>
           </li>
           <li>
-            <Link to="/dashboard-securitysettings">
+            <Link to="/settings">
               <i className="ti-shield"></i>
-              <span>{t("userMenu.securitySettings")}</span>
+              <span>{t("Settings")}</span>
             </Link>
           </li>
           <li>

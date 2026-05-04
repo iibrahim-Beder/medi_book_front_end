@@ -141,7 +141,7 @@ let completeRegistration =false ;
                       element={<WeeklyTimeSlots />}
                     />
                     <Route
-                      path="security-settings"
+                      path="settings"
                       element={<SecuritySettings />}
                     />
                     <Route path="account-settings" element={<Acco />} />
