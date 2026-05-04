@@ -16,7 +16,6 @@ import AppointmentManagementMain from "./pages/appointment-management/Appointmen
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 import Test from './test/Test';
-import Test2, { DashboardUnCompleteRegistration } from './test/Test2';
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -35,6 +34,7 @@ import ScrollToTop from "./context/ScrollToTop";
 import Authentication from "./pages/login/Authentication";
 import ShiftsManagement from "./pages/shifts-management/ShiftsManagement";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import DashboardUnCompleteRegistration from "./pages/dashbord/DashboardUnCompleteRegistration";
 
 
 function App() {
@@ -116,7 +116,7 @@ let completeRegistration =false ;
                 <div className="contentdiv">
                   <Routes>
                 <Route path="how-v1" element={<Test setOpenStepRegister={setOpenStepRegister} />} />
-                    <Route path="dashboard" element={ completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration />} />
+                    <Route path="dashboard" element={ completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                     <Route
                       path="appointments"
                       element={<AppointmentsPage />}
@@ -131,7 +131,6 @@ let completeRegistration =false ;
                       path="patients"
                       element={<PatientManagement />}
                     />
-                    <Route path="how-v2" element={<Test2 />} />
                     <Route
                       path="manage-financial"
                       element={<DoctorFinancialDashboard />}

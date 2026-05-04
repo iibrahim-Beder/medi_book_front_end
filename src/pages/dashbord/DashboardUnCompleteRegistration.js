@@ -1,8 +1,5 @@
 
-import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { FaChevronDown } from "react-icons/fa";
-import { Progress } from './Test';
+import { useState } from 'react';
 import React from "react";
 import "./dashboard.css";
 import {
@@ -109,7 +106,7 @@ export function SupportStrip2() {
 
 
 /* ---------- Verification Alert ---------- */
-const VerificationAlert = () => (
+const VerificationAlert = ({setOpenStepRegister}) => (
   <div className="dc-alert">
     <div className="dc-alert__left">
       <div className="dc-alert__icon">
@@ -126,7 +123,7 @@ const VerificationAlert = () => (
         </p>
       </div>
     </div>
-    <button type="button" className="dc-btn dc-btn-bg">
+    <button onClick={() => setOpenStepRegister(true)} type="button" className="dc-btn dc-btn-bg">
       Complete registration
       <ArrowRight size={16} style={{ marginLeft: 6 }} />
     </button>
@@ -141,7 +138,7 @@ const steps = [
   { icon: CalendarClock, label: "Set Availability", meta: "Weekly schedule and consultation types", done: false },
 ];
 
-const SetupProgress = () => {
+const SetupProgress = ({setOpenStepRegister}) => {
   const completed = steps.filter((s) => s.done).length;
   const percent = Math.round((completed / steps.length) * 100);
 
@@ -213,7 +210,7 @@ const SetupProgress = () => {
         <p className="dc-card__footnote">
           Estimated time to finish: <strong>4 minutes</strong>
         </p>
-        <button type="button" className="dc-btn dc-btn-bg">
+        <button onClick={() => setOpenStepRegister(true)} type="button" className="dc-btn dc-btn-bg">
           Continue setup
           <ChevronRight size={16} style={{ marginLeft: 4 }} />
         </button>
@@ -221,42 +218,6 @@ const SetupProgress = () => {
     </section>
   );
 };
-
-/* ---------- Support Strip ---------- */
-const links = [
-  { icon: BookOpen, title: "Verification guide", description: "Accepted documents and requirements." },
-  { icon: LifeBuoy, title: "Contact support", description: "Our team replies within one hour." },
-  { icon: ShieldCheck, title: "Privacy & compliance", description: "How we protect your patient data." },
-];
-
-const SupportStrip = () => (
-  <aside className="dc-card dc-aside">
-    <div className="dc-card__header dc-card__header--simple">
-      <h3 className="dc-card__title">Resources</h3>
-      <p className="dc-card__sub">Help and documentation for new practitioners.</p>
-    </div>
-    <ul className="dc-links">
-      {links.map((item) => {
-        const Icon = item.icon;
-        return (
-          <li key={item.title}>
-            <a href="#" className="dc-link">
-              <span className="dc-link__icon">
-                <Icon size={16} />
-              </span>
-              <span className="dc-link__body">
-                <span className="dc-link__title">{item.title}</span>
-                <span className="dc-link__desc">{item.description}</span>
-              </span>
-              <ChevronRight size={16} className="dc-link__chev" />
-            </a>
-          </li>
-        );
-      })}
-    </ul>
-  </aside>
-);
-
 /* ---------- Feature List ---------- */
 const features = [
   { icon: Calendar, title: "Appointment Scheduling", description: "Manage availability, bookings and reminders." },
@@ -302,7 +263,7 @@ const FeatureList = () => (
 );
 
 /* ---------- Page ---------- */
-export const DashboardUnCompleteRegistration = () => {
+export default function DashboardUnCompleteRegistration({setOpenStepRegister}) {   
   return (
     <main className="p-3">
       <div className="dc-heading">
@@ -315,11 +276,11 @@ export const DashboardUnCompleteRegistration = () => {
       </div>
 
       <div className="dc-stack">
-        <VerificationAlert />
+        <VerificationAlert setOpenStepRegister={setOpenStepRegister} />
 
         <div className="dc-grid">
           <div className="dc-grid__main">
-            <SetupProgress />
+            <SetupProgress setOpenStepRegister={setOpenStepRegister} />
           </div>
           <div className="dc-grid__side">
             {/* <SupportStrip /> */}
@@ -332,184 +293,3 @@ export const DashboardUnCompleteRegistration = () => {
     </main>
   );
 };
-
-
-export function StatusToggle() {
-  const [status, setStatus] = useState("active");
-
-  return (
-    
-    <div className="toggle-wrapper">
-      <Progress/>
-      <button
-        className={`toggle-btn ${status === "active" ? "active" : ""}`}
-        onClick={() => setStatus("active")}
-      >
-        Active
-      </button>
-
-      <button
-        className={`toggle-btn ${status === "inactive" ? "inactive" : ""}`}
-        onClick={() => setStatus("inactive")}
-      >
-        Inactive
-      </button>
-    </div>
-  );
-}
-export default function Doctor() {
-  const { t } = useTranslation();
-
-  const [activeTab, setActiveTab] = useState("active");
-  return (
-    <div className="">
-      <DashboardUnCompleteRegistration/>
-
-
-      {/* <FeatureList/>
-      
-      <h1>Doctor generation rules</h1>
-
-      <StatusToggle />
-
-      <ActiveTabs activeCount={2} inactiveCount={3} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <AppointmentToggle activeCount={2} inactiveCount={3} />
-      <StatusSelect />
-  */}
-    </div>
-  );
-}
-export  function ActiveTabs({
-  activeCount = 0,
-  inactiveCount = 0,
-  activeTab,
-  setActiveTab
-}) {
-
-  const tabs = [
-    { key: "active", label: "Active", count: activeCount },
-    { key: "inactive", label: "InActive", count: inactiveCount },
-  ];
-
-  const visibleTabs = tabs.filter((tab) => tab.count > 0);
-
-  if (visibleTabs.length === 0) return null;
-
-  return (
-    <div className="active-tabs">
-      <ul className="nav nav-pills inner-tab">
-        {visibleTabs.map((tab) => (
-          <li className="nav-item" key={tab.key}>
-            <button
-              className={`nav-link ${
-                activeTab === tab.key ? "active" : ""
-              }`}
-              onClick={() => setActiveTab(tab.key)}
-              type="button"
-            >
-              {tab.label}
-              <span className='num-item' style={{lineHeight:1.5}}>{tab.count}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      {/* Content */}
-      {/* <div className="tab-content mt-3">
-        {activeTab === "active" && (
-          <div>Active Content</div>
-        )}
-        {activeTab === "inactive" && (
-          <div>Inactive Content</div>
-        )}
-      </div> */}
-    </div>
-  );
-}
-export  function AppointmentToggle({
-  activeCount = 0,
-  inactiveCount = 0,
-  activeTab, setActiveTab
-}) {
-  // const [selected, setSelected] = useState("active");
-
-  const tabs = [
-    { key: "active", label: "Active", count: activeCount },
-    { key: "inactive", label: "InActive", count: inactiveCount },
-  ];
-
-  // if (options.length === 0) return null;
-
-  return (
-    <div className="toggle-container">
-      {tabs.map((tab) => (
-        <div
-          key={tab.key}
-          className="toggle-item"
-              onClick={() => setActiveTab(tab.key)}
-        >
-          <span
-            className={`dot ${
-              activeTab === tab.key ? "active" : ""
-            }`}
-          ></span>
-
-          <span className="label">
-            {tab.label} <span className="count">{tab.count}</span>
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
-export  function StatusSelect({selected, setSelected}) {
-  const [isOpen, setIsOpen] = useState(false);
-  // const [selected, setSelected] = useState("Active");
-
-  const ref = useRef();
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const options = ["Active", "Inactive"];
-
-  return (
-    <div className="select-container" ref={ref}>
-      <button
-        className="select-btn"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {selected}
-    <FaChevronDown />
-      </button>
-
-      {isOpen && (
-        <div className="tooltip-arrow mt-2" style={{    position: "absolute",zIndex: 3,width:" 100%"}}>
-        <div className="dropdown">
-          {options.map((opt) => (
-            <div
-              key={opt}
-              className={`option ${
-                selected === opt ? "active" : ""
-              }`}
-              onClick={() => {
-                setSelected(opt);
-                setIsOpen(false);
-              }}
-            >
-              {opt}
-            </div>
-          ))}
-        </div>
-        </div>
-      )}
-    </div>
-  );
-}
