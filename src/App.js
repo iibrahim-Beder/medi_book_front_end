@@ -16,7 +16,7 @@ import AppointmentManagementMain from "./pages/appointment-management/Appointmen
 import PatientManagement from "./pages/patient-management/patients-home-page/PatientManagement";
 import PatientProfilePageMain from "./pages/patient-management/patient-information/PatientProfilePageMain";
 import Test from './test/Test';
-import Test2 from './test/Test2';
+import Test2, { DashboardUnCompleteRegistration } from './test/Test2';
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -77,6 +77,9 @@ const { i18n } = useTranslation();
   };
 }, [openStepRegister]);
 
+let completeRegistration =false ;
+// let completeRegistration = localStorage.getItem('completeRegistration');
+
   return (
     <div className="dc-userlogin">
       {/* {!loading && ( */}
@@ -113,7 +116,7 @@ const { i18n } = useTranslation();
                 <div className="contentdiv">
                   <Routes>
                 <Route path="how-v1" element={<Test setOpenStepRegister={setOpenStepRegister} />} />
-                    <Route path="dashboard" element={<DashboardMain />} />
+                    <Route path="dashboard" element={ completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration />} />
                     <Route
                       path="appointments"
                       element={<AppointmentsPage />}

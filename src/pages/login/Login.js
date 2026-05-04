@@ -5,7 +5,11 @@ import { FcGoogle } from "react-icons/fc";
 import logo from "../../assets/images/logo-login1.png";
 import Field from "../ui/form-fields/Field";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../api/doctor-information/authenticationsApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../redux/Slices/login/authSlice";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -18,32 +22,49 @@ export default function Login() {
   const [loginMethod, setLoginMethod] = useState("email"); // "email" or "phone"
   const [msg, setMsg] = useState(null);
 
-  const handleSubmit = (e) => {
+   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
+
+  const handleSubmit = async (e) => {
+    if (isLoading) return;
+    console.log("login===== email", email, "password", password);
+    // return;
+    if (!email || !password) {
+      setMsg({
+        type: "error",
+        text: t("login.error"),
+      });
+      return;
+    }
     e.preventDefault();
     setMsg(null);
 
-    if (loginMethod === "email" && !email) {
-      setMsg({ type: "error", text: t("login.emailRequired") });
-      return;
-    }
+    const loader = toast.loading("Please wait...");
+    try {
+      const res = await login({
+        email,
+        password,
+      }).unwrap();
 
-    if (loginMethod === "phone" && !phone) {
-      setMsg({ type: "error", text: t("login.phoneRequired") });
-      return;
-    }
+      dispatch(setCredentials(res));
 
-    if (!password && !loginWithOTP) {
-      setMsg({ type: "error", text: t("login.passwordRequired") });
-      return;
-    }
+      // why: persist session
+      if (rememberMe) {
+        localStorage.setItem("auth", JSON.stringify(res));
+      }
 
-    setMsg({ type: "success", text: t("login.success") });
-    console.log("Login attempt:", { 
-      [loginMethod]: loginMethod === "email" ? email : phone, 
-      password, 
-      rememberMe, 
-      loginWithOTP 
-    });
+      navigate("/dashboard");
+    } catch (err) {
+      console.log("error",err);
+      toast.error(err?.data?.message || "Login failed");
+      setMsg({
+        type: "error",
+        text: err?.data?.message || "Login failed",
+      });
+    }finally {
+      toast.dismiss(loader);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -89,7 +110,7 @@ export default function Login() {
               </button>
             </div>
 
-            <form className="dc-formtheme dc-userform" onSubmit={handleSubmit}>
+            <form className="dc-formtheme dc-userform" >
               <fieldset>
                 {/* Email/Phone Field */}
                 <div className="form-group">
@@ -181,7 +202,8 @@ export default function Login() {
                 <div className="form-group mt-6" style={{ overflow: "hidden" }}>
                   <button
                     className="btn-primary-gradient w-100 dc-btn"
-                    type="submit"
+                    onClick={handleSubmit}
+                    type="button"
                   >
                     {t("login.button")}
                   </button>

@@ -302,7 +302,7 @@ const FeatureList = () => (
 );
 
 /* ---------- Page ---------- */
-const Dashboard = () => {
+export const DashboardUnCompleteRegistration = () => {
   return (
     <main className="p-3">
       <div className="dc-heading">
@@ -363,7 +363,7 @@ export default function Doctor() {
   const [activeTab, setActiveTab] = useState("active");
   return (
     <div className="">
-      <Dashboard/>
+      <DashboardUnCompleteRegistration/>
 
 
       {/* <FeatureList/>
