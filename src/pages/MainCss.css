@@ -125,7 +125,7 @@ select {
   border: none;
   font-size: 18px;
   cursor: pointer;
-  color: var(--themecolor);
+  color: var(--terthemecolor);
 }
 
 .popup-header {
@@ -153,7 +153,9 @@ select {
   border-radius: 6px;
   border: none;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+.popup-btn:hover { box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);}
 
 .popup-btn.primary {
   background: var(--themecolor, #4285f4);

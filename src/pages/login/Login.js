@@ -50,9 +50,11 @@ export default function Login() {
       dispatch(setCredentials(res));
 
       // why: persist session
-      if (rememberMe) {
-        localStorage.setItem("auth", JSON.stringify(res));
-      }
+    if (rememberMe) {
+      localStorage.setItem("auth", JSON.stringify(res));
+    } else {
+      sessionStorage.setItem("auth", JSON.stringify(res));
+    }
 
       navigate("/dashboard");
     } catch (err) {

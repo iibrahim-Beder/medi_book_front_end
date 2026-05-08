@@ -22,6 +22,7 @@ import {
   CreditCard,
   Lock,
 } from "lucide-react";
+import { useStep1PersonalInfo } from '../doctor-registration/hooks/useStep1BasicInfo';
 
 const links2 = [
   {
@@ -263,12 +264,16 @@ const FeatureList = () => (
 );
 
 /* ---------- Page ---------- */
-export default function DashboardUnCompleteRegistration({setOpenStepRegister}) {   
+export default function DashboardUnCompleteRegistration({setOpenStepRegister}) {  
+      const {
+        formData,
+        isLoading,
+      } = useStep1PersonalInfo(false  , 103); 
   return (
     <main className="p-3">
       <div className="dc-heading">
         <p className="dc-eyebrow">Dashboard</p>
-        <h1 className="dc-h1">Welcome, Dr. john doe</h1>
+        <h1 className="dc-h1">Welcome, Dr. {isLoading ? "Loading..." :( formData.firstName + " " + formData.lastName )|| "doctor"}</h1>
         <p className="dc-lead">
           Complete the remaining verification steps to activate your professional
           account and start receiving patient bookings.

@@ -6,7 +6,8 @@ import { IoSunnyOutline } from "react-icons/io5";
 import { CiDark } from "react-icons/ci";
 import { useTheme } from "../../context/ThemeContext";
 import NotificationButton from "./Notifications/NotificationButton";
-function UserMenu() {
+import { useStep1PersonalInfo } from "../doctor-registration/hooks/useStep1BasicInfo";
+function UserMenu({setShowPopupClose}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -17,6 +18,10 @@ function UserMenu() {
     console.log( "menuOpen", menuOpen);
   };
   const { darkMode, toggleDarkMode } = useTheme();
+      const {
+      formData,
+      isLoading,
+    } = useStep1PersonalInfo(false  , 103);
   return (
 
       <div style={{display:"flex",  alignItems:"center" }}>   
@@ -56,7 +61,7 @@ function UserMenu() {
       </figure>
 
       <div className="dc-username" onClick={toggleMenu}>
-        <h4>Dr. John Doe</h4>
+        <h4>Dr. {isLoading ? "Loading..." : formData.firstName || "doctor"}</h4>
         <span>{t("userMenu.doctor")}</span>
       </div>
       <i className="after fas fa-angle-down" onClick={toggleMenu}></i>
@@ -117,8 +122,8 @@ function UserMenu() {
               <span>{t("Settings")}</span>
             </Link>
           </li>
-          <li>
-            <Link to="/logout">
+          <li onClick={() => setShowPopupClose(true)}>
+            <Link>
               <i className="ti-shift-right"></i>
               <span>{t("userMenu.logout")}</span>
             </Link>

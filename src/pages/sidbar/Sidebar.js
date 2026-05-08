@@ -27,9 +27,11 @@ import { useTranslation } from "react-i18next";
 import './Sidebar.scss';
 import { IoNotificationsOutline } from "react-icons/io5";
 import { Progress } from "../../test/Test";
+import { useStep1PersonalInfo } from "../doctor-registration/hooks/useStep1BasicInfo";
+import { useSelector } from "react-redux";
 
 
-const Sidebar = ({setOpenStepRegister}) => {
+const Sidebar = ({setOpenStepRegister,setShowPopupClose}) => {
   const stepCompleted = {
       personal: true,
       education: true,
@@ -38,7 +40,11 @@ const Sidebar = ({setOpenStepRegister}) => {
       shift: true,
       experience: true,
   };
-
+    const {
+      formData,
+      isLoading,
+    } = useStep1PersonalInfo(false  , 103);
+      const email = useSelector((state) => state.auth.email);
   const canAccess = (requiredSteps = []) => {
     return requiredSteps.every((step) => stepCompleted[step]);
   };
@@ -103,9 +109,9 @@ let iconSize=20;
             </figure>
             <div className="dc-title">
               <h2>
-                <Link to="#">Dr. john doe</Link>
+                <Link to="#">Dr. {isLoading ? "Loading..." : formData.firstName || "doctor"}</Link>
               </h2>
-              <span>@john20769 <FaClone className="clone-icon" /></span>
+              <span>{email} <FaClone className="clone-icon" /></span>
               {/* <a>@michael20769 <FaClone className="clone-icon" /></a> */}
               <Progress setOpenStepRegister={setOpenStepRegister}/>
             </div>
@@ -193,8 +199,8 @@ let iconSize=20;
                 <span>{t("sidebar.notifications")}</span>
               </Link>
             </li>
-            <li>
-              <Link to="/">
+            <li onClick={() => setShowPopupClose(true)}>
+              <Link>
                 <CiLogout className="icon" />
                 <span>{t("sidebar.logout")}</span>
               </Link>

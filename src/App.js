@@ -1,4 +1,3 @@
-
 import { Routes, Route } from "react-router-dom";
 import Navbar from './pages/navbar/Navbar';
 import './App.css';
@@ -35,11 +34,14 @@ import Authentication from "./pages/login/Authentication";
 import ShiftsManagement from "./pages/shifts-management/ShiftsManagement";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import DashboardUnCompleteRegistration from "./pages/dashbord/DashboardUnCompleteRegistration";
+import ProtectedRoute from "./redux/routes/ProtectedRoute";
+import LogoutPopupMessage from "./pages/logout/LogoutPopupMessage";
 
 
 function App() {
 
   const [openStepRegister, setOpenStepRegister] = useState(false);
+  const [showPopupClose, setShowPopupClose] = useState(false);
 
   window.addEventListener("click", () => {
   audioService.init();
@@ -88,17 +90,17 @@ let completeRegistration =false ;
           <Route path="/registration" element={<DoctorRegistration />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Authentication" element={<Authentication />} />
-          <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
           <Route
             path="/*"
             element={
+              <ProtectedRoute>
               <div>
-                <Navbar />
-                <Sidebar setOpenStepRegister={setOpenStepRegister} />
+                <Navbar setShowPopupClose={setShowPopupClose} />
+                <Sidebar setOpenStepRegister={setOpenStepRegister} setShowPopupClose={setShowPopupClose} />
                 {openStepRegister && (
-                    <div className=" custom-modal-overlay registration-popup d-flex justify-content-center align-items-center  fade-in" onClick={() => setOpenStepRegister(false)}>
+                  <div className=" custom-modal-overlay registration-popup d-flex justify-content-center align-items-center  fade-in" onClick={() => setOpenStepRegister(false)}>
                       
                       <div className="custom-modal-content position-relative scale-in"    onClick={(e) => e.stopPropagation()}>
                         
@@ -115,6 +117,7 @@ let completeRegistration =false ;
                 )}            
                 <div className="contentdiv">
                   <Routes>
+                    <Route path="/" element={completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                 <Route path="how-v1" element={<Test setOpenStepRegister={setOpenStepRegister} />} />
                     <Route path="dashboard" element={ completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                     <Route
@@ -167,10 +170,12 @@ let completeRegistration =false ;
                   </Routes>
                 </div>
               </div>
+            </ProtectedRoute>
             }
           />
         </Routes>
       {/* )} */}
+      { showPopupClose && <LogoutPopupMessage setShowPopupClose={setShowPopupClose} />}
         </div>
   );
 }

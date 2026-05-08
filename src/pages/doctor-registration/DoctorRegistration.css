@@ -130,7 +130,7 @@
 .step .step-label {  top: 58px; font-size: 14px;  font-weight: 600;   white-space: nowrap;  }
 :lang(ar) { .step .step-label ,.form-title{ font-family: "Tajawal", "Cairo", sans-serif;} }
 :lang(en) { .step .step-label ,.form-title{ font-family: "Cairo", "Tajawal", sans-serif; }} 
-
+.step .step-label{color: var(--terthemecolor);}
 
 
 
@@ -298,11 +298,6 @@ body .form-group label{
   font-weight: 400;
   font-family: "Poppins", sans-serif;
 }
-.doctor-registration .input-with-icon input{
-  /* padding-left: 25px; */
-  color:var(--text-tertiary);
-}
-
 .doctor-registration form p{
   float: unset;
   position: unset;
@@ -413,6 +408,7 @@ display: inline-flex;
   transition: width 0.35s ease;
 }
 @media (max-width: 668px) {
+  .custom-modal-content{max-width: 90%;}
   .progress-container{
     margin: 20px 0; 
   }
