@@ -4,6 +4,7 @@ import {
   useAddDoctorBasicInfoMutation,
   useUpdateDoctorBasicInfoMutation,
   useGetDoctorBasicInfoQuery,
+  useGetDoctorCurrentStepQuery,
 } from "../../../api/doctor-information/doctorBasicInfoApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -17,8 +18,18 @@ export const useStep1PersonalInfo = (isNew) => {
   useGetDoctorBasicInfoQuery(doctorId, {
     skip: isNew || !doctorId,
   });
-  
-  console.log("isNew", isNew, "doctorId", doctorId, "fetchedData", fetchedData);
+    // NEW
+  const {
+    data: currentStepData,
+    isLoading: isCurrentStepLoading,
+    error: currentStepError,
+  } = useGetDoctorCurrentStepQuery(doctorId, {
+    skip: !doctorId,
+  });
+
+  // NEW
+  const doctorCurrentStep = currentStepData?.data || null;
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -163,7 +174,32 @@ export const useStep1PersonalInfo = (isNew) => {
       toast.dismiss(loader);
     }
   };
+const DoctorRegistrationStep = {
+  BasicInfo: 1,
+  ProfileAndSpecialties: 2,
+  Education: 3,
+  Experience: 4,
+  Locations: 5,
+  Shifts: 6,
+};
 
+const doctorCurrentStepNumber =
+  DoctorRegistrationStep[doctorCurrentStep] || 0;
+
+const completedStepsPercent = Math.round(
+  (doctorCurrentStepNumber /
+    Object.keys(DoctorRegistrationStep).length) *
+    100
+);
+
+console.log(
+  "doctorCurrentStepNumber",
+  doctorCurrentStepNumber,
+  "doctorCurrentStep",
+  doctorCurrentStep,
+  "completedStepsPercent",
+  completedStepsPercent
+);
   return {
     formData,
     errors,
@@ -171,7 +207,12 @@ export const useStep1PersonalInfo = (isNew) => {
     handleInputChange,
     handleSubmit,
     refetch, 
-    error
+    error,
+    doctorCurrentStep,
+    isCurrentStepLoading,
+    currentStepError,
+    doctorCurrentStepNumber,
+    completedStepsPercent
   };
 };
 

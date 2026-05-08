@@ -505,3 +505,24 @@
   opacity: 1;
   margin-top: 8px;
 }
+
+.progress-card-container .progressRow{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.progress-card-container .progressLabel{
+  font-size: 14px;
+  font-weight: 500;
+}
+.progress-card-container .progressPct{
+  font-size: 14px;
+  font-weight: 600;
+}
+.progress-card-container .trackOuter{
+  width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgb(238, 240, 244);
+  }

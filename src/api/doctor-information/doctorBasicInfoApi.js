@@ -29,6 +29,24 @@ export const doctorApi = baseApi.injectEndpoints({
       }),
       providesTags: (result, error, id) => [{ type: 'Doctor', id }],
     }),
+      getDoctorCurrentStep: builder.query({
+      query: (doctorId) => ({
+        url: '/Doctors/GetDoctorCurrentStep',
+        method: 'GET',
+        params: { DoctorID: doctorId },
+      }),
+      providesTags: (result, error, id) => [
+        { type: 'Doctor', id },
+      ],
+      transformResponse: (response) => {
+        console.log('Get Doctor Current Step Response:', response);
+        return response;
+      },
+      transformErrorResponse: (response) => {
+        console.log('Get Doctor Current Step Error:', response);
+        return response;
+      },
+    }),
 
     // Update doctor basic info
   updateDoctorBasicInfo: builder.mutation({
@@ -49,4 +67,6 @@ export const {
   useLazyGetDoctorBasicInfoQuery,
   useGetDoctorBasicInfoQuery,
   useUpdateDoctorBasicInfoMutation,
+  useGetDoctorCurrentStepQuery,
+  useLazyGetDoctorCurrentStepQuery,
 } = doctorApi;

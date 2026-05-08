@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateUserAccountMutation } from '../../../api/doctor-information/authenticationsApi'; 
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export const useAuthentication = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -56,6 +58,8 @@ const passwordRegex =
 
       console.log('Account created response:', response);
       if(response.succeeded){
+        toast.success("Account created successfully");
+        navigate("/login");
 
       }
 

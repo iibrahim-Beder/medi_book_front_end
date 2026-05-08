@@ -44,32 +44,32 @@ console.log("================doctorId", doctorId);
                 isNew={!completedSteps.includes(1)}
               />
             )}
-            {currentStep === 2 && (
+              {currentStep === 2 && (
+                <Step3ProfessionalInfo
+                  ref={stepRef}
+                  isNew={!completedSteps.includes(3)}
+                />
+              )}
+            {currentStep === 3 && (
               <AcademicQualifications
                 ref={stepRef}
                 isNew={!completedSteps.includes(1)}
               />
             )}
-            {currentStep === 3 && (
-              <Step3ProfessionalInfo
-                ref={stepRef}
-                isNew={!completedSteps.includes(3)}
-              />
-            )}
-            {currentStep === 4 && (
+              {currentStep === 4 && (
+                <DoctorExperience
+                  ref={stepRef}
+                  isNew={!completedSteps.includes(4)}
+                />
+              )}
+            {currentStep === 5 && (
               <StepLocation
                 ref={stepRef}
                 isNew={!completedSteps.includes(4)}
               />
             )}
-            {currentStep === 5 && (
-              <ShiftStep
-                ref={stepRef}
-                isNew={!completedSteps.includes(4)}
-              />
-            )}
             {currentStep === 6 && (
-              <DoctorExperience
+              <ShiftStep
                 ref={stepRef}
                 isNew={!completedSteps.includes(4)}
               />

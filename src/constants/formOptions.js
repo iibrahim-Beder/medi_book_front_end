@@ -39,12 +39,12 @@ const qualificationKeys = [
 
 const stepsKeys = [
   { key: "steps.personalInfo", icon: <PiUserCircle /> },
-  { key: "steps.education", icon: <PiCertificateThin /> },
   { key: "steps.profileAndSpecialty", icon: <MdOutlineFolderSpecial /> },
+  { key: "steps.education", icon: <PiCertificateThin /> },
+  { key: "steps.experience", icon: <LuUserCog /> },
   { key: "steps.location", icon: <CiLocationOn /> },
   { key: "steps.shift", icon: <PiCalendarCheckLight /> },
   // { key: "steps.makeSlots", icon: <CiClock1 /> },
-  { key: "steps.experience", icon: <LuUserCog /> },
   // { key: "steps.PaymentInsurance", icon: <PiMoneyWavyLight /> }, 
 ];
 

@@ -140,9 +140,8 @@ const steps = [
   { icon: CalendarClock, label: "Set Availability", meta: "Weekly schedule and consultation types", done: false },
 ];
 
-const SetupProgress = ({setOpenStepRegister}) => {
-  const completed = steps.filter((s) => s.done).length;
-  const percent = Math.round((completed / steps.length) * 100);
+export const SetupProgress = ({setOpenStepRegister}) => {
+  const {completedStepsPercent,doctorCurrentStepNumber } = useStep1PersonalInfo();
 
   return (
     <section className="dc-card">
@@ -150,18 +149,18 @@ const SetupProgress = ({setOpenStepRegister}) => {
         <div>
           <h3 className="dc-card__title">Profile completion</h3>
           <p className="dc-card__sub">
-            {completed} of {steps.length} steps completed
+            {doctorCurrentStepNumber} of {6} steps completed
           </p>
         </div>
         <div className="dc-percent">
-          {percent}
+          {completedStepsPercent}
           <span className="dc-percent__sign">%</span>
         </div>
       </div>
 
       <div className="dc-progress-wrap">
         <div className="dc-progress">
-          <div className="dc-progress__bar" style={{ width: `${percent}%` }} />
+          <div className="dc-progress__bar" style={{ width: `${completedStepsPercent}%` }} />
         </div>
       </div>
 
@@ -263,6 +262,194 @@ const FeatureList = () => (
     </div>
   </section>
 );
+const s = {
+  page: {
+    minHeight: "100vh",
+    // fontFamily: "'Inter', 'Cairo', sans-serif",
+  },
+  container: {
+    maxWidth: 900,
+    margin: "0 auto",
+    padding: "40px 20px",
+  },
+  h1: {
+    fontSize: 24,
+    fontWeight: 600,
+    // color: colors.text,
+    margin: 0,
+  },
+  subtitle: {
+    fontSize: 14,
+    // color: colors.muted,
+    marginTop: 4,
+  },
+  card: {
+    background: "var(--cardcolor)",
+    borderRadius: 12,
+    // border: `1px solid ${colors.border}`,
+    padding: 24,
+    marginBottom: 24,
+    textAlign: "right",
+  },
+  progressRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  progressLabel: {
+    fontSize: 14,
+    fontWeight: 500,
+    // color: colors.text,
+  },
+  progressPct: {
+    fontSize: 14,
+    fontWeight: 600,
+    // color: colors.primary,
+  },
+  trackOuter: {
+    width: "100%",
+    height: 8,
+    borderRadius: 4,
+    // backgroundColor: colors.track,
+    marginBottom: 24,
+  },
+  trackInner: (pct) => ({
+    height: "100%",
+    borderRadius: 4,
+    // backgroundColor: colors.primary,
+    width: `${pct}%`,
+    transition: "width 0.5s ease",
+  }),
+  stepsGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+    gap: 12,
+  },
+  stepCard: (done) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 8,
+    borderRadius: 10,
+    padding: 14,
+    textAlign: "center",
+    // border: `1px solid ${done ? colors.primaryBorder : colors.border}`,
+    // backgroundColor: done ? colors.primaryLight : '',
+    transition: "all 0.2s",
+  }),
+  stepCircle: (done) => ({
+    width: 36,
+    height: 36,
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: done ? colors.primary : colors.track,
+    // color: done ? "#fff" : colors.muted,
+  }),
+  stepTitle: {
+    fontSize: 12,
+    fontWeight: 500,
+    lineHeight: 1.3,
+  },
+  // stepBtn: (done) => ({
+  //   fontSize: 12,
+  //   fontWeight: 500,
+  //   padding: "0px 12px",
+  //   borderRadius: 12,
+  //   border: "none",
+  //   cursor: "pointer",
+  //   backgroundColor: "transparent",
+  //   color: done ? colors.primary : colors.accent,
+  //   transition: "background 0.2s",
+  // }),
+  // ctaBtn: {
+  //   width: "100%",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   gap: 8,
+  //   backgroundColor: colors.primary,
+  //   color: "#fff",
+  //   fontWeight: 500,
+  //   fontSize: 14,
+  //   padding: "14px 0",
+  //   borderRadius: 12,
+  //   border: "none",
+  //   cursor: "pointer",
+  //   marginBottom: 32,
+  //   transition: "opacity 0.2s",
+  // },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 600,
+    // color: colors.text,
+    marginBottom: 16,
+  },
+  featuresGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+    gap: 12,
+  },
+  featureCard: (locked) => ({
+    position: "relative",
+    borderRadius: 12,
+    // border: `1px solid ${colors.border}`,
+    padding: 20,
+    backgroundColor: "var(--cardcolor)",
+    opacity: locked ? 0.5 : 1,
+    cursor: locked ? "not-allowed" : "pointer",
+    transition: "all 0.2s",
+  }),
+  featureLock: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+  },
+  featureIcon: (locked) => ({
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
+  }),
+  featureTitle: {
+    fontSize: 14,
+    fontWeight: 500,
+    // color: colors.text,
+  },
+  featureDesc: {
+    fontSize: 12,
+    color: "var(--text-sub)",
+    marginTop: 2,
+  },
+};
+export const ProgressSide = ({setOpenStepRegister}) => {
+    const {completedStepsPercent,doctorCurrentStepNumber } = useStep1PersonalInfo();
+
+  return (
+        <div  className=" p-2 progress-card-container">
+
+          <div  className='progressRow'>
+            <span  className="progressLabel text-suptext">
+              {doctorCurrentStepNumber} of {6} steps completed
+            </span>
+            <span className='progressPct'>{completedStepsPercent}%</span>
+          </div>
+          <div className="trackOuter mb-1">
+            <div style={s.trackInner(completedStepsPercent)} />
+          </div>
+          <span className="text-center-small-bold" >complete your profile to unlock all features</span>
+
+          <button className="add-btn" onClick={() => setOpenStepRegister(true)}>
+                   Complete
+                 </button>
+        </div>
+  )
+};
 
 /* ---------- Page ---------- */
 export default function DashboardUnCompleteRegistration({setOpenStepRegister}) {  

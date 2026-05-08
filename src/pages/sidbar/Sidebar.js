@@ -29,6 +29,7 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { Progress } from "../../test/Test";
 import { useStep1PersonalInfo } from "../doctor-registration/hooks/useStep1BasicInfo";
 import { useSelector } from "react-redux";
+import { ProgressSide } from "../dashbord/DashboardUnCompleteRegistration";
 
 
 const Sidebar = ({setOpenStepRegister,setShowPopupClose}) => {
@@ -114,6 +115,7 @@ let iconSize=20;
               <span>{email} <FaClone className="clone-icon" /></span>
               {/* <a>@michael20769 <FaClone className="clone-icon" /></a> */}
               <Progress setOpenStepRegister={setOpenStepRegister}/>
+              {/* <ProgressSide setOpenStepRegister={setOpenStepRegister}/> */}
             </div>
           </div>
         </div>
