@@ -15,7 +15,6 @@ const Step3ProfessionalInfo = forwardRef(
     {
        insideUi = false,
       isNew,
-      doctorId =103,
       currencyOptions = [
         { label: "AOA", value: 45 },
         { label: "EGP", value: 47 },
@@ -40,7 +39,7 @@ const Step3ProfessionalInfo = forwardRef(
       specialtiesOptions,
       specialtiesLoading,
       handlePrimaryChange,
-    } = useStep2ProfessionalInfo(isNew, doctorId);
+    } = useStep2ProfessionalInfo(isNew);
 
     useImperativeHandle(ref, () => ({
       submit: handleSubmit,

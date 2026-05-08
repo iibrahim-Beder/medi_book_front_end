@@ -43,7 +43,7 @@ const Sidebar = ({setOpenStepRegister,setShowPopupClose}) => {
     const {
       formData,
       isLoading,
-    } = useStep1PersonalInfo(false  , 103);
+    } = useStep1PersonalInfo(false);
       const email = useSelector((state) => state.auth.email);
   const canAccess = (requiredSteps = []) => {
     return requiredSteps.every((step) => stepCompleted[step]);

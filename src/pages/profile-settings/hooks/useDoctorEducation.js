@@ -7,9 +7,12 @@ import {
   useGetDoctorEducationsQuery,
 } from "../../../api/doctor-information/doctorEducationApi";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 
-export const useDoctorEducation = (doctorId) => {
+export const useDoctorEducation = () => {
+  const doctorId = useSelector((state) => state.auth.doctorId);
+
   const {
     data: educationsData,
     isLoading,

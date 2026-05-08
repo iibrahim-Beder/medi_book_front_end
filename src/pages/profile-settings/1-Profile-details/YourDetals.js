@@ -5,11 +5,10 @@ import SelectField from "../../ui/form-fields/SelectField";
 import { useStep1PersonalInfo } from "../../doctor-registration/hooks/useStep1BasicInfo";
 import Loader from "../../shared/Loader";
 
-const Yourdetails = ({ isNew = false, doctorId = 103 }) => {
+const Yourdetails = ({ isNew = false }) => {
   const { t } = useTranslation();
 
-  const { formData, errors, isLoading, handleInputChange, handleSubmit } =
-    useStep1PersonalInfo(isNew, doctorId);
+  const { formData, errors, isLoading, handleInputChange, handleSubmit } =useStep1PersonalInfo(isNew);
 
   const handleSave = async () => {
     const success = await handleSubmit();

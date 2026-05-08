@@ -7,8 +7,10 @@ import {
   useGetDoctorExperiencesQuery,
 } from "../../../api/doctor-information/ExperienceApi";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-export const useDoctorExperience = (doctorId) => { 
+export const useDoctorExperience = () => { 
+  const doctorId = useSelector((state) => state.auth.doctorId);
   const {
     data: experiencesData,
     isLoading,

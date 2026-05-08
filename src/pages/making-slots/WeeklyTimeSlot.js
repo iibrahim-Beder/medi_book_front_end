@@ -89,7 +89,6 @@ export default function WeeklyTimeSlots() {
     openModal,
     setOpenModal,
   } = useShiftRules({
-    doctorId: 103,
     activeShift,
     activeTab: activeDay,
   });

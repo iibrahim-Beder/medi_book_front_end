@@ -5,7 +5,6 @@ import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
 
 const DoctorExperience = () => {
-  const doctorId = 103;
 
 
   const {
@@ -17,7 +16,7 @@ const DoctorExperience = () => {
     error,
     refetch,
     experiences
-  } = useDoctorExperience(doctorId);
+  } = useDoctorExperience();
 
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;

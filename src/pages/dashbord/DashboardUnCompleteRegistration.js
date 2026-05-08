@@ -23,6 +23,7 @@ import {
   Lock,
 } from "lucide-react";
 import { useStep1PersonalInfo } from '../doctor-registration/hooks/useStep1BasicInfo';
+import { useSelector } from 'react-redux';
 
 const links2 = [
   {
@@ -265,10 +266,11 @@ const FeatureList = () => (
 
 /* ---------- Page ---------- */
 export default function DashboardUnCompleteRegistration({setOpenStepRegister}) {  
+  const doctorId = useSelector((state) => state.auth.doctorId);
       const {
         formData,
         isLoading,
-      } = useStep1PersonalInfo(false  , 103); 
+      } = useStep1PersonalInfo(false  , doctorId); 
   return (
     <main className="p-3">
       <div className="dc-heading">

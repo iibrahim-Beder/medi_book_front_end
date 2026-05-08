@@ -11,11 +11,13 @@ import {
 
 import toast from "react-hot-toast";
 import { FaAppStoreIos } from "react-icons/fa";
+import { useSelector } from "react-redux";
 export default function useShiftRules({
-  doctorId = 103,
   activeShift,
   activeTab,
 }) {
+  
+  const doctorId = useSelector((state) => state.auth.doctorId);
   const {
     data: Maindata,
     isLoading,

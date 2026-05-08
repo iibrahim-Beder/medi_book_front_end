@@ -4,7 +4,6 @@ import { useDoctorEducation } from "../hooks/useDoctorEducation";
 import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
 const AcademicQualifications = () => {
-  const doctorId = 103;
 
 
   const {
@@ -16,7 +15,7 @@ const AcademicQualifications = () => {
     error,
     refetch,
     educations
-  } = useDoctorEducation(doctorId);
+  } = useDoctorEducation();
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
   if (error) return <ErrorLoading error={error} refetch={refetch} />;

@@ -9,7 +9,6 @@ const ShiftStep = forwardRef(
     {
       insidUi = false,
       isNew,
-      doctorId,
       onChange = () => {},
       forceShowError = true,
     },
@@ -34,7 +33,7 @@ const ShiftStep = forwardRef(
       locations,
       isFetchingAvailability,
       templates,
-    } = useAddShifts((doctorId = 103));
+    } = useAddShifts();
     console.log("locations", locations);
     useImperativeHandle(ref, () => ({
       submit: handleSave,

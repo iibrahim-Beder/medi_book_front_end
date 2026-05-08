@@ -6,10 +6,13 @@ import {
   useAddShiftsStepToDoctorMutation,
 } from '../../../api/doctor-information/ShiftsApi';
 import { useDoctorLocationsManager } from '../../location-settings/useDoctorLocations';
+import { useSelector } from 'react-redux';
 
 
 
-const useAddShifts = (doctorId) => {
+const useAddShifts = () => {
+  const doctorId = useSelector((state) => state.auth.doctorId);
+
   const { t } = useTranslation();
 
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);

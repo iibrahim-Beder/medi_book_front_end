@@ -6,7 +6,7 @@ import useShift from "./hooks/useShift";
 import SiftForm from "./components/ShiftForm";
 import ShiftStep from "./components/ShiftStep";
 import Loader from "../shared/Loader";
-export default function ShiftsManagement({ doctorId = 103 }) {
+export default function ShiftsManagement() {
   const [activeTab, setActiveTab] = useState("Sunday");
   const { t } = useTranslation();
 
@@ -28,7 +28,7 @@ export default function ShiftsManagement({ doctorId = 103 }) {
     locations,
     templates,
     toggleActiveStatus,
-  } = useShift((doctorId = 103));
+  } = useShift();
   const [openModal, setOpenModal] = useState(false);
 
   return (

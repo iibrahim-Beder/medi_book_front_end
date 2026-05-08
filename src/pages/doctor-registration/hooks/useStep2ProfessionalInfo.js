@@ -8,9 +8,12 @@ import {
 } from "../../../api/doctor-information/doctorProfileApi";
 import toast from "react-hot-toast";
 import { useGetSpecialtiesQuery } from "../../../api/doctor-information/specialtiesApi";
+import { useSelector } from "react-redux";
 
-export const useStep2ProfessionalInfo = (isNew, doctorId = null) => {
+export const useStep2ProfessionalInfo = (isNew) => {
   const { t } = useTranslation();
+  const doctorId = useSelector((state) => state.auth.doctorId);
+
 
   const {
     data: fetchedData,

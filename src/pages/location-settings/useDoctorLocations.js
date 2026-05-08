@@ -9,9 +9,11 @@ import {
   useActivateDoctorLocationMutation,  
   useDeactivateDoctorLocationMutation, 
 } from "../../api/doctor-information/doctorLocationsApi";
+import { useSelector } from "react-redux";
 
-export const useDoctorLocationsManager = (doctorId = 103) => {
+export const useDoctorLocationsManager = () => {
   const { t } = useTranslation();
+  const doctorId = useSelector((state) => state.auth.doctorId);
 
   // ==================== API Calls ====================
   const {

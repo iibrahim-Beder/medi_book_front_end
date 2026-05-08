@@ -11,6 +11,7 @@ import './DoctorRegistration.css';
 import Step3ProfessionalInfo from "./steps/Step3ProfessionalInfo";
 import AcademicQualifications from "../profile-settings/Profile-card/Education";
 import DoctorExperience from "../profile-settings/Profile-card/Experience";
+import { useSelector } from "react-redux";
 
 export default function DoctorRegistration({currentStepFromParent=null}) {
   const { t } = useTranslation();
@@ -22,6 +23,8 @@ export default function DoctorRegistration({currentStepFromParent=null}) {
     handlePrevious,
     setCurrentStep,
   } = useDoctorRegistration(currentStepFromParent);
+const doctorId = useSelector((state) => state.auth.doctorId);
+console.log("================doctorId", doctorId);
 
   console.log("currentStep", currentStep);
   return (
@@ -38,42 +41,36 @@ export default function DoctorRegistration({currentStepFromParent=null}) {
             {currentStep === 1 && (
               <Step1PersonalInfo
                 ref={stepRef}
-                doctorId={103}
                 isNew={!completedSteps.includes(1)}
               />
             )}
             {currentStep === 2 && (
               <AcademicQualifications
                 ref={stepRef}
-                doctorId={103}
                 isNew={!completedSteps.includes(1)}
               />
             )}
             {currentStep === 3 && (
               <Step3ProfessionalInfo
                 ref={stepRef}
-                doctorId={103}
                 isNew={!completedSteps.includes(3)}
               />
             )}
             {currentStep === 4 && (
               <StepLocation
                 ref={stepRef}
-                doctorId={103}
                 isNew={!completedSteps.includes(4)}
               />
             )}
             {currentStep === 5 && (
               <ShiftStep
                 ref={stepRef}
-                doctorId={103}
                 isNew={!completedSteps.includes(4)}
               />
             )}
             {currentStep === 6 && (
               <DoctorExperience
                 ref={stepRef}
-                doctorId={103}
                 isNew={!completedSteps.includes(4)}
               />
             )}

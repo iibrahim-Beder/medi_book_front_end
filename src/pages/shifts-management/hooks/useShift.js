@@ -7,8 +7,11 @@ import {
 } from "../../../api/doctor-information/ShiftsApi";
 import { useDoctorLocationsManager } from "../../location-settings/useDoctorLocations";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-export default function useShift(doctorId) {
+export default function useShift() {
+  const doctorId = useSelector((state) => state.auth.doctorId);
+
   const { data: shifts = [], isLoading, error } = useGetDoctorShiftsQuery(doctorId, {
     skip: !doctorId
   });

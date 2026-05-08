@@ -6,8 +6,11 @@ import {
   useGetDoctorBasicInfoQuery,
 } from "../../../api/doctor-information/doctorBasicInfoApi";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-export const useStep1PersonalInfo = (isNew, doctorId = null) => {
+export const useStep1PersonalInfo = (isNew) => {
+  const doctorId = useSelector((state) => state.auth.doctorId);
+
   const { t } = useTranslation();
   
   const { data: fetchedData, isLoading: isFetching , refetch, error } =
