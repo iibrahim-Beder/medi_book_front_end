@@ -114,7 +114,7 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
                           onClick={() => setOpenStepRegister(false)}
                         ><IoIosCloseCircleOutline/></button>
 
-                        <DoctorRegistration currentStepFromParent={openStepRegister} />
+                        <DoctorRegistration openStepRegister={openStepRegister} />
 
                       </div>
 

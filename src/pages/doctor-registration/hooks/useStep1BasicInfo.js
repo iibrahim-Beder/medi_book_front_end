@@ -23,6 +23,7 @@ export const useStep1PersonalInfo = (isNew) => {
     data: currentStepData,
     isLoading: isCurrentStepLoading,
     error: currentStepError,
+    refetch: refetchCurrentStep,
   } = useGetDoctorCurrentStepQuery(doctorId, {
     skip: !doctorId,
   });
@@ -143,6 +144,7 @@ export const useStep1PersonalInfo = (isNew) => {
           phoneNumber: formData.phoneNumber,
           // imagePath: formData.imagePath || "",
         };
+        console.log("payload", payload);
           const response =await addDoctorBasicInfo(payload).unwrap()
            if (response.succeeded) {
         toast.success(t("personalInfo.success"));
@@ -184,22 +186,14 @@ const DoctorRegistrationStep = {
 };
 
 const doctorCurrentStepNumber =
-  DoctorRegistrationStep[doctorCurrentStep] || 0;
+  DoctorRegistrationStep[doctorCurrentStep] || 1;
 
 const completedStepsPercent = Math.round(
-  (doctorCurrentStepNumber /
+  ((doctorCurrentStepNumber - 1)/
     Object.keys(DoctorRegistrationStep).length) *
     100
 );
 
-console.log(
-  "doctorCurrentStepNumber",
-  doctorCurrentStepNumber,
-  "doctorCurrentStep",
-  doctorCurrentStep,
-  "completedStepsPercent",
-  completedStepsPercent
-);
   return {
     formData,
     errors,
@@ -212,7 +206,8 @@ console.log(
     isCurrentStepLoading,
     currentStepError,
     doctorCurrentStepNumber,
-    completedStepsPercent
+    completedStepsPercent,
+    refetchCurrentStep
   };
 };
 

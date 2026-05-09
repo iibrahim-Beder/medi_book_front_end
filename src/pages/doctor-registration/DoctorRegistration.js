@@ -7,13 +7,14 @@ import StepLocation from "./steps/StepLocation";
 import ShiftStep from "./steps/ShiftStep";
 import ButtonPrevious from "../ui/form-fields/ButtonPrevious";
 import SuccessMessage from "./steps/SuccessMessage";
-import './DoctorRegistration.css';
+import "./DoctorRegistration.css";
 import Step3ProfessionalInfo from "./steps/Step3ProfessionalInfo";
 import AcademicQualifications from "../profile-settings/Profile-card/Education";
 import DoctorExperience from "../profile-settings/Profile-card/Experience";
-import { useSelector } from "react-redux";
+import {  useEffect } from "react";
+import { useStep1PersonalInfo } from "./hooks/useStep1BasicInfo";
 
-export default function DoctorRegistration({currentStepFromParent=null}) {
+export default function DoctorRegistration({ openStepRegister }) {
   const { t } = useTranslation();
   const {
     currentStep,
@@ -22,14 +23,19 @@ export default function DoctorRegistration({currentStepFromParent=null}) {
     handleSave,
     handlePrevious,
     setCurrentStep,
-  } = useDoctorRegistration(currentStepFromParent);
-const doctorId = useSelector((state) => state.auth.doctorId);
-console.log("================doctorId", doctorId);
+  } = useDoctorRegistration();
+  const { refetchCurrentStep } = useStep1PersonalInfo();
 
+  useEffect(() => {
+    refetchCurrentStep();
+  }, [openStepRegister]);
   console.log("currentStep", currentStep);
   return (
     <div className="doctor-registration">
-      <div className="container" style={{ maxWidth: "1150px", overflow: "visible" }}>
+      <div
+        className="container"
+        style={{ maxWidth: "1150px", overflow: "visible" }}
+      >
         <ProgressStepper
           currentStep={currentStep}
           completedSteps={completedSteps}
@@ -44,35 +50,29 @@ console.log("================doctorId", doctorId);
                 isNew={!completedSteps.includes(1)}
               />
             )}
-              {currentStep === 2 && (
-                <Step3ProfessionalInfo
-                  ref={stepRef}
-                  isNew={!completedSteps.includes(3)}
-                />
-              )}
+            {currentStep === 2 && (
+              <Step3ProfessionalInfo
+                ref={stepRef}
+                isNew={!completedSteps.includes(2)}
+              />
+            )}
             {currentStep === 3 && (
               <AcademicQualifications
                 ref={stepRef}
-                isNew={!completedSteps.includes(1)}
+                isNew={!completedSteps.includes(3)}
               />
             )}
-              {currentStep === 4 && (
-                <DoctorExperience
-                  ref={stepRef}
-                  isNew={!completedSteps.includes(4)}
-                />
-              )}
-            {currentStep === 5 && (
-              <StepLocation
+            {currentStep === 4 && (
+              <DoctorExperience
                 ref={stepRef}
                 isNew={!completedSteps.includes(4)}
               />
+            )}
+            {currentStep === 5 && (
+              <StepLocation ref={stepRef} isNew={!completedSteps.includes(5)} />
             )}
             {currentStep === 6 && (
-              <ShiftStep
-                ref={stepRef}
-                isNew={!completedSteps.includes(4)}
-              />
+              <ShiftStep ref={stepRef} isNew={!completedSteps.includes(6)} />
             )}
             <div
               className="btn-container"
@@ -91,7 +91,8 @@ console.log("================doctorId", doctorId);
                     justifyContent: "flex-end",
                   }}
                 >
-                  {(currentStep !== 1 || completedSteps.includes(currentStep))&& (
+                  {(currentStep !== 1 ||
+                    completedSteps.includes(currentStep)) && (
                     <button
                       type="button"
                       className="btn skip"

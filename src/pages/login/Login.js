@@ -58,7 +58,7 @@ export default function Login() {
 
       navigate("/dashboard");
     } catch (err) {
-      console.log("error",err);
+      console.log("login error",err);
       toast.error(err?.data?.message || "Login failed");
       setMsg({
         type: "error",

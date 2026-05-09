@@ -110,12 +110,11 @@ let iconSize=20;
             </figure>
             <div className="dc-title">
               <h2>
-                <Link to="#">Dr. {isLoading ? "Loading..." : formData.firstName || "doctor"}</Link>
+                <Link to="#">Dr. {isLoading ? "Loading..." : formData.firstName || ""}</Link>
               </h2>
               <span>{email} <FaClone className="clone-icon" /></span>
               {/* <a>@michael20769 <FaClone className="clone-icon" /></a> */}
-              <Progress setOpenStepRegister={setOpenStepRegister}/>
-              {/* <ProgressSide setOpenStepRegister={setOpenStepRegister}/> */}
+              <ProgressSide setOpenStepRegister={setOpenStepRegister}/>
             </div>
           </div>
         </div>
