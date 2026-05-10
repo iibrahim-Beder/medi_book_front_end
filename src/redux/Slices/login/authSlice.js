@@ -28,6 +28,8 @@ const authSlice = createSlice({
     logout: (state) => {
       state.accessToken = null;
       state.refreshToken = null;
+      state.email = null;
+      state.doctorId = null;
 
       localStorage.removeItem("auth");
       sessionStorage.removeItem("auth");

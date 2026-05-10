@@ -69,7 +69,7 @@ const transformMessagesData = (response,personId=1) => {
     content: message.content,
     sentAt: message.sentAt,
     sentAtFormatted: message.sentAt,
-    status: message.messageStatus,
+    status: message.status,
     isMine: message.senderId === personId,
     isDelivered: message.isDelivered,
     senderId: message.senderId || null,
