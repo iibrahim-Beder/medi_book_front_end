@@ -9,6 +9,7 @@ import {
 import StarRating from "../../shared/StarRating";
 import StarIcon from "@mui/icons-material/Star";
 import { Link } from "react-router-dom";
+import { usePatientReviews } from "../hooks/usePatientReviews";
 function Stat({  label, subValue, value }) {
   return (
     <Box>
@@ -22,6 +23,7 @@ function Stat({  label, subValue, value }) {
   );
 }
 export default function TotalReviewsCard() {
+  const {totalCount,averageRating}=usePatientReviews();
   return (
     <div className="payment-card mb-3">
       <Card
@@ -73,16 +75,16 @@ export default function TotalReviewsCard() {
             flexWrap: "wrap",
           }}
         >
-          <Stat label="Total Reviews" value="128" />
+          <Stat label="Total Reviews" value={totalCount} />
 
           <Divider orientation="vertical" flexItem />
 
           <Stat
             label="Average Rating: "
-            subValue={4.6}
+            subValue={averageRating}
             value={
               <>
-                <StarRating rating={4.6} style={{ display: "inline-block" }} />
+                <StarRating rating={averageRating} style={{ display: "inline-block" }} />
               </>
             }
           />

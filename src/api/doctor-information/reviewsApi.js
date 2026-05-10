@@ -47,6 +47,7 @@ const transformReviewsData = (response, searchTerm = "") => {
     rating: item.rating,
     comment: item.comment,
     createdAt: item.createdAt,
+    patientName: item.patientName,
     highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.reviewID)
   }));
 
@@ -63,12 +64,14 @@ export const reviewsApi = baseApi.injectEndpoints({
     // Get ALL reviews (for all patients)
     getReviews: builder.query({
       query: ({ 
+        doctorId=1,
         filter = {}, 
         orderBy, 
         pageNumber = 1, 
         pageSize = 10 
       }) => {
         const params = {
+          DoctorId: doctorId,
           ...(filter.minRating !== undefined && { 'Filters.MinRating': filter.minRating }),
           ...(filter.maxRating !== undefined && { 'Filters.MaxRating': filter.maxRating }),
           ...(filter.appointmentType !== undefined && { 'Filters.AppointmentType': transformAppointmentTypeToAPI(filter.appointmentType) }),

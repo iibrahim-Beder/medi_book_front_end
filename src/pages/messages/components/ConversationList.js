@@ -68,7 +68,6 @@ export default function ConversationList() {
           <div className="dc-empty">No conversations</div>
         ) : (
           conversations.map((chat) => (
-            console.log("chat from list",chat),
             <ConversationItem
               key={chat.chatId}
               id={chat.chatId}

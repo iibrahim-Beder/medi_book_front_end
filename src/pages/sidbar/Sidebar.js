@@ -7,7 +7,7 @@ import { PiClockUserThin } from "react-icons/pi";
 // import icons 
 import { SlCalender } from "react-icons/sl";
 import DashboardIcon from "../../assets/icons/DashboardIcon";
-import { BsList } from "react-icons/bs";
+import { BsList, BsStar } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { HiOutlineChatBubbleOvalLeft } from "react-icons/hi2";
@@ -174,6 +174,12 @@ let iconSize=20;
               <Link to="/manage-financial">
                 <CiBadgeDollar className="icon" />
                 <span>{t("sidebar.manageFinancial")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/reviews">
+                <BsStar className="icon" />
+                <span>{t("Reviews")}</span>
               </Link>
             </li>
             <li>

@@ -157,7 +157,7 @@ addPatientDiagnosis: builder.mutation({
         status: getStatusValue(prescription.status),
         prescribedMedications: (prescription.recipes || []).map(med => ({
           PrescriptionId: 22,
-          medicationId:22,
+          medicationId: med.medication.id,
           startDate: med.startDate || new Date().toISOString(),
           endDate: med.endDate || new Date(Date.now() + (med.durationInDays || 1) * 24 * 60 * 60 * 1000).toISOString(),
           dosage: med.dosage,

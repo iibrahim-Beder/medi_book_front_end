@@ -7,6 +7,7 @@ import { CiDark } from "react-icons/ci";
 import { useTheme } from "../../context/ThemeContext";
 import NotificationButton from "./Notifications/NotificationButton";
 import { useStep1PersonalInfo } from "../doctor-registration/hooks/useStep1BasicInfo";
+import { HiOutlineChatBubbleOvalLeft } from "react-icons/hi2";
 function UserMenu({setShowPopupClose}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();
@@ -102,13 +103,31 @@ function UserMenu({setShowPopupClose}) {
           <li>
             <Link to="/chat">
               <i className="ti-shopping-cart"></i>
-              <span>{t("chats")}</span>
+              <span>{t("Chats")}</span>
             </Link>
           </li>
           <li>
             <Link to="/manage-financial">
               <i className="ti-bookmark"></i>
               <span>{t("sidebar.manageFinancial")}</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/reviews">
+              <i className="ti-bookmark"></i>
+              <span>{t("Reviews")}</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/patients">
+              <i className="ti-bookmark"></i>
+              <span>{t("Patients")}</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/notifications">
+              <i className="ti-bookmark"><HiOutlineChatBubbleOvalLeft className="icon" /></i>
+              <span>{t("Notifications")}</span>
             </Link>
           </li>
           <li>

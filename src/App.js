@@ -92,7 +92,7 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
       {/* {!loading && ( */}
         <ScrollToTop />              
         <Routes>
-          <Route path="/registration" element={<DoctorRegistration />} />
+          {/* <Route path="/registration" element={<DoctorRegistration />} /> */}
           <Route path="/Login" element={<Login />} />
           <Route path="/Authentication" element={<Authentication />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -123,6 +123,7 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
                 <div className="contentdiv">
                   <Routes>
                     <Route path="/" element={completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
+                <Route path="how-v2" element={<DashboardMain />} />
                 <Route path="how-v1" element={<Test setOpenStepRegister={setOpenStepRegister} />} />
                     <Route path="dashboard" element={ completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                     <Route

@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 import StarRating from "../../shared/StarRating";
 const RATING_STATS = [
-  { rating: 5, count: 82, percentage: 64, color: "#ffc107" },
-  { rating: 4, count: 31, percentage: 24, color: "#ffc107" },
-  { rating: 3, count: 9,  percentage: 7,  color: "#ffc107" },
-  { rating: 2, count: 4,  percentage: 3,  color: "#ffc107" },
-  { rating: 1, count: 2,  percentage: 2,  color: "#ffc107" },
+  { rating: 5, count: 7, percentage: 70, color: "#ffc107" },
+  { rating: 4, count: 2, percentage: 20, color: "#ffc107" },
+  { rating: 3, count: 1,  percentage: 10,  color: "#ffc107" },
+  { rating: 2, count: 0,  percentage: 0,  color: "#ffc107" },
+  { rating: 1, count: 0,  percentage: 0,  color: "#ffc107" },
 ];
 
 export default function RatingSummary() {

@@ -11,11 +11,18 @@ import { updateTyping } from "../slices/messagesSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectChat } from "../slices/chatsSlice";
 const MessageStatus = {
-  Sent: 0,
+  Sent: 0, 
   Delivered: 1,
   Read: 2,
   Failed: 3,
   Sending: 4,
+};
+const MessageStatusToString = {
+  0: "Sent",
+  1: "Delivered",
+  2: "Read",
+  3: "Failed",
+  4: "Sending",
 };
 export const useMessageListener = () => {
   const dispatch = useDispatch();
@@ -215,7 +222,7 @@ useEffect(() => {
 
   // user typing listener
   const handleUserTyping = (typingUpdate) => {
-    if (typingUpdate.chatId === selectedChatRef.current  && isChatOpenRef.current) {
+    if (typingUpdate.chatId === selectedChatRef.current  && isChatOpenRef.current && typingUpdate.isTyping) {
       audioService.play("writing");
     }
     dispatch(
@@ -250,7 +257,7 @@ useEffect(() => {
 
             draft.data.forEach((msg) => {
               if (statusUpdate.messageId === msg.id) {
-                msg.status = statusUpdate.messageStatus;
+                msg.status = MessageStatusToString[statusUpdate.messageStatus];
               }
             });
           }
