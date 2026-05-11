@@ -50,7 +50,9 @@ const transformMedicalConditionData = (response, searchValue = "") => {
     notes: item.notes,
     conditionType: item.conditionType,
     createdAt: item.createdAt,
-    updatedAt: item.updatedAt
+    updatedAt: item.updatedAt,
+    diagnosisName: item.diagnosisName,
+    diagnosedDate: item.diagnosedDate,
   }));
 
   return {

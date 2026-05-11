@@ -36,8 +36,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import DashboardUnCompleteRegistration from "./pages/dashbord/DashboardUnCompleteRegistration";
 import ProtectedRoute from "./redux/routes/ProtectedRoute";
 import LogoutPopupMessage from "./pages/logout/LogoutPopupMessage";
-import { useStep1PersonalInfo } from "./pages/doctor-registration/hooks/useStep1BasicInfo";
 import Loader from "./pages/shared/Loader";
+import { useDoctorRegistration } from "./pages/doctor-registration/hooks/useDoctorRegistration";
 
 
 function App() {
@@ -81,7 +81,7 @@ const { i18n } = useTranslation();
   };
 }, [openStepRegister]);
 
-const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError} =useStep1PersonalInfo();
+const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError} =useDoctorRegistration();
 let completeRegistration =doctorCurrentStepNumber===6 ;
 // let completeRegistration = localStorage.getItem('completeRegistration');
   if(isCurrentStepLoading ){

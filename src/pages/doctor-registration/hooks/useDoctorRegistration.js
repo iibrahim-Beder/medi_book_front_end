@@ -1,57 +1,91 @@
-
-import {  useEffect, useRef, useState } from "react"
-import { useStep1PersonalInfo } from "./useStep1BasicInfo";
-
+import { useEffect, useRef, useState } from "react";
+import { useGetDoctorCurrentStepQuery } from "../../../api/doctor-information/doctorBasicInfoApi";
+import { useSelector } from "react-redux";
 
 export function useDoctorRegistration() {
+  const doctorId = useSelector((state) => state.auth.doctorId);
 
-  const {doctorCurrentStepNumber} =useStep1PersonalInfo();
+  const {
+    data: currentStepData,
+    isLoading: isCurrentStepLoading,
+    error: currentStepError,
+    refetch: refetchCurrentStep,
+  } = useGetDoctorCurrentStepQuery(doctorId, {
+    skip: !doctorId,
+  });
 
-const [currentStep, setCurrentStep] = useState(doctorCurrentStepNumber)
-const [completedSteps, setCompletedSteps] = useState([]);
+  // NEW
+  const doctorCurrentStep = currentStepData?.data || null;
 
-useEffect(() => {
-  if (doctorCurrentStepNumber) {
-    setCurrentStep(doctorCurrentStepNumber);
+  const DoctorRegistrationStep = {
+    BasicInfo: 1 ,
+    ProfileAndSpecialties: 2,
+    Education: 3,
+    Experience: 4,
+    Locations: 5,
+    Shifts: 6,
+  };
 
-    setCompletedSteps(
-      Array.from(
-        { length: doctorCurrentStepNumber - 1 },
-        (_, i) => i + 1
-      )
-    );
-  }
-}, [doctorCurrentStepNumber]);
-  const stepRef = useRef(null)
+  const doctorCurrentStepNumber =
+    DoctorRegistrationStep[doctorCurrentStep] || 1;
 
-//   useEffect(() => {
-//     async function fetchRegistration() {
-//     //   const res: RegistrationMeta = await fakeFetch()
-//     //   setCurrentStep(res.currentStep)
-//     //   setCompletedSteps(res.completedSteps)
-//     }
+  const completedStepsPercent = Math.round(
+    ((doctorCurrentStepNumber - 1) /
+      Object.keys(DoctorRegistrationStep).length) *
+      100,
+  );
+  const stepCompleted = {
+    BasicInfo: doctorCurrentStepNumber > DoctorRegistrationStep.BasicInfo,
+    ProfileAndSpecialties:
+      doctorCurrentStepNumber > DoctorRegistrationStep.ProfileAndSpecialties,
+    Education: doctorCurrentStepNumber > DoctorRegistrationStep.Education,
+    Experience: doctorCurrentStepNumber > DoctorRegistrationStep.Experience,
+    Locations: doctorCurrentStepNumber > DoctorRegistrationStep.Locations,
+    Shifts: doctorCurrentStepNumber > DoctorRegistrationStep.Shifts,
+    All: doctorCurrentStepNumber > Object.keys(DoctorRegistrationStep).length,
+  };
 
-//     fetchRegistration()
-//   }, [])
+  const [currentStep, setCurrentStep] = useState(doctorCurrentStepNumber);
+  const [completedSteps, setCompletedSteps] = useState([]);
+
+  useEffect(() => {
+    if (doctorCurrentStepNumber) {
+      setCurrentStep(doctorCurrentStepNumber);
+
+      setCompletedSteps(
+        Array.from({ length: doctorCurrentStepNumber - 1 }, (_, i) => i + 1),
+      );
+    }
+  }, [doctorCurrentStepNumber]);
+  const stepRef = useRef(null);
+
+  //   useEffect(() => {
+  //     async function fetchRegistration() {
+  //     //   const res: RegistrationMeta = await fakeFetch()
+  //     //   setCurrentStep(res.currentStep)
+  //     //   setCompletedSteps(res.completedSteps)
+  //     }
+
+  //     fetchRegistration()
+  //   }, [])
 
   async function handleSave() {
-    if (!stepRef.current?.submit) return
+    if (!stepRef.current?.submit) return;
 
-    const isSuccess = await stepRef.current.submit()
+    const isSuccess = await stepRef.current.submit();
 
     if (isSuccess) {
-      setCompletedSteps(prev =>
-        prev.includes(currentStep)
-          ? prev
-          : [...prev, currentStep]
-      )
+      setCompletedSteps((prev) =>
+        prev.includes(currentStep) ? prev : [...prev, currentStep],
+      );
+      if (currentStep < doctorCurrentStepNumber){refetchCurrentStep();};
 
-      setCurrentStep(prev => prev + 1)
+      setCurrentStep((prev) => prev + 1);
     }
   }
 
   function handlePrevious() {
-    setCurrentStep(prev => Math.max(prev - 1, 1))
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   }
 
   return {
@@ -60,6 +94,14 @@ useEffect(() => {
     stepRef,
     handleSave,
     handlePrevious,
-    setCurrentStep
-  }
+    setCurrentStep,
+    doctorCurrentStep,
+    isCurrentStepLoading,
+    currentStepError,
+    doctorCurrentStepNumber,
+    completedStepsPercent,
+    refetchCurrentStep,
+    stepCompleted,
+    DoctorRegistrationStep
+  };
 }

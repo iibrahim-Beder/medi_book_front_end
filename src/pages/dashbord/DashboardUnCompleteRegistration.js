@@ -21,9 +21,13 @@ import {
   FileSearch,
   CreditCard,
   Lock,
+  GraduationCap,
+  MapPin,
+  Briefcase,
 } from "lucide-react";
 import { useStep1PersonalInfo } from '../doctor-registration/hooks/useStep1BasicInfo';
 import { useSelector } from 'react-redux';
+import { useDoctorRegistration } from '../doctor-registration/hooks/useDoctorRegistration';
 
 const links2 = [
   {
@@ -96,17 +100,6 @@ export function SupportStrip2() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* ---------- Verification Alert ---------- */
 const VerificationAlert = ({setOpenStepRegister}) => (
   <div className="dc-alert">
@@ -132,16 +125,59 @@ const VerificationAlert = ({setOpenStepRegister}) => (
   </div>
 );
 
-/* ---------- Setup Progress ---------- */
-const steps = [
-  { icon: User, label: "Basic Information", meta: "Personal details and contact", done: true },
-  { icon: Stethoscope, label: "Medical Specialty", meta: "Primary field and sub-specialties", done: true },
-  { icon: FileText, label: "Upload Documents", meta: "Medical license, ID, insurance certificate", done: false, current: true },
-  { icon: CalendarClock, label: "Set Availability", meta: "Weekly schedule and consultation types", done: false },
-];
-
 export const SetupProgress = ({setOpenStepRegister}) => {
-  const {completedStepsPercent,doctorCurrentStepNumber } = useStep1PersonalInfo();
+  const {stepCompleted,DoctorRegistrationStep,doctorCurrentStepNumber,completedStepsPercent}=useDoctorRegistration();
+  /* ---------- Setup Progress ---------- */
+  const steps = [
+    {
+      // step: DoctorRegistrationStep.BasicInfo,
+      icon: User,
+      label: "Basic Information",
+      meta: "Personal details and contact",
+      done: stepCompleted.BasicInfo,
+      current: DoctorRegistrationStep.BasicInfo === doctorCurrentStepNumber,
+    },
+    {
+      // step: DoctorRegistrationStep.ProfileAndSpecialties,
+      icon: Stethoscope,
+      label: "Medical Specialty",
+      meta: "Primary field and sub-specialties",
+      done: stepCompleted.ProfileAndSpecialties,
+      current: DoctorRegistrationStep.ProfileAndSpecialties === doctorCurrentStepNumber,
+    },
+    {
+      // step: DoctorRegistrationStep.Education,
+      icon: GraduationCap,
+      label: "Education",
+      meta: "Degrees, universities, and certifications",
+      done: stepCompleted.Education,
+      current: DoctorRegistrationStep.Education === doctorCurrentStepNumber,
+    },
+    {
+      // step: DoctorRegistrationStep.Experience,
+      icon: Briefcase,
+      label: "Experience",
+      meta: "Years of practice and work history",
+      done: stepCompleted.Experience,
+      current: DoctorRegistrationStep.Experience === doctorCurrentStepNumber,
+    },
+    {
+      // step: DoctorRegistrationStep.Locations,
+      icon: MapPin,
+      label: "Locations",
+      meta: "Clinics and consultation addresses",
+      done: stepCompleted.Locations,
+      current: DoctorRegistrationStep.Locations === doctorCurrentStepNumber,
+    },
+    {
+      // step: DoctorRegistrationStep.Shifts,
+      icon: CalendarClock,
+      label: "Shifts",
+      meta: "Availability and working hours",
+      done: stepCompleted.Shifts,
+      current: DoctorRegistrationStep.Shifts === doctorCurrentStepNumber,
+    },
+  ];
 
   return (
     <section className="dc-card">
@@ -263,7 +299,7 @@ const FeatureList = () => (
   </section>
 );
 export const ProgressSide = ({setOpenStepRegister}) => {
-    const {completedStepsPercent ,doctorCurrentStepNumber } = useStep1PersonalInfo();
+    const {completedStepsPercent ,doctorCurrentStepNumber } = useDoctorRegistration();
 
   return (
         <div  className=" p-2 progress-card-container">

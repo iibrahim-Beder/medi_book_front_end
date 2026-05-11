@@ -9,7 +9,7 @@ export const doctorApi = baseApi.injectEndpoints({
         method: 'POST',
         body: doctorData,
       }),
-      invalidatesTags: [{ type: 'Doctor', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Doctor' }],
       transformResponse: (response, meta, arg) => {
         console.log('Add Doctor Basic Info Response:', response);
         return response;
@@ -36,7 +36,7 @@ export const doctorApi = baseApi.injectEndpoints({
         params: { DoctorID: doctorId },
       }),
       providesTags: (result, error, id) => [
-        { type: 'Doctor', id },
+        { type: 'Doctor'},
       ],
       transformResponse: (response) => {
         console.log('Get Doctor Current Step Response:', response);

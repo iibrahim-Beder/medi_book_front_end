@@ -173,8 +173,16 @@ const DiagnosedConditionsTable = ({patientId}) => {
                               {translateSeverity(condition.severity)}
                             </span>
                           </td>
-                          <td title={condition.diagnosisName}>
-                            {condition.diagnosisName}
+                          <td title={condition.diagnosisName}
+                            data-has-match={isHasMatched(condition, "DiagnosisName")? "true": undefined}
+                            data-right-has-match={isHasMatched(condition, "DiagnosisName")? "true": undefined} 
+                            >
+                              <HighlightText
+                                text={condition.diagnosisName}
+                                searchTerm={medicalConditionsData.searchTerm}
+                                matchedFields={condition.highlightInfo?.matchedFields || []}
+                                fieldName="DiagnosisName"
+                              />
                           </td>
                           <td>{formatDate(condition.diagnosedDate)}</td>
                           <td>

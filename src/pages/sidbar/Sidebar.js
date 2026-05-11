@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { PiClockUserThin } from "react-icons/pi";
+import { useSelector } from "react-redux";
+import { ProgressSide } from "../dashbord/DashboardUnCompleteRegistration";
+import './Sidebar.scss';
 
 
 
@@ -24,23 +27,13 @@ import {
   FaBars
 } from 'react-icons/fa';
 import { useTranslation } from "react-i18next";
-import './Sidebar.scss';
 import { IoNotificationsOutline } from "react-icons/io5";
-import { Progress } from "../../test/Test";
+import { useDoctorRegistration } from "../doctor-registration/hooks/useDoctorRegistration";
 import { useStep1PersonalInfo } from "../doctor-registration/hooks/useStep1BasicInfo";
-import { useSelector } from "react-redux";
-import { ProgressSide } from "../dashbord/DashboardUnCompleteRegistration";
 
 
 const Sidebar = ({setOpenStepRegister,setShowPopupClose}) => {
-  const stepCompleted = {
-      personal: true,
-      education: true,
-      profile: true,
-      location: true,
-      shift: true,
-      experience: true,
-  };
+const {stepCompleted}=useDoctorRegistration();
     const {
       formData,
       isLoading,
@@ -114,7 +107,7 @@ let iconSize=20;
               </h2>
               <span>{email} <FaClone className="clone-icon" /></span>
               {/* <a>@michael20769 <FaClone className="clone-icon" /></a> */}
-              <ProgressSide setOpenStepRegister={setOpenStepRegister}/>
+              {!stepCompleted.all && <ProgressSide setOpenStepRegister={setOpenStepRegister}/>}
             </div>
           </div>
         </div>
@@ -129,81 +122,81 @@ let iconSize=20;
               </Link>
             </li>
             <li className="dc-notificationicon">
-              <Link to="/appointments">
+              <Link to="/appointments" {...getLinkProps(["Shifts"]) }>
                 <BsList className="icon" />
                 <span>{t("sidebar.appointmentList")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/appointment-management">
+              <Link to="/appointment-management" {...getLinkProps(["Shifts"]) }>
                 <CiSettings className="icon" />
                 <span>{t("sidebar.appointmentManagement")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/appointment-location">
+              <Link to="/appointment-location" {...getLinkProps(["Locations"]) }>
                 <CiLocationOn className="icon" />
                 <span>{t("Locations")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/Generate-Doctor-Slots">
+              <Link to="/Generate-Doctor-Slots" {...getLinkProps(["Shifts"]) } >
                 <PiClockUserThin className="icon" />
                 <span>{t("sidebar.makeSlots")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/patients">
+              <Link to="/patients" {...getLinkProps(["All"]) }>
                 <PiUsersThreeLight className="icon" />
                 <span>{t("sidebar.managePatients")}</span>
               </Link>
             </li>
              <li>
-              <Link to="/pationt-information">
+              <Link to="/pationt-information" {...getLinkProps(["All"]) }>
                 <InfomationIcon width={iconSize} height={iconSize} className="icon" />
                 <span>{t("sidebar.pationtInformation")}</span>
               </Link>
             </li>
             <li>
-              <Link to="chat">
+              <Link to="chat" {...getLinkProps(["All"]) } >
                 <HiOutlineChatBubbleOvalLeft className="icon" />
                 <span>{t("sidebar.messages")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/manage-financial">
+              <Link to="/manage-financial" {...getLinkProps(["All"]) } >
                 <CiBadgeDollar className="icon" />
                 <span>{t("sidebar.manageFinancial")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/reviews">
+              <Link to="/reviews" {...getLinkProps(["All"]) }>
                 <BsStar className="icon" />
                 <span>{t("Reviews")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/account-settings">
+              <Link to="/account-settings" {...getLinkProps(["BasicInfo"]) }>
                 <LiaUserCogSolid className="icon" />
                 <span>{t("sidebar.accountSettings")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/shifts-management" {...getLinkProps(["personal", "shift"])}>
+              <Link to="/shifts-management" {...getLinkProps(["Shift"])}>
                 <SlCalender className="icon" />
                 <span>{t("Shifts Management")}</span>
               </Link>
             </li>
             <li>
               <Link to="/settings">
-                <LiaUserShieldSolid className="icon" />
+                <CiSettings className="icon" />
                 <span>{t("Settings")}</span>
               </Link>
             </li>
             <li>
               <Link to="/notifications">
                 <IoNotificationsOutline className="icon" />
-                <span>{t("sidebar.notifications")}</span>
+                <span>{t("Notifications")}</span>
               </Link>
             </li>
             <li onClick={() => setShowPopupClose(true)}>

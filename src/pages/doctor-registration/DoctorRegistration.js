@@ -12,7 +12,6 @@ import Step3ProfessionalInfo from "./steps/Step3ProfessionalInfo";
 import AcademicQualifications from "../profile-settings/Profile-card/Education";
 import DoctorExperience from "../profile-settings/Profile-card/Experience";
 import {  useEffect } from "react";
-import { useStep1PersonalInfo } from "./hooks/useStep1BasicInfo";
 
 export default function DoctorRegistration({ openStepRegister }) {
   const { t } = useTranslation();
@@ -23,8 +22,9 @@ export default function DoctorRegistration({ openStepRegister }) {
     handleSave,
     handlePrevious,
     setCurrentStep,
+    refetchCurrentStep,
+    doctorCurrentStepNumber
   } = useDoctorRegistration();
-  const { refetchCurrentStep } = useStep1PersonalInfo();
 
   useEffect(() => {
     refetchCurrentStep();
@@ -43,7 +43,6 @@ export default function DoctorRegistration({ openStepRegister }) {
         />
         {true ? (
           <div className="form-container">
-            {/* {renderCurrentStep()} */}
             {currentStep === 1 && (
               <Step1PersonalInfo
                 ref={stepRef}
@@ -91,8 +90,7 @@ export default function DoctorRegistration({ openStepRegister }) {
                     justifyContent: "flex-end",
                   }}
                 >
-                  {(currentStep !== 1 ||
-                    completedSteps.includes(currentStep)) && (
+                  {(completedSteps.includes(currentStep)) && (
                     <button
                       type="button"
                       className="btn skip"

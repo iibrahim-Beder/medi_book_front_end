@@ -1415,13 +1415,13 @@ ul.sub-menu {
 .dc-usernav ul li a{
 	color:var(--terthemecolor);
 	display:block;
-	padding:10px 7px;
+	padding:8px 7px;
 	line-height:inherit;
 	position: relative;
 }
 .dc-usernav ul li a i{
 	color: #999;
-	font-size: 14px;
+	font-size: 20px;
 	min-width: 28px;
 	line-height: inherit;
 	display: inline-block;
