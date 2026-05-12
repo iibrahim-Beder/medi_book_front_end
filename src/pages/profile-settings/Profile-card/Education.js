@@ -1,11 +1,9 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import CustomAccordion from "../../shared/CustomAccordion";
 import { useDoctorEducation } from "../hooks/useDoctorEducation";
 import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
-const AcademicQualifications = () => {
-
-
+const AcademicQualifications = forwardRef(({ isNew }, ref) => {
   const {
     handleAddAcademic,
     handleDeleteAcademic,
@@ -14,8 +12,30 @@ const AcademicQualifications = () => {
     isLoading,
     error,
     refetch,
-    educations
-  } = useDoctorEducation();
+    educations,
+  } = useDoctorEducation(isNew);
+  useImperativeHandle(
+    ref,
+    () => ({
+      submit: async () => {
+        const unsavedEducation = educations.find(
+          (edu) => edu.isNew || edu.isExpanded
+        );
+        console.log("unsavedEducation", unsavedEducation);
+
+        if (!unsavedEducation) {
+          return true;
+        }
+
+        const index = educations.findIndex(
+          (edu) => edu.id === unsavedEducation.id
+        );
+
+        return await handleSaveAcademic(index, unsavedEducation);
+      },
+    }),
+    [educations, handleSaveAcademic]
+  );
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
   if (error) return <ErrorLoading error={error} refetch={refetch} />;
@@ -101,11 +121,16 @@ const AcademicQualifications = () => {
   ];
 
   const getAcademicTitle = (item) => {
-    if (item.institutionName && item.graduationYear && item.degree && item.major) {
+    if (
+      item.institutionName &&
+      item.graduationYear &&
+      item.degree &&
+      item.major
+    ) {
       return `${item.institutionName} - ${item.major} - ${item.degree}  - ${item.graduationYear}`;
     } else if (item.institutionName && item.graduationYear && item.degree) {
       return `${item.institutionName} - ${item.degree}  - ${item.graduationYear}`;
-    }else if (item.institutionName && item.graduationYear) {
+    } else if (item.institutionName && item.graduationYear) {
       return `${item.institutionName} - ${item.graduationYear}`;
     }
     return "New Academic Qualification";
@@ -119,18 +144,20 @@ const AcademicQualifications = () => {
         addNewLabel="Add New Qualification"
         data={educations}
         formFields={formFields}
-        onAdd={handleAddAcademic}
+        onAdd={isNew ? null: handleAddAcademic}
+        buttonsAvailable={isNew ? false: true}
         onDelete={handleDeleteAcademic}
         onUpdate={handleUpdateAcademic}
         onSave={handleSaveAcademic}
         getItemTitle={getAcademicTitle}
         noDataMessage="No academic qualifications added yet. Click 'Add New Qualification' to get started."
+        isUpdateOut={isNew}
         // backgroundColor="#f8f9fa"
         // titleBackgroundColor="#e3f2fd"
         // allowMultipleOpen={true}
       />
     </div>
   );
-};
+});
 
 export default AcademicQualifications;

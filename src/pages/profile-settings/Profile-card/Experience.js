@@ -1,10 +1,10 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import CustomAccordion from "../../shared/CustomAccordion";
 import { useDoctorExperience } from "../hooks/useDoctorExperience";
 import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
 
-const DoctorExperience = () => {
+const DoctorExperience = forwardRef(({ isNew }, ref) => {
 
 
   const {
@@ -16,8 +16,29 @@ const DoctorExperience = () => {
     error,
     refetch,
     experiences
-  } = useDoctorExperience();
+  } = useDoctorExperience(isNew);
+useImperativeHandle(
+  ref,
+  () => ({
+    submit: async () => {
+      const unsavedEducation = experiences.find(
+        (edu) => edu.isNew || edu.isExpanded
+      );
+      console.log("unsavedEducation", unsavedEducation);
 
+      if (!unsavedEducation) {
+        return true;
+      }
+
+      const index = experiences.findIndex(
+        (edu) => edu.id === unsavedEducation.id
+      );
+
+      return await handleSaveExperience(index, unsavedEducation);
+    },
+  }),
+  [experiences, handleSaveExperience]
+);
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
 
@@ -75,15 +96,18 @@ const DoctorExperience = () => {
         addNewLabel="Add New Experience"
         data={experiences}
         formFields={formFields}
-        onAdd={handleAddExperience}
+        // onAdd={handleAddExperience}
         onDelete={handleDeleteExperience}
         onUpdate={handleUpdateExperience}
         onSave={handleSaveExperience}
         getItemTitle={getExperienceTitle}
         noDataMessage="No experience added yet. Click 'Add New Experience' to get started."
+        onAdd={isNew ? null: handleAddExperience}
+        buttonsAvailable={isNew ? false: true}
+        isUpdateOut={isNew}
       />
     </div>
   );
-};
+});
 
 export default DoctorExperience;

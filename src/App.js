@@ -124,7 +124,7 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
                   <Routes>
                     <Route path="/" element={completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                 <Route path="how-v2" element={<DashboardMain />} />
-                <Route path="how-v1" element={<Test setOpenStepRegister={setOpenStepRegister} />} />
+                <Route path="how-v1" element={<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                     <Route path="dashboard" element={ completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                     <Route
                       path="appointments"

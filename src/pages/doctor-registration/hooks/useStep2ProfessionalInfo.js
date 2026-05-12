@@ -149,18 +149,15 @@ export const useStep2ProfessionalInfo = (isNew) => {
       if (isNew) {
         const payload = {
           doctorID: doctorId,
-          yearsOfExperience: { value: Number(formData.yearsOfExperience) },
-          defaultPricePerSession: {
-            value: Number(formData.defaultPricePerSession),
-          },
-          defaultCurrencyId: { value: Number(formData.defaultCurrencyId) },
-          bio: { value: formData.bio },
-          languagesSpoken: { value: formData.languagesSpoken },
-          specialtyIds: {
-            value: formData.specialtyIds.map((id) => Number(id)),
-          },
-          primarySpecialtyId: { value: Number(formData.primarySpecialtyId) },
+          yearsOfExperience:  Number(formData.yearsOfExperience) ,
+          defaultPricePerSession:Number(formData.defaultPricePerSession),
+          defaultCurrencyId:  Number(formData.defaultCurrencyId),
+          bio: formData.bio,
+          languagesSpoken: formData.languagesSpoken ,
+          specialtieIDs: formData.specialtyIds.map((id) => Number(id)),
+          primarySpecialtyId:Number(formData.primarySpecialtyId)
         };
+        console.log("====payload", payload);
         const response = await addProfile(payload).unwrap();
         if (response.succeeded) {
           toast.success(t("professionalInfo.success"));
@@ -183,6 +180,7 @@ export const useStep2ProfessionalInfo = (isNew) => {
         return false;
       }
     } catch (error) {
+      console.log("====error", error);
       toast.error(error?.data?.message || t("professionalInfo.error"));
       return false;
     } finally {

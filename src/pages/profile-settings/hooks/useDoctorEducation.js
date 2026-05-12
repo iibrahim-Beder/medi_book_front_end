@@ -10,17 +10,31 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 
-export const useDoctorEducation = () => {
+export const useDoctorEducation = (New=false) => {
   const doctorId = useSelector((state) => state.auth.doctorId);
+  console.log("doctorId", doctorId);
 
   const {
     data: educationsData,
     isLoading,
     error,
     refetch
-  } = useGetDoctorEducationsQuery({ doctorId }, { skip: !doctorId });
-  const [educations, setEducations] = useState(educationsData?.data?.map(transformDoctorEducation) || []);
+  } = useGetDoctorEducationsQuery({ doctorId }, { skip: !doctorId || New });
 
+  const newItem = {
+       id: `temp-${Date.now()}`,
+       institutionName: "",
+       degree: "",
+       major: "",
+       graduationYear: "",
+       startDate: "",
+       endDate: "",
+       notes: "",
+       certificateFileUrl: "",
+       isExpanded: true,
+       isNew: true,
+     };
+  const [educations, setEducations] = useState(educationsData?.data?.map(transformDoctorEducation) || [newItem]);
   useEffect(() => {
     if (educationsData) {
       setEducations(educationsData?.data?.map(transformDoctorEducation) || []);
@@ -39,21 +53,6 @@ export const useDoctorEducation = () => {
       toast.error("Save previous first");
       return;
     }
-
-    const newItem = {
-      id: `temp-${Date.now()}`,
-      institutionName: "",
-      degree: "",
-      major: "",
-      graduationYear: "",
-      startDate: "",
-      endDate: "",
-      notes: "",
-      certificateFileUrl: "",
-      isExpanded: true,
-      isNew: true,
-    };
-
     setEducations((prev) => [newItem, ...prev]);
   }, [educations]);
   // hooks/useDoctorEducation.js
@@ -103,6 +102,10 @@ export const useDoctorEducation = () => {
       if (isAdding || isUpdating) return false;
 
        console.log("===========data",data);
+       if (!data) {
+        toast.error("education is required");
+        return false;
+      }
       if (!data.institutionName) {
         toast.error("institution name is required");
         return false;

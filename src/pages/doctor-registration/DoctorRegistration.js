@@ -22,13 +22,8 @@ export default function DoctorRegistration({ openStepRegister }) {
     handleSave,
     handlePrevious,
     setCurrentStep,
-    refetchCurrentStep,
-    doctorCurrentStepNumber
   } = useDoctorRegistration();
 
-  useEffect(() => {
-    refetchCurrentStep();
-  }, [openStepRegister]);
   console.log("currentStep", currentStep);
   return (
     <div className="doctor-registration">

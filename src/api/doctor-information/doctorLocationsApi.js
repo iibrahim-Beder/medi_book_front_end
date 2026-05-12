@@ -20,6 +20,16 @@ export const doctorLocationsApi = baseApi.injectEndpoints({
         { type: 'DoctorLocations', id: doctorId },
       ],
     }),
+    AddLocationStepToDoctor: builder.mutation({
+      query: (locationData) => ({
+        url: '/Doctors/AddLocationStepToDoctor',
+        method: 'POST',
+        body: locationData,
+      }),
+      invalidatesTags: (result, error, { doctorId }) => [
+        { type: 'DoctorLocations', id: doctorId },
+      ],
+    }),
 
     updateDoctorLocation: builder.mutation({
       query: (locationData) => ({
@@ -93,6 +103,7 @@ export const doctorLocationsApi = baseApi.injectEndpoints({
 export const {
   useGetDoctorLocationsQuery,
   useAddLocationToDoctorMutation,
+  useAddLocationStepToDoctorMutation,
   useUpdateDoctorLocationMutation,
   useActivateDoctorLocationMutation,
   useDeactivateDoctorLocationMutation,

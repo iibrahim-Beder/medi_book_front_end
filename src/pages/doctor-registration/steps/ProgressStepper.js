@@ -1,7 +1,7 @@
 import React from "react";
 
 const ProgressStepper = ({ currentStep, stepsMeta }) => {
-  const progressPct = ((currentStep - 1) / (stepsMeta.length )) * 100;
+  const progressPct = ((currentStep - 1) / (stepsMeta.length )) * 110;
 
   return (
     <div className="table-card progress-container">

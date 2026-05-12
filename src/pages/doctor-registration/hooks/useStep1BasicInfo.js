@@ -22,7 +22,7 @@ export const useStep1PersonalInfo = (isNew) => {
     firstName: "",
     lastName: "",
     dateOfBirth: "",
-    gender: "",
+    gender: "Male",
     licenseNumber: "",
     phoneNumber: "",
     imagePath: "",
@@ -77,35 +77,40 @@ export const useStep1PersonalInfo = (isNew) => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.firstName.trim())
-      newErrors.firstName = t("personalInfo.firstName.required");
-
+    if (!formData.firstName.trim()){
+      toast.error(t("first name required"));
+      return false ;
+    }
     if (!formData.lastName.trim())
-      newErrors.lastName = t("personalInfo.lastName.required");
+    {
+      toast.error(t("last Name required"));
+      return false ;
+    }
 
     if (!formData.dateOfBirth)
-      newErrors.dateOfBirth = t("personalInfo.dateOfBirth.required");
-
+    {
+    toast.error(t("date of birth required"));
+    return false ;
+    }
     if (formData.gender === "" || formData.gender === null)
-      newErrors.gender = t("personalInfo.gender.required");
-
+    {
+      toast.error(t("gender required"));
+      return false ;
+    }
     if (!formData.licenseNumber.trim())
-      newErrors.licenseNumber = t("personalInfo.licenseNumber.required");
-
+    {
+      toast.error(t("license number required"));
+      return false ;
+    }
+    return true;
     // if (!formData.phoneNumber.trim())
     //   newErrors.phoneNumber = t("personalInfo.phoneNumber.required");
     // else if (!/^01[0-9]{9}$/.test(formData.phoneNumber))
     //   newErrors.phoneNumber = t("personalInfo.phoneNumber.invalid");
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      toast.error(t("validation.checkErrors"));
       return false;
     }
 

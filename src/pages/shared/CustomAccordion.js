@@ -42,6 +42,8 @@ const CustomAccordion = memo(({
  hedarClassName="",
  handleToggle,
  applyRule,
+ buttonsAvailable = true,
+ isUpdateOut = false
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
@@ -96,6 +98,9 @@ const CustomAccordion = memo(({
   };
 
 const handleFieldChange = (index, field, value) => {
+  if (isUpdateOut){
+    onUpdate(index, field, value);
+  }
   setDataRead(prev =>
     prev.map((item, i) =>
       i === index ? { ...item, [field]: value } : item
@@ -353,7 +358,7 @@ const handleFieldChange = (index, field, value) => {
                         </div>
                       )}
 
-                      {!readOnly && !liveUpdate && (
+                      {!readOnly && !liveUpdate && buttonsAvailable && (
                         <div className="dc-btnarea d-flex">
                           <button
                             type="button"

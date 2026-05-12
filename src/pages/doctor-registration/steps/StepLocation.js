@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { useDoctorLocation } from "../hooks/useStep3Locations";
+import { useDoctorLocation } from "../hooks/useDoctorLocation";
 import ErrorLoading from "../../shared/ErrorLoading";
 import SectionTitle from "../../shared/SectionTitle";
 import BlueMapPicker from "../../location-settings/carts/MapSearch";

@@ -5,10 +5,15 @@ import {
   useGetDoctorLocationsQuery,
   useAddLocationToDoctorMutation,
   useUpdateDoctorLocationMutation,
+  useAddLocationStepToDoctorMutation,
 } from "../../../api/doctor-information/doctorLocationsApi";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-export const useDoctorLocation = (isNew, doctorId) => {
+export const useDoctorLocation = (isNew) => {
+
+  const doctorId = useSelector((state) => state.auth.doctorId);
+  
   const { t } = useTranslation();
 
   const {
@@ -20,9 +25,9 @@ export const useDoctorLocation = (isNew, doctorId) => {
     skip: !doctorId || isNew,
   });
 
-  const [addLocation, { isLoading: isAdding }] =
-    useAddLocationToDoctorMutation();
-
+  const [addLocation, { isLoading: isAdding }] =useAddLocationToDoctorMutation();
+  const [addLocationStep, { isLoading: isAddingStep }] =useAddLocationStepToDoctorMutation();
+  
   const [updateLocation, { isLoading: isUpdating }] =
     useUpdateDoctorLocationMutation();
 
@@ -67,26 +72,32 @@ export const useDoctorLocation = (isNew, doctorId) => {
   }, [formData, t]);
 
   const handleSubmit = async () => {
-    if (!doctorId) return false;
+    if (!doctorId ||isAddingStep||isAdding) return false;
     if (!validate()) return false;
 
     const loader = toast.loading(t("loading"));
 
+    console.log("location formData", doctorId, formData);
     try {
       if (isNew || !formData.locationId) {
-        await addLocation({
-          doctorId,
-          locations: [
-            {
-              locationName: formData.displayName,
-              isPrimary: true,
-              locationPoint: {
-                latitude: formData.lat,
-                longitude: formData.lng,
-              },
-            },
-          ],
-        }).unwrap();
+        if(isNew) {
+          await addLocationStep({
+            doctorId,
+            locationName: formData.displayName,
+            isPrimary: true,
+            latitude: formData.lat,
+            longitude: formData.lng,
+          }).unwrap();
+
+        }else{
+          await addLocation({
+            doctorId,
+            locationName: formData.displayName,
+            isPrimary: true,
+            latitude: formData.lat,
+            longitude: formData.lng,
+          }).unwrap();
+        }
       } else {
         await updateLocation(
           buildLocationPayload(data.data[0], formData)
@@ -96,6 +107,7 @@ export const useDoctorLocation = (isNew, doctorId) => {
       toast.success(t("SavedSuccessfully"));
       return true;
     } catch (e) {
+      console.error("location error", e );
       toast.error(e?.data?.message || "Error");
       return false;
     } finally {

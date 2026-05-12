@@ -171,7 +171,7 @@ function UserMenu({ setShowPopupClose }) {
             <li>
               <Link to="/settings">
                 <i>
-                  <LiaUserShieldSolid className="icon" />
+                  <CiSettings className="icon" />
                 </i>
                 <span>{t("Settings")}</span>
               </Link>

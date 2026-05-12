@@ -9,15 +9,26 @@ import {
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-export const useDoctorExperience = () => { 
+export const useDoctorExperience = (New=false)=> { 
   const doctorId = useSelector((state) => state.auth.doctorId);
   const {
     data: experiencesData,
     isLoading,
     error,
     refetch,
-  } = useGetDoctorExperiencesQuery({ doctorId }, { skip: !doctorId });
-  const [experiences, setExperience] = useState( experiencesData?.data?.map(transformDoctorExperience) || []);
+  } = useGetDoctorExperiencesQuery({ doctorId }, { skip: !doctorId || New });
+      const newItem = {
+      id: `temp-${Date.now()}`,
+      workplace: "",
+      jobTitle: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+      isExpanded: true,
+      isNew: true,
+    };
+
+  const [experiences, setExperience] = useState( experiencesData?.data?.map(transformDoctorExperience) || [newItem]);
 
   useEffect(() => {
     if (experiencesData) {

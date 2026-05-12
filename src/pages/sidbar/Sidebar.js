@@ -176,13 +176,13 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/account-settings" {...getLinkProps(["BasicInfo"]) }>
+              <Link to="/account-settings" {...getLinkProps(["Experience"]) }>
                 <LiaUserCogSolid className="icon" />
                 <span>{t("sidebar.accountSettings")}</span>
               </Link>
             </li>
             <li>
-              <Link to="/shifts-management" {...getLinkProps(["Shift"])}>
+              <Link to="/shifts-management" {...getLinkProps(["Shifts"])}>
                 <SlCalender className="icon" />
                 <span>{t("Shifts Management")}</span>
               </Link>

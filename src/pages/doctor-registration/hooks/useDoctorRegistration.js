@@ -16,6 +16,7 @@ export function useDoctorRegistration() {
 
   // NEW
   const doctorCurrentStep = currentStepData?.data || null;
+  // const doctorCurrentStep = "Locations";
 
   const DoctorRegistrationStep = {
     BasicInfo: 1 ,
@@ -24,6 +25,7 @@ export function useDoctorRegistration() {
     Experience: 4,
     Locations: 5,
     Shifts: 6,
+    all: 7
   };
 
   const doctorCurrentStepNumber =
@@ -41,8 +43,9 @@ export function useDoctorRegistration() {
     Education: doctorCurrentStepNumber > DoctorRegistrationStep.Education,
     Experience: doctorCurrentStepNumber > DoctorRegistrationStep.Experience,
     Locations: doctorCurrentStepNumber > DoctorRegistrationStep.Locations,
-    Shifts: doctorCurrentStepNumber > DoctorRegistrationStep.Shifts,
-    All: doctorCurrentStepNumber > Object.keys(DoctorRegistrationStep).length,
+    // dont forget to fix this issue =============================================================================== dont forget to fix this issue
+    Shifts: doctorCurrentStepNumber > DoctorRegistrationStep.Shifts - 1,
+    All: doctorCurrentStepNumber > Object.keys(DoctorRegistrationStep).length - 2,
   };
 
   const [currentStep, setCurrentStep] = useState(doctorCurrentStepNumber);
@@ -78,7 +81,7 @@ export function useDoctorRegistration() {
       setCompletedSteps((prev) =>
         prev.includes(currentStep) ? prev : [...prev, currentStep],
       );
-      if (currentStep < doctorCurrentStepNumber){refetchCurrentStep();};
+      if (currentStep <= doctorCurrentStepNumber){refetchCurrentStep();};
 
       setCurrentStep((prev) => prev + 1);
     }
