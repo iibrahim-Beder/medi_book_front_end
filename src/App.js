@@ -38,7 +38,8 @@ import ProtectedRoute from "./redux/routes/ProtectedRoute";
 import LogoutPopupMessage from "./pages/logout/LogoutPopupMessage";
 import Loader from "./pages/shared/Loader";
 import { useDoctorRegistration } from "./pages/doctor-registration/hooks/useDoctorRegistration";
-import PageNotFound from "./pages/notFound-pageError/PageNotFound";
+import NotFoundPage from "./pages/notFound-pageError/NotFoundPage";
+import ErrorPage from "./pages/notFound-pageError/ErrorPage";
 
 
 function App() {
@@ -82,11 +83,14 @@ const { i18n } = useTranslation();
   };
 }, [openStepRegister]);
 
-const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError} =useDoctorRegistration();
+const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching } =useDoctorRegistration();
 let completeRegistration =doctorCurrentStepNumber===6 ;
 // let completeRegistration = localStorage.getItem('completeRegistration');
   if(isCurrentStepLoading ){
     return <Loader/>
+  }
+  if(currentStepError){
+    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} />
   }
   return (
     <div className="dc-userlogin">
@@ -135,7 +139,7 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
                       path="appointment-location"
                       element={<LocationMain />}
                     />
-                    <Route path="*" element={<PageNotFound />} />
+                    <Route path="*" element={<NotFoundPage />} />
                     <Route path="home-v1" element={<Test />} />
 
                     <Route path="chat" element={<MessagesPage />} />

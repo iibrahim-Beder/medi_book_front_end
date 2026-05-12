@@ -13,3 +13,14 @@
       margin: auto;
 }
 .page-not-found img{max-width: 50%; max-height: 100vh;}
+
+.error-box {
+  display: inline-block;
+  padding: 12px 30px;
+  border: 3px solid #f5b5b5;
+  border-radius: 14px;
+  background: #fff5f5;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000;
+}

@@ -10,6 +10,7 @@ export function useDoctorRegistration() {
     isLoading: isCurrentStepLoading,
     error: currentStepError,
     refetch: refetchCurrentStep,
+    isFetching
   } = useGetDoctorCurrentStepQuery(doctorId, {
     skip: !doctorId,
   });
@@ -104,6 +105,7 @@ export function useDoctorRegistration() {
     doctorCurrentStepNumber,
     completedStepsPercent,
     refetchCurrentStep,
+    isFetching,
     stepCompleted,
     DoctorRegistrationStep
   };

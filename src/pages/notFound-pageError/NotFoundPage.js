@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import "./pageNotFoundAndErrorPage.css";
-export default function PageNotFound({ setOpenStepRegister }) {
+export default function NotFoundPage({ setOpenStepRegister }) {
     const navigate = useNavigate();
 
   return (

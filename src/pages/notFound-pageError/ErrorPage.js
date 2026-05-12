@@ -1,9 +1,9 @@
 import Button from "@mui/material/Button";
-import { useStep1PersonalInfo } from "../pages/doctor-registration/hooks/useStep1BasicInfo";
+import { useStep1PersonalInfo } from "../doctor-registration/hooks/useStep1BasicInfo";
 // import "./pageNotFoundAndErrorPage.css";
 
-export default function ErrorPage() {
-    const { formData, isLoading,error } = useStep1PersonalInfo(false);  
+export default function ErrorPage({refetch,isFetching} ) {
+    const { formData } = useStep1PersonalInfo(false);  
 
   return (
     <div className="page-not-found">
@@ -25,6 +25,7 @@ export default function ErrorPage() {
             (Error Code: 503 Service Unavailable)
           </h4>
             <Button
+              onClick={refetch}
               variant="contained"
               sx={{
                 borderRadius: "10px",
@@ -34,7 +35,7 @@ export default function ErrorPage() {
                 boxShadow: "none",
               }}
             >
-              Retry Connection
+              {isFetching ? "Loading..." : "Retry Connection"} 
             </Button>
         </div>
         <img src="/images/dashboard/errorServer.png" alt="Error" />
