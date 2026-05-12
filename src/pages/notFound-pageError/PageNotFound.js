@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
-
+import "./pageNotFoundAndErrorPage.css";
 export default function PageNotFound({ setOpenStepRegister }) {
     const navigate = useNavigate();
 
@@ -39,8 +39,7 @@ export default function PageNotFound({ setOpenStepRegister }) {
           >
             Go Back
           </a>        </div>
-        {/* <img src="/images/dashboard/notFound.png" alt="notFound" /> */}
-        <img src="/images/dashboard/notFound6.png" alt="notFound" />
+        <img src="/images/dashboard/notFound.png" alt="notFound" />
       </div>
     </div>
   );

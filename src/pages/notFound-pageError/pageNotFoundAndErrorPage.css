@@ -1,0 +1,15 @@
+
+
+/* page not found */
+.page-not-found {
+  height: 100vh;
+}
+.page-not-found .content-container{
+  padding: 0 35px;
+  display: flex;
+  flex-direction: row;
+}
+.page-not-found .text-content{
+      margin: auto;
+}
+.page-not-found img{max-width: 50%; max-height: 100vh;}

@@ -38,6 +38,7 @@ import ProtectedRoute from "./redux/routes/ProtectedRoute";
 import LogoutPopupMessage from "./pages/logout/LogoutPopupMessage";
 import Loader from "./pages/shared/Loader";
 import { useDoctorRegistration } from "./pages/doctor-registration/hooks/useDoctorRegistration";
+import PageNotFound from "./pages/notFound-pageError/PageNotFound";
 
 
 function App() {
@@ -134,6 +135,9 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
                       path="appointment-location"
                       element={<LocationMain />}
                     />
+                    <Route path="*" element={<PageNotFound />} />
+                    <Route path="home-v1" element={<Test />} />
+
                     <Route path="chat" element={<MessagesPage />} />
                     <Route path="chat/:chatId" element={<MessagesPage />} />
                     <Route
