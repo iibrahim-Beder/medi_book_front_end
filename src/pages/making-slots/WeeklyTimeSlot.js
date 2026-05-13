@@ -178,7 +178,7 @@ export default function WeeklyTimeSlots() {
                           LinkTo="/shifts-management"
                           linkText="Go to Create Shift"
                           text={t(
-                            "No Slots Available ! Because there is no shift on this day on this template. If you want to add slots on this shift you can go to create a new shift",
+                            "No Slots Available ! Because There are no available shifts on this template today. If you want to add slots on this shift you can go to create a new shift",
                           )}
                         />
                       </div>
