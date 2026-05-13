@@ -237,7 +237,7 @@ export const SetupProgress = ({setOpenStepRegister}) => {
                 <p className="dc-step__meta">{step.meta}</p>
               </div>
 
-              {!step.done && <ChevronRight size={16} className="dc-step__chev" />}
+              {/* {!step.done && <ChevronRight size={16} className="dc-step__chev" />} */}
             </li>
           );
         })}

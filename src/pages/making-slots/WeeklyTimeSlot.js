@@ -110,7 +110,7 @@ export default function WeeklyTimeSlots() {
     { key: "Friday", label: t("Friday") },
     { key: "Saturday", label: t("Saturday") },
   ];
-  if (isLoading) return <Loader />;
+  
   return (
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace accordion-table ">

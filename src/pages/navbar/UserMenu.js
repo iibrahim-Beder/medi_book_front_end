@@ -160,11 +160,11 @@ function UserMenu({ setShowPopupClose }) {
             </li>
 
             <li>
-              <Link to="/account-settings">
+              <Link to="/account-information">
                 <i>
                   <LiaUserCogSolid className="icon" />
                 </i>
-                <span>{t("userMenu.accountSettings")}</span>
+                <span>{t("Account Information")}</span>
               </Link>
             </li>
 

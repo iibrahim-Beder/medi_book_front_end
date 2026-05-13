@@ -14,22 +14,22 @@ export default function DashboardMain() {
   const statsData = [
     {
       img: "/images/card-icon/img-17.png",
-      count: "150",
+      count: "24",
       title: t("dashboard.totalAppointments"),
     },
     {
       img: "/images/card-icon/img-16.png",
-      count: "1406",
+      count: "14",
       title: t("dashboard.completedAppointments"),
     },
     {
       img: "/images/card-icon/img-15.png",
-      count: "2075",
+      count: "3",
       title: t("dashboard.cancelledAppointments"),
     },
     {
       img: "/images/card-icon/img-18.png",
-      count: "334",
+      count: "7",
       title: t("dashboard.followupAppointments"),
     },
   ];

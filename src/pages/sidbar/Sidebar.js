@@ -176,9 +176,9 @@ let iconSize=20;
               </Link>
             </li>
             <li>
-              <Link to="/account-settings" {...getLinkProps(["Experience"]) }>
+              <Link to="/account-information" {...getLinkProps(["Experience"]) }>
                 <LiaUserCogSolid className="icon" />
-                <span>{t("sidebar.accountSettings")}</span>
+                <span>{t("Account Information")}</span>
               </Link>
             </li>
             <li>

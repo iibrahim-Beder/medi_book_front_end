@@ -160,7 +160,7 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
                       path="settings"
                       element={<SecuritySettings />}
                     />
-                    <Route path="account-settings" element={<Acco />} />
+                    <Route path="account-information" element={<Acco />} />
                     <Route
                       path="pationt-information/:patientId"
                       element={<PatientProfilePageMain />}

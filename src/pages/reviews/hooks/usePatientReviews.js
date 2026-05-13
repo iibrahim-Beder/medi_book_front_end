@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from "react";
 import { useGetReviewsQuery } from "../../../api/doctor-information/reviewsApi";
 import { useSelector } from "react-redux";
 
-export const usePatientReviews = () => {
+export const usePatientReviews = (itemsPerPage=3) => {
       // const doctorId = useSelector((state) => state.auth.doctorId);
   const doctorId = 1;
 
@@ -17,7 +17,6 @@ export const usePatientReviews = () => {
   const [appointmentType, setAppointmentType] = useState(undefined);
   const [page, setPage] = useState(1);
 
-  const itemsPerPage = 3;
 
   useEffect(() => {
     setPage(1);

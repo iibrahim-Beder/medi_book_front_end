@@ -10,9 +10,10 @@ export default function DataEmptyCom({
   linkText = "Add New",
   btnText = "Add New",
   onClick = null,
+  containerStyle = {},
 }) {
   return (
-    <div className="empty-data-container">
+    <div className="empty-data-container" style={containerStyle}>
       <img style={imgStyle} src="/images/dashboard/dataEmpty.png" alt="Error" />
       <div className="text-center text-danger mt-4">
         <h3 style={{ fontWeight: "500", color: "#008ce9" }}>Data Empty</h3>
