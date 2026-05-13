@@ -1,6 +1,5 @@
 import Notes from "../doctor-financial-dashboard/component/Notes";
 import ErrorPage from "../notFound-pageError/ErrorPage";
-import DataEmptyCom from "../shared/DataEmptyCom";
 import Loader from "../shared/Loader";
 import PatientReviewsCards from "./components/PatientsReviewsCards";
 import RatingSummary from "./components/RatingReviewsSummary";
@@ -10,7 +9,7 @@ import { usePatientReviews } from "./hooks/usePatientReviews";
 export default function ReviewsPage() {
   const { isLoading, isError, refetch, reviews, isFetching } =
     usePatientReviews();
-  console.log("reviews", reviews);
+
   if (isError || (!isLoading && reviews.length === 0 && isFetching)) {
     return <ErrorPage refetch={refetch} isFetching={isFetching} />;
   }
@@ -18,19 +17,7 @@ export default function ReviewsPage() {
   if (isLoading) {
     return <Loader />;
   }
-  if (reviews.length === 0) {
-    return (
-      <div className="col-lg-12 m-4">
-        <div className="">
-          <DataEmptyCom
-            text="No Reviews Found"
-            children={<>⭐⭐⭐⭐⭐</>}
-            imgStyle={{ maxWidth: "50%", maxHeight: "70vh" }}
-          />
-        </div>
-      </div>
-    );
-  }
+
   return (
     <div>
       <div className="row reviews-page ">
