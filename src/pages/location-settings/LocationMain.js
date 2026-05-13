@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LocationField from "./carts/LocationField";
 import '../MainCss.css'
+import { useDoctorLocationsManager } from "./useDoctorLocations";
+import ErrorPage from "../notFound-pageError/ErrorPage";
 
 export default function LocationMain() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("AddLocation");
+  const{ refetch,
+    isError,
+   isFetchingLocations,isLoading,locations}=useDoctorLocationsManager();
+       if(isError|| (!isLoading && locations.length === 0 && isFetchingLocations)){
+         return   <ErrorPage refetch={refetch} isFetching={isFetchingLocations} />
+    }
 
   return (
     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">

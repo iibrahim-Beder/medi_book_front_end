@@ -20,6 +20,7 @@ export default function useShiftRules({
   const doctorId = useSelector((state) => state.auth.doctorId);
   const {
     data: Maindata,
+    currentData,
     isLoading,
     isFetching: isMainRulesFetching,
     isError,
@@ -34,10 +35,7 @@ export default function useShiftRules({
     {
       skip: !doctorId || !activeShift || !activeTab,
     },
-  );
-  // useEffect(() => {
-  //   console.log("=====From  useShiftRules data", Maindata, "isError", isError);
-  // }, [Maindata]);
+  )
   const [activateRule, { isLoading: isActivating }] =
     useActivateGenerationRuleMutation();
 
@@ -50,7 +48,6 @@ export default function useShiftRules({
   const [checkAvailability, { isFetching: isFetchingAvailability }] =
     useLazyCheckRuleAvailabilityQuery();
 
-  console.log("activeTab", activeTab, "selectedDays", selectedDays);
   const handleToggleRuleActive = useCallback(
     async (item) => {
       console.log(
@@ -211,7 +208,7 @@ export default function useShiftRules({
     setOpenModal(true);
   };
   useEffect(() => {
-    // console.log("=====data", Maindata, "isError", isError, "activeShift", activeShift, "activeTab", activeTab , "the condition ",(!doctorId || !activeShift || !activeTab),"doctorId, activeShift, activeTab",doctorId, activeShift, activeTab);
+    console.log("=====Maindata", Maindata, "isError", isError, "activeShift", activeShift, "activeTab", activeTab , "the condition ",(!doctorId || !activeShift || !activeTab),"doctorId, activeShift, activeTab",doctorId, activeShift, activeTab);
     if (isError) {
       setRules([]);
       return;
@@ -436,8 +433,8 @@ export default function useShiftRules({
     selectedDays,
     setSelectedDays,
   ]);
-
   return {
+    Maindata,
     isLoading,
     isMainRulesFetching,
     applyRule,
@@ -459,6 +456,9 @@ export default function useShiftRules({
     handleUpdateInactiveSlot,
     openModal,
     setOpenModal,
+    error,
+    isError,
+    refetch,
   };
 }
 // =======================================================================================================

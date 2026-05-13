@@ -25,6 +25,7 @@ export default function ErrorPage({refetch,isFetching} ) {
             (Error Code: 503 Service Unavailable)
           </h4>
             <Button
+              disabled={isFetching}
               onClick={refetch}
               variant="contained"
               sx={{

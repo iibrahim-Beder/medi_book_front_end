@@ -90,7 +90,7 @@ let completeRegistration =doctorCurrentStepNumber===6 ;
     return <Loader/>
   }
   if(currentStepError){
-    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} />
+    // return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} />
   }
   return (
     <div className="dc-userlogin">

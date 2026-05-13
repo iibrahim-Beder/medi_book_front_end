@@ -81,6 +81,7 @@ export default function ShiftsManagement() {
                       locations={locations}
                       onAdd={addShifts}
                       onUpdate={updateShift}
+                      setOpenModal={setOpenModal}
                       t={t}
                     />
                   ) : null,

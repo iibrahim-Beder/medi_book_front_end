@@ -28,6 +28,7 @@ export const useConversations = () => {
     data: chatsData,
     isLoading,
     isError,
+    isFetching,
     refetch: refetchConversations,
   } = useGetDoctorChatsQuery({
     pageNumber,
@@ -92,5 +93,6 @@ export const useConversations = () => {
     // WebSocket
     isChatTyping,
     setIsChatOpen: setIsChatComponentOpen,
+    isFetching
   };
 };

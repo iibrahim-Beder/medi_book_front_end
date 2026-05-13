@@ -12,7 +12,9 @@ import Field from "../ui/form-fields/Field";
 import SegmentedProgress from "./TimeRange/SegmentedProgress";
 import ActiveTabs from "./components/ActiveTabs";
 import Loader from "../shared/Loader";
-import {getTimeSlotTitle} from "./helper/helper";
+import { getTimeSlotTitle } from "./helper/helper";
+import ErrorPage from "../notFound-pageError/ErrorPage";
+import DataEmptyCom from "../shared/DataEmptyCom";
 
 export default function WeeklyTimeSlots() {
   const APPOINTMENT_TYPES = ["InPerson", "Follow-up", "Check-up", "Emergency"];
@@ -62,9 +64,8 @@ export default function WeeklyTimeSlots() {
   ];
   const [activeDay, setActiveDay] = useState("Sunday");
   const [activeShift, setActiveShift] = useState(7);
-    const [activeTab, setActiveTab] = useState("Active");
+  const [activeTab, setActiveTab] = useState("Active");
 
-  
   const {
     isLoading,
     isMainRulesFetching,
@@ -88,10 +89,16 @@ export default function WeeklyTimeSlots() {
     applyRule,
     openModal,
     setOpenModal,
+    isError,
+    error,
+    refetch,
   } = useShiftRules({
     activeShift,
     activeTab: activeDay,
   });
+    if (isError && error?.status !== 500) {
+    return <ErrorPage refetch={refetch} isFetching={isMainRulesFetching} />;
+  }
   const activeShiftName =
     shaftTabs.find((t) => t.templateId === activeShift)?.name || "Morning";
   const tabs = [
@@ -103,6 +110,7 @@ export default function WeeklyTimeSlots() {
     { key: "Friday", label: t("Friday") },
     { key: "Saturday", label: t("Saturday") },
   ];
+  if (isLoading) return <Loader />;
   return (
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace accordion-table ">
@@ -160,65 +168,97 @@ export default function WeeklyTimeSlots() {
                 className="w-100 border-0  dc-tabscontent tab-content accordion-table accordion-table-card "
                 style={{ minHeight: "550px" }}
               >
-                {isLoading || isMainRulesFetching  ? (
-            Loader("loading-in-side loadin-in-tab-content m-lg-auto")
+                {isMainRulesFetching ? (
+                  Loader("loading-in-side loadin-in-tab-content m-lg-auto")
                 ) : (
                   <div className="d-flex flex-column flex-direction-column w-100">
-                    <div className="" style={{ marginBottom: "20px" }}>
-                      <div
-                        className="table-card"
-                        style={{ padding: "20px 5px " }}
-                      >
-                        <SegmentedProgress
-                          mode="segmented"
-                          height={26}
-                          gap={3}
-                          segments={segments}
-                          handleSelectRange={() => {}}
+                    {!segments?.length || error?.status === 500 ? (
+                      <div className="table-card">
+                        <DataEmptyCom
+                          LinkTo="/shifts-management"
+                          linkText="Go to Create Shift"
+                          text={t(
+                            "No Slots Available ! Because there is no shift on this day on this template. If you want to add slots on this shift you can go to create a new shift",
+                          )}
                         />
                       </div>
-                    </div>
-                    <ActiveTabs activeCount={activeRules.length} inactiveCount={inactiveRules.length} activeTab={activeTab} setActiveTab={setActiveTab} />
+                    ) : (
+                      <>
+                        <div className="" style={{ marginBottom: "20px" }}>
+                          <div
+                            className="table-card"
+                            style={{ padding: "20px 5px " }}
+                          >
+                            <SegmentedProgress
+                              mode="segmented"
+                              height={26}
+                              gap={3}
+                              segments={segments}
+                              handleSelectRange={() => {}}
+                            />
+                          </div>
+                        </div>
+                        <ActiveTabs
+                          activeCount={activeRules.length}
+                          inactiveCount={inactiveRules.length}
+                          activeTab={activeTab}
+                          setActiveTab={setActiveTab}
+                        />
+                        {/* Active Slots */}
+                        {activeTab === "Active" &&
+                          (!activeRules.length ? (
+                            <>
+                              <div className="table-card p-1">
+                                <DataEmptyCom
+                                  imgStyle={{ maxWidth: "200px" }}
+                                  text={t("No Active Slots Available yet !")}
+                                  btnText="add new slot"
+                                  onClick={() => setOpenModal(true)}
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            <CustomAccordion
+                              getItemTitle={getTimeSlotTitle}
+                              accordioninnertitleSize="slots-accordion-title"
+                              title={`${t("Active Slots")}`}
+                              data={activeRules}
+                              formFields={formFields}
+                              appointmentTypes={APPOINTMENT_TYPES}
+                              currencies={CURRENCIES}
+                              onUpdate={handleUpdateActiveSlot}
+                              onSave={handleSaveSlot}
+                              timeline={segments}
+                              isActive={true}
+                              hedarClassName="title-card"
+                              handleToggle={handleToggleRuleActive}
+                              applyRule={applyRule}
+                              noDataMessage={t("No Active Slots Available !")}
+                            />
+                          ))}
 
-                    {/* Active Slots */}
-                  {activeTab === "Active" &&
-                    <CustomAccordion
-                      getItemTitle={getTimeSlotTitle}
-                      accordioninnertitleSize="slots-accordion-title"
-                      title={`${t("Active Slots")}`}
-                      data={activeRules}
-                      formFields={formFields}
-                      appointmentTypes={APPOINTMENT_TYPES}
-                      currencies={CURRENCIES}
-                      onUpdate={handleUpdateActiveSlot}
-                      onSave={handleSaveSlot}
-                      timeline={segments}
-                      isActive={true}
-                      hedarClassName="title-card"
-                      handleToggle={handleToggleRuleActive}
-                      applyRule={applyRule}
-                      noDataMessage={t("No Active Slots Available !")}
-                    />}
-
-                    {/* Inactive Slots */}
-                   {activeTab === "Inactive" &&
-                    <CustomAccordion
-                      getItemTitle={getTimeSlotTitle}
-                      accordioninnertitleSize="slots-accordion-title"
-                      title={`${t("Inactive Slots")}`}
-                      data={inactiveRules}
-                      formFields={formFields}
-                      appointmentTypes={APPOINTMENT_TYPES}
-                      currencies={CURRENCIES}
-                      onUpdate={handleUpdateInactiveSlot}
-                      onSave={handleSaveSlot}
-                      timeline={segments}
-                      isActive={false}
-                      hedarClassName="title-card"
-                      handleToggle={handleToggleRuleActive}
-                      applyRule={applyRule}
-                      noDataMessage={t("No Inactive Slots Available !")}
-                    />}
+                        {/* Inactive Slots */}
+                        {activeTab === "Inactive" && (
+                          <CustomAccordion
+                            getItemTitle={getTimeSlotTitle}
+                            accordioninnertitleSize="slots-accordion-title"
+                            title={`${t("Inactive Slots")}`}
+                            data={inactiveRules}
+                            formFields={formFields}
+                            appointmentTypes={APPOINTMENT_TYPES}
+                            currencies={CURRENCIES}
+                            onUpdate={handleUpdateInactiveSlot}
+                            onSave={handleSaveSlot}
+                            timeline={segments}
+                            isActive={false}
+                            hedarClassName="title-card"
+                            handleToggle={handleToggleRuleActive}
+                            applyRule={applyRule}
+                            noDataMessage={t("No Inactive Slots Available !")}
+                          />
+                        )}
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -320,22 +360,25 @@ export const AddModal = ({ show, onHide, children }) => {
       onHide={onHide}
       size="lg"
       centered
-      className="diagnosis-modal pr-0 small-modal " 
+      className="diagnosis-modal pr-0 small-modal "
       // style={{maxWidth:"830px"}}
     >
       <div>
-      <Modal.Header className="modal-header-custom">
-        <Modal.Title className="modal-title-custom">Add Rules</Modal.Title>
-        <button type="button" className="btn-close-custom" onClick={onHide}>
-          <MdClose size={24} />
-        </button>
-      </Modal.Header>
+        <Modal.Header className="modal-header-custom">
+          <Modal.Title className="modal-title-custom">Add Rules</Modal.Title>
+          <button type="button" className="btn-close-custom" onClick={onHide}>
+            <MdClose size={24} />
+          </button>
+        </Modal.Header>
 
-      <Modal.Body className="p-0">
-        <div className="modal-content-custom" style={{ overflowY: "visible" }}>
-          {children}
-        </div>
-      </Modal.Body>
+        <Modal.Body className="p-0">
+          <div
+            className="modal-content-custom"
+            style={{ overflowY: "visible" }}
+          >
+            {children}
+          </div>
+        </Modal.Body>
       </div>
       {/* 
       <Modal.Footer className="modal-footer-custom">

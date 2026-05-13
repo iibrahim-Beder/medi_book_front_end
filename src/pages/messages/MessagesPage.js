@@ -3,13 +3,13 @@ import ProfileSidebar from "./components/ProfileSidebar";
 import { useConversations } from "./hooks/useConversations";
 import { useSyncChatWithUrl } from "./hooks/useSyncChatWithUrl";
 import "./messages.css";
-import ErrorLoading from "../shared/ErrorLoading";
+import ErrorPage from "../notFound-pageError/ErrorPage";
 export default function MessagesPage() {
-  const{isLoading,isError,refetch,conversations}=useConversations();
+  const{isLoading,isError,refetch,conversations ,isFetching}=useConversations();
     useSyncChatWithUrl();
     
-    if(isError){
-         return   <ErrorLoading isError={isError} refetch={refetch} />
+    if(isError|| (!isLoading && conversations.length === 0 && isFetching)){
+         return   <ErrorPage refetch={refetch} isFetching={isFetching} />
     }
   return (<>
     

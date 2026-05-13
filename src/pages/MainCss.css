@@ -1764,3 +1764,11 @@ display: none;
   transition: scrollbar-color 0.4s ease;
 }
 /* pop up register end */
+
+/* empty-data-container */
+.empty-data-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

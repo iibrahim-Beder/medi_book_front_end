@@ -18,8 +18,10 @@ export const useDoctorLocationsManager = () => {
   // ==================== API Calls ====================
   const {
     data,
-    isLoading: isFetching,
+    isLoading,
     refetch,
+    isError,
+    isFetching: isFetchingLocations
   } = useGetDoctorLocationsQuery(doctorId, {
     skip: !doctorId,
   });
@@ -161,7 +163,10 @@ export const useDoctorLocationsManager = () => {
     updateLocalLocation,
     saveLocation,
     toggleActiveStatus,
-    isLoading: isFetching || isAdding || isUpdating,
+    isLoading,
+     refetch,
+    isError,
+   isFetchingLocations
   };
 };
 

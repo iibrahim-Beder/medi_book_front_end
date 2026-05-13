@@ -4,6 +4,7 @@ import SelectTimePicker from "../../ui/form-fields/SelectTimePicker";
 import toast from "react-hot-toast";
 import PopupMessage from "../../shared/PopupMessage";
 import { useTranslation } from "react-i18next";
+import DataEmptyCom from "../../shared/DataEmptyCom";
 export default function ShiftForm({
   dayIndex,
   shifts = [],
@@ -12,12 +13,13 @@ export default function ShiftForm({
   onAdd,
   onUpdate,
   onToggleActive,
+  setOpenModal
 }) {
   const { t } = useTranslation();
   return (
     <div>
       {shifts.length === 0 && (
-        <div>{t ? t("No shifts for this day") : "No shifts for this day"}</div>
+       <DataEmptyCom text="No Shift Found for this day" btnText="Add New Shift" onClick={() => setOpenModal(true)} />
       )}
 
       {shifts.map((shift) => (

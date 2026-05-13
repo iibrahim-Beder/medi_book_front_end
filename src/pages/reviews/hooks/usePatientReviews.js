@@ -5,8 +5,8 @@ import { useGetReviewsQuery } from "../../../api/doctor-information/reviewsApi";
 import { useSelector } from "react-redux";
 
 export const usePatientReviews = () => {
-    //   const doctorId = useSelector((state) => state.auth.doctorId);
-  const doctorId = 1;
+      const doctorId = useSelector((state) => state.auth.doctorId);
+  // const doctorId = 1;
 
   const [dateRange, setDateRange] = useState({
     start: null,
