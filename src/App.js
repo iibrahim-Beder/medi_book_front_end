@@ -85,12 +85,12 @@ const { i18n } = useTranslation();
 
 const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching } =useDoctorRegistration();
 let completeRegistration =doctorCurrentStepNumber===6 ;
-// let completeRegistration = localStorage.getItem('completeRegistration');
-  if(isCurrentStepLoading ){
+
+if(isCurrentStepLoading ){
     return <Loader/>
   }
   if(currentStepError){
-    // return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} />
+    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} />
   }
   return (
     <div className="dc-userlogin">

@@ -107,7 +107,7 @@ let iconSize=20;
               </h2>
               <span>{email} <FaClone className="clone-icon" /></span>
               {/* <a>@michael20769 <FaClone className="clone-icon" /></a> */}
-              {!stepCompleted.all && <ProgressSide setOpenStepRegister={setOpenStepRegister}/>}
+              {!stepCompleted.All && <ProgressSide setOpenStepRegister={setOpenStepRegister}/>}
             </div>
           </div>
         </div>

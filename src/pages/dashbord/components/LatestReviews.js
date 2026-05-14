@@ -8,8 +8,6 @@ import DataEmptyCom from "../../shared/DataEmptyCom";
 
 export default function LatestReviews() {
   const {reviews , isLoading} = usePatientReviews(4);
-  console.log("reviews", reviews);
-
 
   return (
     <div className="dc-dashboardbox">
