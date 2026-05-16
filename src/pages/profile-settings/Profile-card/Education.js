@@ -144,7 +144,7 @@ const AcademicQualifications = forwardRef(({ isNew }, ref) => {
         addNewLabel="Add New Qualification"
         data={educations}
         formFields={formFields}
-        onAdd={isNew ? null: handleAddAcademic}
+        onAdd={handleAddAcademic}
         buttonsAvailable={isNew ? false: true}
         onDelete={handleDeleteAcademic}
         onUpdate={handleUpdateAcademic}

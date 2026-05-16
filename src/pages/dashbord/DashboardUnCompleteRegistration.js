@@ -185,7 +185,7 @@ export const SetupProgress = ({setOpenStepRegister}) => {
         <div>
           <h3 className="dc-card__title">Profile completion</h3>
           <p className="dc-card__sub">
-            {doctorCurrentStepNumber} of {6} steps completed
+            {doctorCurrentStepNumber -1} of {6} steps completed
           </p>
         </div>
         <div className="dc-percent">
@@ -306,7 +306,7 @@ export const ProgressSide = ({setOpenStepRegister}) => {
 
           <div  className='progressRow'>
             <span  className="progressLabel text-suptext">
-              {doctorCurrentStepNumber} of {6} steps completed
+              {doctorCurrentStepNumber -1} of {6} steps completed
             </span>
             <span className='progressPct'>{completedStepsPercent}%</span>
           </div>

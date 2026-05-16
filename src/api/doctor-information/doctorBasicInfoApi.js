@@ -59,6 +59,27 @@ export const doctorApi = baseApi.injectEndpoints({
     { type: 'Doctor', id: doctorId }
   ],
 }),
+
+ // Update current doctor step
+    updateCurrentDoctorStep: builder.mutation({
+      query: (doctorId) => ({
+        url: '/Doctors/UpdateCurrentDoctorStep',
+        method: 'PUT',
+        body: { doctorId },
+      }),
+      invalidatesTags: (result, error, doctorId) => [
+        { type: 'Doctor', id: doctorId },
+      ],
+      transformResponse: (response) => {
+        console.log('Update Current Doctor Step Response:', response);
+        return response;
+      },
+      transformErrorResponse: (response) => {
+        console.log('Update Current Doctor Step Error:', response);
+        return response;
+      },
+    }),
+
   }),
 });
 
@@ -69,4 +90,5 @@ export const {
   useUpdateDoctorBasicInfoMutation,
   useGetDoctorCurrentStepQuery,
   useLazyGetDoctorCurrentStepQuery,
+  useUpdateCurrentDoctorStepMutation,
 } = doctorApi;

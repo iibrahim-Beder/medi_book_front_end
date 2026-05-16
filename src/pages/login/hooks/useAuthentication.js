@@ -64,7 +64,8 @@ const passwordRegex =
       }
 
     } catch (error) {
-      const errorMessage = error?.data?.Message || t('register.error');
+      console.error('Account creation error:', error);
+      const errorMessage = error?.data?.message || t('register.error');
       toast.error(errorMessage);
     }finally {
       toast.dismiss(loader);

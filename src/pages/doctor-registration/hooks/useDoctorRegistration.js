@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useGetDoctorCurrentStepQuery } from "../../../api/doctor-information/doctorBasicInfoApi";
+import { useGetDoctorCurrentStepQuery, useUpdateCurrentDoctorStepMutation } from "../../../api/doctor-information/doctorBasicInfoApi";
 import { useSelector } from "react-redux";
 
 export function useDoctorRegistration() {
@@ -14,6 +14,8 @@ export function useDoctorRegistration() {
   } = useGetDoctorCurrentStepQuery(doctorId, {
     skip: !doctorId,
   });
+  const [updateCurrentDoctorStep, { isLoading }] =
+  useUpdateCurrentDoctorStepMutation();
 
   // NEW
   const doctorCurrentStep = currentStepData?.data || null;
@@ -63,15 +65,6 @@ export function useDoctorRegistration() {
   }, [doctorCurrentStepNumber]);
   const stepRef = useRef(null);
 
-  //   useEffect(() => {
-  //     async function fetchRegistration() {
-  //     //   const res: RegistrationMeta = await fakeFetch()
-  //     //   setCurrentStep(res.currentStep)
-  //     //   setCompletedSteps(res.completedSteps)
-  //     }
-
-  //     fetchRegistration()
-  //   }, [])
 
   async function handleSave() {
     if (!stepRef.current?.submit) return;
@@ -82,7 +75,7 @@ export function useDoctorRegistration() {
       setCompletedSteps((prev) =>
         prev.includes(currentStep) ? prev : [...prev, currentStep],
       );
-      if (currentStep <= doctorCurrentStepNumber){refetchCurrentStep();};
+      if (currentStep >= doctorCurrentStepNumber){refetchCurrentStep();};
 
       setCurrentStep((prev) => prev + 1);
     }
@@ -91,6 +84,21 @@ export function useDoctorRegistration() {
   function handlePrevious() {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   }
+const handleNextStep = async () => {
+  console.log("Response currentStep", currentStep, "doctorCurrentStepNumber", doctorCurrentStepNumber);
+  setCurrentStep((prev) => prev + 1);
+  if (currentStep >= doctorCurrentStepNumber) {
+    try {
+      const response = await updateCurrentDoctorStep(doctorId).unwrap();
+
+      console.log("Update Current Doctor Step Response:", response);
+
+      await refetchCurrentStep();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
 
   return {
     currentStep,
@@ -107,6 +115,7 @@ export function useDoctorRegistration() {
     refetchCurrentStep,
     isFetching,
     stepCompleted,
-    DoctorRegistrationStep
+    DoctorRegistrationStep,
+    handleNextStep
   };
 }

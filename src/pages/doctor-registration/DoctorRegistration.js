@@ -22,6 +22,7 @@ export default function DoctorRegistration({ openStepRegister }) {
     handleSave,
     handlePrevious,
     setCurrentStep,
+    handleNextStep,
   } = useDoctorRegistration();
 
   console.log("currentStep", currentStep);
@@ -85,11 +86,11 @@ export default function DoctorRegistration({ openStepRegister }) {
                     justifyContent: "flex-end",
                   }}
                 >
-                  {(completedSteps.includes(currentStep)) && (
+                  {((completedSteps.includes(currentStep)) || (currentStep ===3 || currentStep ===4)) && (
                     <button
                       type="button"
                       className="btn skip"
-                      onClick={() => setCurrentStep((prev) => prev + 1)}
+                      onClick={handleNextStep}
                       style={{
                         background: "#eee",
                         color: "#333",
@@ -99,13 +100,13 @@ export default function DoctorRegistration({ openStepRegister }) {
                       {t("skip")}
                     </button>
                   )}
-                  <button
+         { !((completedSteps.includes(currentStep)) && (currentStep ===3 || currentStep ===4)) &&        <button
                     type="button"
                     className="second-btn"
                     onClick={handleSave}
                   >
                     {t("save")}
-                  </button>
+                  </button>}
                 </div>
               ) : (
                 <button

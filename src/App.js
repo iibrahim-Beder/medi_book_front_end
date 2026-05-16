@@ -47,9 +47,17 @@ function App() {
   const [openStepRegister, setOpenStepRegister] = useState(false);
   const [showPopupClose, setShowPopupClose] = useState(false);
 
-  window.addEventListener("click", () => {
-  audioService.init();
-}, { once: true });
+useEffect(() => {
+  const initAudio = () => {
+    audioService.init();
+  };
+
+  window.addEventListener("click", initAudio, { once: true });
+
+  return () => {
+    window.removeEventListener("click", initAudio);
+  };
+}, []);
 const soundsConfig = {
   notification: '/sounds/notification.mp3',
   messageArrived: '/sounds/message-arrives.wav',
@@ -82,7 +90,20 @@ useEffect(() => {
     document.documentElement.style.overflow = "auto";
   };
 }, [openStepRegister]);
+useEffect(() => {
+  const handleEsc = (e) => {
+    if (e.key === "Escape") {
+      setOpenStepRegister(false);
+      setShowPopupClose(false);
+    }
+  };
 
+  window.addEventListener("keydown", handleEsc);
+
+  return () => {
+    window.removeEventListener("keydown", handleEsc);
+  };
+}, []);
 const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching } =useDoctorRegistration();
 let completeRegistration =doctorCurrentStepNumber===6 ;
 
