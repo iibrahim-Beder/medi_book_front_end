@@ -4,8 +4,8 @@ import { Modal } from "react-bootstrap";
 import { MdClose } from "react-icons/md";
 import useShift from "./hooks/useShift";
 import SiftForm from "./components/ShiftForm";
-import ShiftStep from "./components/ShiftStep";
 import Loader from "../shared/Loader";
+import ShiftStep from "../doctor-registration/steps/ShiftStep";
 export default function ShiftsManagement() {
   const [activeTab, setActiveTab] = useState("Sunday");
   const { t } = useTranslation();

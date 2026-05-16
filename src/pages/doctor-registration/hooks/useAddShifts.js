@@ -33,11 +33,11 @@ const useAddShifts = () => {
     { skip: !doctorId || !selectedTemplateId }
   );
   const templates = [
-    { templateId: 0, name: "Select time template", startTime: "", endTime: "" },
-    { templateId: 7, name: "Morning", startTime: "08:00", endTime: "12:00" },
-    { templateId: 8, name: "Afternoon", startTime: "12:00", endTime: "16:00" },
-    { templateId: 9, name: "Evening", startTime: "16:00", endTidme: "20:00" },
-    { templateId: 11, name: "Night", startTime: "20:00", endTime: "23:59" },
+    { templateId: 0, name: "Select time template", startTime: "", endTime: ""  },
+    { templateId: 7, name: "Morning 08:00 AM - 12:00 PM", startTime: "08:00", endTime: "12:00" },
+    { templateId: 8, name: "Afternoon 12:00 PM - 04:00 PM", startTime: "12:00", endTime: "16:00" },
+    { templateId: 9, name: "Evening 04:00 PM - 08:00 PM", startTime: "16:00", endTidme: "20:00" },
+    { templateId: 11, name: "Night 08:00 PM - 11:59 PM", startTime: "20:00", endTime: "23:59" },
   ];
 
   const [addShifts, { isLoading: isAdding }] = useAddShiftsStepToDoctorMutation();

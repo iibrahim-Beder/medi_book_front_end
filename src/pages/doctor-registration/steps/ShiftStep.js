@@ -42,7 +42,7 @@ const ShiftStep = forwardRef(
     return (
       // <div className="shift-template-selector">
       <div
-        className="table-card"
+        className={insidUi ? "" : "table-card"}
         style={{ position: "relative", display: "flex" }}
       >
         {/* {isLoading  && Loader("form-loader")} */}
@@ -54,8 +54,7 @@ const ShiftStep = forwardRef(
                 options={templates.map((tmpl) => ({
                   value: tmpl.templateId,
                   label:
-                    tmpl.name +
-                    `${tmpl.startTime && "  " + tmpl.startTime + " - " + tmpl.endTime}`,
+                    tmpl.name ,
                 }))}
                 value={selectedTemplateId}
                 onChange={(e) => setSelectedTemplateId(e.target.value)}
