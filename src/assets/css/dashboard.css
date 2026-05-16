@@ -5729,6 +5729,7 @@ html[dir="rtl"]  {
 
 	@media (max-width: 820px) {
 		    .dc-userform fieldset .form-group.form-group-half {width: 100%;}
+		    .dc-userform fieldset .form-group.form-group-fourth {width: 50% !important;}
 		.dc-checkboxgroup{grid-template-columns: repeat(2, 1fr);}
 .dc-accordioninnertitle.small ~ .dc-collapseexp 
 {
@@ -5956,7 +5957,11 @@ padding: 0 10px;
             padding-right: 15px !important;
             padding-left: 10px !important;
         }
-	}}
+	}
+	@media (max-width: 480px) {
+	   .dc-userform fieldset .form-group.form-group-fourth {width: 100% !important;}
+	}
+}
 }	
 
 	.PatientsFilters{padding: 10px !important;}

@@ -75,7 +75,8 @@ const Step3ProfessionalInfo = forwardRef(
             <fieldset>
           {isLoading && Loader("form-loader")}
               {/* years of experience */}
-              <div className="form-group form-group-half">
+            <div className="form-group form-group-half p-0">
+              <div className="form-group p-0 form-group-half form-group-fourth">
                 <Field
                   label={t("years of experience")}
                   type="number"
@@ -86,12 +87,12 @@ const Step3ProfessionalInfo = forwardRef(
                   className="form-control"
                   placeholder={t("years of experience")}
                   min="0"
-                  forceShowError={true}
+                  forceShowError={true} 
                 />
               </div>
 
               {/* price */}
-              <div className="form-group form-group-half">
+              <div className="form-group p-0 form-group-half form-group-fourth">
                 <Field
                   label={t("default Price")}
                   type="number"
@@ -106,9 +107,10 @@ const Step3ProfessionalInfo = forwardRef(
                   forceShowError={true}
                 />
               </div>
+              </div>
 
               {/* currency */}
-              <div className="form-group form-group-half">
+              <div className="form-group p-0 form-group-half">
                 <SelectField
                   label={t("currency")}
                   name="defaultCurrencyId"
@@ -122,7 +124,7 @@ const Step3ProfessionalInfo = forwardRef(
               </div>
 
               {/* languages */}
-              <div className="form-group form-group-half">
+              <div className="form-group">
                 <Field
                   label={t("languages")}
                   name="languagesSpoken"
@@ -135,7 +137,7 @@ const Step3ProfessionalInfo = forwardRef(
               </div>
 
               {/* bio */}
-              <div className="form-group form-group-full">
+              <div className="form-group p-0 form-group-full">
                 <TextAreaField
                   label={t("bio")}
                   name="bio"

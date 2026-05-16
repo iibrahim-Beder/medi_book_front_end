@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { format, parse, isValid } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
+import Calendar from "react-calendar";
 import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
 
@@ -283,7 +284,7 @@ const SelectDatePicker = ({
               boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
               padding: "8px"
             }}>
-              <DayPicker
+              <Calendar
                 mode="single"
                 selected={tempDate}
                 onSelect={handleDateSelect}

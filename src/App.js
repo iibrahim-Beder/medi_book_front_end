@@ -71,15 +71,15 @@ const { i18n } = useTranslation();
       document.documentElement.dir = "ltr";
     }
   }, [i18n.language]);
-  useEffect(() => {
+useEffect(() => {
   if (openStepRegister) {
-    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
   } else {
-    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
   }
 
   return () => {
-    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
   };
 }, [openStepRegister]);
 
@@ -110,7 +110,7 @@ if(isCurrentStepLoading ){
                 <Navbar setShowPopupClose={setShowPopupClose} />
                 <Sidebar setOpenStepRegister={setOpenStepRegister} setShowPopupClose={setShowPopupClose} />
                 {openStepRegister && (
-                  <div className=" custom-modal-overlay registration-popup d-flex justify-content-center align-items-center  fade-in" onClick={() => setOpenStepRegister(false)}>
+                  <div className=" custom-modal-overlay registration-popup d-flex justify-content-center align-items-center  fade-in">
                       
                       <div className="custom-modal-content position-relative scale-in"    onClick={(e) => e.stopPropagation()}>
                         

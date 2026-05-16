@@ -192,7 +192,8 @@ export const useDoctorExperience = (New=false)=> {
         }
 
         return success;
-      } catch {
+      } catch (error) {
+        console.log("=======error",error);
         toast.error("Save failed");
         return false;
       } finally {
