@@ -31,10 +31,11 @@ const ShiftStep = forwardRef(
       handleSave,
       isAdding,
       locations,
+      isLoadingLocations,
       isFetchingAvailability,
       templates,
     } = useAddShifts();
-    console.log("locations", locations);
+
     useImperativeHandle(ref, () => ({
       submit: handleSave,
     }));
@@ -101,13 +102,14 @@ const ShiftStep = forwardRef(
             <div className="form-group-half form-group">
               <SelectField
                 label={t("Location")}
-                options={locations.map((loc) => ({
+                name="location"
+                disabled={isLoadingLocations || !locations.length}
+                options={ isLoadingLocations ? [{ value: "empty", label: t("loading") }] : [{ value: "empty", label: t("Select Location") }, ...locations.map((loc) => ({
                   value: loc.id,
                   label: loc.displayName,
-                }))}
+                }))]}
                 value={selectedLocationId}
                 onChange={(e) => setSelectedLocationId(e.target.value)}
-                placeholder={t("shift.selectLocationPlaceholder")}
               />
             </div>
             {insidUi && (

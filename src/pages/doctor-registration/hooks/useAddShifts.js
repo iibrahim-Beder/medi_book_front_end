@@ -19,7 +19,7 @@ const useAddShifts = () => {
   const [selectedLocationId, setSelectedLocationId] = useState(null);
   const [breakTimes, setBreakTimes] = useState({ start: '', end: '' });
   const [selectedDays, setSelectedDays] = useState([]);
-  const {locations}= useDoctorLocationsManager(doctorId)
+  const {locations ,isLoading:isLoadingLocations}= useDoctorLocationsManager(doctorId)
   console.log("locations",locations);
   const {
     data: availabilityData,
@@ -47,9 +47,6 @@ const useAddShifts = () => {
     setBreakTimes({ start: '', end: '' });
   }, [selectedTemplateId]);
 
-  useEffect(() => {
-    setSelectedDays([]);
-  }, [selectedLocationId]);
 
   const toggleDay = (dayOfWeek) => {
     setSelectedDays((prev) =>
@@ -62,24 +59,26 @@ const useAddShifts = () => {
   const handleSave = async () => {
 const SelectedTemplate = templates.find(
   (template) => template.templateId === Number(selectedTemplateId));    // const templateTime = { startTime: SelectedTemplate.startTime, endTime: SelectedTemplate.endTime };
-    console.log("templates",templates,"selectedTemplateId",selectedTemplateId,"selectedLocationId",selectedLocationId,"selectedDays",selectedDays,"breakTimes",breakTimes,"templateTime",SelectedTemplate);
+    // console.log("selectedTemplateId",selectedTemplateId,"selectedLocationId",selectedLocationId,"selectedDays",selectedDays,"breakTimes",breakTimes,"templateTime",SelectedTemplate);
+    console.log("selectedLocationId",selectedLocationId);
     
     if (!selectedTemplateId) {
-      toast.error(t('shift.selectTemplate'));
+      toast.error(t('Selec Template required'));
       return;
     }
-    if (!selectedLocationId) {
-      toast.error(t('shift.selectLocation'));
+    if (!selectedLocationId || selectedLocationId === "empty" ) {
+      toast.error(t('Selec Location required'));
       return;
     }
     if (selectedDays.length === 0) {
-      toast.error(t('shift.selectAtLeastOneDay'));
+      toast.error(t('Selec Days of week required'));
       return;
     }
-         if (!breakTimes.end) {}
          if (!breakTimes.start) {
           toast.error("Break start time is required");
           return false ;}
+          if (!breakTimes.end){
+          toast.error("Break end time is required");return false };
           if (breakTimes.start  < SelectedTemplate.startTime) {
             toast.error("Break start time must be greater than shift start time");
             return false;
@@ -88,8 +87,6 @@ const SelectedTemplate = templates.find(
             toast.error("Break end time must be less than shift end time");
             return false;
           }
-          if (!breakTimes.end){
-          toast.error("Break end time is required");return false };
         if(breakTimes.start  >= breakTimes.end){
           toast.error("Break start time must be less than break end time");
           return false ;
@@ -142,7 +139,8 @@ const SelectedTemplate = templates.find(
     isAdding,
     locations,
     isFetchingAvailability,
-    templates
+    templates,
+    isLoadingLocations
   };
 };
 

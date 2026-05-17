@@ -571,9 +571,8 @@
   ,
     "success": {
     "title": "Registration Successful!",
-    "message1": "Your information has been successfully registered in MediPRO Elite system.",
-    "message2": "Your data will be reviewed by the administration and you will be contacted soon.",
-    "requestNumber": "Request Number",
+    "message1": "Your information has been successfully registered in MediBook system.",
+    "message2": "You can now set rules to organize your appointments, and the system will automatically generate the time periods on a daily basis.",
     "newRegister": "New Registration"
  
   }

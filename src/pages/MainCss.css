@@ -339,7 +339,7 @@ li {
   background-color: var(--cardcolor);  
   padding: 0;
   cursor: pointer;
-  line-height: 44px;
+  line-height: 30px;
   border: 1px solid #eeeeeeb5;
   font-weight: 400;
   vertical-align: middle;

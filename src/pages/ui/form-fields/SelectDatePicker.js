@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { format, parse, isValid } from 'date-fns';
-import { DayPicker } from 'react-day-picker';
 import Calendar from "react-calendar";
-import 'react-day-picker/dist/style.css';
 import { CiCalendar } from "react-icons/ci";
 
 const SelectDatePicker = ({
@@ -57,6 +55,7 @@ const SelectDatePicker = ({
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        handleManualInputSubmit();
         setShowDropdown(false);
         setIsEditing(false);
         setTouched(true);
@@ -99,7 +98,7 @@ const SelectDatePicker = ({
       onChange?.({
         target: {
           name,
-          value: selected.toISOString().slice(0, -1) // 2025-11-27T10:22:05.7395677
+         value: format(selected, "yyyy-MM-dd'T'HH:mm:ss") // 2025-11-27T10:22:05.7395677
         }
       });
     }
@@ -166,8 +165,7 @@ const SelectDatePicker = ({
     onChange?.({
       target: {
         name,
-        value: finalDate.toISOString().slice(0, -1)
-      }
+    value: format(finalDate, "yyyy-MM-dd'T'HH:mm:ss")      }
     });
   };
 
@@ -177,14 +175,15 @@ const SelectDatePicker = ({
     setShowDropdown(true);
   };
 
-  const handleInputBlur = () => {
-    setTimeout(() => {
-      if (!showDropdown) {
-        setIsEditing(false);
-        setTouched(true);
-      }
-    }, 200);
-  };
+const handleInputBlur = () => {
+  setTimeout(() => {
+    if (!showDropdown) {
+      handleManualInputSubmit();
+      setIsEditing(false);
+      setTouched(true);
+    }
+  }, 200);
+};
 
   const handleIconClick = () => {
     if (disabled) return;
@@ -284,19 +283,14 @@ const SelectDatePicker = ({
               boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
               padding: "8px"
             }}>
-              <Calendar
-                mode="single"
-                selected={tempDate}
-                onSelect={handleDateSelect}
-                month={month}
-                onMonthChange={setMonth}
-                styles={{
-                  caption: { display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' },
-                  caption_label: { textTransform: "capitalize", fontWeight: 'bold' },
-                  day: { cursor: "pointer", borderRadius: "3px" },
-                  selected: { backgroundColor: "#3fabf3", color: "white", fontWeight: 'bold' }
-                }}
-              />
+            <Calendar
+              value={tempDate}
+              onChange={handleDateSelect}
+              activeStartDate={month}
+              onActiveStartDateChange={({ activeStartDate }) =>
+                setMonth(activeStartDate)
+              }
+            />
             </div>
           )}
         </div>

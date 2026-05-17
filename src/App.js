@@ -140,7 +140,7 @@ if(isCurrentStepLoading ){
                           onClick={() => setOpenStepRegister(false)}
                         ><IoIosCloseCircleOutline/></button>
 
-                        <DoctorRegistration openStepRegister={openStepRegister} />
+                        <DoctorRegistration setOpenStepRegister={setOpenStepRegister} openStepRegister={openStepRegister} />
 
                       </div>
 

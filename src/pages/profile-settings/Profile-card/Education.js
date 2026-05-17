@@ -50,11 +50,8 @@ const AcademicQualifications = forwardRef(({ isNew }, ref) => {
     {
       name: "graduationYear",
       label: "Graduation Year",
-      type: "number",
+      type: "date",
       placeholder: "Enter graduation year",
-      min: 1950,
-      max: 2030,
-      required: true,
       half: true,
     },
     {

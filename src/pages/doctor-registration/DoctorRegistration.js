@@ -13,7 +13,7 @@ import AcademicQualifications from "../profile-settings/Profile-card/Education";
 import DoctorExperience from "../profile-settings/Profile-card/Experience";
 import {  useEffect } from "react";
 
-export default function DoctorRegistration({ openStepRegister }) {
+export default function DoctorRegistration({ openStepRegister ,setOpenStepRegister}) {
   const { t } = useTranslation();
   const {
     currentStep,
@@ -37,7 +37,7 @@ export default function DoctorRegistration({ openStepRegister }) {
           completedSteps={completedSteps}
           stepsMeta={getStepsMeta(t)}
         />
-        {true ? (
+        {currentStep <= 6 ? (
           <div className="form-container">
             {currentStep === 1 && (
               <Step1PersonalInfo
@@ -121,7 +121,7 @@ export default function DoctorRegistration({ openStepRegister }) {
           </div>
         ) : (
           <SuccessMessage
-          // resetForm={resetForm}
+          setOpenStepRegister={setOpenStepRegister}
           />
         )}
       </div>
