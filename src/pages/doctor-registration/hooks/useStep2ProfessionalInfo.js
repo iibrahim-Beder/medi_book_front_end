@@ -97,44 +97,48 @@ export const useStep2ProfessionalInfo = (isNew) => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.yearsOfExperience)
-      newErrors.yearsOfExperience = t(
-        "professionalInfo.yearsOfExperience.required",
-      );
+    if (!formData.yearsOfExperience){toast.error(t("years of experience required")); return false;};
+
     if (!formData.defaultPricePerSession)
-      newErrors.defaultPricePerSession = t(
-        "professionalInfo.defaultPrice.required",
-      );
+    {
+      toast.error(t("default price per session required"));
+      return false;
+    }
     // if (!formData.defaultCurrencyId)
     //   newErrors.defaultCurrencyId = t("professionalInfo.currency.required");
     if (!formData.bio.trim())
-      newErrors.bio = t("professionalInfo.bio.required");
+    {
+      toast.error(t("bio required"));
+      return false;
+    }
     if (!formData.languagesSpoken.trim())
-      newErrors.languagesSpoken = t("professionalInfo.languages.required");
+    {
+      toast.error(t("languages spoken required"));
+      return false;
+    }
     if (!formData.specialtyIds.length)
-      newErrors.specialtyIds = t("professionalInfo.specialties.required");
+    {
+      toast.error(t("specialty required at least one"));
+      return false;
+    }
     if (!formData.primarySpecialtyId)
-      newErrors.primarySpecialtyId = t(
-        "professionalInfo.primarySpecialty.required",
-      );
+     {
+      toast.error(t("primary specialty required"));
+      return false;
+     }
     if (
       !formData.primarySpecialtyId &&
       !formData.specialtyIds.includes(Number(formData.primarySpecialtyId))
     ) {
-      newErrors.primarySpecialtyId = t(
-        "professionalInfo.primarySpecialty.mustBeSelected",
-      );
+      toast.error(t("primary specialty not found"));
+      return false;
     }
-    setErrors(newErrors);
-    console.log("errors",errors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
   const handleSubmit = async () => {
     console.log("formData", formData,"fetchedData",fetchedData);
     if (!validateForm()) {
-      toast.error(t("validation.checkErrors"));
       return false;
     }
 

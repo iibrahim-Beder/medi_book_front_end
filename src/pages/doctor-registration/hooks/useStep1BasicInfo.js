@@ -139,7 +139,7 @@ export const useStep1PersonalInfo = (isNew) => {
         console.log("payload", payload);
           const response =await addDoctorBasicInfo(payload).unwrap()
            if (response.succeeded) {
-        toast.success(t("personalInfo.success"));
+        toast.success(t("Personal info success"));
         return true;
       }
       }else{
@@ -154,7 +154,7 @@ export const useStep1PersonalInfo = (isNew) => {
       const response = await updateDoctorBasicInfo({ doctorId:doctorId, ...payload}).unwrap();
 
       if (response.succeeded) {
-        toast.success(t("personalInfo.success"));
+        toast.success(t("Personal Info success"));
         return true;
       }
 
@@ -187,7 +187,7 @@ export const buildPayload = (original, updated) => {
   const payload = {};
   console.log("=======original", original, "updated", updated);
 
-  if (updated.dateOfBirth !==  original.dateOfBirth.split("T")[0]) {
+  if (updated.dateOfBirth.split("T")[0] !==  original.dateOfBirth.split("T")[0]) {
     payload.dateOfBirth = updated.dateOfBirth || null;
   }
   if (updated.firstName !== original.firstName) {

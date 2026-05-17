@@ -9,6 +9,7 @@ export function useDoctorRegistration() {
     data: currentStepData,
     isLoading: isCurrentStepLoading,
     error: currentStepError,
+    isError: isCurrentStepError,
     refetch: refetchCurrentStep,
     isFetching
   } = useGetDoctorCurrentStepQuery(doctorId, {
