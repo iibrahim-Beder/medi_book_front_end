@@ -34,6 +34,7 @@ const ShiftStep = forwardRef(
       isLoadingLocations,
       isFetchingAvailability,
       templates,
+      selectedTemplate
     } = useAddShifts();
 
     useImperativeHandle(ref, () => ({
@@ -83,6 +84,8 @@ const ShiftStep = forwardRef(
                 label="Break Start Time"
                 placeholder="Break Start Time"
                 value={breakTimes.start}
+                minTime={selectedTemplate?.startTime}
+                maxTime={selectedTemplate?.endTime}
                 onChange={(e) =>
                   setBreakTimes({ ...breakTimes, start: e.target.value })
                 }
@@ -94,6 +97,8 @@ const ShiftStep = forwardRef(
                 label="Break End Time"
                 placeholder="Break End Time"
                 value={breakTimes.end}
+                minTime={selectedTemplate?.startTime}
+                maxTime={selectedTemplate?.endTime}
                 onChange={(e) =>
                   setBreakTimes({ ...breakTimes, end: e.target.value })
                 }

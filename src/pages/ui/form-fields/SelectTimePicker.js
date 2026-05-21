@@ -1,9 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { CiClock2 } from "react-icons/ci";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import {formatTimeForDisplay,parseManualInput} from '../../shared/utils';
-// import './TimePicker.css';
+import { formatTimeForDisplay, parseManualInput } from "../../shared/utils";
+import "./SelectTimePicker.css";
 
+const convert24To12 = (time24) => {
+  const [hourStr, minute] = time24.split(":");
+  const hour24 = parseInt(hourStr, 10);
+
+  const period = hour24 >= 12 ? "PM" : "AM";
+  const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+
+  return {
+    hour: hour12.toString().padStart(2, "0"),
+    minute,
+    period,
+  };
+};
 const SelectTimePicker = ({
   label,
   name,
@@ -17,30 +30,50 @@ const SelectTimePicker = ({
   disabled = false,
   half = false,
   required = false,
-  width = 'auto'
+  minTime,
+  maxTime,
+  width = "auto",
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
 
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [manualInput, setManualInput] = useState('');
+  const [manualInput, setManualInput] = useState("");
   const [isEditing, setIsEditing] = useState(false);
-  const [inputError, setInputError] = useState('');
-  const [activePeriod, setActivePeriod] = useState('PM');
-  const [selectedHour, setSelectedHour] = useState('04');
-  const [selectedMinute, setSelectedMinute] = useState('00');
+  const [inputError, setInputError] = useState("");
+  const [activePeriod, setActivePeriod] = useState("PM");
+  const [selectedHour, setSelectedHour] = useState("04");
+  const [selectedMinute, setSelectedMinute] = useState("00");
 
   const dropdownRef = useRef();
   const inputRef = useRef();
 
   // Generate hours (1-12)
-  const hours = Array.from({ length: 12 }, (_, i) => 
-    (i + 1).toString().padStart(2, '0')
-  );
+  const minutes = ["00", "15", "30", "45"];
 
-  // Generate minutes (00, 15, 30, 45)
-  const minutes = ['00', '15', '30', '45'];
+  const generateAllowedHours = () => {
+    if (!minTime || !maxTime) {
+      return Array.from({ length: 12 }, (_, i) =>
+        (i + 1).toString().padStart(2, "0"),
+      );
+    }
+
+    const startHour = parseInt(minTime.split(":")[0], 10);
+    const endHour = parseInt(maxTime.split(":")[0], 10);
+
+    const allowed = [];
+
+    for (let h = startHour; h <= endHour; h++) {
+      const hour12 = h % 12 === 0 ? 12 : h % 12;
+
+      allowed.push(hour12.toString().padStart(2, "0"));
+    }
+
+    return [...new Set(allowed)];
+  };
+
+  const hours = generateAllowedHours();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -52,106 +85,145 @@ const SelectTimePicker = ({
           const syntheticEvent = {
             target: {
               name: name,
-              value: selectedTime
-            }
+              value: selectedTime,
+            },
           };
           onBlur(syntheticEvent);
         }
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onBlur, name, selectedTime]);
+  useEffect(() => {
+    if (!value && minTime) {
+      const parsed = convert24To12(minTime);
+
+      setSelectedHour(parsed.hour);
+      setSelectedMinute(parsed.minute);
+      setActivePeriod(parsed.period);
+      setSelectedTime(minTime);
+      setManualInput(`${parsed.hour}:${parsed.minute} ${parsed.period}`);
+    }
+  }, [minTime, value]);
 
   // Initialize from value prop - FIXED VERSION
   useEffect(() => {
     const initializeFromValue = () => {
       // If no value or empty value, set defaults
-      if (!value && value !== '') {
-        setSelectedTime('');
-        setManualInput('');
-        setSelectedHour('04');
-        setSelectedMinute('00');
-        setActivePeriod('PM');
+      if (!value && value !== "") {
+        setSelectedTime("");
+        setManualInput("");
+        setSelectedHour("04");
+        setSelectedMinute("00");
+        setActivePeriod("PM");
         return;
       }
 
       // If value is empty string
-      if (value === '') {
-        setSelectedTime('');
-        setManualInput('');
-        setSelectedHour('04');
-        setSelectedMinute('00');
-        setActivePeriod('PM');
+      if (value === "") {
+        setSelectedTime("");
+        setManualInput("");
+        setSelectedHour("04");
+        setSelectedMinute("00");
+        setActivePeriod("PM");
         return;
       }
 
       // If value is a string and contains time
-      if (typeof value === 'string' && value.includes(':')) {
+      if (typeof value === "string" && value.includes(":")) {
         try {
-          const [hoursPart, minutesPart] = value.split(':');
+          const [hoursPart, minutesPart] = value.split(":");
           const hourNum = parseInt(hoursPart, 10);
-          
+
           if (!isNaN(hourNum)) {
             setSelectedTime(value);
-            const displayHour = hourNum > 12 ? (hourNum - 12).toString().padStart(2, '0') : hoursPart.padStart(2, '0');
-            const displayMinute = minutesPart || '00';
-            const displayPeriod = hourNum >= 12 ? 'PM' : 'AM';
-            
+            const displayHour =
+              hourNum > 12
+                ? (hourNum - 12).toString().padStart(2, "0")
+                : hoursPart.padStart(2, "0");
+            const displayMinute = minutesPart || "00";
+            const displayPeriod = hourNum >= 12 ? "PM" : "AM";
+
             setSelectedHour(displayHour);
             setSelectedMinute(displayMinute);
             setActivePeriod(displayPeriod);
             setManualInput(`${displayHour}:${displayMinute} ${displayPeriod}`);
           }
         } catch (error) {
-          console.error('Error parsing time value:', error);
+          console.error("Error parsing time value:", error);
           // Set defaults if parsing fails
-          setSelectedTime('');
-          setManualInput('');
-          setSelectedHour('04');
-          setSelectedMinute('00');
-          setActivePeriod('PM');
+          setSelectedTime("");
+          setManualInput("");
+          setSelectedHour("04");
+          setSelectedMinute("00");
+          setActivePeriod("PM");
         }
       } else {
         // Set defaults for invalid values
-        setSelectedTime('');
-        setManualInput('');
-        setSelectedHour('04');
-        setSelectedMinute('00');
-        setActivePeriod('PM');
+        setSelectedTime("");
+        setManualInput("");
+        setSelectedHour("04");
+        setSelectedMinute("00");
+        setActivePeriod("PM");
       }
     };
 
     initializeFromValue();
   }, [value]);
 
+  const isWithinRange = (time24) => {
+    if (!minTime && !maxTime) return true;
+
+    if (minTime && time24 < minTime) return false;
+    if (maxTime && time24 > maxTime) return false;
+
+    return true;
+  };
   const handleTimeSelect = () => {
-    const hour24 = activePeriod === 'PM' 
-      ? (parseInt(selectedHour, 10) === 12 ? 12 : parseInt(selectedHour, 10) + 12)
-      : (parseInt(selectedHour, 10) === 12 ? 0 : parseInt(selectedHour, 10));
-    
-    const timeValue = `${hour24.toString().padStart(2, '0')}:${selectedMinute}`;
-    
+    const hour24 =
+      activePeriod === "PM"
+        ? parseInt(selectedHour, 10) === 12
+          ? 12
+          : parseInt(selectedHour, 10) + 12
+        : parseInt(selectedHour, 10) === 12
+          ? 0
+          : parseInt(selectedHour, 10);
+
+    const timeValue = `${hour24.toString().padStart(2, "0")}:${selectedMinute}`;
+
+    if (!isWithinRange(timeValue)) {
+      setInputError(
+        `Time must be between ${formatTimeForDisplay(minTime)} and ${formatTimeForDisplay(maxTime)}`,
+      );
+      return;
+    }
+
     setSelectedTime(timeValue);
     setManualInput(`${selectedHour}:${selectedMinute} ${activePeriod}`);
     setShowDropdown(false);
     setIsEditing(false);
     setTouched(true);
-    setInputError('');
-    
-    const syntheticEvent = {
+    setInputError("");
+
+    onChange?.({
       target: {
-        name: name,
-        value: timeValue
-      }
-    };
-    onChange?.(syntheticEvent);
+        name,
+        value: timeValue,
+      },
+    });
   };
 
   const handleManualInputChange = (e) => {
     const value = e.target.value;
-    setManualInput(value);
-    setInputError('');
+    if (!isWithinRange(parsed.time24)) {
+      setInputError(
+        `Time must be between ${formatTimeForDisplay(minTime)} and ${formatTimeForDisplay(maxTime)}`,
+      );
+      return;
+    }
+
+    setInputError("");
 
     // Auto-parse and update if valid
     const parsed = parseManualInput(value);
@@ -160,12 +232,12 @@ const SelectTimePicker = ({
       setSelectedHour(parsed.hour);
       setSelectedMinute(parsed.minute);
       setActivePeriod(parsed.period);
-      
+
       const syntheticEvent = {
         target: {
           name: name,
-          value: parsed.time24
-        }
+          value: parsed.time24,
+        },
       };
       onChange?.(syntheticEvent);
     }
@@ -173,35 +245,35 @@ const SelectTimePicker = ({
 
   const handleManualInputBlur = (e) => {
     const value = e.target.value;
-    
+
     if (value.trim()) {
       const parsed = parseManualInput(value);
       if (!parsed) {
-        setInputError('Please use format: HH:MM AM/PM or HH:MM');
+        setInputError("Please use format: HH:MM AM/PM or HH:MM");
       } else {
-        setInputError('');
+        setInputError("");
         setSelectedTime(parsed.time24);
         setSelectedHour(parsed.hour);
         setSelectedMinute(parsed.minute);
         setActivePeriod(parsed.period);
-        
+
         const syntheticEvent = {
           target: {
             name: name,
-            value: parsed.time24
-          }
+            value: parsed.time24,
+          },
         };
         onChange?.(syntheticEvent);
       }
     }
-    
+
     setTouched(true);
     if (onBlur) {
       const syntheticEvent = {
         target: {
           name: name,
-          value: selectedTime
-        }
+          value: selectedTime,
+        },
       };
       onBlur(syntheticEvent);
     }
@@ -238,20 +310,21 @@ const SelectTimePicker = ({
   // Scroll functions for hours
   const scrollHourUp = () => {
     const currentIndex = hours.indexOf(selectedHour);
-    const nextIndex = currentIndex > 0 ? currentIndex - 1 : hours.length - 1;
-    const newHour = hours[nextIndex];
+    if (currentIndex <= 0) return;
+
+    const newHour = hours[currentIndex - 1];
     setSelectedHour(newHour);
     updateTimeFromScroll(newHour, selectedMinute, activePeriod);
   };
 
   const scrollHourDown = () => {
     const currentIndex = hours.indexOf(selectedHour);
-    const nextIndex = currentIndex < hours.length - 1 ? currentIndex + 1 : 0;
-    const newHour = hours[nextIndex];
+    if (currentIndex >= hours.length - 1) return;
+
+    const newHour = hours[currentIndex + 1];
     setSelectedHour(newHour);
     updateTimeFromScroll(newHour, selectedMinute, activePeriod);
   };
-
   // Scroll functions for minutes
   const scrollMinuteUp = () => {
     const currentIndex = minutes.indexOf(selectedMinute);
@@ -271,47 +344,54 @@ const SelectTimePicker = ({
 
   // Update time when scrolling
   const updateTimeFromScroll = (hour, minute, period) => {
-    const hour24 = period === 'PM' 
-      ? (parseInt(hour, 10) === 12 ? 12 : parseInt(hour, 10) + 12)
-      : (parseInt(hour, 10) === 12 ? 0 : parseInt(hour, 10));
-    
-    const timeValue = `${hour24.toString().padStart(2, '0')}:${minute}`;
-    
+    const hour24 =
+      period === "PM"
+        ? parseInt(hour, 10) === 12
+          ? 12
+          : parseInt(hour, 10) + 12
+        : parseInt(hour, 10) === 12
+          ? 0
+          : parseInt(hour, 10);
+
+    const timeValue = `${hour24.toString().padStart(2, "0")}:${minute}`;
+
+    if (!isWithinRange(timeValue)) {
+      return;
+    }
+
     setSelectedTime(timeValue);
     setManualInput(`${hour}:${minute} ${period}`);
-    
-    const syntheticEvent = {
+
+    onChange?.({
       target: {
-        name: name,
-        value: timeValue
-      }
-    };
-    onChange?.(syntheticEvent);
+        name,
+        value: timeValue,
+      },
+    });
   };
 
   // Toggle AM/PM
   const togglePeriod = () => {
-    const newPeriod = activePeriod === 'AM' ? 'PM' : 'AM';
+    const newPeriod = activePeriod === "AM" ? "PM" : "AM";
     setActivePeriod(newPeriod);
     updateTimeFromScroll(selectedHour, selectedMinute, newPeriod);
   };
 
-  const displayValue = isEditing ? manualInput : formatTimeForDisplay(selectedTime);
+  const displayValue = isEditing
+    ? manualInput
+    : formatTimeForDisplay(selectedTime);
 
   return (
-    <div className={`form-group ${half ? "form-group-half" : ""} ${showError ? "has-error" : ""}`}>
+    <div
+      className={`time-picker-container ${half ? "form-group-half" : ""} ${showError ? "has-error" : ""}`}
+    >
       {label && (
-        <label htmlFor={name}>
+        <label htmlFor={name} className="time-picker-label">
           {label}
           {required && <span className="required">*</span>}
         </label>
       )}
       <div className="input-with-icon">
-        {/* {icon && (
-          <span className={`input-icon ${showError ? "icon-error" : ""}`}>
-            {icon}
-          </span>
-        )} */}
         <div
           className="TimePicker timepicker"
           style={{ position: "relative", width }}
@@ -320,22 +400,13 @@ const SelectTimePicker = ({
           <div style={{ position: "relative", width: "100%" }}>
             <CiClock2
               onClick={handleIconClick}
-              style={{
-                position: "absolute",
-                top: "50%",
-                transform: "translateY(-50%)",
-                right: "12px",
-                color: showError ? "#ff4d4f" : "#012047",
-                cursor: disabled ? "not-allowed" : "pointer",
-                zIndex: 1,
-                opacity: disabled ? 0.5 : 1
-              }}
+              className={`clock-icon ${showError ? "icon-error" : ""} ${disabled ? "disabled" : ""}`}
               size={20}
             />
             <input
               ref={inputRef}
               type="text"
-              className={`form-control Select1 TimePickerMain ${showError ? "input-error" : ""}`}
+              className={`time-picker-input ${showError ? "input-error" : ""} ${disabled ? "disabled" : ""}`}
               id={name}
               name={name}
               value={displayValue}
@@ -345,259 +416,65 @@ const SelectTimePicker = ({
               onKeyDown={handleKeyDown}
               disabled={disabled}
               autoComplete="off"
-              style={{
-                padding: "10px 40px 10px 16px",
-                width: "100%",
-                borderRadius: "8px",
-                border: inputError || showError ? "1px solid #ff4d4f" : "1px solid #d0d5dd",
-                // color: "#012047",
-                fontSize: "14px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                opacity: disabled ? 0.6 : 1,
-                backgroundColor: disabled ? "#f8f9fa" : "",
-                transition: "all 0.2s ease",
-                height: "40px"
-              }}
               placeholder={placeholder}
             />
           </div>
 
           {showDropdown && !disabled && (
             <div className="time-dropdown-container">
-              <div
-                className='time-picker-dropdown list-date-option open'
-                style={{
-                  backgroundColor: "#fff",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "12px",
-                  boxShadow: "0 10px 25px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)",
-                  position: 'absolute',
-                  zIndex: 1000,
-                  marginTop: '8px',
-                  // width: '300px',
-                  padding: '10px',
-                  // overflow: 'hidden'
-                }}
-              >
-
+              <div className="time-picker-dropdown list-date-option open">
                 {/* Time Selector with Scroll */}
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '20px',
-                  marginBottom: '24px'
-                }}>
+                <div className="time-selector-wrapper">
                   {/* Hours Scroll */}
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#64748b',
-                      fontWeight: '500',
-                      marginBottom: '8px'
-                    }}>
-                      Hour
-                    </div>
-                    <button type="button" onClick={scrollHourUp}
-                      style={{
-                        width: '40px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: '#f8fafc',
-                        color: '#012047',
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#e2e8f0';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = '#f8fafc';
-                      }}
+                  <div className="time-selector-column">
+                    <div className="selector-label">Hour</div>
+                    <button
+                      type="button"
+                      onClick={scrollHourUp}
+                      className="scroll-button"
                     >
                       <IoIosArrowUp />
                     </button>
-                    <div style={{
-                      width: '60px',
-                      height: '50px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '24px',
-                      fontWeight: '700',
-                      color: '#012047',
-                      backgroundColor: '#f8fafc',
-                      borderRadius: '8px',
-                      margin: '4px 0'
-                    }}>
-                      {selectedHour}
-                    </div>
+                    <div className="selector-value">{selectedHour}</div>
                     <button
-                    type="button" 
+                      type="button"
                       onClick={scrollHourDown}
-                      style={{
-                        width: '40px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: '#f8fafc',
-                        color: '#012047',
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#e2e8f0';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = '#f8fafc';
-                      }}
+                      className="scroll-button"
                     >
                       <IoIosArrowDown />
                     </button>
                   </div>
 
                   {/* Colon */}
-                  <div style={{
-                    fontSize: '24px',
-                    fontWeight: '700',
-                    color: '#012047',
-                    marginTop: '25px'
-                  }}>
-                    :
-                  </div>
+                  <div className="time-colon">:</div>
 
                   {/* Minutes Scroll */}
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#64748b',
-                      fontWeight: '500',
-                      marginBottom: '8px'
-                    }}>
-                      Min
-                    </div>
+                  <div className="time-selector-column">
+                    <div className="selector-label">Min</div>
                     <button
-                    type="button" 
+                      type="button"
                       onClick={scrollMinuteUp}
-                      style={{
-                        width: '40px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: '#f8fafc',
-                        color: '#012047',
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#e2e8f0';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = '#f8fafc';
-                      }}
+                      className="scroll-button"
                     >
                       <IoIosArrowUp />
                     </button>
-                    <div style={{
-                      width: '60px',
-                      height: '50px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '24px',
-                      fontWeight: '700',
-                      color: '#012047',
-                      backgroundColor: '#f8fafc',
-                      borderRadius: '8px',
-                      margin: '4px 0'
-                    }}>
-                      {selectedMinute}
-                    </div>
+                    <div className="selector-value">{selectedMinute}</div>
                     <button
-                    type="button" 
+                      type="button"
                       onClick={scrollMinuteDown}
-                      style={{
-                        width: '40px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: '#f8fafc',
-                        color: '#012047',
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#e2e8f0';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = '#f8fafc';
-                      }}
+                      className="scroll-button"
                     >
                       <IoIosArrowDown />
                     </button>
                   </div>
 
                   {/* AM/PM Toggle */}
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#64748b',
-                      fontWeight: '500',
-                      marginBottom: '8px'
-                    }}>
-                      AM/PM
-                    </div>
+                  <div className="time-selector-column">
+                    <div className="selector-label">AM/PM</div>
                     <button
-                    type="button" 
+                      type="button"
                       onClick={togglePeriod}
-                      style={{
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: 'var(--bluecolor)',
-                        color: 'white',
-                        fontSize: '16px',
-                        fontWeight: '700',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        // margin: '29px 0'
-                      }}
+                      className="period-button"
                     >
                       {activePeriod}
                     </button>
@@ -605,37 +482,28 @@ const SelectTimePicker = ({
                 </div>
 
                 {/* Footer Buttons */}
-                <div style={{
-                  display: 'flex',
-                  gap: '12px',
-                  justifyContent: 'flex-end'
-                }}>
-                  <button type="button"  className='simple-btn'onClick={handleCancel}>
+                <div className="dropdown-footer">
+                  <button
+                    type="button"
+                    className="simple-btn"
+                    onClick={handleCancel}
+                  >
                     Cancel
                   </button>
-                  <button  type="button" className='second-btn p-0'onClick={handleTimeSelect}>
+                  <button
+                    type="button"
+                    className="second-btn p-0"
+                    onClick={handleTimeSelect}
+                  >
                     Set Time
                   </button>
                 </div>
+                {inputError && (
+                  <span className="range-error-text">{inputError}</span>
+                )}
               </div>
             </div>
           )}
-
-          {/* {(inputError || showError) && (
-            <div
-              style={{
-                position: "absolute",
-                top: "100%",
-                left: 0,
-                color: "#ff4d4f",
-                fontSize: "12px",
-                marginTop: "4px",
-                fontWeight: 500
-              }}
-            >
-              {inputError || error}
-            </div>
-          )} */}
         </div>
       </div>
       {showError && <span className="error-text">{error}</span>}

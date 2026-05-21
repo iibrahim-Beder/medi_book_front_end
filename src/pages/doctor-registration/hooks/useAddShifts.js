@@ -121,9 +121,14 @@ const SelectedTemplate = templates.find(
       toast.dismiss(loader);
     }
   };
+  
+  const selectedTemplate = templates.find(
+  (tmpl) => tmpl.templateId === Number(selectedTemplateId)
+);
 
   console.log("availabilityData",availabilityData);
   return {
+    selectedTemplate,
     selectedTemplateId,
     setSelectedTemplateId,
     selectedLocationId,

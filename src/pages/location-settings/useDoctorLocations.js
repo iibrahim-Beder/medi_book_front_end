@@ -26,7 +26,6 @@ export const useDoctorLocationsManager = () => {
   } = useGetDoctorLocationsQuery(doctorId, {
     skip: !doctorId,
   });
-  console.log("====data", data);
 
   const [addLocation, { isLoading: isAdding }] = useAddLocationToDoctorMutation();
   const [updateLocation, { isLoading: isUpdating }] = useUpdateDoctorLocationMutation();

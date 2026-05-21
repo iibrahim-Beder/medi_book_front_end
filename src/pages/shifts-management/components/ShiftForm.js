@@ -36,11 +36,12 @@ export default function ShiftForm({
   );
 }
 
-function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive }) {
+function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, templates }) {
+  const template = templates.find((s) => s.templateId === shift.shiftTemplateId);
   useEffect(() => {
     setisActive(shift.isActive);
   }, [shift]);
-  console.log("====shift form ", shift);
+
   const { t } = useTranslation();
 
   const [activePopup, setActivePopup] = useState({
@@ -116,6 +117,8 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive }) {
                 label="Break Start"
                 value={breakStart}
                 onChange={(e) => setBreakStart(e.target.value)}
+                minTime={template?.startTime}
+                maxTime={template?.endTime}
               />
             </div>
             <div className="form-group-half form-group">
@@ -124,6 +127,8 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive }) {
                 label="Break End"
                 value={breakEnd}
                 onChange={(e) => setBreakEnd(e.target.value)}
+                minTime={template?.startTime}
+                maxTime={template?.endTime}
               />
             </div>
             <div className="form-group-half form-group">
