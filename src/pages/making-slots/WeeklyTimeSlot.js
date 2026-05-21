@@ -96,9 +96,9 @@ export default function WeeklyTimeSlots() {
     activeShift,
     activeTab: activeDay,
   });
-    if (isError && error?.status !== 500) {
-    return <ErrorPage refetch={refetch} isFetching={isMainRulesFetching} />;
-  }
+  //   if (isError && error?.status !== 500) {
+  //   return <ErrorPage refetch={refetch} isFetching={isMainRulesFetching} />;
+  // }
   const activeShiftName =
     shaftTabs.find((t) => t.templateId === activeShift)?.name || "Morning";
   const tabs = [
@@ -110,7 +110,7 @@ export default function WeeklyTimeSlots() {
     { key: "Friday", label: t("Friday") },
     { key: "Saturday", label: t("Saturday") },
   ];
-  
+
   return (
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace accordion-table ">
@@ -154,13 +154,13 @@ export default function WeeklyTimeSlots() {
                 style={{ width: "fit-content", margin: "20px 0 0 20px" }}
                 className="table-title"
               >
-                {activeDay} {activeShiftName} Slots
+                {activeDay} {activeShiftName} Rules
               </h3>
               <button
                 className="add-btn pr-5"
                 onClick={() => setOpenModal(true)}
               >
-                {t("Add New Slots")}
+                {t("Add New Rules")}
               </button>
             </div>
             <div className="card m-0 border-0" style={{ boxShadow: "none" }}>
@@ -172,13 +172,22 @@ export default function WeeklyTimeSlots() {
                   Loader("loading-in-side loadin-in-tab-content m-lg-auto")
                 ) : (
                   <div className="d-flex flex-column flex-direction-column w-100">
-                    {!segments?.length || error?.status === 500 ? (
+                    {isError && error?.statusCode !== 500 ? (
+                      <div className="table-card">
+                      <ErrorPage
+                        error={error}
+                        refetch={refetch}
+                        isFetching={isMainRulesFetching}
+                        imgStyle = {{ width: "40%", maxWidth: "350px" }}
+                      />
+                      </div>
+                    ) : !segments?.length || error?.statusCode === 500 ? (
                       <div className="table-card">
                         <DataEmptyCom
                           LinkTo="/shifts-management"
                           linkText="Go to Create Shift"
                           text={t(
-                            "No Slots Available ! Because There are no available shifts on this template today. If you want to add slots on this shift you can go to create a new shift",
+                            "No Rules Available ! Because There are no available shifts on this template today. If you want to add Rules on this shift you can go to create a new shift",
                           )}
                         />
                       </div>
@@ -198,30 +207,30 @@ export default function WeeklyTimeSlots() {
                             />
                           </div>
                         </div>
+
                         <ActiveTabs
                           activeCount={activeRules.length}
                           inactiveCount={inactiveRules.length}
                           activeTab={activeTab}
                           setActiveTab={setActiveTab}
                         />
-                        {/* Active Slots */}
+
+                        {/* Active Rules */}
                         {activeTab === "Active" &&
                           (!activeRules.length ? (
-                            <>
-                              <div className="table-card p-1">
-                                <DataEmptyCom
-                                  imgStyle={{ maxWidth: "200px" }}
-                                  text={t("No Active Slots Available yet !")}
-                                  btnText="add new slot"
-                                  onClick={() => setOpenModal(true)}
-                                />
-                              </div>
-                            </>
+                            <div className="table-card p-1">
+                              <DataEmptyCom
+                                imgStyle={{ maxWidth: "200px" }}
+                                text={t("No Active Rules Available yet !")}
+                                btnText="add new Rules"
+                                onClick={() => setOpenModal(true)}
+                              />
+                            </div>
                           ) : (
                             <CustomAccordion
                               getItemTitle={getTimeSlotTitle}
                               accordioninnertitleSize="slots-accordion-title"
-                              title={`${t("Active Slots")}`}
+                              title={`${t("Active Rules")}`}
                               data={activeRules}
                               formFields={formFields}
                               appointmentTypes={APPOINTMENT_TYPES}
@@ -233,16 +242,16 @@ export default function WeeklyTimeSlots() {
                               hedarClassName="title-card"
                               handleToggle={handleToggleRuleActive}
                               applyRule={applyRule}
-                              noDataMessage={t("No Active Slots Available !")}
+                              noDataMessage={t("No Active Rules Available !")}
                             />
                           ))}
 
-                        {/* Inactive Slots */}
+                        {/* Inactive Rules */}
                         {activeTab === "Inactive" && (
                           <CustomAccordion
                             getItemTitle={getTimeSlotTitle}
                             accordioninnertitleSize="slots-accordion-title"
-                            title={`${t("Inactive Slots")}`}
+                            title={`${t("Inactive Rules")}`}
                             data={inactiveRules}
                             formFields={formFields}
                             appointmentTypes={APPOINTMENT_TYPES}
@@ -254,7 +263,7 @@ export default function WeeklyTimeSlots() {
                             hedarClassName="title-card"
                             handleToggle={handleToggleRuleActive}
                             applyRule={applyRule}
-                            noDataMessage={t("No Inactive Slots Available !")}
+                            noDataMessage={t("No Inactive Rules Available !")}
                           />
                         )}
                       </>
@@ -301,7 +310,7 @@ export default function WeeklyTimeSlots() {
                         <Field
                           type="number"
                           name="SlotDurationInMinutes"
-                          placeholder={t("Slot Duration")}
+                          placeholder={t("Rules Duration")}
                           label={t("Duration (Minutes)")}
                           value={addSlotData.SlotDurationInMinutes}
                           onChange={(e) =>

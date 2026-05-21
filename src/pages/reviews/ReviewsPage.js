@@ -7,11 +7,11 @@ import TotalReviewsCard from "./components/TotalReviewsCard";
 import { usePatientReviews } from "./hooks/usePatientReviews";
 
 export default function ReviewsPage() {
-  const { isLoading, isError, refetch, reviews, isFetching } =
+  const { isLoading, isError,error, refetch, reviews, isFetching } =
     usePatientReviews();
 
   if (isError || (!isLoading && reviews.length === 0 && isFetching)) {
-    return <ErrorPage refetch={refetch} isFetching={isFetching} />;
+    return <ErrorPage refetch={refetch} isFetching={isFetching} error={error} />;
   }
 
   if (isLoading) {

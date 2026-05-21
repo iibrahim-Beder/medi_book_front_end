@@ -50,6 +50,7 @@ export const usePatientReviews = (itemsPerPage=3) => {
     isFetching,
     isError,
     refetch,
+    error,
   } = useGetReviewsQuery({
     doctorId,
     filter,
@@ -70,6 +71,7 @@ export const usePatientReviews = (itemsPerPage=3) => {
     isLoading,
     isFetching,
     isError,
+    error,
     refetch,
 
     dateRange,

@@ -104,14 +104,14 @@ useEffect(() => {
     window.removeEventListener("keydown", handleEsc);
   };
 }, []);
-const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching } =useDoctorRegistration();
+const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching ,isCurrentStepError } =useDoctorRegistration();
 let completeRegistration =doctorCurrentStepNumber===6 ;
 
 if(isCurrentStepLoading ){
     return <Loader/>
   }
-  if(currentStepError){
-    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} />
+  if(currentStepError ||isCurrentStepError ){
+    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} nameVariable={true} error={currentStepError}/>
   }
   return (
     <div className="dc-userlogin">

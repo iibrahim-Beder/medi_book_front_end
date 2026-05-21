@@ -21,6 +21,7 @@ export const useDoctorLocationsManager = () => {
     isLoading,
     refetch,
     isError,
+    error,
     isFetching: isFetchingLocations
   } = useGetDoctorLocationsQuery(doctorId, {
     skip: !doctorId,
@@ -166,6 +167,7 @@ export const useDoctorLocationsManager = () => {
     isLoading,
      refetch,
     isError,
+    error,
    isFetchingLocations
   };
 };

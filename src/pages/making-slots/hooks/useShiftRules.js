@@ -12,6 +12,7 @@ import {
 import toast from "react-hot-toast";
 import { FaAppStoreIos } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { getErrorMessage } from "../../utils/api-errors";
 export default function useShiftRules({
   activeShift,
   activeTab,
@@ -99,7 +100,7 @@ export default function useShiftRules({
         toast.dismiss(loadingToast);
       } catch (error) {
         console.error("Toggle rule failed", error);
-        toast.error(error?.data?.message || "Failed to update rule");
+        toast.error(getErrorMessage(error));
         toast.dismiss(loadingToast);
       }
     },
@@ -208,7 +209,7 @@ export default function useShiftRules({
     setOpenModal(true);
   };
   useEffect(() => {
-    console.log("=====Maindata", Maindata, "isError", isError, "activeShift", activeShift, "activeTab", activeTab , "the condition ",(!doctorId || !activeShift || !activeTab),"doctorId, activeShift, activeTab",doctorId, activeShift, activeTab);
+
     if (isError) {
       setRules([]);
       return;
@@ -322,13 +323,13 @@ export default function useShiftRules({
           success = true;
         }
 
-        toast.dismiss(loadingToast);
         return success;
       } catch (error) {
         console.error("======== Failed to save slot", error);
-        toast.error(error?.data?.message || "Error saving slot");
-        toast.dismiss(loadingToast);
+        toast.error(getErrorMessage(error));
         return false;
+      }finally {
+        toast.dismiss(loadingToast);
       }
     },
     [
@@ -415,7 +416,7 @@ export default function useShiftRules({
       return success;
     } catch (error) {
       console.log("=======Failed to save slot", error);
-      toast.error(error?.data?.message || "Error saving slot");
+      toast.error(getErrorMessage(error));
       toast.dismiss(loadingToast);
       return false;
     }
@@ -498,7 +499,6 @@ export const buildRuleUpdatePayload = (original, updated) => {
 
   console.log("======original", original, "updated", updated);
 
-  // Price (حول String → Number عشان المقارنة)
   if (Number(original.Price) !== Number(updated.Price)) {
     payload.overrideAmount = Number(updated.Price);
   }

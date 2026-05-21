@@ -27,7 +27,7 @@ export const generationRulesApi = baseApi.injectEndpoints({
 
       transformErrorResponse: (response, meta, arg) => {
         console.log('=====From  Get Doctor Shift Rules Error Response:', response);
-        response.status = response?.data?.statusCode;
+        response.statusCode = response?.data?.statusCode;
         return response;
       },
     }),

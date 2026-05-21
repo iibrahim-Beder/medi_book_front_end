@@ -29,6 +29,7 @@ export const useConversations = () => {
     isLoading,
     isError,
     isFetching,
+    error,
     refetch: refetchConversations,
   } = useGetDoctorChatsQuery({
     pageNumber,
@@ -81,6 +82,7 @@ export const useConversations = () => {
     currentChat,
     isLoading,
     isError,
+    error,
     isSearching: isLoading && pageNumber === 1,
     searchTerm,
     handleSearch,

@@ -111,6 +111,7 @@ const handleNextStep = async () => {
     doctorCurrentStep,
     isCurrentStepLoading,
     currentStepError,
+    isCurrentStepError,
     doctorCurrentStepNumber,
     completedStepsPercent,
     refetchCurrentStep,

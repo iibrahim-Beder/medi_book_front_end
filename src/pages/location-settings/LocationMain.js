@@ -10,9 +10,9 @@ export default function LocationMain() {
   const [activeTab, setActiveTab] = useState("AddLocation");
   const{ refetch,
     isError,
-   isFetchingLocations,isLoading,locations}=useDoctorLocationsManager();
+   isFetchingLocations,isLoading,locations,error}=useDoctorLocationsManager();
        if(isError|| (!isLoading && locations.length === 0 && isFetchingLocations)){
-         return   <ErrorPage refetch={refetch} isFetching={isFetchingLocations} />
+         return   <ErrorPage refetch={refetch} isFetching={isFetchingLocations} error={error} />
     }
 
   return (

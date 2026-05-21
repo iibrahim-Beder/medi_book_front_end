@@ -5,11 +5,11 @@ import { useSyncChatWithUrl } from "./hooks/useSyncChatWithUrl";
 import "./messages.css";
 import ErrorPage from "../notFound-pageError/ErrorPage";
 export default function MessagesPage() {
-  const{isLoading,isError,refetch,conversations ,isFetching}=useConversations();
+  const{isLoading,isError,refetch,conversations ,isFetching,error}=useConversations();
     useSyncChatWithUrl();
     
     if(isError|| (!isLoading && conversations.length === 0 && isFetching)){
-         return   <ErrorPage refetch={refetch} isFetching={isFetching} />
+         return   <ErrorPage refetch={refetch} isFetching={isFetching} error={error} />
     }
   return (<>
     
