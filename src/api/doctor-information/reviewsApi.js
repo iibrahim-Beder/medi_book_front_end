@@ -48,6 +48,7 @@ const transformReviewsData = (response, searchTerm = "") => {
     comment: item.comment,
     createdAt: item.createdAt,
     patientName: item.patientName,
+    patientId: item.patientID,
     highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.reviewID)
   }));
 

@@ -10,6 +10,7 @@ import { useLoginMutation } from "../../api/doctor-information/authenticationsAp
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/Slices/login/authSlice";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "../utils/api-errors";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -31,14 +32,10 @@ export default function Login() {
     console.log("login===== email", email, "password", password);
     // return;
     if (!email || !password) {
-      setMsg({
-        type: "error",
-        text: t("login.error"),
-      });
+      toast.error("Please enter email and password");
       return;
     }
     e.preventDefault();
-    setMsg(null);
 
     const loader = toast.loading("Please wait...");
     try {
@@ -59,11 +56,7 @@ export default function Login() {
       navigate("/dashboard");
     } catch (err) {
       console.log("login error",err);
-      toast.error(err?.data?.message || "Login failed");
-      setMsg({
-        type: "error",
-        text: err?.data?.message || "Login failed",
-      });
+      toast.error(getErrorMessage(err));
     }finally {
       toast.dismiss(loader);
     }

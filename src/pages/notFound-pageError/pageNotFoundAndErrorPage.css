@@ -28,3 +28,23 @@
   font-size: 20px;
   font-weight: 600;
 }
+
+
+@media (max-width: 791px){
+  .page-not-found .content-container{
+        padding: 0 35px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .page-not-found img{
+        width: auto !important;
+        max-width: 300px;
+        max-height: 45vh;
+  }
+  .page-not-found{
+        display: inline-flex;
+    justify-content: center;
+    width: 100%;
+  }
+}

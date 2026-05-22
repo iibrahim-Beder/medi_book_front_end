@@ -46,7 +46,7 @@ const FeedbackItem = ({ appointment, index }) => {
       <img src={"/images/avt/patient-avt.png"} alt={appointment.patientName} />
     </figure>
     <div className="dc-userlistingcontent2">
-      <Link to={`/pationt-information/${appointment.patientId||4}`} className="button-elment"title="pationt profile" >
+      <Link to={`/pationt-information/${appointment?.patientId}`} className="button-elment"title="pationt profile" >
       <h6 className="mt-2 button-elment">{appointment.patientName}</h6>
       </Link>
       <StarRating rating={appointment.rating|| 4} 

@@ -70,7 +70,6 @@ export const useStep2ProfessionalInfo = (isNew) => {
       });
     }
   }, [isNew, fetchedData]);
-    console.log("fetchedData", fetchedData, "formData", formData);
 
 
   const handleInputChange = (e) => {

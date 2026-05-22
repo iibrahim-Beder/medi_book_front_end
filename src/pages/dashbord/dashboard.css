@@ -29,6 +29,9 @@
 
   --dc-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.uncomplete-dashboard{
+  padding: 16px;
+}
 
 /* ---------- Page background (apply to wrapper if you want gradient) ---------- */
 .dc-page {
@@ -525,4 +528,16 @@
     height: 8px;
     border-radius: 4px;
     background-color: rgb(238, 240, 244);
+  }
+
+  @media (max-width: 400px){
+    .uncomplete-dashboard{
+      padding: 16px 0;
+    }
+    .uncomplete-dashboard .dc-grid{
+      display: block;
+    }
+    .uncomplete-dashboard .dc-grid__side{
+      margin-top: 1.5rem;
+    }
   }

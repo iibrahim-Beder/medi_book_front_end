@@ -330,7 +330,7 @@ export default function DashboardUnCompleteRegistration({setOpenStepRegister}) {
         isLoading,
       } = useStep1PersonalInfo(false  , doctorId); 
   return (
-    <main className="p-3">
+    <main className="uncomplete-dashboard ">
       <div className="dc-heading">
         <p className="dc-eyebrow">Dashboard</p>
         <h1 className="dc-h1">Welcome, Dr. {isLoading ? "Loading..." :( formData.firstName + " " + formData.lastName )|| "doctor"}</h1>
