@@ -8,6 +8,7 @@ import {
 } from "../../../api/doctor-information/doctorEducationApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { getErrorMessage } from "../../utils/api-errors";
 
 
 export const useDoctorEducation = (New=false) => {
@@ -178,7 +179,7 @@ export const useDoctorEducation = (New=false) => {
         return success;
       } catch(error){ 
         console.log("=======error",error);
-        toast.error("Save failed");
+        toast.error(getErrorMessage(error));
         return false;
       } finally {
         toast.dismiss(loading);

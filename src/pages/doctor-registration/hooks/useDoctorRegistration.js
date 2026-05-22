@@ -29,14 +29,15 @@ export function useDoctorRegistration() {
     Experience: 4,
     Locations: 5,
     Shifts: 6,
-    all: 7
+    PaymentMethod: 7,
+    all: 8
   };
 
   const doctorCurrentStepNumber =
     DoctorRegistrationStep[doctorCurrentStep] || 1;
 
   const completedStepsPercent = Math.round(
-    ((doctorCurrentStepNumber - 1) /
+    ((doctorCurrentStepNumber + 1) /
       Object.keys(DoctorRegistrationStep).length) *
       100,
   );
@@ -48,8 +49,8 @@ export function useDoctorRegistration() {
     Experience: doctorCurrentStepNumber > DoctorRegistrationStep.Experience,
     Locations: doctorCurrentStepNumber > DoctorRegistrationStep.Locations,
     // dont forget to fix this issue =============================================================================== dont forget to fix this issue
-    Shifts: doctorCurrentStepNumber > DoctorRegistrationStep.Shifts - 1,
-    All: doctorCurrentStepNumber > Object.keys(DoctorRegistrationStep).length - 2,
+    Shifts: doctorCurrentStepNumber > DoctorRegistrationStep.Shifts,
+    All: doctorCurrentStepNumber > Object.keys(DoctorRegistrationStep).length -2 ,
   };
 
   const [currentStep, setCurrentStep] = useState(doctorCurrentStepNumber);

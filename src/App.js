@@ -104,8 +104,8 @@ useEffect(() => {
     window.removeEventListener("keydown", handleEsc);
   };
 }, []);
-const {    doctorCurrentStepNumber,isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching ,isCurrentStepError } =useDoctorRegistration();
-let completeRegistration =doctorCurrentStepNumber===6 ;
+const {  stepCompleted , isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching ,isCurrentStepError } =useDoctorRegistration();
+let completeRegistration =stepCompleted.All;
 
 if(isCurrentStepLoading ){
     return <Loader/>

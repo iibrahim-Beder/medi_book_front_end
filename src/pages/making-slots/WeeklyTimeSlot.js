@@ -172,7 +172,7 @@ export default function WeeklyTimeSlots() {
                   Loader("loading-in-side loadin-in-tab-content m-lg-auto")
                 ) : (
                   <div className="d-flex flex-column flex-direction-column w-100">
-                    {isError && error?.statusCode !== 500 ||true? (
+                    {isError && error?.statusCode !== 500? (
                       <div className="table-card">
                       <ErrorPage
                         error={error}
