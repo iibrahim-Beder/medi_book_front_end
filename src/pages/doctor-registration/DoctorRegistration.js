@@ -23,6 +23,7 @@ export default function DoctorRegistration({ openStepRegister ,setOpenStepRegist
     handlePrevious,
     setCurrentStep,
     handleNextStep,
+    doctorCurrentStepNumber
   } = useDoctorRegistration();
 
   console.log("currentStep", currentStep);
@@ -35,6 +36,7 @@ export default function DoctorRegistration({ openStepRegister ,setOpenStepRegist
         <ProgressStepper
           currentStep={currentStep}
           completedSteps={completedSteps}
+          doctorCurrentStepNumber={doctorCurrentStepNumber}
           stepsMeta={getStepsMeta(t)}
         />
         {currentStep <= 6 ? (

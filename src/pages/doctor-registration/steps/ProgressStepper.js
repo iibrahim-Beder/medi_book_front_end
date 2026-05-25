@@ -1,7 +1,7 @@
 import React from "react";
 
-const ProgressStepper = ({ currentStep, stepsMeta }) => {
-  const progressPct = ((currentStep - 1) / (stepsMeta.length )) * 110;
+const ProgressStepper = ({ currentStep, stepsMeta , completedSteps , doctorCurrentStepNumber}) => {
+  const progressPct = ((doctorCurrentStepNumber - 1) / (stepsMeta.length )) * 110;
 
   return (
     <div className="table-card progress-container">
@@ -9,7 +9,7 @@ const ProgressStepper = ({ currentStep, stepsMeta }) => {
         {stepsMeta.map((s, i) => {
           const stepNumber = i + 1;
           const isActive = currentStep === stepNumber;
-          const isCompleted = currentStep > stepNumber;
+          const isCompleted = completedSteps.includes(stepNumber);
 
           return (
             <div

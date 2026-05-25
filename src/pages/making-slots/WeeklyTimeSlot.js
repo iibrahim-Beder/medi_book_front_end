@@ -370,7 +370,6 @@ export const AddModal = ({ show, onHide, children }) => {
       size="lg"
       centered
       backdrop="static"
-      // keyboard={false}
       className="diagnosis-modal pr-0 small-modal "
       // style={{maxWidth:"830px"}}
     >

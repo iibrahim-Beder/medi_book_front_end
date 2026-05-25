@@ -102,6 +102,7 @@ export const AddModal = ({ show, onHide }) => {
       show={show}
       onHide={onHide}
       size="lg"
+      backdrop="static"
       centered
       className="diagnosis-modal pr-0"
     >
