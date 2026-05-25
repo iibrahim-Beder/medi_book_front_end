@@ -33,45 +33,54 @@ const SelectDatePicker = ({
   const inputRef = useRef();
 
   useEffect(() => {
-    if (value) {
-      const date = new Date(value); 
-      if (isValid(date)) {
-        setSelectedDate(date);
-        setTempDate(date);
-        setMonth(date);
-        setManualInput(format(date, 'dd/MM/yyyy'));
-      } else {
-        setSelectedDate(null);
-        setTempDate(null);
-        setManualInput('');
-      }
-    } else {
+    if (!value) {
       setSelectedDate(null);
       setTempDate(null);
       setManualInput('');
+      return;
     }
+
+    const parsed = parse(
+      value.split('T')[0],
+      'yyyy-MM-dd',
+      new Date()
+    );
+
+    if (!isValid(parsed)) return;
+
+    setSelectedDate(parsed);
+    setTempDate(parsed);
+    setMonth(parsed);
+    setManualInput(format(parsed, 'dd/MM/yyyy'));
   }, [value]);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        handleManualInputSubmit();
-        setShowDropdown(false);
-        setIsEditing(false);
-        setTouched(true);
-        if (onBlur) {
-          onBlur({
-            target: {
-              name,
-              value: selectedDate ? selectedDate.toISOString().slice(0, -1) : null
-            }
-          });
-        }
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onBlur, name, selectedDate]);
+  const handleClickOutside = (event) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target)
+    ) {
+      setShowDropdown(false);
+      setIsEditing(false);
+      setTouched(true);
+
+      onBlur?.({
+        target: {
+          name,
+          value: selectedDate || null,
+        },
+      });
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () =>
+    document.removeEventListener(
+      'mousedown',
+      handleClickOutside
+    );
+}, [name, onBlur, selectedDate]);
 
   const handleDateSelect = (date) => {
     if (date && isValid(date)) {

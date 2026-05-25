@@ -1776,3 +1776,75 @@ display: none;
 .form-group-fourth{
     width: 25%;
 }
+
+
+
+
+.file-thumb {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.file-icon {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 10px;
+  font-size: 22px;
+}
+
+.file-info {
+  flex: 1;
+}
+
+.remove-file-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 26%;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  line-height: 0;
+}
+
+/* file-preview-box */
+.file-preview-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.file-info {
+  flex: 1;
+  min-width: 0; 
+  display: flex;
+  flex-direction: column;
+}
+
+.file-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.file-name span {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-file-btn {
+  flex-shrink: 0;
+}

@@ -7,6 +7,7 @@ import {
 } from "../../../api/doctor-information/doctorBasicInfoApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { getErrorMessage } from "../../utils/api-errors";
 
 export const useStep1PersonalInfo = (isNew) => {
   const doctorId = useSelector((state) => state.auth.doctorId);
@@ -56,57 +57,58 @@ export const useStep1PersonalInfo = (isNew) => {
     }
   }, [isNew, fetchedData]);
 
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
+const handleInputChange = (e) => {
+  const { name, value, files, multiple } = e.target;
 
-    if (name === "licenseImage") {
-      setFormData((prev) => ({
-        ...prev,
-        licenseImage: files?.[0] || null,
-      }));
-    } else if (name === "gender") {
-      const genderValue = value === "Male" ? 0 : 1;
-      setFormData((prev) => ({ ...prev, gender: genderValue }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+  if (files) {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: multiple
+        ? Array.from(files)
+        : files?.[0] || null,
+    }));
+  } else if (name === "gender") {
+    const genderValue = value === "Male" ? 0 : 1;
 
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
+    setFormData((prev) => ({
+      ...prev,
+      gender: genderValue,
+    }));
+  } else {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
 
-  const validateForm = () => {
-    if (!formData.firstName.trim()){
-      toast.error(t("first name required"));
-      return false ;
-    }
+  if (errors[name]) {
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  }
+};
+ const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim())
+      newErrors.firstName = t("first name required");
+
     if (!formData.lastName.trim())
-    {
-      toast.error(t("last Name required"));
-      return false ;
-    }
+      newErrors.lastName = t("last Name required");
 
     if (!formData.dateOfBirth)
-    {
-    toast.error(t("date of birth required"));
-    return false ;
-    }
+      newErrors.dateOfBirth = t("date of birth required");
+
     if (formData.gender === "" || formData.gender === null)
-    {
-      toast.error(t("gender required"));
-      return false ;
-    }
+      newErrors.gender = t("gender required");
+
     if (!formData.licenseNumber.trim())
-    {
-      toast.error(t("license number required"));
-      return false ;
-    }
-    return true;
-    // if (!formData.phoneNumber.trim())
-    //   newErrors.phoneNumber = t("personalInfo.phoneNumber.required");
-    // else if (!/^01[0-9]{9}$/.test(formData.phoneNumber))
-    //   newErrors.phoneNumber = t("personalInfo.phoneNumber.invalid");
+      newErrors.licenseNumber = t("license number required");
+
+    setErrors(newErrors);
+    toast.error("Please fill all the required fields");
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
@@ -115,7 +117,7 @@ export const useStep1PersonalInfo = (isNew) => {
     }
 
     if (!doctorId) {
-      toast.error(t("personalInfo.doctorIdMissing"));
+      toast.error(t("Error"));
       return false;
     }
 
@@ -139,7 +141,7 @@ export const useStep1PersonalInfo = (isNew) => {
         console.log("payload", payload);
           const response =await addDoctorBasicInfo(payload).unwrap()
            if (response.succeeded) {
-        toast.success(t("Personal info success"));
+        toast.success(t("Personal Info Added Successfully"));
         return true;
       }
       }else{
@@ -154,14 +156,13 @@ export const useStep1PersonalInfo = (isNew) => {
       const response = await updateDoctorBasicInfo({ doctorId:doctorId, ...payload}).unwrap();
 
       if (response.succeeded) {
-        toast.success(t("Personal Info success"));
+        toast.success(t("Personal Info Updated Successfully"));
         return true;
       }
 
-      toast.error(response.message || t("personalInfo.error"));
-      return false;
     }
     } catch (error) {
+       toast.error(getErrorMessage(error));
       toast.error(error?.data?.message || t("personalInfo.error"));
       return false;
     } finally {

@@ -62,6 +62,7 @@ const Step1PersonalInfo = forwardRef(
               value={formData.firstName}
               onChange={handleInputChange}
               error={errors.firstName}
+              forceShowError={forceShowError}
               className="form-control"
               placeholder={t("yourDetails.firstName")}
             />
@@ -76,6 +77,7 @@ const Step1PersonalInfo = forwardRef(
               value={formData.lastName}
               onChange={handleInputChange}
               error={errors.lastName}
+              forceShowError={forceShowError}
               className="form-control"
               placeholder={t("yourDetails.lastName")}
             />
@@ -89,6 +91,7 @@ const Step1PersonalInfo = forwardRef(
               name="dateOfBirth"
               value={formData.dateOfBirth}
               onChange={handleInputChange}
+              forceShowError={forceShowError}
               error={errors.dateOfBirth}
               className="form-control"
             />
@@ -125,6 +128,7 @@ const Step1PersonalInfo = forwardRef(
               value={formData.licenseNumber}
               onChange={handleInputChange}
               error={errors.licenseNumber}
+              forceShowError={forceShowError}
               className="form-control"
               placeholder={t("yourDetails.license")}
             />

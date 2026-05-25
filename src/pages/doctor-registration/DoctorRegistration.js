@@ -11,7 +11,6 @@ import "./DoctorRegistration.css";
 import Step3ProfessionalInfo from "./steps/Step3ProfessionalInfo";
 import AcademicQualifications from "../profile-settings/Profile-card/Education";
 import DoctorExperience from "../profile-settings/Profile-card/Experience";
-import {  useEffect } from "react";
 
 export default function DoctorRegistration({ openStepRegister ,setOpenStepRegister}) {
   const { t } = useTranslation();

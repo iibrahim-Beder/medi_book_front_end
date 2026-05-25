@@ -59,7 +59,6 @@ const Step3ProfessionalInfo = forwardRef(
 
     return (
       <>
-      <div className={`${insideUi ||true? "table-card insideUi" : ""}`}>
         {insideUi ? (
           <div className="dc-tabscontenttitle">
             <h3>{t("professionalInfo.title")}</h3>
@@ -67,6 +66,7 @@ const Step3ProfessionalInfo = forwardRef(
         ) : (
           <SectionTitle title={t("professionalInfo.title")} />
         )}
+      <div className={`${insideUi ||true? "table-card insideUi" : ""}`}>
 
         <div
           style={{ position: "relative" }}

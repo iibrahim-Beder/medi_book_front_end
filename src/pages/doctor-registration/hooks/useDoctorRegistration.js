@@ -37,8 +37,8 @@ export function useDoctorRegistration() {
     DoctorRegistrationStep[doctorCurrentStep] || 1;
 
   const completedStepsPercent = Math.round(
-    ((doctorCurrentStepNumber + 1) /
-      Object.keys(DoctorRegistrationStep).length) *
+    ((doctorCurrentStepNumber - 1 ) /
+      (Object.keys(DoctorRegistrationStep).length -2)) *
       100,
   );
   const stepCompleted = {

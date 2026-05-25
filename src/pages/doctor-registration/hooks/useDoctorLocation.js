@@ -60,11 +60,11 @@ export const useDoctorLocation = (isNew) => {
     const newErrors = {};
 
     if (!formData.displayName.trim()) {
-      newErrors.displayName = t("requiredField");
+      newErrors.displayName = t("location name required");
     }
 
     if (!formData.lat || !formData.lng) {
-      newErrors.location = t("SelectLocationOnMap");
+      newErrors.location = t("Select a location");
     }
 
     setErrors(newErrors);
@@ -99,12 +99,18 @@ export const useDoctorLocation = (isNew) => {
           }).unwrap();
         }
       } else {
+        const updatePayload = buildLocationPayload(data.data[0], formData);
+        if (!Object.keys(updatePayload).length) {
+          console.log("update location", updatePayload);
+          toast(t("No changes detected"));
+          return true;
+        };
         await updateLocation(
-          buildLocationPayload(data.data[0], formData)
+          { doctorId, locationId: formData.locationId, ...updatePayload }
         ).unwrap();
       }
 
-      toast.success(t("SavedSuccessfully"));
+      toast.success(t("Saved Location Successfully"));
       return true;
     } catch (e) {
       console.error("location error", e );
@@ -127,10 +133,7 @@ export const useDoctorLocation = (isNew) => {
 };
 
 const buildLocationPayload = (original, updated) => {
-  const payload = {
-    locationId: updated.locationId,
-    setPrimary: true,
-  };
+  const payload = {};
 
   if (original.locationName !== updated.displayName) {
     payload.locationName = { value: updated.displayName };
@@ -144,5 +147,6 @@ const buildLocationPayload = (original, updated) => {
     payload.longitude = { value: Number(updated.lng) };
   }
 
+  console.log("original", original, "updated", updated , "payload", payload);
   return payload;
 };
