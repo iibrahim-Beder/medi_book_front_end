@@ -153,7 +153,7 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
                     shift.locationName,
                   );
                 }}
-                className={`dc-btn m-0 ${isActive ? "deactivate-btn" : ""}`}
+                className={`second-btn m-0 ${isActive ? "deactivate-btn" : ""}`}
                 style={{ margin: "11px 4px", minWidth: "fit-content" }}
               > 
                 {isActive ? t("Deactivate") : t("Activate")}

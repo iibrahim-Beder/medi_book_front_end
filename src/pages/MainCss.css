@@ -1563,18 +1563,19 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
     width: 100%;
     display: block;
 }
-.dc-btn.deactivate-btn {
-border-color: #E53935;
+.second-btn.deactivate-btn {
+    background: var(--secthemecolor);
+    padding: 7px 17px;
 }
 
-.dc-btn.deactivate-btn:hover {
+/* .dc-btn.deactivate-btn:hover {
   background-color: var(--red);
   box-shadow: 0 9px 20px 0 #f33a3a94;
 }
 
 .dc-btn.deactivate-btn:active {
   background-color: #E53935;
-}
+} */
 .dc-accordioninnertitle .dc-rightarea .dc-addinfo:active{
   background-color: var(--themecolor);
 }

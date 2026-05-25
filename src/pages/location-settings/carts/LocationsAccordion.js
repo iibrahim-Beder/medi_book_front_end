@@ -317,11 +317,11 @@ const LocationsAccordion = memo(({
                     </div>
                   </div>
                 </div>
-                <div className="dc-btnarea d-flex align-items-end">
+                <div className="dc-btnarea d-flex align-items-end w-100 pt-3">
                 {!item.isNew &&<button
                     type="button"
                     onClick={() => handleShowActiveConfirm(item.id, !item.isActive, getLocationTitle(item))}
-                    className={`dc-btn ${item.isActive ? "deactivate-btn" : ""}`}
+                    className={`second-btn mr-auto ${item.isActive ? "deactivate-btn" : ""}`}
                     style={{   minWidth:"fit-content" }}
                     >
                     {item.isActive ? t("Deactivate"): t("Activate")}
@@ -377,21 +377,21 @@ const LocationsAccordion = memo(({
       {activePopup.show && (
         <PopupMessage
           type="warning"
-          title={t("popup.change_active_title")}
+          title={t("are you sure?")}
           message={t(
             activePopup.newActive
-              ? "popup.activate_location_confirm"
-              : "popup.deactivate_location_confirm",
+              ? "Are you sure you want to activate this location?"
+              : "Are you sure you want to deactivate this location?",
             { name: activePopup.locationName }
           )}
           buttons={[
             {
-              text: t("actions.cancel"),
+              text: t("Cancel"),
               onClick: handleCloseActiveConfirm,
               variant: "secondary"
             },
             {
-              text: t("actions.confirm"),
+              text: t("Confirm"),
               onClick: handleConfirmActiveToggle,
               variant: "primary"
             }

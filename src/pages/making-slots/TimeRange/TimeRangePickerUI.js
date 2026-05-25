@@ -262,7 +262,7 @@ const TimeRangePickerUI = ({
           <div style={{
             fontSize: '16px',
             fontWeight: '600',
-            color: '#012047',
+            // color: '#012047',
             marginBottom: '12px',
             textAlign: 'center',
           }}>

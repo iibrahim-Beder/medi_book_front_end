@@ -78,7 +78,7 @@ const Step3ProfessionalInfo = forwardRef(
             <div className="form-group form-group-half p-0">
               <div className="form-group p-0 form-group-half form-group-fourth">
                 <Field
-                  label={t("years of experience")}
+                  label={t("Years of experience")}
                   type="number"
                   name="yearsOfExperience"
                   value={formData.yearsOfExperience}
@@ -94,7 +94,7 @@ const Step3ProfessionalInfo = forwardRef(
               {/* price */}
               <div className="form-group p-0 form-group-half form-group-fourth">
                 <Field
-                  label={t("default Price")}
+                  label={t("Default Price")}
                   type="number"
                   name="defaultPricePerSession"
                   value={formData.defaultPricePerSession}

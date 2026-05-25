@@ -150,7 +150,7 @@ const EditableList = ({
             className="error-text"
             style={{ height: "40px", color: "var(--text-sub)", margin: "10px" }}
           >
-            primary specialty <FaStar color="ffc107" />
+            Primary specialty <FaStar color="ffc107" />
           </span>
         )}
         {error && (

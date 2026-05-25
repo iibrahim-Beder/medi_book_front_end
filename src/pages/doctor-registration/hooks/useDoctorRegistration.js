@@ -114,7 +114,7 @@ const handleNextStep = async () => {
     currentStepError,
     isCurrentStepError,
     doctorCurrentStepNumber,
-    completedStepsPercent,
+    completedStepsPercent: stepCompleted.BasicInfo ? completedStepsPercent : 0,
     refetchCurrentStep,
     isFetching,
     stepCompleted,

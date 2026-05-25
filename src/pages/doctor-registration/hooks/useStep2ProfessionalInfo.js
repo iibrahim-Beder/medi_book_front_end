@@ -122,14 +122,14 @@ export const useStep2ProfessionalInfo = (isNew) => {
     }
     if (!formData.primarySpecialtyId)
      {
-      toast.error(t("primary specialty required"));
+      toast.error(t("Primary specialty required"));
       return false;
      }
     if (
       !formData.primarySpecialtyId &&
       !formData.specialtyIds.includes(Number(formData.primarySpecialtyId))
     ) {
-      toast.error(t("primary specialty not found"));
+      toast.error(t("Primary specialty not found"));
       return false;
     }
     return true;

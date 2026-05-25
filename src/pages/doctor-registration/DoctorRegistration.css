@@ -292,6 +292,7 @@
   min-height: fit-content;
 }
 body .form-group label{
+  text-transform: capitalize;
   margin-bottom: 0;
   color: #465D7C;
   font-size: 16px;
@@ -416,10 +417,6 @@ display: inline-flex;
     display: grid;
     grid-template-columns: auto auto auto;
   }
-  .step.active .step-circle {
-  background-color: var(--blue);
-  border-color: var(--blue);
-}
 }
 @media (max-width: 468px) {
 .doctor-registration .dc-experienceaccordion ,.accordion-table-card .dc-experienceaccordion{
@@ -439,4 +436,11 @@ display: inline-flex;
   float: right !important;
   width: fit-content !important;
   margin: 0 !important;
+}
+
+.step.active .step-circle {
+  background-color:  #CBD5E1;
+  border-color:  #CBD5E1;
+  /* background-color: var(--blue);
+  border-color: var(--blue); */
 }

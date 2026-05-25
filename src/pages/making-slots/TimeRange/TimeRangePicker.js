@@ -214,7 +214,7 @@ const TimeRangePicker = ({
                 border:
                   inputError || showError
                     ? "1px solid #ff4d4f"
-                    : "1px solid #d0d5dd",
+                    : "",
               }}
               placeholder={placeholder}
             />

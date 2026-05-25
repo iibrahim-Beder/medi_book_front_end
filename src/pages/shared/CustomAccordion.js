@@ -351,7 +351,7 @@ const handleFieldChange = (index, field, value) => {
                     onSubmit={liveUpdate ? (e) => e.preventDefault() : (e) => handleSave(index, e)}
                   >
                     <fieldset>
-                      <div className="form-group">{renderFormFields(index, item)}</div>
+                      <div style={{borderBottom:"1px solid #ddd"}} className="form-group mb-2 pb-2">{renderFormFields(index, item)}</div>
                       {hint && (
                         <div className="form-group">
                           <span>{hint}</span>
@@ -381,7 +381,7 @@ const handleFieldChange = (index, field, value) => {
                       <button
                             type="button"
                             onClick={() => handleToggle(item)}
-                            className={`dc-btn ${item.isActive ? "deactivate-btn" : ""}`}
+                            className={`second-btn ${item.isActive ? "deactivate-btn" : ""}`}
                             style={{ margin: "11px 4px",  minWidth:"fit-content" }}
                           >
                             {item.isActive ? t("Deactivate"): t("Activate")}
