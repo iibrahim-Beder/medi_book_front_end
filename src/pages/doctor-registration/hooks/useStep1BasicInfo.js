@@ -121,7 +121,7 @@ const handleInputChange = (e) => {
       return false;
     }
 
-    const loader = toast.loading(t("loading"));
+    const loader = toast.loading(t("loading..."));
 
     try {
       console.log("formData", formData);
@@ -163,7 +163,6 @@ const handleInputChange = (e) => {
     }
     } catch (error) {
        toast.error(getErrorMessage(error));
-      toast.error(error?.data?.message || t("personalInfo.error"));
       return false;
     } finally {
       toast.dismiss(loader);

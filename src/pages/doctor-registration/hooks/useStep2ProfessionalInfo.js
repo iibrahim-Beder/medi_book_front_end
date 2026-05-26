@@ -9,6 +9,7 @@ import {
 import toast from "react-hot-toast";
 import { useGetSpecialtiesQuery } from "../../../api/doctor-information/specialtiesApi";
 import { useSelector } from "react-redux";
+import { getErrorMessage } from "../../utils/api-errors";
 
 export const useStep2ProfessionalInfo = (isNew) => {
   const { t } = useTranslation();
@@ -136,7 +137,7 @@ const validateForm = () => {
     }
 
     if (!doctorId) {
-      toast.error(t("professionalInfo.doctorIdMissing"));
+      toast.error(t("Error"));
       return false;
     }
 
@@ -173,12 +174,12 @@ const validateForm = () => {
           toast.success(t("professional information updated successfully"));
           return true;
         }
-        toast.error(response.message || t("failed to update"));
+        toast.error(getErrorMessage(error));
         return false;
       }
     } catch (error) {
       console.log("====error", error);
-      toast.error(error?.data?.message || t("something went wrong"));
+      toast.error(getErrorMessage(error));
       return false;
     } finally {
       toast.dismiss(loader);
