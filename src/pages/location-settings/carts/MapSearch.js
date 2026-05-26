@@ -150,7 +150,8 @@ onChange({
           onDragEnd={handleDragEnd}
         />
       </GoogleMap>
-      <label className="mt-2 mb-0">{t("Place Name")}</label>
+      <div className="form-group m-0 mt-1">
+      <label >{t("Location Name")}</label>
       <input
       color="var(--terthemecolor)"
         className="form-control"
@@ -162,6 +163,7 @@ onChange({
 })        }
         placeholder={t("SpecialPlaceNameOptional")}
       />
+    </div>
     </div>
   );
 };

@@ -104,7 +104,7 @@ export const useDoctorEducation = (New=false) => {
   // SAVE
   const handleSaveAcademic = useCallback(
     async (index, data) => {
-      if (isAdding || isUpdating) return false;
+      if (isAdding || isUpdating || isAddingOne) return false;
 
        console.log("===========data",data);
        if (!data) {

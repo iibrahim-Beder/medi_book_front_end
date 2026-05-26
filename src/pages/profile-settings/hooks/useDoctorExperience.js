@@ -5,9 +5,11 @@ import {
   useUpdateDoctorExperienceMutation,
   useDeleteDoctorExperienceMutation,
   useGetDoctorExperiencesQuery,
+  useAddDoctorOneExperienceMutation,
 } from "../../../api/doctor-information/ExperienceApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { getErrorMessage } from "../../utils/api-errors";
 
 export const useDoctorExperience = (New=false)=> { 
   const doctorId = useSelector((state) => state.auth.doctorId);
@@ -40,6 +42,10 @@ export const useDoctorExperience = (New=false)=> {
 
   const [addExperience, { isLoading: isAdding }] =
     useAddDoctorExperienceMutation();
+
+  const [addOneExperience, { isLoading: isAddingOne }] =
+    useAddDoctorOneExperienceMutation();
+
   const [updateExperience, { isLoading: isUpdating }] =
     useUpdateDoctorExperienceMutation();
   const [deleteExperience] = useDeleteDoctorExperienceMutation();
@@ -98,9 +104,9 @@ export const useDoctorExperience = (New=false)=> {
         setExperience((prev) =>
           prev.filter((_, i) => i !== index)
         );
-        toast.success("Deleted");
-      } catch {
-        toast.error("Delete failed");
+        toast.success("Deleted Successfully");
+      } catch(error) {
+        toast.error(getErrorMessage(error));
       } finally {
         toast.dismiss(loading);
       }
@@ -111,7 +117,7 @@ export const useDoctorExperience = (New=false)=> {
   // SAVE
   const handleSaveExperience = useCallback(
     async (index, data) => {
-      if (isAdding || isUpdating) return false;
+      if (isAdding || isUpdating ||isAddingOne) return false;
       
             if (!data.workplace ) {
               toast.error(" workplace is required");
@@ -133,30 +139,19 @@ export const useDoctorExperience = (New=false)=> {
         let success = false;
 
         if (data.isNew) {
-          const res = await addExperience({
-            doctorId,
-            experiences: [data],
-          }).unwrap();
-
-          if (res?.succeeded) {
-            const created = res.data?.[0];
-
-            setExperience((prev) =>
-              prev.map((item, i) =>
-                i === index
-                  ? {
-                      ...created,
-                      id: created.doctorExperienceId,
-                      isNew: false,
-                      isExpanded: false,
-                    }
-                  : item
-              )
-            );
-
-            toast.success("Added Successfully");
-            success = true;
+          if(New){
+         await addExperience({
+              doctorId,
+              experiences: [data],
+            }).unwrap();
+          }else{
+            await addOneExperience({
+                 doctorId,
+                 experience: data,
+               }).unwrap();
           }
+            toast.success("Added experience Successfully");
+            success = true;
         } else {
           const original =
             experiencesData?.data?.find(
@@ -194,7 +189,7 @@ export const useDoctorExperience = (New=false)=> {
         return success;
       } catch (error) {
         console.log("=======error",error);
-        toast.error("Save failed");
+        toast.error(getErrorMessage(error));
         return false;
       } finally {
         toast.dismiss(loading);

@@ -87,6 +87,53 @@ export const doctorExperienceApi = baseApi.injectEndpoints({
       },
     }),
 
+    // ADD ONE
+    addDoctorOneExperience: builder.mutation({
+  query: ({ doctorId, experience }) => ({
+    url: "/Doctors/AddDoctorExperience",
+    method: "POST",
+    body: {
+      doctorId,
+      experience: {
+        workplace: processField(experience.workplace),
+        jobTitle: processField(experience.jobTitle),
+        startDate: processField(experience.startDate),
+        endDate: processField(experience.endDate),
+        description: processField(experience.description),
+      },
+    },
+  }),
+
+  async onQueryStarted(_, { dispatch, queryFulfilled, getState }) {
+    try {
+      const { data } = await queryFulfilled;
+      const added = data?.data;
+      if (!added) return;
+
+      const state = getState();
+      const queries =
+        state[baseApi.reducerPath]?.queries ?? {};
+
+      Object.values(queries).forEach((entry) => {
+        if (entry?.endpointName === "getDoctorExperiences") {
+          dispatch(
+            doctorExperienceApi.util.updateQueryData(
+              "getDoctorExperiences",
+              entry.originalArgs,
+              (draft) => {
+                draft.data.unshift({
+                  ...added,
+                  id: added.doctorExperienceId,
+                });
+              }
+            )
+          );
+        }
+      });
+    } catch {}
+  },
+}),
+
     // UPDATE
     updateDoctorExperience: builder.mutation({
       query: ({ doctorId, doctorExperienceId, updates }) => ({
@@ -188,6 +235,7 @@ export const doctorExperienceApi = baseApi.injectEndpoints({
 export const {
   useGetDoctorExperiencesQuery,
   useAddDoctorExperienceMutation,
+  useAddDoctorOneExperienceMutation,
   useUpdateDoctorExperienceMutation,
   useDeleteDoctorExperienceMutation,
 } = doctorExperienceApi;
