@@ -47,7 +47,7 @@ const ShiftStep = forwardRef(
       // <div className="shift-template-selector">
       <>
       <div
-        className={insidUi ? "" : "table-card"}
+        className={insidUi ? "" : "table-card insideUi"}
         style={{ position: "relative", display: "flex" }}
       >
         {/* {isLoading  && Loader("form-loader")} */}

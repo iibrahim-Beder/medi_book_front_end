@@ -47,7 +47,7 @@ const Step1PersonalInfo = forwardRef(
       <>
         <SectionTitle icon={<FaRegUser />} title={t("personalInfo.title")} />
 
-        <div className="table-card" style={{position: "relative"}}>
+        <div className="table-card insideUi" style={{position: "relative"}}>
           {isLoading  && Loader("form-loader")}
     <form className="dc-formtheme dc-userform">
         <fieldset>
