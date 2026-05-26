@@ -26,6 +26,7 @@ const EditableList = ({
   selectLabel = "Select Item",
   onPrimaryChange,
   primarySpecialtyId = "",
+  outError = false
 }) => {
   const { t } = useTranslation();
 
@@ -101,6 +102,11 @@ const EditableList = ({
       onPrimaryChange?.(newPrimary);
     }
   };
+  const showPrimarySpecialty =
+  (!error && !outError) || (!error && items.length > 0);
+
+const showOutError =
+  outError && !error && items.length === 0 ;
 
   return (
     <div className="dc-skills dc-tabsinfo">
@@ -145,20 +151,30 @@ const EditableList = ({
           </fieldset>
         </form>
 
-        {!error && (
-          <span
-            className="error-text"
-            style={{ height: "40px", color: "var(--text-sub)", margin: "10px" }}
-          >
-            Primary specialty <FaStar color="ffc107" />
-          </span>
-        )}
-        {error && (
-          <p className="error-text" style={{ color: "red", margin: "10px" }}>
-            {error}
-          </p>
-        )}
+       {showPrimarySpecialty && (
+      <span
+        className="error-text"
+        style={{
+          height: "40px",
+          color: "var(--text-sub)",
+          margin: "10px",
+        }}
+      >
+        Primary specialty <FaStar color="#ffc107" />
+      </span>
+    )}
 
+    {error && (
+      <span className="error-text">
+        {error}
+      </span>
+    )}
+
+    {showOutError && (
+      <span className="error-text">
+        {outError}
+      </span>
+    )}
         <div className="dc-myskills">
           <AnimatePresence mode="popLayout">
             <ul className="sortable list">

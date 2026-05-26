@@ -45,7 +45,7 @@ const StepLocation = forwardRef(({ isNew, doctorId }, ref) => {
           <p style={{ color: "red" }}>{errors.location}</p>
         )}
         {errors.displayName && (
-          <p style={{ color: "red" }}>{errors.displayName}</p>
+          <span className="error-text">  {errors.displayName}</span>
         )}
       </div>
     </>

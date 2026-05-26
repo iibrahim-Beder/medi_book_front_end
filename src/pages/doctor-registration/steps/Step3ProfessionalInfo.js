@@ -15,11 +15,6 @@ const Step3ProfessionalInfo = forwardRef(
     {
        insideUi = false,
       isNew,
-      currencyOptions = [
-        { label: "AOA", value: 45 },
-        { label: "EGP", value: 47 },
-        { label: "USD", value: 46 },
-      ],
       onChange = () => {},
       forceShowError = true,
     },
@@ -39,6 +34,7 @@ const Step3ProfessionalInfo = forwardRef(
       specialtiesOptions,
       specialtiesLoading,
       handlePrimaryChange,
+      currencyOptions
     } = useStep2ProfessionalInfo(isNew);
 
     useImperativeHandle(ref, () => ({
@@ -85,7 +81,7 @@ const Step3ProfessionalInfo = forwardRef(
                   onChange={handleInputChange}
                   error={errors.yearsOfExperience}
                   className="form-control"
-                  placeholder={t("years of experience")}
+                  placeholder={t("Years of experience")}
                   min="0"
                   forceShowError={true} 
                 />
@@ -101,7 +97,7 @@ const Step3ProfessionalInfo = forwardRef(
                   onChange={handleInputChange}
                   error={errors.defaultPricePerSession}
                   className="form-control"
-                  placeholder={t("defaultPrice")}
+                  placeholder={t("Default Price")}
                   //   min="0"
                   //   step="0.01"
                   forceShowError={true}
@@ -131,7 +127,7 @@ const Step3ProfessionalInfo = forwardRef(
                   value={formData.languagesSpoken}
                   onChange={handleInputChange}
                   error={errors.languagesSpoken}
-                  placeholder={t("languages")}
+                  placeholder={t("Enter languages spoken")}
                   forceShowError={true}
                 />
               </div>
@@ -146,7 +142,7 @@ const Step3ProfessionalInfo = forwardRef(
                   error={errors.bio}
                   className="form-control"
                   rows={4}
-                  placeholder={t("professionalInfo.bio.placeholder")}
+                  placeholder={t("Enter bio here ...")}
                   forceShowError={true}
                 />
               </div>
@@ -165,6 +161,7 @@ const Step3ProfessionalInfo = forwardRef(
                 primarySpecialtyId={formData.primarySpecialtyId}
                 onPrimaryChange={handlePrimaryChange}
                 forceShowError={true}
+                outError={errors.specialtyIds}
               />
             </fieldset>
              {  insideUi && <button

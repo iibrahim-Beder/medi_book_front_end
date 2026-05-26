@@ -13,7 +13,13 @@ import { useSelector } from "react-redux";
 export const useStep2ProfessionalInfo = (isNew) => {
   const { t } = useTranslation();
   const doctorId = useSelector((state) => state.auth.doctorId);
-
+  
+  const currencyOptions = [
+          { label: "Select currency", value: null },
+          { label: "AED", value: 45 },
+          { label: "EGP", value: 47 },
+          { label: "USD", value: 46 },
+        ]
 
   const {
     data: fetchedData,
@@ -55,7 +61,7 @@ export const useStep2ProfessionalInfo = (isNew) => {
       setFormData({
         yearsOfExperience: apiData.yearsOfExperience || "",
         defaultPricePerSession: apiData.defaultPricePerSession || "",
-        defaultCurrencyId: apiData.defaultCurrencyId || "",
+        defaultCurrencyId: currencyOptions.find((c) => c.label === apiData.defaultCurrency)?.value || "",
         bio: apiData.bio || "",
         languagesSpoken: apiData.languagesSpoken || "",
         specialtyIds: apiData.specialties.map((s) => s.specialtieID),
@@ -95,49 +101,37 @@ export const useStep2ProfessionalInfo = (isNew) => {
     }));
   };
 
-  const validateForm = () => {
-    if (!formData.yearsOfExperience){toast.error(t("years of experience required")); return false;};
-
+const validateForm = () => {
+    const newErrors = {};
     if (!formData.defaultPricePerSession)
-    {
-      toast.error(t("default price per session required"));
-      return false;
-    }
-    // if (!formData.defaultCurrencyId)
-    //   newErrors.defaultCurrencyId = t("professionalInfo.currency.required");
-    if (!formData.bio.trim())
-    {
-      toast.error(t("bio required"));
-      return false;
-    }
-    if (!formData.languagesSpoken.trim())
-    {
-      toast.error(t("languages spoken required"));
-      return false;
-    }
+      newErrors.defaultPricePerSession = t(
+        "default Price required",
+      );
+    if (!formData.defaultCurrencyId)
+      newErrors.defaultCurrencyId = t("currency required");
     if (!formData.specialtyIds.length)
-    {
-      toast.error(t("specialty required at least one"));
-      return false;
-    }
+      newErrors.specialtyIds = t("Specialty required");
     if (!formData.primarySpecialtyId)
-     {
-      toast.error(t("Primary specialty required"));
-      return false;
-     }
+      newErrors.specialtyIds = t(
+        "Select primary specialty required",
+      );
     if (
       !formData.primarySpecialtyId &&
       !formData.specialtyIds.includes(Number(formData.primarySpecialtyId))
     ) {
-      toast.error(t("Primary specialty not found"));
-      return false;
+      newErrors.specialtyIds = t(
+        "Select primary specialty required",
+      );
     }
-    return true;
+    setErrors(newErrors);
+    console.log("errors",errors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     console.log("formData", formData,"fetchedData",fetchedData);
     if (!validateForm()) {
+      toast.error(t("fill all the required fields"));
       return false;
     }
 
@@ -163,28 +157,28 @@ export const useStep2ProfessionalInfo = (isNew) => {
         console.log("====payload", payload);
         const response = await addProfile(payload).unwrap();
         if (response.succeeded) {
-          toast.success(t("professionalInfo.success"));
+          toast.success(t("professional information added successfully"));
           return true;
         }
       } else {
         const payload = buildPayload(fetchedData?.data, formData);
         console.log("============payload", payload);
         if (!Object.keys(payload).length) {
-          toast(t("noChanges"));
+          toast(t("no changes detected"));
           return true;
         }
         payload.doctorID = doctorId;
         const response = await updateProfile(payload).unwrap();
         if (response.succeeded) {
-          toast.success(t("professionalInfo.success"));
+          toast.success(t("professional information updated successfully"));
           return true;
         }
-        toast.error(response.message || t("professionalInfo.error"));
+        toast.error(response.message || t("failed to update"));
         return false;
       }
     } catch (error) {
       console.log("====error", error);
-      toast.error(error?.data?.message || t("professionalInfo.error"));
+      toast.error(error?.data?.message || t("something went wrong"));
       return false;
     } finally {
       toast.dismiss(loader);
@@ -202,7 +196,8 @@ export const useStep2ProfessionalInfo = (isNew) => {
     error,
     specialtiesOptions: mappedOptions,
     specialtiesLoading,
-    handlePrimaryChange
+    handlePrimaryChange,
+    currencyOptions
   };
 };
 
@@ -220,7 +215,7 @@ const buildPayload = (original, updated) => {
     };
   }
   if (Number(updated.defaultCurrencyId) !== original?.defaultCurrencyId) {
-    // payload.defaultCurrencyId = { value: Number(updated.defaultCurrencyId) };
+    payload.defaultCurrencyId = { value: Number(updated.defaultCurrencyId) };
   }
   if (updated.bio !== original?.bio) {
     payload.bio = { value: updated.bio };

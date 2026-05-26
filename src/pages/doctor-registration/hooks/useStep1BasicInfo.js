@@ -107,12 +107,12 @@ const handleInputChange = (e) => {
       newErrors.licenseNumber = t("license number required");
 
     setErrors(newErrors);
-    toast.error("Please fill all the required fields");
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) {
+      toast.error("fill all the required fields");
       return false;
     }
 
