@@ -6,6 +6,7 @@ import ErrorLoading from "../../shared/ErrorLoading";
 import SectionTitle from "../../shared/SectionTitle";
 import BlueMapPicker from "../../location-settings/carts/MapSearch";
 import Loader from "../../shared/Loader";
+import { BiSolidInfoCircle } from "react-icons/bi";
 
 
 const StepLocation = forwardRef(({ isNew, doctorId }, ref) => {
@@ -19,6 +20,7 @@ const StepLocation = forwardRef(({ isNew, doctorId }, ref) => {
     isLoading,
     error,
     refetch,
+    MainHint = "You can add more than one location from within"
   } = useDoctorLocation(isNew, doctorId);
 
   useImperativeHandle(ref, () => ({
@@ -48,6 +50,7 @@ const StepLocation = forwardRef(({ isNew, doctorId }, ref) => {
           <span className="error-text">  {errors.displayName}</span>
         )}
       </div>
+        {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px"}} />{MainHint}</span>} 
     </>
   );
 });

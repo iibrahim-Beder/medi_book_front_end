@@ -4,6 +4,7 @@ import SelectField from "../../ui/form-fields/SelectField";
 import DaysAvailabilityCheckbox from "../../ui/form-fields/DaysAvailabilityCheckbox";
 import SelectTimePicker from "../../ui/form-fields/SelectTimePicker";
 import useAddShifts from "../hooks/useAddShifts";
+import { BiSolidInfoCircle } from "react-icons/bi";
 const ShiftStep = forwardRef(
   (
     {
@@ -11,6 +12,7 @@ const ShiftStep = forwardRef(
       isNew,
       onChange = () => {},
       forceShowError = true,
+      MainHint=""
     },
     ref,
   ) => {
@@ -43,6 +45,7 @@ const ShiftStep = forwardRef(
 
     return (
       // <div className="shift-template-selector">
+      <>
       <div
         className={insidUi ? "" : "table-card"}
         style={{ position: "relative", display: "flex" }}
@@ -134,6 +137,9 @@ const ShiftStep = forwardRef(
         </form>
         {/* </div> */}
       </div>
+       {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px"}} />{MainHint}</span>} 
+
+      </>
     );
   },
 );

@@ -4,7 +4,7 @@ import { useDoctorExperience } from "../hooks/useDoctorExperience";
 import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
 
-const DoctorExperience = forwardRef(({ isNew }, ref) => {
+const DoctorExperience = forwardRef(({ isNew ,register }, ref) => {
 
 
   const {
@@ -105,6 +105,7 @@ useImperativeHandle(
         onAdd={isNew ? null: handleAddExperience}
         buttonsAvailable={isNew ? false: true}
         isUpdateOut={isNew}
+        MainHint={ register && "You can also add more than one experience from within."}
       />
     </div>
   );

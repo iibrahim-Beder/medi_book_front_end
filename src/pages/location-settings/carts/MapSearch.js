@@ -122,7 +122,7 @@ onChange({
 
   return (
     <div>
-      <Autocomplete
+      {/* <Autocomplete
         onLoad={(ref) => (autocompleteRef.current = ref)}
         onPlaceChanged={onPlaceChanged}
       >
@@ -130,7 +130,7 @@ onChange({
           className="form-control mb-2"
           placeholder={t("SearchForAddress")}
         />
-      </Autocomplete>
+      </Autocomplete> */}
 
       {loadingName && (
         <div style={{ fontSize: 13 }}>{t("LoadingPlaceName")}...</div>

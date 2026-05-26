@@ -3,7 +3,7 @@ import CustomAccordion from "../../shared/CustomAccordion";
 import { useDoctorEducation } from "../hooks/useDoctorEducation";
 import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
-const AcademicQualifications = forwardRef(({ isNew }, ref) => {
+const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
   const {
     handleAddAcademic,
     handleDeleteAcademic,
@@ -149,9 +149,11 @@ const AcademicQualifications = forwardRef(({ isNew }, ref) => {
         getItemTitle={getAcademicTitle}
         noDataMessage="No academic qualifications added yet. Click 'Add New Qualification' to get started."
         isUpdateOut={isNew}
+        hint="Add your educational qualifications and certificates to your profile. This information will be displayed on your profile page and can be used to help potential patients find you."
         // backgroundColor="#f8f9fa"
         // titleBackgroundColor="#e3f2fd"
         // allowMultipleOpen={true}
+        MainHint={register && "You can also add more than one qualification from within."}
       />
     </div>
   );

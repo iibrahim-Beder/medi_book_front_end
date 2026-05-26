@@ -56,19 +56,21 @@ export default function DoctorRegistration({ openStepRegister ,setOpenStepRegist
               <AcademicQualifications
                 ref={stepRef}
                 isNew={!completedSteps.includes(3)}
+                register={true}
               />
             )}
             {currentStep === 4 && (
               <DoctorExperience
                 ref={stepRef}
                 isNew={!completedSteps.includes(4)}
+                register={true}
               />
             )}
             {currentStep === 5 && (
-              <StepLocation ref={stepRef} isNew={!completedSteps.includes(5)} />
+              <StepLocation ref={stepRef} isNew={!completedSteps.includes(5)} register={true} />
             )}
             {currentStep === 6 && (
-              <ShiftStep ref={stepRef} isNew={!completedSteps.includes(6)} />
+              <ShiftStep ref={stepRef} isNew={!completedSteps.includes(6)} MainHint={"You can also add more than one shift from within."} />
             )}
             <div
               className="btn-container"

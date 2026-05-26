@@ -12,6 +12,7 @@ import PopupMessage from "./PopupMessage";
 import { useTranslation } from "react-i18next";
 import TimeRangePicker from "../making-slots/TimeRange/TimeRangePicker";
 import RenderCheckboxes  from "../making-slots/components/RenderCheckboxe";
+import { BiSolidInfoCircle } from "react-icons/bi";
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
@@ -44,6 +45,7 @@ const CustomAccordion = memo(({
  applyRule,
  buttonsAvailable = true,
  isUpdateOut = false
+ ,MainHint="",
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
@@ -250,6 +252,7 @@ const handleFieldChange = (index, field, value) => {
       {dataRead.length === 0 && noDataMessage ? (
         <div className="dc-experienceaccordion accordion">{noDataMessage}</div>
       ) : (
+        <>
         <ul className="dc-experienceaccordion accordion">
           {dataRead.map((item, index) => {
             if (!item._initialTitle && !readOnly ) {item._initialTitle = renderItemTitle(item);}
@@ -400,6 +403,8 @@ const handleFieldChange = (index, field, value) => {
             );
           })}
         </ul>
+         {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px"}} />{MainHint}</span>}
+        </>
       )}
 
       {/* Delete Confirmation Popup */}
