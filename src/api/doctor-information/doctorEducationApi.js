@@ -98,6 +98,57 @@ export const doctorEducationApi = baseApi.injectEndpoints({
       },
     }),
 
+    addDoctorOneEducation: builder.mutation({
+  query: ({ doctorId, education }) => ({
+    url: "/Doctors/AddDoctorEducation",
+    method: "POST",
+    body: {
+      doctorId,
+      education: {
+        institutionName: processField(education.institutionName),
+        degree: processField(education.degree),
+        major: processField(education.major),
+        graduationYear: education.graduationYear,
+        startDate: processField(education.startDate),
+        endDate: processField(education.endDate),
+        notes: processField(education.notes),
+        certificateFileUrl: processField(
+          education.certificateFileUrl
+        ),
+      },
+    },
+  }),
+
+  async onQueryStarted(_, { dispatch, queryFulfilled, getState }) {
+    try {
+      const { data } = await queryFulfilled;
+      const added = data?.data;
+      if (!added) return;
+
+      const state = getState();
+      const queries =
+        state[baseApi.reducerPath]?.queries ?? {};
+
+      Object.values(queries).forEach((entry) => {
+        if (entry?.endpointName === "getDoctorEducations") {
+          dispatch(
+            doctorEducationApi.util.updateQueryData(
+              "getDoctorEducations",
+              entry.originalArgs,
+              (draft) => {
+                draft.data.unshift({
+                  ...added,
+                  id: added.doctorEducationId,
+                });
+              }
+            )
+          );
+        }
+      });
+    } catch {}
+  },
+}),
+
     // UPDATE
     updateDoctorEducation: builder.mutation({
       query: ({ doctorId, doctorEducationId, updates }) => ({
@@ -199,6 +250,7 @@ export const doctorEducationApi = baseApi.injectEndpoints({
 export const {
   useGetDoctorEducationsQuery,
   useAddDoctorEducationMutation,
+  useAddDoctorOneEducationMutation,
   useUpdateDoctorEducationMutation,
   useDeleteDoctorEducationMutation,
 } = doctorEducationApi;

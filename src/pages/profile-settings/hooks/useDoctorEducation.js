@@ -5,6 +5,7 @@ import {
   useUpdateDoctorEducationMutation,
   useDeleteDoctorEducationMutation,
   useGetDoctorEducationsQuery,
+  useAddDoctorOneEducationMutation,
 } from "../../../api/doctor-information/doctorEducationApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -44,6 +45,9 @@ export const useDoctorEducation = (New=false) => {
 
   const [addEducation, { isLoading: isAdding }] =
     useAddDoctorEducationMutation();
+
+  const [addOneEducation, { isLoading: isAddingOne }] =
+    useAddDoctorOneEducationMutation();
   const [updateEducation, { isLoading: isUpdating }] =
     useUpdateDoctorEducationMutation();
   const [deleteEducation] = useDeleteDoctorEducationMutation();
@@ -126,30 +130,21 @@ export const useDoctorEducation = (New=false) => {
         let success = false;
 
         if (data.isNew) {
-          const res = await addEducation({
-            doctorId,
-            educations: [data],
-          }).unwrap();
-
-          if (res?.succeeded) {
-            const created = res.data?.[0];
-
-            setEducations((prev) =>
-              prev.map((item, i) =>
-                i === index
-                  ? {
-                      ...created,
-                      id: created.doctorEducationId,
-                      isNew: false,
-                      isExpanded: false,
-                    }
-                  : item,
-              ),
-            );
-
-            toast.success("Added Successfully");
-            success = true;
+          // const res = null;
+          if(New){
+          await addEducation({
+             doctorId,
+             educations: [data],
+           }).unwrap();
+          }else{
+            console.log("data",data);
+          await addOneEducation({
+              doctorId,
+              education: data,
+            }).unwrap();
           }
+            toast.success("Added qualification Successfully");
+            success = true;
         } else {
           const original =  educationsData?.data?.find((item) => item.doctorEducationId === data.id) || {};
 
@@ -169,10 +164,10 @@ export const useDoctorEducation = (New=false) => {
               ),
             );
 
-            toast.success("Updated");
+            toast.success("Updated qualification successfully");
             success = true;
           } else {
-            toast.error(res?.message);
+            toast.error(getErrorMessage(error));
           }
         }
 
