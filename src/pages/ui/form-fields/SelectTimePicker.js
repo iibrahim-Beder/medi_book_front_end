@@ -383,6 +383,7 @@ const SelectTimePicker = ({
 
   return (
     <div
+      style={{padding:"10px"}}
       className={`time-picker-container ${half ? "form-group-half" : ""} ${showError ? "has-error" : ""}`}
     >
       {label && (
