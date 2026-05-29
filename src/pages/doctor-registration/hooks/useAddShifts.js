@@ -19,8 +19,11 @@ const useAddShifts = () => {
   const [selectedLocationId, setSelectedLocationId] = useState(null);
   const [breakTimes, setBreakTimes] = useState({ start: '', end: '' });
   const [selectedDays, setSelectedDays] = useState([]);
+  
+  const [errors, setErrors] = useState({});
+  
   const {locations ,isLoading:isLoadingLocations}= useDoctorLocationsManager(doctorId)
-  console.log("locations",locations);
+
   const {
     data: availabilityData,
     isLoading: loadingAvailability,
@@ -45,10 +48,16 @@ const useAddShifts = () => {
   useEffect(() => {
     setSelectedDays([]);
     setBreakTimes({ start: '', end: '' });
+    setErrors((prev) => ({ ...prev, selectedTemplateId: null }));
   }, [selectedTemplateId]);
+
+  useEffect(() => {
+    setErrors((prev) => ({ ...prev, selectedLocationId: null }));
+  }, [selectedLocationId]);
 
 
   const toggleDay = (dayOfWeek) => {
+    setErrors((prev) => ({ ...prev, selectedDays: null }));
     setSelectedDays((prev) =>
       prev.includes(dayOfWeek)
         ? prev.filter((d) => d !== dayOfWeek)
@@ -58,43 +67,29 @@ const useAddShifts = () => {
 
   const handleSave = async () => {
 const SelectedTemplate = templates.find(
-  (template) => template.templateId === Number(selectedTemplateId));    // const templateTime = { startTime: SelectedTemplate.startTime, endTime: SelectedTemplate.endTime };
-    // console.log("selectedTemplateId",selectedTemplateId,"selectedLocationId",selectedLocationId,"selectedDays",selectedDays,"breakTimes",breakTimes,"templateTime",SelectedTemplate);
-    console.log("selectedLocationId",selectedLocationId);
+  (template) => template.templateId === Number(selectedTemplateId));  
     
-    if (!selectedTemplateId) {
-      toast.error(t('Selec Template required'));
-      return;
+     if (!validateForm()) {
+      toast.error("fill all the required fields");
+      return false;
     }
-    if (!selectedLocationId || selectedLocationId === "empty" ) {
-      toast.error(t('Selec Location required'));
-      return;
+
+   
+    if((breakTimes.start !== SelectedTemplate.startTime) && (breakTimes.end  || breakTimes.start)){
+      if (breakTimes.start  < SelectedTemplate.startTime) {
+        toast.error("Break start time must be greater than shift start time");
+        return false;
+      }
+      if (breakTimes.end > SelectedTemplate.endTime) {
+        toast.error("Break end time must be less than shift end time");
+        return false;
+      }
+    if(breakTimes.start  >= breakTimes.end){
+      toast.error("Break start time must be less than break end time");
+      return false ;
     }
-    if (selectedDays.length === 0) {
-      toast.error(t('Selec Days of week required'));
-      return;
     }
-         if (!breakTimes.start) {
-          toast.error("Break start time is required");
-          return false ;}
-          if (!breakTimes.end){
-          toast.error("Break end time is required");return false };
-          if (breakTimes.start  < SelectedTemplate.startTime) {
-            toast.error("Break start time must be greater than shift start time");
-            return false;
-          }
-          if (breakTimes.end > SelectedTemplate.endTime) {
-            toast.error("Break end time must be less than shift end time");
-            return false;
-          }
-        if(breakTimes.start  >= breakTimes.end){
-          toast.error("Break start time must be less than break end time");
-          return false ;
-        }
-    // if (!breakTimes.start || !breakTimes.end) {
-    //   toast.error(t('shift.setBreakTimes'));
-    //   return;
-    // }
+
 
     const loader = toast.loading(t("loading"));
     try {
@@ -121,12 +116,27 @@ const SelectedTemplate = templates.find(
       toast.dismiss(loader);
     }
   };
+   const validateForm = () => {
+    const newErrors = {};
+
+    if (!selectedTemplateId)
+      newErrors.selectedTemplateId = t("Selec Template required");
+
+    if (!selectedLocationId || selectedLocationId === "empty")
+      newErrors.selectedLocationId = t("Selec Location required");
+
+    if (selectedDays.length === 0)
+      newErrors.selectedDays = t("Selec Days of week required");
+
+    setErrors(newErrors);
+    console.log("errors",errors);
+    return Object.keys(newErrors).length === 0;
+  };
   
   const selectedTemplate = templates.find(
   (tmpl) => tmpl.templateId === Number(selectedTemplateId)
 );
 
-  console.log("availabilityData",availabilityData);
   return {
     selectedTemplate,
     selectedTemplateId,
@@ -145,7 +155,8 @@ const SelectedTemplate = templates.find(
     locations,
     isFetchingAvailability,
     templates,
-    isLoadingLocations
+    isLoadingLocations,
+    errors,
   };
 };
 

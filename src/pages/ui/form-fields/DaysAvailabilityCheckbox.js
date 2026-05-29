@@ -13,6 +13,7 @@ const DaysAvailabilityCheckbox = ({
   readOnly = false,
   disabled: MainInputdisabled = false,
   loading = false,
+  error = false
 }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -171,6 +172,7 @@ const DaysAvailabilityCheckbox = ({
           </div>
         </div>
       )}
+            {error && <span className="error-text">{error}</span>}
     </div>
   );
 };

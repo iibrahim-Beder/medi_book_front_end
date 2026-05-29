@@ -149,7 +149,6 @@ const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
         getItemTitle={getAcademicTitle}
         noDataMessage="No academic qualifications added yet. Click 'Add New Qualification' to get started."
         isUpdateOut={isNew}
-        hint="Add your educational qualifications and certificates to your profile. This information will be displayed on your profile page and can be used to help potential patients find you."
         // backgroundColor="#f8f9fa"
         // titleBackgroundColor="#e3f2fd"
         // allowMultipleOpen={true}

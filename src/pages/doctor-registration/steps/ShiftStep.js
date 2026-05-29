@@ -36,7 +36,8 @@ const ShiftStep = forwardRef(
       isLoadingLocations,
       isFetchingAvailability,
       templates,
-      selectedTemplate
+      selectedTemplate,
+      errors
     } = useAddShifts();
 
     useImperativeHandle(ref, () => ({
@@ -44,7 +45,6 @@ const ShiftStep = forwardRef(
     }));
 
     return (
-      // <div className="shift-template-selector">
       <>
       <div
         className={insidUi ? "" : "table-card insideUi"}
@@ -64,6 +64,8 @@ const ShiftStep = forwardRef(
                 value={selectedTemplateId}
                 onChange={(e) => setSelectedTemplateId(e.target.value)}
                 placeholder={t("shift.selectTemplatePlaceholder")}
+                error={errors.selectedTemplateId}
+                forceShowError={forceShowError}
               />
             </div>
             <div className="form-group-half form-group">
@@ -78,6 +80,7 @@ const ShiftStep = forwardRef(
                   selectedTemplateId === "0"
                 }
                 loading={loadingAvailability || isFetchingAvailability}
+                error={errors.selectedDays}
               />
             </div>
 
@@ -118,6 +121,9 @@ const ShiftStep = forwardRef(
                 }))]}
                 value={selectedLocationId}
                 onChange={(e) => setSelectedLocationId(e.target.value)}
+                error={errors.selectedLocationId}
+                forceShowError={forceShowError}
+
               />
             </div>
             {insidUi && (
