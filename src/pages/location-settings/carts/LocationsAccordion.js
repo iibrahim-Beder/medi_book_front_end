@@ -289,7 +289,7 @@ const LocationsAccordion = memo(({
                 }}
                 className={`dc-collapseexp ${item.isExpanded ? "show" : "hide"}`}
               >
-                <div>
+                <div style={{borderBottom: "1px solid rgb(221, 221, 221)",margiBottom:"6px" , paddingBottom: "8px"}}>
                   <BlueMapPicker
                     value={displayData}
                     onChange={(loc) => {
@@ -299,7 +299,7 @@ const LocationsAccordion = memo(({
                       handleDraftChange(item.id, "displayName", loc.displayName);
                     }}
                   />
-                  <div style={{ marginTop: "15px", display: "flex", gap: "20px", flexWrap: "wrap" }}>
+                  <div style={{ marginTop: "15px", display: "inline-flex", gap: "20px", flexWrap: "wrap" }}>
                     {/* Primary checkbox (draft-based) */}
                     <div className="dc-on-off">
                       <input style={{margin:"0 10px"}}

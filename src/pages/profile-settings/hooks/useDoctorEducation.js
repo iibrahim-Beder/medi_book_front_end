@@ -14,8 +14,9 @@ import { getErrorMessage } from "../../utils/api-errors";
 
 export const useDoctorEducation = (New=false) => {
   const doctorId = useSelector((state) => state.auth.doctorId);
-  console.log("doctorId", doctorId);
 
+  const [errors, setErrors] = useState({});
+    
   const {
     data: educationsData,
     isLoading,
@@ -63,11 +64,25 @@ export const useDoctorEducation = (New=false) => {
   // hooks/useDoctorEducation.js
 
   // UPDATE LOCAL
-  const handleUpdateAcademic = useCallback((index, field, value) => {
-    setEducations((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, [field]: value } : item)),
-    );
-  }, []);
+  const handleUpdateAcademic = useCallback(
+    (index, field, value) => {
+        setEducations((prev) =>
+          prev.map((item, i) =>
+            i === index
+              ? { ...item, [field]: value }
+              : item
+          )
+        );
+
+      const errorKey = `${field}_${index}`;
+
+      setErrors((prev) => ({
+        ...prev,
+        [errorKey]: "",
+      }));
+    },
+    []
+  );
 
   // DELETE
   const handleDeleteAcademic = useCallback(
@@ -101,26 +116,53 @@ export const useDoctorEducation = (New=false) => {
     [educations, doctorId],
   );
 
+  const validateEducation = useCallback((index, data) => {
+    const newErrors = {};
+
+    if (!data?.institutionName?.trim()) {
+      newErrors[`institutionName_${index}`] =
+        "Institution name is required";
+    }
+
+    if (!data?.graduationYear) {
+      newErrors[`graduationYear_${index}`] =
+        "Graduation year is required";
+    }
+
+    if (
+      !data?.degree ||
+      data.degree === "select degree"
+    ) {
+      newErrors[`degree_${index}`] =
+        "Degree is required";
+    }
+
+    if (
+      data.startDate &&
+      data.endDate &&
+      new Date(data.endDate) < new Date(data.startDate)
+    ) {
+      newErrors[`endDate_${index}`] =
+        "End date must be after start date";
+    }
+
+    setErrors((prev) => ({
+      ...prev,
+      ...newErrors,
+    }));
+
+    return Object.keys(newErrors).length === 0;
+  }, []);
+
+
   // SAVE
   const handleSaveAcademic = useCallback(
     async (index, data) => {
       if (isAdding || isUpdating || isAddingOne) return false;
 
        console.log("===========data",data);
-       if (!data) {
-        toast.error("education is required");
-        return false;
-      }
-      if (!data.institutionName) {
-        toast.error("institution name is required");
-        return false;
-      }
-      if (!data.graduationYear) {
-        toast.error("graduation year is required");
-        return false;
-      }
-      if (!data.degree || (data.degree==="select degree")) {
-        toast.error("degree is required");
+     if (!validateEducation(index, data)) {
+        toast.error("Please fix validation errors");
         return false;
       }
 
@@ -180,7 +222,7 @@ export const useDoctorEducation = (New=false) => {
         toast.dismiss(loading);
       }
     },
-    [doctorId, isAdding, isUpdating],
+    [doctorId, isAdding, isUpdating , isAddingOne],
   );
   return {
     handleAddAcademic,
@@ -190,7 +232,8 @@ export const useDoctorEducation = (New=false) => {
     isLoading,
     error,
     refetch,
-    educations
+    educations,
+    errors
   };
 };
 

@@ -50,7 +50,7 @@ const StepLocation = forwardRef(({ isNew, doctorId }, ref) => {
           <span className="error-text">  {errors.displayName}</span>
         )}
       </div>
-        {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px"}} />{MainHint}</span>} 
+       {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px" ,minWidth:"fit-content"}} />{MainHint}</span>} 
     </>
   );
 });

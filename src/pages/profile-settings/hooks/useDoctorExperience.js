@@ -13,6 +13,9 @@ import { getErrorMessage } from "../../utils/api-errors";
 
 export const useDoctorExperience = (New=false)=> { 
   const doctorId = useSelector((state) => state.auth.doctorId);
+  
+  const [errors, setErrors] = useState({});
+  
   const {
     data: experiencesData,
     isLoading,
@@ -73,12 +76,22 @@ export const useDoctorExperience = (New=false)=> {
 
   // UPDATE LOCAL
   const handleUpdateExperience = useCallback((index, field, value) => {
-    setExperience((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, [field]: value } : item
-      )
-    );
-  }, []);
+      setExperience((prev) =>
+          prev.map((item, i) =>
+            i === index
+              ? { ...item, [field]: value }
+              : item
+          )
+        );
+
+      const errorKey = `${field}_${index}`;
+
+      setErrors((prev) => ({
+        ...prev,
+        [errorKey]: "",
+      }));
+    },
+    []);
 
   // DELETE
   const handleDeleteExperience = useCallback(
@@ -114,25 +127,50 @@ export const useDoctorExperience = (New=false)=> {
     [experiences, doctorId]
   );
 
+   const validateExperience = useCallback((index, data) => {
+      const newErrors = {};
+  
+      if (!data?.workplace?.trim()) {
+        newErrors[`workplace_${index}`] =
+          "workplace is required";
+      }
+  
+      if (!data?.jobTitle) {
+        newErrors[`jobTitle_${index}`] =
+          "Job title is required";
+      }
+  
+      if (!data?.startDate) {
+        newErrors[`startDate_${index}`] =
+          "Start date is required";
+      }
+  
+      if (
+        data.startDate &&
+        data.endDate &&
+        new Date(data.endDate) < new Date(data.startDate)
+      ) {
+        newErrors[`endDate_${index}`] =
+          "End date must be after start date";
+      }
+  
+      setErrors((prev) => ({
+        ...prev,
+        ...newErrors,
+      }));
+  
+      return Object.keys(newErrors).length === 0;
+    }, []);
+
   // SAVE
   const handleSaveExperience = useCallback(
     async (index, data) => {
       if (isAdding || isUpdating ||isAddingOne) return false;
       
-            if (!data.workplace ) {
-              toast.error(" workplace is required");
-              return false;
-            }
-      
-            if (!data.jobTitle) {
-              toast.error("job title is required");
-              return false;
-            }
-      if(!data.startDate) {
-        toast.error("Start date is required");
-        return false;
-      }
-
+      if (!validateExperience(index, data)){
+        toast.error("Please fix validation errors");
+        return false;  
+      } 
       const loading = toast.loading("Saving...");
 
       try {
@@ -207,6 +245,7 @@ export const useDoctorExperience = (New=false)=> {
     error,
     refetch,
     experiences,
+    errors
   };
 };
 

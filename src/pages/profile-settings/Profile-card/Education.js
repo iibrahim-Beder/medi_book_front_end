@@ -3,6 +3,7 @@ import CustomAccordion from "../../shared/CustomAccordion";
 import { useDoctorEducation } from "../hooks/useDoctorEducation";
 import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
+import { formatDate } from "../../shared/utils";
 const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
   const {
     handleAddAcademic,
@@ -13,6 +14,7 @@ const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
     error,
     refetch,
     educations,
+    errors
   } = useDoctorEducation(isNew);
   useImperativeHandle(
     ref,
@@ -124,11 +126,11 @@ const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
       item.degree &&
       item.major
     ) {
-      return `${item.institutionName} - ${item.major} - ${item.degree}  - ${item.graduationYear}`;
+      return `${item.institutionName} - ${item.major} - ${item.degree}  - ${formatDate( item.graduationYear)}`;
     } else if (item.institutionName && item.graduationYear && item.degree) {
-      return `${item.institutionName} - ${item.degree}  - ${item.graduationYear}`;
+      return `${item.institutionName} - ${item.degree}  - ${formatDate(item.graduationYear)}`;
     } else if (item.institutionName && item.graduationYear) {
-      return `${item.institutionName} - ${item.graduationYear}`;
+      return `${item.institutionName} - ${formatDate(item.graduationYear)}`;
     }
     return "New Academic Qualification";
   };
@@ -148,11 +150,13 @@ const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
         onSave={handleSaveAcademic}
         getItemTitle={getAcademicTitle}
         noDataMessage="No academic qualifications added yet. Click 'Add New Qualification' to get started."
-        isUpdateOut={isNew}
+        isUpdateOut={true}
         // backgroundColor="#f8f9fa"
         // titleBackgroundColor="#e3f2fd"
         // allowMultipleOpen={true}
         MainHint={register && "You can also add more than one qualification from within."}
+        errors={errors}
+        forceShowError={true}
       />
     </div>
   );

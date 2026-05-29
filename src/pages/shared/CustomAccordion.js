@@ -403,7 +403,7 @@ const handleFieldChange = (index, field, value) => {
             );
           })}
         </ul>
-         {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px"}} />{MainHint}</span>}
+           {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px" ,minWidth:"fit-content"}} />{MainHint}</span>} 
         </>
       )}
 

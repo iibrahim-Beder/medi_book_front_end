@@ -6,7 +6,6 @@ import React, {
 } from "react";
 import SectionTitle from "../../shared/SectionTitle";
 import Field from "../../ui/form-fields/Field";
-import { FaEnvelope, FaPhone, FaIdCard } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import { useStep1PersonalInfo } from "../hooks/useStep1BasicInfo";

@@ -3,6 +3,7 @@ import CustomAccordion from "../../shared/CustomAccordion";
 import { useDoctorExperience } from "../hooks/useDoctorExperience";
 import CustomAccordionSkeleton from "../../shared/CustomAccordionSkeleton";
 import ErrorLoading from "../../shared/ErrorLoading";
+import { formatDate } from "../../shared/utils";
 
 const DoctorExperience = forwardRef(({ isNew ,register }, ref) => {
 
@@ -15,7 +16,8 @@ const DoctorExperience = forwardRef(({ isNew ,register }, ref) => {
     isLoading,
     error,
     refetch,
-    experiences
+    experiences,
+    errors
   } = useDoctorExperience(isNew);
 useImperativeHandle(
   ref,
@@ -80,6 +82,9 @@ useImperativeHandle(
   ];
 
   const getExperienceTitle = (item) => {
+    if (item.workplace && item.jobTitle && item.startDate) {
+      return `${item.jobTitle} - ${item.workplace} - ${formatDate(item.startDate)}`;
+    }
     if (item.workplace && item.jobTitle) {
       return `${item.jobTitle} - ${item.workplace}`;
     } else if (item.workplace) {
@@ -104,8 +109,10 @@ useImperativeHandle(
         noDataMessage="No experience added yet. Click 'Add New Experience' to get started."
         onAdd={isNew ? null: handleAddExperience}
         buttonsAvailable={isNew ? false: true}
-        isUpdateOut={isNew}
+        isUpdateOut={true}
         MainHint={ register && "You can also add more than one experience from within."}
+        errors={errors}
+        forceShowError={true}
       />
     </div>
   );
