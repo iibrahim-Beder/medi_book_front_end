@@ -15,6 +15,7 @@ import Loader from "../shared/Loader";
 import { getTimeSlotTitle } from "./helper/helper";
 import ErrorPage from "../notFound-pageError/ErrorPage";
 import DataEmptyCom from "../shared/DataEmptyCom";
+import PopupMessage from "../shared/PopupMessage";
 
 export default function WeeklyTimeSlots() {
   const APPOINTMENT_TYPES = ["InPerson", "Follow-up", "Check-up", "Emergency"];
@@ -92,6 +93,9 @@ export default function WeeklyTimeSlots() {
     isError,
     error,
     refetch,
+    activePopup,
+    handleCloseActiveConfirm,
+    handleConfirmActiveToggle,
   } = useShiftRules({
     activeShift,
     activeTab: activeDay,
@@ -356,6 +360,35 @@ export default function WeeklyTimeSlots() {
           </div>
         </div>
       </div>
+     {activePopup.show && (
+  <PopupMessage
+    type={activePopup.newActive ? "success" : "danger"}
+    title={
+      activePopup.newActive
+        ? t("activate shift")
+        : t("deactivate shift")
+    }
+    message={t(
+      activePopup.newActive
+        ? "are you sure you want to activate this shift?"
+        : "are you sure you want to deactivate this shift?",
+      { name: activePopup.locationName }
+    )}
+    buttons={[
+      {
+        text: t("cancel"),
+        onClick: handleCloseActiveConfirm,
+        variant: "secondary",
+      },
+      {
+        text: t("confirm"),
+        onClick: handleConfirmActiveToggle,
+        variant: "primary",
+      },
+    ]}
+    onClose={handleCloseActiveConfirm}
+  />
+)}
     </div>
   );
 }

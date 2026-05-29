@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { FaAppStoreIos } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { getErrorMessage } from "../../utils/api-errors";
+import PopupMessage from "../../shared/PopupMessage";
+import { t } from "i18next";
 export default function useShiftRules({
   activeShift,
   activeTab,
@@ -49,71 +51,71 @@ export default function useShiftRules({
   const [checkAvailability, { isFetching: isFetchingAvailability }] =
     useLazyCheckRuleAvailabilityQuery();
 
-  const handleToggleRuleActive = useCallback(
-    async (item) => {
-      console.log(
-        "=========ruleId",
-        // indexId,
-        "item",
-        item,
-        "isActive",
-        item.isActive,
-      );
-      if (isActivating || isDeactivating) return;
+  // const handleToggleRuleActive = useCallback(
+  //   async (item) => {
+  //     console.log(
+  //       "=========ruleId",
+  //       // indexId,
+  //       "item",
+  //       item,
+  //       "isActive",
+  //       item.isActive,
+  //     );
+  //     if (isActivating || isDeactivating) return;
 
-      const loadingToast = toast.loading(
-        item.isActive ? "Deactivating..." : "Activating...",
-      );
+  //     const loadingToast = toast.loading(
+  //       item.isActive ? "Deactivating..." : "Activating...",
+  //     );
 
-      try {
-        let result;
+  //     try {
+  //       let result;
 
-        if (item.isActive) {
-          result = await deactivateRule({
-            doctorId,
-            ruleId: item.ruleId,
-            shiftTemplateId: activeShift,
-            dayOfWeek: activeTab,
-          }).unwrap();
-        } else {
-          result = await activateRule({
-            doctorId,
-            ruleId: item.ruleId,
-            shiftTemplateId: activeShift,
-            dayOfWeek: activeTab,
-          }).unwrap();
-        }
-        console.log("======= result after toggle", result);
+  //       if (item.isActive) {
+  //         result = await deactivateRule({
+  //           doctorId,
+  //           ruleId: item.ruleId,
+  //           shiftTemplateId: activeShift,
+  //           dayOfWeek: activeTab,
+  //         }).unwrap();
+  //       } else {
+  //         result = await activateRule({
+  //           doctorId,
+  //           ruleId: item.ruleId,
+  //           shiftTemplateId: activeShift,
+  //           dayOfWeek: activeTab,
+  //         }).unwrap();
+  //       }
+  //       console.log("======= result after toggle", result);
 
-        if (result?.succeeded) {
-          toast.success(result.message || "Updated Successfully");
+  //       if (result?.succeeded) {
+  //         toast.success(result.message || "Updated Successfully");
 
-          // setRules((prev) =>
-          //   prev.map((rule) =>
-          //     rule.ruleId === indexId
-          //       ? { ...rule, isActive: !item.isActive }
-          //       : rule,
-          //   ),
-          // );
-        }
+  //         // setRules((prev) =>
+  //         //   prev.map((rule) =>
+  //         //     rule.ruleId === indexId
+  //         //       ? { ...rule, isActive: !item.isActive }
+  //         //       : rule,
+  //         //   ),
+  //         // );
+  //       }
 
-        toast.dismiss(loadingToast);
-      } catch (error) {
-        console.error("Toggle rule failed", error);
-        toast.error(getErrorMessage(error));
-        toast.dismiss(loadingToast);
-      }
-    },
-    [
-      doctorId,
-      activeShift,
-      activeTab,
-      activateRule,
-      deactivateRule,
-      isActivating,
-      isDeactivating,
-    ],
-  );
+  //       toast.dismiss(loadingToast);
+  //     } catch (error) {
+  //       console.error("Toggle rule failed", error);
+  //       toast.error(getErrorMessage(error));
+  //       toast.dismiss(loadingToast);
+  //     }
+  //   },
+  //   [
+  //     doctorId,
+  //     activeShift,
+  //     activeTab,
+  //     activateRule,
+  //     deactivateRule,
+  //     isActivating,
+  //     isDeactivating,
+  //   ],
+  // );
   const toggleDay = useCallback(
     (day) => {
       setSelectedDays((prev) =>
@@ -251,9 +253,7 @@ export default function useShiftRules({
     [inactiveRules, rules, handleUpdateSlot],
   );
 
-  // =========================
-  // Save Slot (Add / Update)
-  // =========================
+     // ===== UPDATE =====
   const handleSaveSlot = useCallback(
     async (slotId, slotData) => {
       if (isAdding || isUpdating) return;
@@ -297,7 +297,6 @@ export default function useShiftRules({
       try {
         let success = false;
         
-        // ===== UPDATE =====
         const payload =
         {
           ruleId: slotData.id,
@@ -345,6 +344,7 @@ export default function useShiftRules({
     ],
   );
 
+  // ===== ADD =====
   const handleSaveNewSlots = useCallback(async () => {
     if (isAdding || isUpdating) return;
     console.log("======addSlotData", addSlotData, "selectedDays", selectedDays);
@@ -410,6 +410,7 @@ export default function useShiftRules({
 
         success = true;
         setOpenModal(false);
+        setAddData({});
       }
 
       toast.dismiss(loadingToast);
@@ -434,6 +435,87 @@ export default function useShiftRules({
     selectedDays,
     setSelectedDays,
   ]);
+
+
+
+// ============== POPUP ACTIVE TOGGLE =============
+
+const [activePopup, setActivePopup] = useState({
+  show: false,
+  item: null,
+  newActive: false,
+  locationName: "",
+});
+
+const handleToggleRuleActive = useCallback((item) => {
+  setActivePopup({
+    show: true,
+    item,
+    newActive: !item.isActive,
+    locationName: item.locationName || "",
+  });
+}, []);
+
+const handleCloseActiveConfirm = () => {
+  setActivePopup({
+    show: false,
+    item: null,
+    newActive: false,
+    locationName: "",
+  });
+};
+
+
+const handleConfirmActiveToggle = useCallback(async () => {
+  const item = activePopup.item;
+  if (!item || isActivating || isDeactivating) return;
+
+  const loadingToast = toast.loading(
+    item.isActive ? "Deactivating..." : "Activating..."
+  );
+
+  try {
+    let result;
+
+    if (item.isActive) {
+      result = await deactivateRule({
+        doctorId,
+        ruleId: item.ruleId,
+        shiftTemplateId: activeShift,
+        dayOfWeek: activeTab,
+      }).unwrap();
+    } else {
+      result = await activateRule({
+        doctorId,
+        ruleId: item.ruleId,
+        shiftTemplateId: activeShift,
+        dayOfWeek: activeTab,
+      }).unwrap();
+    }
+
+    if (result?.succeeded) {
+      toast.success(result.message || "Updated Successfully");
+    }
+
+    handleCloseActiveConfirm();
+    toast.dismiss(loadingToast);
+  } catch (error) {
+    console.error("Toggle rule failed", error);
+    toast.error(getErrorMessage(error));
+    toast.dismiss(loadingToast);
+  }
+}, [
+  activePopup,
+  doctorId,
+  activeShift,
+  activeTab,
+  activateRule,
+  deactivateRule,
+  isActivating,
+  isDeactivating,
+]);
+
+
   return {
     Maindata,
     isLoading,
@@ -460,6 +542,10 @@ export default function useShiftRules({
     error,
     isError,
     refetch,
+    activePopup,
+    handleConfirmActiveToggle,
+    handleCloseActiveConfirm,
+  
   };
 }
 // =======================================================================================================
