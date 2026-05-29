@@ -161,7 +161,8 @@ const Step3ProfessionalInfo = forwardRef(
                 primarySpecialtyId={formData.primarySpecialtyId}
                 onPrimaryChange={handlePrimaryChange}
                 forceShowError={true}
-                outError={errors.specialtyIds}
+                outError  ={errors.specialtyIds}
+                outErrorTwo={errors.primarySpecialtyId}
               />
             </fieldset>
              {  insideUi && <button

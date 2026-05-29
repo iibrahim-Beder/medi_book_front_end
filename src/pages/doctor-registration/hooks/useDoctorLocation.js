@@ -73,7 +73,8 @@ export const useDoctorLocation = (isNew) => {
 
   const handleSubmit = async () => {
     if (!doctorId ||isAddingStep||isAdding) return false;
-    if (!validate()) return false;
+    if (!validate()) {
+      toast.error(t("fill required field"));return false};
 
     const loader = toast.loading(t("loading"));
 

@@ -120,7 +120,7 @@ const validateForm = () => {
       !formData.primarySpecialtyId &&
       !formData.specialtyIds.includes(Number(formData.primarySpecialtyId))
     ) {
-      newErrors.specialtyIds = t(
+      newErrors.primarySpecialtyId = t(
         "Select primary specialty required",
       );
     }

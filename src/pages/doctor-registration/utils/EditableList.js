@@ -26,7 +26,8 @@ const EditableList = ({
   selectLabel = "Select Item",
   onPrimaryChange,
   primarySpecialtyId = "",
-  outError = false
+  outError = false,
+  outErrorTwo=false
 }) => {
   const { t } = useTranslation();
 
@@ -103,10 +104,10 @@ const EditableList = ({
     }
   };
   const showPrimarySpecialty =
-  (!error && !outError) || (!error && items.length > 0);
+  ((!error && !outError) || (!error && items.length > 0)) && !outErrorTwo;
 
 const showOutError =
-  outError && !error && items.length === 0 ;
+  (outError && !error && items.length === 0) || outErrorTwo  ;
 
   return (
     <div className="dc-skills dc-tabsinfo">
@@ -172,7 +173,7 @@ const showOutError =
 
     {showOutError && (
       <span className="error-text">
-        {outError}
+        {outError || outErrorTwo}
       </span>
     )}
         <div className="dc-myskills">
