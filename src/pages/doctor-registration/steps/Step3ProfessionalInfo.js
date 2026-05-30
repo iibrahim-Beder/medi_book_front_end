@@ -74,7 +74,7 @@ const Step3ProfessionalInfo = forwardRef(
             <div className="form-group form-group-half p-0">
               <div className="form-group p-0 form-group-half form-group-fourth">
                 <Field
-                  label={t("Years of experience")}
+                  label={t("Experience (years)")}
                   type="number"
                   name="yearsOfExperience"
                   value={formData.yearsOfExperience}

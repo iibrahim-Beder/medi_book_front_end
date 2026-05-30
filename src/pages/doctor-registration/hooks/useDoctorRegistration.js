@@ -34,7 +34,7 @@ export function useDoctorRegistration() {
   };
 
   const doctorCurrentStepNumber =
-    DoctorRegistrationStep[doctorCurrentStep] || 1;
+    DoctorRegistrationStep[doctorCurrentStep] || 2;
 
   const completedStepsPercent = Math.round(
     ((doctorCurrentStepNumber - 1 ) /

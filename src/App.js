@@ -111,7 +111,7 @@ if(isCurrentStepLoading ){
     return <Loader/>
   }
   if(currentStepError ||isCurrentStepError ){
-    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} nameVariable={true} error={currentStepError}/>
+    // return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} nameVariable={true} error={currentStepError}/>
   }
   return (
     <div className="dc-userlogin">

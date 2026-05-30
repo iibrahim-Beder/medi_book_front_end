@@ -245,9 +245,11 @@
   .form-grid.profile-form  {display:block;}
   .progress-steps::before, .progress-bar { display: none; }
   .step { margin: 8px 12px; }
-  .form-container { padding: 28px 18px; }
+  .form-container { padding: 28px 6px; }
+  .doctor-registration .form-container .table-card{ padding: 18px; }
   .step .step-label{white-space: normal; text-align: center; top: 60px; font-size: 13px;}
   .form-title{margin-top: 15px;}
+  .custom-modal-content{max-width: 90vw;}
 }
 
 
@@ -411,7 +413,7 @@ display: inline-flex;
 @media (max-width: 668px) {
   .custom-modal-content{max-width: 90%;}
   .progress-container{
-    margin: 20px 0; 
+    margin: 0; 
   }
   .progress-steps {
     display: grid;
@@ -422,6 +424,12 @@ display: inline-flex;
 .doctor-registration .dc-experienceaccordion ,.accordion-table-card .dc-experienceaccordion{
             padding: 20px 10px !important;
 }
+ .progress-container{
+   padding:15px 5px !important; 
+  }
+  .progress-container .step{
+            margin: 8px 8px;
+  }
 }
 /* progress steper css end */
 .preloader-outer.form-loader{
@@ -444,3 +452,10 @@ display: inline-flex;
   /* background-color: var(--blue);
   border-color: var(--blue); */
 }
+/* 
+
+@media (max-width: 1080px) and (min-width: 821px) {
+   .doctor-registration  .dc-userform fieldset .form-group.form-group-fourth {
+        width: 50% !important;
+    }
+} */

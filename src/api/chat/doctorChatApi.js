@@ -143,11 +143,7 @@ export const doctorChatApi = baseApi.injectEndpoints({
       },
       transformErrorResponse: (response, meta, args) => {
         console.error('Doctor Chats API Error:', response);
-        return transformChatsData({
-          succeeded: false,
-          error: response.data,
-          status: response.status
-        });
+        return response;
       },
       providesTags: ['DoctorChats'],
     }),

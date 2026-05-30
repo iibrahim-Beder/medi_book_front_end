@@ -1643,7 +1643,7 @@ color: var(--terthemecolor);
   /* padding: 20px; */
 
   width: 100%;
-  max-width: 80vw;
+  max-width: 82vw;
   max-height: 90vh;
 
   overflow-y: auto; /* scroll */

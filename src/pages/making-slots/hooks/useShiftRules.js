@@ -205,7 +205,7 @@ export default function useShiftRules({
         toast.error("Please select a type");
         return;
       }
-      const originalRecord = rules.find((r) => r.ruleId === slotData.ruleId);
+      const originalRecord = Maindata?.data?.rules.find((r) => r.ruleId === slotData.ruleId) || {};
       const payloadChanges = buildRuleUpdatePayload(originalRecord, slotData);
       if (!payloadChanges||!Object.keys(payloadChanges).length) {
         toast("no changes detected");

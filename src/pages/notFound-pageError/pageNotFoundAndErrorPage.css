@@ -12,7 +12,12 @@
 .page-not-found .text-content{
       margin: auto;
 }
-.page-not-found img{max-width: 50%; max-height: 100vh;}
+.page-not-found img{
+    width: 50%;
+    max-height: 100vh;
+    max-width: 500px;
+    margin-top: 25px;
+  }
 
 .error-box {
   display: inline-block;
@@ -30,7 +35,7 @@
 }
 
 
-@media (max-width: 791px){
+@media (max-width: 820px){
   .page-not-found .content-container{
         padding: 0 35px;
     display: flex;
@@ -41,10 +46,15 @@
         width: auto !important;
         max-width: 300px;
         max-height: 45vh;
+        margin-top: 20px;
   }
   .page-not-found{
         display: inline-flex;
     justify-content: center;
     width: 100%;
+  }
+  .page-not-found .text-content{
+    text-align: center;
+    margin-top: 20px;
   }
 }

@@ -249,6 +249,8 @@ export default function WeeklyTimeSlots() {
                               handleToggle={handleToggleRuleActive}
                               applyRule={applyRule}
                               noDataMessage={t("No Active Rules Available !")}
+                              isUpdateOut={true}
+
                             />
                           ))}
 
@@ -270,6 +272,7 @@ export default function WeeklyTimeSlots() {
                             handleToggle={handleToggleRuleActive}
                             applyRule={applyRule}
                             noDataMessage={t("No Inactive Rules Available !")}
+                            isUpdateOut={true}
                           />
                         )}
                       </>

@@ -7,6 +7,7 @@ import ErrorPage from "../notFound-pageError/ErrorPage";
 export default function MessagesPage() {
   const{isLoading,isError,refetch,conversations ,isFetching,error}=useConversations();
     useSyncChatWithUrl();
+    console.log("chat error",error)
     
     if(isError|| (!isLoading && conversations.length === 0 && isFetching)){
          return   <ErrorPage refetch={refetch} isFetching={isFetching} error={error} />
