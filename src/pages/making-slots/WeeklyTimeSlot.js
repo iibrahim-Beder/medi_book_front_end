@@ -236,7 +236,7 @@ export default function WeeklyTimeSlots() {
                                 imgStyle={{ maxWidth: "200px" }}
                                 text={t("No Active Rules Available yet !")}
                                 btnText="add new Rules"
-                                onClick={handleCloseAddModal}
+                                onClick={() => setOpenModal(true)}
                               />
                             </div>
                           ) : (

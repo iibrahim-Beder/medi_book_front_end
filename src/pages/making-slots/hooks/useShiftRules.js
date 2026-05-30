@@ -21,6 +21,7 @@ export default function useShiftRules({
 }) {
   
   const doctorId = useSelector((state) => state.auth.doctorId);
+  console.log("doctorId", doctorId);
   const {
     data: Maindata,
     currentData,
