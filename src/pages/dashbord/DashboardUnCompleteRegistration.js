@@ -245,7 +245,7 @@ export const SetupProgress = ({setOpenStepRegister}) => {
 
       <div className="dc-card__footer">
         <p className="dc-card__footnote">
-          Estimated time to finish: <strong>{doctorCurrentStepNumber - 6 * -1 * 2 } minutes</strong>
+          Estimated time to finish: <strong>{((doctorCurrentStepNumber - 7) * -1) * 2 } minutes</strong>
         </p>
         <button onClick={() => setOpenStepRegister(true)} type="button" className="dc-btn dc-btn-bg">
           Continue setup
