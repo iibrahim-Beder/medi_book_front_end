@@ -90,12 +90,14 @@ export default function WeeklyTimeSlots() {
     applyRule,
     openModal,
     setOpenModal,
+    handleCloseAddModal,
     isError,
     error,
     refetch,
     activePopup,
     handleCloseActiveConfirm,
     handleConfirmActiveToggle,
+    formErrors
   } = useShiftRules({
     activeShift,
     activeTab: activeDay,
@@ -160,12 +162,12 @@ export default function WeeklyTimeSlots() {
               >
                 {activeDay} {activeShiftName} Rules
               </h3>
-              <button
+              {(!isMainRulesFetching && !isError ) && <button
                 className="add-btn pr-5"
                 onClick={() => setOpenModal(true)}
               >
                 {t("Add New Rules")}
-              </button>
+              </button>}
             </div>
             <div className="card m-0 border-0" style={{ boxShadow: "none" }}>
               <div
@@ -227,7 +229,7 @@ export default function WeeklyTimeSlots() {
                                 imgStyle={{ maxWidth: "200px" }}
                                 text={t("No Active Rules Available yet !")}
                                 btnText="add new Rules"
-                                onClick={() => setOpenModal(true)}
+                                onClick={handleCloseAddModal}
                               />
                             </div>
                           ) : (
@@ -276,13 +278,15 @@ export default function WeeklyTimeSlots() {
                 )}
               </div>
 
-              <AddModal show={openModal} onHide={() => setOpenModal(false)}>
+              <AddModal show={openModal} onHide={handleCloseAddModal}>
                 <form className="dc-formtheme dc-userform table-insideUi">
                   <fieldset>
                     <TimeRangePicker
                       timeline={segments}
                       onChange={(e) => handleUpdateAddSlot("rangeTime", e)}
                       value={addSlotData.rangeTime}
+                      error={formErrors.rangeTime}
+                      forceShowError={true}
                     />
                     <div className="form-group-half form-group">
                       <DaysAvailabilityCheckbox
@@ -293,6 +297,7 @@ export default function WeeklyTimeSlots() {
                           !availabilityData.length || isFetchingAvailability
                         }
                         loading={isFetchingAvailability}
+                        error={formErrors.selectedDays}
                       />
                     </div>
                     <div className="form-group-half form-group p-0">
@@ -308,6 +313,7 @@ export default function WeeklyTimeSlots() {
                           }
                           className="form-control"
                           forceShowError={true}
+                          error={formErrors.Price}
                         />
                       </div>
                       <div className="form-group-half form-group">
@@ -325,6 +331,7 @@ export default function WeeklyTimeSlots() {
                           }
                           className="form-control"
                           forceShowError={true}
+                          error={formErrors.SlotDurationInMinutes}
                         />
                       </div>
                     </div>
@@ -340,6 +347,7 @@ export default function WeeklyTimeSlots() {
                         forceShowError={true}
                         readOnly={false}
                         index={null}
+                        outError={formErrors.AppointmentTypes}
                       />
                     </div>
                     <div className="form-group dc-btnarea p-3">

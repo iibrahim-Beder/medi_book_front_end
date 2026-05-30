@@ -28,7 +28,7 @@ export default function useShift() {
     return map;
   }, [shifts]);
   
-    const {locations}= useDoctorLocationsManager(doctorId)
+    const {locations}= useDoctorLocationsManager()
 
      const [ activateShift] =    useActivateDoctorShiftMutation();  
       const [deactivateShift] = useDeactivateDoctorShiftMutation();

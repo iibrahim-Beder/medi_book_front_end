@@ -10,6 +10,7 @@ export default function RenderCheckboxes({
   errors = {},
   forceShowError = false,
   readOnly = false,
+  outError = false
 }) {
   const value = item?.[field.name ] || [];
   const errorKey = `${field.name}_${index}`;
@@ -47,8 +48,8 @@ export default function RenderCheckboxes({
           ))}
         </div>
 
-        {forceShowError && error && (
-          <div className="text-danger small">{error}</div>
+        {((forceShowError && error ) || outError )&& (
+          <div className="error-text">{error ||outError}</div>
         )}
       </div>
     </>

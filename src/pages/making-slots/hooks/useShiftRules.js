@@ -48,74 +48,12 @@ export default function useShiftRules({
   const [selectedDays, setSelectedDays] = useState([]);
   const [addSlotData, setAddData] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [formErrors, setErrors] = useState({});
+
+
   const [checkAvailability, { isFetching: isFetchingAvailability }] =
     useLazyCheckRuleAvailabilityQuery();
 
-  // const handleToggleRuleActive = useCallback(
-  //   async (item) => {
-  //     console.log(
-  //       "=========ruleId",
-  //       // indexId,
-  //       "item",
-  //       item,
-  //       "isActive",
-  //       item.isActive,
-  //     );
-  //     if (isActivating || isDeactivating) return;
-
-  //     const loadingToast = toast.loading(
-  //       item.isActive ? "Deactivating..." : "Activating...",
-  //     );
-
-  //     try {
-  //       let result;
-
-  //       if (item.isActive) {
-  //         result = await deactivateRule({
-  //           doctorId,
-  //           ruleId: item.ruleId,
-  //           shiftTemplateId: activeShift,
-  //           dayOfWeek: activeTab,
-  //         }).unwrap();
-  //       } else {
-  //         result = await activateRule({
-  //           doctorId,
-  //           ruleId: item.ruleId,
-  //           shiftTemplateId: activeShift,
-  //           dayOfWeek: activeTab,
-  //         }).unwrap();
-  //       }
-  //       console.log("======= result after toggle", result);
-
-  //       if (result?.succeeded) {
-  //         toast.success(result.message || "Updated Successfully");
-
-  //         // setRules((prev) =>
-  //         //   prev.map((rule) =>
-  //         //     rule.ruleId === indexId
-  //         //       ? { ...rule, isActive: !item.isActive }
-  //         //       : rule,
-  //         //   ),
-  //         // );
-  //       }
-
-  //       toast.dismiss(loadingToast);
-  //     } catch (error) {
-  //       console.error("Toggle rule failed", error);
-  //       toast.error(getErrorMessage(error));
-  //       toast.dismiss(loadingToast);
-  //     }
-  //   },
-  //   [
-  //     doctorId,
-  //     activeShift,
-  //     activeTab,
-  //     activateRule,
-  //     deactivateRule,
-  //     isActivating,
-  //     isDeactivating,
-  //   ],
-  // );
   const toggleDay = useCallback(
     (day) => {
       setSelectedDays((prev) =>
@@ -144,20 +82,9 @@ export default function useShiftRules({
       } catch (error) {
         console.error("availability check failed", error);
       }
+      setErrors((prev) => ({ ...prev, selectedDays: null }));
     },
     [doctorId, activeShift, checkAvailability, activeTab],
-  );
-  const handleUpdateAddSlot = useCallback(
-    (field, value) => {
-      // console.log("======field", field, "value", value);
-
-      setAddData((prev) => ({ ...prev, [field]: value }));
-
-      if (field === "rangeTime") {
-        checkRuleAvailability(value.start, value.end);
-      }
-    },
-    [checkRuleAvailability],
   );
 
   const segments = useMemo(() => {
@@ -345,39 +272,96 @@ export default function useShiftRules({
   );
 
   // ===== ADD =====
+  const handleCloseAddModal = useCallback(() => {
+    setOpenModal(false);
+    // setAddData({});
+    setErrors({});
+  }, []);
+
+  const handleUpdateAddSlot = useCallback(
+  (field, value) => {
+    setAddData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [field]: "",
+      ...(field === "rangeTime"
+        ? { rangeTime: "" }
+        : {}),
+    }));
+
+    if (field === "rangeTime") {
+      checkRuleAvailability(
+        value.start,
+        value.end
+      );
+    }
+  },
+  [checkRuleAvailability]
+);
+
+  const validateSlotForm = useCallback(() => {
+  const newErrors = {};
+
+  if (!addSlotData) {
+    newErrors.slot = "Please add a slot first";
+  }
+
+  if (
+    !addSlotData?.rangeTime?.start ||
+    !addSlotData?.rangeTime?.end
+  ) {
+    newErrors.rangeTime =
+      "Please add start and end time";
+  }
+
+  if (!selectedDays?.length) {
+    newErrors.selectedDays =
+      "Please add days for the slot";
+  }
+
+  if (!addSlotData?.SlotDurationInMinutes) {
+    newErrors.SlotDurationInMinutes =
+      "Please add duration";
+  }
+
+  if (!addSlotData?.Price) {
+    newErrors.Price =
+      "Please add price";
+  }
+
+  if (
+    !addSlotData?.AppointmentTypes ||
+    addSlotData.AppointmentTypes.length === 0
+  ) {
+    newErrors.AppointmentTypes =
+      "Please add appointment types";
+  }
+
+  if (
+    addSlotData?.rangeTime?.start &&
+    addSlotData?.rangeTime?.end &&
+    addSlotData.rangeTime.start >=
+      addSlotData.rangeTime.end
+  ) {
+    newErrors.rangeTime =
+      "Start time must be less than end time";
+  }
+
+  setErrors(newErrors);
+
+  return Object.keys(newErrors).length === 0;
+}, [addSlotData, selectedDays]);
   const handleSaveNewSlots = useCallback(async () => {
     if (isAdding || isUpdating) return;
     console.log("======addSlotData", addSlotData, "selectedDays", selectedDays);
-    if (!addSlotData) {
-      toast.error("Please add a slot first");
-      return;
-    }
-    if (
-      !addSlotData.rangeTime ||
-      !addSlotData.rangeTime.start ||
-      !addSlotData.rangeTime.end
-    ) {
-      toast.error("Please add a start and end time for the slot");
-      return;
-    }
-    if (!selectedDays || selectedDays.length === 0) {
-      toast.error("Please add days for the slot");
-      return;
-    }
-    if (!addSlotData.SlotDurationInMinutes) {
-      toast.error("Please add a duration for the slot");
-      return;
-    }
-    if (!addSlotData.Price) {
-      toast.error("Please add a price for the slot");
-      return;
-    }
-    if (
-      !addSlotData.AppointmentTypes ||
-      addSlotData.AppointmentTypes.length === 0
-    ) {
-      toast.error("Please add allowed appointment types for the slot");
-      return;
+    
+    if (!validateSlotForm()) {
+      toast.error("Please fix validation errors");
+      return false;
     }
 
     const loadingToast = toast.loading("Saving...");
@@ -411,6 +395,7 @@ export default function useShiftRules({
         success = true;
         setOpenModal(false);
         setAddData({});
+        setAvailabilityData([]);
       }
 
       toast.dismiss(loadingToast);
@@ -539,13 +524,14 @@ const handleConfirmActiveToggle = useCallback(async () => {
     handleUpdateInactiveSlot,
     openModal,
     setOpenModal,
+    handleCloseAddModal,
     error,
     isError,
     refetch,
     activePopup,
     handleConfirmActiveToggle,
     handleCloseActiveConfirm,
-  
+    formErrors
   };
 }
 // =======================================================================================================

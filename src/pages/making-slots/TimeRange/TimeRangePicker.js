@@ -390,22 +390,6 @@ const TimeRangePicker = ({
               </div>
             </div>
           )}
-
-          {(inputError || showError) && (
-            <div
-              style={{
-                position: "absolute",
-                top: "100%",
-                left: 0,
-                color: "#ff4d4f",
-                fontSize: "12px",
-                marginTop: "4px",
-                fontWeight: 500,
-              }}
-            >
-              {inputError || error}
-            </div>
-          )}
         </div>
       </div>
       {showError && <span className="error-text">{error}</span>}

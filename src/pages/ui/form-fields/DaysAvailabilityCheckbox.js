@@ -92,7 +92,7 @@ const DaysAvailabilityCheckbox = ({
     >
       <label> {t("Days")} </label>
       <div
-        className="input-with-icon select-wrapper"
+        className={`input-with-icon select-wrapper ${error ? "input-error" : ""}`}
         style={{cursor:"pointer"}}
         onClick={() => !MainInputdisabled && setIsOpen(!isOpen)}
       >
