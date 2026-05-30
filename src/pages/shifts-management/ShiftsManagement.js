@@ -6,11 +6,14 @@ import useShift from "./hooks/useShift";
 import SiftForm from "./components/ShiftForm";
 import Loader from "../shared/Loader";
 import ShiftStep from "../doctor-registration/steps/ShiftStep";
+import { useSearchParams } from "react-router-dom";
 export default function ShiftsManagement() {
-  const [activeTab, setActiveTab] = useState("Sunday");
+    
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { t } = useTranslation();
 
-  const tabs = [
+ const tabs = [
     { key: "Sunday", label: t("Sunday"), dayIndex: 0 },
     { key: "Monday", label: t("Monday"), dayIndex: 1 },
     { key: "Tuesday", label: t("Tuesday"), dayIndex: 2 },
@@ -20,6 +23,11 @@ export default function ShiftsManagement() {
     { key: "Saturday", label: t("Saturday"), dayIndex: 6 },
   ];
 
+  const currentDay = searchParams.get("day");
+
+  const activeTab = tabs.some((t) => t.key === currentDay)
+    ? currentDay
+    : "Sunday";
   const {
     shiftsByDay,
     isLoading,
@@ -31,6 +39,7 @@ export default function ShiftsManagement() {
   } = useShift();
   const [openModal, setOpenModal] = useState(false);
 
+    if(isLoading) return <Loader />
   return (
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace accordion-table ">
@@ -44,7 +53,7 @@ export default function ShiftsManagement() {
                     className={`${activeTab === tab.key ? "active" : ""}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      setActiveTab(tab.key);
+                      setSearchParams({ day: tab.key });
                     }}
                   >
                     {tab.label}
@@ -67,10 +76,7 @@ export default function ShiftsManagement() {
                 {t("Add Shift")}
               </button>
             </div>
-
-            {isLoading
-              ? Loader("loading-in-side loadin-in-tab-content m-lg-auto")
-              : tabs.map((tab) =>
+                {tabs.map((tab) =>
                   activeTab === tab.key ? (
                     <SiftForm
                       onToggleActive={toggleActiveStatus}

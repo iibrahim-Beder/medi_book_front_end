@@ -16,6 +16,7 @@ import { getTimeSlotTitle } from "./helper/helper";
 import ErrorPage from "../notFound-pageError/ErrorPage";
 import DataEmptyCom from "../shared/DataEmptyCom";
 import PopupMessage from "../shared/PopupMessage";
+import { useSearchParams } from "react-router-dom";
 
 export default function WeeklyTimeSlots() {
   const APPOINTMENT_TYPES = ["InPerson", "Follow-up", "Check-up", "Emergency"];
@@ -26,6 +27,15 @@ export default function WeeklyTimeSlots() {
     { templateId: 8, name: "Afternoon", startTime: "12:00", endTime: "16:00" },
     { templateId: 9, name: "Evening", startTime: "16:00", endTime: "20:00" },
     { templateId: 11, name: "Night", startTime: "20:00", endTime: "23:59" },
+  ];
+    const tabs = [
+    { key: "Sunday", label: t("Sunday") },
+    { key: "Monday", label: t("Monday") },
+    { key: "Tuesday", label: t("Tuesday") },
+    { key: "Wednesday", label: t("Wednesday") },
+    { key: "Thursday", label: t("Thursday") },
+    { key: "Friday", label: t("Friday") },
+    { key: "Saturday", label: t("Saturday") },
   ];
   const formFields = [
     {
@@ -63,7 +73,13 @@ export default function WeeklyTimeSlots() {
       options: APPOINTMENT_TYPES,
     },
   ];
-  const [activeDay, setActiveDay] = useState("Sunday");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dayParam = searchParams.get("day");
+  
+  const activeDay = tabs.some((t) => t.key === dayParam)
+  ? dayParam
+  : "Sunday";
+  
   const [activeShift, setActiveShift] = useState(7);
   const [activeTab, setActiveTab] = useState("Active");
 
@@ -102,21 +118,12 @@ export default function WeeklyTimeSlots() {
     activeShift,
     activeTab: activeDay,
   });
-  //   if (isError && error?.status !== 500) {
-  //   return <ErrorPage refetch={refetch} isFetching={isMainRulesFetching} />;
-  // }
-  const activeShiftName =
-    shaftTabs.find((t) => t.templateId === activeShift)?.name || "Morning";
-  const tabs = [
-    { key: "Sunday", label: t("Sunday") },
-    { key: "Monday", label: t("Monday") },
-    { key: "Tuesday", label: t("Tuesday") },
-    { key: "Wednesday", label: t("Wednesday") },
-    { key: "Thursday", label: t("Thursday") },
-    { key: "Friday", label: t("Friday") },
-    { key: "Saturday", label: t("Saturday") },
-  ];
 
+  const activeShiftName =
+  shaftTabs.find((t) => t.templateId === activeShift)?.name || "Morning";
+
+  
+  if(isLoading) return <Loader />
   return (
     <div className="col-12">
       <div className="dc-haslayout dc-dbsectionspace accordion-table ">
@@ -135,7 +142,7 @@ export default function WeeklyTimeSlots() {
                     className={`${activeDay === tab.key ? "active" : ""}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      setActiveDay(tab.key);
+                      setSearchParams({ day: tab.key });
                     }}
                   >
                     {tab.label}
@@ -190,7 +197,7 @@ export default function WeeklyTimeSlots() {
                     ) : !segments?.length || error?.statusCode === 500 ? (
                       <div className="table-card">
                         <DataEmptyCom
-                          LinkTo="/shifts-management"
+                          LinkTo={`/shifts-management?day=${activeDay}`}
                           linkText="Go to Create Shift"
                           text={t(
                             "No Rules Available ! Because There are no available shifts on this template today. If you want to add Rules on this shift you can go to create a new shift",

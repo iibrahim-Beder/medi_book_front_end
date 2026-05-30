@@ -7,6 +7,7 @@ import {
 } from '../../../api/doctor-information/ShiftsApi';
 import { useDoctorLocationsManager } from '../../location-settings/useDoctorLocations';
 import { useSelector } from 'react-redux';
+import { getErrorMessage } from '../../utils/api-errors';
 
 
 
@@ -110,8 +111,8 @@ const SelectedTemplate = templates.find(
       // refetchAvailability();
       return result;
     } catch (err) {
-      toast.error(err?.data?.message || t('common.error'));
-      throw err;
+      console.error("====err ",err);
+      toast.error(getErrorMessage(err));
     }finally {
       toast.dismiss(loader);
     }
