@@ -96,81 +96,79 @@ const SelectTimePicker = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onBlur, name, selectedTime]);
   useEffect(() => {
-    if (!value && minTime) {
-      const parsed = convert24To12(minTime);
+  if (!minTime || !maxTime) return;
 
-      setSelectedHour(parsed.hour);
-      setSelectedMinute(parsed.minute);
-      setActivePeriod(parsed.period);
-      setSelectedTime(minTime);
-      setManualInput(`${parsed.hour}:${parsed.minute} ${parsed.period}`);
-    }
-  }, [minTime, value]);
+  const current = value || selectedTime;
+
+  if (!current || !isWithinRange(current)) {
+    const parsed = convert24To12(minTime);
+
+    setSelectedHour(parsed.hour);
+    setSelectedMinute(parsed.minute);
+    setActivePeriod(parsed.period);
+    setSelectedTime(minTime);
+    setManualInput(`${parsed.hour}:${parsed.minute} ${parsed.period}`);
+
+    onChange?.({
+      target: {
+        name,
+        value: minTime,
+      },
+    });
+  }
+  }, [minTime, maxTime]);
 
   // Initialize from value prop - FIXED VERSION
   useEffect(() => {
-    const initializeFromValue = () => {
-      // If no value or empty value, set defaults
-      if (!value && value !== "") {
+    if (value === "" || value == null) {
+      if (minTime) {
+        const parsed = convert24To12(minTime);
+
         setSelectedTime("");
+        setSelectedHour(parsed.hour);
+        setSelectedMinute(parsed.minute);
+        setActivePeriod(parsed.period);
         setManualInput("");
-        setSelectedHour("04");
-        setSelectedMinute("00");
-        setActivePeriod("PM");
-        return;
-      }
-
-      // If value is empty string
-      if (value === "") {
-        setSelectedTime("");
-        setManualInput("");
-        setSelectedHour("04");
-        setSelectedMinute("00");
-        setActivePeriod("PM");
-        return;
-      }
-
-      // If value is a string and contains time
-      if (typeof value === "string" && value.includes(":")) {
-        try {
-          const [hoursPart, minutesPart] = value.split(":");
-          const hourNum = parseInt(hoursPart, 10);
-
-          if (!isNaN(hourNum)) {
-            setSelectedTime(value);
-            const displayHour =
-              hourNum > 12
-                ? (hourNum - 12).toString().padStart(2, "0")
-                : hoursPart.padStart(2, "0");
-            const displayMinute = minutesPart || "00";
-            const displayPeriod = hourNum >= 12 ? "PM" : "AM";
-
-            setSelectedHour(displayHour);
-            setSelectedMinute(displayMinute);
-            setActivePeriod(displayPeriod);
-            setManualInput(`${displayHour}:${displayMinute} ${displayPeriod}`);
-          }
-        } catch (error) {
-          console.error("Error parsing time value:", error);
-          // Set defaults if parsing fails
-          setSelectedTime("");
-          setManualInput("");
-          setSelectedHour("04");
-          setSelectedMinute("00");
-          setActivePeriod("PM");
-        }
       } else {
-        // Set defaults for invalid values
         setSelectedTime("");
         setManualInput("");
         setSelectedHour("04");
         setSelectedMinute("00");
         setActivePeriod("PM");
       }
-    };
 
-    initializeFromValue();
-  }, [value]);
+      return;
+    }
+
+    if (typeof value === "string" && value.includes(":")) {
+      try {
+        const parsed = convert24To12(value);
+
+        setSelectedTime(value);
+        setSelectedHour(parsed.hour);
+        setSelectedMinute(parsed.minute);
+        setActivePeriod(parsed.period);
+        setManualInput(`${parsed.hour}:${parsed.minute} ${parsed.period}`);
+        setInputError("");
+      } catch {
+        setSelectedTime("");
+        setManualInput("");
+      }
+    }
+  }, [value, minTime]);   
+
+  useEffect(() => {
+  if (!value || !minTime || !maxTime) return;
+
+  if (!isWithinRange(value)) {
+    onChange?.({
+      target: {
+        name,
+        value: "",
+      },
+    });
+  }
+}, [minTime, maxTime]);
 
   const isWithinRange = (time24) => {
     if (!minTime && !maxTime) return true;
@@ -216,31 +214,32 @@ const SelectTimePicker = ({
 
   const handleManualInputChange = (e) => {
     const value = e.target.value;
+    setManualInput(value);
+
+    const parsed = parseManualInput(value);
+
+    if (!parsed) return;
+
     if (!isWithinRange(parsed.time24)) {
       setInputError(
-        `Time must be between ${formatTimeForDisplay(minTime)} and ${formatTimeForDisplay(maxTime)}`,
+        `Time must be between ${formatTimeForDisplay(minTime)} and ${formatTimeForDisplay(maxTime)}`
       );
       return;
     }
 
     setInputError("");
 
-    // Auto-parse and update if valid
-    const parsed = parseManualInput(value);
-    if (parsed) {
-      setSelectedTime(parsed.time24);
-      setSelectedHour(parsed.hour);
-      setSelectedMinute(parsed.minute);
-      setActivePeriod(parsed.period);
+    setSelectedTime(parsed.time24);
+    setSelectedHour(parsed.hour);
+    setSelectedMinute(parsed.minute);
+    setActivePeriod(parsed.period);
 
-      const syntheticEvent = {
-        target: {
-          name: name,
-          value: parsed.time24,
-        },
-      };
-      onChange?.(syntheticEvent);
-    }
+    onChange?.({
+      target: {
+        name,
+        value: parsed.time24,
+      },
+    });
   };
 
   const handleManualInputBlur = (e) => {

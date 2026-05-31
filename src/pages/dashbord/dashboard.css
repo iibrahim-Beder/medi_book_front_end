@@ -540,4 +540,5 @@
     .uncomplete-dashboard .dc-grid__side{
       margin-top: 1.5rem;
     }
+    .time-selector-wrapper{gap: 10px;}
   }

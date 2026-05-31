@@ -368,7 +368,6 @@ export default function useShiftRules({
     const loadingToast = toast.loading("Saving...");
 
     try {
-      let success = false;
 
       // ===== ADD =====
       const payload = {
@@ -385,7 +384,6 @@ export default function useShiftRules({
         allowedAppointmentTypes: "InPerson",
       };
       console.log("=======payload", payload);
-      // return;
 
       const result = await addRule(payload).unwrap();
       console.log("=======result", result);
@@ -393,20 +391,24 @@ export default function useShiftRules({
       if (result?.succeeded) {
         toast.success(result.message || "Added Successfully");
 
-        success = true;
         setOpenModal(false);
         setAddData({});
         setAvailabilityData([]);
+        return true;
+      }else {
+        toast.error(getErrorMessage(result));
+        return false;
       }
 
       toast.dismiss(loadingToast);
-      return success;
     } catch (error) {
-      console.log("=======Failed to save slot", error);
+      console.log("=======Failed to save slot getErrorMessage", error);
       toast.error(getErrorMessage(error));
-      toast.dismiss(loadingToast);
       return false;
+    }finally {
+      toast.dismiss(loadingToast);
     }
+    
   }, [
     doctorId,
     activeShift,
