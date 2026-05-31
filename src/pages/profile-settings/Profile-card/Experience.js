@@ -23,23 +23,40 @@ useImperativeHandle(
   ref,
   () => ({
     submit: async () => {
-      const unsavedEducation = experiences.find(
-        (edu) => edu.isNew || edu.isExpanded
-      );
-      console.log("unsavedEducation", unsavedEducation);
+      if (isNew) {
+        const unsavedExperiences = experiences.filter(
+          exp => exp.isNew || exp.isExpanded
+        );
 
-      if (!unsavedEducation) {
+        if (!unsavedExperiences.length) {
+          return true;
+        }
+
+        return await handleSaveExperience(
+          null,
+          unsavedExperiences
+        );
+      }
+
+      const unsavedExperience = experiences.find(
+        exp => exp.isNew || exp.isExpanded
+      );
+
+      if (!unsavedExperience) {
         return true;
       }
 
       const index = experiences.findIndex(
-        (edu) => edu.id === unsavedEducation.id
+        exp => exp.id === unsavedExperience.id
       );
 
-      return await handleSaveExperience(index, unsavedEducation);
+      return await handleSaveExperience(
+        index,
+        unsavedExperience
+      );
     },
   }),
-  [experiences, handleSaveExperience]
+  [experiences, handleSaveExperience, isNew]
 );
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
@@ -102,15 +119,15 @@ useImperativeHandle(
         data={experiences}
         formFields={formFields}
         // onAdd={handleAddExperience}
-        onDelete={handleDeleteExperience}
+        onDelete={!register && handleDeleteExperience}
         onUpdate={handleUpdateExperience}
         onSave={handleSaveExperience}
         getItemTitle={getExperienceTitle}
         noDataMessage="No experience added yet. Click 'Add New Experience' to get started."
-        onAdd={isNew ? null: handleAddExperience}
+        onAdd={handleAddExperience}
         buttonsAvailable={isNew ? false: true}
         isUpdateOut={true}
-        MainHint={ register && "You can also add more than one experience from within."}
+        MainHint={ register && "You can also add or delete experiences from inside."}
         errors={errors}
         forceShowError={true}
       />

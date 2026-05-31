@@ -16,28 +16,43 @@ const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
     educations,
     errors
   } = useDoctorEducation(isNew);
-  useImperativeHandle(
-    ref,
-    () => ({
-      submit: async () => {
-        const unsavedEducation = educations.find(
-          (edu) => edu.isNew || edu.isExpanded
+useImperativeHandle(
+  ref,
+  () => ({
+    submit: async () => {
+      if (isNew) {
+        const unsavedEducations = educations.filter(
+          edu => edu.isNew || edu.isExpanded
         );
-        console.log("unsavedEducation", unsavedEducation);
 
-        if (!unsavedEducation) {
+        if (!unsavedEducations.length) {
           return true;
         }
 
-        const index = educations.findIndex(
-          (edu) => edu.id === unsavedEducation.id
+        return await handleSaveAcademic(
+          null,
+          unsavedEducations
         );
+      }
 
-        return await handleSaveAcademic(index, unsavedEducation);
-      },
-    }),
-    [educations, handleSaveAcademic]
-  );
+      const unsavedEducation = educations.find(
+        edu => edu.isNew || edu.isExpanded
+      );
+
+      if (!unsavedEducation) return true;
+
+      const index = educations.findIndex(
+        edu => edu.id === unsavedEducation.id
+      );
+
+      return await handleSaveAcademic(
+        index,
+        unsavedEducation
+      );
+    },
+  }),
+  [educations, handleSaveAcademic, isNew]
+);
   if (isLoading)
     return <CustomAccordionSkeleton number={3} className={"d-grid"} />;
   if (error) return <ErrorLoading error={error} refetch={refetch} />;
@@ -145,7 +160,7 @@ const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
         formFields={formFields}
         onAdd={handleAddAcademic}
         buttonsAvailable={isNew ? false: true}
-        onDelete={handleDeleteAcademic}
+        onDelete={!register && handleDeleteAcademic}
         onUpdate={handleUpdateAcademic}
         onSave={handleSaveAcademic}
         getItemTitle={getAcademicTitle}
@@ -154,7 +169,7 @@ const AcademicQualifications = forwardRef(({ isNew ,register}, ref) => {
         // backgroundColor="#f8f9fa"
         // titleBackgroundColor="#e3f2fd"
         // allowMultipleOpen={true}
-        MainHint={register && "You can also add more than one qualification from within."}
+        MainHint={register && "You can also add or delete qualifications from inside."}
         errors={errors}
         forceShowError={true}
       />

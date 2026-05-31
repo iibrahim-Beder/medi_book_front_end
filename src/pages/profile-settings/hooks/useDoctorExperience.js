@@ -55,7 +55,11 @@ export const useDoctorExperience = (New=false)=> {
 
   // ADD
   const handleAddExperience = useCallback(() => {
-    if (experiences?.[0]?.isNew) {
+    const hasUnsaved = experiences.some(
+        (item) => item.isNew
+      );
+    
+      if (!New && hasUnsaved) {
       toast.error("Save previous first");
       return;
     }
@@ -162,79 +166,184 @@ export const useDoctorExperience = (New=false)=> {
       return Object.keys(newErrors).length === 0;
     }, []);
 
-  // SAVE
-  const handleSaveExperience = useCallback(
-    async (index, data) => {
-      if (isAdding || isUpdating ||isAddingOne) return false;
-      
-      if (!validateExperience(index, data)){
-        toast.error("Please fix validation errors");
-        return false;  
-      } 
-      const loading = toast.loading("Saving...");
+    
+    const validateExperiences = useCallback(
+  (items) => {
+    const newErrors = {};
 
-      try {
-        let success = false;
+    items.forEach((data, index) => {
+      if (!data?.workplace?.trim()) {
+        newErrors[`workplace_${index}`] =
+          "Workplace is required";
+      }
 
-        if (data.isNew) {
-          if(New){
-         await addExperience({
+      if (!data?.jobTitle?.trim()) {
+        newErrors[`jobTitle_${index}`] =
+          "Job title is required";
+      }
+
+      if (!data?.startDate) {
+        newErrors[`startDate_${index}`] =
+          "Start date is required";
+      }
+
+      if (
+        data.startDate &&
+        data.endDate &&
+        new Date(data.endDate) <
+          new Date(data.startDate)
+      ) {
+        newErrors[`endDate_${index}`] =
+          "End date must be after start date";
+      }
+    });
+
+    setErrors(newErrors);
+
+    return !Object.keys(newErrors).length;
+  },
+  []
+    );
+
+    // SAVE
+    const handleSaveExperience = useCallback(
+      async (index, data) => {
+        if (
+          isAdding ||
+          isUpdating ||
+          isAddingOne
+        )
+          return false;
+
+        const loading = toast.loading(
+          "Saving..."
+        );
+
+        try {
+          let success = false;
+
+          // ===== BATCH MODE =====
+          if (New && Array.isArray(data)) {
+            if (!validateExperiences(data)) {
+              toast.error(
+                "Please fix validation errors"
+              );
+              return false;
+            }
+
+            const payload = data.map(item => ({
+              workplace: item.workplace,
+              jobTitle: item.jobTitle,
+              startDate: item.startDate,
+              endDate: item.endDate,
+              description: item.description,
+            }));
+
+            const res = await addExperience({
               doctorId,
-              experiences: [data],
+              experiences: payload,
             }).unwrap();
-          }else{
+
+            if (res?.succeeded) {
+              toast.success(
+                "Experiences added successfully"
+              );
+
+              success = true;
+
+            } else {
+              toast.error(res?.message);
+            }
+
+            return success;
+          }
+
+          // ===== CURRENT SINGLE MODE =====
+          if (!validateExperience(index, data)) {
+            toast.error(
+              "Please fix validation errors"
+            );
+            return false;
+          }
+
+          if (data.isNew) {
             await addOneExperience({
-                 doctorId,
-                 experience: data,
-               }).unwrap();
-          }
-            toast.success("Added experience Successfully");
-            success = true;
-        } else {
-          const original =
-            experiencesData?.data?.find(
-              (item) => item.doctorExperienceId === data.id
-            ) || {};
+              doctorId,
+              experience: data,
+            }).unwrap();
 
-          const updates = buildExperienceUpdatePayload(original, data);
-          if (!Object.keys(updates).length) {
-            toast("No changes found");
-            return;
-          }
-
-          const res = await updateExperience({
-            doctorId,
-            doctorExperienceId: data.id,
-            updates,
-          }).unwrap();
-
-          if (res?.succeeded) {
-            setExperience((prev) =>
-              prev.map((item, i) =>
-                i === index
-                  ? { ...data, isExpanded: false }
-                  : item
-              )
+            toast.success(
+              "Added experience Successfully"
             );
 
-            toast.success("Updated");
             success = true;
           } else {
-            toast.error(res?.message);
-          }
-        }
+            const original =
+              experiencesData?.data?.find(
+                item =>
+                  item.doctorExperienceId ===
+                  data.id
+              ) || {};
 
-        return success;
-      } catch (error) {
-        console.log("=======error",error);
-        toast.error(getErrorMessage(error));
-        return false;
-      } finally {
-        toast.dismiss(loading);
-      }
-    },
-    [doctorId, isAdding, isUpdating]
-  );
+            const updates =
+              buildExperienceUpdatePayload(
+                original,
+                data
+              );
+
+            if (!Object.keys(updates).length) {
+              toast("No changes found");
+              return false;
+            }
+
+            const res =
+              await updateExperience({
+                doctorId,
+                doctorExperienceId:
+                  data.id,
+                updates,
+              }).unwrap();
+
+            if (res?.succeeded) {
+              setExperience(prev =>
+                prev.map((item, i) =>
+                  i === index
+                    ? {
+                        ...data,
+                        isExpanded: false,
+                      }
+                    : item
+                )
+              );
+
+              toast.success("Updated");
+
+              success = true;
+            } else {
+              toast.error(res?.message);
+            }
+          }
+
+          return success;
+        } catch (error) {
+          toast.error(
+            getErrorMessage(error)
+          );
+          return false;
+        } finally {
+          toast.dismiss(loading);
+        }
+      },
+      [
+        doctorId,
+        isAdding,
+        isUpdating,
+        isAddingOne,
+        New,
+        validateExperience,
+        validateExperiences,
+      ]
+    );
 
   return {
     handleAddExperience,

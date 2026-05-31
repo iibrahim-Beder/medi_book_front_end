@@ -70,7 +70,7 @@ export default function DoctorRegistration({ openStepRegister ,setOpenStepRegist
               <StepLocation ref={stepRef} isNew={!completedSteps.includes(5)} register={true} />
             )}
             {currentStep === 6 && (
-              <ShiftStep ref={stepRef} isNew={!completedSteps.includes(6)} MainHint={"You can also add more than one shift from within."} />
+              <ShiftStep ref={stepRef} isNew={!completedSteps.includes(6)} MainHint={"You can also delete or add more than one work shift from inside."} />
             )}
             <div
               className="btn-container"

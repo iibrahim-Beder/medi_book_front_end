@@ -196,7 +196,7 @@
 .file-upload .btn { position: relative; overflow: hidden; }
 
 /* Buttons */
-.btn-container { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--gray-light); }
+.btn-container { display: flex; justify-content: space-between; gap: 12px; margin-top: 15px; padding-top: 18px; border-top: 1px solid var(--gray-light); }
 .btn {
   padding: 14px 24px; background: #0069d9; color: #fff; border: none; border-radius: var(--radius-sm) ;
   font-weight: 700 !important;  display: inline-flex; align-items: center; gap: 8px; transition: var(--tr) !important; box-shadow: 0 5px 15px rgb(33 30 30 / 15%);

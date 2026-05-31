@@ -20,7 +20,7 @@ const StepLocation = forwardRef(({ isNew, doctorId }, ref) => {
     isLoading,
     error,
     refetch,
-    MainHint = "You can also add more than one location from within"
+    MainHint = "You can also add or delete locations from inside."
   } = useDoctorLocation(isNew, doctorId);
 
   useImperativeHandle(ref, () => ({

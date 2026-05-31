@@ -54,13 +54,24 @@ export const useDoctorEducation = (New=false) => {
   const [deleteEducation] = useDeleteDoctorEducationMutation();
 
   // ADD
-  const handleAddAcademic = useCallback(() => {
-    if (educations?.[0]?.isNew) {
-      toast.error("Save previous first");
-      return;
-    }
-    setEducations((prev) => [newItem, ...prev]);
-  }, [educations]);
+const handleAddAcademic = useCallback(() => {
+  const hasUnsaved = educations.some(
+    (item) => item.isNew
+  );
+
+  if (!New && hasUnsaved) {
+    toast.error("Save previous first");
+    return;
+  }
+
+  setEducations((prev) => [
+    {
+      ...newItem,
+      id: `temp-${Date.now()}`
+    },
+    ...prev,
+  ]);
+}, [educations, New]);
   // hooks/useDoctorEducation.js
 
   // UPDATE LOCAL
@@ -154,76 +165,199 @@ export const useDoctorEducation = (New=false) => {
     return Object.keys(newErrors).length === 0;
   }, []);
 
+  const validateEducations = useCallback(
+  (items) => {
+    const newErrors = {};
 
-  // SAVE
-  const handleSaveAcademic = useCallback(
-    async (index, data) => {
-      if (isAdding || isUpdating || isAddingOne) return false;
+    items.forEach((data, index) => {
+      if (!data?.institutionName?.trim()) {
+        newErrors[
+          `institutionName_${index}`
+        ] =
+          "Institution name is required";
+      }
 
-       console.log("===========data",data);
-     if (!validateEducation(index, data)) {
-        toast.error("Please fix validation errors");
+      if (!data?.graduationYear) {
+        newErrors[
+          `graduationYear_${index}`
+        ] =
+          "Graduation year is required";
+      }
+
+      if (
+        !data?.degree ||
+        data.degree === "select degree"
+      ) {
+        newErrors[`degree_${index}`] =
+          "Degree is required";
+      }
+
+      if (
+        data.startDate &&
+        data.endDate &&
+        new Date(data.endDate) <
+          new Date(data.startDate)
+      ) {
+        newErrors[`endDate_${index}`] =
+          "End date must be after start date";
+      }
+    });
+
+    setErrors(newErrors);
+
+    return !Object.keys(newErrors).length;
+  },
+  []
+);
+
+
+const handleSaveAcademic = useCallback(
+  async (index, data) => {
+    
+    if (
+      isAdding ||
+      isUpdating ||
+      isAddingOne
+    )
+    return false;
+
+    const loading = toast.loading(
+      "Saving..."
+    );
+
+    try {
+      let success = false;
+
+      // ===== BATCH MODE =====
+      if (New && Array.isArray(data)) {
+        if (!validateEducations(data)) {
+          toast.error(
+            "Please fix validation errors"
+          );
+          return false;
+        }
+
+        const payload = data.map(item => ({
+          institutionName:
+            item.institutionName,
+          degree: item.degree,
+          major: item.major,
+          graduationYear:
+            item.graduationYear,
+          startDate: item.startDate,
+          endDate: item.endDate,
+          notes: item.notes,
+          certificateFileUrl:
+            item.certificateFileUrl,
+        }));
+
+        const res = await addEducation({
+          doctorId,
+          educations: payload,
+        }).unwrap();
+
+        if (res?.succeeded) {
+          toast.success(
+            "Qualifications added successfully"
+          );
+
+          success = true;
+        } else {
+          toast.error(res?.message);
+        }
+
+        return success;
+      }
+
+      // ===== CURRENT SINGLE MODE =====
+      if (!validateEducation(index, data)) {
+        toast.error(
+          "Please fix validation errors"
+        );
         return false;
       }
 
-      const loading = toast.loading("Saving...");
+      if (data.isNew) {
+      console.log(" from if it is new ","data", data, index, "educations" , educations, "New", New );
+      // return false;
+        await addOneEducation({
+          doctorId,
+          education: data,
+        }).unwrap();
 
-      try {
-        let success = false;
+        toast.success(
+          "Added qualification Successfully"
+        );
 
-        if (data.isNew) {
-          // const res = null;
-          if(New){
-          await addEducation({
-             doctorId,
-             educations: [data],
-           }).unwrap();
-          }else{
-            console.log("data",data);
-          await addOneEducation({
-              doctorId,
-              education: data,
-            }).unwrap();
-          }
-            toast.success("Added qualification Successfully");
-            success = true;
-        } else {
-          const original =  educationsData?.data?.find((item) => item.doctorEducationId === data.id) || {};
+        success = true;
+      } else {
+        const original =
+          educationsData?.data?.find(
+            item =>
+              item.doctorEducationId ===
+              data.id
+          ) || {};
 
-          const updates = buildEducationUpdatePayload(original, data);
-          if (!Object.keys(updates).length){toast("No changes found");return;}
+        const updates =
+          buildEducationUpdatePayload(
+            original,
+            data
+          );
 
-          const res = await updateEducation({
+        if (!Object.keys(updates).length) {
+          toast("No changes found");
+          return false;
+        }
+
+    console.log(" from if it is not new ","payload",updates  );
+      // return false;
+
+      const res = await updateEducation({
             doctorId,
             doctorEducationId: data.id,
             updates,
           }).unwrap();
 
-          if (res?.succeeded) {
-            setEducations((prev) =>
-              prev.map((item, i) =>
-                i === index ? { ...data, isExpanded: false } : item,
-              ),
-            );
+        if (res?.succeeded) {
+          setEducations(prev =>
+            prev.map((item, i) =>
+              i === index
+                ? {
+                    ...data,
+                    isExpanded: false,
+                  }
+                : item
+            )
+          );
 
-            toast.success("Updated qualification successfully");
-            success = true;
-          } else {
-            toast.error(getErrorMessage(error));
-          }
+          toast.success(
+            "Updated qualification successfully"
+          );
+
+          success = true;
         }
-
-        return success;
-      } catch(error){ 
-        console.log("=======error",error);
-        toast.error(getErrorMessage(error));
-        return false;
-      } finally {
-        toast.dismiss(loading);
       }
-    },
-    [doctorId, isAdding, isUpdating , isAddingOne],
-  );
+
+      return success;
+    } catch (error) {
+      toast.error(
+        getErrorMessage(error)
+      );
+      return false;
+    } finally {
+      toast.dismiss(loading);
+    }
+  },
+  [
+    doctorId,
+    isAdding,
+    isUpdating,
+    isAddingOne,
+    New,
+    validateEducation,
+    validateEducations,
+  ]
+);
   return {
     handleAddAcademic,
     handleDeleteAcademic,
