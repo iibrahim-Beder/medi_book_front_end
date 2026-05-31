@@ -38,7 +38,7 @@ const ShiftStep = forwardRef(
       templates,
       selectedTemplate,
       errors
-    } = useAddShifts();
+    } = useAddShifts(isNew);
 
     useImperativeHandle(ref, () => ({
       submit: handleSave,

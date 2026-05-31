@@ -64,6 +64,56 @@ export const doctorShiftsApi = baseApi.injectEndpoints({
       ],
     }),
 
+    addShiftToDoctor: builder.mutation({
+      query: (payload) => ({
+        url: "/Doctors/AddShiftToDoctor",
+        method: "POST",
+        body: payload,
+      }),
+      async onQueryStarted(
+        { doctorId, ...newShiftsData },
+        { dispatch, queryFulfilled },
+      ) {
+        const tempShifts = newShiftsData.daysOfWeek.map((day, idx) => ({
+          shiftId: `temp-${Date.now()}-${idx}`, 
+          dayOfWeek: day,
+          shiftTemplateId: newShiftsData.shiftTemplateId,
+          shiftTemplateName: "",
+          isActive: true,
+          locationId: newShiftsData.locationId,
+          locationName: "",
+          breakStartTime: newShiftsData.breakStartTime,
+          breakEndTime: newShiftsData.breakEndTime,
+          isOptimistic: true,
+        }));
+
+        const patchResult = dispatch(
+          doctorShiftsApi.util.updateQueryData(
+            "getDoctorShifts",
+            doctorId,
+            (draft) => {
+              draft.push(...tempShifts);
+            },
+          ),
+        );
+
+        try {
+          await queryFulfilled;
+          dispatch(
+            doctorShiftsApi.util.invalidateTags([
+              { type: "DoctorShifts", id: doctorId },
+            ]),
+          );
+        } catch {
+          patchResult.undo();
+        }
+      },
+      invalidatesTags: (result, error, { doctorId }) => [
+        { type: "DoctorShifts", id: doctorId },
+        { type: "ShiftDaysAvailability", },
+      ],
+    }),
+
     updateShift: builder.mutation({
       query: (payload) => ({
         url: "/Doctors/UpdateShift",
@@ -204,6 +254,7 @@ deactivateDoctorShift: builder.mutation({
 export const {
   useGetDoctorShiftsQuery,
   useAddShiftsStepToDoctorMutation,
+  useAddShiftToDoctorMutation,
   useUpdateShiftMutation,
   useDeleteShiftMutation,
   useGetShiftDaysAvailabilityQuery,

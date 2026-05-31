@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import {
   useGetShiftDaysAvailabilityQuery,
   useAddShiftsStepToDoctorMutation,
+  useAddShiftToDoctorMutation,
 } from '../../../api/doctor-information/ShiftsApi';
 import { useDoctorLocationsManager } from '../../location-settings/useDoctorLocations';
 import { useSelector } from 'react-redux';
@@ -11,7 +12,8 @@ import { getErrorMessage } from '../../utils/api-errors';
 
 
 
-const useAddShifts = () => {
+const useAddShifts = (New) => {
+
   const doctorId = useSelector((state) => state.auth.doctorId);
 
   const { t } = useTranslation();
@@ -45,6 +47,7 @@ const useAddShifts = () => {
   ];
 
   const [addShifts, { isLoading: isAdding }] = useAddShiftsStepToDoctorMutation();
+  const [addShift, { isLoading: isAddingShift }] = useAddShiftToDoctorMutation();
 
   useEffect(() => {
     setSelectedDays([]);
@@ -67,7 +70,9 @@ const useAddShifts = () => {
   };
 
   const handleSave = async () => {
-const SelectedTemplate = templates.find(
+    if(isAddingShift || isAdding) return;
+
+    const SelectedTemplate = templates.find(
   (template) => template.templateId === Number(selectedTemplateId));  
     
      if (!validateForm()) {
@@ -95,21 +100,32 @@ const SelectedTemplate = templates.find(
     const loader = toast.loading(t("loading"));
     try {
       console.log("selectedTemplateId",selectedTemplateId,"selectedLocationId",selectedLocationId,"selectedDays",selectedDays,"breakTimes",breakTimes);
-      const result = await addShifts({
-        doctorId,
-        locationId: selectedLocationId,
-        shiftTemplateId: selectedTemplateId,
-        daysOfWeek: selectedDays,
-        breakStartTime: breakTimes.start,
-        breakEndTime: breakTimes.end,
-      }).unwrap();
+      if(New){
+        await addShifts({
+            doctorId,
+            locationId: selectedLocationId,
+            shiftTemplateId: selectedTemplateId,
+            daysOfWeek: selectedDays,
+            breakStartTime: breakTimes.start,
+            breakEndTime: breakTimes.end,
+          }).unwrap();
+          
+        }else{
+        await addShift({
+            doctorId,
+            locationId: selectedLocationId,
+            shiftTemplateId: selectedTemplateId,
+            daysOfWeek: selectedDays,
+            breakStartTime: breakTimes.start,
+            breakEndTime: breakTimes.end,
+          }).unwrap();
+      }
 
-      console.log("====result",result);
       toast.success(t('shift.addedSuccess'));
       setSelectedDays([]);
       setBreakTimes({ start: '', end: '' });
       // refetchAvailability();
-      return result;
+      return true;
     } catch (err) {
       console.error("====err ",err);
       toast.error(getErrorMessage(err));
