@@ -8,6 +8,7 @@ export default function Step4Locations({ doctorId }) {
   const {
     locations,
     errors,
+    clearFieldError,
     addNewLocation,
     updateLocalLocation,
     saveLocation,
@@ -39,6 +40,7 @@ export default function Step4Locations({ doctorId }) {
       // onAddLocation={addNewLocation}
       onSaveLocation={saveLocation}
       onToggleActive={toggleActiveStatus}
+      clearFieldError={clearFieldError}
 
     />}
     { activeTab === "Inactive" && <LocationsAccordion
@@ -48,6 +50,7 @@ export default function Step4Locations({ doctorId }) {
       // onAddLocation={addNewLocation}
       onSaveLocation={saveLocation}
       onToggleActive={toggleActiveStatus}
+      clearFieldError={clearFieldError}
 
     />}
     </>

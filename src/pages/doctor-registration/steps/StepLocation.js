@@ -41,6 +41,7 @@ const StepLocation = forwardRef(({ isNew, doctorId }, ref) => {
           onChange={(loc) =>
             setFormData((prev) => ({ ...prev, ...loc }))
           }
+          errors={errors}
         />
 
         {errors.location && (

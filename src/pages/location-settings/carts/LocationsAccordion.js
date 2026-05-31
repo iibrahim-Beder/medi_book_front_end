@@ -20,6 +20,8 @@ const LocationsAccordion = memo(({
   allowMultipleOpen = false,
   title = "Locations",
   noDataMessage = "No locations found",
+  errors = {},
+  clearFieldError = () => {}
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState([]);
@@ -29,14 +31,21 @@ const LocationsAccordion = memo(({
   const [activePopup, setActivePopup] = useState({ show: false, id: null, newActive: false, locationName: "" });
 
   useEffect(() => {
-    const formattedData = locations.map(location => ({
-      ...location,
-      id: location.id,
-      isExpanded: location.isExpanded || false,
-      isNew: location.isNew || false,
-    }));
-    setDataRead(formattedData);
-    setDraftData({});
+    setDataRead((prev) =>
+      locations.map((location) => {
+        const existing = prev.find((p) => p.id === location.id);
+
+        return {
+          ...location,
+          id: location.id,
+          isExpanded:
+            existing?.isExpanded ??
+            location.isExpanded ??
+            false,
+          isNew: location.isNew || false,
+        };
+      })
+    );
   }, [locations]);
 
   const getLocationTitle = (location) => {
@@ -123,10 +132,13 @@ const LocationsAccordion = memo(({
         [field]: value,
       },
     }));
+    clearFieldError(id, field);
   };
 
   const handleSave = async (id) => {
-    const draft = draftData[id];
+    const draft =
+      draftData[id] ||
+        dataRead.find((item) => item.id === id);    console.log("draft", draft ,"id", id);
     if (!draft) return;
 
     if (onSaveLocation) {
@@ -298,6 +310,7 @@ const LocationsAccordion = memo(({
                       handleDraftChange(item.id, "officialName", loc.officialName);
                       handleDraftChange(item.id, "displayName", loc.displayName);
                     }}
+                errors={errors[item.id] || {}}   
                   />
                   <div style={{ marginTop: "15px", display: "inline-flex", gap: "20px", flexWrap: "wrap" }}>
                     {/* Primary checkbox (draft-based) */}
@@ -329,7 +342,7 @@ const LocationsAccordion = memo(({
                   <button
                     type="button"
                     style={{ margin: '0 5px' }}
-                    className="simple-btn"
+                    className="simple-btn ml-auto"
                     onClick={() => handleCancel(item.id)}
                   >
                     {t("Cancel")}

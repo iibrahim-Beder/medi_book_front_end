@@ -121,7 +121,7 @@ const useAddShifts = (New) => {
           }).unwrap();
       }
 
-      toast.success(t('shift.addedSuccess'));
+      toast.success(t('Shift added successfully'));
       setSelectedDays([]);
       setBreakTimes({ start: '', end: '' });
       // refetchAvailability();

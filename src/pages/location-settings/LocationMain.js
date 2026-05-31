@@ -12,7 +12,7 @@ export default function LocationMain() {
     isError,
    isFetchingLocations,isLoading,locations,error}=useDoctorLocationsManager();
        if(isError|| (!isLoading && locations.length === 0 && isFetchingLocations)){
-         return   <ErrorPage refetch={refetch} isFetching={isFetchingLocations} error={error} />
+        //  return   <ErrorPage refetch={refetch} isFetching={isFetchingLocations} error={error} />
     }
 
   return (

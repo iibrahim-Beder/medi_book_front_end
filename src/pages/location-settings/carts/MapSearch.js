@@ -6,6 +6,7 @@ import {
   Autocomplete,
 } from "@react-google-maps/api";
 import { useTranslation } from "react-i18next";
+import Field from "../../ui/form-fields/Field";
 
 const mapStyles = [
   {
@@ -55,7 +56,7 @@ const mapStyles = [
   },
 ];
 
-const BlueMapPicker = ({ value, onChange }) => {
+const BlueMapPicker = ({ value, onChange , errors }) => {
   const { t } = useTranslation();
   const mapRef = useRef(null);
   const autocompleteRef = useRef(null);
@@ -151,7 +152,23 @@ onChange({
         />
       </GoogleMap>
       <div className="form-group m-0 mt-1">
-      <label >{t("Location Name")}</label>
+        <Field
+          label={t("Location Name")}
+          type="text"
+          name="displayName"
+          value={value.displayName}
+          onChange={(e) =>
+            onChange({
+              ...value,
+              displayName: e.target.value,
+            })
+          }
+          error={errors?.displayName}
+          forceShowError={true}
+          className="form-control"
+          placeholder={t("SpecialPlaceNameOptional")}
+        />
+      {/* <label >{t("Location Name")}</label>
       <input
       color="var(--terthemecolor)"
         className="form-control"
@@ -162,7 +179,7 @@ onChange({
   displayName: e.target.value,
 })        }
         placeholder={t("SpecialPlaceNameOptional")}
-      />
+      /> */}
     </div>
     </div>
   );

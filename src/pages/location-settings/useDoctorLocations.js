@@ -56,7 +56,7 @@ export const useDoctorLocationsManager = () => {
 
   // ==================== Add new location ====================
   const addNewLocation = () => {
-    if (locations?.[0]?.isNew) {toast.error('Please save the previous location first'); return;}
+    // if (locations?.[0]?.isNew) {toast.error('Please save the previous location first'); return;}
     const newId = Date.now();
     setLocations((prev) => [
       {
@@ -82,27 +82,51 @@ export const useDoctorLocationsManager = () => {
   };
 
   // ==================== Validation ====================
-  const validate = useCallback(() => {
-    const newErrors = {};
-    locations.forEach((loc) => {
-      const err = {};
-      if (!loc.displayName.trim()) {
-        err.displayName = t("requiredField");
-      }
-      if (!loc.lat || !loc.lng) {
-        err.location = t("SelectLocationOnMap");
-      }
-      if (Object.keys(err).length > 0) {
-        newErrors[loc.id] = err;
-      }
+
+  const validateLocation = useCallback((formData) => {
+    const errors = {};
+
+    if (!formData.displayName?.trim()) {
+      errors.displayName = t("location name required");
+    }
+
+    if (!formData.lat || !formData.lng) {
+      errors.location = t("Select a location");
+    }
+
+    return errors;
+  }, [t]);
+
+  const clearFieldError = useCallback((id, field) => {
+    setErrors((prev) => {
+      if (!prev[id]) return prev;
+
+      return {
+        ...prev,
+        [id]: {
+          ...prev[id],
+          [field]: undefined,
+        },
+      };
     });
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [locations, t]);
+  }, []);
 
   // ==================== Save Single Location (used by Accordion) ====================
   const saveLocation = async (id, locationData) => {
     if (!doctorId) return false;
+    
+    const validationErrors = validateLocation(locationData);
+    console.log("id", id,"locationData", locationData, "validationErrors", validationErrors);
+
+      if (Object.keys(validationErrors).length) {
+        setErrors((prev) => ({
+          ...prev,
+          [id]: validationErrors,
+        }));
+
+        toast.error(t("fill required field"));
+        return false;
+      }
 
     const loader = toast.loading(t("loading"));
     try {
@@ -118,18 +142,26 @@ export const useDoctorLocationsManager = () => {
           longitude: locationData.lng,
         }).unwrap();
       } else {
-        const payload = buildLocationPayload(original, locationData);
-        const res = await updateLocation({
-          locationId: id,
-          ...payload,
-        }).unwrap();
-        console.log("====res", res);
+        const updatePayload =buildLocationPayload(original, locationData);
+        if (!Object.keys(updatePayload).length) {
+          console.log("update location", updatePayload);
+          toast(t("No changes detected"));
+          return true;
+        };
+        await updateLocation(
+          { doctorId, locationId: locationData.locationId, ...updatePayload }
+        ).unwrap();
       }
 
-      toast.success(t("SavedSuccessfully"));
+      toast.success(t("Saved Successfully"));
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
       return true;
     } catch (e) {
-      toast.error(e?.data?.message || t("Error"));
+      toast.error(e?.data?.message || t("Error Saving"));
       return false;
     } finally {
       toast.dismiss(loader);
@@ -147,7 +179,7 @@ export const useDoctorLocationsManager = () => {
       } else {
         await deactivateLocation({ locationId, doctorId }).unwrap();
       }
-      toast.success(t("StatusUpdated"));
+      toast.success(t("Status Updated Successfully"));
     } catch (error) {
       toast.error(error?.data?.message || t("Error"));
     } finally {
@@ -167,28 +199,28 @@ export const useDoctorLocationsManager = () => {
      refetch,
     isError,
     error,
+    setErrors,
+    clearFieldError,
    isFetchingLocations
   };
 };
 
 // ==================== Build payload ====================
 const buildLocationPayload = (original, updated) => {
-  const payload = {
-    locationId: original.id,
-    setPrimary: !!updated.isPrimary,
-  };
+  const payload = {};
 
-  if (original.displayName !== updated.displayName) {
+  if (original.locationName !== updated.displayName) {
     payload.locationName = { value: updated.displayName };
   }
 
-  if (Number(original.lat) !== Number(updated.lat)) {
+  if (original.locationPoint.latitude !== updated.lat) {
     payload.latitude = { value: Number(updated.lat) };
   }
 
-  if (Number(original.lng) !== Number(updated.lng)) {
+  if (original.locationPoint.longitude !== updated.lng) {
     payload.longitude = { value: Number(updated.lng) };
   }
 
+  console.log("original", original, "updated", updated , "payload", payload);
   return payload;
 };
