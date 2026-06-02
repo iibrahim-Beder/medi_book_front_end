@@ -59,6 +59,9 @@ const CustomAccordion = memo(({
   const handleShowDeleteConfirm = (index) => {
     const item = dataRead[index];
     const itemName = getItemTitle ? getItemTitle(item) : (item.title || item.type || "Item");
+    if (item?.isNew === true) {
+      onDelete(index);
+    }else
     setDeletePopup({ show: true, index, itemName });
   };
 

@@ -119,7 +119,7 @@ useImperativeHandle(
         data={experiences}
         formFields={formFields}
         // onAdd={handleAddExperience}
-        onDelete={!register && handleDeleteExperience}
+        onDelete={(!register || isNew ) && handleDeleteExperience}
         onUpdate={handleUpdateExperience}
         onSave={handleSaveExperience}
         getItemTitle={getExperienceTitle}

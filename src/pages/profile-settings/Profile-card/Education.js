@@ -160,7 +160,7 @@ useImperativeHandle(
         formFields={formFields}
         onAdd={handleAddAcademic}
         buttonsAvailable={isNew ? false: true}
-        onDelete={!register && handleDeleteAcademic}
+        onDelete={(!register || isNew ) && handleDeleteAcademic}
         onUpdate={handleUpdateAcademic}
         onSave={handleSaveAcademic}
         getItemTitle={getAcademicTitle}
