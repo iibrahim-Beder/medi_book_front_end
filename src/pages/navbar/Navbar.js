@@ -30,7 +30,7 @@ function Navbar({ setShowPopupClose }) {
               {/* Logo */}
               <strong className="dc-logo">
                 <Link to="/">
-                  <img src="/images/newlogo.png" alt="user logo" />
+                  <img src="/images/d-logo.png" alt="user logo" />
                 </Link>
               </strong>
 
