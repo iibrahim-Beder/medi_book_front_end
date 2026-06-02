@@ -2347,7 +2347,8 @@ body.dc-userlogin .dc-loginarea{display: none;}
 .dc-headerform .dc-formbtn a{border-radius: 0 4px 4px 0;}
 .dc-header-dashboard .dc-navigation > ul > li > a{padding: 28px 25px;}
 .dc-header-dashboard .dc-userlogedin{padding: 13px 0;}
-.dc-header-dashboard .dc-logo{margin:24px 0 23px 0;}
+.dc-header-dashboard .dc-logo{margin:20px 0 0px 0;}
+.dc-header-dashboard .dc-logo img{width: 176px;}
 .dc-sidebarwrapper {
 	top: 0;
 	left: 0;

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Field from "../ui/form-fields/Field";
-import logo from "../../assets/images/logo-login1.png";
+import logo from "../../assets/images/loginImg.png";
 import { useAuthentication } from "./hooks/useAuthentication";
 
 export default function Authentication() {

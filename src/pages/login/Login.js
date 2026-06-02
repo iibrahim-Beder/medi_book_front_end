@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEye, FiEyeOff, FiMail, FiLock, FiPhone } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import logo from "../../assets/images/logo-login1.png";
+import logo from "../../assets/images/loginImg.png";
 import Field from "../ui/form-fields/Field";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -77,7 +77,7 @@ export default function Login() {
     <div style={{height:"100vh", display:"flex", justifyContent:"center"}}>
       <div className="d-flex align-items-center justify-content-center login-container">
         <div className="col-md-7 col-lg-6 login-left">
-          <img src={logo} className="img-fluid" alt="Doccure Login" />
+          <img src={logo} className="img-fluid" alt="Register Login" />
         </div>
 
         {/* Login Form */}
