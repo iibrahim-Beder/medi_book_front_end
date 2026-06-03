@@ -6076,6 +6076,10 @@ label , .simple-btn ,.css-1wk5iqf-MuiPaper-root{
 .dc-postedsilder .dc-postedsilderitem,.dc-hiredfreelance .dc-userlistinghold{
 	background-color: var(--badybkcolor);
 }
+ .table-insideUi select:disabled, .table-card.insideUi select:disabled {
+    font-size: 16px !important;
+    background-color: #f2f2f2 !important;
+}
 }
 
 

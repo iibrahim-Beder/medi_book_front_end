@@ -99,15 +99,15 @@ const useAddShifts = (New) => {
 
     const loader = toast.loading(t("loading"));
     try {
-      console.log("selectedTemplateId",selectedTemplateId,"selectedLocationId",selectedLocationId,"selectedDays",selectedDays,"breakTimes",breakTimes);
+      console.log("selectedTemplateId",selectedTemplateId,"selectedLocationId",selectedLocationId,"selectedDays",selectedDays,"breakTimes",breakTimes.start || null,breakTimes.end || null);
       if(New){
         await addShifts({
             doctorId,
             locationId: selectedLocationId,
             shiftTemplateId: selectedTemplateId,
             daysOfWeek: selectedDays,
-            breakStartTime: breakTimes.start,
-            breakEndTime: breakTimes.end,
+            breakStartTime: breakTimes.start || null,
+            breakEndTime: breakTimes.end || null,
           }).unwrap();
           
         }else{

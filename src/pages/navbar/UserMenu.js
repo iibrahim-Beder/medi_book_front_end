@@ -10,7 +10,7 @@ import { CiDark, CiSettings, CiLocationOn, CiLogout, CiBadgeDollar } from "react
 import { HiOutlineChatBubbleOvalLeft } from "react-icons/hi2";
 import { SlCalender } from "react-icons/sl";
 import { BsList, BsStar } from "react-icons/bs";
-import { PiUsersThreeLight } from "react-icons/pi";
+import { PiClockUserThin, PiUsersThreeLight } from "react-icons/pi";
 import { LiaUserCogSolid, LiaUserShieldSolid } from "react-icons/lia";
 
 import DashboardIcon from "../../assets/icons/DashboardIcon";
@@ -108,7 +108,7 @@ function UserMenu({ setShowPopupClose }) {
             <li>
               <Link to="/Generate-Doctor-Slots">
                 <i>
-                  <BsList className="icon" />
+                  <PiClockUserThin className="icon" />
                 </i>
                 <span>{t("sidebar.makeSlots")}</span>
               </Link>
