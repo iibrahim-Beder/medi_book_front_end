@@ -11,8 +11,9 @@ import "./DoctorRegistration.css";
 import Step3ProfessionalInfo from "./steps/Step3ProfessionalInfo";
 import AcademicQualifications from "../profile-settings/Profile-card/Education";
 import DoctorExperience from "../profile-settings/Profile-card/Experience";
+import { useEffect } from "react";
 
-export default function DoctorRegistration({ openStepRegister ,setOpenStepRegister}) {
+export default function DoctorRegistration({ openStepRegister , setOpenStepRegister , modalContentRef }) {
   const { t } = useTranslation();
   const {
     currentStep,
@@ -24,6 +25,13 @@ export default function DoctorRegistration({ openStepRegister ,setOpenStepRegist
     handleNextStep,
     doctorCurrentStepNumber
   } = useDoctorRegistration();
+
+  useEffect(() => {
+    modalContentRef.current?.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentStep]);
 
   console.log("currentStep", currentStep);
   return (

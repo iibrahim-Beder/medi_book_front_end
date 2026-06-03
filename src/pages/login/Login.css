@@ -111,7 +111,7 @@
     font-size: 14px !important;
 }
 
-.login-header .login-logo { color:var(--secthemecolor) ;font-family: 'Poppins', Arial, Helvetica, sans-serif;}
+.login-header .login-logo { color:var(--themecolor) ;font-family: 'Poppins', Arial, Helvetica, sans-serif;}
 .account-signup p a,.account-signup p a:hover{
     font-weight: 500;
     color: #0E82FD;

@@ -3,7 +3,7 @@ import Navbar from './pages/navbar/Navbar';
 import './App.css';
 import './assets/css/font-awesome.min.css';
 import Sidebar from './pages/sidbar/Sidebar';
-import  { useState, useEffect } from "react";
+import  { useState, useEffect , useRef} from "react";
 import DashboardMain from './pages/dashbord/DashboardMain';
 import Acco from './pages/profile-settings/ProfileSettings';
 import LocationMain from "./pages/location-settings/LocationMain";
@@ -104,6 +104,9 @@ useEffect(() => {
     window.removeEventListener("keydown", handleEsc);
   };
 }, []);
+const modalContentRef = useRef(null);
+
+
 const {  stepCompleted , isCurrentStepLoading,currentStepError ,refetchCurrentStep,isFetching ,isCurrentStepError } =useDoctorRegistration();
 let completeRegistration =stepCompleted.All;
 
@@ -133,14 +136,14 @@ if(isCurrentStepLoading ){
                 {openStepRegister && (
                   <div className=" custom-modal-overlay registration-popup d-flex justify-content-center align-items-center  fade-in">
                       
-                      <div className="custom-modal-content position-relative scale-in"    onClick={(e) => e.stopPropagation()}>
+                      <div className="custom-modal-content position-relative scale-in"      ref={modalContentRef}   onClick={(e) => e.stopPropagation()}>
                         
                         <button
                           className="btn-close custom-close-btn"
                           onClick={() => setOpenStepRegister(false)}
                         ><IoIosCloseCircleOutline/></button>
 
-                        <DoctorRegistration setOpenStepRegister={setOpenStepRegister} openStepRegister={openStepRegister} />
+                        <DoctorRegistration setOpenStepRegister={setOpenStepRegister} openStepRegister={openStepRegister} modalContentRef={modalContentRef} />
 
                       </div>
 
