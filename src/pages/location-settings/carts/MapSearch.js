@@ -123,15 +123,6 @@ onChange({
 
   return (
     <div>
-      {/* <Autocomplete
-        onLoad={(ref) => (autocompleteRef.current = ref)}
-        onPlaceChanged={onPlaceChanged}
-      >
-        <input
-          className="form-control mb-2"
-          placeholder={t("SearchForAddress")}
-        />
-      </Autocomplete> */}
 
       {loadingName && (
         <div style={{ fontSize: 13 }}>{t("LoadingPlaceName")}...</div>
@@ -168,18 +159,6 @@ onChange({
           className="form-control"
           placeholder={t("SpecialPlaceNameOptional")}
         />
-      {/* <label >{t("Location Name")}</label>
-      <input
-      color="var(--terthemecolor)"
-        className="form-control"
-        value={value.displayName}
-        onChange={(e) =>
-onChange({
-  ...value,
-  displayName: e.target.value,
-})        }
-        placeholder={t("SpecialPlaceNameOptional")}
-      /> */}
     </div>
     </div>
   );
