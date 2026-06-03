@@ -116,8 +116,8 @@ const useAddShifts = (New) => {
             locationId: selectedLocationId,
             shiftTemplateId: selectedTemplateId,
             daysOfWeek: selectedDays,
-            breakStartTime: breakTimes.start,
-            breakEndTime: breakTimes.end,
+            breakStartTime: breakTimes.start || null,
+            breakEndTime: breakTimes.end || null,
           }).unwrap();
       }
 

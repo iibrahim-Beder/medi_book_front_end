@@ -1536,6 +1536,7 @@ font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 }
 
 @media (max-width: 768px) {
+  .dc-header-dashboard .dc-logo img{margin-left:35px ;}
   .day-label {
     flex-wrap: wrap;
   }
