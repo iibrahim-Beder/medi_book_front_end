@@ -96,11 +96,11 @@ export default function ShiftsManagement() {
         </div>
       </div>
 
-      <AddModal show={openModal} onHide={() => setOpenModal(false)}></AddModal>
+      <AddModal show={openModal} onHide={() => setOpenModal(false)} setOpenModal={setOpenModal}></AddModal>
     </div>
   );
 }
-export const AddModal = ({ show, onHide }) => {
+export const AddModal = ({ show, onHide  ,setOpenModal}) => {
   const { t } = useTranslation();
 
   return (
@@ -123,7 +123,7 @@ export const AddModal = ({ show, onHide }) => {
           className="modal-content-custom table-insideUi"
           style={{ overflowY: "visible" }}
         >
-          <ShiftStep insidUi={true} />
+          <ShiftStep setOpenModal={setOpenModal} insidUi={true} />
         </div>
       </Modal.Body>
       {/* <Modal.Footer className="modal-footer-custom">

@@ -15,6 +15,7 @@ export default function ShiftForm({
   onToggleActive,
   setOpenModal
 }) {
+  console.log("shifts", shifts);
   const { t } = useTranslation();
   return (
     <div>
@@ -67,10 +68,10 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
     shift.locationId || "",
   );
   const [breakStart, setBreakStart] = useState(
-    shift.breakStartTime ? shift.breakStartTime : "",
+    shift.breakStartTime || null,
   );
   const [breakEnd, setBreakEnd] = useState(
-    shift.breakEndTime ? shift.breakEndTime : "",
+    shift.breakEndTime || null,
   );
   const [isActive, setisActive] = useState(
     shift.isActive ? shift.isActive : false,

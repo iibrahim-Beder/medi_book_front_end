@@ -12,7 +12,8 @@ const ShiftStep = forwardRef(
       isNew,
       onChange = () => {},
       forceShowError = true,
-      MainHint=""
+      MainHint="",
+      setOpenModal = () => {}
     },
     ref,
   ) => {
@@ -38,7 +39,7 @@ const ShiftStep = forwardRef(
       templates,
       selectedTemplate,
       errors
-    } = useAddShifts(isNew);
+    } = useAddShifts(isNew,setOpenModal);
 
     useImperativeHandle(ref, () => ({
       submit: handleSave,

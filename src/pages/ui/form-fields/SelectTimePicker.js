@@ -100,7 +100,7 @@ const SelectTimePicker = ({
 
   const current = value || selectedTime;
 
-  if (!current || !isWithinRange(current)) {
+  if (current && !isWithinRange(current)) {
     const parsed = convert24To12(minTime);
 
     setSelectedHour(parsed.hour);
@@ -116,7 +116,7 @@ const SelectTimePicker = ({
       },
     });
   }
-  }, [minTime, maxTime]);
+  }, [minTime, maxTime, value]);
 
   // Initialize from value prop - FIXED VERSION
   useEffect(() => {
@@ -168,8 +168,7 @@ const SelectTimePicker = ({
       },
     });
   }
-}, [minTime, maxTime]);
-
+}, [value, minTime, maxTime, name]);
   const isWithinRange = (time24) => {
     if (!minTime && !maxTime) return true;
 
@@ -213,33 +212,48 @@ const SelectTimePicker = ({
   };
 
   const handleManualInputChange = (e) => {
-    const value = e.target.value;
-    setManualInput(value);
+  const value = e.target.value;
 
-    const parsed = parseManualInput(value);
+  setManualInput(value);
 
-    if (!parsed) return;
-
-    if (!isWithinRange(parsed.time24)) {
-      setInputError(
-        `Time must be between ${formatTimeForDisplay(minTime)} and ${formatTimeForDisplay(maxTime)}`
-      );
-      return;
-    }
-
+  if (value.trim() === "") {
+    setSelectedTime("");
     setInputError("");
-
-    setSelectedTime(parsed.time24);
-    setSelectedHour(parsed.hour);
-    setSelectedMinute(parsed.minute);
-    setActivePeriod(parsed.period);
 
     onChange?.({
       target: {
         name,
-        value: parsed.time24,
+        value: "",
       },
     });
+
+    return;
+  }
+
+  const parsed = parseManualInput(value);
+
+  if (!parsed) return;
+
+  if (!isWithinRange(parsed.time24)) {
+    setInputError(
+      `Time must be between ${formatTimeForDisplay(minTime)} and ${formatTimeForDisplay(maxTime)}`
+    );
+    return;
+  }
+
+  setInputError("");
+
+  setSelectedTime(parsed.time24);
+  setSelectedHour(parsed.hour);
+  setSelectedMinute(parsed.minute);
+  setActivePeriod(parsed.period);
+
+  onChange?.({
+    target: {
+      name,
+      value: parsed.time24,
+    },
+  });
   };
 
   const handleManualInputBlur = (e) => {

@@ -27,6 +27,7 @@ export default function useShift() {
     });
     return map;
   }, [shifts]);
+  console.log("shiftsByDay", shiftsByDay);
   
     const {locations}= useDoctorLocationsManager()
 

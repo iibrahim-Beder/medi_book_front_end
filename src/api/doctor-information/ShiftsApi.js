@@ -10,7 +10,10 @@ export const doctorShiftsApi = baseApi.injectEndpoints({
       providesTags: (result, error, doctorId) => [
         { type: "DoctorShifts", id: doctorId },
       ],
-      transformResponse: (response) => response.data,
+      transformResponse: (response) => {
+        console.log("Get Doctor Shifts Response:", response);
+        return response.data;
+      },
     }),
 
     addShiftsStepToDoctor: builder.mutation({

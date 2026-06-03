@@ -12,7 +12,7 @@ import { getErrorMessage } from '../../utils/api-errors';
 
 
 
-const useAddShifts = (New) => {
+const useAddShifts = (New,setOpenModal) => {
 
   const doctorId = useSelector((state) => state.auth.doctorId);
 
@@ -51,7 +51,7 @@ const useAddShifts = (New) => {
 
   useEffect(() => {
     setSelectedDays([]);
-    setBreakTimes({ start: '', end: '' });
+    setBreakTimes({ start: null, end: null });
     setErrors((prev) => ({ ...prev, selectedTemplateId: null }));
   }, [selectedTemplateId]);
 
@@ -124,6 +124,7 @@ const useAddShifts = (New) => {
       toast.success(t('Shift added successfully'));
       setSelectedDays([]);
       setBreakTimes({ start: '', end: '' });
+      if(setOpenModal){ setOpenModal(false)};
       // refetchAvailability();
       return true;
     } catch (err) {
