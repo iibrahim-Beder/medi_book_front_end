@@ -407,6 +407,7 @@ button:focus {
 }
 
 @media (max-width: 576px){
+  .diagnosis-modal.small-modal .modal-dialog  {  max-width: 100% !important;}
   
   
   .CustHr{

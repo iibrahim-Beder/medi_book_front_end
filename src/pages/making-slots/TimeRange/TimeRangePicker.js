@@ -20,6 +20,7 @@ const TimeRangePicker = ({
   width = "auto",
   timeline = [],
   lastActiveId,
+  showinModal=false
 }) => {
   const [touched, setTouched] = useState(false);
   const showError = Boolean(error) && (touched || forceShowError);
@@ -249,6 +250,7 @@ const TimeRangePicker = ({
                     activeRange={activeRange}
                     activeRangeValue={value}
                     lastActiveId={lastActiveId}
+                    showinModal={showinModal}
                   />
                 </div>
 

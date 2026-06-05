@@ -297,6 +297,7 @@ export default function WeeklyTimeSlots() {
                       value={addSlotData.rangeTime}
                       error={formErrors.rangeTime}
                       forceShowError={true}
+                      showinModal={true}
                     />
                     <div className="form-group-half form-group">
                       <DaysAvailabilityCheckbox

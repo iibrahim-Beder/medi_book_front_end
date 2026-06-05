@@ -75,6 +75,7 @@ export default function SegmentedProgress({
   activeRange,
   activeRangeValue,
   lastActiveId,
+  showinModal = false,
 }) {
   const parsedActiveRange = activeRangeValue
     ? {
@@ -212,6 +213,18 @@ export default function SegmentedProgress({
       })}
     </div>
   );
+  const width = window.innerWidth;
+
+let offset =  width * 0.1;
+
+if (width >= 992) {
+  offset = width * 0.1; // 10vw
+} else if (width > 576) {
+  offset = width * 0.05; // 5vw
+}else {
+  offset = 8
+}
+
 
   if (!normalized.length) return null;
 
@@ -361,7 +374,7 @@ export default function SegmentedProgress({
             style={{
               position: "fixed",
               top: hoverInfo.y + 8,
-              left: hoverInfo.x,
+              left: showinModal ? hoverInfo.x - offset : hoverInfo.x,
               transform: "translateX(-50%)",
               padding: "6px 10px",
               background: "var(--cardcolor)",

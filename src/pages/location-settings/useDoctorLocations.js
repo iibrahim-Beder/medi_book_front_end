@@ -26,6 +26,7 @@ export const useDoctorLocationsManager = () => {
   } = useGetDoctorLocationsQuery(doctorId, {
     skip: !doctorId,
   });
+  console.log("data", data);
 
   const [addLocation, { isLoading: isAdding }] = useAddLocationToDoctorMutation();
   const [updateLocation, { isLoading: isUpdating }] = useUpdateDoctorLocationMutation();
@@ -113,10 +114,9 @@ export const useDoctorLocationsManager = () => {
 
   // ==================== Save Single Location (used by Accordion) ====================
   const saveLocation = async (id, locationData) => {
-    if (!doctorId) return false;
+    if (!doctorId || isUpdating || isAdding) return false;
     
     const validationErrors = validateLocation(locationData);
-    console.log("id", id,"locationData", locationData, "validationErrors", validationErrors);
 
       if (Object.keys(validationErrors).length) {
         setErrors((prev) => ({
@@ -143,13 +143,13 @@ export const useDoctorLocationsManager = () => {
         }).unwrap();
       } else {
         const updatePayload =buildLocationPayload(original, locationData);
-        if (!Object.keys(updatePayload).length) {
+          if (!Object.keys(updatePayload).length) {
           console.log("update location", updatePayload);
           toast(t("No changes detected"));
           return true;
         };
         await updateLocation(
-          { doctorId, locationId: locationData.locationId, ...updatePayload }
+          { doctorId, locationId: id, ...updatePayload }
         ).unwrap();
       }
 
@@ -161,6 +161,7 @@ export const useDoctorLocationsManager = () => {
       });
       return true;
     } catch (e) {
+      console.error("error saving location", e);
       toast.error(e?.data?.message || t("Error Saving"));
       return false;
     } finally {
@@ -209,18 +210,23 @@ export const useDoctorLocationsManager = () => {
 const buildLocationPayload = (original, updated) => {
   const payload = {};
 
-  if (original.locationName !== updated.displayName) {
-    payload.locationName = { value: updated.displayName };
+  if (original.displayName !== updated.displayName) {
+    payload.locationName = {
+      value: updated.displayName,
+    };
   }
 
-  if (original.locationPoint.latitude !== updated.lat) {
-    payload.latitude = { value: Number(updated.lat) };
+  if (Number(original.lat) !== Number(updated.lat)) {
+    payload.latitude = {
+      value: Number(updated.lat),
+    };
   }
 
-  if (original.locationPoint.longitude !== updated.lng) {
-    payload.longitude = { value: Number(updated.lng) };
+  if (Number(original.lng) !== Number(updated.lng)) {
+    payload.longitude = {
+      value: Number(updated.lng),
+    };
   }
 
-  console.log("original", original, "updated", updated , "payload", payload);
   return payload;
 };

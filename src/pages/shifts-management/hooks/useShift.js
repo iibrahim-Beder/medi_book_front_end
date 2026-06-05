@@ -43,6 +43,7 @@ export default function useShift() {
       breakStartTime: { value: (breakStartTime) },
       breakEndTime: { value: (breakEndTime) },
     };
+    console.log("payload", payload);
     const shift = shifts.find((s) => s.shiftId === shiftId)
     const templateTime = templates.find((s) => s.templateId === shift.shiftTemplateId)
     console.log("=============payload", payload, "shift", shift,"templateTime",templateTime);
@@ -51,24 +52,21 @@ export default function useShift() {
     if (!locationId){
       toast.error("Location is required");
       return false ;}
-
-      if (!breakStartTime){
-      toast.error("Break start time is required");
-      return false ;}
-      if (breakStartTime < templateTime.startTime) {
-        toast.error("Break start time must be greater than shift start time");
-        return false;
-      }
-      if (breakEndTime > templateTime.endTime) {
-        toast.error("Break end time must be less than shift end time");
-        return false;
-      }
-      if (!breakEndTime){
-      toast.error("Break end time is required");return false };
-    if(breakStartTime >= breakEndTime){
-      toast.error("Break start time must be less than break end time");
-      return false ;
-    }
+         
+          if((breakStartTime !== templateTime.startTime) && (breakEndTime  || breakStartTime)){
+            if (breakStartTime  < templateTime.startTime) {
+              toast.error("Break start time must be greater than shift start time");
+              return false;
+            }
+            if (breakEndTime > templateTime.endTime) {
+              toast.error("Break end time must be less than shift end time");
+              return false;
+            }
+          if(breakStartTime  >= breakEndTime){
+            toast.error("Break start time must be less than break end time");
+            return false ;
+          }
+          }
    
     return updateShiftMutation(payload).unwrap();
   }

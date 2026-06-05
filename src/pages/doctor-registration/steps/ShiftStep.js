@@ -13,7 +13,7 @@ const ShiftStep = forwardRef(
       onChange = () => {},
       forceShowError = true,
       MainHint="",
-      setOpenModal = () => {}
+      setOpenModal 
     },
     ref,
   ) => {
