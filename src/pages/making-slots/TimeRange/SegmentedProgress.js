@@ -216,6 +216,7 @@ export default function SegmentedProgress({
   const width = window.innerWidth;
 
 let offset =  width * 0.1;
+let heightPlus =  showinModal ? 10 : 35
 
 if (width >= 992) {
   offset = width * 0.1; // 10vw
@@ -259,7 +260,7 @@ if (width >= 992) {
                   height,
                 }}
                 onClick={() => handleSelectRange(seg)}
-                onMouseEnter={(e) => {
+                onMouseMove={(e) => {
                   setHoverInfo({
                     seg,
                     x: e.clientX,
@@ -312,7 +313,7 @@ if (width >= 992) {
                 //     type: seg.visualType || seg.type,
                 //   })
                 // }
-                onMouseEnter={(e) => {
+                onMouseMove={(e) => {
                   setHoverInfo({
                     seg,
                     x: e.clientX,
@@ -373,7 +374,7 @@ if (width >= 992) {
             className="hover-tooltip tooltip-arrow"
             style={{
               position: "fixed",
-              top: hoverInfo.y + 8,
+              top: hoverInfo.y + heightPlus,
               left: showinModal ? hoverInfo.x - offset : hoverInfo.x,
               transform: "translateX(-50%)",
               padding: "6px 10px",

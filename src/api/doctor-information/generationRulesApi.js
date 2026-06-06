@@ -51,42 +51,37 @@ export const generationRulesApi = baseApi.injectEndpoints({
     // =========================
     // UPDATE RULE
     // =========================
-    updateGenerationRule: builder.mutation({
-      query: (body) => ({
-        url: "/GenerationRule/UpdateGenerationRule",
-        method: "PUT",
-        body,
-      }),
+  updateGenerationRule: builder.mutation({
+  query: (body) => ({
+    url: "/GenerationRule/UpdateGenerationRule",
+    method: "PUT",
+    body,
+  }),
 
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
-        try {
-          const { data: response } = await queryFulfilled;
-          const realData = response.data;
+  async onQueryStarted(args, { dispatch, queryFulfilled }) {
+    try {
+      const { data: response } = await queryFulfilled;
 
-          dispatch(
-            generationRulesApi.util.updateQueryData(
-              "getDoctorShiftRules",
-              {
-                doctorId: args.doctorId,
-                shiftTemplateId: args.shiftTemplateId,
-                dayOfWeek: args.dayOfWeek,
-              },
-              (draft) => {
-                if (!draft?.data) return;
-
-                draft.data.rules = realData.rules;
-
-                if (draft.data.designer) {
-                  draft.data.designer.segments = realData.designer.segments;
-                }
-              },
-            ),
-          );
-        } catch (error) {
-          console.error("UpdateGenerationRule failed", error);
-        }
-      },
-    }),
+      dispatch(
+        generationRulesApi.util.updateQueryData(
+          "getDoctorShiftRules",
+          {
+            doctorId: args.doctorId,
+            shiftTemplateId: args.shiftTemplateId,
+            dayOfWeek: args.dayOfWeek,
+          },
+          (draft) => {
+            draft.data.rules = response.data.rules;
+            draft.data.designer.segments =
+              response.data.designer.segments;
+          }
+        )
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  },
+}),
     // =========================
     // ACTIVATE RULE
     // =========================

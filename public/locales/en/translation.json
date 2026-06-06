@@ -1431,6 +1431,9 @@
     "success": "Account created successfully",
     "passwordWeak": "Password must be at least 6 characters and include uppercase, lowercase and a special character (#$%&)"
 
-  }
+  },
+  "PhoneCall": "Phone Call",
+  "VideoCall": "Video Call",
+  "InPerson": "In Person Visit"
   }
   

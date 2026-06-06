@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ShaftTabs from "./ShaftTabs";
 import useShiftRules from "./hooks/useShiftRules";
@@ -12,14 +12,13 @@ import Field from "../ui/form-fields/Field";
 import SegmentedProgress from "./TimeRange/SegmentedProgress";
 import ActiveTabs from "./components/ActiveTabs";
 import Loader from "../shared/Loader";
-import { getTimeSlotTitle } from "./helper/helper";
+import { APPOINTMENT_TYPES , getTimeSlotTitle } from "./helper/helper";
 import ErrorPage from "../notFound-pageError/ErrorPage";
 import DataEmptyCom from "../shared/DataEmptyCom";
 import PopupMessage from "../shared/PopupMessage";
 import { useSearchParams } from "react-router-dom";
 
 export default function WeeklyTimeSlots() {
-  const APPOINTMENT_TYPES = ["InPerson", "Follow-up", "Check-up", "Emergency"];
   const CURRENCIES = ["EGP", "USD", "EUR", "GBP"];
   const { t } = useTranslation();
   const shaftTabs = [
@@ -142,6 +141,10 @@ export default function WeeklyTimeSlots() {
                     className={`${activeDay === tab.key ? "active" : ""}`}
                     onClick={(e) => {
                       e.preventDefault();
+
+                      setActiveShift(7);
+                      setActiveTab("Active");
+
                       setSearchParams({ day: tab.key });
                     }}
                   >
@@ -161,6 +164,7 @@ export default function WeeklyTimeSlots() {
               activeShift={activeShift}
               setActiveShift={setActiveShift}
               tabs={shaftTabs}
+              setActiveTab={setActiveTab}
             />
             <div className="table-header">
               <h3
@@ -331,7 +335,7 @@ export default function WeeklyTimeSlots() {
                         <Field
                           type="number"
                           name="SlotDurationInMinutes"
-                          placeholder={t("Rules Duration")}
+                          placeholder={t("Slot Duration")}
                           label={t("Duration (Minutes)")}
                           value={addSlotData.SlotDurationInMinutes}
                           onChange={(e) =>

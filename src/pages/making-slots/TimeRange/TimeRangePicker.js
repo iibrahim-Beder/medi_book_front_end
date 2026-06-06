@@ -315,7 +315,7 @@ const TimeRangePicker = ({
                             {endTime &&
                               ` | End: ${formatTimeForDisplay(endTime)}`}
                           </div>
-                          {validationError && (
+                          {/* {validationError && (
                             <div
                               style={{
                                 fontSize: "12px",
@@ -326,7 +326,7 @@ const TimeRangePicker = ({
                             >
                               {validationError}
                             </div>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -363,6 +363,7 @@ const TimeRangePicker = ({
                       // Data
                       getFilteredHours={getFilteredHours}
                       getFilteredMinutes={getFilteredMinutes}
+                      validationError={validationError}
                     />
                   </>
                 )}

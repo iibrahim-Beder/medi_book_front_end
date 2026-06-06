@@ -58,7 +58,7 @@ const CustomAccordion = memo(({
   // === Delete Confirmation ===
   const handleShowDeleteConfirm = (index) => {
     const item = dataRead[index];
-    const itemName = getItemTitle ? getItemTitle(item) : (item.title || item.type || "Item");
+    const itemName = getItemTitle ? getItemTitle(item, t) : (item.title || item.type || "Item");
     if (item?.isNew === true) {
       onDelete(index);
     }else
@@ -215,7 +215,7 @@ const handleFieldChange = (index, field, value) => {
   };
 
   const renderItemTitle = (item) => {
-    if (getItemTitle) return getItemTitle(item);
+    if (getItemTitle) return getItemTitle(item, t);
     return item.title || item.type || item.medication ||  "New Item";
   };
 

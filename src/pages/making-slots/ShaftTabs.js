@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 
-export default function ShaftTabs({ activeShift, setActiveShift,tabs }) {
+export default function ShaftTabs({ activeShift, setActiveShift, tabs ,setActiveTab }) {
   return (
     <div className="col-12 p-0 two-tabs">
       <div className="div-container-tabs shift">
@@ -18,6 +18,7 @@ export default function ShaftTabs({ activeShift, setActiveShift,tabs }) {
                 onClick={(e) => {
                   e.preventDefault();
                   setActiveShift(tab.templateId);
+                  setActiveTab?.("Active");
                 }}
               >
                 {tab.name}

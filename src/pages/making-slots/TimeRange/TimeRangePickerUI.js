@@ -29,6 +29,7 @@ const TimeRangePickerUI = ({
   handleTimeSelect,
   handleEditStartTime,
   handleCancel,
+  validationError,
   
   // Data
   getFilteredHours,
@@ -312,7 +313,18 @@ const TimeRangePickerUI = ({
           {renderTimePicker(false)}
         </div>
       </div>
-
+      {validationError && (
+        <div
+          style={{
+            fontSize: "12px",
+            color: "#ff4d4f",
+            marginTop: "4px",
+            fontWeight: 500,
+          }}
+        >
+          {validationError}
+        </div>
+      )}
       {/* Footer Buttons */}
       <div style={{
         display: 'flex',

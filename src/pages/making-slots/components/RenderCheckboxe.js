@@ -1,7 +1,6 @@
-// components/RenderCheckboxes.jsx
 
 import React from "react";
-
+import { useTranslation } from "react-i18next";
 export default function RenderCheckboxes({
   field,
   index,
@@ -12,6 +11,7 @@ export default function RenderCheckboxes({
   readOnly = false,
   outError = false
 }) {
+  const { t } = useTranslation();
   const value = item?.[field.name ] || [];
   const errorKey = `${field.name}_${index}`;
   const error = errors?.[errorKey];
@@ -42,7 +42,7 @@ export default function RenderCheckboxes({
               />
 
               <label htmlFor={`${field.name}_${index}_${optIndex}`}>
-                {(option)}
+                {(t(option))}
               </label>
             </span>
           ))}

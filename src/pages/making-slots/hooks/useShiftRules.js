@@ -10,18 +10,16 @@ import {
 } from "../../../api/doctor-information/generationRulesApi";
 
 import toast from "react-hot-toast";
-import { FaAppStoreIos } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { getErrorMessage } from "../../utils/api-errors";
-import PopupMessage from "../../shared/PopupMessage";
-import { t } from "i18next";
+import { buildRuleUpdatePayload, timeToNumber, transformRuleData } from "../helper/helper";
 export default function useShiftRules({
   activeShift,
   activeTab,
 }) {
   
   const doctorId = useSelector((state) => state.auth.doctorId);
-  console.log("doctorId", doctorId);
+
   const {
     data: Maindata,
     currentData,
@@ -206,7 +204,7 @@ export default function useShiftRules({
         toast.error("Please select a type");
         return;
       }
-      const originalRecord = Maindata?.data?.rules.find((r) => r.ruleId === slotData.ruleId) || {};
+      const originalRecord = Maindata?.data?.rules.find((r) => r.generationRuleID === slotData.id) || {};
       const payloadChanges = buildRuleUpdatePayload(originalRecord, slotData);
       if (!payloadChanges||!Object.keys(payloadChanges).length) {
         toast("no changes detected");
@@ -537,73 +535,3 @@ const handleConfirmActiveToggle = useCallback(async () => {
     formErrors
   };
 }
-// =======================================================================================================
-export const transformRuleData = (rule) => {
-  return {
-    id: rule.generationRuleID || `rule-${Date.now()}`,
-    ruleId: rule.generationRuleID,
-
-    SlotDurationInMinutes: rule.slotDurationInMinutes,
-
-    rangeTime: {
-      start: rule.startTime?.slice(0, 5),
-      end: rule.endTime?.slice(0, 5),
-    },
-
-    Price: rule.price,
-    Currency: rule.currency,
-
-    AllowedAppointmentTypes: rule.allowedAppointmentTypes
-      ? rule.allowedAppointmentTypes.split(",")
-      : [],
-
-    isActive: rule.isActive,
-
-    isNew: false,
-    isExpanded: false,
-  };
-};
-
-const timeToNumber = (time) => {
-  const [h, m] = time.split(":").map(Number);
-  return h + m / 60;
-};
-
-export const buildRuleUpdatePayload = (original, updated) => {
-  const payload = {};
-
-  console.log("======original", original, "updated", updated);
-
-  if (Number(original.Price) !== Number(updated.Price)) {
-    payload.overrideAmount = Number(updated.Price);
-  }
-  // Slot Duration
-  if (
-    Number(original.SlotDurationInMinutes) !==
-    Number(updated.SlotDurationInMinutes)
-  ) {
-    payload.SlotDurationInMinutes = Number(updated.SlotDurationInMinutes) || null;
-  }
-
-  // Appointment Types (array compare)
-  const originalTypes = original.AllowedAppointmentTypes || [];
-  const updatedTypes = updated.AllowedAppointmentTypes || [];
-
-  if (
-    originalTypes.length !== updatedTypes.length ||
-    originalTypes.some((t, i) => t !== updatedTypes[i])
-  ) {
-    payload.AllowedAppointmentTypes = updatedTypes || null;
-  }
-
-  // Range Time
-  if (
-    original.rangeTime?.start !== updated.rangeTime?.start ||
-    original.rangeTime?.end !== updated.rangeTime?.end
-  ) {
-    payload.startTime = updated.rangeTime.start || null;
-    payload.endTime = updated.rangeTime.end || null;
-  }
-  
-  return payload;
-};
