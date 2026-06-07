@@ -66,6 +66,14 @@ export default function WeeklyTimeSlots() {
       half: true,
     },
     {
+      name: "location",
+      label: t("location"),
+      disabled: true,
+      // type: "select",
+      // options: [{ value: "", label: t("selectCurrency") }, ...CURRENCIES.map(c => ({ value: c, label: c }))],
+      half: true,
+    },
+    {
       name: "AllowedAppointmentTypes",
       label: t("allowedAppointmentTypes"),
       type: "checkboxes",
@@ -305,6 +313,7 @@ export default function WeeklyTimeSlots() {
                     />
                     <div className="form-group-half form-group">
                       <DaysAvailabilityCheckbox
+                        locationVisability={true}
                         availability={availabilityData}
                         selectedDays={selectedDays}
                         onToggle={toggleDay}

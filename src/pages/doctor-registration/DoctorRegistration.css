@@ -452,10 +452,12 @@ display: inline-flex;
   /* background-color: var(--blue);
   border-color: var(--blue); */
 }
-/* 
-
-@media (max-width: 1080px) and (min-width: 821px) {
-   .doctor-registration  .dc-userform fieldset .form-group.form-group-fourth {
-        width: 50% !important;
-    }
-} */
+.success-message .btns{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.success-message .btns .simple-btn{
+font-size: 20px;
+}

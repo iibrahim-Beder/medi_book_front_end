@@ -51,6 +51,7 @@ export const transformRuleData = (rule) => {
       : [],
 
     isActive: rule.isActive,
+    location: "Main Cairo",
 
     isNew: false,
     isExpanded: false,

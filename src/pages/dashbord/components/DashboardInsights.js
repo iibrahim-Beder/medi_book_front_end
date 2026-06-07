@@ -10,7 +10,7 @@ export default function DashboardInsights() {
   const insights = [
     {title: t("Messages"), img: '/images/card-icon/chat.png',     link: "/chat",isNotIcon:true },
     {title: t("financial dashboard"), img: "/images/thumbnail/img-20.png", link: "/manage-financial",ToBigImg:true  },
-    {title: t("Next appointment"), img: "/images/thumbnail/img-21.png",   link: "/appointment-management", countdown: "2026-06-03T20:01:22" ,ToBigImg:true  },
+    {title: t("Next appointment"), img: "/images/thumbnail/img-21.png",   link: "/appointment-management", countdown: "2026-06-07T20:01:22" ,ToBigImg:true  },
     {title: t("patients dashboard"), img: "/images/thumbnail/img-22.png",   link: "/patients",ToBigImg:true  }
   ];
   return (

@@ -379,7 +379,7 @@ export default function useShiftRules({
         startTime: addSlotData.rangeTime.start,
         endTime: addSlotData.rangeTime.end,
         overrideAmount: Number(addSlotData.Price),
-        allowedAppointmentTypes: "InPerson",
+        allowedAppointmentTypes: addSlotData.AppointmentTypes.join(","),
       };
       console.log("=======payload", payload);
 

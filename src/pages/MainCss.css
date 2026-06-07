@@ -1850,3 +1850,61 @@ display: none;
 .remove-file-btn {
   flex-shrink: 0;
 }
+
+.labels{
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
+.dc-checkbox input[type=checkbox] + label span.location{
+    color: var(--terthemecolor);
+    font-size: 13px;
+    font-weight: 600;
+    /* margin-left: 30px; */
+}
+
+.analytics-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.analytics-tab {
+  height: 45px;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  background: var(--cardcolor);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  font-size: 18px;
+  font-weight: 500;
+
+  transition: all 0.25s ease;
+
+  .analytics-tab-icon {
+    font-size: 24px;
+  }
+
+  &:hover {
+    border-color: var(--bluecolor);
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    border: 1px solid var(--bluecolor);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}

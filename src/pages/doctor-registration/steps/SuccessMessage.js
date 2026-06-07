@@ -2,31 +2,34 @@ import React from "react";
 import { FaCheckCircle, FaRedo } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import { Button } from "@mui/material";
 
 const SuccessMessage = ({ setOpenStepRegister }) => {
   const { t } = useTranslation();
 
   return (
     <div className="success-message">
-      <FaCheckCircle />
-      <h2 style={{ fontWeight: "600" }}>{t("success.title")}</h2>
+      <IoCheckmarkCircleOutline className="mb-0" />
+      <h2 className="mb-0" style={{ fontWeight: "500", color: "var(--success)" }}>{t("SUCCESS!")}</h2>
+      <h2 style={{ fontWeight: "500" }}>{t("success.title")}</h2>
       <h5 style={{ fontWeight: "500" }}>{t("success.message2")} </h5>
       <br />
-      <div className="d-flex flex-column">
-        <Link to="/Generate-Doctor-Slots">
-          <a
-            href="!#"
-            style={{
-              textWrapMode: "nowrap",
-              textDecoration: "underline",
-              margin: "0 20px",
-              fontWeight: "500",
-              fontSize: "16px",
+      <div className="btns">
+         <Link to="/Generate-Doctor-Slots">
+          <Button
+           onClick={() => setOpenStepRegister(false)}
+            variant="contained"
+            sx={{
+              borderRadius: "10px",
+              textTransform: "none",
+              px: 3,
+              backgroundColor: "#60a5fa",
+              boxShadow: "none",
             }}
-            onClick={() => setOpenStepRegister(false)}
           >
             {t("Go to generate rules page")}
-          </a>
+          </Button>
         </Link>
         <button
           onClick={() => setOpenStepRegister(false)}

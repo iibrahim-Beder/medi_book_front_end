@@ -219,7 +219,7 @@ let offset =  width * 0.1;
 let heightPlus =  showinModal ? 10 : 35
 
 if (width >= 992) {
-  offset = width * 0.1; // 10vw
+  offset = width * 0.12; // 10vw
 } else if (width > 576) {
   offset = width * 0.05; // 5vw
 }else {

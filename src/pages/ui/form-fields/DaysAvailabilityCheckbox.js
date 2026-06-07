@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { MdOutlineCheckCircle } from "react-icons/md";
 import { FaCheckCircle, FaChevronDown } from "react-icons/fa";
 import { CgUnavailable } from "react-icons/cg";
+import { IoLocation } from "react-icons/io5";
 
 const DaysAvailabilityCheckbox = ({
   availability=[],
@@ -13,11 +14,13 @@ const DaysAvailabilityCheckbox = ({
   readOnly = false,
   disabled: MainInputdisabled = false,
   loading = false,
-  error = false
+  error = false,
+  locationVisability = false
 }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const inputRef = useRef();
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -84,26 +87,50 @@ const DaysAvailabilityCheckbox = ({
     (a, b) => a.dayOfWeek - b.dayOfWeek,
   );
 
+    const selectedDayNames = selectedDays.map((day) => getDayName(day));
+    const  selectedDayNamesString = selectedDayNames.length > 0 ? selectedDayNames.length === 7 ? t("All days") : selectedDayNames.join(", "): t("Select days");
+
   return (
     <div
       ref={dropdownRef}
       className={`form-group `}
       // className={` ${isOpen ? " form-group table-filter-show" : ""} ` }
     >
-      <label> {t("Days")} </label>
+      <label> {t("Choose Days")} </label>
       <div
         className={`input-with-icon select-wrapper ${error ? "input-error" : ""}`}
         style={{cursor:"pointer"}}
         onClick={() => !MainInputdisabled && setIsOpen(!isOpen)}
       >
-        <select
+        {/* <select
+           title={selectedDayNamesString}
           // className="form-control"
           value=""
           disabled={MainInputdisabled}
-          style={{ pointerEvents: "none" }}
         >
-          <option>{  loading ? t("Loading...") :  MainInputdisabled ? t("Blocked Select Template For Days") : t("Select days")}</option>
-        </select>
+          <option>{  loading ? t("Loading...") :  MainInputdisabled ? t("Blocked Select Template For Days") : selectedDayNamesString}</option>
+        </select> */}
+                  <input
+                            style={{paddingRight:"30px", border:isOpen ? "1px solid var(--blue)" : "" }}
+
+              ref={inputRef}
+              type="text"
+              className={`form-control Select1 TimePickerMain ${false ? "input-error" : ""}`}
+              // id={name}
+              // name={name}
+              value={selectedDayNamesString}
+              // onFocus={handleInputFocus}
+              // onKeyDown={handleKeyDown}
+              disabled={MainInputdisabled}
+              autoComplete="off"
+              // style={{
+              //   border:
+              //     inputError || showError
+              //       ? "1px solid #ff4d4f"
+              //       : "",
+              // }}
+              // placeholder={placeholder}
+            />
 
         <FaChevronDown className="select-arrow" />
       </div>
@@ -121,7 +148,7 @@ const DaysAvailabilityCheckbox = ({
               borderRadius: "5px",
               background: "var(--cardcolor)",
               border: "1px solid #E6E8EE",
-              boxShadow: "var(--scshadocolor) 0px 4px 14px 0px",
+              boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 25px, rgba(0, 0, 0, 0.05) 0px 4px 6px",
               position: "absolute",
               marginTop: "10px",
               zIndex: 9,
@@ -160,9 +187,14 @@ const DaysAvailabilityCheckbox = ({
                             {status.icon}
                           </span>
                         )}
-                        {status.label && (
+                      <div className="labels">
+                          {status.label && (
                           <span className="status-text">{status.label}</span>
                         )}
+                        {status.label && locationVisability && (
+                          <span className="location"><IoLocation className="mr-1"/>main cairo</span>
+                        )} 
+                        </div>
                       </div>
                     </label>
                   </span>
