@@ -211,6 +211,9 @@ activateDoctorShift: builder.mutation({
     }
 
   },
+  invalidatesTags: (result, error, { doctorId }) => [
+    { type: "ShiftDaysAvailability"},
+  ],  
 }),
 
 deactivateDoctorShift: builder.mutation({
@@ -250,6 +253,9 @@ deactivateDoctorShift: builder.mutation({
     }
 
   },
+  invalidatesTags: (result, error, { doctorId }) => [
+    { type: "ShiftDaysAvailability" },
+  ],
 }),
   }),
 });

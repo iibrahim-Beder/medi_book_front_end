@@ -14,7 +14,8 @@ export default function PopupMessage({
   message = "This is a popup message",
   iconOverride,
   buttons = [{ text: "OK", onClick: () => {}, variant: "primary" ,disabled: false }],
-  onClose
+  onClose,
+  children
 }) {
   const [closing, setClosing] = useState(false);
 
@@ -59,6 +60,7 @@ export default function PopupMessage({
         </div>
 
         <div className="popup-body">
+          {children}
           <p>{message}</p>
         </div>
 

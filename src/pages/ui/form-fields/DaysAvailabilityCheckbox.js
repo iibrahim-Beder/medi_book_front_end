@@ -15,7 +15,8 @@ const DaysAvailabilityCheckbox = ({
   disabled: MainInputdisabled = false,
   loading = false,
   error = false,
-  locationVisability = false
+  locationVisability = false,
+  openAlways=false
 }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -74,7 +75,24 @@ const DaysAvailabilityCheckbox = ({
         label: t("day conflict"),
         Conflict: true,
       };
-    } else {
+    }else if (state === "AlreadyDeactivated") {
+      return {
+        disabled: true,
+        icon: <CgUnavailable   className="status-icon reactivate" />,
+        label: t("day already deactivated"),
+        Conflict: false,
+        deactivated: true
+      };
+    }else if (state === "AvailableToDeactivate") {
+      return {
+        disabled: false,
+        // icon: <MdOutlineCheckCircle   className="status-icon deactivated" />,
+        // label: t(""),
+        Conflict: false,
+        deactivated: true
+      };
+    }
+    else {
       return {
         icon: <MdOutlineCheckCircle   className="status-icon active " />,
         disabled: false,
@@ -88,7 +106,7 @@ const DaysAvailabilityCheckbox = ({
   );
 
     const selectedDayNames = selectedDays.map((day) => getDayName(day));
-    const  selectedDayNamesString = selectedDayNames.length > 0 ? selectedDayNames.length === 7 ? t("All days") : selectedDayNames.join(", "): t("Select days");
+    const  selectedDayNamesString = loading ? t("Loading...") : selectedDayNames.length > 0 ? selectedDayNames.length === 7 ? t("All days") : selectedDayNames.join(", "): t("Select days");
 
   return (
     <div
@@ -96,7 +114,8 @@ const DaysAvailabilityCheckbox = ({
       className={`form-group `}
       // className={` ${isOpen ? " form-group table-filter-show" : ""} ` }
     >
-      <label> {t("Choose Days")} </label>
+      {!openAlways && <>
+       <label> {t("Choose Days")} </label>
       <div
         className={`input-with-icon select-wrapper ${error ? "input-error" : ""}`}
         style={{cursor:"pointer"}}
@@ -134,26 +153,16 @@ const DaysAvailabilityCheckbox = ({
 
         <FaChevronDown className="select-arrow" />
       </div>
+      </>
+      }
 
-      {isOpen && (
+      {(isOpen || openAlways) && (
         <div className="table-filter-container">
           <div
             // className="filter-dropdown-menu dropdown-menu show"
-            className="hover-tooltip tooltip-arrow"
+            className={`${openAlways ? " " : "hover-tooltip tooltip-arrow  container-checkboxs "} `}
             style={{
-              // right: "4%",
-              // top: "auto",
-              // left: "unset",
-              padding: "20px ",
-              borderRadius: "5px",
-              background: "var(--cardcolor)",
-              border: "1px solid #E6E8EE",
-              boxShadow: "rgba(0, 0, 0, 0.1) 0px 10px 25px, rgba(0, 0, 0, 0.05) 0px 4px 6px",
-              position: "absolute",
-              marginTop: "10px",
-              zIndex: 9,
-              width: "97%",
-              // maxWidth: "350px"
+              position:openAlways ? "unset" : "absolute",
             }}
           >
             <div className="days-availability-checkbox">
@@ -165,7 +174,7 @@ const DaysAvailabilityCheckbox = ({
                 const isChecked = ((selectedDays.includes(dayOfWeek))||(disabled)) && !Conflict;
 
                 return (
-                  <span key={dayOfWeek} className="dc-checkbox">
+                  <span key={dayOfWeek} className={`dc-checkbox ${ status.deactivated? "deactivated" : ""}`}>
                     <input
                       type="checkbox"
                       id={`${getDayName(dayOfWeek)}-type-${index}`}

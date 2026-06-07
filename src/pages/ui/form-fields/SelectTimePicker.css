@@ -197,3 +197,17 @@
   font-weight: 500;
   display: block;
 }
+
+.simple-cancel-btn {
+  padding: 8px 16px;
+  border: 1px solid #d0d5dd;
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.simple-cancel-btn:hover {
+  background-color: #f8f9fa;
+}

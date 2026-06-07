@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import PopupMessage from "../../shared/PopupMessage";
 import { useTranslation } from "react-i18next";
 import DataEmptyCom from "../../shared/DataEmptyCom";
+import DaysAvailabilityCheckbox from "../../ui/form-fields/DaysAvailabilityCheckbox";
+import useAddShifts from "../../doctor-registration/hooks/useAddShifts";
 export default function ShiftForm({
   dayIndex,
   shifts = [],
@@ -99,7 +101,16 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
     }
   }
   const activeCheckboxId = `active-${shift.shiftId}`;
-
+    const {
+      selectedTemplateId,
+      selectedDays,
+      toggleDay,
+      // dayCheckboxes,
+      loadingAvailability,
+      availabilityData,
+      isFetchingAvailability,
+      errors,
+    } = useAddShifts()
   return (
     <div className="shift-form">
       <div className="dc-tabscontenttitle title-card ">
@@ -188,7 +199,7 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
             {
               text: t("cancel"),
               onClick: handleCloseActiveConfirm,
-              variant: "secondary",
+              variant: "simple-cancel-btn shadow-0 ",
             },
             {
               text: t("confirm"),
@@ -197,6 +208,30 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
             },
           ]}
           onClose={handleCloseActiveConfirm}
+          children={
+            <DaysAvailabilityCheckbox
+              openAlways={true}
+              availability={[
+                {dayOfWeek: 0,  state: "AvailableToDeactivate",},
+                { dayOfWeek: 1, state: "AvailableToDeactivate" },
+                { dayOfWeek: 2, state: "AlreadyDeactivated" },
+                { dayOfWeek: 3, state: "AlreadyDeactivated" },
+                { dayOfWeek: 4, state: "AvailableToDeactivate" },
+                { dayOfWeek: 5, state: "AvailableToDeactivate" },
+                { dayOfWeek: 6, state: "AvailableToDeactivate" },
+              ]}
+              selectedDays={selectedDays}
+              onToggle={toggleDay}
+              // disabled={
+              //   loadingAvailability ||
+              //   !availabilityData ||
+              //   isFetchingAvailability ||
+              //   selectedTemplateId === "0"
+              // }
+              loading={loadingAvailability || isFetchingAvailability}
+              error={errors.selectedDays}
+            />
+          }
         />
       )}
     </div>
