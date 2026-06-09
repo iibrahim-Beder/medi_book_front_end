@@ -194,7 +194,7 @@ export default function WeeklyTimeSlots() {
                 style={{ minHeight: "550px" }}
               >
                   <div className="d-flex flex-column flex-direction-column w-100">
-                    {isError && error?.statusCode !== 500? (
+                    {isError && error?.statusCode !== 500 && !isMainRulesFetching? (
                       <div className="table-card">
                       <ErrorPage
                         error={error}
@@ -203,7 +203,7 @@ export default function WeeklyTimeSlots() {
                         imgStyle = {{ width: "40%", maxWidth: "350px" }}
                       />
                       </div>
-                    ) : !segments?.length || error?.statusCode === 500 ? (
+                    ) : ((!segments?.length || error?.statusCode === 500) && !isMainRulesFetching ) ? (
                       <div className="table-card">
                         <DataEmptyCom
                           LinkTo={`/shifts-management?day=${activeDay}`}
@@ -240,7 +240,7 @@ export default function WeeklyTimeSlots() {
 
                         {/* Active Rules */}
                         {activeTab === "Active" &&
-                          (!activeRules.length ? (
+                          (!activeRules.length && !isMainRulesFetching ? (
                             <div className="table-card p-1">
                               <DataEmptyCom
                                 imgStyle={{ maxWidth: "200px" }}

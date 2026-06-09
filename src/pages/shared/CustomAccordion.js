@@ -255,7 +255,7 @@ const handleFieldChange = (index, field, value) => {
 
       {/* No Data */}
       {isFetching ? (
-         <CustomAccordionSkeleton oneBtn={onDelete} headar={false} number={3} className={"d-grid"} />
+         <CustomAccordionSkeleton oneBtn={!onDelete} headar={false} number={3} className={"d-grid"} />
       ) : <>
       {dataRead.length === 0 && noDataMessage ? (
         <div className="dc-experienceaccordion accordion">{noDataMessage}</div>
