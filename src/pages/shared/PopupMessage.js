@@ -6,6 +6,9 @@ import {
   FaInfoCircle,
   FaTimes,
 } from "react-icons/fa";
+import { LiaTimesSolid } from "react-icons/lia";
+import { LiaTimesCircle } from "react-icons/lia";
+
 // import "../../MainCss.css";
 // component for popup message with icon, title, message, buttons, and close functionality
 export default function PopupMessage({
@@ -51,7 +54,7 @@ export default function PopupMessage({
       <div className="popup-card">
         
         <button className="popup-close" onClick={handleClose}>
-          <FaTimes />
+          <LiaTimesCircle />
         </button>
 
         <div className="popup-header" style={{ color }}>

@@ -20,7 +20,7 @@ export default function LogoutPopupMessage({ setShowPopupClose }) {
       message={`Are you sure you want to logout?`}
       buttons={[
         {
-          text: "Cancel",
+          text: "simple-cancel-btn shadow-0",
           onClick: () => setShowPopupClose(false),
           variant: "secondary",
         },

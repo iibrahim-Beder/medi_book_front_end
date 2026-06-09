@@ -397,25 +397,25 @@ export default function WeeklyTimeSlots() {
     type={activePopup.newActive ? "success" : "danger"}
     title={
       activePopup.newActive
-        ? t("activate shift")
-        : t("deactivate shift")
+        ? t("Activate rule")
+        : t("Deactivate rule")
     }
     message={t(
       activePopup.newActive
-        ? "are you sure you want to activate this shift?"
-        : "are you sure you want to deactivate this shift?",
+        ? "Are you sure you want to activate this rule?"
+        : "Are you sure you want to deactivate this rule?",
       { name: activePopup.locationName }
     )}
     buttons={[
       {
-        text: t("cancel"),
+        text: t("Cancel"),
         onClick: handleCloseActiveConfirm,
-        variant: "secondary",
+        variant: "simple-cancel-btn shadow-0",
       },
       {
-        text: t("confirm"),
+        text: t("Confirm"),
         onClick: handleConfirmActiveToggle,
-        variant: "primary",
+        variant: activePopup.newActive ? "primary" : "deactivate-btn",
       },
     ]}
     onClose={handleCloseActiveConfirm}

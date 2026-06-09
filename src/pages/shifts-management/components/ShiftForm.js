@@ -191,9 +191,9 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
           }
           message={t(
             activePopup.newActive
-              ? "are you sure you want to activate this shift?"
-              : "are you sure you want to deactivate this shift?",
-            { name: activePopup.locationName },
+              ? "Are you sure you want to activate selected shift?"
+              : "Are you sure you want to deactivate selected shift?",
+            { name: activePopup.shiftName },
           )}
           buttons={[
             {
@@ -204,7 +204,7 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
             {
               text: t("confirm"),
               onClick: handleConfirmActiveToggle,
-              variant: "primary",
+              variant: activePopup.newActive ? "primary" : "deactivate-btn",
             },
           ]}
           onClose={handleCloseActiveConfirm}

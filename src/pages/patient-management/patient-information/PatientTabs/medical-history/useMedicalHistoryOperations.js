@@ -212,7 +212,8 @@ if(validateForm(selectedRecord)){
         setSelectedRecord(null);
       } else {
         toast.dismiss(loadingToast);
-        toast.error(res.Message || "Failed to add");
+        console.error("Failed to add", res);
+        toast.error(res.message || "Failed to add");
       }
     } catch (error) {
       console.error("Failed to add", error);
@@ -226,6 +227,7 @@ if(validateForm(selectedRecord)){
   );
 
   const updates = buildUpdatePayload(originalRecord, selectedRecord);
+  console.log("updates", updates);
 
   if (!Object.keys(updates).length) {
     toast('No changes detected');
@@ -235,16 +237,17 @@ if(validateForm(selectedRecord)){
   }
   
   try {
-    await updateMedicalHistory({
+   const res =  await updateMedicalHistory({
       historyId: selectedRecord.id,
-      updates
+      ...updates
     }).unwrap();
+    console.log("res", res);
 
     toast.success('Updated Successfully');
     setShowModal(false);
     setSelectedRecord(null);
   } catch (e) {
-    // console.log(e);
+    console.log("error saving medical history",e);
     toast.error('Update failed');
   } finally {
     toast.dismiss(loadingToast);

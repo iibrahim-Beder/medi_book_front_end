@@ -374,7 +374,7 @@ const LocationsAccordion = memo(({
             {
               text: t("actions.cancel"),
               onClick: handleCloseDeleteConfirm,
-              variant: "secondary"
+              variant: "simple-cancel-btn shadow-0"
             },
             {
               text: t("actions.delete"),
@@ -401,7 +401,7 @@ const LocationsAccordion = memo(({
             {
               text: t("Cancel"),
               onClick: handleCloseActiveConfirm,
-              variant: "secondary"
+              variant: "simple-cancel-btn shadow-0"
             },
             {
               text: t("Confirm"),

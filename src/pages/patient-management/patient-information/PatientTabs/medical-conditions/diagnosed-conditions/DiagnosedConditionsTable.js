@@ -27,6 +27,7 @@ const DiagnosedConditionsTable = ({patientId}) => {
     appliedFilters,
     currentPage,
     expandedRow,
+    expandedField,
     medicalConditionsData,
     currentData,
     searchTerm,
@@ -173,7 +174,7 @@ const DiagnosedConditionsTable = ({patientId}) => {
                               {translateSeverity(condition.severity)}
                             </span>
                           </td>
-                          <td title={condition.diagnosisName}
+                          {/* <td title={condition.diagnosisName}
                             data-has-match={isHasMatched(condition, "DiagnosisName")? "true": undefined}
                             data-right-has-match={isHasMatched(condition, "DiagnosisName")? "true": undefined} 
                             >
@@ -183,7 +184,45 @@ const DiagnosedConditionsTable = ({patientId}) => {
                                 matchedFields={condition.highlightInfo?.matchedFields || []}
                                 fieldName="DiagnosisName"
                               />
-                          </td>
+                          </td> */}
+                          <td data-has-match={isHasMatched(condition, "DiagnosisName")? "true": undefined}>
+                               <HighlightText
+                               text={truncateText(condition.diagnosisName, 50)}
+                                 searchTerm={searchTerm}
+                                 matchedFields={condition.highlightInfo?.matchedFields || []}
+                                 fieldName="DiagnosisName"
+                               />
+                              { condition.diagnosisName && 
+                                condition.diagnosisName.length > 50 && (
+                                 <Button
+                                   className={` ${hasHiddenMatch(condition, "DiagnosisName", condition.diagnosisName, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
+                                   size="sm"
+                                   style={{
+                                     backgroundColor: "transparent",
+                                     padding: 0,
+                                     fontSize: "19px",
+                                     height: "20px",
+                                   }}
+                                   onClick={() =>
+                                     handleExpandClick(
+                                       condition.id,
+                                       "diagnosisName"
+                                     )
+                                   }
+                                 >
+                                   <MdExpandMore
+                                     style={{
+                                       transform:
+                                         expandedRow === condition.id &&
+                                         expandedField === "diagnosisName"
+                                           ? "rotate(180deg)"
+                                           : "rotate(0deg)",
+                                       transition: "transform 0.3s ease",
+                                     }}
+                                   />
+                                 </Button>
+                               )}
+                           </td>
                           <td>{formatDate(condition.diagnosedDate)}</td>
                           <td>
                             <span
@@ -220,7 +259,7 @@ const DiagnosedConditionsTable = ({patientId}) => {
                                     fontSize: "19px",
                                     height: "20px",
                                   }}
-                                  onClick={() => handleExpandClick(condition.id)}
+                                  onClick={() => handleExpandClick(condition.id, "notes")}
                                 >
                                   <MdExpandMore
                                     style={{
@@ -239,7 +278,7 @@ const DiagnosedConditionsTable = ({patientId}) => {
                         </tr>
 
                         {/* Expanded row for Notes */}
-                        {expandedRow === condition.id && condition.notes && condition.notes.length > 50 && (
+                        {expandedRow === condition.id && expandedField === "notes" && condition.notes && condition.notes.length > 50 && (
                           <tr
                             className="table-active-content"
                             style={{ backgroundColor: "transparent" }}
@@ -260,6 +299,29 @@ const DiagnosedConditionsTable = ({patientId}) => {
                             </td>
                           </tr>
                         )}
+                        {
+                          expandedRow === condition.id && expandedField === "diagnosisName" && condition.diagnosisName && condition.diagnosisName.length > 50 && (
+                            <tr
+                              className="table-active-content"
+                              style={{ backgroundColor: "transparent" }}
+                            >
+                              <td
+                                colSpan="6"
+                                className="border-0 background-in-hover-none"
+                              >
+                                <div className="description-expanded-section">
+                                  <TextAreaField
+                                    label={t("DiagnosedConditionsTable.diagnosis_name")}
+                                    value={condition.diagnosisName}
+                                    disabled={true}
+                                    isHasMatched={isHasMatched(condition, "DiagnosisName")}
+                                    searchTerm={searchTerm}
+                                  />
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        }
                       </React.Fragment>
                     );
                   })

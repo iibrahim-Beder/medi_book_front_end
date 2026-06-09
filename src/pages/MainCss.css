@@ -98,7 +98,7 @@ select {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: #00000054;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -119,11 +119,11 @@ select {
 
 .popup-close {
   position: absolute;
-  top: 10px;
+  top: 17px;
   right: 10px;
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 30px;
   cursor: pointer;
   color: var(--terthemecolor);
 }
@@ -1926,4 +1926,14 @@ display: none;
     border: 1px solid var(--bluecolor);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
+}
+
+.deactivate-btn {
+    background: var(--secthemecolor);
+    color: #fff;
+    padding: 5px 12px;
+}
+
+.popup-card h3{
+      font-weight: 500;
 }

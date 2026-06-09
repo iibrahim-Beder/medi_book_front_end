@@ -23,6 +23,7 @@ export const useMedicalConditions = (isMobile = false,patientId) => {
   
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState(null);
+  const [expandedField, setExpandedField] = useState(null);
 
   const pageSize = isMobile ? 5 : 5;
 
@@ -144,8 +145,9 @@ const mappedMedicalConditionsData = useMemo(() => {
     setCurrentPage(1);
   };
 
-  const handleExpandClick = (id) => {
+  const handleExpandClick = (id, field) => {
     setExpandedRow(prev => prev === id ? null : id);
+    setExpandedField(prev => prev === field ? null : field);
   };
 
   const getSeverityColor = (severity) => {
@@ -176,6 +178,7 @@ const mappedMedicalConditionsData = useMemo(() => {
     appliedFilters,
     currentPage,
     expandedRow,
+    expandedField,
     medicalConditionsData: mappedMedicalConditionsData,
     currentData,
     searchTerm,
