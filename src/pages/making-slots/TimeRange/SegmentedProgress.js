@@ -1,5 +1,6 @@
 import "./SegmentedBar.css";
 import React, { useMemo, useState } from "react";
+import SegmentedProgressSkeleton from "./SegmentedProgressSkeleton";
 
 function buildTicks(min, max, step = 1) {
   const start = Math.ceil(min / step) * step;
@@ -76,6 +77,7 @@ export default function SegmentedProgress({
   activeRangeValue,
   lastActiveId,
   showinModal = false,
+  isLoading = false
 }) {
   const parsedActiveRange = activeRangeValue
     ? {
@@ -140,6 +142,7 @@ export default function SegmentedProgress({
     });
     return { normalized, min, max, total };
   }, [segments]);
+  
   const mergedSegments = useMemo(() => {
     if (!normalized.length) return [];
 
@@ -226,6 +229,7 @@ if (width >= 992) {
   offset = 8
 }
 
+  if(isLoading) { return <SegmentedProgressSkeleton/>}
 
   if (!normalized.length) return null;
 

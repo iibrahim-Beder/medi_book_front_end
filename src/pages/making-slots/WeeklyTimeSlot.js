@@ -193,9 +193,6 @@ export default function WeeklyTimeSlots() {
                 className="w-100 border-0  dc-tabscontent tab-content accordion-table accordion-table-card "
                 style={{ minHeight: "550px" }}
               >
-                {isMainRulesFetching ? (
-                  Loader("loading-in-side loadin-in-tab-content m-lg-auto")
-                ) : (
                   <div className="d-flex flex-column flex-direction-column w-100">
                     {isError && error?.statusCode !== 500? (
                       <div className="table-card">
@@ -229,6 +226,7 @@ export default function WeeklyTimeSlots() {
                               gap={3}
                               segments={segments}
                               handleSelectRange={() => {}}
+                              isLoading={isMainRulesFetching}
                             />
                           </div>
                         </div>
@@ -269,6 +267,7 @@ export default function WeeklyTimeSlots() {
                               applyRule={applyRule}
                               noDataMessage={t("No Active Rules Available !")}
                               isUpdateOut={true}
+                              isFetching={isMainRulesFetching}
 
                             />
                           ))}
@@ -297,7 +296,6 @@ export default function WeeklyTimeSlots() {
                       </>
                     )}
                   </div>
-                )}
               </div>
 
               <AddModal show={openModal} onHide={handleCloseAddModal}>

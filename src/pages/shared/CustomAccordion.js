@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import TimeRangePicker from "../making-slots/TimeRange/TimeRangePicker";
 import RenderCheckboxes  from "../making-slots/components/RenderCheckboxe";
 import { BiSolidInfoCircle } from "react-icons/bi";
+import CustomAccordionSkeleton from "./CustomAccordionSkeleton";
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
@@ -46,6 +47,7 @@ const CustomAccordion = memo(({
  buttonsAvailable = true,
  isUpdateOut = false
  ,MainHint="",
+ isFetching
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
@@ -252,6 +254,9 @@ const handleFieldChange = (index, field, value) => {
       )}
 
       {/* No Data */}
+      {isFetching ? (
+         <CustomAccordionSkeleton oneBtn={onDelete} headar={false} number={3} className={"d-grid"} />
+      ) : <>
       {dataRead.length === 0 && noDataMessage ? (
         <div className="dc-experienceaccordion accordion">{noDataMessage}</div>
       ) : (
@@ -409,6 +414,8 @@ const handleFieldChange = (index, field, value) => {
            {MainHint && <span className="align-items-center d-inline-flex"><BiSolidInfoCircle style={{fontSize:"x-large" , margin: "10px 5px" ,minWidth:"fit-content"}} />{MainHint}</span>} 
         </>
       )}
+      </>
+      }
 
       {/* Delete Confirmation Popup */}
       {deletePopup.show && (

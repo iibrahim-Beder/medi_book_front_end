@@ -1,3 +1,5 @@
+import Skeleton from "react-loading-skeleton";
+
 
 export const toDecimal = (hour, minute, period) => {
   let h = parseInt(hour, 10);

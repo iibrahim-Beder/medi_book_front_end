@@ -1,10 +1,10 @@
 import Skeleton from "react-loading-skeleton";
  
 
-export default function CustomAccordionSkeleton( {className="" , number=5} ) {
+export default function CustomAccordionSkeleton( {className="" , number=5 , headar=true,oneBtn=false} ) {
   return (
     <div className={`${className} table-card flex-grow-1 `}>
-      <Skeleton width={"100%"} height={30} style={{ borderRadius: 3, margin:"0px  0px 19px 0px" }} />
+     {headar && <Skeleton width={"100%"} height={30} style={{ borderRadius: 3, margin:"0px  0px 19px 0px" }} />}
       {[...Array(number)].map((i) => (
         <div key={i} className=" dc-accordioninnertitle skeleton">
           <div className="note-header">
@@ -15,7 +15,7 @@ export default function CustomAccordionSkeleton( {className="" , number=5} ) {
 
           <div className="note-actions">
             <Skeleton width={40} height={36} style={{ borderRadius: 8 }} />
-            <Skeleton width={40} height={36} style={{ borderRadius: 8, marginLeft: 8 }} />
+           {!oneBtn && <Skeleton width={40} height={36} style={{ borderRadius: 8, marginLeft: 8 }} />}
           </div>
         </div>
       ))}
