@@ -78,6 +78,7 @@ const TimeRangePicker = ({
     name,
     setShowDropdown,
   );
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -100,48 +101,6 @@ const TimeRangePicker = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onBlur, name, startTime, endTime]);
-
-  // const handleManualStartChange = (e) => {
-  //   const value = e.target.value;
-  //   setManualStartInput(value);
-  //   setInputError("");
-
-  //   const parsed = parseManualInput(value);
-  //   if (parsed) {
-  //     // TODO: Validate against range
-  //     const syntheticEvent = {
-  //       target: {
-  //         name: name,
-  //         value: {
-  //           start: parsed.time24,
-  //           end: endTime,
-  //         },
-  //       },
-  //     };
-  //     onChange?.(syntheticEvent);
-  //   }
-  // };
-
-  // const handleManualEndChange = (e) => {
-  //   const value = e.target.value;
-  //   setManualEndInput(value);
-  //   setInputError("");
-
-  //   const parsed = parseManualInput(value);
-  //   if (parsed) {
-  //     // TODO: Validate against range and start time
-  //     const syntheticEvent = {
-  //       target: {
-  //         name: name,
-  //         value: {
-  //           start: startTime,
-  //           end: parsed.time24,
-  //         },
-  //       },
-  //     };
-  //     onChange?.(syntheticEvent);
-  //   }
-  // };
 
   const handleInputFocus = () => {
     if (disabled) return;

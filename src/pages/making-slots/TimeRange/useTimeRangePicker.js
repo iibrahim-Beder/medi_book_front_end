@@ -52,7 +52,7 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
           ? (hourNum === 12 ? 12 : hourNum + 12)
           : (hourNum === 12 ? 0 : hourNum);
         
-        return hour24 >= Math.floor(rangeStart) && hour24 <= Math.floor(rangeEnd);
+        return hour24 >= Math.floor(rangeStart) && hour24 < Math.ceil(rangeEnd);
       });
     } else {
       // For end time: show only hours after start time within range
@@ -80,7 +80,7 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
         }
         
         // Same period: end time must be after start time
-        return hour24 > startHour24 && hour24 <= Math.floor(rangeEnd);
+        return hour24 >= startHour24 && hour24 <= Math.floor(rangeEnd);;
       });
     }
   }, [selectedRange, startTime, startHour, startPeriod, hours]);
@@ -104,7 +104,7 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
       
       if (isStart) {
         // For start time: any time in range
-        return timeValue >= rangeStart && timeValue <= rangeEnd;
+        return timeValue >= rangeStart && timeValue < rangeEnd;
       } else {
         // For end time: must be after start time
         if (!startTime) return false;
@@ -145,6 +145,46 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
     
     initializeFromValue();
   }, [initialStartTime, initialEndTime]);
+  
+  // Set default minutes
+  useEffect(() => {
+    if (!selectedRange) return;
+
+    const validMinutes = getFilteredMinutes(true, startHour);
+
+    if (
+      validMinutes.length > 0 &&
+      !validMinutes.includes(startMinute)
+    ) {
+      setStartMinute(validMinutes[0]);
+    }
+  }, [
+    startHour,
+    startPeriod,
+    selectedRange,
+    startMinute,
+    getFilteredMinutes,
+  ]);
+
+  useEffect(() => {
+    if (!selectedRange || isSelectingStart) return;
+
+    const validMinutes = getFilteredMinutes(false, endHour);
+
+    if (
+      validMinutes.length > 0 &&
+      !validMinutes.includes(endMinute)
+    ) {
+      setEndMinute(validMinutes[0]);
+    }
+  }, [
+    endHour,
+    endPeriod,
+    selectedRange,
+    endMinute,
+    isSelectingStart,
+    getFilteredMinutes,
+  ]);
 
   // Handle range selection
   const handleSelectRange = useCallback((range) => {
@@ -167,10 +207,42 @@ export const useTimeRangePicker = (initialStartTime = '', initialEndTime = '', o
     
     // Reset end time
     setEndTime('');
-    setEndHour('05');
+    setEndHour('00');
     setEndMinute('00');
-    setEndPeriod('PM');
+    setEndPeriod(range.start >= 12 ? "PM" : "AM");
   }, []);
+
+  const getNextQuarterHour = useCallback(
+  (hour, minute, period) => {
+    let hourNum = parseInt(hour, 10);
+    let minuteNum = parseInt(minute, 10);
+
+    minuteNum += 15;
+
+    let nextPeriod = period;
+
+    if (minuteNum >= 60) {
+      minuteNum = 0;
+
+      if (hourNum === 11) {
+        hourNum = 12;
+        nextPeriod = period === "AM" ? "PM" : "AM";
+      } else if (hourNum === 12) {
+        hourNum = 1;
+      } else {
+        hourNum += 1;
+      }
+    }
+
+    return {
+      hour: hourNum.toString().padStart(2, "0"),
+      minute: minuteNum.toString().padStart(2, "0"),
+      period: nextPeriod,
+    };
+  },
+  []
+);
+
 
   // Handle time selection
 const handleTimeSelect = useCallback(() => {
@@ -181,7 +253,7 @@ const handleTimeSelect = useCallback(() => {
   if (isSelectingStart) {
     const startVal = toDecimal(startHour, startMinute, startPeriod);
 
-    if (startVal < selectedRange.start || startVal > selectedRange.end) {
+    if (startVal < selectedRange.start || startVal >= selectedRange.end) {
       setValidationError("Start time must be within selected range.");
       return;
     }
@@ -200,21 +272,15 @@ const handleTimeSelect = useCallback(() => {
     setIsStartTimeSelected(true);
     setIsSelectingStart(false);
 
-    const nextMinute =
-      startMinute === "45"
-        ? "00"
-        : minutes[minutes.indexOf(startMinute) + 1];
+    const nextTime = getNextQuarterHour(
+      startHour,
+      startMinute,
+      startPeriod
+    );
 
-    const nextHour =
-      startMinute === "45"
-        ? parseInt(startHour) === 12
-          ? "01"
-          : (parseInt(startHour) + 1).toString().padStart(2, "0")
-        : startHour;
-
-    setEndHour(nextHour);
-    setEndMinute(nextMinute);
-    setEndPeriod(startPeriod);
+    setEndHour(nextTime.hour);
+    setEndMinute(nextTime.minute);
+    setEndPeriod(nextTime.period);
   } else {
     const endVal = toDecimal(endHour, endMinute, endPeriod);
     const startVal = toDecimal(startHour, startMinute, startPeriod);
