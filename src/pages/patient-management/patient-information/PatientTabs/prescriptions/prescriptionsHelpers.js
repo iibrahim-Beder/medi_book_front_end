@@ -98,15 +98,15 @@ export const prescriptionsHelpers = (t) => {
     },
     {
       name: "startDate",
-      placeholder: t("PrescriptionsTable.start_date"),
+      placeholder: t("start date"),
       half: true,
-      label: t("PrescriptionsTable.start_date"),
+      label: t("start date"),
     },
     {
       name: "endDate",
-      placeholder: t("PrescriptionsTable.end_date"),
+      placeholder: t("end date"),
       half: true,
-      label: t("PrescriptionsTable.end_date"),
+      label: t("end date"),
     },
     {
       name: "instructions",

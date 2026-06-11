@@ -88,7 +88,8 @@ export const patientAllergiesApi = baseApi.injectEndpoints({
           ...(filter.searchValue && { 'Filter.SearchValue': filter.searchValue }),
           ...(filter.isActive !== undefined && { 'Filter.IsActive': filter.isActive }),
           ...(filter.severity !== undefined && { 'Filter.Severity': transformSeverityToAPI(filter.severity) }),
-          ...(filter.dateNoted && { 'Filter.DateNoted': filter.dateNoted }),
+          ...(filter.DateNotedFrom && { 'Filter.DateNotedFrom': filter.DateNotedFrom }),
+          ...(filter.DateNotedFrom && { 'Filter.DateNotedTo': filter.DateNotedTo }),
           ...(orderBy && { 'OrderBy': orderBy }),
           ...(pageNumber && { 'PageNumber': pageNumber }),
           ...(pageSize && { 'PageSize': pageSize })

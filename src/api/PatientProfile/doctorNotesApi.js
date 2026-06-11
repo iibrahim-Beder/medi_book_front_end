@@ -1,14 +1,6 @@
 import { baseApi } from '../baseApi';
 
 // Transform note type
-const transformNoteTypeToAPI = (noteType) => {
-  const noteTypeMap = {
-    'Communication': 1,
-    'Administrative': 2, 
-    'Reminder': 3,
-  };
-  return noteTypeMap[noteType] ?? null;
-};
 
 const transformNoteTypeToUI = (noteType) => {
   const noteTypeMap = {
@@ -32,7 +24,7 @@ const transformSingleDoctorNote = (response) => {
     ...response,
     data: {
       id: response.data.id,
-      noteType: transformNoteTypeToAPI(response.data.noteType),
+      noteType: response.data.noteType,
       noteTypeValue: response.data.noteType,
       content: response.data.content,
       createdAt: response.data.createdAt,
@@ -95,7 +87,7 @@ export const doctorNotesApi = baseApi.injectEndpoints({
       }) => {
         const params = {
           PatientId: patientId,
-          ...(filter.noteType && { 'filter.NoteType': transformNoteTypeToAPI(filter.noteType) }),
+          ...(filter.noteType && { 'filter.NoteType': filter.noteType }),
           ...(filter.searchText && { 'filter.SearchText': filter.searchText }),
           ...(filter.fromDate && { 'filter.FromDate': filter.fromDate }),
           ...(filter.toDate && { 'filter.ToDate': filter.toDate }),
@@ -138,7 +130,7 @@ export const doctorNotesApi = baseApi.injectEndpoints({
       query: ({ patientId, noteData }) => {
         const params = {
           PatientId: patientId,
-          NoteType: transformNoteTypeToAPI(noteData.noteType),
+          NoteType:noteData.noteType,
           Content: noteData.content || ''
         };
 
@@ -189,7 +181,7 @@ export const doctorNotesApi = baseApi.injectEndpoints({
       query: ({ noteId, updates }) => {
         const params = {
           Id: noteId,
-          NoteType: transformNoteTypeToAPI(updates.noteType),
+          NoteType: updates.noteType,
           Content: updates.content || ''
         };
 
@@ -211,7 +203,8 @@ export const doctorNotesApi = baseApi.injectEndpoints({
 
         try {
           const { data } = await queryFulfilled;
-          const updatedNote = data;
+          console.log("RTK UPDATE RESPONSE", data);
+          const updatedNote = data.data;
 
           Object.values(queries).forEach(entry => {
             if (entry?.endpointName === "getDoctorPatientNotes") {

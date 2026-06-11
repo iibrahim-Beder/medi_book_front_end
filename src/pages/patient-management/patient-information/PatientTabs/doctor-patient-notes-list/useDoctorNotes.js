@@ -85,7 +85,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
   const [deleteNoteMutation, { isLoading: isDeletingNote }] = useDeleteDoctorPatientNoteMutation();
 
   // Sync data from API to local state
-  useState(() => {
+  useEffect(() => {
     if (notesResponse?.succeeded && notesResponse.data) {
       const formattedNotes = notesResponse.data.map(note => ({
         ...note,
@@ -160,7 +160,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
       }
       return note;
     }));
-  }, []);
+  }, [localNotes]);
 
   const handleDeleteNote = useCallback(async (noteId) => {
     if (isDeletingNote) return;
@@ -241,6 +241,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
             content: noteData.content
           }
         }).unwrap();
+        console.log("result",result);
 
         if (result?.succeeded) {
           toast.success(result?.message || 'Saved Successfully');

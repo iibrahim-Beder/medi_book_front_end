@@ -11,6 +11,8 @@ import {
 } from "./allergyHelpers";
 
 import toast from 'react-hot-toast';
+import { getErrorMessage } from "../../../../utils/api-errors";
+import { formatDateForAPI } from "../../../../shared/utils";
 
 
 export const useAllergies = (patientId) => {
@@ -18,14 +20,17 @@ export const useAllergies = (patientId) => {
     searchValue: "",
     isActive: "All",
     severity: "",
-    dateNoted: ""
+    DateNotedFrom: null,
+    DateNotedTo: null
   });
   
   const [appliedFilters, setAppliedFilters] = useState({
     searchValue: "",
     isActive: "All",
     severity: "",
-    dateNoted: ""
+    DateNotedFrom: null,
+    DateNotedTo: null
+
   });
   
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,7 +48,9 @@ export const useAllergies = (patientId) => {
   const queryArgs = useMemo(() => {
     const apiFilters = {
       ...appliedFilters,
-      dateNoted: appliedFilters.dateNoted,
+      
+      DateNotedFrom: formatDateForAPI(currentFilters.DateNotedFrom),
+      DateNotedTo: formatDateForAPI(currentFilters.DateNotedTo),
       isActive: appliedFilters.isActive === "All" ? undefined : 
                 appliedFilters.isActive === "Active" ? true :
                 appliedFilters.isActive === "Inactive" ? false : undefined
@@ -62,7 +69,7 @@ export const useAllergies = (patientId) => {
       pageNumber: currentPage,
       pageSize: pageSize
     };
-  }, [appliedFilters, currentPage, pageSize]);
+  }, [appliedFilters, currentPage, pageSize,currentFilters]);
 
   const {
     data: allergiesData,
@@ -110,7 +117,8 @@ export const useAllergies = (patientId) => {
       searchValue: "",
       isActive: "All",
       severity: "",
-      dateNoted: ""
+      DateNotedTo: null,
+      DateNotedFrom: null
     };
     setCurrentFilters(resetFilters);
     setAppliedFilters(resetFilters);
@@ -172,15 +180,6 @@ export const useAllergies = (patientId) => {
   };
 }, [allergiesData]);
 
-// Auto expand if there is a match on first row
-// useEffect(() => {
-//   if (!mappedAllergies?.data?.length) return;
-//   const firstMatchRow = mappedAllergies.data.find(
-//     item => item.highlightInfo?.matchedFields?.length
-//   );
-//   if (!firstMatchRow) return;
-//   setExpandedRow(firstMatchRow.id);
-// }, [mappedAllergies]);
 const openNotes = (id) => {
   setExpandedRow(prev => ({
     ...prev,
@@ -226,7 +225,7 @@ const handleSave = async () => {
         setSelectedRecord(null);
       } else {
         console.log("error",res);
-        toast.error("Failed to add allergy");
+        toast.error(getErrorMessage(res));
       }
     } else {
       const originalRecord = allergiesData?.data?.find(

@@ -15,6 +15,7 @@ export const useDiagnoses = (patientId) => {
       fromDate: null,
       toDate: null
     });
+      console.log("currentFilters", currentFilters, "appliedFilters", appliedFilters);
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;

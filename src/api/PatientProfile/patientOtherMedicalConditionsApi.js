@@ -183,57 +183,34 @@ export const patientMedicalConditionsApi = baseApi.injectEndpoints({
         { patientId, conditionData },
         { dispatch, queryFulfilled, getState }
       ) {
-        const tempId = `temp-${Date.now()}`;
-        const state = getState();
-        const queries = state[baseApi.reducerPath]?.queries ?? [];
-        const patches = [];
-
-        Object.values(queries).forEach(entry => {
-          if (entry?.endpointName === 'getExternalPatientMedicalConditions') {
-            patches.push(
-              dispatch(
-                patientMedicalConditionsApi.util.updateQueryData(
-                  'getExternalPatientMedicalConditions',
-                  entry.originalArgs,
-                  draft => {
-                    draft.data.unshift({
-                      id: tempId,
-                      medicalConditionId: tempId,
-                      medicalConditionName: conditionData.medicalConditionName,
-                      severity: conditionData.severity,
-                      diagnosedDate: conditionData.diagnosisDate,
-                      isActive: conditionData.isActive ?? true,
-                      notes: conditionData.notes,
-                      createdAt: new Date().toISOString(),
-                      optimistic: true
-                    });
-                    draft.totalCount += 1;
-                  }
-                )
-              )
-            );
-          }
-        });
-
         try {
           const { data } = await queryFulfilled;
-          patches.forEach(p => p.undo());
+
+          if (!data?.succeeded) return;
+
+          const state = getState();
+          const queries = state[baseApi.reducerPath]?.queries ?? [];
 
           Object.values(queries).forEach(entry => {
-            if (entry?.endpointName === 'getExternalPatientMedicalConditions') {
+            if (
+              entry?.endpointName ===
+              "getExternalPatientMedicalConditions"
+            ) {
               dispatch(
                 patientMedicalConditionsApi.util.updateQueryData(
-                  'getExternalPatientMedicalConditions',
+                  "getExternalPatientMedicalConditions",
                   entry.originalArgs,
                   draft => {
                     draft.data.unshift(data.data);
+                    draft.totalCount =
+                      (draft.totalCount ?? 0) + 1;
                   }
                 )
               );
             }
           });
-        } catch {
-          patches.forEach(p => p.undo());
+        } catch (error) {
+          console.error(error);
         }
       }
     }),

@@ -18,7 +18,6 @@ export const otherMedicalConditionsHelpers = (t) => {
         { value: "Mild", label: t('OtherMedicalConditions.severity_options.Mild') },
         { value: "Moderate", label: t('Moderate') }, 
         { value: "Severe", label: t('OtherMedicalConditions.severity_options.Severe') },
-        { value: "Critical", label: t('OtherMedicalConditions.severity_options.Critical') }
       ], 
       placeholder: t('OtherMedicalConditions.select_severity'),
       required: true

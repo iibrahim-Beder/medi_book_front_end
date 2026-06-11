@@ -100,20 +100,10 @@ const AllergyTable = ({patientId}) => {
             setSearchTerm={(value) =>
               setCurrentFilters((prev) => ({ ...prev, searchValue: value }))
             }
-            filterConfigs={filterConfigs}
-            filterDateFrom={
-              currentFilters.dateNoted
-                ? new Date(currentFilters.dateNoted)
-                : null
-            }
-            setFilterDateFrom={(date) =>
-              setCurrentFilters((prev) => ({
-                ...prev,
-                dateNoted: date ? date.toISOString() : "",
-              }))
-            }
-            filterDateTo={null}
-            setFilterDateTo={() => {}}
+            filterDateFrom={currentFilters.DateNotedFrom}
+            setFilterDateFrom={(date) => setCurrentFilters(prev => ({ ...prev, DateNotedFrom: date }))}
+            filterDateTo={currentFilters.DateNotedTo}
+            setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, DateNotedTo: date }))}
             onReset={handleResetFilters}
             onSearch={handleSearch}
             conditions={allergiesData?.data || []}
@@ -188,12 +178,16 @@ const AllergyTable = ({patientId}) => {
                       </td>
                       <td>{formatDate(entry.dateNoted)}</td>
                       <td data-has-match={isHasMatched(entry, fieldMapping.reaction)? "true": undefined}>
+                        {entry.reaction ? (
                         <HighlightText
                           text={entry.reaction}
                           searchTerm={allergiesData.searchTerm}
                           matchedFields={entry.highlightInfo?.matchedFields || []}
                           fieldName={fieldMapping.reaction}
                         />
+                          ) : (
+                          "-"
+                        )}
                       </td>
                       <td>
                         {entry.notes ? (

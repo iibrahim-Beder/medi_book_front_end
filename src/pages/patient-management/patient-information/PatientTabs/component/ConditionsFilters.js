@@ -36,6 +36,9 @@ const ConditionsFilters = ({
 
   // Search handler
   const handleSearch = () => {
+    if(searchTerm.length>=100){
+      setSearchTerm(searchTerm.slice(0,99));
+    }
     if (onSearch) onSearch();
   };
 

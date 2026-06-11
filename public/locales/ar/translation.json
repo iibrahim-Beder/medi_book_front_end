@@ -1140,6 +1140,7 @@
     }
   },
   "PrescriptionsTable": {
+    "medication_details": "الأدوية",
     "table_title": "قائمة الوصفات الطبية",
     "table_subtitle": "أحمد محمد علي",
     "prescription_title": "عنوان الوصفة الطبية",

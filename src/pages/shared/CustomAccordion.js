@@ -422,12 +422,12 @@ const handleFieldChange = (index, field, value) => {
         <PopupMessage
           type="danger"
           title="Delete Item"
-          message={`Are you sure you want to delete "${deletePopup.itemName}"? This action cannot be undone.`}
+          message={`Are you sure you want to delete "${deletePopup.itemName.slice(0, 120) + (deletePopup.itemName.length > 120 ? "..." : "")}"? This action cannot be undone.`}
           buttons={[
             {
               text: "Cancel",
               onClick: handleCloseDeleteConfirm,
-              variant: "secondary"
+              variant: "simple-cancel-btn shadow-0"
             },
             {
               text: "Delete",

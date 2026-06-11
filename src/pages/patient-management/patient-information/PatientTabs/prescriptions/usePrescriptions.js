@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { 
   useGetPatientPrescriptionsQuery 
 } from "../../../../../api/PatientProfile/patientPrescriptionApi";
-import { formatDateForAPI } from "../../../../shared/utils";
+import { formatDate, formatDateForAPI } from "../../../../shared/utils";
 
 export const usePrescriptions = (isMobile = false,patientId) => {
   // State 
@@ -231,8 +231,12 @@ console.log("mappedprescriptionsData", mappedprescriptionsData);
       durationInDays: med.durationInDays,
       instructions: med.instructions,
       // Additional fields if needed
-      startDate: med.startDate,
-      endDate: med.endDate,
+      startDate: formatDate(med.createdAt),
+      endDate: formatDate(new Date(
+        new Date(med.createdAt).setDate(
+          new Date(med.createdAt).getDate() + med.durationInDays
+        )
+      )),
       highlightInfo: med.highlightInfo
     }));
   };

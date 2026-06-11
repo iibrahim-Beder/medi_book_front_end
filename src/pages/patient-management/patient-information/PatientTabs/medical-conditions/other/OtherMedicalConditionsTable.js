@@ -228,7 +228,7 @@ const OtherMedicalConditions = ({patientId}) => {
                                   />
                                 ) : "-"}
                               </span>
-                              {condition.notes.length > 50 && (
+                              {condition.notes && condition.notes.length > 50 && (
                                 <Button
                                   className={` ${hasHiddenMatch(condition, "Notes", condition.notes, searchTerm)? "has-match pulse": ""} md-expandable view-btn ms-2`}
                                   size="sm"

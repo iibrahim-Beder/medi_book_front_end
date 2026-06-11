@@ -1,4 +1,4 @@
-import { formatDate } from "../../../../shared/utils";
+import { formatDate, formatDateForAPI } from "../../../../shared/utils";
 
 export const allergyHelpers = (t) => {
 
@@ -147,7 +147,7 @@ export const buildAllergyUpdatePayload = (original, updated) => {
   }
 
   if (updated.dateNoted !== original.dateNoted) {
-    payload.dateNoted = updated.dateNoted;
+    payload.dateNoted = formatDateForAPI(updated.dateNoted);
   }
 
   return payload;

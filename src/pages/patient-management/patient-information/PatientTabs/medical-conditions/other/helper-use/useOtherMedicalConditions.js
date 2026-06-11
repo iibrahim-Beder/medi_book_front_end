@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { 
   useGetExternalPatientMedicalConditionsQuery,
   useDeleteExternalPatientMedicalConditionMutation, 
@@ -12,6 +12,7 @@ import {
 
 import toast from 'react-hot-toast';
 import { formatDateForAPI } from "../../../../../../shared/utils";
+import { getErrorMessage } from "../../../../../../utils/api-errors";
 
 
 export const useOtherMedicalConditions = (patientId) => {
@@ -100,19 +101,6 @@ const mappedMedicalConditionsData = useMemo(() => {
   };
 }, [medicalConditionsData]);
 
-// useEffect(() => {
-//   if (!mappedMedicalConditionsData?.data?.length) return;
-
-//   const firstMatchRow = mappedMedicalConditionsData.data.find(
-//     item => item.highlightInfo?.matchedFields?.some(
-//       match => match.field === "Notes"
-//     )
-//   );
-
-//   if (!firstMatchRow) return;
-
-//   setExpandedRow(firstMatchRow.id);
-// }, [mappedMedicalConditionsData]);
 
   // Mutations - Fixed hook names
   const [deleteMedicalCondition, { isLoading: isDeleting }] = useDeleteExternalPatientMedicalConditionMutation();
@@ -210,12 +198,13 @@ const handleSave = async () => {
       const res = await addMedicalCondition(addData).unwrap();
 
       if (res?.succeeded) {
+        console.log(" res ",res);
         toast.success( "Added Successfully");
         setShowModal(false);
         setSelectedRecord(null);
       } else {
         console.log(" res ",res);
-        toast.error( "Failed to add");
+        toast.error(getErrorMessage(res));
       }
     } else {
       const originalRecord = medicalConditionsData?.data?.find(
