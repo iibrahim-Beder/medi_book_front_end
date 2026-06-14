@@ -150,6 +150,7 @@ select {
 
 .popup-btn {
   padding: 8px 14px;
+  min-width: 85px;
   border-radius: 6px;
   border: none;
   cursor: pointer;

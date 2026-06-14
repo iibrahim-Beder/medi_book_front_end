@@ -114,9 +114,10 @@ const handleAddAcademic = useCallback(() => {
             toast.error(res?.message);
             return;
           }
+        }else{
+          setEducations((prev) => prev.filter((_, i) => i !== index));
         }
 
-        setEducations((prev) => prev.filter((_, i) => i !== index));
         toast.success("Deleted");
       } catch {
         toast.error("Delete failed");

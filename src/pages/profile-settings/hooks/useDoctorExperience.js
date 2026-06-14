@@ -80,6 +80,7 @@ export const useDoctorExperience = (New=false)=> {
 
   // UPDATE LOCAL
   const handleUpdateExperience = useCallback((id, field, value) => {
+    console.log("==========",id, field, value, "experiences", experiences);
       setExperience((prev) =>
           prev.map((item, i) =>
             item.id === id
@@ -116,11 +117,11 @@ export const useDoctorExperience = (New=false)=> {
             toast.error(res?.message);
             return;
           }
+        }else{
+          setExperience((prev) =>
+            prev.filter((_, i) => i !== index)
+          );
         }
-
-        setExperience((prev) =>
-          prev.filter((_, i) => i !== index)
-        );
         toast.success("Deleted Successfully");
       } catch(error) {
         toast.error(getErrorMessage(error));

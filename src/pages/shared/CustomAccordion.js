@@ -57,6 +57,7 @@ const CustomAccordion = memo(({
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
 
   useEffect(() => {
+    console.log("======data", data);
     setDataRead(data || []);
   }, [data]);
 
@@ -96,11 +97,12 @@ const CustomAccordion = memo(({
       } else if (onUpdate) {
         const currentData = dataRead || [];
         currentData.forEach((_, i) => {
+        const itemIdOrIndex = useId ? dataRead[i]?.id : index;
         currentData[index]._initialTitle = renderItemTitle(currentData[index]);
           if (i === index) {
-            onUpdate(i, "isExpanded", !currentData[index]?.isExpanded);
+            onUpdate(itemIdOrIndex, "isExpanded", !currentData[index]?.isExpanded);
           } else if (!allowMultipleOpen) {
-            onUpdate(i, "isExpanded", false);
+            onUpdate(itemIdOrIndex, "isExpanded", false);
           }
         });
       }
@@ -109,9 +111,10 @@ const CustomAccordion = memo(({
   };
 
 const handleFieldChange = (index, field, value) => {
-    const itemId = useId?  dataRead[index]?.id :index;
+    const itemIdOrIndex = useId ? dataRead[index]?.id : index;
+    console.log("======= itemIdOrIndex", itemIdOrIndex);
   if (isUpdateOut) {
-    onUpdate(itemId, field, value);
+    onUpdate(itemIdOrIndex, field, value);
   }
 
   setDataRead(prev =>
@@ -122,7 +125,7 @@ const handleFieldChange = (index, field, value) => {
 
   setLocalErrors(prev => {
     const newErrors = { ...prev };
-    delete newErrors[`${field}_${itemId}`];
+    delete newErrors[`${field}_${itemIdOrIndex}`];
     return newErrors;
   });
 };
