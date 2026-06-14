@@ -139,6 +139,7 @@ console.log("DiagnosisModal render");
                 placeholder: t("Enter medical condition"),
                 type:"dropdown",
                 DropdownType: "disease",
+                required: true
                 // half: true,
               },
               {
@@ -198,8 +199,10 @@ console.log("DiagnosisModal render");
                 name: "note",
                 type: "textarea",
                 placeholder: t("Enter note content"),
+                required: true,
               },
             ]}
+            forceShowError={true}
           />
         </div>
 
@@ -233,6 +236,8 @@ console.log("DiagnosisModal render");
                 type: "text",
                 placeholder: t("Enter prescription title"),
                 half: true,
+                required: true,
+                requiredErrorMessage: t("Prescription title is required"),
               },
               {
                 label: t("Status"),
@@ -309,7 +314,6 @@ console.log("DiagnosisModal render");
               },
             ]}
             forceShowError={true}
-            for
           />
         </div>
       </Modal.Body>

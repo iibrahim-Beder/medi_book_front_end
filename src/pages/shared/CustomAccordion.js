@@ -393,7 +393,7 @@ const handleFieldChange = (index, field, value) => {
                       field.type === "dropdown" && (
                         <div
                           key={idx}
-                          className={`dropdown-with-search-in-accordion ${
+                          className={`dropdown-with-search-in-accordion pt-4 ${
                             field.half ? "form-group-half" : ""
                           }`}
                         >
@@ -415,7 +415,7 @@ const handleFieldChange = (index, field, value) => {
                     onSubmit={liveUpdate ? (e) => e.preventDefault() : (e) => handleSave(index, e)}
                   >
                     <fieldset>
-                      <div style={{borderBottom:"1px solid #ddd"}} className="form-group mb-2 pb-2">{renderFormFields(index, item)}</div>
+                      <div style={{borderBottom:"1px solid #ddd"}} className="form-group mb-1 pb-3">{renderFormFields(index, item)}</div>
                       {hint && (
                         <div className="form-group">
                           <span>{hint}</span>

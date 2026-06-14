@@ -154,6 +154,7 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
                if (!Object.keys(medicalConditionPayload).length) {
                      toast.dismiss(loadingToast);
                      toast("No changes detected");
+                     closeEditingConditionDiagnosis();
                      return false;
                }
      const payload = {
@@ -193,6 +194,14 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
   }
 }, [editingDiagnosis, setEditingDiagnosis, addInternalPatientMedicalCondition, isAddingCondition, isUpdatingCondition]);
 
+ const closeEditingConditionDiagnosis = useCallback(() => {
+          setEditingDiagnosis(prev => ({
+          ...prev,
+          conditions: (prev.conditions || []).map(note =>
+            note.isExpanded ? { ...note, isExpanded: false } : note
+          )
+        }));
+ })
   return {
     handleAddCondition,
     handleDeleteCondition,

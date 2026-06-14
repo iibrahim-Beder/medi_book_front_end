@@ -20,7 +20,7 @@ export default function RenderCheckboxes({
     <>
       {field.label && <label>{field.label}</label>}
 
-      <div className="form-group pb-3">
+      <div className="form-group">
         <div className="dc-checkboxgroup">
           {field.options.map((option, optIndex) => (
             <span key={option} className="dc-checkbox">

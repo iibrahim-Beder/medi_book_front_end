@@ -8,6 +8,7 @@ import SelectField from "../ui/form-fields/SelectField";
 import Field from "../ui/form-fields/Field";
 import { useTranslation } from "react-i18next";
 import PopupMessage from "./PopupMessage"; 
+import toast from "react-hot-toast";
 
 const TwoLevelAccordion = memo(({
   formFieldsRecipe = [],
@@ -31,8 +32,10 @@ const TwoLevelAccordion = memo(({
   isHasMatched = () => false,
   searchTerm ="",
   forceShowError = false,
+  isUpdateOut = false,
 }) => {
   const [dataRead, setDataRead] = useState(data);
+  const [localErrors, setLocalErrors] = useState({});
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
   const { t } = useTranslation();
 
@@ -84,18 +87,61 @@ const TwoLevelAccordion = memo(({
   };
 
   const handleFieldChange = (index, field, value) => {
-    if (onUpdate) {
+    const itemId = dataRead[index]?.id;
+
+    if (isUpdateOut && onUpdate) {
       onUpdate(index, field, value);
     }
+
+    setDataRead(prev =>
+      prev.map((item, i) =>
+        i === index
+          ? { ...item, [field]: value }
+          : item
+      )
+    );
+
+    setLocalErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[`${field}_${itemId}`];
+      return newErrors;
+    });
   };
 
   const handleSave = (index, e) => {
     e.preventDefault();
-    const currentData = data || [];
-    const itemData = currentData[index];
-    if (onSave && itemData) {
-      onSave(index, itemData);
+
+    const itemData = dataRead[index];
+
+    const validationErrors = {};
+
+    formFields.forEach((field) => {
+      if (!field.required) return;
+
+      const value = itemData?.[field.name];
+
+      const isEmpty =
+        value === undefined ||
+        value === null ||
+        value === "" ||
+        (Array.isArray(value) && value.length === 0);
+
+      if (isEmpty) {
+        validationErrors[`${field.name}_${itemData.id}`] =
+          field.requiredErrorMessage ||
+          `${field.label} is required`;
+      }
+    });
+
+    if (Object.keys(validationErrors).length) {
+      setLocalErrors(validationErrors);
+      toast.error(t("fill required field"));
+      return;
     }
+
+    setLocalErrors({});
+
+    onSave?.(index, itemData);
   };
 
   const handleCancel = (index) => {
@@ -107,7 +153,7 @@ const TwoLevelAccordion = memo(({
     }
   };
 
-  const accordionData = readOnly ? dataRead : data;
+  const accordionData =  dataRead || [];
   const renderItemTitle = (item) => {
     return item.title || item.medication || item.type || "New Prescription";
   };
@@ -234,7 +280,9 @@ const TwoLevelAccordion = memo(({
                   onSubmit={(e) => handleSave(index, e)}
                 >
                   <fieldset>
-                    {(formFields || []).map((field, idx) => (
+                    {(formFields || []).map((field, idx) => {
+                      const errorKey = `${field.name}_${item.id}`;
+                      return (
                       <div
                         key={idx}
                         className={`form-group ${field.half ? "form-group-half" : ""}`}
@@ -250,7 +298,8 @@ const TwoLevelAccordion = memo(({
                             disabled={readOnly}
                             isHasMatched={isHasMatched(item,field.name)||false}
                             searchTerm={searchTerm}
-
+                            error={localErrors[errorKey]}
+                            forceShowError={forceShowError}
                           />
                         ) : field.type === "select" ? (
                           <SelectField
@@ -262,9 +311,11 @@ const TwoLevelAccordion = memo(({
                             onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                             isHasMatched={isHasMatched(item,field.name)||false}
                             searchTerm={searchTerm}
+                            error={localErrors[errorKey]}
+                            forceShowError={forceShowError}
                           />
                         ) : field.type === "number" ? (
-                          <input
+                          <Field
                             disabled={readOnly}
                             type="number"
                             className="form-control"
@@ -272,6 +323,8 @@ const TwoLevelAccordion = memo(({
                             value={item[field.name] || ""}
                             onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                             min="0"
+                            error={localErrors[errorKey]}
+                            forceShowError={forceShowError}
                           />
                         ) : (
                           <Field
@@ -284,10 +337,13 @@ const TwoLevelAccordion = memo(({
                             onChange={(e) => handleFieldChange(index, field.name, e.target.value)}
                             isHasMatched={isHasMatched(item,field.name)||false}
                             searchTerm={searchTerm}
+                            error={localErrors[errorKey]}
+                            forceShowError={forceShowError}
                           />
                         )}
                       </div>
-                    ))}
+                      );
+                    })}
 
                     {!readOnly && (
                       <div className="dc-btnarea d-flex">
