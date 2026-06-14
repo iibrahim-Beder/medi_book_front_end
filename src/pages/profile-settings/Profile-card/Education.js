@@ -180,6 +180,7 @@ useImperativeHandle(
         MainHint={register && "You can also add or delete qualifications from inside."}
         errors={errors}
         forceShowError={true}
+        useId={true}
       />
     </div>
   );

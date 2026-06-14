@@ -76,16 +76,16 @@ const handleAddAcademic = useCallback(() => {
 
   // UPDATE LOCAL
   const handleUpdateAcademic = useCallback(
-    (index, field, value) => {
+    (id, field, value) => {
         setEducations((prev) =>
           prev.map((item, i) =>
-            i === index
+            item.id === id
               ? { ...item, [field]: value }
               : item
           )
         );
 
-      const errorKey = `${field}_${index}`;
+      const errorKey = `${field}_${id}`;
 
       setErrors((prev) => ({
         ...prev,

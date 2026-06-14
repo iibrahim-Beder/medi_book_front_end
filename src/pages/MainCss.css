@@ -305,7 +305,7 @@ li {
 }
 
 .react-calendar__navigation button {
-  min-width: 44px;
+  min-width: 35px;
   background: none;
   color: #fff;
   font-size: 16px;

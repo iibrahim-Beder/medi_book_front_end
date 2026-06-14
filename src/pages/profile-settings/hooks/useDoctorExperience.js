@@ -79,16 +79,16 @@ export const useDoctorExperience = (New=false)=> {
   }, [experiences]);
 
   // UPDATE LOCAL
-  const handleUpdateExperience = useCallback((index, field, value) => {
+  const handleUpdateExperience = useCallback((id, field, value) => {
       setExperience((prev) =>
           prev.map((item, i) =>
-            i === index
+            item.id === id
               ? { ...item, [field]: value }
               : item
           )
         );
 
-      const errorKey = `${field}_${index}`;
+      const errorKey = `${field}_${id}`;
 
       setErrors((prev) => ({
         ...prev,

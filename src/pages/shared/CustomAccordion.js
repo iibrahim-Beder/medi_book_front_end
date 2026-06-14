@@ -49,7 +49,7 @@ const CustomAccordion = memo(({
  isUpdateOut = false
  ,MainHint="",
  isFetching,
- useId
+ useId = false
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
@@ -104,13 +104,14 @@ const CustomAccordion = memo(({
           }
         });
       }
+      setLocalErrors({});
     }, 0);
   };
 
 const handleFieldChange = (index, field, value) => {
-    const itemId = dataRead[index]?.id;
+    const itemId = useId?  dataRead[index]?.id :index;
   if (isUpdateOut) {
-    onUpdate(index, field, value);
+    onUpdate(itemId, field, value);
   }
 
   setDataRead(prev =>

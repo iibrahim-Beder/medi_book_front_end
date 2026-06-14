@@ -136,6 +136,7 @@ useImperativeHandle(
         MainHint={ register && "You can also add or delete experiences from inside."}
         errors={errors}
         forceShowError={true}
+        useId={true}
       />
     </div>
   );
