@@ -63,6 +63,8 @@ useImperativeHandle(
       type: "text",
       placeholder: "Enter institution name",
       half: true,
+      required: true,
+      requiredErrorMessage: "Institution name is required"
     },
     {
       name: "graduationYear",
@@ -70,6 +72,8 @@ useImperativeHandle(
       type: "date",
       placeholder: "Enter graduation year",
       half: true,
+      required: true,
+      requiredErrorMessage: "Graduation year is required"
     },
     {
       name: "major",
@@ -77,6 +81,8 @@ useImperativeHandle(
       type: "text",
       placeholder: "Enter university or institution name",
       half: true,
+      required: true,
+      requiredErrorMessage: "Major is required"
     },
     {
       name: "degree",
@@ -104,6 +110,8 @@ useImperativeHandle(
       ],
       placeholder: "Enter degree name",
       half: true,
+      required: true,
+      requiredErrorMessage: "Degree is required"
     },
 
     {
@@ -165,7 +173,7 @@ useImperativeHandle(
         onSave={handleSaveAcademic}
         getItemTitle={getAcademicTitle}
         noDataMessage="No academic qualifications added yet. Click 'Add New Qualification' to get started."
-        isUpdateOut={true}
+        isUpdateOut={isNew ? true : false}
         // backgroundColor="#f8f9fa"
         // titleBackgroundColor="#e3f2fd"
         // allowMultipleOpen={true}

@@ -131,12 +131,12 @@ const handleAddAcademic = useCallback(() => {
     const newErrors = {};
 
     if (!data?.institutionName?.trim()) {
-      newErrors[`institutionName_${index}`] =
+      newErrors[`institutionName_${data.id}`] =
         "Institution name is required";
     }
 
     if (!data?.graduationYear) {
-      newErrors[`graduationYear_${index}`] =
+      newErrors[`graduationYear_${data.id}`] =
         "Graduation year is required";
     }
 
@@ -144,7 +144,7 @@ const handleAddAcademic = useCallback(() => {
       !data?.degree ||
       data.degree === "select degree"
     ) {
-      newErrors[`degree_${index}`] =
+      newErrors[`degree_${data.id}`] =
         "Degree is required";
     }
 
@@ -153,7 +153,7 @@ const handleAddAcademic = useCallback(() => {
       data.endDate &&
       new Date(data.endDate) < new Date(data.startDate)
     ) {
-      newErrors[`endDate_${index}`] =
+      newErrors[`endDate_${data.id}`] =
         "End date must be after start date";
     }
 
@@ -172,14 +172,14 @@ const handleAddAcademic = useCallback(() => {
     items.forEach((data, index) => {
       if (!data?.institutionName?.trim()) {
         newErrors[
-          `institutionName_${index}`
+          `institutionName_${data.id}`
         ] =
           "Institution name is required";
       }
 
       if (!data?.graduationYear) {
         newErrors[
-          `graduationYear_${index}`
+          `graduationYear_${data.id}`
         ] =
           "Graduation year is required";
       }
@@ -188,7 +188,7 @@ const handleAddAcademic = useCallback(() => {
         !data?.degree ||
         data.degree === "select degree"
       ) {
-        newErrors[`degree_${index}`] =
+        newErrors[`degree_${data.id}`] =
           "Degree is required";
       }
 
@@ -198,7 +198,7 @@ const handleAddAcademic = useCallback(() => {
         new Date(data.endDate) <
           new Date(data.startDate)
       ) {
-        newErrors[`endDate_${index}`] =
+        newErrors[`endDate_${data.id}`] =
           "End date must be after start date";
       }
     });
@@ -309,8 +309,8 @@ const handleSaveAcademic = useCallback(
           return false;
         }
 
-    console.log(" from if it is not new ","payload",updates  );
-      // return false;
+    console.log(" from if it is not new ","payload",updates , "doctorId" ,doctorId, "doctorEducationId", data.id, );
+      return false;
 
       const res = await updateEducation({
             doctorId,

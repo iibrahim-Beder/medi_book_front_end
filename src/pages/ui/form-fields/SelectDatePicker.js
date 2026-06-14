@@ -286,7 +286,7 @@ const handleInputBlur = () => {
               position: 'absolute',
               zIndex: 1000,
               marginTop: '4px',
-              backgroundColor: "#fff",
+              backgroundColor: "var(--cardcolor)",
               border: "1px solid #E6E8EE",
               borderRadius: "5px",
               boxShadow: "0 2px 8px rgba(0,0,0,0.1)",

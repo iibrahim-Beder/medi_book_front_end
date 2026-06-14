@@ -30,6 +30,7 @@ const TwoLevelAccordion = memo(({
   getItemTitleRecipe ,
   isHasMatched = () => false,
   searchTerm ="",
+  forceShowError = false,
 }) => {
   const [dataRead, setDataRead] = useState(data);
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
@@ -333,6 +334,7 @@ const TwoLevelAccordion = memo(({
                     }
                    isHasMatched={isHasMatched}
                    searchTerm={searchTerm}
+                   forceShowError={forceShowError}
                   />
                 )}
               </div>

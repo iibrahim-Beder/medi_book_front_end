@@ -107,11 +107,15 @@ export default function useShiftRules({
   }, [Maindata]);
 
   const [rules, setRules] = useState([]);
-  const activeRules = rules?.filter((r) => r.isActive);
-  const inactiveRules = rules?.filter((r) => !r.isActive);
+  const [activeRules, setActiveRules] = useState([]);
+  const [inactiveRules, setInactiveRules] = useState([]);
   const [addRule, { isLoading: isAdding }] = useAddGenerationRuleMutation();
   const [updateRule, { isLoading: isUpdating }] =
     useUpdateGenerationRuleMutation();
+    useEffect(() => {
+      setActiveRules(rules.filter((r) => r.isActive));
+      setInactiveRules(rules.filter((r) => !r.isActive));
+    },[rules])
   // =========================
   // Add Slot
   // =========================
@@ -137,6 +141,7 @@ export default function useShiftRules({
     setOpenModal(true);
   };
   useEffect(() => {
+    console.log("changed from api");
 
     if (isError) {
       setRules([]);
@@ -150,7 +155,8 @@ export default function useShiftRules({
     setAddData({});
     setAvailabilityData([]);
   }, [activeShift, activeTab]);
-  // =========================
+
+    // =========================
   // Update Slot Field
   // =========================
   const handleUpdateSlot = useCallback((index, field, value) => {
@@ -182,7 +188,7 @@ export default function useShiftRules({
      // ===== UPDATE =====
   const handleSaveSlot = useCallback(
     async (slotId, slotData) => {
-      if (isAdding || isUpdating) return;
+      if (isAdding || isUpdating) return false;
       console.log("========slotData", slotData, "slotId", slotId, "rules", rules);
       if (!slotData) {
         toast.error("Please add a slot first");
@@ -214,7 +220,7 @@ export default function useShiftRules({
             ),
           );
         
-        return;
+        return ;
       }
       
 
@@ -239,11 +245,13 @@ export default function useShiftRules({
         if (result?.succeeded) {
           toast.success(result.message || "Updated Successfully");
 
-          // setRules((prev) =>
-          //   prev.map((slot) =>
-          //     slot.id === slotId ? { ...slotData, isExpanded: false } : slot,
-          //   ),
-          // );
+            setRules(prev =>
+                prev.map(slot =>
+                  slot.id === slotData.id
+                    ? { ...slot, ...slotData, isExpanded: false }
+                    : slot
+                )
+              );
 
           success = true;
         }
@@ -265,8 +273,8 @@ export default function useShiftRules({
       updateRule,
       isAdding,
       isUpdating,
-      setRules,
-      rules
+      rules,
+      Maindata
     ],
   );
 
@@ -502,7 +510,7 @@ const handleConfirmActiveToggle = useCallback(async () => {
 ]);
 
 
-  return {
+   return {
     Maindata,
     isLoading,
     isMainRulesFetching,

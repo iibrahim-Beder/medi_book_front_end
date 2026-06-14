@@ -39,7 +39,6 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
     emptyStates
   } = patientNotesHelpers(t);
 
-  // if (true) return PatientNotesSkeleton();
   if (isError) return <div>{emptyStates.error}</div>;
   return (
     <div className="Accordion-section d-flex flex-column">
@@ -77,7 +76,7 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
           noHedarBefore={true}
           showSingleSaveButton={true}
           getItemTitle={(note) => note.noteType ? `${note.noteType}: ${note.content}` : "New Note"}
-          isUpdateOut={true}
+          forceShowError={true}
         />
       </div>
      )}

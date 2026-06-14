@@ -41,6 +41,8 @@ export default function WeeklyTimeSlots() {
       name: "rangeTime",
       label: t("Select Time Range"),
       type: "timeRange",
+      required: true,
+      requiredErrorMessage: t("Select time range required"),
     },
     {
       name: "SlotDurationInMinutes",
@@ -49,6 +51,8 @@ export default function WeeklyTimeSlots() {
       min: 5,
       step: 5,
       half: true,
+      required: true,
+      requiredErrorMessage: t("Slot duration minutes Required"),
     },
     {
       name: "Price",
@@ -56,6 +60,8 @@ export default function WeeklyTimeSlots() {
       type: "number",
       min: 0,
       half: true,
+      required: true,
+      requiredErrorMessage: t("Price Required"),
     },
     {
       name: "Currency",
@@ -78,6 +84,8 @@ export default function WeeklyTimeSlots() {
       label: t("allowedAppointmentTypes"),
       type: "checkboxes",
       options: APPOINTMENT_TYPES,
+      required: true,
+      requiredErrorMessage: t("Allowed Appointment Types Required"),
     },
   ];
   const [searchParams, setSearchParams] = useSearchParams();
@@ -93,10 +101,8 @@ export default function WeeklyTimeSlots() {
   const {
     isLoading,
     isMainRulesFetching,
-    rules,
     segments,
     // handleAddSlot,
-    handleUpdateSlot,
     handleSaveSlot,
     handleToggleRuleActive,
     handleUpdateAddSlot,
@@ -232,8 +238,6 @@ export default function WeeklyTimeSlots() {
                         </div>
 
                         <ActiveTabs
-                          activeCount={activeRules.length}
-                          inactiveCount={inactiveRules.length}
                           activeTab={activeTab}
                           setActiveTab={setActiveTab}
                         />
@@ -266,8 +270,8 @@ export default function WeeklyTimeSlots() {
                               handleToggle={handleToggleRuleActive}
                               applyRule={applyRule}
                               noDataMessage={t("No Active Rules Available !")}
-                              isUpdateOut={true}
                               isFetching={isMainRulesFetching}
+                              forceShowError={true}
 
                             />
                           ))}
@@ -290,7 +294,7 @@ export default function WeeklyTimeSlots() {
                             handleToggle={handleToggleRuleActive}
                             applyRule={applyRule}
                             noDataMessage={t("No Inactive Rules Available !")}
-                            isUpdateOut={true}
+                            forceShowError={true}
                           />
                         )}
                       </>

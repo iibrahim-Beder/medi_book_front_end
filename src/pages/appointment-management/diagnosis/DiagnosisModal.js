@@ -255,6 +255,8 @@ console.log("DiagnosisModal render");
                 name: "medication",
                 type: "dropdown",
                 placeholder: t("Select medication"),
+                required: true,
+                requiredErrorMessage: t("Medication is required"),
                 // half: true,
               },
               {
@@ -269,6 +271,8 @@ console.log("DiagnosisModal render");
                 name: "dosage",
                 placeholder: t("Enter dosage"),
                 half: true,
+                required: true,
+                requiredErrorMessage: t("Dosage is required"),
               },
                {
                 label: t("Duration (Days)"),
@@ -276,6 +280,8 @@ console.log("DiagnosisModal render");
                 type: "number",
                 placeholder: t("Enter duration in days"),
                 half: true,
+                required: true,
+                requiredErrorMessage: t("Duration is required"),
               },
               {
                 label: t("Start Date"),
@@ -283,6 +289,8 @@ console.log("DiagnosisModal render");
                 type: "date",
                 placeholder: t("Select start date"),
                 half: true,
+                required: true,
+                requiredErrorMessage: t("Start date is required"),
               },
               {
                 label: t("End Date"),
@@ -290,6 +298,8 @@ console.log("DiagnosisModal render");
                 type: "date",
                 placeholder: t("Select end date"),
                 half: true,
+                required: true,
+                requiredErrorMessage: t("End date is required"),
               },
               {
                 label: t("Instructions"),
@@ -298,6 +308,8 @@ console.log("DiagnosisModal render");
                 type: "textarea",
               },
             ]}
+            forceShowError={true}
+            for
           />
         </div>
       </Modal.Body>

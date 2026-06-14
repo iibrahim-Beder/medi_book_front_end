@@ -135,17 +135,17 @@ export const useDoctorExperience = (New=false)=> {
       const newErrors = {};
   
       if (!data?.workplace?.trim()) {
-        newErrors[`workplace_${index}`] =
+        newErrors[`workplace_${data.id}`] =
           "workplace is required";
       }
   
       if (!data?.jobTitle) {
-        newErrors[`jobTitle_${index}`] =
+        newErrors[`jobTitle_${data.id}`] =
           "Job title is required";
       }
   
       if (!data?.startDate) {
-        newErrors[`startDate_${index}`] =
+        newErrors[`startDate_${data.id}`] =
           "Start date is required";
       }
   
@@ -154,7 +154,7 @@ export const useDoctorExperience = (New=false)=> {
         data.endDate &&
         new Date(data.endDate) < new Date(data.startDate)
       ) {
-        newErrors[`endDate_${index}`] =
+        newErrors[`endDate_${data.id}`] =
           "End date must be after start date";
       }
   
@@ -171,19 +171,19 @@ export const useDoctorExperience = (New=false)=> {
   (items) => {
     const newErrors = {};
 
-    items.forEach((data, index) => {
+    items.forEach((data) => {
       if (!data?.workplace?.trim()) {
-        newErrors[`workplace_${index}`] =
+        newErrors[`workplace_${data.id}`] =
           "Workplace is required";
       }
 
       if (!data?.jobTitle?.trim()) {
-        newErrors[`jobTitle_${index}`] =
+        newErrors[`jobTitle_${data.id}`] =
           "Job title is required";
       }
 
       if (!data?.startDate) {
-        newErrors[`startDate_${index}`] =
+        newErrors[`startDate_${data.id}`] =
           "Start date is required";
       }
 
@@ -193,7 +193,7 @@ export const useDoctorExperience = (New=false)=> {
         new Date(data.endDate) <
           new Date(data.startDate)
       ) {
-        newErrors[`endDate_${index}`] =
+        newErrors[`endDate_${data.id}`] =
           "End date must be after start date";
       }
     });

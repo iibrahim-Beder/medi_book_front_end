@@ -70,6 +70,8 @@ useImperativeHandle(
       type: "text",
       placeholder: "Enter workplace name",
       half: true,
+      required: true,
+      requiredErrorMessage: "Workplace name is required"
     },
     {
       name: "jobTitle",
@@ -77,12 +79,16 @@ useImperativeHandle(
       type: "text",
       placeholder: "Enter job title",
       half: true,
+      required: true,
+      requiredErrorMessage: "Job title is required"
     },
     {
       name: "startDate",
       label: "Start Date",
       type: "date",
       half: true,
+      required: true,
+      requiredErrorMessage: "Start date is required"
     },
     {
       name: "endDate",
@@ -126,7 +132,7 @@ useImperativeHandle(
         noDataMessage="No experience added yet. Click 'Add New Experience' to get started."
         onAdd={handleAddExperience}
         buttonsAvailable={isNew ? false: true}
-        isUpdateOut={true}
+        isUpdateOut={isNew ? true : false}
         MainHint={ register && "You can also add or delete experiences from inside."}
         errors={errors}
         forceShowError={true}

@@ -80,7 +80,6 @@ const ConditionsFilters = ({
                 left: "10px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                color: "#000",
                 fontSize: "23px",
               }}
             />

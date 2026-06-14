@@ -24,6 +24,7 @@ const DropdownWithSearch = ({
   onChange = () => {},
   disabled = false,
   itemsPerPage = 6,
+  errorFromParent = false,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -307,6 +308,7 @@ const DropdownWithSearch = ({
           </ClickAwayListener>
         </Popper>
       </Box>
+         {errorFromParent && <span className="error-text">{errorFromParent}</span>}
     </div>
   );
 };

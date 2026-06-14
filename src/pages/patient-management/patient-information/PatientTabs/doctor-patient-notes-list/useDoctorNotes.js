@@ -86,17 +86,24 @@ export const usePatientNotes = (isMobile = false,patientId) => {
 
   // Sync data from API to local state
   useEffect(() => {
-    if (notesResponse?.succeeded && notesResponse.data) {
-      const formattedNotes = notesResponse.data.map(note => ({
-        ...note,
-        displayCreatedAt: formatDateForDisplay(note.createdAt),
-        displayLastModifiedAt: formatDateForDisplay(note.lastModifiedAt),
-        isExpanded: false,
-        hasUnsavedChanges: false,
-        isTemp: false
-      }));
-      setLocalNotes(formattedNotes);
-    }
+    if (!notesResponse?.succeeded || !notesResponse.data) return;
+
+    setLocalNotes(prev =>
+      notesResponse.data.map(note => {
+        const existing = prev.find(x => x.id === note.id);
+
+        return {
+          ...note,
+          displayCreatedAt: formatDateForDisplay(note.createdAt),
+          displayLastModifiedAt: formatDateForDisplay(note.lastModifiedAt),
+
+          isExpanded: existing?.isExpanded ?? false,
+          hasUnsavedChanges: existing?.hasUnsavedChanges ?? false,
+          isTemp: false,
+          isNew: false
+        };
+      })
+    );
   }, [notesResponse]);
 
   
@@ -252,29 +259,38 @@ export const usePatientNotes = (isMobile = false,patientId) => {
       }
 
       if (success) {
-        // Update local state
-        setLocalNotes(prev => prev.map(note => {
+      setLocalNotes(prev =>
+        prev.map(note => {
           if (note.id === noteId) {
             return {
               ...noteData,
-              id: result.data?.id || noteId, 
+              id: result.data?.id || noteId,
               isExpanded: false,
               isNew: false,
               isTemp: false,
               hasUnsavedChanges: false,
-              displayLastModifiedAt: formatDateForDisplay(new Date().toISOString())
+              displayLastModifiedAt: formatDateForDisplay(
+                new Date().toISOString()
+              )
             };
           }
-          return note;
-        }));
-      }
 
-    } catch (error) {
-      console.error('Error saving note:', error);
-      toast.error(error?.data?.message || 'Error saving note');
+          return note;
+        })
+      );
+
+      return true;
+    }
+
+    
+  } catch (error) {
+    console.error('Error saving note:', error);
+    toast.error(error?.data?.message || 'Error saving note');
+    return false;
+    }finally {
+      toast.dismiss(loadingToast);
     }
     
-    toast.dismiss(loadingToast);
   }, [localNotes, isUpdatingNote, isAddingNote, addNoteMutation, updateNoteMutation, refetch]);
 
   const handleCancelNote = useCallback((noteId) => {
@@ -289,32 +305,13 @@ export const usePatientNotes = (isMobile = false,patientId) => {
       ));
     }
   }, [localNotes]);
-useEffect(() => {
-  if (notesResponse?.data) {
-    const notes = notesResponse.data.map(note => ({
-      ...note,
-      displayCreatedAt: formatDateForDisplay(note.createdAt),
-      displayLastModifiedAt: formatDateForDisplay(note.lastModifiedAt),
-      hasUnsavedChanges: false
-    }));
-    setLocalNotes(notes);
-  }
-}, [notesResponse]);
 
-  const accordionData = localNotes.map(note => ({
-    ...note,
-    title: note.noteType,
-    date: formatDateForDisplay(note.lastModifiedAt || note.createdAt),
-    displayCreatedAt: note.displayCreatedAt || formatDateForDisplay(note.createdAt),
-    displayLastModifiedAt: note.displayLastModifiedAt || formatDateForDisplay(note.lastModifiedAt),
-    hasUnsavedChanges: note.hasUnsavedChanges || false
-  }));
 
 
   return {
     // State
     isFetching, 
-    localNotes: accordionData,
+    localNotes,
     currentFilters,
     appliedFilters,
     currentPage,

@@ -14,6 +14,7 @@ import TimeRangePicker from "../making-slots/TimeRange/TimeRangePicker";
 import RenderCheckboxes  from "../making-slots/components/RenderCheckboxe";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import CustomAccordionSkeleton from "./CustomAccordionSkeleton";
+import toast from "react-hot-toast";
 const CustomAccordion = memo(({
   oneAccordion = false,
   titleBackgroundColor = "",
@@ -47,10 +48,12 @@ const CustomAccordion = memo(({
  buttonsAvailable = true,
  isUpdateOut = false
  ,MainHint="",
- isFetching
+ isFetching,
+ useId
 }) => {
   const { t } = useTranslation();
   const [dataRead, setDataRead] = useState(data);
+  const [localErrors, setLocalErrors] = useState({});
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
 
   useEffect(() => {
@@ -105,27 +108,63 @@ const CustomAccordion = memo(({
   };
 
 const handleFieldChange = (index, field, value) => {
-  if (isUpdateOut){
+    const itemId = dataRead[index]?.id;
+  if (isUpdateOut) {
     onUpdate(index, field, value);
   }
+
   setDataRead(prev =>
     prev.map((item, i) =>
       i === index ? { ...item, [field]: value } : item
     )
   );
+
+  setLocalErrors(prev => {
+    const newErrors = { ...prev };
+    delete newErrors[`${field}_${itemId}`];
+    return newErrors;
+  });
 };
 
   const handleSave = (index, e) => {
-    e.preventDefault();
-    const currentData = dataRead || [];
-    const itemData = currentData[index];
-  //    if (itemData && !readOnly&& itemData.isExpanded===false) {
-  //   itemData._initialTitle = renderItemTitle(itemData);
-  // }
-    if (onSave && itemData) {
-      onSave(index, dataRead[index]);
+  e.preventDefault();
+
+  const itemData = dataRead[index];
+
+  const validationErrors = {};
+
+  formFields.forEach((field) => {
+    if (!field.required) return;
+
+    const value = itemData?.[field.name];
+
+    const isEmpty =
+      value === undefined ||
+      value === null ||
+      value === "" ||
+      (Array.isArray(value) && value.length === 0);
+
+    if (isEmpty) {
+      validationErrors[`${field.name}_${itemData.id}`] =
+        field.requiredErrorMessage ||
+        `${field.label} is required`;
     }
-  };
+  });
+
+  if (Object.keys(validationErrors).length > 0) {
+    setLocalErrors(validationErrors);
+    if (!isUpdateOut) {
+      toast.error(t("fill required field"));
+    }
+    return;
+  }
+
+  setLocalErrors({});
+
+  if (onSave) {
+    onSave(index, itemData);
+  }
+};
 
   const handleCancel = (index) => {
     const currentData = data || [];
@@ -138,8 +177,8 @@ const handleFieldChange = (index, field, value) => {
 
   const getFieldComponent = (field, index, onChange, item, errors, forceShowError, readOnly) => {
     const value = item[field.name];
-    const errorKey = `${field.name}_${index}`;
-    const error = errors[errorKey];
+    const errorKey = `${field.name}_${item.id}`;
+    const error =localErrors[errorKey] || errors[errorKey];
     const commonProps = {
       label: field.label,
       name: field.name,
@@ -178,6 +217,7 @@ const handleFieldChange = (index, field, value) => {
       />;
     } else if (field.type === "checkboxes") {
       return <RenderCheckboxes 
+      {...commonProps}
       field={field}
         accept={field.accept}
         buttonIcon={field.buttonIcon}
@@ -185,6 +225,7 @@ const handleFieldChange = (index, field, value) => {
         onChange={onChange}
         index={index}
         item={item}
+        outError={error}
       />
     } else {
       return <Field
@@ -344,18 +385,30 @@ const handleFieldChange = (index, field, value) => {
 
                 {/* Accordion Body */}
                 <div style={{ backgroundColor }} className={collapseClass}>
-                  {formFields.map(
-                    (field, idx) =>
+                  {formFields.map((field, idx) => {
+                    const errorKey = `${field.name}_${item.id}`;
+                    const error = localErrors[errorKey] || errors[errorKey];
+
+                    return (
                       field.type === "dropdown" && (
-                        <div key={idx} className={`dropdown-with-search-in-accordion ${ field.half ? "form-group-half" :"" } `} >
+                        <div
+                          key={idx}
+                          className={`dropdown-with-search-in-accordion ${
+                            field.half ? "form-group-half" : ""
+                          }`}
+                        >
                           <DropdownWithSearch
                             type={field.DropdownType}
                             value={item[field.name] || ""}
-                            onChange={(val) => handleFieldChange(index, field.name, val)}
+                            onChange={(val) =>
+                              handleFieldChange(index, field.name, val)
+                            }
+                            errorFromParent={error}
                           />
                         </div>
                       )
-                  )}
+                    );
+                  })}
 
                   <form
                     className="dc-formtheme dc-userform"

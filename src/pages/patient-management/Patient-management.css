@@ -412,7 +412,7 @@ border-bottom: 1px solid #dee2e670 !important;
 }
 
  .diagnosis-modal .modal-footer-custom {
-  background-color: #f8f9fa;
+  background-color: var(--badybkcolor);
   border-top: 1px solid #dee2e6;
   padding: 0 1rem ;
 }

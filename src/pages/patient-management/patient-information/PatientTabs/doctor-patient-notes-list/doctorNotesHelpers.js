@@ -11,7 +11,9 @@ export const patientNotesHelpers = (t) => {
       placeholder: t("Select note type"),
       options: noteTypeOptions.map(type => ({ value: type, label: type })),
       half: false,
-      readOnly: false
+      readOnly: false,
+      required: true,
+      requiredErrorMessage: t("Note type is required")
     },
     {
       name: "content",
@@ -19,7 +21,9 @@ export const patientNotesHelpers = (t) => {
       type: "textarea",
       placeholder: t("Enter note content..."),
       half: false,
-      readOnly: false
+      readOnly: false,
+      required: true,
+      requiredErrorMessage: t("Note content is required")
     },
     {
       name: "displayCreatedAt",
@@ -85,11 +89,14 @@ export const createIndexBasedHandlers = (data, handlers) => {
         handlers.onUpdate(item.id, field, value);
       }
     },
-    onSave: (index, itemData) => {
+    onSave: async (index, itemData) => {
       const item = data[index];
+
       if (item && handlers.onSave) {
-        handlers.onSave(item.id, itemData);
+        return await handlers.onSave(item.id, itemData);
       }
+
+      return false;
     },
     onCancel: (index) => {
       const item = data[index];
