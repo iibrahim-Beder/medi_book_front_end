@@ -74,9 +74,9 @@ console.log("DiagnosisModal render");
 
       <Modal.Body className="space-y-4 pt-0 diagnosis-modal-body ">
         {/* Basic Information */}
-        <div className="mb-4">
+        <div className="mb-4 diagnosis-modal-management">
           <div className="row">
-            <div className="col-lg-12 col-sm-12 small-field">
+            <div className="col-lg-12 col-sm-12 ">
               <Field
                 label={t("Diagnosis Name")}
                 value={editingDiagnosis?.diagnosisName || ""}
@@ -103,12 +103,14 @@ console.log("DiagnosisModal render");
             onChange={(e) => onUpdateDiagnosis("description", e.target.value)}
             placeholder={t("Enter diagnosis description")}
           />
+         <div className="small-field">
           <Field
             label={t("Code")}
             value={editingDiagnosis?.code || ""}
             onChange={(e) => onUpdateDiagnosis("code", e.target.value)}
             placeholder={t("Enter diagnosis code")}
           />
+          </div>
         </div>
 
         {/* Conditions */}

@@ -153,12 +153,12 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
                 <p
                   style={{
                     margin: "0",
-                    cursor: "pointer",
+                    // cursor: "pointer",
                     transition: "all 0.3s ease",
                   }}
-                  onClick={() =>
-                    toggleDescription(disease.diagnosisId || disease.id)
-                  }
+                  // onClick={() =>
+                  //   toggleDescription(disease.diagnosisId || disease.id)
+                  // }
                 >
                   {expandedDescriptions[disease.diagnosisId || disease.id]
                     ? disease.description

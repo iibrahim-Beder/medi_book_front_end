@@ -16,12 +16,12 @@ const DeleteConfirmationPopup = ({ deletePopup, onClose, onConfirm, t }) => {
         {
           text: t("Cancel"),
           onClick: onClose,
-          variant: "secondary",
+          variant: "popup-btn simple-cancel-btn shadow-0",
         },
         {
           text: t("Delete"),
           onClick: onConfirm,
-          variant: "danger",
+          variant: "popup-btn deactivate-btn",
         },
       ]}
       onClose={onClose}

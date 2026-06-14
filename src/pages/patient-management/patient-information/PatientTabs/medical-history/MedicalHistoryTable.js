@@ -426,12 +426,12 @@ const MedicalHistoryTable = ({patientId}) => {
             {
               text: t('Cancel'),
               onClick: handleClosePopup,
-              variant: "secondary"
+              variant: "popup-btn simple-cancel-btn shadow-0",
             },
             {
               text: t('Delete'),
               onClick: handleConfirmDelete,
-              variant: "danger",
+              variant: "popup-btn deactivate-btn",
               disabled: isDeleting
             }
           ]}

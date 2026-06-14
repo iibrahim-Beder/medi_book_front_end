@@ -1938,3 +1938,6 @@ display: none;
 .popup-card h3{
       font-weight: 500;
 }
+.diagnosis-modal-management textarea,.diagnosis-modal-management  select,.diagnosis-modal-management input{
+  background-color: var(--badybkcolor) !important; ;
+  }

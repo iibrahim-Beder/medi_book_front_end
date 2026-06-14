@@ -431,8 +431,8 @@ const MedicalHistoryMobileView = ({patientId}) => {
             description: t(`MedicalHistory.history_type_options.${recordToDelete.historyType}`)
           })}
           buttons={[
-            { text: t('Cancel'), onClick: handleClosePopup, variant: "secondary" },
-            { text: t('Delete'), onClick: handleConfirmDelete, variant: "danger", disabled: isDeleting }
+            { text: t('Cancel'), onClick: handleClosePopup,variant: "popup-btn simple-cancel-btn shadow-0",},
+            { text: t('Delete'), onClick: handleConfirmDelete, variant: "popup-btn deactivate-btn", disabled: isDeleting }
           ]}
           onClose={handleClosePopup}
         />

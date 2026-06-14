@@ -97,7 +97,7 @@ const CustomAccordion = memo(({
       } else if (onUpdate) {
         const currentData = dataRead || [];
         currentData.forEach((_, i) => {
-        const itemIdOrIndex = useId ? dataRead[i]?.id : index;
+        const itemIdOrIndex = useId ? dataRead[i]?.id : i;
         currentData[index]._initialTitle = renderItemTitle(currentData[index]);
           if (i === index) {
             onUpdate(itemIdOrIndex, "isExpanded", !currentData[index]?.isExpanded);

@@ -409,12 +409,12 @@ const TwoLevelAccordion = memo(({
             {
               text: t("Cancel"),
               onClick: handleCloseDeleteConfirm,
-              variant: "secondary"
+              variant: "popup-btn simple-cancel-btn shadow-0",
             },
             {
               text: t("Delete"),
               onClick: handleConfirmDelete,
-              variant: "danger"
+              variant: "popup-btn deactivate-btn",
             }
           ]}
           onClose={handleCloseDeleteConfirm}

@@ -27,7 +27,7 @@ export default function LogoutPopupMessage({ setShowPopupClose }) {
         {
           text: "Logout",
           onClick: handleLogout,
-          variant: "second-btn",
+          variant: "popup-btn deactivate-btn",
         },
       ]}
       onClose={() => setShowPopupClose(false)}
