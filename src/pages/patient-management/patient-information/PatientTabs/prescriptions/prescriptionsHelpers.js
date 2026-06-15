@@ -121,9 +121,9 @@ export const prescriptionsHelpers = (t) => {
   const emptyStates = {
     noResults: (searchValue) => 
       searchValue 
-        ? t('PrescriptionsTable.no_results_for_search', { search: searchValue })
-        : t('PrescriptionsTable.no_records_found'),
-    noPrescriptions: t('PrescriptionsMobileView.no_prescriptions_found')
+        ? t('No results found for "{{search}}"', { search: searchValue })
+        : t('No Prescriptions Found'),
+    noPrescriptions: t('No Prescriptions Found')
   };
 
   return {

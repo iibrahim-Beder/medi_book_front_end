@@ -77,8 +77,8 @@ export const otherMedicationsHelpers = (t) => {
   const emptyStates = {
     noResults: (searchValue) => 
       searchValue 
-        ? t('Othermedications.no_results_for_search', { search: searchValue })
-        : t('Othermedications.no_records_found')
+        ? t('No results found for "{{search}}"', { search: searchValue })
+        : t('No Other Medications Found')
   };
 
   return {

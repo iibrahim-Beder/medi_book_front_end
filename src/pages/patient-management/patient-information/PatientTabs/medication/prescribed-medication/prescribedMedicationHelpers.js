@@ -41,9 +41,9 @@ export const prescribedMedicationHelpers = (t) => {
   const emptyStates = {
     noResults: (searchValue) => 
       searchValue 
-        ? t('PrescribedMedicationTable.no_results_for_search', { search: searchValue })
-        : t('PrescribedMedicationTable.no_records_found'),
-    noMedications: t("PrescribedMedicationMobileView.no_medications_found")
+        ? t('No results found for "{{search}}"', { search: searchValue })
+        : t('No Prescribed Medications Found'),
+    noMedications: t("No Prescribed Medications Found")
   };
 
   // Format duration display

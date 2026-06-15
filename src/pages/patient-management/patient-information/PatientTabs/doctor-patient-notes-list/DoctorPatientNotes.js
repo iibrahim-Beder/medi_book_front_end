@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { usePatientNotes } from "./useDoctorNotes";
 import { patientNotesHelpers, createIndexBasedHandlers } from "./doctorNotesHelpers";
 import CustomAccordionSkeleton from "../../../../shared/CustomAccordionSkeleton";
+import DataEmptyComponent from "../../../../shared/DataEmptyComponent";
 
 const PatientNotes = ({ patientId = 4, isMobile = false }) => {
   const { t } = useTranslation();
@@ -39,6 +40,12 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
     emptyStates
   } = patientNotesHelpers(t);
 
+  const isFilterEmpty =
+    !currentFilters.searchText &&
+    !currentFilters.noteType &&
+    !currentFilters.fromDate &&
+    !currentFilters.toDate;
+
   if (isError) return <div>{emptyStates.error}</div>;
   return (
     <div className="Accordion-section d-flex flex-column">
@@ -58,8 +65,21 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
           filterConfigs={filterConfigs}
         />
       </div>
-     { (isLoading||isFetching)?(<CustomAccordionSkeleton/>):(
       <div className="table-card flex-grow-1">
+      {localNotes.length === 0 ? (
+        isFilterEmpty ? (
+          <DataEmptyComponent imgStyle={{ maxWidth: "300px" }} title="No Notes Found" text="No Notes Found"/>
+        ) : (
+          <DataEmptyComponent
+           imgStyle={{ maxWidth: "200px" }} title="No Notes Found" text="No Notes Found Based on Filters" 
+                btnText="Clear Filters"
+                onClick={() => {
+                  handleResetFilters();
+                  handleSearch();
+                }}
+          />
+        )
+      ) : (
         <CustomAccordion
           title={t("Patient Notes")}
           addNewLabel={t("Add New Note")}
@@ -75,11 +95,14 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
           accordioninnertitleSize=""
           noHedarBefore={true}
           showSingleSaveButton={true}
-          getItemTitle={(note) => note.noteType ? `${note.noteType}: ${note.content}` : "New Note"}
+          getItemTitle={(note) =>
+            note.noteType ? `${note.noteType}: ${note.content}` : "New Note"
+          }
           forceShowError={true}
+          isFetching={isLoading || isFetching}
         />
+      )}
       </div>
-     )}
 
 
       {notesResponse && notesResponse.data && notesResponse.data.length > 0 && (

@@ -25,6 +25,7 @@ import {
   useMarkAllNotificationsAsReadMutation,
 } from "../../../../api/PatientProfile/patientNotificationsApi";
 import PatientName from "./component/PatientName";
+import DataEmptyComponent from "../../../shared/DataEmptyComponent";
 
 const PatientNotificationsCards = ({ patientId }) => {
   const { t } = useTranslation();
@@ -155,6 +156,13 @@ const PatientNotificationsCards = ({ patientId }) => {
     </div>
   );
 
+  const isFilterEmpty =
+    !filterType &&
+    !filterIsRead &&
+    !filterEntityType &&
+    !dateRange.start &&
+    !dateRange.end;
+
   return (
     <div className="comments-list notifications-list">
       <div className="filters-container-search">
@@ -238,9 +246,18 @@ const PatientNotificationsCards = ({ patientId }) => {
         ) : isError ? (
           <ErrorLoading onRetry={refetch} />
         ) : notifications.length === 0 ? (
-          <div className="text-center py-5 text-muted">
-            {t("No notifications found")}
-          </div>
+         <>
+              {isFilterEmpty? (
+                <DataEmptyComponent imgStyle={{ maxWidth: "300px" }} title="No Notifications " text="No Notifications For This Patient yet "  />                
+              ):(
+                <DataEmptyComponent imgStyle={{ maxWidth: "200px" }} title="No Reviews Found" text="No Reviews Found Based on Filters"  
+                btnText="Clear Filters"
+                onClick={() => {
+                  resetFilters();
+                }}
+                 />
+              )}
+            </>
         ) : (
           notifications.map((note) => {
             const icon = getNotificationIcon(note);

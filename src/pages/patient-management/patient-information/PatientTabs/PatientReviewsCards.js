@@ -81,7 +81,6 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
   const showShimmer = isFetching || isLoading;
 
   const isFilterEmpty = Object.keys(starFilters).length === 0 && !dateRange.start && !dateRange.end && !appointmentType;
-  console.log("isFilterEmpty", isFilterEmpty)
   return (
     <div className="comments-list">
       {/* Header */}
@@ -167,7 +166,7 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
               {isFilterEmpty? (
                 <DataEmptyComponent imgStyle={{ maxWidth: "300px" }} title="No Reviews Found" text="No Reviews Found" children={"⭐⭐⭐⭐⭐"} />                
               ):(
-                <DataEmptyComponent imgStyle={{ maxWidth: "200px" }} title="No Reviews Found Based on Filters" text="No Reviews Found Based on Filters" 
+                <DataEmptyComponent imgStyle={{ maxWidth: "200px" }} title="No Reviews Found" text="No Reviews Found Based on Filters" 
                 btnText="Clear Filters"
                 onClick={() => {
                   setStarFilters({});

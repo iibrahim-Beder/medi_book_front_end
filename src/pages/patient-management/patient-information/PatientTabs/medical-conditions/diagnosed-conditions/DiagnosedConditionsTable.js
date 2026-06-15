@@ -329,8 +329,8 @@ const DiagnosedConditionsTable = ({patientId}) => {
                   <tr>
                     <td colSpan="6" className="text-center text-muted">
                       {appliedFilters.searchValue ?
-                        t('DiagnosedConditionsTable.no_results_for_search', { search: appliedFilters.searchValue }) :
-                        t('DiagnosedConditionsTable.no_records_found')
+                        t('No results found for "{{search}}"', { search: appliedFilters.searchValue }) :
+                        t('No records found')
                       }
                     </td>
                   </tr>
