@@ -4,7 +4,7 @@ import SelectTimePicker from "../../ui/form-fields/SelectTimePicker";
 import toast from "react-hot-toast";
 import PopupMessage from "../../shared/PopupMessage";
 import { useTranslation } from "react-i18next";
-import DataEmptyCom from "../../shared/DataEmptyCom";
+import DataEmptyComponent from "../../shared/DataEmptyComponent";
 import DaysAvailabilityCheckbox from "../../ui/form-fields/DaysAvailabilityCheckbox";
 import useAddShifts from "../../doctor-registration/hooks/useAddShifts";
 export default function ShiftForm({
@@ -22,7 +22,7 @@ export default function ShiftForm({
   return (
     <div>
       {shifts.length === 0 && (
-       <DataEmptyCom text="No Shift Found for this day" btnText="Add New Shift" onClick={() => setOpenModal(true)} />
+       <DataEmptyComponent text="No Shift Found for this day" btnText="Add New Shift" onClick={() => setOpenModal(true)} />
       )}
 
       {shifts.map((shift) => (

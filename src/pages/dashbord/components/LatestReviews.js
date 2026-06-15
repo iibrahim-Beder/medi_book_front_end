@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { usePatientReviews } from "../../reviews/hooks/usePatientReviews";
 import Skeleton from "react-loading-skeleton";
-import DataEmptyCom from "../../shared/DataEmptyCom";
+import DataEmptyComponent from "../../shared/DataEmptyComponent";
 
 export default function LatestReviews() {
   const {reviews , isLoading} = usePatientReviews(4);
@@ -24,7 +24,7 @@ export default function LatestReviews() {
                 key={appointment.bookingId || index}
                 appointment={appointment}
               />
-            ))) : <DataEmptyCom containerStyle={{flexDirection: "column"}} imgStyle={{width:"100%" ,maxWidth:"300px"}}  text="No Reviews Found" children={"⭐⭐⭐⭐⭐"} />}
+            ))) : <DataEmptyComponent containerStyle={{flexDirection: "column"}} imgStyle={{width:"100%" ,maxWidth:"300px"}}  text="No Reviews Found" children={"⭐⭐⭐⭐⭐"} />}
       </div>
     </div>
   );

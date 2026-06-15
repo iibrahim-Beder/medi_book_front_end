@@ -2,7 +2,8 @@ import { Button } from "@mui/material";
 import { Link as LinkIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function DataEmptyCom({
+export default function DataEmptyComponent({
+  title = "Data Empty",
   text = "No Data Found",
   imgStyle = { width: "40%", maxWidth: "300px" },
   children = null,
@@ -16,7 +17,7 @@ export default function DataEmptyCom({
     <div className="empty-data-container" style={containerStyle}>
       <img style={imgStyle} src="/images/dashboard/dataEmpty.png" alt="Error" />
       <div className="text-center text-danger mt-4">
-        <h3 style={{ fontWeight: "500", color: "#008ce9" }}>Data Empty</h3>
+        <h3 style={{ fontWeight: "500", color: "#008ce9" }}>{title}</h3>
         <h5 style={{ fontWeight: "500" }}>{text}</h5>
         {children}
         {LinkTo && (

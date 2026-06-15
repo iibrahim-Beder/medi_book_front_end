@@ -10,7 +10,7 @@ import { useGetPatientReviewsQuery } from "../../../../api/PatientProfile/patien
 import Skeleton from "react-loading-skeleton";
 import ErrorLoading from "../../../shared/ErrorLoading";
 import PatientName from "./component/PatientName";
-
+import DataEmptyComponent from "../../../shared/DataEmptyComponent";
 const ShimmerCard = () => (
   <div className="mb-4 table-card card">
     <div className="d-flex justify-content-between mb-2">
@@ -80,6 +80,8 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
   const totalCount = reviewsResponse?.totalCount ?? 0;
   const showShimmer = isFetching || isLoading;
 
+  const isFilterEmpty = Object.keys(starFilters).length === 0 && !dateRange.start && !dateRange.end && !appointmentType;
+  console.log("isFilterEmpty", isFilterEmpty)
   return (
     <div className="comments-list">
       {/* Header */}
@@ -99,7 +101,7 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
         </div>
       </div>
 
-      {/*  Filters */}
+  {/*  Filters */}
       <div className="review-filters d-flex gap-3 align-items-center flex-wrap">
 
       <FilterDropdown
@@ -160,7 +162,21 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
           {showShimmer ? (
             [...Array(itemsPerPage)].map((_, i) => <ShimmerCard key={i} />)
           ) : reviews.length === 0 ? (
-            <p className="text-center text-muted mt-4">{t("No reviews found")}</p>
+            // <p className="text-center text-muted mt-4">{t("No reviews found")}</p>
+            <div className="table-card mt-3 p-1">
+              {isFilterEmpty? (
+                <DataEmptyComponent imgStyle={{ maxWidth: "300px" }} title="No Reviews Found" text="No Reviews Found" children={"⭐⭐⭐⭐⭐"} />                
+              ):(
+                <DataEmptyComponent imgStyle={{ maxWidth: "200px" }} title="No Reviews Found Based on Filters" text="No Reviews Found Based on Filters" 
+                btnText="Clear Filters"
+                onClick={() => {
+                  setStarFilters({});
+                  setAppointmentType(undefined);
+                  setDateRange({ start: null, end: null });
+                }}
+                 />
+              )}
+            </div>
           ) : (
             reviews.map((review) => (
               <Card key={review.reviewId} className="mb-4 table-card">

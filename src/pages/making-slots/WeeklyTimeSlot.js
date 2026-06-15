@@ -14,7 +14,7 @@ import ActiveTabs from "./components/ActiveTabs";
 import Loader from "../shared/Loader";
 import { APPOINTMENT_TYPES , getTimeSlotTitle } from "./helper/helper";
 import ErrorPage from "../notFound-pageError/ErrorPage";
-import DataEmptyCom from "../shared/DataEmptyCom";
+import DataEmptyComponent from "../shared/DataEmptyComponent";
 import PopupMessage from "../shared/PopupMessage";
 import { useSearchParams } from "react-router-dom";
 
@@ -211,7 +211,7 @@ export default function WeeklyTimeSlots() {
                       </div>
                     ) : ((!segments?.length || error?.statusCode === 500) && !isMainRulesFetching ) ? (
                       <div className="table-card">
-                        <DataEmptyCom
+                        <DataEmptyComponent
                           LinkTo={`/shifts-management?day=${activeDay}`}
                           linkText="Go to Create Shift"
                           text={t(
@@ -246,10 +246,10 @@ export default function WeeklyTimeSlots() {
                         {activeTab === "Active" &&
                           (!activeRules.length && !isMainRulesFetching ? (
                             <div className="table-card p-1">
-                              <DataEmptyCom
+                              <DataEmptyComponent
                                 imgStyle={{ maxWidth: "200px" }}
-                                text={t("No Active Rules Available yet !")}
-                                btnText="add new Rules"
+                                text={t("There are no active rules for this shift yet.")}
+                                btnText="Add New Rule"
                                 onClick={() => setOpenModal(true)}
                               />
                             </div>
