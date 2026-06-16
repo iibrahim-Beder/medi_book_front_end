@@ -21,22 +21,24 @@ export default function ChatMessages() {
     messagesLoading,
     resendMessage,
     isError,
+    messagesIsError,
     refetchMessages,
   } = useMessages();
-  console.log("messages", messages);
-useEffect(() => {
-      if(window.innerWidth >= 992){
-        setIsChatOpen(true)
-      }
-  return () => {
-    document.documentElement.setAttribute("isConversationOpen", "false");
-    setIsChatOpen(false)
-    console.log("unmount");
+
+  useEffect(() => {
+        if(window.innerWidth >= 992){
+          setIsChatOpen(true)
+        }
+    return () => {
+      document.documentElement.setAttribute("isConversationOpen", "false");
+      setIsChatOpen(false)
+      console.log("unmount");
+    }
+  }, [])
+  
+  if(messagesIsError && messages.length === 0){
+    return <div style={{minHeight:"55vh"}}> <ErrorLoading isError={isError} refetch={refetchMessages} /></div>
   }
-}, [])
-if(isError){
-  return <ErrorLoading isError={isError} refetch={refetchMessages} />;
-}
 
 
   return (
@@ -100,6 +102,7 @@ if(isError){
             );
           })}
           {isLoadingOlderMessages && Loader("loading-in-side")}
+          {messagesIsError && <h6 className="error-text" style={{height:"auto", margin:"10px 0",marginTop:"65px" ,textAlign:"center"}}>{"Error loading more messages"}</h6>}
         </>
       )}
     </div>

@@ -42,8 +42,8 @@ export const useMessages = () => {
         }
       : null
   );
-    const currentMessages = messagesData?.data ?? [];
-
+  console.log("messagesData",messagesData)
+  const currentMessages = messagesData?.data.filter((msg) => msg.chatId === selectedChat) || [];
   const [sendMessageApi, { isLoading: isSending }] = useSendMessageMutation();
   const chatContainerRef = useRef(null);
   const toLatestMessage = () => {

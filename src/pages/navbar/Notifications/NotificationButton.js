@@ -26,6 +26,7 @@ const NotificationDropdown = () => {
     isFetching,
     isConnected,
     isLoading,
+    isError,
     refetch,
     hasMore,
     mutemut,
@@ -241,7 +242,7 @@ const NotificationDropdown = () => {
                     </div>
                   </li>
                 ))}
-              {hasMore &&  <li
+              {hasMore && !isError &&  <li
                   style={{
                     minHeight: "50px",
                     display: "flex",
@@ -253,6 +254,7 @@ const NotificationDropdown = () => {
                 >
                   {Loader("loading-in-side")}
                 </li>}
+                {isError && <h6 className="error-text" style={{height:"auto", margin:"10px 0",textAlign:"center"}}>{"Error loading more notifications"}</h6>}
               </ul>
             )}
           </div>

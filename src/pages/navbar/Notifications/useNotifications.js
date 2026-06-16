@@ -16,7 +16,7 @@ export const useNotifications = (userId) => {
   const [notifications, setNotifications] = useState([]);
   const [expandedMessageId, setExpandedMessageId] = useState(null);
 
-  const { data, isFetching , isLoading, refetch} = useGetDoctorNotificationsQuery({
+  const { data, isFetching , isLoading, refetch , isError} = useGetDoctorNotificationsQuery({
     pageNumber: page,
     pageSize: PAGE_SIZE,
     
@@ -105,6 +105,7 @@ export const useNotifications = (userId) => {
     markAllAsRead,
     handleNotificationClick,
     isFetching,
+    isError,
     isLoading, 
     refetch,
     isConnected,
