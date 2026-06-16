@@ -57,7 +57,6 @@ const CustomAccordion = memo(({
   const [deletePopup, setDeletePopup] = useState({ show: false, index: null, itemName: "" });
 
   useEffect(() => {
-    console.log("======data", data);
     setDataRead(data || []);
   }, [data]);
 

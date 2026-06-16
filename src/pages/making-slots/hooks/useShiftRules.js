@@ -20,6 +20,8 @@ export default function useShiftRules({
   
   const doctorId = useSelector((state) => state.auth.doctorId);
 
+  console.log("===doctorId", doctorId);
+
   const {
     data: Maindata,
     currentData,
@@ -76,7 +78,9 @@ export default function useShiftRules({
         console.log("====availability check res", res);
         if (res?.succeeded) {
           setAvailabilityData(res.data);
-          setSelectedDays(() => [activeTab]);
+          if(res.data.find((d) => d.dayOfWeek === activeTab).state === "Available"){
+            setSelectedDays(() => [activeTab]);
+          }
         }
       } catch (error) {
         console.error("availability check failed", error);
@@ -488,7 +492,7 @@ const handleConfirmActiveToggle = useCallback(async () => {
     }
 
     if (result?.succeeded) {
-      toast.success(result.message || "Updated Successfully");
+      toast.success(item.isActive ? "Deactivated Successfully" : "Activated Successfully");
     }
 
     handleCloseActiveConfirm();

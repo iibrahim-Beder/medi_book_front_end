@@ -212,6 +212,7 @@ export default function WeeklyTimeSlots() {
                     ) : ((!segments?.length || error?.statusCode === 500) && !isMainRulesFetching ) ? (
                       <div className="table-card">
                         <DataEmptyComponent
+                          title="Shift Empty !"
                           LinkTo={`/shifts-management?day=${activeDay}`}
                           linkText="Go to Create Shift"
                           text={t(

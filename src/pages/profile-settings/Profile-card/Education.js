@@ -80,9 +80,7 @@ useImperativeHandle(
       label: "Major",
       type: "text",
       placeholder: "Enter university or institution name",
-      half: true,
-      required: true,
-      requiredErrorMessage: "Major is required"
+      half: true, 
     },
     {
       name: "degree",
