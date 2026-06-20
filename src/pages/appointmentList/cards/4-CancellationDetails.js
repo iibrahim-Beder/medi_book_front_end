@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export default function CancellationDetails({ cancellation }) {
+export default function CancellationDetails({ time, cancelledBy, financialStatus, reason }) {
   const { t } = useTranslation();
 
   return (
@@ -9,28 +9,28 @@ export default function CancellationDetails({ cancellation }) {
       <div className="dc-user-info" style={{ float: "none" }}>
         <div className="dc-title">
           <h4>{t("cancellation.time")}:</h4>
-          <span>{cancellation.time}</span>
+          <span>{time || "—"}</span>
         </div>
       </div>
 
       <div className="dc-user-info mt-0">
         <div className="dc-title">
           <h4>{t("cancellation.by")}:</h4>
-          <span>{cancellation.cancelledBy}</span>
+          <span>{cancelledBy || "—"}</span>
         </div>
       </div>
 
       <div className="dc-user-info">
         <div className="dc-title">
           <h4>{t("cancellation.financialStatus")}:</h4>
-          <span>{cancellation.financialStatus}</span>
+          <span>{financialStatus || "—"}</span>
         </div>
       </div>
 
       <div className="dc-user-info">
         <div className="dc-title">
           <h4>{t("cancellation.reason")}:</h4>
-          <span>{cancellation.reason || "—"}</span>
+          <span>{reason || "—"}</span>
         </div>
       </div>
     </div>

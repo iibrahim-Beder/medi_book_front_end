@@ -88,7 +88,7 @@ function UserMenu({ setShowPopupClose }) {
             </li>
 
             <li>
-              <Link to="/appointments">
+              <Link to="/time-slots">
                 <i>
                   <SlCalender className="icon" />
                 </i>

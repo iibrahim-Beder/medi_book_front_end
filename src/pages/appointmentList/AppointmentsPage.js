@@ -1,7 +1,6 @@
 import { Appointments } from "./cards/AppointmentsOverCard";
 import AppointmentsStatusCard from "./cards/AppointmentsStatusCard";
 import AppointmentsTypeCard from "./cards/AppointmentsTypeCard";
-import MainAppointtmentList2 from "./MainAppointmentList";
 
 export default function AppointmentsPage() {
   return (
@@ -13,9 +12,6 @@ export default function AppointmentsPage() {
       </div>
       <div className="col-lg-6 col-md-12">
       <AppointmentsStatusCard />
-        </div>
-        <div style={{padding:"0 16px"}} >
-        <MainAppointtmentList2 />
         </div>
     </div>
     </div>

@@ -27,7 +27,7 @@ import { audioService } from "./pages/notifications/audioService";
 import { signalRService } from "./api/chat/ChatSignalRService";
 import { useMessageListener } from "./pages/messages/hooks/useMessageListener";
 import ReviewsPage from "./pages/reviews/ReviewsPage";
-import AppointmentsPage from "./pages/appointmentList/AppointmentsPage";
+import MainAppointmentList from "./pages/appointmentList/MainAppointmentList";
 import WeeklyTimeSlots from "./pages/making-slots/WeeklyTimeSlot";
 import ScrollToTop from "./context/ScrollToTop";
 import Authentication from "./pages/login/Authentication";
@@ -114,7 +114,7 @@ if(isCurrentStepLoading ){
     return <Loader/>
   }
   if(currentStepError ||isCurrentStepError ){
-    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} nameVariable={true} error={currentStepError}/>
+    // return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} nameVariable={true} error={currentStepError}/>
   }
   return (
     <div className="dc-userlogin">
@@ -156,8 +156,8 @@ if(isCurrentStepLoading ){
                 <Route path="how-v1" element={<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                     <Route path="dashboard" element={ completeRegistration ? <DashboardMain /> :<DashboardUnCompleteRegistration  setOpenStepRegister={setOpenStepRegister}/>} />
                     <Route
-                      path="appointments"
-                      element={<AppointmentsPage />}
+                      path="time-slots"
+                      element={<MainAppointmentList />}
                     />
                     <Route
                       path="appointment-location"

@@ -12,10 +12,12 @@ export default function DataEmptyComponent({
   btnText = "Add New",
   onClick = null,
   containerStyle = {},
+  imgDate = false, 
 }) {
+  const imgSrc = imgDate? "/images/dashboard/dateBook.png" :  "/images/dashboard/dataEmpty.png";
   return (
     <div className="empty-data-container" style={containerStyle}>
-      <img style={imgStyle} src="/images/dashboard/dataEmpty.png" alt="Error" />
+      <img style={imgStyle} src={imgSrc} alt="Error" />
       <div className="text-center text-danger mt-4">
         <h3 style={{ fontWeight: "500", color: "#008ce9" }}>{title}</h3>
         <h5 style={{ fontWeight: "500" }}>{text}</h5>

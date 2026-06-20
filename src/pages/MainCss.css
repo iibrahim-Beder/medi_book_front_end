@@ -223,6 +223,9 @@ li {
 }
 /* Shift Manegar end*/
 @media (max-width: 692px){
+  .dc-user-detail-skeleton{
+    flex-direction: column;
+  }
   .breakdiv{
     flex-direction: column;
   }
@@ -1899,6 +1902,7 @@ display: none;
 }
 
 .analytics-tab {
+  color: var(--terthemecolor);
   height: 45px;
   border: 1px solid #e5e7eb;
   border-radius: 9px;

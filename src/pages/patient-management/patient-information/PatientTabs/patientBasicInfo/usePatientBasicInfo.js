@@ -38,13 +38,13 @@ skip: !patientId || isNaN(patientId),
 
 
 
-export const patientSkeletonTheme = (longLoading) => {
+export const patientSkeletonTheme = (longLoading ,padding , showLastCard=true) => {
   return (
   <>
-        <div className="dc-dashboardbox cardInfo PatientBasicInfo" style={{ padding: '1.5rem' }}>
+        <div className="dc-dashboardbox cardInfo PatientBasicInfo" style={{margin : padding ? 0 : "", padding: '1.5rem' }}>
       <SkeletonTheme baseColor="#e3e3e3" highlightColor="#f7f7f7">
         {/* <div className="dc-dashboardbox cardInfo PatientBasicInfo" style={{ padding: '1.5rem' }}> */}
-          <div className="dc-user-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="dc-user-header" style={{ padding:padding , display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Skeleton  width={120} height={120}  />
   
             <div style={{ flex: 1 }}>
@@ -55,7 +55,7 @@ export const patientSkeletonTheme = (longLoading) => {
   
           <div className="dc-user-details" style={{ paddingTop: '1.5rem' }}>
             {[...Array(4)].map((_, i) => (
-              <div key={i} style={{ marginBottom: '1.2rem' , display: 'flex', justifyContent: 'space-between'}}>
+              <div className="dc-user-detail-skeleton" key={i} style={{ marginBottom: '1.2rem' , display: 'flex', justifyContent: 'space-between'}}>
                 <div style={{width: '50%'}}>
                 <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
                 <Skeleton height={18} width={ i === 2 ? "80%" : "50%"}/>
@@ -68,6 +68,7 @@ export const patientSkeletonTheme = (longLoading) => {
               </div>
             ))}
   
+           {showLastCard &&<>
             <hr style={{ margin: '1.5rem 0', opacity: 0.4 }} />
   
                {[...Array(2)].map((_, i) => (
@@ -84,8 +85,9 @@ export const patientSkeletonTheme = (longLoading) => {
               </div>
             ))}
             <hr style={{ margin: '1.5rem 0', opacity: 0.4 }} />
-  
-            <div style={{  display: 'flex', justifyContent: 'space-between'}}>
+           
+           
+       <div style={{  display: 'flex', justifyContent: 'space-between'}}>
         <div style={{width: '50%'}}>
                 <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
                 <Skeleton height={18} width= "80%" />
@@ -94,6 +96,8 @@ export const patientSkeletonTheme = (longLoading) => {
                 <Skeleton height={14} width="40%" style={{ marginBottom: '4px' }} />
                 <Skeleton height={18} width="50%" />
                 </div></div>
+           </>  
+                }
   
             {longLoading && (
               <div style={{ textAlign: 'center', marginTop: '2rem', color: '#555', fontSize: '14px' }}>

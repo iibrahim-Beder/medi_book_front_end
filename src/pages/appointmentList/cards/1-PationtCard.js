@@ -4,7 +4,7 @@ import { BsFillChatTextFill } from "react-icons/bs";
 import { BsWechat } from "react-icons/bs";
 
 
-export default function PationtCard({userName,userImg,userType,userLocation,chatId,patientId}) {
+export default function PationtCard({userName,userImg,userType,userLocation,chatId,patientId ,status ,time, spaces}) {
     return (
       <div className="dc-user-header">
         <div>
@@ -28,9 +28,9 @@ export default function PationtCard({userName,userImg,userType,userLocation,chat
 
         </div>
         <SingleSlot
-          time="10:30 am"
-          spaces={2}
-          status="pending"
+          time={time}
+          spaces={spaces}
+          status={status}
           onClick={() => console.log("Slot clicked")}
         />
       </div>
