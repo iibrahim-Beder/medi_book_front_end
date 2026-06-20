@@ -4,6 +4,7 @@ import Field from "../../ui/form-fields/Field";
 import SelectField from "../../ui/form-fields/SelectField";
 import { useStep1PersonalInfo } from "../../doctor-registration/hooks/useStep1BasicInfo";
 import Loader from "../../shared/Loader";
+import FileField from "../../ui/form-fields/FileField";
 
 const Yourdetails = ({ isNew = false }) => {
   const { t } = useTranslation();
@@ -116,6 +117,18 @@ const Yourdetails = ({ isNew = false }) => {
               className="form-control"
               placeholder={t("yourDetails.phone")}
             />
+          </div>
+          <div className="form-group">
+          <FileField
+            label={t("Change your image")}
+            name="imagePath"
+            accept="image/*"
+            onChange={handleInputChange}
+            hint={t("personalInfo.licenseImage.hint")}
+            error={errors?.imagePath}
+            value={formData.imagePath}
+            multiple={false}
+          />
           </div>
         </fieldset>
 

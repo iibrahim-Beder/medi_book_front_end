@@ -238,7 +238,6 @@ const handleInputBlur = () => {
                 transform: "translateY(-50%)",
                 color: "#012047",
                 cursor: disabled ? "not-allowed" : "pointer",
-                zIndex: 2,
                 opacity: disabled ? 0.5 : 1
               }}
               size={20}

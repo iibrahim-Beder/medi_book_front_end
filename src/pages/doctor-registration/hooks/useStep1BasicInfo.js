@@ -27,7 +27,6 @@ export const useStep1PersonalInfo = (isNew) => {
     licenseNumber: "",
     phoneNumber: "",
     imagePath: "",
-    licenseImage: null,
   });
 
   const [errors, setErrors] = useState({});
@@ -52,7 +51,6 @@ export const useStep1PersonalInfo = (isNew) => {
         licenseNumber: apiData.licenseNumber || "",
         phoneNumber: apiData.phoneNumber || "",
         imagePath: apiData.imagePath || "",
-        licenseImage: null,
       });
     }
   }, [isNew, fetchedData]);
@@ -124,22 +122,22 @@ const handleInputChange = (e) => {
     const loader = toast.loading(t("loading..."));
 
     try {
-      console.log("formData", formData);
       if(isNew){
        const  payload = {
-          doctorId,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          dateOfBirth: formData.dateOfBirth
+          DoctorId: doctorId,
+          FirstName: formData.firstName,
+          LastName: formData.lastName,
+          DateOfBirth: formData.dateOfBirth
           ? new Date(formData.dateOfBirth).toISOString()
           : null,
-          gender: formData.gender==="Male" ? 0 : 1,
-          licenseNumber: formData.licenseNumber,
-          phoneNumber: formData.phoneNumber,
-          // imagePath: formData.imagePath || "",
+          Gender: formData.gender==="Male" ? 0 : 1,
+          LicenseNumber: formData.licenseNumber,
+          PhoneNumber: formData.phoneNumber,
+          Photo: formData.imagePath || "",
         };
-        console.log("payload", payload);
-          const response =await addDoctorBasicInfo(payload).unwrap()
+
+
+        const response =await addDoctorBasicInfo(payload).unwrap()
            if (response.succeeded) {
         toast.success(t("Personal Info Added Successfully"));
         return true;
@@ -169,6 +167,11 @@ const handleInputChange = (e) => {
     }
   };
 
+      const doctorImageSrc =
+      formData?.imagePath
+        ? `${process.env.REACT_APP_API_URL}${formData.imagePath}`
+        : "/images/avt/doctor-imge-avt.png" || "/images/avt/doctor-imge-avt.png";
+
   return {
     formData,
     errors,
@@ -177,6 +180,7 @@ const handleInputChange = (e) => {
     handleSubmit,
     refetch, 
     error,
+    doctorImageSrc,
   };
 };
 
@@ -188,22 +192,25 @@ export const buildPayload = (original, updated) => {
   console.log("=======original", original, "updated", updated);
 
   if (updated.dateOfBirth.split("T")[0] !==  original.dateOfBirth.split("T")[0]) {
-    payload.dateOfBirth = updated.dateOfBirth || null;
+    payload.DateOfBirth = updated.dateOfBirth || null;
   }
   if (updated.firstName !== original.firstName) {
-    payload.firstName = updated.firstName || null;
+    payload.FirstName = updated.firstName || null;
   }
   if ((updated.gender )!== (original.gender=== "Male"? 0 : 1)) {
-    payload.gender = updated.gender ;
+    payload.Gender = updated.gender ;
   }
   if (updated.lastName !== original.lastName) {
-    payload.lastName = updated.lastName|| null;
+    payload.LastName = updated.lastName|| null;
   }
   if (updated.licenseNumber !== original.licenseNumber) {
-    payload.licenseNumber = updated.licenseNumber || null;
+    payload.LicenseNumber = updated.licenseNumber || null;
   }
   if (updated.phoneNumber !== original.phoneNumber) {
-    payload.phoneNumber = updated.phoneNumber || null;
+    payload.PhoneNumber = updated.phoneNumber || null;
+  }
+  if(updated.imagePath !== original.imagePath) {
+    payload.Photo = updated.imagePath || null;
   }
 console.log("payload======", payload,(updated.gender ),(( original.gender=== "Male"? 0 : 1)));
   return payload;

@@ -53,6 +53,7 @@ const CustomAccordion2 = memo(
     isFetching = false,
     // New: injected editableList hook
     editableList,
+    titileDelete = "Delete",
   }) => {
     const { t } = useTranslation();
     const [deletePopup, setDeletePopup] = React.useState({
@@ -442,8 +443,7 @@ const CustomAccordion2 = memo(
         {deletePopup.show && (
           <PopupMessage
             type="danger"
-            title="Delete Item"
-            message={`Are you sure you want to delete "${deletePopup.itemName.slice(0, 120)}${
+ش           message={`Are you sure you want to delete "${deletePopup.itemName.slice(0, 120)}${
               deletePopup.itemName.length > 120 ? "..." : ""
             }"? This action cannot be undone.`}
             buttons={[

@@ -46,9 +46,10 @@ const CustomAccordion = memo(({
  handleToggle,
  applyRule,
  buttonsAvailable = true,
- isUpdateOut = false
- ,MainHint="",
+ isUpdateOut = false,
+ MainHint="",
  isFetching,
+ titileDelete = "Delete",
  useId = false
 }) => {
   const { t } = useTranslation();
@@ -477,7 +478,7 @@ const handleFieldChange = (index, field, value) => {
       {deletePopup.show && (
         <PopupMessage
           type="danger"
-          title="Delete Item"
+          title={t( `${titileDelete}`)}
           message={`Are you sure you want to delete "${deletePopup.itemName.slice(0, 120) + (deletePopup.itemName.length > 120 ? "..." : "")}"? This action cannot be undone.`}
           buttons={[
             {

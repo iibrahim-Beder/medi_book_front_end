@@ -6,7 +6,6 @@ const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_BASE_URL || 'https://finds-sellers-relevant-somebody.trycloudflare.com/Api/v1',
   prepareHeaders: (headers) => {
     console.log("== api requst==");
-    headers.set('Content-Type', 'application/json');
     headers.set('Accept', 'application/json');
     headers.set('ngrok-skip-browser-warning', 'true');
     

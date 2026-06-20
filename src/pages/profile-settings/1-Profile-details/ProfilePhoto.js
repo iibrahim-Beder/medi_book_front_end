@@ -2,22 +2,22 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { useStep1PersonalInfo } from "../../doctor-registration/hooks/useStep1BasicInfo";
 
 const ProfilePhoto = () => {
   const { t } = useTranslation();
-
+    const {
+      doctorImageSrc
+    } = useStep1PersonalInfo(false);
   return (
     <div className="dc-profilephoto dc-tabsinfo">
       <div className="dc-tabscontenttitle">
         <h3>{t("profilePhoto.title")}</h3>
       </div>
       <div className="dc-profilephotocontent">
-        <div className="dc-description">
-          <p>{t("profilePhoto.description")}</p>
-        </div>
         <form className="dc-formtheme dc-formprojectinfo dc-formcategory">
           <fieldset>
-            <div className="form-group form-group-label">
+            {/* <div className="form-group form-group-label">
               <div className="dc-labelgroup">
                 <label htmlFor="filep">
                   <span className="dc-btn">{t("profilePhoto.selectFiles")}</span>
@@ -28,10 +28,10 @@ const ProfilePhoto = () => {
                   {t("profilePhoto.uploading")} <i className="fa fa-spinner fa-spin"></i>
                 </em>
               </div>
-            </div>
+            </div> */}
             <div className="form-group">
               <ul className="dc-attachfile dc-attachfilevtwo">
-                <li className="dc-uploadingholder dc-companyimg-uploading">
+                {/* <li className="dc-uploadingholder dc-companyimg-uploading">
                   <div className="dc-uploadingbox">
                     <figure>
                       <img src="images/company/img-07.jpg" alt="Profile" />
@@ -47,27 +47,27 @@ const ProfilePhoto = () => {
                       </em>
                     </div>
                   </div>
-                </li>
+                </li> */}
 
                 <li className="dc-uploadingholder dc-companyimg-user">
                   <div className="dc-uploadingbox">
                     <figure>
-                      <img src="images/company/img-08.jpg" alt="Profile" />
+                      <img src={doctorImageSrc} alt="Profile" />
                     </figure>
-                    <div className="dc-uploadingbar dc-uploading">
-                      <span className="uploadprogressbar"></span>
+                    <div className="dc-uploadingbar">
+                      {/* <span className="uploadprogressbar"></span> */}
                       <span>{t("profilePhoto.fileName")}</span>
-                      <em>
+                      {/* <em>
                         {t("profilePhoto.fileSize")}{" "}
                         <a href="#">
                           <FaTimes />
                         </a>
-                      </em>
+                      </em> */}
                     </div>
                   </div>
                 </li>
 
-                <li className="dc-uploadingholder">
+                {/* <li className="dc-uploadingholder">
                   <div className="dc-uploadingbox">
                     <div className="dc-designimg">
                       <input
@@ -93,7 +93,7 @@ const ProfilePhoto = () => {
                       </em>
                     </div>
                   </div>
-                </li>
+                </li> */}
               </ul>
             </div>
           </fieldset>

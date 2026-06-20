@@ -66,17 +66,14 @@ const PatientNotes = ({ patientId = 4, isMobile = false }) => {
         />
       </div>
       <div className="table-card flex-grow-1">
-      {localNotes.length === 0 ? (
+      {localNotes.length === 0 && !isFetching ? (
         isFilterEmpty ? (
           <DataEmptyComponent imgStyle={{ maxWidth: "300px" }} title="No Notes Found" text="No Notes Found"/>
         ) : (
           <DataEmptyComponent
            imgStyle={{ maxWidth: "200px" }} title="No Notes Found" text="No Notes Found Based on Filters" 
                 btnText="Clear Filters"
-                onClick={() => {
-                  handleResetFilters();
-                  handleSearch();
-                }}
+                onClick={handleResetFilters}
           />
         )
       ) : (

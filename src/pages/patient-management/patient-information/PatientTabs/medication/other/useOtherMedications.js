@@ -106,8 +106,10 @@ export const useOtherMedications = (patientId) => {
     medicationId: "",
     medicationName: "",
     medicationCategory: "",
-    startDate: new Date(),
-    endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+    startDate: new Date().toISOString(),
+    endDate: new Date(
+      new Date().setDate(new Date().getDate() + 7)
+    ).toISOString(),
     isActive: true,
   };
 

@@ -7,6 +7,7 @@ import Loader from "../../shared/Loader";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import ErrorLoading from "../../shared/ErrorLoading";
+import { useStep1PersonalInfo } from "../../doctor-registration/hooks/useStep1BasicInfo";
 
 export default function ChatMessages() {
     const selectedChat = useSelector((state) => state.chats.selectedChatId);
@@ -24,6 +25,8 @@ export default function ChatMessages() {
     messagesIsError,
     refetchMessages,
   } = useMessages();
+
+    const { doctorImageSrc } = useStep1PersonalInfo(false);
 
   useEffect(() => {
         if(window.innerWidth >= 992){
@@ -88,7 +91,7 @@ export default function ChatMessages() {
                   img={
                     showAvatar
                       ? message.isMine
-                        ? "/images/avt/doctor-imge-avt.png"
+                        ? doctorImageSrc
                         : "/images/avt/patient-avt.png"
                       : null
                   }

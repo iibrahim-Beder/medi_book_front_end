@@ -13,10 +13,13 @@ export default function ConversationList() {
     searchTerm,
     handleSearch,
     loadMore,
-    
-
   } = useConversations();
-    console.log(" from ConversationList isError",isError,"isLoading",isLoading);
+  console.log(
+    " from ConversationList isError",
+    isError,
+    "isLoading",
+    isLoading,
+  );
 
   const [inputValue, setInputValue] = useState(searchTerm);
 
@@ -31,7 +34,11 @@ export default function ConversationList() {
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    if (scrollHeight - scrollTop <= clientHeight + 50 && pagination.hasMore && !isLoading) {
+    if (
+      scrollHeight - scrollTop <= clientHeight + 50 &&
+      pagination.hasMore &&
+      !isLoading
+    ) {
       loadMore();
     }
   };
@@ -49,7 +56,11 @@ export default function ConversationList() {
               // value={inputValue}
               // onChange={(e) => setInputValue(e.target.value)}
             />
-            <button type="submit" className="dc-searchgbtn" disabled={isSearching}>
+            <button
+              type="submit"
+              className="dc-searchgbtn"
+              disabled={isSearching}
+            >
               <IoSearchOutline />
             </button>
           </div>
@@ -74,11 +85,13 @@ export default function ConversationList() {
               img={chat.patientAvatar || "/images/avt/patient-avt.png"}
               name={chat.patientName.trim() || "patient un name"}
               lastMsg={chat?.lastMessage || "No messages yet"}
-              isOnline={chat.isOnline} 
-              lastSeen={chat.lastSeen} 
+              isOnline={chat.isOnline}
+              lastSeen={chat.lastSeen}
               lastMessageTime={chat.lastMessageTime}
               lastMessageIsMine={chat.lastMessageIsMine}
-              messeagesDotNotification={chat.unreadCount > 0 ? chat.unreadCount : undefined}
+              messeagesDotNotification={
+                chat.unreadCount > 0 ? chat.unreadCount : undefined
+              }
               status={chat.status}
               isLastMessageRead={chat.isLastMessageRead}
             />

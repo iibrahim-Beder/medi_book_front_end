@@ -37,6 +37,7 @@ const {stepCompleted}=useDoctorRegistration();
     const {
       formData,
       isLoading,
+      doctorImageSrc
     } = useStep1PersonalInfo(false);
       const email = useSelector((state) => state.auth.email);
   const canAccess = (requiredSteps = []) => {
@@ -99,7 +100,7 @@ let iconSize=20;
           </figure>
           <div className="dc-companysinfo">
             <figure>
-              <img src="/images/avt/doctor-imge-avt.png" alt="Badge" />
+              <img src={doctorImageSrc} alt="Badge" />
             </figure>
             <div className="dc-title">
               <h2>

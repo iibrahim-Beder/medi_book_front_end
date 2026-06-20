@@ -25,7 +25,7 @@ function UserMenu({ setShowPopupClose }) {
   const { t } = useTranslation();
   const { darkMode, toggleDarkMode } = useTheme();
 
-  const { formData, isLoading } = useStep1PersonalInfo(false);
+  const { formData, isLoading ,doctorImageSrc} = useStep1PersonalInfo(false);
 
   const toggleMenu = () => {
     if (window.innerWidth < 992) {
@@ -66,7 +66,7 @@ function UserMenu({ setShowPopupClose }) {
         }}
       >
         <figure className="dc-userimg">
-          <img src="/images/avt/doctor-imge-avt.png" alt="user" />
+          <img src={ doctorImageSrc} alt="doctorImage" />
         </figure>
 
         <div className="dc-username" onClick={toggleMenu}>

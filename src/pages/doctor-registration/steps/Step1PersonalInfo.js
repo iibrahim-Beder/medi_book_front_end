@@ -148,12 +148,14 @@ const Step1PersonalInfo = forwardRef(
           </div>
               <FileField
                 label={t("Select your image")}
-                name="licenseImage"
+                name="imagePath"
                 accept="image/*"
                 onChange={handleInputChange}
                 hint={t("personalInfo.licenseImage.hint")}
-                error={errors?.licenseImage}
+                error={errors?.imagePath}
                 forceShowError={forceShowError}
+                value={formData.imagePath}
+                multiple={false}
               />
         </fieldset>
       </form>
