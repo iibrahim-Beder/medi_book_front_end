@@ -12,7 +12,7 @@ const statusColors = {
   pending: "#247cff7b", // blue
 };
 
-const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedSlot, setSelectedSlot }) => {
+const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedSlotId, setSelectedSlot }) => {
   const { t } = useTranslation();
 
   return (
@@ -54,7 +54,7 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
                   onClick={() => setSelectedSlot(slot)}
                   style={{
                     border:
-                      selectedSlot?.slotId === slot?.slotId ? "1px solid var(--blue)" :
+                      selectedSlotId === slot?.slotId ? "1px solid var(--blue)" :
                       filter === "All"
                         ? ""
                         : `0.5px solid ${

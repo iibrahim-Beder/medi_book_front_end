@@ -4,8 +4,9 @@ import { Button, Card } from "react-bootstrap";
 import { MdExpandMore } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
 import { formatDate } from "../../shared/utils";
+import DataEmptyComponent from "../../shared/DataEmptyComponent";
 
-const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
+const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, handleAddDiagnosis , t }) => {
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
   const toggleDescription = (diagnosisId) => {
@@ -46,11 +47,15 @@ const DiagnosisList = ({ isLoading, currentItems, onEditDiagnosis, t }) => {
 
   if (currentItems.length === 0) {
     return (
-      <Card className="text-center py-5">
-        <Card.Body>
-          <p className="text-muted">{t("No diagnoses found")}</p>
-        </Card.Body>
-      </Card>
+      <div className="table-card">
+      <DataEmptyComponent
+        text={t("No Diagnosis Found for this patient on this booking")}
+        title={t("No Diagnosis Found")}
+        imgStyle={{ width: "100%", maxWidth: "300px" }}
+        onClick={handleAddDiagnosis}
+        btnText={t("Add Diagnosis")}
+      />
+      </div>
     );
   }
 

@@ -4,177 +4,200 @@ import {
   useAddPatientDiagnosisMutation,
   useUpdatePatientDiagnosisMutation,
   useDeletePatientDiagnosisMutation,
-  useGetPatientDiagnosesQuery
+  useGetPatientDiagnosesQuery,
 } from "../../../api/PatientProfile/patientDiagnosesApi";
 import { removeNewChildren, transformDiagnosisData } from "./diagnosisUtils";
 import { buildDiagnosisUpdatePayload } from "./handlerUtils";
 import { BsFillInfoCircleFill } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const PATIENT_ID = 4;
 
 export const useDiagnosisCRUD = (setCurrentItems) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const doctorId = useSelector((state) => state.auth.doctorId);
+  const { appointmentId } = useParams();
+
   const [deletePopup, setDeletePopup] = useState({
     show: false,
     diagnosisId: null,
-    diagnosisName: ""
+    diagnosisName: "",
   });
-    const {
-      data: diagnosesData,
-      isLoading,
-      error,
-      isFetching,
-      refetch
-    } = useGetPatientDiagnosesQuery({
-      patientId: PATIENT_ID,
-      pageNumber: currentPage,
-      pageSize: rowsPerPage
-    });
+  const {
+    data: diagnosesData,
+    isLoading,
+    error,
+    isFetching,
+    refetch,
+  } = useGetPatientDiagnosesQuery({
+    doctorId: doctorId,
+    bookingId: Number(appointmentId),
+    patientId: PATIENT_ID,
+    pageNumber: currentPage,
+    pageSize: rowsPerPage,
+  });
   // API Mutations
-  const [addDiagnosis, { isLoading: isAdding }] = useAddPatientDiagnosisMutation(); 
-  const [updateDiagnosis, { isLoading: isUpdating }] = useUpdatePatientDiagnosisMutation();
-  const [deleteDiagnosis, { isLoading: isDeleting }] = useDeletePatientDiagnosisMutation();
+  const [addDiagnosis, { isLoading: isAdding }] =
+    useAddPatientDiagnosisMutation();
+  const [updateDiagnosis, { isLoading: isUpdating }] =
+    useUpdatePatientDiagnosisMutation();
+  const [deleteDiagnosis, { isLoading: isDeleting }] =
+    useDeletePatientDiagnosisMutation();
 
-
- const handleSaveDiagnosis = useCallback(async (diagnosisData) => {
-  console.log('Saving diagnosis data:', diagnosisData);
-  if (isAdding || isUpdating ) return;
-  if (!diagnosisData) {
-    console.error('No diagnosis data provided');
-    toast.error("No diagnosis data to save");
-    return false;
-  }else{
-    // if(!diagnosisData.diagnosisName) {toast.error('Diagnosis name is required.') ;return false ;};
-  }
-  const loadingToast = toast.loading('Saving...');
-  if (diagnosisData.isNew) {
-    console.log('Sending add data:', diagnosisData);
-     try {
-    const result = await addDiagnosis({
-      patientId: PATIENT_ID, 
-      diagnosisData: diagnosisData 
-    }).unwrap();
-
-            console.log("Add Diagnosis Result:",result);
-    
-    if (result?.succeeded) {
-      toast.success("Diagnosis saved successfully");
-      toast.dismiss(loadingToast);
-        
-        if (result?.meta?.hasRejections) {
-          const rejectedC = result?.meta?.results?.PatientMedicalConditionLinks.rejected || [];
-        rejectedC.forEach(item => {
-          const rejectedMed = (diagnosisData.conditions || []).find(
-            med => med.medicalCondition.id === item.itemId
-          );
-      
-          const medName = rejectedMed ? rejectedMed.medicalCondition.name : "therapy medical condition";
-      
-          toast(
-            `${medName}, failed: ${item.reason}`,
-            {
-              icon: <BsFillInfoCircleFill style={{ fontSize: "large" }} />,
-              duration: 15000,
-            }
-          );
-        });
-
-           const prescriptions = diagnosisData?.prescriptions||[];
-          //  const prescriptions = prescriptionData || [];
-                const rejectedM = result?.meta?.results?.PrescribedMedications.rejected || [];
-              
-                if (result?.meta?.hasRejections) {
-                    const allRecipes = prescriptions.flatMap(p => p.recipes || []);
-                    console.log(  "diagnosisData",diagnosisData, "allRecipes", allRecipes, "prescriptions", prescriptions,);
-                                  
-                    rejectedM.forEach(item => {
-                      const rejectedMed = allRecipes.find(
-                        med => med.medication.id === item.itemId
-                      );
-                                
-                  const medName = rejectedMed ? rejectedMed.medication.name : "therapy medication";
-              
-                  toast(
-                    `${medName}, failed: ${item.reason}`,
-                    {
-                      icon: <BsFillInfoCircleFill style={{ fontSize: "large" }} />,
-                      duration: 15000,
-                    }
-                  );
-                });
-              
-              }
-      
-      }
-          
-      return true;
-    } else {
-      console.log("Failed to save diagnosis:", result);
-      toast.error(result.message || "Failed to save diagnosis");
-      toast.dismiss(loadingToast);
-      return false;
-    }
-  } catch (error) {
-    console.log("Error saving diagnosis:", error);
-    toast.error(error?.data?.message || "Error saving diagnosis");
-    toast.dismiss(loadingToast);
-    return false;
-  }
-    
-  }else
-    {
-      const originalRecord = diagnosesData?.data?.find(
-        r => r.diagnosisId === diagnosisData.diagnosisId
-      );
-      // console.log("diagnosesData",diagnosesData,'===originalRecord:', originalRecord);
-      if (!originalRecord) {
-        console.error('Original record not found');
-        toast.error('error saving diagnosis');
-        toast.dismiss(loadingToast);
+  const handleSaveDiagnosis = useCallback(
+    async (diagnosisData) => {
+      console.log("Saving diagnosis data:", diagnosisData);
+      if (isAdding || isUpdating) return;
+      if (!diagnosisData) {
+        console.error("No diagnosis data provided");
+        toast.error("No diagnosis data to save");
         return false;
+      } else {
+        // if(!diagnosisData.diagnosisName) {toast.error('Diagnosis name is required.') ;return false ;};
       }
-        const diagnosisPayload = buildDiagnosisUpdatePayload(originalRecord, diagnosisData);
-        // console.log('===diagnosisPayload:', diagnosisPayload);
-     if (!Object.keys(diagnosisPayload).length) {
-            toast.dismiss(loadingToast);
-            toast("No changes detected");
-            return true;
-          }
-      try {
-        let result;
-          result = await updateDiagnosis({
-          diagnosisId: diagnosisData.diagnosisId,
-          patientId: PATIENT_ID,
-          updates: diagnosisPayload
-        }).unwrap();
+      const loadingToast = toast.loading("Saving...");
+      if (diagnosisData.isNew) {
+        console.log("Sending add data:", diagnosisData);
+        try {
+          const result = await addDiagnosis({
+            patientId: PATIENT_ID,
+            diagnosisData: diagnosisData,
+          }).unwrap();
 
-        if (result?.succeeded) {
-          toast.success("Diagnosis updated successfully");
-          toast.dismiss(loadingToast);
-                   
-          return true;
-        } else {
-          toast.error(result.message || "Failed to update diagnosis");
+          console.log("Add Diagnosis Result:", result);
+
+          if (result?.succeeded) {
+            toast.success("Diagnosis saved successfully");
+            toast.dismiss(loadingToast);
+
+            if (result?.meta?.hasRejections) {
+              const rejectedC =
+                result?.meta?.results?.PatientMedicalConditionLinks.rejected ||
+                [];
+              rejectedC.forEach((item) => {
+                const rejectedMed = (diagnosisData.conditions || []).find(
+                  (med) => med.medicalCondition.id === item.itemId,
+                );
+
+                const medName = rejectedMed
+                  ? rejectedMed.medicalCondition.name
+                  : "therapy medical condition";
+
+                toast(`${medName}, failed: ${item.reason}`, {
+                  icon: <BsFillInfoCircleFill style={{ fontSize: "large" }} />,
+                  duration: 15000,
+                });
+              });
+
+              const prescriptions = diagnosisData?.prescriptions || [];
+              //  const prescriptions = prescriptionData || [];
+              const rejectedM =
+                result?.meta?.results?.PrescribedMedications.rejected || [];
+
+              if (result?.meta?.hasRejections) {
+                const allRecipes = prescriptions.flatMap(
+                  (p) => p.recipes || [],
+                );
+                console.log(
+                  "diagnosisData",
+                  diagnosisData,
+                  "allRecipes",
+                  allRecipes,
+                  "prescriptions",
+                  prescriptions,
+                );
+
+                rejectedM.forEach((item) => {
+                  const rejectedMed = allRecipes.find(
+                    (med) => med.medication.id === item.itemId,
+                  );
+
+                  const medName = rejectedMed
+                    ? rejectedMed.medication.name
+                    : "therapy medication";
+
+                  toast(`${medName}, failed: ${item.reason}`, {
+                    icon: (
+                      <BsFillInfoCircleFill style={{ fontSize: "large" }} />
+                    ),
+                    duration: 15000,
+                  });
+                });
+              }
+            }
+
+            return true;
+          } else {
+            console.log("Failed to save diagnosis:", result);
+            toast.error(result.message || "Failed to save diagnosis");
+            toast.dismiss(loadingToast);
+            return false;
+          }
+        } catch (error) {
+          console.log("Error saving diagnosis:", error);
+          toast.error(error?.data?.message || "Error saving diagnosis");
           toast.dismiss(loadingToast);
           return false;
         }
-      }   
-     catch (error) {
-      console.log('Error saving diagnosis:', error);
-      toast.error(error?.message || "Error saving diagnosis");
-      toast.dismiss(loadingToast);
-      return false;
-    }
-    }
-  }, [addDiagnosis, updateDiagnosis,isAdding,isUpdating,diagnosesData]);
+      } else {
+        const originalRecord = diagnosesData?.data?.find(
+          (r) => r.diagnosisId === diagnosisData.diagnosisId,
+        );
+        // console.log("diagnosesData",diagnosesData,'===originalRecord:', originalRecord);
+        if (!originalRecord) {
+          console.error("Original record not found");
+          toast.error("error saving diagnosis");
+          toast.dismiss(loadingToast);
+          return false;
+        }
+        const diagnosisPayload = buildDiagnosisUpdatePayload(
+          originalRecord,
+          diagnosisData,
+        );
+        // console.log('===diagnosisPayload:', diagnosisPayload);
+        if (!Object.keys(diagnosisPayload).length) {
+          toast.dismiss(loadingToast);
+          toast("No changes detected");
+          return true;
+        }
+        try {
+          let result;
+          result = await updateDiagnosis({
+            diagnosisId: diagnosisData.diagnosisId,
+            patientId: PATIENT_ID,
+            updates: diagnosisPayload,
+          }).unwrap();
+
+          if (result?.succeeded) {
+            toast.success("Diagnosis updated successfully");
+            toast.dismiss(loadingToast);
+
+            return true;
+          } else {
+            toast.error(result.message || "Failed to update diagnosis");
+            toast.dismiss(loadingToast);
+            return false;
+          }
+        } catch (error) {
+          console.log("Error saving diagnosis:", error);
+          toast.error(error?.message || "Error saving diagnosis");
+          toast.dismiss(loadingToast);
+          return false;
+        }
+      }
+    },
+    [addDiagnosis, updateDiagnosis, isAdding, isUpdating, diagnosesData],
+  );
 
   const handleAddDiagnosis = useCallback(() => {
     const newDiagnosis = {
       id: `temp-${Date.now()}`,
       diagnosisId: null,
+      bookingId: Number(appointmentId),
       diagnosisName: "",
       symptomsDescription: "",
       description: "",
@@ -185,18 +208,21 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
       isNew: true,
       isExpanded: true,
     };
-   
+
     setEditingDiagnosis(newDiagnosis);
     setSelectedDiagnosis(newDiagnosis);
   }, []);
 
-  const handleUpdateDiagnosis = useCallback((field, value) => {
-    if (!editingDiagnosis) return;
-    setEditingDiagnosis(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  }, [editingDiagnosis]);
+  const handleUpdateDiagnosis = useCallback(
+    (field, value) => {
+      if (!editingDiagnosis) return;
+      setEditingDiagnosis((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    },
+    [editingDiagnosis],
+  );
 
   const handleEditDiagnosis = useCallback((diagnosis) => {
     // console.log('Opening modal with already transformed diagnosis:', diagnosis);
@@ -208,7 +234,7 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
     setDeletePopup({
       show: true,
       diagnosisId,
-      diagnosisName
+      diagnosisName,
     });
   }, []);
 
@@ -216,25 +242,28 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
     setDeletePopup({
       show: false,
       diagnosisId: null,
-      diagnosisName: ""
+      diagnosisName: "",
     });
   }, []);
 
   const handleConfirmDelete = useCallback(async () => {
-    console.log('isDeleting:', isDeleting);
-    if(isDeleting) return;
+    console.log("isDeleting:", isDeleting);
+    if (isDeleting) return;
     if (deletePopup.diagnosisId) {
-      const loadingToast = toast.loading('Deleting...');
+      const loadingToast = toast.loading("Deleting...");
       try {
-        if (deletePopup.diagnosisId.toString().startsWith('temp-')) {
+        if (deletePopup.diagnosisId.toString().startsWith("temp-")) {
           setEditingDiagnosis(null);
           setSelectedDiagnosis(null);
         } else {
-          const result = await deleteDiagnosis({ diagnosisId:deletePopup.diagnosisId, patientId:  PATIENT_ID}).unwrap();
+          const result = await deleteDiagnosis({
+            diagnosisId: deletePopup.diagnosisId,
+            patientId: PATIENT_ID,
+          }).unwrap();
           if (result?.succeeded) {
             toast.success("Diagnosis deleted successfully");
             setEditingDiagnosis(null);
-            setSelectedDiagnosis(null);            
+            setSelectedDiagnosis(null);
             toast.dismiss(loadingToast);
           } else {
             toast.error(result.message || "Failed to delete diagnosis");
@@ -242,26 +271,38 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
         }
         handleCloseDeleteConfirm();
       } catch (error) {
-        console.error('Error deleting diagnosis:', error);
+        console.error("Error deleting diagnosis:", error);
         toast.error(error?.data?.message || "Error deleting diagnosis");
         toast.dismiss(loadingToast);
-      }finally {
+      } finally {
         toast.dismiss(loadingToast);
       }
     }
-  }, [deletePopup, deleteDiagnosis, refetch, handleCloseDeleteConfirm, isDeleting]);
+  }, [
+    deletePopup,
+    deleteDiagnosis,
+    refetch,
+    handleCloseDeleteConfirm,
+    isDeleting,
+  ]);
 
-  const handleDeleteDiagnosis = useCallback((id,diagnosisName) => {
-    console.log('Deleting diagnosis with ID:', id, 'Name:', editingDiagnosis);
-    handleShowDeleteConfirm(id, diagnosisName);
-  }, [handleShowDeleteConfirm]);
+  const handleDeleteDiagnosis = useCallback(
+    (id, diagnosisName) => {
+      console.log("Deleting diagnosis with ID:", id, "Name:", editingDiagnosis);
+      handleShowDeleteConfirm(id, diagnosisName);
+    },
+    [handleShowDeleteConfirm],
+  );
 
   const handleSaveAndClose = useCallback(async () => {
-    if(!editingDiagnosis.diagnosisName){toast.error('Diagnosis name is required.');return false;};
+    if (!editingDiagnosis.diagnosisName) {
+      toast.error("Diagnosis name is required.");
+      return false;
+    }
     if (!editingDiagnosis) return;
     if (isAdding || isUpdating) return;
-    console.log('===Saving and closing:', isAdding, isUpdating);
-    
+    console.log("===Saving and closing:", isAdding, isUpdating);
+
     const isEmptyNewDiagnosis =
       editingDiagnosis.isNew &&
       !editingDiagnosis.diagnosisName?.trim() &&
@@ -274,31 +315,33 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
       return;
     }
 
-    const success = await handleSaveDiagnosis(removeNewChildren(editingDiagnosis));
-   
+    const success = await handleSaveDiagnosis(
+      removeNewChildren(editingDiagnosis),
+    );
+
     if (success) {
       setSelectedDiagnosis(null);
       setEditingDiagnosis(null);
     }
-  }, [editingDiagnosis, handleSaveDiagnosis , isAdding, isUpdating]);
+  }, [editingDiagnosis, handleSaveDiagnosis, isAdding, isUpdating]);
 
   const handleCancelEdit = useCallback(() => {
-     const cleanedDiagnosis = removeNewChildren(editingDiagnosis);
-     setCurrentItems(prev =>
-       prev.map(item =>
-         item.diagnosisId === editingDiagnosis.diagnosisId
-           ? {
-               ...item,
-               ...cleanedDiagnosis,
-               diagnosisName: selectedDiagnosis.diagnosisName,
-               symptomsDescription: selectedDiagnosis.symptomsDescription,
-               description: selectedDiagnosis.description,
-               code: selectedDiagnosis.code
-             }
-           : item
-       )
-      );
-      console.log('Cancel edit', "editingDiagnosis : " ,editingDiagnosis);
+    const cleanedDiagnosis = removeNewChildren(editingDiagnosis);
+    setCurrentItems((prev) =>
+      prev.map((item) =>
+        item.diagnosisId === editingDiagnosis.diagnosisId
+          ? {
+              ...item,
+              ...cleanedDiagnosis,
+              diagnosisName: selectedDiagnosis.diagnosisName,
+              symptomsDescription: selectedDiagnosis.symptomsDescription,
+              description: selectedDiagnosis.description,
+              code: selectedDiagnosis.code,
+            }
+          : item,
+      ),
+    );
+    console.log("Cancel edit", "editingDiagnosis : ", editingDiagnosis);
     if (editingDiagnosis?.isNew) {
       const hasContent =
         editingDiagnosis.diagnosisName?.trim() ||
@@ -311,12 +354,11 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
       } else {
         handleShowDeleteConfirm(
           editingDiagnosis.id,
-          editingDiagnosis.diagnosisName || 'New Diagnosis'
+          editingDiagnosis.diagnosisName || "New Diagnosis",
         );
         return;
       }
     } else {
-
       setSelectedDiagnosis(null);
       setEditingDiagnosis(null);
     }
@@ -344,10 +386,9 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
     isLoading,
     error,
     isFetching,
-    refetch, 
+    refetch,
     setCurrentPage,
     currentPage,
-    setRowsPerPage
+    setRowsPerPage,
   };
-  
 };

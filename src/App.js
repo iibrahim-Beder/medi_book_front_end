@@ -114,7 +114,7 @@ if(isCurrentStepLoading ){
     return <Loader/>
   }
   if(currentStepError ||isCurrentStepError ){
-    // return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} nameVariable={true} error={currentStepError}/>
+    return <ErrorPage refetch={refetchCurrentStep} isFetching={isFetching} nameVariable={true} error={currentStepError}/>
   }
   return (
     <div className="dc-userlogin">
@@ -190,7 +190,7 @@ if(isCurrentStepLoading ){
                       element={<PatientProfilePageMain />}
                     />
                     <Route
-                      path="appointment-management"
+                      path="appointment-management/:appointmentId/:slotId"
                       element={<AppointmentManagementMain />}
                     />
                     <Route

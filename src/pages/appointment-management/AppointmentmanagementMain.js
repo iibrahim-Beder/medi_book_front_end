@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import AppointmentInformation from "./tabs/AppointmentInformation";
 import DiagnosisMobileViewWithCRUD from "./tabs/DiagnosisTab";
+import {  useSearchParams } from "react-router-dom";
 export default function PatientProfilePageMain() {
-  const [activeTab, setActiveTab] = useState("AppointmentInformation");
   const { t } = useTranslation();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const defaultTab = "AppointmentInformation";
+  const activeTab = searchParams.get("tab") || defaultTab;
+  
+  const setActiveTab = (tabKey) => {
+    setSearchParams({ tab: tabKey }); 
+  };
 
   const tabs = [
     { key: "AppointmentInformation", label: t("Appointment information") },

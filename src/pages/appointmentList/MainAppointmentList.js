@@ -10,66 +10,42 @@ import TimeSlotInformationCard from "./cards/2-TimeSlotInformationCard";
 import { Button, Divider, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { t } from "i18next";
-import { useGetTimeSlotsForWebQuery } from "../../api/doctor-information/timeSlotsApi";
-import { formatDateForAPI } from "../shared/utils";
-import { useSelector } from "react-redux";
-import { useGetTimeSlotDetailsForWebQuery } from "../../api/doctor-information/timeSlotsApi";
 import DataEmptyComponent from "../shared/DataEmptyComponent";
 import { patientSkeletonTheme } from "../patient-management/patient-information/PatientTabs/patientBasicInfo/usePatientBasicInfo";
 import ErrorPage from "../notFound-pageError/ErrorPage";
+import ErrorLoading from "../shared/ErrorLoading";
+import { useTimeSlots } from "./hooks/useTimeSlots";
+import { useTimeSlotDetails } from "./hooks/useTimeSlotDetails";
 export default function MainAppointtmentList() {
-  const doctorId = useSelector((state) => state.auth.doctorId);
-  const [date, setDate] = useState(new Date());
-  const [filter, setFilter] = useState("All");
-  const [selectedSlot, setSelectedSlot] = useState(null);
   const {
-    data: slotsData,
+    date,
+    filter,
+    setFilter,
+    handleDateChange,
+    slotsData,
     isLoading,
     isFetching,
     isError,
     error,
     refetch,
-  } = useGetTimeSlotsForWebQuery({
-    doctorId: doctorId,
-    date: formatDateForAPI(date),
-    filter: filter,
-  });
-
+    handleSelectSlot,
+    handleFilterChange,
+    slotId
+  } = useTimeSlots();
   const {
-    data: slotDetails,
-    isLoading: isSlotDetailsLoading,
-    isFetching: isSlotDetailsFetching,
-    error: slotDetailsError,
-  } = useGetTimeSlotDetailsForWebQuery(selectedSlot?.slotId, {
-    skip: !selectedSlot?.slotId,
-  });
+    slot,
+    patient,
+    cancellation,
+    slotDetails,
+    isSlotDetailsLoading,
+    isSlotDetailsFetching,
+    slotDetailsError,
+    isSlotDetailsError,
+    refetchSlotDetails,
+  }=useTimeSlotDetails(slotId);
+  
 
-  const slot =
-    {
-      status: selectedSlot?.status,
-      ...slotDetails?.slotInfoOverview,
-    } || {};
-
-  const patient = {
-    patientId: slotDetails?.patientInfoOverview?.patientId,
-    name: slotDetails?.patientInfoOverview?.patientName,
-    img: slotDetails?.patientInfoOverview?.patientImageUrl,
-    phoneNumber: slotDetails?.patientInfoOverview?.phoneNumber,
-    bookingType: slotDetails?.patientInfoOverview?.bookingType,
-    patientAge: slotDetails?.patientInfoOverview?.patientAge,
-    isFirstVisit: slotDetails?.patientInfoOverview?.isFirstVisit,
-  };
-
-  const cancellation = {
-    time: slotDetails?.cancellationInfoOverview?.cancellationTime,
-    cancelledBy: slotDetails?.cancellationInfoOverview?.cancelledBy,
-    financialStatus: slotDetails?.cancellationInfoOverview?.financialStatus,
-    reason: slotDetails?.cancellationInfoOverview?.cancellationReason,
-  };
-
-  console.log("==MainAppointtmentList",(isError || (!isLoading && !slotsData  && isFetching) ));
-
-  if (isError || (!isLoading && !slotsData  && isFetching)) {
+  if (isError || (!isLoading && !slotsData && isFetching)) {
     return (
       <ErrorPage refetch={refetch} isFetching={isFetching} error={error} />
     );
@@ -80,20 +56,23 @@ export default function MainAppointtmentList() {
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
           <div class="dc-haslayout dc-dbsectionspace dc-haslayout dc-dbsectionspace">
             <div className="dc-dashboardbox dc-apointments-wrap dc-apointments-wraptest ">
-              <CalendarComponent date={date} setDate={setDate} />
-               {slotsData?.length === 0 && !isFetching && !isLoading && filter==="All" ? (null) : (
+              <CalendarComponent date={date} setDate={handleDateChange} />
+              {slotsData?.length === 0 &&
+              !isFetching &&
+              !isLoading &&
+              filter === "All" ? null : (
                 <AppointmentSpaces
                   isLoading={isLoading || isFetching}
                   slots={slotsData || []}
                   filter={filter}
-                  setFilter={setFilter}
+                  setFilter={handleFilterChange}
                   onRemoveSlot={(slot, index) =>
                     console.log("Remove slot:", slot, index)
                   }
-                  selectedSlot={selectedSlot}
-                  setSelectedSlot={setSelectedSlot}
+                  selectedSlotId={slotId}
+                  setSelectedSlot={handleSelectSlot}
                 />
-               )}
+              )}
 
               {slotsData?.length === 0 && !isFetching && !isLoading ? (
                 <DataEmptyComponent
@@ -102,13 +81,19 @@ export default function MainAppointtmentList() {
                     backgroundColor: "var(--badybkcolor)",
                   }}
                   title={t("No Time Slots Found!")}
-                  text={filter !=="All" ? t("No time slots found in this date change the date or clear filters.") : t("No time slots found in this date you can change the date.")}
+                  text={
+                    filter !== "All"
+                      ? t(
+                          "No time slots found in this date change the date or clear filters.",
+                        )
+                      : t(
+                          "No time slots found in this date you can change the date.",
+                        )
+                  }
                   btnText={t("Clear Filters")}
-                  onClick={filter !=="All" ? () => setFilter("All") : null}
-                  />
-              ) : ( null )}
-
-            
+                  onClick={filter !== "All" ? () => setFilter("All") : null}
+                />
+              ) : null}
             </div>
           </div>
         </div>
@@ -117,9 +102,16 @@ export default function MainAppointtmentList() {
           <div className="dc-haslayout dc-dbsectionspace dc-dbsectionspacetest">
             {isSlotDetailsLoading || isSlotDetailsFetching ? (
               patientSkeletonTheme(false, "0 0 25px", false)
+            ) : isSlotDetailsError ? (
+              <div className="table-card">
+                <ErrorLoading
+                  error={slotDetailsError}
+                  refetch={refetchSlotDetails}
+                />{" "}
+              </div>
             ) : (
               <>
-                {selectedSlot ? (
+                {slotId ? (
                   <div className="dc-dashboardbox">
                     {slotDetails?.patientInfoOverview && (
                       <PationtCard
@@ -168,7 +160,7 @@ export default function MainAppointtmentList() {
                         <Divider orientation="vertical" flexItem />
 
                         <Link
-                          to={`/appointment-details/${slotDetails.bookingId}`}
+                          to={`/appointment-details/${slotDetails.bookingId}/${slotId}`}
                           className="button-elment"
                         >
                           <Button
@@ -185,7 +177,7 @@ export default function MainAppointtmentList() {
                           </Button>
                         </Link>
                       </div>
-                    ): null}
+                    ) : null}
                   </div>
                 ) : (
                   <div className="table-card">

@@ -10,6 +10,9 @@ import { useDiagnosisCRUD } from "../diagnosis/useDiagnosisCRUD";
 import { transformDiagnosisData } from "../diagnosis/diagnosisUtils";
 import ErrorLoading from "../../shared/ErrorLoading";
 import PatientName from "../../patient-management/patient-information/PatientTabs/component/PatientName";
+import { useParams } from "react-router-dom";
+import { useTimeSlotDetails } from "../../appointmentList/hooks/useTimeSlotDetails";
+import ErrorPage from "../../notFound-pageError/ErrorPage";
 
 const DiagnosisMobileView = () => {
   const { t } = useTranslation();
@@ -17,7 +20,7 @@ const DiagnosisMobileView = () => {
   // Pagination state
   const [showRowsPerPage, setshowRowsPerPage] = useState(3);
   const [totalCount, setTotalCount] = useState(0);
-
+  const { slotId } = useParams();  
   // API Call
 
   const [currentItems, setCurrentItems] = useState([]);
@@ -46,6 +49,10 @@ const DiagnosisMobileView = () => {
     setRowsPerPage,
     currentPage
   } = useDiagnosisCRUD(setCurrentItems,checkAndRefetch);
+
+  const {
+    patient,
+  } = useTimeSlotDetails(Number(slotId));
   const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
     if (diagnosesData?.data) {
@@ -86,7 +93,9 @@ useEffect(() => {
 
 if (error) {
     return (
-     <ErrorLoading isError={error} refetch={refetch} />
+      <div className="table-card w-100">
+        <ErrorPage refetch={refetch} isFetching={isFetching} error={error} />
+      </div>
     );
   }
 
@@ -95,7 +104,7 @@ if (error) {
       <div className="table-header">
         <div>
           <h3 className="table-title">{t("Diagnosis")}</h3>
-          <h6 className="table-subtitle"><PatientName/></h6>
+          <h6 className="table-subtitle">{patient.name}</h6>
         </div>
         <button
           onClick={handleAddDiagnosis}
@@ -112,6 +121,7 @@ if (error) {
           currentItems={currentItems}
           onEditDiagnosis={handleEditDiagnosis}
           t={t}
+          handleAddDiagnosis={handleAddDiagnosis}
         />
       </div>
 

@@ -81,6 +81,8 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getPatientDiagnoses: builder.query({
       query: ({ 
+        doctorId,
+        bookingId,
         patientId, 
         filter = {}, 
         orderBy=1, 
@@ -89,6 +91,8 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
       }) => {
         const params = {
           PatientId: patientId,
+          DoctorId: doctorId,
+          BookingId: bookingId,
           ...(filter.searchValue && { 'DiagnosisSearchFilter.SearchValue': filter.searchValue }),
           ...(filter.fromDate && { 'DiagnosisSearchFilter.FromDate': filter.fromDate }),
           ...(filter.toDate && { 'DiagnosisSearchFilter.ToDate': filter.toDate }),
@@ -146,7 +150,7 @@ addPatientDiagnosis: builder.mutation({
 
     const body = {
       diagnosisName: diagnosisData.diagnosisName,
-      bookingId: diagnosisData.bookingId || 73  ,
+      bookingId: diagnosisData.bookingId ,
       code: diagnosisData.code || "DX-000",
       symptomsDescription: diagnosisData.symptomsDescription,
       description: diagnosisData.description,
