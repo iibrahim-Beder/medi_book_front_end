@@ -11,17 +11,9 @@ import DoctorFinancialDashboard from "../pages/doctor-financial-dashboard/Doctor
 import PatientManagement from "../pages/patient-management/patients-home-page/PatientManagement";
 import ReviewsPage from "../pages/reviews/ReviewsPage";
 import { BsList } from "react-icons/bs";
-import { useGetTimeSlotsForWebQuery } from "../api/doctor-information/timeSlots";
 export default function ErrorPage() {
   const [activeTab, setActiveTab] = useState("patients");
 
-  const { data: slots, isLoading } = useGetTimeSlotsForWebQuery({
-  doctorId: 103,
-  date: "2026-06-20",
-  filter: "All",
-});
-
-console.log("Slots:", slots);
   return (
     <div className="">
       <div style={{ zIndex:"7" , position: "relative"}}>
