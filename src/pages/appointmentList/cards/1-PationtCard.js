@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import SingleSlot from'./SingleSlot'
 import { BsFillChatTextFill } from "react-icons/bs";
 import { BsWechat } from "react-icons/bs";
+import { convertSrcPatientImg } from '../../shared/utils';
 
 
 export default function PationtCard({userName,userImg,userType,userLocation,chatId,patientId ,status ,time, spaces}) {
@@ -9,7 +10,7 @@ export default function PationtCard({userName,userImg,userType,userLocation,chat
       <div className="dc-user-header">
         <div>
           <figure className="dc-user-img">
-            <img src={userImg} alt={`${userName} img`} />
+            <img src={convertSrcPatientImg(userImg)} alt={`${userName} img`} onError={(e) => (e.target.src = "/images/avt/patient-avt.png")} />
           </figure>
         </div>
         <div className="dc-title">

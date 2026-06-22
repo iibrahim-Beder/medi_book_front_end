@@ -5,7 +5,7 @@ export default function ChatMessage({isIngroupAndNotTheLast, type, img, text, da
   return (
     <div className={msgClass + (isIngroupAndNotTheLast ? " dc-ingroupmessage" : " dc-ingroupmessage-last" ) + (isfirstInGroup ? " dc-first-in-group" : " not-the-first" )}>
       { img && <figure>
-        <img src={img} alt="user" />
+        <img src={img} alt="user"  onError={(e) => (e.target.src = "/images/avt/patient-avt.png")} />
       </figure>}
       <div className="dc-description">
         <p className="dc-messagecontent">

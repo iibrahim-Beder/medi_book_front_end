@@ -115,6 +115,7 @@ const PatientsTable = () => {
                             alt={patient.patientName}
                             className="rounded-circle me-2"
                             style={{ width: "40px", height: "40px" }}
+                            onError={(e) => (e.target.src = "/images/avt/patient-avt.png")}
                           />
                           <span>{patient.patientName}</span>
                         </div>

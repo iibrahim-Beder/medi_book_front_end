@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import ErrorLoading from '../../../../shared/ErrorLoading';
 import usePatientBasicInfo, { patientSkeletonTheme } from './usePatientBasicInfo';
+import { convertSrcPatientImg } from '../../../../shared/utils';
 
 export default function PatientBasicInfo({patientId}) {
   const { t } = useTranslation();
@@ -45,12 +46,9 @@ export default function PatientBasicInfo({patientId}) {
         <div>
           <figure className="dc-user-img">
             <img
-              src={patient?.image || "/images/feedback/user-img.jpg"}
+              src={convertSrcPatientImg(patient?.image)}
               alt={t("PatientBasicInfo.patient_image_alt")}
-              onError={(e) => {
-                e.currentTarget.onerror = null; 
-                e.currentTarget.src = "/images/feedback/user-img.jpg";
-              }}
+              onError={(e) => (e.target.src = "/images/avt/patient-avt.png")}
             />
           </figure>
         </div>

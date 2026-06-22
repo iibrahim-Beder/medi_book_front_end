@@ -66,7 +66,7 @@ function UserMenu({ setShowPopupClose }) {
         }}
       >
         <figure className="dc-userimg">
-          <img src={ doctorImageSrc} alt="doctorImage" />
+          <img src={ doctorImageSrc} alt="doctorImage" onError={(e) => (e.target.src = "/images/avt/doctor-imge-avt.png")} />
         </figure>
 
         <div className="dc-username" onClick={toggleMenu}>

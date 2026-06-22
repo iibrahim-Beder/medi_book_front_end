@@ -1,4 +1,4 @@
-import { formatChatDate, isSameDay } from "../../shared/utils";
+import { convertSrcPatientImg, formatChatDate, isSameDay } from "../../shared/utils";
 import { useConversations } from "../hooks/useConversations";
 import ChatMessage from "./ChatMessage";
 import { SyncLoader } from "react-spinners";
@@ -12,7 +12,7 @@ import { useStep1PersonalInfo } from "../../doctor-registration/hooks/useStep1Ba
 export default function ChatMessages() {
     const selectedChat = useSelector((state) => state.chats.selectedChatId);
   
-  const { isChatTyping,setIsChatOpen } = useConversations();
+  const { isChatTyping,setIsChatOpen,currentChat } = useConversations();
   const {
     messages,
     chatContainerRef,
@@ -92,7 +92,7 @@ export default function ChatMessages() {
                     showAvatar
                       ? message.isMine
                         ? doctorImageSrc
-                        : "/images/avt/patient-avt.png"
+                        : convertSrcPatientImg(currentChat?.imageUrl)
                       : null
                   }
                   showAvatar={showAvatar}

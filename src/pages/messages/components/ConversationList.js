@@ -2,6 +2,7 @@ import { useConversations } from "../hooks/useConversations";
 import ConversationItem from "../components/ConversationItem";
 import { IoSearchOutline } from "react-icons/io5";
 import { useState, useEffect } from "react";
+import { convertSrcPatientImg } from "../../shared/utils";
 
 export default function ConversationList() {
   const {
@@ -16,9 +17,7 @@ export default function ConversationList() {
   } = useConversations();
   console.log(
     " from ConversationList isError",
-    isError,
-    "isLoading",
-    isLoading,
+    conversations
   );
 
   const [inputValue, setInputValue] = useState(searchTerm);
@@ -82,7 +81,7 @@ export default function ConversationList() {
             <ConversationItem
               key={chat.chatId}
               id={chat.chatId}
-              img={chat.patientAvatar || "/images/avt/patient-avt.png"}
+              img={convertSrcPatientImg(chat.imageUrl) || "/images/avt/patient-avt.png"}
               name={chat.patientName.trim() || "patient un name"}
               lastMsg={chat?.lastMessage || "No messages yet"}
               isOnline={chat.isOnline}

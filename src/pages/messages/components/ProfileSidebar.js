@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useConversations } from "../hooks/useConversations";
+import { convertSrcPatientImg } from "../../shared/utils";
 
 export default function ProfileSidebar() {
       const {currentChat,isLoading} =useConversations();
@@ -12,7 +13,7 @@ export default function ProfileSidebar() {
       <div className="dc-dashboardboxcontent">
         <div className="dc-userprofile">
           <figure>
-            <img src="/images/avt/patient-avt.png" alt="profile" />
+            <img src={convertSrcPatientImg(currentChat?.imageUrl)} alt="profile"  onError={(e) => (e.target.src = "/images/avt/patient-avt.png")} />
           </figure>
           <div className="dc-title">
             <h3>
@@ -21,7 +22,7 @@ export default function ProfileSidebar() {
             </h3>
             <span>
               Member since May 30, 2025 <br />
-              <a href="javascript:void(0);">@valentine20658</a>
+              <a href="!#">@valentine20658</a>
             </span>
           </div>
         </div>

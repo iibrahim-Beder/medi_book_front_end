@@ -116,7 +116,7 @@ export default function MainAppointtmentList() {
                     {slotDetails?.patientInfoOverview && (
                       <PationtCard
                         userName={patient?.name}
-                        userImg="/images/avt/patient-avt.png"
+                        userImg={patient?.img}
                         userLocation={patient?.location}
                         chatId={1}
                         patientId={patient?.patientId}

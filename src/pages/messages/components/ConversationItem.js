@@ -23,7 +23,7 @@ export default function ConversationItem({ id, img, name, lastMsg ,messeagesDotN
     >
       <div className={`dc-chat-item-content ${active ? "dc-active" : ""}`}>
       <figure className={` ${isOnline?"online": "" }`}>
-        <img src={img} alt={name} />
+        <img src={img} alt={name}  onError={(e) => (e.target.src = "/images/avt/patient-avt.png")} />
       </figure>
       <div className="dc-adcontent">
         <h3> <span>{name}</span>  <span className={`${isOnline?"text-online ":""} text-lastseen `} > {isOnline ? "Online" : formatTime(lastSeen)}  </span></h3> 

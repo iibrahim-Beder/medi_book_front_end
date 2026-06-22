@@ -44,7 +44,7 @@ const {
         <div className="dc-dashboardbox pl-4 pr-4">
           <PationtCard
             userName={patient?.name}
-            userImg="/images/avt/patient-avt.png"
+            userImg={patient?.img}
             userLocation={patient?.location}
             chatId={1}
             patientId={patient?.patientId}

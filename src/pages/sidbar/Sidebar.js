@@ -100,7 +100,7 @@ let iconSize=20;
           </figure>
           <div className="dc-companysinfo">
             <figure>
-              <img src={doctorImageSrc} alt="Badge" />
+              <img src={doctorImageSrc} style={{minHeight:"90px"}} alt="Profile" onError={(e) => (e.target.src = "/images/avt/doctor-imge-avt.png")} />
             </figure>
             <div className="dc-title">
               <h2>
