@@ -16,6 +16,15 @@ import {
   FaTimesCircle,
   FaTimes
 } from "react-icons/fa";
+export const convertSrcPatientImg = (src) => {
+  if (!src) return "/images/avt/patient-avt.png";
+  if(!src.startsWith("/")){
+    return `${process.env.REACT_APP_API_URL}/${src}`
+  }else{
+    return `${process.env.REACT_APP_API_URL}${src}`
+  }
+}
+
 export  const formatDate = (dateString) => {
     if (!dateString) return "—";
     const date = new Date(dateString);

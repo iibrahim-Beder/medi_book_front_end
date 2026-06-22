@@ -1,15 +1,5 @@
 import { baseApi } from '../baseApi';
 
-// Transform note type
-
-const transformNoteTypeToUI = (noteType) => {
-  const noteTypeMap = {
-    1: 'Communication',
-    2: 'Administrative',
-    3: 'Reminder', 
-  };
-  return noteTypeMap[noteType] ?? 'General';
-};
 
 const transformSingleDoctorNote = (response) => {
   if (!response || !response.succeeded || !response.data) {

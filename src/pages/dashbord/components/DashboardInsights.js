@@ -74,6 +74,7 @@ function CountdownTimer({ targetDate }) {
 
   return (
     <ul className="dc-countersoon">
+      {/* <li>Next Appointment</li> */}
       <li><i className="fa fa-spinner fa-spin"></i></li>
       <li><div className="dc-countdowncontent"><p>d</p> <span>{timeLeft.days}</span></div></li>
       <li><div className="dc-countdowncontent"><p>h</p> <span>{timeLeft.hours}</span></div></li>

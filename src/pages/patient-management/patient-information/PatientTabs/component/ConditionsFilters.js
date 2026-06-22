@@ -120,7 +120,8 @@ const ConditionsFilters = ({
       diagnosisDateFrom: start, 
       diagnosisDateTo: end 
     });
-  }}
+  }
+}
           />
         )}
 

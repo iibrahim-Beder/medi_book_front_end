@@ -170,7 +170,7 @@ const handleInputChange = (e) => {
       const doctorImageSrc =
       formData?.imagePath
         ? `${process.env.REACT_APP_API_URL}${formData.imagePath}`
-        : "/images/avt/doctor-imge-avt.png" || "/images/avt/doctor-imge-avt.png";
+        : "/images/avt/doctor-imge-avt.png";
 
   return {
     formData,
