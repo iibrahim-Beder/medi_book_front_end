@@ -18,7 +18,7 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(1);
   const doctorId = useSelector((state) => state.auth.doctorId);
   const { appointmentId } = useParams();
 

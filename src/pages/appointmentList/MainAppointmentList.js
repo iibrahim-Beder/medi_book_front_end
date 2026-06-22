@@ -160,12 +160,13 @@ export default function MainAppointtmentList() {
                         <Divider orientation="vertical" flexItem />
 
                         <Link
-                          to={`/appointment-details/${slotDetails.bookingId}/${slotId}`}
+                          to={`/appointment-management/${slotDetails.bookingId}/${slotId}`}
                           className="button-elment"
                         >
                           <Button
                             variant="contained"
                             sx={{
+                              width: "100%",
                               borderRadius: "10px",
                               textTransform: "none",
                               px: 3,

@@ -62,15 +62,15 @@ const DiagnosisMobileView = () => {
     }
   }, [diagnosesData]);  
 // Case 1: When page changes
-useEffect(() => {
-  if(lastPage!==currentPage){
-    if((showRowsPerPage>3&&totalCount>6) || 
-    (showRowsPerPage<3&&totalCount<6 && currentPage>lastPage)
-    ){setRowsPerPage(showRowsPerPage);}
-    else{setshowRowsPerPage(3);setRowsPerPage(3);};
-    setLastPage(currentPage);
-  }
-}, [currentPage]);
+// useEffect(() => {
+//   if(lastPage!==currentPage){
+//     if((showRowsPerPage>3&&totalCount>6) || 
+//     (showRowsPerPage<3&&totalCount<6 && currentPage>lastPage)
+//     ){setRowsPerPage(showRowsPerPage);}
+//     else{setshowRowsPerPage(3);setRowsPerPage(3);};
+//     setLastPage(currentPage);
+//   }
+// }, [currentPage]);
 
   function checkAndRefetch(isAdding=false) {
     if (isAdding) {

@@ -194,6 +194,10 @@ if(isCurrentStepLoading ){
                       element={<AppointmentManagementMain />}
                     />
                     <Route
+                      path="appointment-management/:appointmentId"
+                      element={<AppointmentManagementMain />}
+                    />
+                    <Route
                       path="notifications"
                       element={<NotificationsPage />}
                     />

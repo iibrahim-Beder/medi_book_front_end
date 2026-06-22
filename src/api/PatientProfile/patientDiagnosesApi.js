@@ -91,7 +91,7 @@ export const patientDiagnosesApi = baseApi.injectEndpoints({
       }) => {
         const params = {
           PatientId: patientId,
-          DoctorId: doctorId,
+          DoctorId: 1,
           BookingId: bookingId,
           ...(filter.searchValue && { 'DiagnosisSearchFilter.SearchValue': filter.searchValue }),
           ...(filter.fromDate && { 'DiagnosisSearchFilter.FromDate': filter.fromDate }),
