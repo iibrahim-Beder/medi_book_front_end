@@ -6,7 +6,8 @@ import {
   useDeleteDoctorPatientNoteMutation 
 } from '../../../../../api/PatientProfile/doctorNotesApi';
 import toast from 'react-hot-toast';
-
+import { formatDateForAPI ,formatDate } from "../../../../shared/utils";
+import { getErrorMessage } from "../../../../utils/api-errors";
 
 export const usePatientNotes = (isMobile = false,patientId) => {
 
@@ -31,24 +32,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = isMobile ? 5 : 5;
 
-  // Helper function to format date for API
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
 
-  // Helper function to format date for display
-  const formatDateForDisplay = (dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
 
   const queryArgs = useMemo(() => {
     const apiFilters = {
@@ -69,7 +53,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
       pageNumber: currentPage,
       pageSize: pageSize
     };
-  }, [appliedFilters, currentPage, pageSize]);
+  }, [appliedFilters, currentPage, pageSize ,currentFilters]);
 
   // RTK Query hooks
   const { 
@@ -94,8 +78,8 @@ export const usePatientNotes = (isMobile = false,patientId) => {
 
         return {
           ...note,
-          displayCreatedAt: formatDateForDisplay(note.createdAt),
-          displayLastModifiedAt: formatDateForDisplay(note.lastModifiedAt),
+          displayCreatedAt: formatDate(note.createdAt),
+          displayLastModifiedAt: formatDate(note.lastModifiedAt),
 
           isExpanded: existing?.isExpanded ?? false,
           hasUnsavedChanges: existing?.hasUnsavedChanges ?? false,
@@ -145,7 +129,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
       isExpanded: true, // Expanded by default for new notes
       isNew: true,
       isTemp: true,
-      displayCreatedAt: formatDateForDisplay(new Date().toISOString()),
+      displayCreatedAt: formatDate(new Date().toISOString()),
       displayLastModifiedAt: "",
       hasUnsavedChanges: true
     };
@@ -184,7 +168,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
         if (result?.succeeded) {
           toast.success('Deleted Successfully');
         } else {
-          toast.error(result?.message || 'Failed to delete');
+          toast.error(getErrorMessage(result));
           toast.dismiss(loadingToast);
           return;
         }
@@ -194,7 +178,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
       setLocalNotes(prev => prev.filter(note => note.id !== noteId));
       
     } catch (error) {
-      toast.error(error?.data?.message || error?.message || 'Error deleting note');
+      toast.error(getErrorMessage(error));
     }
     
     toast.dismiss(loadingToast);
@@ -269,7 +253,7 @@ export const usePatientNotes = (isMobile = false,patientId) => {
               isNew: false,
               isTemp: false,
               hasUnsavedChanges: false,
-              displayLastModifiedAt: formatDateForDisplay(
+              displayLastModifiedAt: formatDate(
                 new Date().toISOString()
               )
             };
@@ -339,7 +323,5 @@ export const usePatientNotes = (isMobile = false,patientId) => {
     setCurrentNote,
     refetch,
     
-    // Utilities
-    formatDateForDisplay
   };
 };

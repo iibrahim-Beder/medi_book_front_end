@@ -170,9 +170,9 @@ const PatientReviewsTable = () => {
                 name: "type",
                 label: t("Appointment Type"),
                 data: [
-                  { key: "Consultation", label: t("Consultation") },
-                  { key: "FollowUp", label: t("FollowUp") },
-                  { key: "Emergency", label: t("Emergency") },
+                  { key: "PhoneCall", label: t("PhoneCall") },
+                  { key: "InPerson", label: t("InPerson") },
+                  { key: "VideoCall", label: t("VideoCall") },
                 ],
               },
             ]}

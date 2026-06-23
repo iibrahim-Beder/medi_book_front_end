@@ -122,10 +122,9 @@ const PatientReviewsCards = ({ patientId = 4 }) => {
         name: "type",
         label: t("Appointment Type"),
         data: [
-          { key: "Consultation", label: t("Consultation") },
-          { key: "FollowUp", label: t("Follow Up") },
-          { key: "Emergency", label: t("Emergency") },
-          { key: "Routine", label: t("Routine") },
+          { key: "PhoneCall", label: t("PhoneCall") },
+          { key: "InPerson", label: t("InPerson") },
+          { key: "VideoCall", label: t("VideoCall") },
         ],
       },
     ]}

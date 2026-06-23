@@ -106,6 +106,7 @@ const AllergyTable = ({patientId}) => {
             setFilterDateTo={(date) => setCurrentFilters(prev => ({ ...prev, DateNotedTo: date }))}
             onReset={handleResetFilters}
             onSearch={handleSearch}
+            filterConfigs={filterConfigs}
             conditions={allergiesData?.data || []}
           />
         </div>

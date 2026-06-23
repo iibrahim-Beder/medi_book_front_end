@@ -1,23 +1,5 @@
 import { baseApi } from '../baseApi';
 
-const transformAppointmentTypeToAPI = (appointmentType) => {
-  const appointmentTypeMap = {
-    'Consultation': 0,
-    'FollowUp': 1,
-    'Emergency': 2
-    // Add other appointment types as needed
-  };
-  return appointmentTypeMap[appointmentType] ?? null;
-};
-
-const transformAppointmentTypeToUI = (appointmentType) => {
-  const appointmentTypeMap = {
-    0: 'Consultation',
-    1: 'FollowUp', 
-    2: 'Emergency'
-  };
-  return appointmentTypeMap[appointmentType] ?? 'Consultation';
-};
 
 const transformReviewsData = (response, searchTerm = "") => {
   if (!response || !response.succeeded) {
@@ -42,7 +24,7 @@ const transformReviewsData = (response, searchTerm = "") => {
     id: item.reviewID,
     reviewID: item.reviewID,
     bookingId: item.bookingId,
-    bookingType: transformAppointmentTypeToUI(item.bookingType),
+    bookingType: item.bookingType,
     bookingTypeValue: item.bookingType,
     rating: item.rating,
     comment: item.comment,
@@ -75,7 +57,7 @@ export const reviewsApi = baseApi.injectEndpoints({
           DoctorId: doctorId,
           ...(filter.minRating !== undefined && { 'Filters.MinRating': filter.minRating }),
           ...(filter.maxRating !== undefined && { 'Filters.MaxRating': filter.maxRating }),
-          ...(filter.appointmentType !== undefined && { 'Filters.AppointmentType': transformAppointmentTypeToAPI(filter.appointmentType) }),
+          ...(filter.appointmentType !== undefined && { 'Filters.AppointmentType': filter.appointmentType }),
           ...(filter.fromDate && { 'Filters.FromDate': filter.fromDate }),
           ...(filter.toDate && { 'Filters.ToDate': filter.toDate }),
           ...(orderBy?.orderBy && { 'OrderBy.OrderBy': orderBy.orderBy }),
