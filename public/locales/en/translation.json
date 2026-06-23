@@ -116,7 +116,7 @@
   "selectFiles": "Select Files",
   "dropFiles": "Drop files here to upload",
   "uploading": "Uploading",
-  "fileName": "Profile Photo.jpg",
+  "fileName": "Profile Photo",
   "fileSize": "File size: 300 kb"
 }
 ,"bannerPhoto": {
@@ -125,7 +125,7 @@
   "dropFiles": "Drop files here to upload",
   "uploading": "Uploading",
   "alt": "Banner Photo",
-  "fileName": "Banner Photo.jpg",
+  "fileName": "Banner Photo",
   "fileSize": "File size: 300 kb"
 }
 ,"education": {

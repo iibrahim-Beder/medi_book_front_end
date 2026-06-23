@@ -167,6 +167,7 @@ const DaysAvailabilityCheckbox = ({
           >
             <div className="days-availability-checkbox">
               {sortedAvailability.map((item, index) => {
+                console.log("item", item);
                 const dayOfWeek = item.dayOfWeek;
                 const status = getStatusInfo(item);
                 const Conflict = status.Conflict || false;
@@ -188,20 +189,27 @@ const DaysAvailabilityCheckbox = ({
                       htmlFor={`${getDayName(dayOfWeek)}-type-${index}`}
                     >
                       <div className="d-flex " style={{ gap: "4px" }}>
-                        <span style={{width:"30%", minWidth:"fit-content"}} >
+                        <span style={{width:"50%", minWidth:"fit-content"}} >
                         {getDayName(dayOfWeek)}
                         </span>
+                      <div className={`labels ${locationVisability ? "container-label-location" : ""}`}>
+                        <div className="status-label d-flex w-100">
                         {status.icon && (
                           <span className="status-indicator">
                             {status.icon}
                           </span>
                         )}
-                      <div className="labels">
                           {status.label && (
                           <span className="status-text">{status.label}</span>
                         )}
+                        </div>
                         {status.label && locationVisability && (
-                          <span className="location"><IoLocation className="mr-1"/>main cairo</span>
+                          <span className="location">
+                            <IoLocation className="mr-1" />
+                            {item.locationName?.length > 30
+                              ? `${item.locationName.slice(0, 30)}...`
+                              : item.locationName}
+                          </span>
                         )} 
                         </div>
                       </div>

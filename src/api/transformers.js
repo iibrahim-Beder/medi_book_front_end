@@ -31,11 +31,11 @@ export  const transformPatientData = (apiData) => {
     name: `${patient.firstName} ${patient.lastName}`,
     birthDate: patient.dateOfBirth ? patient.dateOfBirth.split('T')[0] : 'N/A',
     age: calculateAge(patient.dateOfBirth),
-    gender: patient.genderName || 'N/A',
-    phone: patient.phoneNumber || 'N/A',
-    email: patient.email || 'N/A',
-    city: patient.cityName || 'Riyadh, Saudi Arabia',
-    address: patient.address || 'N/A',
+    gender: patient.genderName || '_',
+    phone: patient.phoneNumber || '_',
+    email: patient.email || '_',
+    city: patient.cityName || '_',
+    address: patient.address || '_',
     
     // Medical Data
     chronic: patient.chronicDiseasesNames || [],
@@ -52,7 +52,7 @@ export  const transformPatientData = (apiData) => {
     nextVisit: 'Sep 15, 2025', // Default value
     
     // UI Data
-    image: patient.imagePath || '/images/avt/patient-avt.png',
+    image: patient.imagePath || '',
     verified: true,
     
     // Original API data for reference

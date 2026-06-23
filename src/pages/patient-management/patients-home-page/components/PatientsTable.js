@@ -61,7 +61,6 @@ const PatientsTable = () => {
                   {/* <th className="border-0">{t("patientId")}</th> */}
                   <th className="border-0">{t("name")}</th>
                   <th className="border-0">{t("age")}</th>
-                  <th className="border-0">{t("address")}</th>
                   <th className="border-0">{t("phone")}</th>
                   <th className="border-0">{t("Completed visits")}</th>
                   <th className="border-0">{t("lastVisit")}</th>
@@ -97,6 +96,9 @@ const PatientsTable = () => {
                       <td>
                         <Skeleton width={120} height={15} />
                       </td>
+                      <td>
+                        <Skeleton width={120} height={15} />
+                      </td>
                     </tr>
                   ))
                 ) : error ? (
@@ -121,21 +123,20 @@ const PatientsTable = () => {
                         </div>
                       </td>
 
-                      <td>{patient.age || "-"}</td>
+                      <td>{patient.age || "_"}</td>
 
-                      <td>-</td>
 
-                      <td>{patient.phoneNumber || "-"}</td>
+                      <td>{patient.phoneNumber || "_"}</td>
 
                       <td>
                         {patient.completedVisitsCount
                           ? patient.completedVisitsCount
-                          : "-"}
+                          : "_"}
                       </td>
                       <td>
                         {patient.lastVisitDate
                           ? formatDate(patient.lastVisitDate)
-                          : "-"}
+                          : "_"}
                       </td>
 
                       <td className="fw-bold text-success">
