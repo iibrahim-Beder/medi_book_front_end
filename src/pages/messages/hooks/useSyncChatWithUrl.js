@@ -9,20 +9,22 @@ import { useConversations } from "./useConversations";
 export const useSyncChatWithUrl = () => {
   const { chatId } = useParams();
   const dispatch = useDispatch();
-  const {setIsChatOpen} =useConversations();
-  const isChatOpen = useSelector((state) => state.chats.isChatOpen);  
-
+  const { setIsChatOpen } = useConversations();
+  const isChatOpen = useSelector((state) => state.chats.isChatOpen);
 
   useEffect(() => {
-    if (!chatId) { document.documentElement.setAttribute("isConversationOpen", "false") ; setIsChatOpen(false);return;}
+    if (!chatId) {
+      document.documentElement.setAttribute("isConversationOpen", "false");
+      setIsChatOpen(false);
+      dispatch(selectChat(null));
+      return;
+    }
     const id = Number(chatId);
-    document.documentElement.setAttribute("isConversationOpen", "true"); setIsChatOpen(true)
+    document.documentElement.setAttribute("isConversationOpen", "true");
+    setIsChatOpen(true);
 
     if (id) {
       dispatch(selectChat(id));
     }
-  }, [chatId, dispatch,isChatOpen]);
-
-  
-
+  }, [chatId, dispatch, isChatOpen]);
 };

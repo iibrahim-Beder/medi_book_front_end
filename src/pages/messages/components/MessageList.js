@@ -1,11 +1,11 @@
+import { useSelector } from "react-redux";
 import MessageHeader from "./MessageHeader";
 import ConversationHeader from "./ConversationHeader";
 import ConversationList from "../components/ConversationList";
 import ChatBox from "./ChatBox";
-import { useSelector } from "react-redux";
 
 export default function MessageList() {
-    const selectedChat = useSelector((state) => state.chats.selectedChatId);  
+  const selectedChat = useSelector((state) => state.chats.selectedChatId);
   return (
     <div className="dc-dashboardbox dc-messages-holder">
       <MessageHeader />
@@ -16,7 +16,7 @@ export default function MessageList() {
             <ConversationList />
           </li>
           <li>
-            {selectedChat &&  <ChatBox />}
+             <ChatBox />
           </li>
         </ul>
       </div>

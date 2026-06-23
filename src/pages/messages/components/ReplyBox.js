@@ -6,8 +6,9 @@ import { BsHandThumbsUp } from "react-icons/bs";
 import { BsHandThumbsDown } from "react-icons/bs";
 import { CiFaceSmile } from "react-icons/ci";
 import "emoji-picker-element";
+import { useSelector } from "react-redux";
 
-export default function ReplyBox() {
+export default function ReplyBox({desabled=false}) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiPickerRef = useRef(null);
   const emojiButtonRef = useRef(null);
@@ -68,33 +69,48 @@ export default function ReplyBox() {
     updateUserTyping: updateusertyping,
   });
 
+  const handleSendMessage = () => {
+    if (desabled) return;
+    if (message.trim()) {
+      sendMessage(message);
+      setMessage("");
+      onMessageSent();
+    }
+  };
+const selectedChat = useSelector(
+  (state) => state.chats.selectedChatId
+);
+
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, [selectedChat]);
+
   return (
     <div className="dc-replaybox">
       <div className="form-group">
         <textarea
+          ref={textareaRef}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => { !desabled && setMessage(e.target.value)}}
           className="form-control"
-          placeholder="Type message here"
+          placeholder={desabled ? "You can't send message , selected conversation first" : "Type a message..."}
           onBlur={onInputBlur}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
-              if (message.trim()) {
-                sendMessage(message);
-                setMessage("");
-                onMessageSent();
-              }
+              handleSendMessage();
             }
           }}
         />
       </div>
 
       <div className="dc-iconbox" style={{ position: "relative" }}>
-        <i onClick={() => sendMessage("👎")} >
+        <i onClick={() =>{ !desabled && sendMessage("👎")}} >
           <BsHandThumbsDown />
         </i>
-        <i onClick={() => sendMessage("👍")}>
+        <i onClick={() => { !desabled && sendMessage("👍")}}>
           <BsHandThumbsUp />
         </i>
         <i 
@@ -109,13 +125,12 @@ export default function ReplyBox() {
 
 
         <button
+        title={desabled ? "You can't send message , selected conversation first" : ""}
           className="dc-btnsendmsg"
+          style={{ cursor: desabled ? "not-allowed" : "pointer" }}
+          disabled={desabled}
           onClick={() => {
-            if (message.trim()) {
-              sendMessage(message);
-              setMessage("");
-              onMessageSent();
-            }
+            handleSendMessage();
           }}
         >
           Send

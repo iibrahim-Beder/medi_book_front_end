@@ -12,9 +12,10 @@ export default function DataEmptyComponent({
   btnText = "Add New",
   onClick = null,
   containerStyle = {},
-  imgDate = false, 
+  imgType = "dataEmpty",
 }) {
-  const imgSrc = imgDate? "/images/dashboard/dateBook.png" :  "/images/dashboard/dataEmpty.png";
+  const imgSrc = `/images/dashboard/${imgType}.png`;
+
   return (
     <div className="empty-data-container" style={containerStyle}>
       <img style={imgStyle} src={imgSrc} alt="Error" />

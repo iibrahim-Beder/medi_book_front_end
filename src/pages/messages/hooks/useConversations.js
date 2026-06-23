@@ -35,26 +35,31 @@ export const useConversations = () => {
     pageNumber,
     pageSize,
   });
-  console.log("chatsData", chatsData);
-  useEffect(() => {
-    if (
-      window.innerWidth >= 992 &&
-      !isLoading &&
-      chatsData?.data?.length > 0 &&
-      selectedChat) {
-        navigate(`/chat/${selectedChat}`);
-    }
+  // console.log("chatsData", chatsData);
+  // const hasNavigatedRef = useRef(false);
+
+  // useEffect(() => {
+  //     if (hasNavigatedRef.current) return;
+  //   if (
+  //     window.innerWidth >= 992 &&
+  //     !isLoading &&
+  //     chatsData?.data?.length > 0 &&
+  //     selectedChat) {
+  //       hasNavigatedRef.current = true;
+  //       navigate(`/chat/${selectedChat}`);
+  //   }
     
-    if (
-      window.innerWidth >= 992 &&
-      !isLoading &&
-      chatsData?.data?.length > 0 &&
-      !selectedChat
-    ) {
-      const firstId = chatsData.data[0]?.chatId;
-        navigate(`/chat/${firstId}`);
-    }
-  }, [isLoading, chatsData, selectedChat,isChatOpen]);
+  //   if (
+  //     window.innerWidth >= 992 &&
+  //     !isLoading &&
+  //     chatsData?.data?.length > 0 &&
+  //     !selectedChat
+  //   ) {
+  //     const firstId = chatsData.data[0]?.chatId;
+  //       hasNavigatedRef.current = true;
+  //       navigate(`/chat/${firstId}`);
+  //   }
+  // }, );
   // console.log("isLoading",isLoading);
 
   const handleSearch = useCallback((term) => {

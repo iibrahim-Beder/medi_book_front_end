@@ -183,7 +183,7 @@ export default function MainAppointtmentList() {
                 ) : (
                   <div className="table-card">
                     <DataEmptyComponent
-                      imgDate
+                      imgType="dateBook"
                       title="Choose a time to show it"
                       containerStyle={{ flexDirection: "column" }}
                       imgStyle={{ width: "100%", maxWidth: "300px" }}

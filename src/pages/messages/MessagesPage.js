@@ -14,7 +14,7 @@ export default function MessagesPage() {
     }
   return (<>
     
-  {isLoading || (!isError && conversations.length === 0) ? (
+  {isLoading || (!isError && conversations.length === 0 && isFetching ) ? (
 <div className="preloader-outer">
   <div className="wt-preloader-holder">
     <div className="wt-loader"></div>
