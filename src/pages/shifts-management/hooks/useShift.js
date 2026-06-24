@@ -1,22 +1,50 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useGetDoctorShiftsQuery,
   useUpdateShiftMutation,
   useActivateDoctorShiftMutation,
   useDeactivateDoctorShiftMutation,
+  useGetShiftDaysAvailabilityQuery,
 } from "../../../api/doctor-information/ShiftsApi";
 import { useDoctorLocationsManager } from "../../location-settings/useDoctorLocations";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { getErrorMessage } from "../../utils/api-errors";
 
 export default function useShift() {
   const doctorId = useSelector((state) => state.auth.doctorId);
+
+  const [selectedTemplateId, setSelectedTemplateId] = useState(null);
+  const [selectedDays, setSelectedDays] = useState([]);
+
 
   const { data: shifts = [], isLoading, error } = useGetDoctorShiftsQuery(doctorId, {
     skip: !doctorId
   });
   const [updateShiftMutation, updateResult] = useUpdateShiftMutation();
 
+    const {
+      data: availabilityData,
+      isLoading: loadingAvailability,
+      error: availabilityError,
+      isError: isAvailabilityError,
+      isFetching: isFetchingAvailability,
+      refetch: refetchAvailability,
+    } = useGetShiftDaysAvailabilityQuery(
+      { doctorId, shiftTemplateId: selectedTemplateId },
+      { skip: !doctorId || !selectedTemplateId }
+    );
+    useEffect(() => {
+      setSelectedDays([]);
+    }, [selectedTemplateId]);
+      const toggleDay = (dayOfWeek) => {
+    // setErrors((prev) => ({ ...prev, selectedDays: null }));
+    setSelectedDays((prev) =>
+      prev.includes(dayOfWeek)
+        ? prev.filter((d) => d !== dayOfWeek)
+        : [...prev, dayOfWeek]
+    );
+  };
 
   const shiftsByDay = useMemo(() => {
     const map = Array.from({ length: 7 }, () => []);
@@ -70,8 +98,8 @@ export default function useShift() {
    
     return updateShiftMutation(payload).unwrap();
   }
-const toggleActiveStatus = async (shiftId, newActiveState) => {
-  console.log("shiftId", shiftId, "newActiveState", newActiveState);
+const toggleActiveStatus = async (shiftIds, newActiveState) => {
+  console.log("shiftIds", shiftIds, "newActiveState", newActiveState);
 
   if (!doctorId) return;
 
@@ -81,9 +109,9 @@ const toggleActiveStatus = async (shiftId, newActiveState) => {
     
     let result ;
     if (newActiveState) {
-    result =  await activateShift({ shiftId, doctorId }).unwrap();
+    result =  await activateShift({ shiftIds, doctorId }).unwrap();
     } else {
-   result =   await deactivateShift({ shiftId, doctorId }).unwrap();
+   result =   await deactivateShift({ shiftIds, doctorId }).unwrap();
     }
 
     console.log("=====result", result);
@@ -92,7 +120,8 @@ const toggleActiveStatus = async (shiftId, newActiveState) => {
     }
 
   } catch (error) {
-    toast.error("Error updating status");
+    console.log("error", error);
+    toast.error(getErrorMessage(error));
   } finally {
     toast.dismiss(loader);
   }
@@ -115,6 +144,16 @@ const toggleActiveStatus = async (shiftId, newActiveState) => {
     updateResult,
     locations,
     templates,
-    toggleActiveStatus
+    toggleActiveStatus,
+    availabilityData,
+    loadingAvailability,
+    availabilityError,
+    isAvailabilityError,
+    isFetchingAvailability,
+    refetchAvailability,
+    setSelectedTemplateId,
+    selectedDays,
+    toggleDay,
+    setSelectedDays,
   };
 }

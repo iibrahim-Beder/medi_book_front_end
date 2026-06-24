@@ -16,8 +16,10 @@ const DaysAvailabilityCheckbox = ({
   loading = false,
   error = false,
   locationVisability = false,
-  openAlways=false
+  openAlways=false,
+  isUseToDeactivate  = false
 }) => {
+  console.log("availability",availability);
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -49,6 +51,38 @@ const DaysAvailabilityCheckbox = ({
 
   const getStatusInfo = (item) => {
     const { state, shiftId } = item;
+    
+    if(isUseToDeactivate ){
+    if (state === "Active") {
+      return {
+        disabled: false,
+        // icon: <MdOutlineCheckCircle   className="status-icon deactivated" />,
+        // label: t(""),
+        Conflict: false,
+        deactivated: true
+      };
+    } else if (state === "Inactive" ) {
+      return {
+        disabled: true,
+        icon: <CgUnavailable   className="status-icon reactivate" />,
+        label: t("day already deactivated"),
+        Conflict: false,
+        deactivated: true
+      };
+    } else if (state === "NoShift" || state === "NotExist") {
+      return {
+        disabled: true,
+        icon: <CgUnavailable   className="status-icon reactivate" />,
+        label: t("day has no shift"),
+        Conflict: true,
+        deactivated: true
+      };
+    }
+    
+    
+    
+    }
+        
     if (state === "Active") {
       return {
         disabled: true,
@@ -61,7 +95,7 @@ const DaysAvailabilityCheckbox = ({
         icon: <IoMdRefresh className="status-icon reactivate" />,
         label: t("day will reactivated"),
       };
-    } else if (state === "NoShift") {
+    } else if (state === "NoShift" || state === "NotExist") {
       return {
         disabled: true,
         icon: <CgUnavailable   className="status-icon reactivate" />,
@@ -167,7 +201,6 @@ const DaysAvailabilityCheckbox = ({
           >
             <div className="days-availability-checkbox">
               {sortedAvailability.map((item, index) => {
-                console.log("item", item);
                 const dayOfWeek = item.dayOfWeek;
                 const status = getStatusInfo(item);
                 const Conflict = status.Conflict || false;

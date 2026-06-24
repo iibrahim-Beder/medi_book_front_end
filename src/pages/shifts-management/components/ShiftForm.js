@@ -6,7 +6,8 @@ import PopupMessage from "../../shared/PopupMessage";
 import { useTranslation } from "react-i18next";
 import DataEmptyComponent from "../../shared/DataEmptyComponent";
 import DaysAvailabilityCheckbox from "../../ui/form-fields/DaysAvailabilityCheckbox";
-import useAddShifts from "../../doctor-registration/hooks/useAddShifts";
+import useShift from "../hooks/useShift";
+import Skeleton from "react-loading-skeleton";
 export default function ShiftForm({
   dayIndex,
   shifts = [],
@@ -15,14 +16,89 @@ export default function ShiftForm({
   onAdd,
   onUpdate,
   onToggleActive,
-  setOpenModal
+  setOpenModal,
 }) {
   console.log("shifts", shifts);
   const { t } = useTranslation();
+
+  const {
+    availabilityData,
+    loadingAvailability,
+    availabilityError,
+    isAvailabilityError,
+    isFetchingAvailability,
+    refetchAvailability,
+    setSelectedTemplateId,
+    selectedDays,
+    toggleDay,
+    selectedTemplateId,
+  } = useShift();
+
+  const [activePopup, setActivePopup] = useState({
+    show: false,
+    id: null,
+    newActive: false,
+    locationName: "",
+  });
+  const handleCloseActiveConfirm = () => {
+    setActivePopup({ show: false,shiftName: "", id: null, newActive: false});
+  };
+
+  const handleConfirmActiveToggle = () => {
+    const shiftIds = selectedDays.map(
+      (day) => availabilityData.find((item) => item.dayOfWeek === day)?.shiftId,
+    );
+
+    if (shiftIds.length > 0 && onToggleActive) {
+      onToggleActive(shiftIds, activePopup.newActive);
+    }
+    handleCloseActiveConfirm();
+  };
+  const handleShowActiveConfirm = (id, newActive, shiftName) => {
+    setSelectedTemplateId(id);
+    setActivePopup({ show: true, id, newActive, shiftName });
+  };
+
+  const renderDaysAvailabilityCheckbox = () => {
+    if (loadingAvailability || !availabilityData || isFetchingAvailability ) {
+      return (
+        <div className="pl-3">
+        {[...Array(7)].map((i) => (
+          <div className="row">
+            <Skeleton  width={25} height={25}   />
+            <div style={{ flex: 1 , marginLeft: 10 , marginBottom: 10 }}>
+              <Skeleton height={25} width="50%" />
+            </div>
+          </div>
+
+        ))}
+        </div>
+      );
+    } else {
+      return (
+        <DaysAvailabilityCheckbox
+          openAlways={true}
+          availability={availabilityData}
+          selectedDays={selectedDays}
+          onToggle={toggleDay}
+          disabled={
+            loadingAvailability || !availabilityData || isFetchingAvailability
+          }
+          loading={loadingAvailability || isFetchingAvailability}
+          isUseToDeactivate={activePopup.newActive ? false : true}
+        />
+      );
+    }
+  };
+
   return (
-    <div>
+    <div className="shift-form-container">
       {shifts.length === 0 && (
-       <DataEmptyComponent text="No Shift Found for this day" btnText="Add New Shift" onClick={() => setOpenModal(true)} />
+        <DataEmptyComponent
+          text="No Shift Found for this day"
+          btnText="Add New Shift"
+          onClick={() => setOpenModal(true)}
+        />
       )}
 
       {shifts.map((shift) => (
@@ -33,48 +109,62 @@ export default function ShiftForm({
           templates={templates}
           locations={locations}
           onUpdate={onUpdate}
+          onShowActiveConfirm={handleShowActiveConfirm}
         />
       ))}
+      {activePopup.show && (
+        <PopupMessage
+          type={activePopup.newActive ? "success" : "danger"}
+          title={
+            activePopup.newActive ? t(`activate ${activePopup?.shiftName||"" } shift`) : t(`deactivate  ${activePopup.shiftName} shift`)
+          }
+          message={t(
+            activePopup.newActive
+              ? "Are you sure you want to activate selected shift?"
+              : "Are you sure you want to deactivate selected shift?",
+            { name: activePopup.shiftName },
+          )}
+          buttons={[
+            {
+              text: t("cancel"),
+              onClick: handleCloseActiveConfirm,
+              variant: "simple-cancel-btn shadow-0 ",
+            },
+            {
+              text: t("confirm"),
+              onClick: handleConfirmActiveToggle,
+              variant: activePopup.newActive ? "primary" : "deactivate-btn",
+            },
+          ]}
+          onClose={handleCloseActiveConfirm}
+          children={renderDaysAvailabilityCheckbox()}
+        />
+      )}
     </div>
   );
 }
 
-function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, templates }) {
-  const template = templates.find((s) => s.templateId === shift.shiftTemplateId);
+function SingleShiftFourm({
+  shift,
+  locations,
+  onUpdate,
+  onToggleActive,
+  templates,
+  onShowActiveConfirm,
+}) {
+  const template = templates.find(
+    (s) => s.templateId === shift.shiftTemplateId,
+  );
   useEffect(() => {
     setisActive(shift.isActive);
   }, [shift]);
-
   const { t } = useTranslation();
 
-  const [activePopup, setActivePopup] = useState({
-    show: false,
-    id: null,
-    newActive: false,
-    locationName: "",
-  });
-  const handleCloseActiveConfirm = () => {
-    setActivePopup({ show: false, id: null, newActive: false, shiftName: "" });
-  };
-
-  const handleConfirmActiveToggle = () => {
-    if (activePopup.id !== null && onToggleActive) {
-      onToggleActive(activePopup.id, activePopup.newActive);
-    }
-    handleCloseActiveConfirm();
-  };
-  const handleShowActiveConfirm = (id, newActive, shiftName) => {
-    setActivePopup({ show: true, id, newActive, shiftName });
-  };
   const [selectedLocationId, setSelectedLocationId] = useState(
     shift.locationId || "",
   );
-  const [breakStart, setBreakStart] = useState(
-    shift.breakStartTime || null,
-  );
-  const [breakEnd, setBreakEnd] = useState(
-    shift.breakEndTime || null,
-  );
+  const [breakStart, setBreakStart] = useState(shift.breakStartTime || null);
+  const [breakEnd, setBreakEnd] = useState(shift.breakEndTime || null);
   const [isActive, setisActive] = useState(
     shift.isActive ? shift.isActive : false,
   );
@@ -100,17 +190,6 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
       setSaving(false);
     }
   }
-  const activeCheckboxId = `active-${shift.shiftId}`;
-    const {
-      selectedTemplateId,
-      selectedDays,
-      toggleDay,
-      // dayCheckboxes,
-      loadingAvailability,
-      availabilityData,
-      isFetchingAvailability,
-      errors,
-    } = useAddShifts()
   return (
     <div className="shift-form">
       <div className="dc-tabscontenttitle title-card ">
@@ -159,15 +238,15 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleShowActiveConfirm(
-                    shift.shiftId,
+                  onShowActiveConfirm(
+                    shift.shiftTemplateId,
                     !isActive,
-                    shift.locationName,
+                    template?.name || "",
                   );
                 }}
                 className={`second-btn m-0 ${isActive ? "deactivate-btn" : ""}`}
                 style={{ margin: "11px 4px", minWidth: "fit-content" }}
-              > 
+              >
                 {isActive ? t("Deactivate") : t("Activate")}
               </button>
               <button
@@ -183,57 +262,6 @@ function SingleShiftFourm({ shift, locations, onUpdate, onToggleActive, template
           </fieldset>
         </form>
       </div>
-      {activePopup.show && (
-        <PopupMessage
-          type={activePopup.newActive ? "success" : "danger"}
-          title={
-            activePopup.newActive ? t("activate shift") : t("deactivate shift")
-          }
-          message={t(
-            activePopup.newActive
-              ? "Are you sure you want to activate selected shift?"
-              : "Are you sure you want to deactivate selected shift?",
-            { name: activePopup.shiftName },
-          )}
-          buttons={[
-            {
-              text: t("cancel"),
-              onClick: handleCloseActiveConfirm,
-              variant: "simple-cancel-btn shadow-0 ",
-            },
-            {
-              text: t("confirm"),
-              onClick: handleConfirmActiveToggle,
-              variant: activePopup.newActive ? "primary" : "deactivate-btn",
-            },
-          ]}
-          onClose={handleCloseActiveConfirm}
-          children={
-            <DaysAvailabilityCheckbox
-              openAlways={true}
-              availability={[
-                {dayOfWeek: 0,  state: "AvailableToDeactivate",},
-                { dayOfWeek: 1, state: "AvailableToDeactivate" },
-                { dayOfWeek: 2, state: "AlreadyDeactivated" },
-                { dayOfWeek: 3, state: "AlreadyDeactivated" },
-                { dayOfWeek: 4, state: "AvailableToDeactivate" },
-                { dayOfWeek: 5, state: "AvailableToDeactivate" },
-                { dayOfWeek: 6, state: "AvailableToDeactivate" },
-              ]}
-              selectedDays={selectedDays}
-              onToggle={toggleDay}
-              // disabled={
-              //   loadingAvailability ||
-              //   !availabilityData ||
-              //   isFetchingAvailability ||
-              //   selectedTemplateId === "0"
-              // }
-              loading={loadingAvailability || isFetchingAvailability}
-              error={errors.selectedDays}
-            />
-          }
-        />
-      )}
     </div>
   );
 }

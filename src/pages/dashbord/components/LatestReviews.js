@@ -62,7 +62,7 @@ const FeedbackItem = ({ appointment, index }) => {
             {/* <span>Booking on: {appointment.date}</span> */}
           {/* </h3> */}
           <Link to={`/appointment-management/${appointment.bookingId}`} className="btn-link" title="view appointment" >
-          <a href="#" className="dc-hiredarrow">
+          <a href="!#" className="dc-hiredarrow">
             <MdArrowForwardIos />
           </a>
           </Link>

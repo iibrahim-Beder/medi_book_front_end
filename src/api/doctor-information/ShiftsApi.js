@@ -175,31 +175,28 @@ export const doctorShiftsApi = baseApi.injectEndpoints({
     }),
 
 activateDoctorShift: builder.mutation({
-  query: ({ shiftId }) => ({
-    url: "/Doctors/ActivateShift",
+  query: ({ shiftIds }) => ({
+    url: `/Doctors/ActivateShifts?${shiftIds
+      .map(id => `ShiftIds=${id}`)
+      .join("&")}`,
     method: "GET",
-    params: { ShiftId: shiftId },
   }),
 
+
   async onQueryStarted(
-    { shiftId, doctorId },
+    { shiftIds, doctorId },
     { dispatch, queryFulfilled }
   ) {
-
     const patchResult = dispatch(
       doctorShiftsApi.util.updateQueryData(
         "getDoctorShifts",
         doctorId,
         (draft) => {
-
-          const shift = draft.find(
-            (loc) => loc.shiftId === shiftId
-          );
-
-          if (shift) {
-            shift.isActive = true;
-          }
-
+          draft.forEach((shift) => {
+            if (shiftIds.includes(shift.shiftId)) {
+              shift.isActive = true;
+            }
+          });
         }
       )
     );
@@ -209,7 +206,6 @@ activateDoctorShift: builder.mutation({
     } catch {
       patchResult.undo();
     }
-
   },
   invalidatesTags: (result, error, { doctorId }) => [
     { type: "ShiftDaysAvailability"},
@@ -217,31 +213,27 @@ activateDoctorShift: builder.mutation({
 }),
 
 deactivateDoctorShift: builder.mutation({
-  query: ({ shiftId }) => ({
-    url: "/Doctors/DeactivateShift",
+  query: ({ shiftIds }) => ({
+    url: `/Doctors/DeactivateShifts?${shiftIds
+      .map(id => `ShiftIds=${id}`)
+      .join("&")}`,
     method: "GET",
-    params: { ShiftId: shiftId },
   }),
 
   async onQueryStarted(
-    { shiftId, doctorId },
+    { shiftIds, doctorId },
     { dispatch, queryFulfilled }
   ) {
-
     const patchResult = dispatch(
       doctorShiftsApi.util.updateQueryData(
         "getDoctorShifts",
         doctorId,
         (draft) => {
-
-          const shift = draft.find(
-            (loc) => loc.shiftId === shiftId
-          );
-
-          if (shift) {
-            shift.isActive = false;
-          }
-
+          draft.forEach((shift) => {
+            if (shiftIds.includes(shift.shiftId)) {
+              shift.isActive = false;
+            }
+          });
         }
       )
     );
@@ -251,7 +243,6 @@ deactivateDoctorShift: builder.mutation({
     } catch {
       patchResult.undo();
     }
-
   },
   invalidatesTags: (result, error, { doctorId }) => [
     { type: "ShiftDaysAvailability" },

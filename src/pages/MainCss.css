@@ -1952,3 +1952,10 @@ display: none;
 .diagnosis-modal-management textarea,.diagnosis-modal-management  select,.diagnosis-modal-management input{
   background-color: var(--badybkcolor) !important; ;
   }
+
+
+
+  .shift-form-container .popup-header h3 {
+        font-size: clamp(20px, 3vw, 20px);
+        width: 78%;
+  }
