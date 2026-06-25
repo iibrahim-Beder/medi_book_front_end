@@ -1201,14 +1201,9 @@ color: white;
 .notification-card-container{
   border-bottom: 1px solid #eee;
   border-radius: 0;
-  padding: 8px;
+  padding: 4px 8px;
   /* background-color: var(--badybkcolor); */
   /* border-radius: 5px; */
-}
-.notification-card-container:hover{
-  background-color: var(--badybkcolor);;
-  /* background-color: #fafafa; */
-
 }
 
 .PatientsFiltersBtn.btn.btn-outline-secondary:hover{
@@ -1959,3 +1954,59 @@ display: none;
         font-size: clamp(20px, 3vw, 20px);
         width: 78%;
   }
+
+  .notification-card {
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 7px 9px;
+  /* gap: 16px; */
+  transition: 0.3s;
+}
+
+.notification-card:hover {
+  box-shadow: 0 6px 18px var(--scshadocolor);
+}
+
+.notification-avatar img {
+  width: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+  min-width: 45px;
+}
+
+/* .notification-content h6 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+} */
+
+.notification-content p {
+    font-size: 14px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    color: var(--text-sub);
+}
+
+.notification-icon {
+  min-width : 58px;
+  color: #3b82f6;
+}
+
+.notification-icon svg {
+  font-size: 20px;
+  display: block;
+  margin: auto;
+}
+
+.notification-icon span {
+  display: block;
+  /* margin-top: 6px; */
+  font-size: 13px;
+  color: var(--terthemecolor);
+  font-weight: 600;
+}
+
+.w-0{
+  width: 0 !important;
+}

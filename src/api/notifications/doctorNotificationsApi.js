@@ -1,40 +1,6 @@
 // doctorNotificationsApi.js
 import { baseApi } from '../baseApi';
 
-// Transform related entity type
-const transformEntityTypeToAPI = (entityType) => {
-  const entityTypeMap = {
-    'System': 0,
-    'Appointment': 1,
-    'Message': 2,
-    'Payment': 3,
-    'Medical': 4
-  };
-  return entityTypeMap[entityType] ?? null;
-};
-
-const transformEntityTypeToUI = (entityType) => {
-  const entityTypeMap = {
-    0: 'System',
-    1: 'Appointment',
-    2: 'Message', 
-    3: 'Payment',
-    4: 'Medical'
-  };
-  return entityTypeMap[entityType] ?? 'System';
-};
-
-// Transform notification type (if exists in API)
-const transformNotificationTypeToAPI = (notificationType) => {
-  const notificationTypeMap = {
-    'Info': 1,
-    'Warning': 2,
-    'Alert': 3,
-    'Reminder': 4
-  };
-  return notificationTypeMap[notificationType] ?? null;
-};
-
 const transformDoctorNotificationsData = (response) => {
   if (!response || !response.succeeded) {
     return {
@@ -79,10 +45,11 @@ export const doctorNotificationsApi = baseApi.injectEndpoints({
         pageNumber = 1, 
         pageSize = 10 
       }) => {
+        console.log('Get filter notifications Params:', { filter });
         const params = {
           ...(filter.isRead !== undefined && { 'filter.IsRead': filter.isRead }),
-          ...(filter.type && { 'filter.Type': transformNotificationTypeToAPI(filter.type) }),
-          ...(filter.relatedEntityType && { 'filter.RelatedEntityType': transformEntityTypeToAPI(filter.relatedEntityType) }),
+          ...(filter.type && { 'filter.Type': filter.type}),
+          ...(filter.relatedEntityType && { 'filter.RelatedEntityType': filter.relatedEntityType }),
           ...(filter.fromDate && { 'filter.FromDate': filter.fromDate }),
           ...(filter.toDate && { 'filter.ToDate': filter.toDate }),
           ...(orderBy?.orderBy && { 'orderBy.OrderBy': orderBy.orderBy }),

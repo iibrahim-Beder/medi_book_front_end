@@ -175,11 +175,11 @@ const NotificationDropdown = () => {
                     className="notification-message border-bottom"
                     onClick={() => handleNotificationClick(n.id)}
                     style={{
-                      cursor: n.isRead ? "default" : "pointer",
+                      cursor: n.isRead ? "" : "pointer",
                       position: "relative",
                     }}
                   >
-                    <div
+                    {/* <div
                       className="  d-flex align-items-start p-2 text-decoration-none text-dark"
                       style={{
                         gap: "10px",
@@ -239,7 +239,40 @@ const NotificationDropdown = () => {
                           />
                         </span>
                       )}
-                    </div>
+                    </div> */}
+                        <div className="notification-card d-flex align-items-center border-0 pl-0 m-1 mr-0 ">
+                                      <div className="notification-icon text-center">
+                                        {getNotificationIcon(n.relatedEntityType)}
+                                        <span> {formatTime(n.createdAt)}</span>
+                                      </div>
+                                      <div className="notification-content flex-grow-1 pr-1">
+                                        <h6 className="mb-0 notification-title">{n.title}</h6>
+                    
+                                                                <p
+                          title={n.message}
+                          className="mb-0 small text-ellipsis"
+                          style={{ direction: "inherit", maxWidth: "230px", whiteSpace:expandedMessageId ===n.id ?"normal":"",  }}
+                        >
+                          {n.message}
+                        </p>
+                                      </div>
+                    
+                                      <div className="ml-auto notification-avatar">
+                                        <img src="/images/avt/patient-avt.png" alt="Patient" />
+                                      </div>
+                                      {!n.isRead && (
+                                        <span className="mb-auto w-0">
+                                          <div
+                                            className="rounded-circle "
+                                            style={{
+                                              width: "8px",
+                                              height: "8px",
+                                              backgroundColor: "#dc3545",
+                                            }}
+                                          />
+                                        </span>
+                                      )}
+                                    </div>
                   </li>
                 ))}
               {hasMore && !isError &&  <li
