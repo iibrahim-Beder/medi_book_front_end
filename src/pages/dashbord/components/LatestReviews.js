@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { usePatientReviews } from "../../reviews/hooks/usePatientReviews";
 import Skeleton from "react-loading-skeleton";
 import DataEmptyComponent from "../../shared/DataEmptyComponent";
+import { convertSrcPatientImg } from "../../shared/utils";
 
 export default function LatestReviews() {
   const {reviews , isLoading} = usePatientReviews(4);
@@ -43,7 +44,7 @@ const FeedbackItem = ({ appointment, index }) => {
   return (
       <div className="dc-userlistinghold" key={index}>
     <figure className="dc-userlistingimg">
-      <img src={"/images/avt/patient-avt.png"} alt={appointment.patientName} />
+      <img src={convertSrcPatientImg(appointment.patientImage) || "/images/avt/patient-avt.png"} onError={(e) => (e.target.src = "/images/avt/patient-avt.png")} alt={appointment.patientName} />
     </figure>
     <div className="dc-userlistingcontent2">
       <Link to={`/pationt-information/${appointment?.patientId}`} className="button-elment"title="pationt profile" >

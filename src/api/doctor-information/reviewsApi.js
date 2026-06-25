@@ -31,7 +31,7 @@ const transformReviewsData = (response, searchTerm = "") => {
     createdAt: item.createdAt,
     patientName: item.patientName,
     patientId: item.patientID,
-    highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.reviewID)
+    patientImage: item.patientImage,
   }));
 
   return {

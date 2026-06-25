@@ -32,7 +32,7 @@ export default function StatsSection() {
         mt={1}
         mb={3}
       >
-        <Link to="/appointment-management">
+        <Link to="/time-slots">
           <Button
             variant="contained"
             sx={{

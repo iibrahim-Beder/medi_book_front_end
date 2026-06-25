@@ -14,11 +14,17 @@ import Pagination from "../../shared/Pagination";
 
 import { usePatientReviews } from "../hooks/usePatientReviews";
 import { Link } from "react-router-dom";
+import { convertSrcPatientImg } from "../../shared/utils";
 
 const ShimmerCard = () => (
   <div className="mb-4 table-card card">
-    <div className="d-flex justify-content-between mb-2">
+    <div className="d-flex justify-content-between mb-2" style={{display: "flex", alignItems: "center"}}>
+    <div style={{display: "flex" , alignItems: "center", gap:"10px" }}>
+       <figure className="dc-userlistingimg m-0">
+         <Skeleton  width={60} height={60} />
+       </figure>
       <Skeleton width={120} height={20} />
+    </div>
       <Skeleton width={80} height={20} />
     </div>
 
@@ -135,10 +141,17 @@ const PatientReviewsCards = () => {
                 >
                   <div className="comments">
                     <div className="d-flex justify-content-between align-items-start comment-head mb-2">
+                        <div className="d-flex align-items-center">
+                        <figure style={{maxWidth:"75px"}} className="dc-userlistingimg m-0">
+                          <img src={convertSrcPatientImg(review.patientImage) || "/images/avt/patient-avt.png"} onError={(e) => (e.target.src = "/images/avt/patient-avt.png")} alt={review.patientName} />
+                        </figure>
                       <div className="patient-info">
-                        <h6 className="mb-0 fw-semibold ml-1">{review.patientName}</h6>
+                        <Link to={`/pationt-information/${review?.patientId}`} className="button-elment"title="pationt profile" >
+                          <h6 className="mb-0 fw-semibold button-elment ml-1">{review.patientName}</h6>
+                        </Link>
                         <StarRating rating={review.rating} />
                       </div>
+                        </div>
 
                       <div className="align-items-center d-flex text-end flex-column">
                           <h6 className="mb-0 fw-semibold">
