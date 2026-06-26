@@ -18,6 +18,8 @@ import Prescriptions from "./PatientTabs/prescriptions/prescriptions";
 import { useDevice } from "../../../context/useIsMobile";
 import AllergyMobileView from "./PatientTabs/allergy/AllergyMobileView";
 import MedicalHistoryMobileView from "./PatientTabs/medical-history/MedicalHistoryMobileView";
+import AppointmentTable from "./PatientTabs/appointments/AppointmentTable";
+import { usePatientAppointments } from "./PatientTabs/appointments/usePatientAppointments";
 
 export default function PatientProfilePageMain() {
   const { patientId } = useParams();
@@ -29,6 +31,8 @@ export default function PatientProfilePageMain() {
   const defaultTab = "BasicInfo";
   const activeTab = searchParams.get("tab") || defaultTab;
 
+  const{appointmentsData} = usePatientAppointments({patientId: numericPatientId});
+  console.log("Patient Appointments Data:", appointmentsData);
   const setActiveTab = (tabKey) => {
     setSearchParams({ tab: tabKey }); 
   };
@@ -86,7 +90,7 @@ export default function PatientProfilePageMain() {
               <PatientBasicInfo patientId={numericPatientId} />
             )}
             {activeTab === "Appointments" && (
-              <AppointmentsTable patientId={numericPatientId} />
+              <AppointmentTable patientId={numericPatientId} />
             )}
             {activeTab === "DoctorPatientNotes" && (
               <DoctorPatientNotes patientId={numericPatientId} />

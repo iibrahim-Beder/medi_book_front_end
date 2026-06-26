@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useGetPatientMedicalConditionsQuery } from "../../../../../../api/PatientProfile/patientMedicalConditionsApi";
+import { formatDateForAPI } from "../../../../../shared/utils";
 
 
 export const useMedicalConditions = (isMobile = false,patientId) => {
@@ -26,13 +27,6 @@ export const useMedicalConditions = (isMobile = false,patientId) => {
   const [expandedField, setExpandedField] = useState(null);
 
   const pageSize = isMobile ? 5 : 5;
-
-  // Helper functions
-  const formatDateForAPI = (date) => {
-    if (!date) return undefined;
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
-  };
 
     const [expandedNotes, setExpandedNotes] = useState({});
   
@@ -97,29 +91,6 @@ const mappedMedicalConditionsData = useMemo(() => {
     searchTerm: medicalConditionsData.meta?.keyword || ""
   };
 }, [medicalConditionsData]);
-
-
-// useEffect(() => {
-//   if (!mappedMedicalConditionsData?.data?.length) return;
-
-//   const firstMatchRow = mappedMedicalConditionsData.data.find(
-//     item => item.highlightInfo?.matchedFields?.length
-//   );
-
-//   if (!firstMatchRow) return;
-
-//   setExpandedRow(firstMatchRow.id);
-
-//   firstMatchRow.highlightInfo.matchedFields.forEach(match => {
-//     if (match.field === "Notes") {
-//       setExpandedNotes(prev => ({
-//         ...prev,
-//         [firstMatchRow.id]: true
-//       }));
-//     }
-//   });
-// }, [mappedMedicalConditionsData]);
-
 
   const handleSearch = (filters) => {
     setCurrentPage(1);
