@@ -154,6 +154,7 @@ export const TableSkeleton = () => {
           <td><Skeleton width={80} height={20} /></td>
           <td><Skeleton width={120} height={20} /></td>
           <td><Skeleton width={80} height={20} /></td>
+          <td><Skeleton width={80} height={20} /></td>
         </tr>
       ))}
     </>
