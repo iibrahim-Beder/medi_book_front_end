@@ -1,6 +1,8 @@
 import { useGetTimeSlotDetailsForWebQuery } from "../../../api/doctor-information/timeSlotsApi";
 
-export function useTimeSlotDetails(slotId) {
+export function useTimeSlotDetails(id, GetDetails=useGetTimeSlotDetailsForWebQuery) {
+
+
   const {
     data: slotDetails,
     isLoading: isSlotDetailsLoading,
@@ -8,12 +10,13 @@ export function useTimeSlotDetails(slotId) {
     error: slotDetailsError,
     isError: isSlotDetailsError,
     refetch: refetchSlotDetails,
-  } = useGetTimeSlotDetailsForWebQuery(slotId, {
-    skip: !slotId,
+  } = GetDetails(id, {
+    skip: !id,
   });
 
   const slot = {
     ...slotDetails?.slotInfoOverview,
+    location: slotDetails?.slotInfoOverview?.locationName,
   };
 
   const patient = {
@@ -24,6 +27,8 @@ export function useTimeSlotDetails(slotId) {
     bookingType: slotDetails?.patientInfoOverview?.bookingType,
     patientAge: slotDetails?.patientInfoOverview?.patientAge,
     isFirstVisit: slotDetails?.patientInfoOverview?.isFirstVisit,
+    location: slotDetails?.patientInfoOverview?.patientCity,
+    chatId: slotDetails?.patientInfoOverview?.chatId,
   };
 
   const cancellation = {

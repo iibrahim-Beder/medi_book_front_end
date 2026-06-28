@@ -118,7 +118,7 @@ export default function MainAppointtmentList() {
                         userName={patient?.name}
                         userImg={patient?.img}
                         userLocation={patient?.location}
-                        chatId={1}
+                        chatId={patient?.chatId}
                         patientId={patient?.patientId}
                         status={slot?.status}
                         time={slot?.startTime}
@@ -160,7 +160,7 @@ export default function MainAppointtmentList() {
                         <Divider orientation="vertical" flexItem />
 
                         <Link
-                          to={`/appointment-management/${slotDetails.bookingId}/${slotId}`}
+                          to={`/appointment-management/${slotDetails.bookingId}`}
                           className="button-elment"
                         >
                           <Button

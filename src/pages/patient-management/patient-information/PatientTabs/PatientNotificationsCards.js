@@ -26,6 +26,8 @@ import {
 } from "../../../../api/PatientProfile/patientNotificationsApi";
 import PatientName from "./component/PatientName";
 import DataEmptyComponent from "../../../shared/DataEmptyComponent";
+import { formatTime, getNotificationIcon } from "../../../shared/utils";
+import { ShimmerCard } from "../../../notifications/Notifications";
 
 const PatientNotificationsCards = ({ patientId }) => {
   const { t } = useTranslation();
@@ -107,54 +109,7 @@ const PatientNotificationsCards = ({ patientId }) => {
     setCurrentPage(1);
   };
 
-  // Icon mapping based on notificationType + relatedEntityType
-  const getNotificationIcon = (item) => {
-    const entityIcons = {
-      Appointment: <FaCalendarCheck style={{ color: "#007bff" }} />,
-      Message: <FaEnvelopeOpenText style={{ color: "#17a2b8" }} />,
-      Payment: <FaMoneyBillWave style={{ color: "#28a745" }} />,
-      Medical: <FaFlask style={{ color: "#6f42c1" }} />,
-      System: <FaSyncAlt style={{ color: "#6c757d" }} />,
-    };
 
-    const typeIcons = {
-      Info: <FaInfoCircle style={{ color: "var(--themecolor)" }} />,
-      Warning: <FaExclamationTriangle style={{ color: "#xffc107" }} />,
-      Alert: <FaTimesCircle style={{ color: "#dc3545" }} />,
-      Reminder: <FaBell style={{ color: "#fd7e14" }} />,
-    };
-
-    // Priority: entity type > notification type
-    return entityIcons[item.relatedEntityType] || typeIcons[item.notificationType] || <FaInfoCircle style={{ color: "var(--themecolor)" }} />;
-  };
-
-  // Format date
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  // Shimmer Card
-  const ShimmerCard = () => (
-    <div className="notification-card-container mb-2">
-      <div className="notification-card">
-        <div className="icon-content w-100">
-          <div className="alert-icon">
-            <Skeleton  width={35} height={30} />
-          </div>
-          <div style={{ flex: 1 }}>
-            <Skeleton height={20} width="20%" />
-            <Skeleton height={16} width="80%" style={{ marginTop: 8 }} />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 
   const isFilterEmpty =
     !filterType &&
@@ -242,7 +197,7 @@ const PatientNotificationsCards = ({ patientId }) => {
       {/* Notifications List */}
       <div className="table-card">
         {isLoading || isFetching? (
-          Array.from({ length: 5 }).map((_, i) => <ShimmerCard key={i} />)
+          Array.from({ length: 7 }).map((_, i) => <ShimmerCard key={i}  imgLoaded={false}/>)
         ) : isError ? (
           <ErrorLoading onRetry={refetch} />
         ) : notifications.length === 0 ? (
@@ -265,31 +220,38 @@ const PatientNotificationsCards = ({ patientId }) => {
             return (
               <div
                 key={note.id}
-                className={`mb-2 notification-card-container ${!note.isRead ? "unread" : ""}`}
+                className={` notification-card-container border-0 unread ${
+                  !note.isRead ? "unread" : ""
+                }`}
                 onClick={() => !note.isRead && handleMarkAsRead(note.id)}
-                style={{ cursor: note.isRead ? "default" : "pointer" }}
+                style={{ cursor: note.isRead ? "" : "pointer" }}
               >
-                <div className="notification-card">
-                  <div className="icon-content w-100 ">
-                    <div className="alert-icon">{icon}</div>
-                    <div style={{ flex: 1 }}>
-                      <div className="d-flex justify-content-between">
-                      <h6 className=" mb-0 notification-title ">{note.title}</h6>
-                        <p  className="mb-0 text-muted small"style={{whiteSpace:"nowrap"}}>{formatDate(note.createdAt)}</p>
-                      </div>
-                      <span className="mb-2" style={{fontSize:"14px"}} >{note.message}</span>
-                      <div 
-                      // className="d-flex align-items-center justify-content-between"
-                      >
-                        {/* <LiaCheckDoubleSolid
-                          style={{
-                            color: note.isRead ? "#0b81ff" : "#c2c9d6",
-                            fontSize: "1.2rem",
-                          }}
-                        /> */}
-                      </div>
-                    </div>
+                <div className="notification-card d-flex align-items-center">
+                  <div className="notification-icon text-center">
+                    {getNotificationIcon(note.relatedEntityType)}
+                    <span> {formatTime(note.createdAt)}</span>
                   </div>
+                  <div className="notification-content flex-grow-1">
+                    <h6 className="mb-0 notification-title">{note.title}</h6>
+
+                    <p className="mb-0">{note.message}</p>
+                  </div>
+
+                  <div className="ml-auto notification-avatar">
+                    {/* <img src="/images/avt/patient-avt.png" alt="Patient" /> */}
+                  </div>
+                  {!note.isRead && (
+                    <span className="mb-auto w-0">
+                      <div
+                        className="rounded-circle "
+                        style={{
+                          width: "8px",
+                          height: "8px",
+                          backgroundColor: "#dc3545",
+                        }}
+                      />
+                    </span>
+                  )}
                 </div>
               </div>
             );

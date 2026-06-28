@@ -8,11 +8,10 @@ import DiagnosisModal from "../diagnosis/DiagnosisModal";
 import DeleteConfirmationPopup from "../diagnosis/DeleteConfirmationPopup";
 import { useDiagnosisCRUD } from "../diagnosis/useDiagnosisCRUD";
 import { transformDiagnosisData } from "../diagnosis/diagnosisUtils";
-import ErrorLoading from "../../shared/ErrorLoading";
-import PatientName from "../../patient-management/patient-information/PatientTabs/component/PatientName";
 import { useParams } from "react-router-dom";
 import { useTimeSlotDetails } from "../../appointmentList/hooks/useTimeSlotDetails";
 import ErrorPage from "../../notFound-pageError/ErrorPage";
+import { useGetBookingOverviewForWebQuery } from "../../../api/doctor-information/timeSlotsApi";
 
 const DiagnosisMobileView = () => {
   const { t } = useTranslation();
@@ -20,7 +19,7 @@ const DiagnosisMobileView = () => {
   // Pagination state
   const [showRowsPerPage, setshowRowsPerPage] = useState(3);
   const [totalCount, setTotalCount] = useState(0);
-  const { slotId } = useParams();  
+  const { appointmentId } = useParams();  
   // API Call
 
   const [currentItems, setCurrentItems] = useState([]);
@@ -52,7 +51,7 @@ const DiagnosisMobileView = () => {
 
   const {
     patient,
-  } = useTimeSlotDetails(Number(slotId));
+} = useTimeSlotDetails(Number(appointmentId), useGetBookingOverviewForWebQuery);
   const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
     if (diagnosesData?.data) {

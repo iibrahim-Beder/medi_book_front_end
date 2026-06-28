@@ -190,10 +190,6 @@ if(isCurrentStepLoading ){
                       element={<PatientProfilePageMain />}
                     />
                     <Route
-                      path="appointment-management/:appointmentId/:slotId"
-                      element={<AppointmentManagementMain />}
-                    />
-                    <Route
                       path="appointment-management/:appointmentId"
                       element={<AppointmentManagementMain />}
                     />

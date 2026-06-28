@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export default function PatientDetails({ name, phoneNumber, patientAge, isFirstVisit, address, bookingType }) {
+export default function PatientDetails({ name, phoneNumber, patientAge, isFirstVisit, address, bookingType , location}) {
   const { t } = useTranslation();
 
   return (
@@ -38,7 +38,13 @@ export default function PatientDetails({ name, phoneNumber, patientAge, isFirstV
         <div className="dc-title">
           <h4>{t("patient.bookingType")}:</h4>
           <span>{bookingType  || "—"}</span>
-          <hr className="CustHr CustHrX" />
+        </div>
+      </div>
+      <div className="dc-user-info">
+        <div className="dc-title">
+          <h4>{t("patient City")}:</h4>
+          <span>{location  || "—"}</span>
+          <hr className="CustHr " />
           <br />
         </div>
       </div>

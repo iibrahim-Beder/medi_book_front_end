@@ -21,11 +21,11 @@ export default function PationtCard({userName,userImg,userType,userLocation,chat
           </h3>
             </Link>
           <span>{userLocation}</span>
-          <Link className='button-elment' to={`/chat/${chatId}`}>
+         { chatId && <Link className='button-elment' to={`/chat/${chatId}`}>
           <button style={{fontSize:"40px"}} title="open chat" className='button-elment'>
         <BsWechat/>
           </button>
-          </Link>
+          </Link>}
 
         </div>
         <SingleSlot

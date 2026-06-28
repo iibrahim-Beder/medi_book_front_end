@@ -48,6 +48,27 @@ getTimeSlotDetailsForWeb: builder.query({
     return response;
   },
 }),
+GetBookingOverviewForWeb: builder.query({
+  query: (bookingId) => ({
+    url: "/Bookings/GetBookingOverviewForWeb",
+    method: "GET",
+    params: {
+      BookingId: bookingId,
+    },
+  }),
+
+  providesTags: ["BookingOverview"],
+
+  transformResponse: (response) => {
+    console.log("Get booking overview Response:", response);
+    return response?.data;
+  },
+
+  transformErrorResponse: (response) => {
+    console.log("Get booking overview Error:", response);
+    return response;
+  },
+}),
 
   }),
 });
@@ -55,4 +76,5 @@ getTimeSlotDetailsForWeb: builder.query({
 export const {
   useGetTimeSlotsForWebQuery,
   useGetTimeSlotDetailsForWebQuery,
+  useGetBookingOverviewForWebQuery
 } = doctorApi;

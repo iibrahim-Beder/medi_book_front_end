@@ -6,9 +6,10 @@ import CancellationDetails from "../../appointmentList/cards/4-CancellationDetai
 import ErrorPage from "../../notFound-pageError/ErrorPage";
 import { useTimeSlotDetails } from "../../appointmentList/hooks/useTimeSlotDetails";
 import { patientSkeletonTheme } from "../../patient-management/patient-information/PatientTabs/patientBasicInfo/usePatientBasicInfo";
+import { useGetBookingOverviewForWebQuery } from "../../../api/doctor-information/timeSlotsApi";
 
 const AppointmentInformation = () => {
-  const { slotId } = useParams();
+  const { appointmentId } = useParams();
 
 const {
   slot,
@@ -20,7 +21,7 @@ const {
   isSlotDetailsError,
   refetchSlotDetails,
   slotDetailsError,
-} = useTimeSlotDetails(Number(slotId));
+} = useTimeSlotDetails(Number(appointmentId), useGetBookingOverviewForWebQuery);
 
 
     if (isSlotDetailsError || (!isSlotDetailsLoading && !slotDetails && isSlotDetailsFetching)) {
@@ -46,7 +47,7 @@ const {
             userName={patient?.name}
             userImg={patient?.img}
             userLocation={patient?.location}
-            chatId={1}
+            chatId={patient?.chatId}
             patientId={patient?.patientId}
             status={slot?.status}
             time={slot?.startTime}
@@ -61,6 +62,7 @@ const {
               bookingType={patient?.bookingType}
               patientAge={patient?.patientAge}
               isFirstVisit={patient?.isFirstVisit}
+              location={patient?.location}
             />
            {slotDetails?.cancellationInfoOverview && <CancellationDetails
               time={cancellation?.time}

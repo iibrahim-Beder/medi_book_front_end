@@ -31,8 +31,6 @@ export default function PatientProfilePageMain() {
   const defaultTab = "BasicInfo";
   const activeTab = searchParams.get("tab") || defaultTab;
 
-  const{appointmentsData} = usePatientAppointments({patientId: numericPatientId});
-  console.log("Patient Appointments Data:", appointmentsData);
   const setActiveTab = (tabKey) => {
     setSearchParams({ tab: tabKey }); 
   };

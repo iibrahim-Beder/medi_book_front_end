@@ -214,28 +214,6 @@ const Notifications = () => {
     }
   }, []);
 
-  const ShimmerCard = () => (
-    <div className="notification-card-container border-0 ">
-      <div className="notification-card">
-        <div className="icon-content w-100">
-          <div className="mr-3 text-center">
-            <Skeleton style={{borderRadius:"40%"}} width={25} height={20} />
-            <Skeleton  width={30} height={14} />
-          </div>
-          <div style={{ flex: 1, maxHeight: "48px" }}>
-            <Skeleton style={{minWidth:"70px"}} minW height={14} width={"30%"}  />
-            <Skeleton style={{minWidth:"120px"}} height={12} width={"60%"} />
-          </div>
-
-          <div className="">
-            <Skeleton circle width={50} height={50} />
-          </div>
-
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     // <div className="notifications-container">
     // <div className="dc-haslayout dc-dbsectionspace notifications-main-page">
@@ -409,3 +387,27 @@ const Notifications = () => {
 };
 
 export default Notifications;
+
+
+
+ export const ShimmerCard = ({imgLoaded =true}) => (
+    <div className="notification-card-container border-0 ">
+      <div className="notification-card">
+        <div className="icon-content w-100">
+          <div className="mr-3 text-center">
+            <Skeleton style={{borderRadius:"40%"}} width={30} height={20} />
+            <Skeleton  width={35} height={14} />
+          </div>
+          <div style={{ flex: 1, maxHeight: "48px" }}>
+            <Skeleton style={{minWidth:"70px"}} minW height={14} width={"30%"}  />
+            <Skeleton style={{minWidth:"120px"}} height={12} width={"60%"} />
+          </div>
+
+          <div className="">
+          {imgLoaded &&  <Skeleton circle width={50} height={50} />}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
