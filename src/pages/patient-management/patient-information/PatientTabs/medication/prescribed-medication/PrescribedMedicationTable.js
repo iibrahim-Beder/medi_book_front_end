@@ -88,9 +88,7 @@ const PrescribedMedicationTable = ({patientId}) => {
               onReset={handleResetFilters}
               onSearch={handleSearch}
               conditions={currentData}
-              showStatusFilter={false}
-              showSeverityFilter={false}
-              showConditionTypeFilter={false}
+              showFilterDropdown={false}
             />
           </div>
 

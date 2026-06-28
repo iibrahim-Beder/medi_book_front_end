@@ -3,8 +3,7 @@ export const medicalConditionsHelpers = (t) => {
     { key: "Acute", label: t("acute") },
     { key: "Chronic", label: t("chronic") },
     { key: "Genetic", label: t("genetic") },
-    { key: "Infectious", label: t("infectious") },
-    { key: "Autoimmune", label: t("autoimmune") }
+    { key: "Other", label: t("Other") },
   ];
 
   const severityLevels = [

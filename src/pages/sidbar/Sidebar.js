@@ -16,7 +16,6 @@ import { CiLocationOn } from "react-icons/ci";
 import { HiOutlineChatBubbleOvalLeft } from "react-icons/hi2";
 import { PiUsersThreeLight } from "react-icons/pi";
 import { LiaUserCogSolid } from "react-icons/lia";
-import { LiaUserShieldSolid } from "react-icons/lia";
 import { CiLogout } from "react-icons/ci";
 import { CiBadgeDollar } from "react-icons/ci";
 
@@ -85,6 +84,96 @@ let iconSize=20;
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  const menuItems = [
+  {
+    to: "/dashboard",
+    label: t("sidebar.insights"),
+    icon: <DashboardIcon width={iconSize} height={iconSize} className="icon" />,
+  },
+  {
+    to: "/time-slots",
+    label: t("sidebar.appointmentList"),
+    icon: <BsList className="icon" />,
+    access: ["Shifts"],
+    className: "dc-notificationicon",
+  },
+  {
+    to: "/appointment-management",
+    label: t("sidebar.appointmentManagement"),
+    icon: <CiSettings className="icon" />,
+    access: ["Shifts"],
+  },
+  {
+    to: "/appointment-location",
+    label: t("Locations"),
+    icon: <CiLocationOn className="icon" />,
+    access: ["Locations"],
+  },
+  {
+    to: "/Generate-Doctor-Slots",
+    label: t("sidebar.makeSlots"),
+    icon: <PiClockUserThin className="icon" />,
+    access: ["Shifts"],
+  },
+  {
+    to: "/patients",
+    label: t("sidebar.managePatients"),
+    icon: <PiUsersThreeLight className="icon" />,
+    access: ["All"],
+  },
+  {
+    to: "/pationt-information",
+    label: t("sidebar.pationtInformation"),
+    icon: (
+      <InfomationIcon
+        width={iconSize}
+        height={iconSize}
+        className="icon"
+      />
+    ),
+    access: ["All"],
+  },
+  {
+    to: "/chat",
+    label: t("sidebar.messages"),
+    icon: <HiOutlineChatBubbleOvalLeft className="icon" />,
+    access: ["All"],
+  },
+  {
+    to: "/manage-financial",
+    label: t("sidebar.manageFinancial"),
+    icon: <CiBadgeDollar className="icon" />,
+    access: ["All"],
+  },
+  {
+    to: "/reviews",
+    label: t("Reviews"),
+    icon: <BsStar className="icon" />,
+    access: ["All"],
+  },
+  {
+    to: "/account-information",
+    label: t("Account Information"),
+    icon: <LiaUserCogSolid className="icon" />,
+    access: ["Experience"],
+  },
+  {
+    to: "/shifts-management",
+    label: t("Shifts Management"),
+    icon: <SlCalender className="icon" />,
+    access: ["Shifts"],
+  },
+  {
+    to: "/settings",
+    label: t("Settings"),
+    icon: <CiSettings className="icon" />,
+  },
+  {
+    to: "/notifications",
+    label: t("Notifications"),
+    icon: <IoNotificationsOutline className="icon" />,
+  },
+];
   return (
     <div ref={sidebarRef} id="dc-sidebarwrapper" className={` ${scrolled ? "scrolled-sidebar" : ""}  dc-sidebarwrapper ${isCollapsed ? "collapsed" : ""}`}>
       <div style={{position:"fixed"}} id="dc-btnmenutoggle" className="dc-btnmenutoggle" onClick={toggleSidebar}>
@@ -115,98 +204,31 @@ let iconSize=20;
 
         {/* Navigation */}
         <nav id="dc-navdashboard" className="dc-navdashboard">
-          <ul onClick={()=>{setIsCollapsed(true)}} >
-            <li>
-              <Link to="/dashboard">
-                <DashboardIcon width={iconSize} height={iconSize} className="icon" /> 
-                <span>{t("sidebar.insights")}</span>
-              </Link>
-            </li>
-            <li className="dc-notificationicon">
-              <Link to="/time-slots" {...getLinkProps(["Shifts"]) }>
-                <BsList className="icon" />
-                <span>{t("sidebar.appointmentList")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/appointment-management" {...getLinkProps(["Shifts"]) }>
-                <CiSettings className="icon" />
-                <span>{t("sidebar.appointmentManagement")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/appointment-location" {...getLinkProps(["Locations"]) }>
-                <CiLocationOn className="icon" />
-                <span>{t("Locations")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/Generate-Doctor-Slots" {...getLinkProps(["Shifts"]) } >
-                <PiClockUserThin className="icon" />
-                <span>{t("sidebar.makeSlots")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/patients" {...getLinkProps(["All"]) }>
-                <PiUsersThreeLight className="icon" />
-                <span>{t("sidebar.managePatients")}</span>
-              </Link>
-            </li>
-             <li>
-              <Link to="/pationt-information" {...getLinkProps(["All"]) }>
-                <InfomationIcon width={iconSize} height={iconSize} className="icon" />
-                <span>{t("sidebar.pationtInformation")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="chat" {...getLinkProps(["All"]) } >
-                <HiOutlineChatBubbleOvalLeft className="icon" />
-                <span>{t("sidebar.messages")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/manage-financial" {...getLinkProps(["All"]) } >
-                <CiBadgeDollar className="icon" />
-                <span>{t("sidebar.manageFinancial")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/reviews" {...getLinkProps(["All"]) }>
-                <BsStar className="icon" />
-                <span>{t("Reviews")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/account-information" {...getLinkProps(["Experience"]) }>
-                <LiaUserCogSolid className="icon" />
-                <span>{t("Account Information")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/shifts-management" {...getLinkProps(["Shifts"])}>
-                <SlCalender className="icon" />
-                <span>{t("Shifts Management")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/settings">
-                <CiSettings className="icon" />
-                <span>{t("Settings")}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/notifications">
-                <IoNotificationsOutline className="icon" />
-                <span>{t("Notifications")}</span>
-              </Link>
-            </li>
-            <li onClick={() => setShowPopupClose(true)}>
-              <Link>
-                <CiLogout className="icon" />
-                <span>{t("sidebar.logout")}</span>
-              </Link>
-            </li>
-          </ul>
+       <ul onClick={() => setIsCollapsed(true)}>
+  {menuItems.map(
+    ({
+      to,
+      label,
+      icon,
+      access = [],
+      className = "",
+    }) => (
+      <li key={to} className={className}>
+        <Link to={to} {...getLinkProps(access)}>
+          {icon}
+          <span>{label}</span>
+        </Link>
+      </li>
+    )
+  )}
+
+  <li onClick={() => setShowPopupClose(true)}>
+    <Link>
+      <CiLogout className="icon" />
+      <span>{t("sidebar.logout")}</span>
+    </Link>
+  </li>
+</ul>
         </nav>
 
         {/* Footer */}

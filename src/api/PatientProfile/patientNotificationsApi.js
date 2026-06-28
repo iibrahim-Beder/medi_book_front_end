@@ -2,48 +2,6 @@
 import { baseApi } from '../baseApi';
 
 // Transform related entity type
-const transformEntityTypeToAPI = (entityType) => {
-  const entityTypeMap = {
-    'System': 0,
-    'Appointment': 1,
-    'Message': 2,
-    'Payment': 3,
-    'Medical': 4
-  };
-  return entityTypeMap[entityType] ?? null;
-};
-
-const transformEntityTypeToUI = (entityType) => {
-  const entityTypeMap = {
-    0: 'System',
-    1: 'Appointment',
-    2: 'Message', 
-    3: 'Payment',
-    4: 'Medical'
-  };
-  return entityTypeMap[entityType] ?? 'System';
-};
-
-// Transform notification type
-const transformNotificationTypeToAPI = (notificationType) => {
-  const notificationTypeMap = {
-    'Info': 1,
-    'Warning': 2,
-    'Alert': 3,
-    'Reminder': 4
-  };
-  return notificationTypeMap[notificationType] ?? null;
-};
-
-const transformNotificationTypeToUI = (notificationType) => {
-  const notificationTypeMap = {
-    1: 'Info',
-    2: 'Warning', 
-    3: 'Alert',
-    4: 'Reminder'
-  };
-  return notificationTypeMap[notificationType] ?? 'Info';
-};
 
 const transformDoctorNotificationsData = (response, searchText = "") => {
   if (!response || !response.succeeded) {
@@ -70,10 +28,8 @@ const transformDoctorNotificationsData = (response, searchText = "") => {
     message: item.message,
     isRead: item.isRead,
     relatedEntityId: item.relatedEntityId,
-    relatedEntityType: transformEntityTypeToUI(item.relatedEntityType),
+    relatedEntityType: item.type,
     relatedEntityTypeValue: item.relatedEntityType,
-    notificationType: transformNotificationTypeToUI(item.type),
-    notificationTypeValue: item.type,
     createdAt: item.createdAt,
     highlightInfo: response.meta?.matchedItems?.find(matched => matched.id === item.id)
   }));
@@ -86,6 +42,7 @@ const transformDoctorNotificationsData = (response, searchText = "") => {
 };
 
 export const patientNotificationsApi = baseApi.injectEndpoints({
+
   endpoints: (builder) => ({
     getPatientDoctorNotifications: builder.query({
       query: ({ 
@@ -98,8 +55,8 @@ export const patientNotificationsApi = baseApi.injectEndpoints({
         const params = {
           PatientId: patientId,
           ...(filter.isRead !== undefined && { 'filter.IsRead': filter.isRead }),
-          ...(filter.type && { 'filter.Type': transformNotificationTypeToAPI(filter.type) }),
-          ...(filter.relatedEntityType && { 'filter.RelatedEntityType': transformEntityTypeToAPI(filter.relatedEntityType) }),
+          ...(filter.type && { 'filter.Type': filter.type }),
+          ...(filter.relatedEntityType && { 'filter.RelatedEntityType': filter.relatedEntityType }),
           ...(filter.fromDate && { 'filter.FromDate': filter.fromDate }),
           ...(filter.toDate && { 'filter.ToDate': filter.toDate }),
           ...(orderBy?.orderBy && { 'orderBy.OrderBy': orderBy.orderBy }),

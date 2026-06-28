@@ -1,20 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import {
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaInfoCircle,
-  FaTimesCircle,
-  FaCalendarCheck,
-  FaCalendarTimes,
-  FaFlask,
-  FaMoneyBillWave,
-  FaEnvelopeOpenText,
-  FaBell,
-  FaSyncAlt,
-} from "react-icons/fa";
-import { LiaCheckDoubleSolid } from "react-icons/lia";
 import { useTranslation } from "react-i18next";
-import Skeleton from "react-loading-skeleton";
 import ErrorLoading from "../../../shared/ErrorLoading";
 import FilterDropdown from "./component/FilterDropdown";
 import DateRangePicker from "./component/DateRangePicker";
@@ -149,20 +134,56 @@ const PatientNotificationsCards = ({ patientId }) => {
                 name: "type",
                 label: t("Notification Type"),
                 data: [
-                  { key: "Info", label: t("Info") },
-                  { key: "Warning", label: t("Warning") },
-                  { key: "Alert", label: t("Alert") },
-                  { key: "Reminder", label: t("Reminder") },
+                  { key: "AppointmentBooked", label: t("Appointment Booked") },
+                  {
+                    key: "AppointmentCancelledByDoctor",
+                    label: t("Appointment Cancelled By Doctor"),
+                  },
+                  {
+                    key: "AppointmentCancelledByPatient",
+                    label: t("Appointment Cancelled By Patient"),
+                  },
+                  {
+                    key: "AppointmentRescheduled",
+                    label: t("Appointment Rescheduled"),
+                  },
+                  {
+                    key: "AppointmentReminder24h",
+                    label: t("Appointment Reminder 24h"),
+                  },
+                  {
+                    key: "AppointmentReminder1h",
+                    label: t("Appointment Reminder 1h"),
+                  },
+                  { key: "PaymentSuccessful", label: t("Payment Successful") },
+                  { key: "PaymentFailed", label: t("Payment Failed") },
+                  {
+                    key: "SystemAnnouncement",
+                    label: t("System Announcement"),
+                  },
+                  {
+                    key: "MaintenanceNotification",
+                    label: t("Maintenance Notification"),
+                  },
+                  {
+                    key: "AccountVerificationReminder",
+                    label: t("Account Verification Reminder"),
+                  },
+                  {
+                    key: "NewDoctorAvailableInArea",
+                    label: t("New Doctor AvailableInArea"),
+                  },
+                  { key: "NewMessage", label: t("New Message") },
+                  { key: "RefundCompleted", label: t("Refund Completed") },
                 ],
               },
               {
                 name: "entityType",
                 label: t("Related To"),
                 data: [
-                  { key: "Appointment", label: t("Appointment") },
+                  { key: "Booking", label: t("Booking") },
                   { key: "Message", label: t("Message") },
                   { key: "Payment", label: t("Payment") },
-                  { key: "Medical", label: t("Medical") },
                   { key: "System", label: t("System") },
                 ],
               },

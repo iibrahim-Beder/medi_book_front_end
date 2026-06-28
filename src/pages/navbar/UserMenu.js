@@ -90,7 +90,7 @@ function UserMenu({ setShowPopupClose }) {
             <li>
               <Link to="/time-slots">
                 <i>
-                  <SlCalender className="icon" />
+                  <BsList className="icon" />
                 </i>
                 <span>{t("userMenu.appointmentList")}</span>
               </Link>
@@ -111,6 +111,14 @@ function UserMenu({ setShowPopupClose }) {
                   <PiClockUserThin className="icon" />
                 </i>
                 <span>{t("sidebar.makeSlots")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/shifts-management">
+                <i>
+                  <SlCalender className="icon" />
+                </i>
+                <span>{t("manage shift")}</span>
               </Link>
             </li>
 
