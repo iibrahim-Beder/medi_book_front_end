@@ -28,6 +28,7 @@ export const transformDiagnosisData = (diagnosis) => {
     conditions: (diagnosis.patientInternalMedicalConditionLinkOverViews || []).map((condition, index) => ({
       id: condition.id || `condition-${diagnosis.diagnosisId}-${index}-${Date.now()}`,
       medicalCondition: {name:condition.medicalConditionName,id:null },
+      medicalConditionName:condition.medicalConditionName,
       category: condition.categoryName,
       severity: condition.severity,
       notes: condition.notes,
@@ -48,6 +49,7 @@ export const transformDiagnosisData = (diagnosis) => {
       recipes: (prescription.prescribedMedications || []).map((med, medIndex) => ({
         id: med.id || `med-${diagnosis.diagnosisId}-${index}-${medIndex}-${Date.now()}`,
         medication:{name: med.medicationName , id: med.medicationNameId},
+        medicationName: med.medicationName,
         category: med.medicationCategoryName,
         dosage: med.dosage,
         instructions: med.instructions,

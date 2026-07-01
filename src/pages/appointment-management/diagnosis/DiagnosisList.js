@@ -56,6 +56,7 @@ const DiagnosisList = ({
     );
   }
 
+  console.log("currentItems", currentItems);
   return (
     <div className="space-y-3 mobile-view ">
       {currentItems.map((disease, index) => (
@@ -177,11 +178,9 @@ const DiagnosisList = ({
                 formFields={[
                   {
                     label: t("Medical Condition"),
-                    name: "medicalCondition",
-                    type: "dropdown",
-                    DropdownType: "disease",
+                    name: "medicalConditionName",
                     required: true,
-                    // half: true,
+                    disabled: true,
                   },
                   {
                     label: t("Category"),
@@ -274,11 +273,10 @@ const DiagnosisList = ({
                 formFieldsRecipe={[
                   {
                     label: t("Medication"),
-                    name: "medication",
-                    type: "dropdown",
+                    name: "medicationName",
                     required: true,
                     requiredErrorMessage: t("Medication is required"),
-                    // half: true,
+                    disabled: true,
                   },
                   {
                     label: t("category"),

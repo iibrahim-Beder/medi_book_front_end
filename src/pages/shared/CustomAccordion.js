@@ -418,6 +418,7 @@ const handleFieldChange = (index, field, value) => {
                               handleFieldChange(index, field.name, val)
                             }
                             errorFromParent={error}
+                            disabled={readOnly}
                           />
                         </div>
                       )

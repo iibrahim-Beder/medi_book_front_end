@@ -103,7 +103,7 @@ const DropdownWithSearch = ({
     setSearchTerm(e.target.value);
   };
   return (
-    <div className="dropdown-container" style={{ opacity: disabled ? 0.6 : 1 }}>
+    <div className="dropdown-container">
       <Box
         sx={{
           margin: "10px 0 20px 0",
