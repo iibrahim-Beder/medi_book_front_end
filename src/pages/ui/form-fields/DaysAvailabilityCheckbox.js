@@ -17,7 +17,8 @@ const DaysAvailabilityCheckbox = ({
   error = false,
   locationVisability = false,
   openAlways=false,
-  isUseToDeactivate  = false
+  isUseToDeactivate  = false,
+  isUseToReactivate  = false
 }) => {
   console.log("availability",availability);
   const { t } = useTranslation();
@@ -95,7 +96,7 @@ const DaysAvailabilityCheckbox = ({
         icon: <IoMdRefresh className="status-icon reactivate" />,
         label: t("day will reactivated"),
       };
-    } else if (state === "NoShift" || state === "NotExist") {
+    } else if (state === "NoShift" || (isUseToReactivate && state === "NotExist")) {
       return {
         disabled: true,
         icon: <CgUnavailable   className="status-icon reactivate" />,

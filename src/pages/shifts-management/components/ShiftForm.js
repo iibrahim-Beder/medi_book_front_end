@@ -86,6 +86,7 @@ export default function ShiftForm({
           }
           loading={loadingAvailability || isFetchingAvailability}
           isUseToDeactivate={activePopup.newActive ? false : true}
+          isUseToReactivate={activePopup.newActive ? true : false}
         />
       );
     }
