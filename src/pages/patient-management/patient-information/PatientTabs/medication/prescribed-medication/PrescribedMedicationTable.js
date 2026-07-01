@@ -101,6 +101,8 @@ const PrescribedMedicationTable = ({patientId}) => {
                   <th>{tableHeaders.category}</th>
                   <th>{tableHeaders.dosage}</th>
                   <th>{tableHeaders.duration}</th>
+                  <th>start date</th>
+                  <th>end date</th>
                   <th>{tableHeaders.instructions}</th>
                   <th>{tableHeaders.diagnosisName}</th>
                   <th>{tableHeaders.prescribedName}</th>
@@ -152,12 +154,18 @@ const PrescribedMedicationTable = ({patientId}) => {
                         <td title={formatDuration(medication.durationInDays)}>
                           {formatDuration(medication.durationInDays)}
                         </td>
+                        <td title={medication.startDate}>
+                          {formatDate(medication.startDate)}
+                        </td>
+                        <td title={medication.endDate}>
+                          {formatDate(medication.endDate)}
+                        </td>
 
                         <td
                          data-has-match={isHasMatched(medication, fieldMapping.instructions)? "true": undefined}
                          data-right-has-match={isHasMatched(medication, fieldMapping.instructions)? "true": undefined} title={medication.instructions}>
                           {!medication.instructions ? (
-                            "-"
+                            "_"
                             
                           ):(
 

@@ -97,6 +97,18 @@ export const diagnosisHelpers = (t) => {
       label: t('Duration (Days)'),
     },
     {
+      label: t("Start Date"),
+      name: "startDate",
+      type: "date",
+      half: true,
+    },
+    {
+      label: t("End Date"),
+      name: "endDate",
+      type: "date",
+      half: true,
+    },
+    {
       name: "instructions",
       type: "textarea",
       label: t('Instructions'),

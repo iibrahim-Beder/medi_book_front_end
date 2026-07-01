@@ -141,7 +141,8 @@ console.log("DiagnosisModal render");
                 placeholder: t("Enter medical condition"),
                 type:"dropdown",
                 DropdownType: "disease",
-                required: true
+                required: true,
+                requiredErrorMessage: t("Medical condition is required"),
                 // half: true,
               },
               {
@@ -214,6 +215,7 @@ console.log("DiagnosisModal render");
             addNewLabel={t("Add Prescription")}
             title={t("Prescriptions")}
             readOnly={false}
+            isUpdateOut
             backgroundColor="var(--scbccolor)"
             titleBackgroundColor="var(--scbccolor)"
             getItemTitleRecipe={(recipe) => recipe.medication.name || "medication"}
@@ -303,10 +305,9 @@ console.log("DiagnosisModal render");
                 label: t("End Date"),
                 name: "endDate",
                 type: "date",
-                placeholder: t("Select end date"),
+                placeholder: t("DD/MM/YYYY"),
                 half: true,
-                required: true,
-                requiredErrorMessage: t("End date is required"),
+                disabled: true
               },
               {
                 label: t("Instructions"),

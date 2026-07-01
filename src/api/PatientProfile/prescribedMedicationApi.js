@@ -25,8 +25,16 @@ const transformMedicationData = (response, searchTerm = "") => {
     id: item.id,
     prescribedMedicationId: item.id,
     dosage: item.dosage,
-    durationInDays: item.durationInDays,
     instructions: item.instructions,
+    startDate: item.startTime,
+    endDate: item.endTime,
+    durationInDays: 
+        item.startTime && item.endTime
+        ? Math.ceil(
+            (new Date(item.endTime).getTime() -
+              new Date(item.startTime).getTime()) /
+            (1000 * 60 * 60 * 24)
+          ) : 0,
     createdAt: item.createdAt,
     medicationName: item.medicationName,
     medicationCategoryName: item.medicationCategoryName,
@@ -112,6 +120,9 @@ export const prescribedMedicationApi = baseApi.injectEndpoints({
 
     try {
       const { data } = await queryFulfilled;
+      if (!data?.succeeded || !data?.data) {
+        return;
+      }
       const realMed = data.data;
 
       Object.values(queries).forEach(entry => {

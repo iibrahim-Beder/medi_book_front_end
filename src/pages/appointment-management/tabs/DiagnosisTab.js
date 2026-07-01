@@ -17,7 +17,7 @@ const DiagnosisMobileView = () => {
   const { t } = useTranslation();
 
   // Pagination state
-  const [showRowsPerPage, setshowRowsPerPage] = useState(3);
+  const [showRowsPerPage, setshowRowsPerPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const { appointmentId } = useParams();  
   // API Call
@@ -54,12 +54,12 @@ const DiagnosisMobileView = () => {
 } = useTimeSlotDetails(Number(appointmentId), useGetBookingOverviewForWebQuery);
   const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
-    if (diagnosesData?.data) {
+  if (selectedDiagnosis === null && diagnosesData?.data) {
       const transformedData = diagnosesData.data.map(transformDiagnosisData);
       setTotalCount(diagnosesData.totalCount);
       setCurrentItems(transformedData);
     }
-  }, [diagnosesData]);  
+  }, [diagnosesData,selectedDiagnosis === null]);  
 // Case 1: When page changes
 // useEffect(() => {
 //   if(lastPage!==currentPage){
@@ -71,6 +71,7 @@ const DiagnosisMobileView = () => {
 //   }
 // }, [currentPage]);
 
+
   function checkAndRefetch(isAdding=false) {
     if (isAdding) {
     setTotalCount(prev => prev + 1);
@@ -81,11 +82,11 @@ const DiagnosisMobileView = () => {
   setTotalCount(prev => prev - 1);
   if (currentItems.length === 1 && currentPage > 1) {
     setCurrentPage((prev) => prev - 1);
-    setshowRowsPerPage(3);
+    setshowRowsPerPage(1);
   } else {
     if ( currentItems.length === 1 && totalCount > showRowsPerPage) {
       refetch();
-      setshowRowsPerPage(3);
+      setshowRowsPerPage(1);
     }
   }
 };

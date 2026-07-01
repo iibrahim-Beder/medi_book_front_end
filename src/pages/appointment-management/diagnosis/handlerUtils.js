@@ -124,7 +124,7 @@ export const buildPrescriptionsUpdatePayload = (original, updated) => {
     payload.symptomsDescription = updated.symptomsDescription || null;
   }
 
-  if (updated.status !== getStatusText(original.status)) {
+  if (updated.status !== original.status) {
     payload.status =   updated.status  || null;
   }
 
@@ -135,7 +135,7 @@ export const buildPrescriptionsUpdatePayload = (original, updated) => {
 };
 export const buildprescribedMedicationUpdatePayload = (original, updated) => {
   const payload = {};
-  // console.log("&&&&original", original, "updated", updated);
+  console.log("============original", original, "updated", updated);
 
   if (updated.dosage !== original.dosage) {
     payload.dosage = updated.dosage || null;
@@ -146,12 +146,13 @@ export const buildprescribedMedicationUpdatePayload = (original, updated) => {
 
   if (updated.durationInDays !== original.durationInDays) {
     payload.durationInDays = updated.durationInDays || null;
+    payload.endDate=(() => {
+          const start = new Date(updated.startDate || new Date());
+          start.setDate(start.getDate() + (parseInt(updated.durationInDays, 10) || 0));
+          return start.toISOString();
+        })()
   }
-
-  if (updated.endDate !== original.endDate) {
-    payload.endDate =   updated.endDate  || null;
-  }
-
+  
   if (updated.startDate !== original.startDate) {
     payload.startDate =   updated.startDate  || null;
   }
@@ -164,10 +165,10 @@ export const buildprescribedMedicationUpdatePayload = (original, updated) => {
 
 export const buildMedicalConditionUpdatePayload = (original, updated) => {
   const payload = {};
-  console.log("&&&&original", original, "updated", updated);
+  console.log("original", original, "updated", updated);
 
   if (updated.isActive !== original.isActive && (updated.isActive==="Active") !== original.isActive) {
-    payload.isActive = updated.isActive || null;
+    payload.isActive = (updated.isActive === "Active") || false;
   }
   if (updated.notes !== original.notes) {
     payload.notes = updated.notes || null;
@@ -177,8 +178,8 @@ export const buildMedicalConditionUpdatePayload = (original, updated) => {
     payload.severity =   updated.severity  || null;
   }
   if (updated.medicalCondition.name !== original.medicalConditionName) {
-    payload.medicationId = updated.medication.id|| null;
+    payload.medicationId = updated.medicalCondition.id|| null;
   }
-  console.log("&&&&payload", payload);
+
   return payload;
 };

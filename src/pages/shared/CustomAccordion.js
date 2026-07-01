@@ -84,15 +84,20 @@ const CustomAccordion = memo(({
 
   const handleEditClick = (index) => {
     setTimeout(() => {
-      if (readOnly) {
+      const unUpdateData = data[index];
+      if (readOnly || !isUpdateOut) {
         setDataRead(prev =>
-          prev.map((item, i) => ({
+            prev.map((item, i) =>
+      i === index
+        ? {
+            ...unUpdateData,
+            isExpanded: !item.isExpanded,
+          }
+        : {
             ...item,
-            isExpanded: i === index
-              ? !item.isExpanded
-              : allowMultipleOpen ? item.isExpanded : false,
-          }))
-        );
+            isExpanded: allowMultipleOpen ? item.isExpanded : false,
+          }
+            ));
         return;
       } else if (onUpdate) {
         const currentData = dataRead || [];
@@ -125,7 +130,7 @@ const handleFieldChange = (index, field, value) => {
 
   setLocalErrors(prev => {
     const newErrors = { ...prev };
-    delete newErrors[`${field}_${itemIdOrIndex}`];
+    delete newErrors[`${field}_${dataRead[index]?.id}`];
     return newErrors;
   });
 };
@@ -175,7 +180,10 @@ const handleFieldChange = (index, field, value) => {
     if (currentData[index]?.isNew) {
       if (onDelete) onDelete(index);
     } else {
-      if (onUpdate) onUpdate(index, "isExpanded", false);
+      if(!isUpdateOut){
+        handleEditClick(index);
+      }
+      if (onUpdate && isUpdateOut) onUpdate(index, "isExpanded", false);
     }
   };
 
@@ -325,7 +333,7 @@ const handleFieldChange = (index, field, value) => {
                   }}
                 >
                   <span
-                    onClick={() => !readOnly && handleEditClick(index)}
+                    onClick={() => handleEditClick(index)}
                     style={{
                       cursor: "pointer",
                       flex: 1,

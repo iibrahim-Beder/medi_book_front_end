@@ -11,6 +11,7 @@ import { buildDiagnosisUpdatePayload } from "./handlerUtils";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { getErrorMessage } from "../../utils/api-errors";
 
 const PATIENT_ID = 4;
 
@@ -133,13 +134,13 @@ export const useDiagnosisCRUD = (setCurrentItems) => {
             return true;
           } else {
             console.log("Failed to save diagnosis:", result);
-            toast.error(result.message || "Failed to save diagnosis");
+            toast.error(getErrorMessage(result));
             toast.dismiss(loadingToast);
             return false;
           }
         } catch (error) {
           console.log("Error saving diagnosis:", error);
-          toast.error(error?.data?.message || "Error saving diagnosis");
+          toast.error(getErrorMessage(error));
           toast.dismiss(loadingToast);
           return false;
         }

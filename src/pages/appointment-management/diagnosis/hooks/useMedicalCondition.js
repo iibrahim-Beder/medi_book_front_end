@@ -85,6 +85,7 @@ const handleDeleteCondition = useCallback(async (conditionId) => {
 
 const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
   if (!editingDiagnosis||isAddingCondition||isUpdatingCondition) return false;
+  console.log('============= Patient Medical Condition Saving condition:', conditionId, conditionData);
   if (!conditionData.medicalCondition){toast.error('Please select a medical condition'); return;} 
 
   if(editingDiagnosis.isNew){ 
@@ -156,14 +157,14 @@ const handleSaveCondition = useCallback(async (conditionId, conditionData) => {
                      toast("No changes detected");
                      closeEditingConditionDiagnosis();
                      return false;
-               }
+                    }
      const payload = {
         conditionId: conditionId,
         diagnosisId: editingDiagnosis.diagnosisId,
         updates: medicalConditionPayload
       };
 
-      console.log('Update Patient Medical Condition Payload:', payload);
+      console.log('=============Update Patient Medical Condition Payload:', payload);
       const result = await updatePatientMedicalCondition(payload).unwrap();
 
       if (result?.succeeded) {           

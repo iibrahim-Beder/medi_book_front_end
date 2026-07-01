@@ -2,11 +2,9 @@
 
 // diagnosisUtils.js
 
-import { getStatusText } from "../../../api/PatientProfile/patientPrescriptionApi";
-
 // Transform API data to match component structure
 export const transformDiagnosisData = (diagnosis) => {
-  // console.log('Original API diagnosis:', diagnosis);
+  console.log('Original API diagnosis:', diagnosis);
   
   const transformed = {
     // Basic diagnosis info - using exact API field names
@@ -34,7 +32,7 @@ export const transformDiagnosisData = (diagnosis) => {
       severity: condition.severity,
       notes: condition.notes,
       isNew: false,
-      isActive: condition.isActive,
+      isActive: condition.isActive?"Active":"Inactive",
       isExpanded: false
     })),
   
@@ -42,7 +40,7 @@ export const transformDiagnosisData = (diagnosis) => {
     prescriptions: (diagnosis.prescriptionOverviews || []).map((prescription, index) => ({
       id: prescription.id || `prescription-${diagnosis.diagnosisId}-${index}-${Date.now()}`,
       title: prescription.title,
-      status: getStatusText(prescription.status),
+      status: prescription.status,
       notes: prescription.notes,
       type: "Medical",
       date: prescription.createdAt?.split('T')[0] || new Date().toISOString().split('T')[0],
@@ -52,10 +50,16 @@ export const transformDiagnosisData = (diagnosis) => {
         medication:{name: med.medicationName , id: med.medicationNameId},
         category: med.medicationCategoryName,
         dosage: med.dosage,
-        durationInDays: med.durationInDays,
         instructions: med.instructions,
-        startDate: med.startDate ? med.startDate.split('T')[0] : '', 
-         endDate: med.endDate ? med.endDate.split('T')[0] : '',
+        startDate: med.startTime?.split('T')[0] ?? '',
+        endDate: med.endTime?.split('T')[0] ?? '',
+        durationInDays:
+        med.startTime && med.endTime
+        ? Math.ceil(
+            (new Date(med.endTime).getTime() -
+              new Date(med.startTime).getTime()) /
+            (1000 * 60 * 60 * 24)
+          ) : 0,
         type: "medication",
         isNew: false,
         isExpanded: false

@@ -6,6 +6,7 @@ import {
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import toast from "react-hot-toast";
 import { buildPrescriptionsUpdatePayload } from "../handlerUtils";
+import { getErrorMessage } from "../../../utils/api-errors";
 export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis,diagnosesData) => {
   const [addPatientPrescription, { isLoading: isAddingPrescription }] = useAddPatientPrescriptionMutation();
   const [updatePatientPrescription, { isLoading: isUpdatingPrescription  }] =  useUpdatePatientPrescriptionMutation();
@@ -81,6 +82,19 @@ export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis,diagnoses
 
   const handleUpdatePrescription = useCallback((prescriptionId, field, value) => {
     if (!editingDiagnosis) return;
+    if(field === 'cancel' || value === 'cancel'){
+      const oldPrescription = diagnosesData?.data?.find(d => d.diagnosisId === editingDiagnosis.diagnosisId)?.prescriptionOverviews?.find(p => p.id === prescriptionId);
+      console.log('oldPrescription', oldPrescription,"diagnosesData",diagnosesData);
+      if (oldPrescription) {
+        setEditingDiagnosis(prev => ({
+          ...prev,
+          prescriptions: (prev.prescriptions || []).map(prescription =>
+            prescription.id === prescriptionId ? { ...prescription, title: oldPrescription.title, status: oldPrescription.status, notes: oldPrescription.notes,isExpanded: false } : prescription
+          )
+        }));
+      }
+      return
+    }
     setEditingDiagnosis(prev => ({
       ...prev,
       prescriptions: (prev.prescriptions || []).map(prescription =>
@@ -127,7 +141,11 @@ export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis,diagnoses
             medicationId: med.medication.id,
             medication: med.medication, 
             startDate: med.startDate || new Date().toISOString(),
-            endDate: med.endDate || new Date().toISOString(),
+            endDate: (() => {
+              const start = new Date(med.startDate || new Date());
+              start.setDate(start.getDate() + (parseInt(med.durationInDays, 10) || 0));
+              return start.toISOString();
+            })(),
             dosage: med.dosage,
             durationInDays: parseInt(med.durationInDays) || 0,
             instructions: med.instructions
@@ -139,15 +157,16 @@ export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis,diagnoses
       const result = await addPatientPrescription(payload).unwrap();
       if (result?.succeeded) { 
           console.log('Add Patient Prescription Result:', result);
-        toast.success(result?.message || "Saved Successfully");
+        toast.success( "Saved Prescription Successfully");
         success = true;
       
         
         const accepted = result?.meta?.results?.PrescribedMedications.accepted || [];
         const rejected = result?.meta?.results?.PrescribedMedications.rejected || [];
+        const acceptedIds = accepted.map(item => item.itemId);
       
         const filteredPrescriptions = (prescriptionData.recipes || []).filter(
-          med => accepted.includes(med.medication.id)
+          med => acceptedIds.includes(med.medication.id)
         );
         if (result?.meta?.hasRejections) {
           
@@ -236,7 +255,7 @@ export const usePrescriptions = (editingDiagnosis, setEditingDiagnosis,diagnoses
     return success;
   } catch (error) {
     console.error('Error saving prescription:', error);
-    toast.error(error?.data?.message || 'Failed to save');
+    toast.error(getErrorMessage(error));
     return false;
   }finally{
     toast.dismiss(loadingToast);

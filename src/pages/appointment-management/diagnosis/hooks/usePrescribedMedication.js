@@ -14,17 +14,13 @@ export const usePrescribedMedication = (editingDiagnosis, setEditingDiagnosis,di
 if (editingDiagnosis?.prescriptions?.find(p => p.id === prescriptionId)?.recipes?.some(r => r.isNew)){
    toast.error('Please save the previous medication first');return;} 
  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-  const oneWeekLater = new Date();
-  oneWeekLater.setDate(oneWeekLater.getDate() + 7);
-  const endDate = oneWeekLater.toISOString().split('T')[0]; // YYYY-MM-DD
-  
   const newRecipe = {
     id: `recipe-${Date.now()}`,
     medication: "",
     dosage: "",
     startDate: today, 
-    endDate: endDate, 
-    durationInDays: "",
+    endDate: "", 
+    durationInDays: '',
     instructions: "",
     type: "medication",
     isNew: true,
@@ -169,19 +165,23 @@ const handleSaveRecipe = useCallback(
         return false;
       }
 
-      const basePayload = {
-        medicationName: recipeData.medication,
-        dosage: recipeData.dosage,
-        durationInDays: parseInt(recipeData.durationInDays, 10) || 0,
-        instructions: recipeData.instructions,
-        startDate: recipeData.startDate || new Date().toISOString(),
-        endDate: recipeData.endDate || new Date().toISOString(),
-        isActive: true
-      };
-
       let success = false;
 
       if (recipe.isNew) {
+  
+      const basePayload = {
+        medicationName: recipeData.medication,
+        dosage: recipeData.dosage,
+        durationInDays: parseInt(recipeData.durationInDays) || 0,
+        instructions: recipeData.instructions,
+        startDate: recipeData.startDate || new Date().toISOString(),
+        endDate: (() => {
+          const start = new Date(recipeData.startDate || new Date());
+          start.setDate(start.getDate() + (parseInt(recipeData.durationInDays, 10) || 0));
+          return start.toISOString();
+        })(),
+        isActive: true
+      };
         const payload = {
             medicationData:{
                 ...basePayload,

@@ -177,11 +177,23 @@ const PrescribedMedicationMobileView = ({patientId}) => {
                         </div>
 
                       <div className="row text-center mb-3">
-                        <div className="col-12">
+                        <div className="col-4">
+                          <div className="">
+                            {formatDate(medication.startDate)}
+                          </div>
+                          <small className="text-muted">{t("Start date")}</small>
+                        </div>
+                        <div className="col-4">
                           <div className="fw-bold text-primary">
                             {medication.durationInDays} {t('PrescribedMedicationTable.days')}
                           </div>
                           <small className="text-muted">{mobileHeaders.duration}</small>
+                        </div>
+                        <div className="col-4">
+                          <div className="">
+                            {formatDate(medication.endDate)}
+                          </div>
+                          <small className="text-muted">{t("End date")}</small>
                         </div>
                       </div>
 

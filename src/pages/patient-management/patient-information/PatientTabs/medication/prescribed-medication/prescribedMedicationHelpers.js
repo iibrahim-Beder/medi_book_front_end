@@ -86,6 +86,8 @@ export const TableSkeleton = () => {
           <td><Skeleton width={120} height={20} /></td>
           <td><Skeleton width={100} height={20} /></td>
           <td><Skeleton width={100} height={20} /></td>
+          <td><Skeleton width={100} height={20} /></td>
+          <td><Skeleton width={100} height={20} /></td>
         </tr>
       ))}
     </>

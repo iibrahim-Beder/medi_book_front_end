@@ -126,7 +126,15 @@ export const useDiagnoses = (patientId) => {
         type: "medication",
         medicationName: med.medicationName,
         dosage: med.dosage,
-        durationInDays: med.durationInDays,
+        startDate: med.startTime?.split('T')[0] ?? '',
+        endDate: med.endTime?.split('T')[0] ?? '',
+        durationInDays:
+        med.startTime && med.endTime
+        ? Math.ceil(
+            (new Date(med.endTime).getTime() -
+              new Date(med.startTime).getTime()) /
+            (1000 * 60 * 60 * 24)
+          ) : 0,
         instructions: med.instructions,
         createdAt: med.createdAt
       })) || []

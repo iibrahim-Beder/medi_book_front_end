@@ -163,9 +163,12 @@ addPatientDiagnosis: builder.mutation({
           PrescriptionId: 22,
           medicationId: med.medication.id,
           startDate: med.startDate || new Date().toISOString(),
-          endDate: med.endDate || new Date(Date.now() + (med.durationInDays || 1) * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: (() => {
+          const start = new Date(med.startDate || new Date());
+          start.setDate(start.getDate() + (parseInt(med.durationInDays, 10) || 0));
+          return start.toISOString();
+        })(),
           dosage: med.dosage,
-          durationInDays: med.durationInDays,
           instructions: med.instructions
         }))
       })),

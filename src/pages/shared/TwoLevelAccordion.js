@@ -80,7 +80,7 @@ const TwoLevelAccordion = memo(({
 
       if (onUpdate) {
         currentData.forEach((_, i) => {
-          onUpdate(i, "isExpanded", i === index ? !currentData[index]?.isExpanded : false);
+          onUpdate(i, "isExpanded", i === index ? currentData[index]?.isExpanded ?"cancel": true : "cancel");
         });
       }
     }, 0);
@@ -149,7 +149,7 @@ const TwoLevelAccordion = memo(({
     if (currentData[index]?.isNew) {
       if (onDelete) onDelete(index);
     } else {
-      if (onUpdate) onUpdate(index, "isExpanded", false);
+      if (onUpdate) onUpdate(index, "cancel", false);
     }
   };
 
@@ -192,8 +192,10 @@ const TwoLevelAccordion = memo(({
           return (
             <li key={item.id || index}>
               <div
+                onClick={() => handleEditClick(index)}
                 className={` ${(isHasMatched(item,"main")) ||item.hasMedicationMatch ? "has-match-inner" : ""}  dc-accordioninnertitle ${readOnly ? "" : "medium"}`}
                 style={{
+                  cursor: "pointer",
                   borderColor: "#eee",
                   borderLeft: item.isNew
                     ? "2px solid #ffa500"
@@ -391,6 +393,7 @@ const TwoLevelAccordion = memo(({
                    isHasMatched={isHasMatched}
                    searchTerm={searchTerm}
                    forceShowError={forceShowError}
+                   insidCustomAccordion
                   />
                 )}
               </div>

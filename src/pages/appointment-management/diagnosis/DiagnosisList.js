@@ -178,7 +178,6 @@ const DiagnosisList = ({
                   {
                     label: t("Medical Condition"),
                     name: "medicalCondition",
-                    placeholder: t("Enter medical condition"),
                     type: "dropdown",
                     DropdownType: "disease",
                     required: true,
@@ -194,7 +193,6 @@ const DiagnosisList = ({
                   {
                     label: t("Severity"),
                     name: "severity",
-                    placeholder: t("Select severity"),
                     type: "select",
                     options: ["Mild", "Moderate", "Severe"],
                     half: true,
@@ -203,7 +201,6 @@ const DiagnosisList = ({
                     label: t("Status"),
                     name: "isActive",
                     type: "select",
-                    placeholder: t("Select status"),
                     options: ["Active", "Inactive"],
                     half: true,
                   },
@@ -211,7 +208,6 @@ const DiagnosisList = ({
                     label: t("Notes"),
                     name: "notes",
                     type: "textarea",
-                    placeholder: t("Enter notes"),
                   },
                 ]}
               />
@@ -233,7 +229,6 @@ const DiagnosisList = ({
                     label: t("Note Content"),
                     name: "note",
                     type: "textarea",
-                    placeholder: t("Enter note content"),
                     required: true,
                   },
                 ]}
@@ -259,7 +254,6 @@ const DiagnosisList = ({
                     label: t("Prescription Title"),
                     name: "title",
                     type: "text",
-                    placeholder: t("Enter prescription title"),
                     half: true,
                     required: true,
                     requiredErrorMessage: t("Prescription title is required"),
@@ -269,14 +263,12 @@ const DiagnosisList = ({
                     name: "status",
                     type: "select",
                     options: ["Active", "Completed", "Cancelled", "Expired"],
-                    placeholder: t("Select status"),
                     half: true,
                   },
                   {
                     label: t("Note"),
                     name: "notes",
                     type: "textarea",
-                    placeholder: t("Enter prescription note"),
                   },
                 ]}
                 formFieldsRecipe={[
@@ -284,7 +276,6 @@ const DiagnosisList = ({
                     label: t("Medication"),
                     name: "medication",
                     type: "dropdown",
-                    placeholder: t("Select medication"),
                     required: true,
                     requiredErrorMessage: t("Medication is required"),
                     // half: true,
@@ -299,7 +290,6 @@ const DiagnosisList = ({
                   {
                     label: t("Dosage"),
                     name: "dosage",
-                    placeholder: t("Enter dosage"),
                     half: true,
                     required: true,
                     requiredErrorMessage: t("Dosage is required"),
@@ -308,7 +298,6 @@ const DiagnosisList = ({
                     label: t("Duration (Days)"),
                     name: "durationInDays",
                     type: "number",
-                    placeholder: t("Enter duration in days"),
                     half: true,
                     required: true,
                     requiredErrorMessage: t("Duration is required"),
@@ -317,24 +306,17 @@ const DiagnosisList = ({
                     label: t("Start Date"),
                     name: "startDate",
                     type: "date",
-                    placeholder: t("Select start date"),
                     half: true,
-                    required: true,
-                    requiredErrorMessage: t("Start date is required"),
                   },
                   {
                     label: t("End Date"),
                     name: "endDate",
                     type: "date",
-                    placeholder: t("Select end date"),
                     half: true,
-                    required: true,
-                    requiredErrorMessage: t("End date is required"),
                   },
                   {
                     label: t("Instructions"),
                     name: "instructions",
-                    placeholder: t("Enter instructions"),
                     type: "textarea",
                   },
                 ]}
