@@ -67,6 +67,7 @@ const TwoLevelAccordion = memo(({
         setDataRead(prev =>
           prev.map((item, i) => ({
             ...item,
+            _initialTitle: renderItemTitle(item),
             isExpanded: i === index ? !item.isExpanded : false
           }))
         );
@@ -74,9 +75,9 @@ const TwoLevelAccordion = memo(({
       }
       const currentData = data || [];
       const item = currentData[index];
-      if (item?.isExpanded === true) {
+      // if (item?.isExpanded === true) {
         item._initialTitle = renderItemTitle(item);
-      }
+      // }
 
       if (onUpdate) {
         currentData.forEach((_, i) => {

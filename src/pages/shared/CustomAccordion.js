@@ -91,10 +91,12 @@ const CustomAccordion = memo(({
       i === index
         ? {
             ...unUpdateData,
+            _initialTitle: renderItemTitle(unUpdateData),
             isExpanded: !item.isExpanded,
           }
         : {
             ...item,
+            _initialTitle: renderItemTitle(unUpdateData),
             isExpanded: allowMultipleOpen ? item.isExpanded : false,
           }
             ));
