@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { VscArrowLeft } from "react-icons/vsc";
 import { useConversations } from "../hooks/useConversations";
-import { formatTime } from "../../shared/utils";
+import { convertSrcPatientImg, formatTime } from "../../shared/utils";
 import {  Link, useNavigate } from "react-router-dom";
 
 export default function ConversationHeader() {
@@ -17,7 +17,10 @@ export default function ConversationHeader() {
       <div className="dc-userlogedin-gird chat-header">
         <div className="dc-userlogedin">
           <figure className={`dc-userimg ${currentChat?.isOnline?"online": "" }`} >
-            <img src="/images/avt/patient-avt.png" alt="user" />
+                       <img src={convertSrcPatientImg(currentChat?.imageUrl) || "/images/avt/unSelectedChat.png" }
+                         alt="profile"
+                         onError={(e) => (e.target.src = "/images/avt/patient-avt.png")}
+                       />
           </figure>
           <div className="dc-username">
             <h3>

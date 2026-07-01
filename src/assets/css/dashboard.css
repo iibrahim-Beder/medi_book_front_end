@@ -1281,11 +1281,12 @@ width: 100%;
 	max-width: 50px;
 }
 .dc-userimg img{
+	min-width: 45px;
 	width: 100%;
 	padding: 3px;
 	display: block;
 	border-radius: 50%;
-	min-height: 43px;
+	min-height: 45px;
 }
 .dc-username{
 	overflow: hidden;

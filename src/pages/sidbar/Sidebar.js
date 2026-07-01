@@ -98,12 +98,6 @@ let iconSize=20;
     className: "dc-notificationicon",
   },
   {
-    to: "/appointment-management",
-    label: t("sidebar.appointmentManagement"),
-    icon: <CiSettings className="icon" />,
-    access: ["Shifts"],
-  },
-  {
     to: "/appointment-location",
     label: t("Locations"),
     icon: <CiLocationOn className="icon" />,

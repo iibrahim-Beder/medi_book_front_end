@@ -15,7 +15,7 @@ export default function ErrorPage() {
   const [activeTab, setActiveTab] = useState("patients");
 
   return (
-    <div className="">
+    <div className="d-inline">
       <div style={{ zIndex:"7" , position: "relative"}}>
         <AnalyticsTabs activeTab={activeTab} setActiveTab={setActiveTab} /> 
       </div>
