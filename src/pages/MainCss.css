@@ -149,7 +149,7 @@ select {
 }
 
 .popup-btn {
-  padding: 8px 14px;
+  padding: 5px 14px;
   min-width: 85px;
   border-radius: 6px;
   border: none;
@@ -161,6 +161,7 @@ select {
 .popup-btn.primary {
   background: var(--themecolor, #4285f4);
   color: #fff;
+  padding: 6px 19px;
 }
 
 .popup-btn.secondary {
