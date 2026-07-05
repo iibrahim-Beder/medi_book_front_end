@@ -65,9 +65,9 @@ export default function ShiftForm({
         <div className="pl-3">
         {[...Array(7)].map((i) => (
           <div className="row">
-            <Skeleton  width={25} height={25}   />
+            <Skeleton  width={25} height={20}   />
             <div style={{ flex: 1 , marginLeft: 10 , marginBottom: 10 }}>
-              <Skeleton height={25} width="50%" />
+              <Skeleton height={20} width="50%" />
             </div>
           </div>
 

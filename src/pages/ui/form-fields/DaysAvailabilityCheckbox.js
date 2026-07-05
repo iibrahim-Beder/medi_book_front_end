@@ -200,7 +200,7 @@ const DaysAvailabilityCheckbox = ({
               position:openAlways ? "unset" : "absolute",
             }}
           >
-            <div className="days-availability-checkbox">
+            <div className="days-availability-checkbox" style={{gap: locationVisability ? "10px" : "0px"}}>
               {sortedAvailability.map((item, index) => {
                 const dayOfWeek = item.dayOfWeek;
                 const status = getStatusInfo(item);
@@ -229,7 +229,7 @@ const DaysAvailabilityCheckbox = ({
                       <div className={`labels ${locationVisability ? "container-label-location" : ""}`}>
                         <div className="status-label d-flex w-100">
                         {status.icon && (
-                          <span className="status-indicator">
+                          <span className="status-indicator m-0">
                             {status.icon}
                           </span>
                         )}

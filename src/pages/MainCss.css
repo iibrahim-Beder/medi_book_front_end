@@ -131,7 +131,7 @@ select {
 .popup-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 .popup-header svg {
@@ -1940,7 +1940,7 @@ display: none;
 .deactivate-btn {
     background: var(--secthemecolor);
     color: #fff;
-    padding: 5px 12px;
+    padding: 5px 20px;
 }
 
 .popup-card h3{
@@ -2011,4 +2011,20 @@ display: none;
 
 .w-0{
   width: 0 !important;
+}
+
+
+.danger-Pbtn{
+  color: rgb(209 43 59);
+  border: 1px solid rgb(220 53 69 / 7%);
+  border-radius: 50%;
+  line-height: 0;
+  font-size: small;
+  padding: 1px;
+  background: #df878740;
+  margin-bottom: 6px;
+}
+.danger-Pbtn svg{
+  font-size: 16px;
+  margin: 0 !important;
 }

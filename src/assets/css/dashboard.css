@@ -50,7 +50,7 @@
 :root {--scBtncolor:#0F3F8C;}
 :root {--shado3color:rgb(221 221 221 / 25%);}
 /* Secondary Color*/
-:root {--secthemecolor:#ff5851;}
+:root {--secthemecolor:#f33144;}
 /* tertiary Color*/
 :root {--terthemecolor:#3d4461;}
 :root {--shado1color:#a1a1a17a;}
@@ -5063,6 +5063,7 @@ a.dc-back:hover{color: #55acee;}
 	width: 100%;
 	display: block;
 	border-radius: 50px;
+	min-height: 40px;
 }
 .dc-offersmessages .dc-verticalscrollbar .mCSB_scrollTools{width: 0;}
 .dc-adcontent{

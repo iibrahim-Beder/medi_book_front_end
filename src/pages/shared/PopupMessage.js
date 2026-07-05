@@ -8,6 +8,8 @@ import {
 } from "react-icons/fa";
 import { LiaTimesSolid } from "react-icons/lia";
 import { LiaTimesCircle } from "react-icons/lia";
+import { IoCloseCircle } from "react-icons/io5";
+import { MdClose } from "react-icons/md";
 
 // import "../../MainCss.css";
 // component for popup message with icon, title, message, buttons, and close functionality
@@ -25,11 +27,11 @@ export default function PopupMessage({
   const typeStyles = {
     success: { color: "#28a745", icon: <FaCheckCircle /> },
     warning: { color: "#ffc107", icon: <FaExclamationTriangle /> },
-    danger: { color: "#dc3545", icon: <FaTimesCircle /> },
+    danger: { clssName:"danger-Pbtn", icon: <MdClose /> },
     info: { color: "#4285f4", icon: <FaInfoCircle /> },
   };
 
-  const { color, icon } = typeStyles[type] || typeStyles.info;
+  const {clssName, color, icon ,border , bakgroundColor } = typeStyles[type] || typeStyles.info;
 
   const handleClose = () => {
     setClosing(true);
@@ -52,13 +54,15 @@ export default function PopupMessage({
   return (
     <div className={`popup-overlay ${closing ? "closing" : ""}`}>
       <div className="popup-card">
-        
+{/*         
         <button className="popup-close" onClick={handleClose}>
           <LiaTimesCircle />
-        </button>
+        </button> */}
 
-        <div className="popup-header" style={{ color }}>
-          {iconOverride || icon}
+        <div className="popup-header" >
+          <div className={clssName} style={{ color, border , bakgroundColor }}>
+             {iconOverride || icon}
+            </div>
           <h3>{title}</h3>
         </div>
 
