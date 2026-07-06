@@ -4,14 +4,11 @@ import { useTranslation } from "react-i18next";
 import SelectField from "../../ui/form-fields/SelectField";
 
 const statusColors = {
-  completed: "#2ecc714a", // green
-  cancelled: "rgb(231 76 60 / 46%)", // red
-  Scheduled: "#247cff7b", // blue
-  empty: "rgb(108 117 125 / 58%)", // gray
-  Available: "rgb(108 117 125 / 58%)", // gray
-  pending: "#247cff7b", // blue
+  completed: "#66BB6A", // Green
+  cancelled: "#EF5350", // Red
+  Scheduled: "#4FC3F7", // Light Blue
+  Booked: "#4FC3F7",    // Light Blue
 };
-
 const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedSlotId, setSelectedSlot }) => {
   const { t } = useTranslation();
 
@@ -54,16 +51,13 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
                   onClick={() => setSelectedSlot(slot)}
                   style={{
                     border:
-                      selectedSlotId === slot?.slotId ? "1px solid var(--blue)" :
-                      filter === "All"
-                        ? ""
-                        : `0.5px solid ${
-                            statusColors[slot.status] || "#000000ff"
-                          }`,
+                      selectedSlotId === slot?.slotId ? "1px solid var(--blue)" : "" ,
+                      backgroundColor: `${statusColors[slot.status] || ""}`,
+                      color: slot.status === "Available" ? "" : "white",
                   }}
                 >
                   <div>
-                    <span style={{ color: "#999" }}>{slot.startTime}</span>
+                    <span style={{ color: slot.status === "Available" ? "#999" : "white" }}>{slot.startTime}</span>
 
                     <span>
                       {t("spaces")}:{" "}

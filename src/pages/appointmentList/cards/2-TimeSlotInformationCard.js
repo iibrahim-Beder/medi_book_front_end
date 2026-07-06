@@ -18,11 +18,11 @@ const TimeSlotInformationCard = ({
   // border color based on status
   const Color =
   {
-    Available: "#0d6efd", // Blue
-    Pending: "#fd7e14",   // Orange
-    Completed: "#198754", // Green
-    Cancelled: "#dc3545", // Red
-    Empty: "#6c757d",     // Gray
+  completed: "#66BB6A", // Green
+  cancelled: "#EF5350", // Red
+  Scheduled: "#4FC3F7", // Light Blue
+  Booked: "#4FC3F7",    // Light Blue
+  Available: "#999",    // Light Blue
   }[status] || "#000";
 
   return (
