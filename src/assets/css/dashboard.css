@@ -4228,6 +4228,30 @@ input[type="button"]:focus{outline: none;}
 	border:1px solid #ddd;
 	font:14px/33px 'Open Sans', sans-serif
 }
+/* .dc-spaces.Selected::after{
+    content:"";
+    position:absolute;
+    left:8px;
+    right:8px;
+    bottom:4px;
+    height:4px;
+    background:#fff;
+    border-radius:10px;
+} */
+.dc-spaces.Selected{
+	transform: scale(1.05);
+    z-index: 2;
+	box-shadow:
+        0 0 0 3px rgba(0, 123, 255, .25),
+        0 8px 20px rgba(0, 0, 0, .15);
+
+		  animation: pulse .4s;
+}
+
+@keyframes pulse{
+    0%{transform:scale(.95);}
+    100%{transform:scale(1.05);}
+}
 .dc-spaces:hover{color: #999;border-color: #bbb;}
 .dc-spaces:hover span:first-child{margin-top: -33px;}
 .dc-spaces span{
@@ -4249,6 +4273,7 @@ input[type="button"]:focus{outline: none;}
 	list-style:none;
 	overflow: hidden;
 	background-color: var(--badybkcolor);
+	padding: 4px;
 }
 .dc-spaces-wrap li{
 	width: 25%;

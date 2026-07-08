@@ -80,19 +80,16 @@ export const prescriptionsHelpers = (t) => {
     },
     {
       name: "categoryName",
-      placeholder: t("PrescriptionsTable.category_name"),
-      label: t("PrescriptionsTable.category_name"),
+      label: t("category name"),
       half: true
     },
     {
       name: "dosage",
-      placeholder: t("PrescriptionsTable.dosage"),
       half: true,
       label: t("PrescriptionsTable.dosage"),
     },
     {
       name: "durationInDays",
-      placeholder: t("PrescriptionsTable.duration"),
       half: true,
       label: t("PrescriptionsTable.duration"),
     },
@@ -111,7 +108,6 @@ export const prescriptionsHelpers = (t) => {
     {
       name: "instructions",
       type: "textarea",
-      placeholder: t("PrescriptionsTable.instructions"),
       label: t("PrescriptionsTable.instructions"),
     },
   ];

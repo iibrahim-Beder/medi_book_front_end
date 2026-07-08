@@ -19,7 +19,6 @@ const date =
 const filter = searchParams.get("filter") || "All";
 
 const slotId = searchParams.get("slotId");
-console.log("slotId", slotId);
 
 const handleFilterChange = (value) => {
   setSearchParams((prev) => {

@@ -161,21 +161,11 @@ export default function MainAppointtmentList() {
 
                         <Link
                           to={`/appointment-management/${slotDetails.bookingId}`}
-                          className="button-elment"
                         >
-                          <Button
-                            variant="contained"
-                            sx={{
-                              width: "100%",
-                              borderRadius: "10px",
-                              textTransform: "none",
-                              px: 3,
-                              backgroundColor: "#60a5fa",
-                              boxShadow: "none",
-                            }}
-                          >
-                            Appointment Details
-                          </Button>
+                        <button
+                          className="add-btn"
+                        >
+                          appointment details </button>
                         </Link>
                       </div>
                     ) : null}

@@ -47,11 +47,11 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
               <li key={index}>
                 <a
                   href="#!"
-                  className="dc-spaces"
+                  className={`dc-spaces ${ selectedSlotId === slot?.slotId ? "Selected" : ""} `}
                   onClick={() => setSelectedSlot(slot)}
                   style={{
-                    border:
-                      selectedSlotId === slot?.slotId ? "1px solid var(--blue)" : "" ,
+                    // transform:
+                    //   selectedSlotId === slot?.slotId ? "scale(1.05, 1.26)" : "" ,
                       backgroundColor: `${statusColors[slot.status] || ""}`,
                       color: slot.status === "Available" ? "" : "white",
                   }}
