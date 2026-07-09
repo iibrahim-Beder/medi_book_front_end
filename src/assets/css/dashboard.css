@@ -4228,16 +4228,6 @@ input[type="button"]:focus{outline: none;}
 	border:1px solid #ddd;
 	font:14px/33px 'Open Sans', sans-serif
 }
-/* .dc-spaces.Selected::after{
-    content:"";
-    position:absolute;
-    left:8px;
-    right:8px;
-    bottom:4px;
-    height:4px;
-    background:#fff;
-    border-radius:10px;
-} */
 .dc-spaces.Selected{
 	transform: scale(1.05);
     z-index: 2;
