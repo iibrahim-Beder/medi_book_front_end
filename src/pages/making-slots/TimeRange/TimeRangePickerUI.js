@@ -50,7 +50,7 @@ const TimeRangePickerUI = ({
     const canScrollMinuteDown = filteredMinutes.length > 0;
     
     return (
-      <div style={{
+      <div className='mb-sm-0' style={{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

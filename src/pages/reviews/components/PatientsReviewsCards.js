@@ -140,7 +140,7 @@ const PatientReviewsCards = () => {
                   style={{ boxShadow: "none" }}
                 >
                   <div className="comments">
-                    <div className="d-flex justify-content-between align-items-start comment-head mb-2">
+                    <div className="d-flex justify-content-between align-items-start comment-head mb-2 flex-wrap">
                         <div className="d-flex align-items-center">
                         <figure style={{maxWidth:"75px"}} className="dc-userlistingimg m-0">
                           <img src={convertSrcPatientImg(review.patientImage) || "/images/avt/patient-avt.png"} onError={(e) => (e.target.src = "/images/avt/patient-avt.png")} alt={review.patientName} />

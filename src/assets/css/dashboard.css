@@ -5822,7 +5822,7 @@ padding: 0 10px;
 	.div-container-tabs.shift .nav-link {
     padding: .5rem 0.5rem;
 	}
-	.payment-page{padding-top: 10px;}
+	.payment-page,.reviews-page{padding-top: 20px;}
 	.DateRangePicker{margin: 10px 0;}
 	        .dc-offersmessages ul li:first-child{border-right: none;}
 	.login-container{margin: 15px 0;}
@@ -5948,6 +5948,27 @@ padding: 0 10px;
     padding: .5rem 0.2rem;
     FONT-SIZE: 14px;
 	}
+	.mb-sm-0{
+		margin-bottom: 0 !important;
+	}
+	.ml-sm-0{
+		margin-left: 0 !important;
+	}
+	.div-container-tabs.shift{
+		margin-left: 4px !important;
+	}
+	.notifications-list .notification-card{
+	-content: center;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+	}
+	.notification-avatar{
+		margin-left: 0 !important;
+		margin-top: 10px !important;
+		width: 50px;
+	}
+	
 		.css-1cg0cz5{grid-template-columns: auto !important;justify-items: center;}
 		.filter-dropdown-menu{max-width: 310px}
 		/* .login-right{padding: 10px;} */

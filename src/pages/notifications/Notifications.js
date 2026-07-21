@@ -317,7 +317,7 @@ const Notifications = () => {
       </div>
 
       {/* Notifications List */}
-      <div className="table-card">
+      <div className="table-card notifications-list">
         {isLoading || isFetching  ? (
           Array.from({ length: 10 }).map((_, i) => <ShimmerCard key={i} />)
         ) : isError ? (
@@ -392,8 +392,8 @@ export default Notifications;
 
  export const ShimmerCard = ({imgLoaded =true}) => (
     <div className="notification-card-container border-0 ">
-      <div className="notification-card">
-        <div className="icon-content w-100">
+      {/* <div className="notification-card"> */}
+        <div className="icon-content w-100 notification-card">
           <div className="mr-3 text-center">
             <Skeleton style={{borderRadius:"40%"}} width={30} height={20} />
             <Skeleton  width={35} height={14} />
@@ -407,7 +407,7 @@ export default Notifications;
           {imgLoaded &&  <Skeleton circle width={50} height={50} />}
           </div>
 
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );
