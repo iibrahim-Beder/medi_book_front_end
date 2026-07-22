@@ -110,6 +110,7 @@ export default function WeeklyTimeSlots() {
     availabilityData,
     selectedDays,
     toggleDay,
+    handleSelectAllAvailableDays,
     isFetchingAvailability,
     addSlotData,
     activeRules,
@@ -316,6 +317,7 @@ export default function WeeklyTimeSlots() {
                     />
                     <div className="form-group-half form-group">
                       <DaysAvailabilityCheckbox
+                      Fieldlabel={t("Select Appointment type, Days")}
                         locationVisability={true}
                         availability={availabilityData}
                         selectedDays={selectedDays}
@@ -324,7 +326,11 @@ export default function WeeklyTimeSlots() {
                           !availabilityData.length || isFetchingAvailability
                         }
                         loading={isFetchingAvailability}
-                        error={formErrors.selectedDays}
+                        error={formErrors.AppointmentTypes || formErrors.selectedDays}
+                        handleUpdateAddSlot={handleUpdateAddSlot}
+                        addSlotData={addSlotData}
+                        handleSelectAllAvailableDays={handleSelectAllAvailableDays}
+                        appointmentType
                       />
                     </div>
                     <div className="form-group-half form-group p-0">
@@ -363,19 +369,6 @@ export default function WeeklyTimeSlots() {
                       </div>
                     </div>
                     <div className=" form-group">
-                      <RenderCheckboxe
-                        field={{
-                          name: "AppointmentTypes",
-                          label: t("Appointment Types"),
-                          options: APPOINTMENT_TYPES,
-                        }}
-                        item={addSlotData}
-                        onChange={handleUpdateAddSlot}
-                        forceShowError={true}
-                        readOnly={false}
-                        index={null}
-                        outError={formErrors.AppointmentTypes}
-                      />
                     </div>
                     <div className="form-group dc-btnarea p-3">
                       <button
@@ -431,6 +424,17 @@ export default function WeeklyTimeSlots() {
 export const AddModal = ({ show, onHide, children }) => {
   const { t } = useTranslation();
 
+  useEffect(() => {
+    if (show) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "auto";
+    }
+  
+    return () => {
+      document.documentElement.style.overflow = "auto";
+    };
+  }, [show]);
   return (
     <Modal
       show={show}

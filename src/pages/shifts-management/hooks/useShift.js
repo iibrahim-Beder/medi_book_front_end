@@ -143,6 +143,7 @@ const toggleActiveStatus = async (shiftIds, newActiveState) => {
     updateShift,
     updateResult,
     locations,
+    // locations : [{id: null, displayName: "Remote"}, ...locations],
     templates,
     toggleActiveStatus,
     availabilityData,

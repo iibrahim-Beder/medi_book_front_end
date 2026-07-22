@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "react-bootstrap";
 import { MdClose } from "react-icons/md";
 import useShift from "./hooks/useShift";
-import SiftForm from "./components/ShiftForm";
+import ShiftForm from "./components/ShiftForm";
 import Loader from "../shared/Loader";
 import ShiftStep from "../doctor-registration/steps/ShiftStep";
 import { useSearchParams } from "react-router-dom";
@@ -78,7 +78,7 @@ export default function ShiftsManagement() {
             </div>
                 {tabs.map((tab) =>
                   activeTab === tab.key ? (
-                    <SiftForm
+                    <ShiftForm
                       onToggleActive={toggleActiveStatus}
                       key={tab.key}
                       dayIndex={tab.dayIndex}
@@ -102,6 +102,18 @@ export default function ShiftsManagement() {
 }
 export const AddModal = ({ show, onHide  ,setOpenModal}) => {
   const { t } = useTranslation();
+  
+    useEffect(() => {
+      if (show) {
+        document.documentElement.style.overflow = "hidden";
+      } else {
+        document.documentElement.style.overflow = "auto";
+      }
+    
+      return () => {
+        document.documentElement.style.overflow = "auto";
+      };
+    }, [show]);
 
   return (
     <Modal
@@ -113,7 +125,7 @@ export const AddModal = ({ show, onHide  ,setOpenModal}) => {
       className="diagnosis-modal pr-0"
     >
       <Modal.Header className="modal-header-custom">
-        <Modal.Title className="modal-title-custom">Add Shift</Modal.Title>
+        <Modal.Title className="modal-title-custom">{t("Add Shift")}</Modal.Title>
         <button type="button" className="btn-close-custom" onClick={onHide}>
           <MdClose size={24} />
         </button>

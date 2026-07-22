@@ -9,7 +9,8 @@ export default function RenderCheckboxes({
   errors = {},
   forceShowError = false,
   readOnly = false,
-  outError = false
+  outError = false,
+  style
 }) {
   const { t } = useTranslation();
   const value = item?.[field.name ] || [];
@@ -21,7 +22,7 @@ export default function RenderCheckboxes({
       {field.label && <label>{field.label}</label>}
 
       <div className="form-group">
-        <div className="dc-checkboxgroup">
+        <div className="dc-checkboxgroup" style={style} >
           {field.options.map((option, optIndex) => (
             <span key={option} className="dc-checkbox">
               <input

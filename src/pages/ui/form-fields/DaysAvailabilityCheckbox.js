@@ -5,8 +5,12 @@ import { MdOutlineCheckCircle } from "react-icons/md";
 import { FaCheckCircle, FaChevronDown } from "react-icons/fa";
 import { CgUnavailable } from "react-icons/cg";
 import { IoLocation } from "react-icons/io5";
+import RenderCheckboxes from "../../making-slots/components/RenderCheckboxe";
+import { VscLock } from "react-icons/vsc";
+export const APPOINTMENT_TYPES = ["InPerson", "VideoCall", "PhoneCall"];
 
 const DaysAvailabilityCheckbox = ({
+  Fieldlabel="Select Days",
   availability=[],
   selectedDays=[],
   onToggle,
@@ -18,7 +22,11 @@ const DaysAvailabilityCheckbox = ({
   locationVisability = false,
   openAlways=false,
   isUseToDeactivate  = false,
-  isUseToReactivate  = false
+  isUseToReactivate  = false,
+  handleUpdateAddSlot = () => {},
+  addSlotData = {},
+  handleSelectAllAvailableDays = () => {},
+  appointmentType
 }) => {
   console.log("availability",availability);
   const { t } = useTranslation();
@@ -107,7 +115,7 @@ const DaysAvailabilityCheckbox = ({
       return {
         disabled: true,
         icon: <CgUnavailable   className="status-icon reactivate" />,
-        label: t("day conflict"),
+        label: t("Conflicting times"),
         Conflict: true,
       };
     }else if (state === "AlreadyDeactivated") {
@@ -129,9 +137,9 @@ const DaysAvailabilityCheckbox = ({
     }
     else {
       return {
-        icon: <MdOutlineCheckCircle   className="status-icon active " />,
+        // icon: <MdOutlineCheckCircle   className="status-icon active " />,
         disabled: false,
-        label: "Available",
+        // label: "Available",
       };
     }
   };
@@ -150,7 +158,7 @@ const DaysAvailabilityCheckbox = ({
       // className={` ${isOpen ? " form-group table-filter-show" : ""} ` }
     >
       {!openAlways && <>
-       <label> {t("Choose Days")} </label>
+       <label> {t(Fieldlabel)} </label>
       <div
         className={`input-with-icon select-wrapper ${error ? "input-error" : ""}`}
         style={{cursor:"pointer"}}
@@ -198,8 +206,29 @@ const DaysAvailabilityCheckbox = ({
             className={`${openAlways ? " " : "hover-tooltip tooltip-arrow  container-checkboxs "} `}
             style={{
               position:openAlways ? "unset" : "absolute",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
+          { appointmentType && <> <RenderCheckboxes
+            style={{display:"flex", flexDirection:"column"}}
+            field={{
+              name: "AppointmentTypes",
+              label: t("Appointment Types"),
+              options: APPOINTMENT_TYPES,
+            }}
+            item={addSlotData}
+            onChange={handleUpdateAddSlot}
+            forceShowError={true}
+            readOnly={false}
+            index={null}
+            // outError={formErrors.AppointmentTypes}
+          />
+          <hr />
+          <div className="d-flex flex-wrap mb-2">
+            <label> {t("Apply To :")} </label>
+            <button onClick={handleSelectAllAvailableDays} type="button" className="add-btn ml-auto p-0" >Select All Available days</button>
+          </div> </> }
             <div className="days-availability-checkbox" style={{gap: locationVisability ? "10px" : "0px"}}>
               {sortedAvailability.map((item, index) => {
                 const dayOfWeek = item.dayOfWeek;
@@ -226,7 +255,8 @@ const DaysAvailabilityCheckbox = ({
                         <span style={{width:"50%", minWidth:"fit-content"}} >
                         {getDayName(dayOfWeek)}
                         </span>
-                      <div className={`labels ${locationVisability ? "container-label-location" : ""}`}>
+                      <div style={{ padding: !status.label  ? 0 : undefined,
+                            }} className={`labels ${locationVisability ? "container-label-location" : ""}`}>
                         <div className="status-label d-flex w-100">
                         {status.icon && (
                           <span className="status-indicator m-0">
@@ -237,14 +267,21 @@ const DaysAvailabilityCheckbox = ({
                           <span className="status-text">{status.label}</span>
                         )}
                         </div>
-                        {status.label && locationVisability && (
+                       {(status.label || item.locationName) && locationVisability && (
                           <span className="location">
-                            <IoLocation className="mr-1" />
+                            {item.locationName === "Remote Consultation" ? 
+                            <div className="remote-location">
+                            <span className="remote-badge remote-location" ><VscLock/> Remote Only</span>
+                            </div> : <>
+                          <IoLocation className="mr-1" />
                             {item.locationName?.length > 30
-                              ? `${item.locationName.slice(0, 30)}...`
-                              : item.locationName}
+                             ? `${item.locationName.slice(0, 30)}...`
+                              : item.locationName
+                          }
+                            </>
+                            }
                           </span>
-                        )} 
+                        )}
                         </div>
                       </div>
                     </label>
@@ -252,6 +289,16 @@ const DaysAvailabilityCheckbox = ({
                 );
               })}
             </div>
+           {appointmentType && <div class="info-box">
+            <div class="info-icon">
+              <i class="fa-solid fa-circle-info"></i>
+            </div>
+
+            <div class="info-content">
+              Days marked as <strong> Remote Only</strong> cannot have
+              <strong> In Person</strong> appointments.
+            </div>
+           </div>}
           </div>
         </div>
       )}

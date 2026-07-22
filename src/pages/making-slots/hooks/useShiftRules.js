@@ -63,6 +63,13 @@ export default function useShiftRules({
     },
     [selectedDays],
   );
+  const handleSelectAllAvailableDays = useCallback(() => {
+  setSelectedDays(
+    availabilityData
+      .filter((d) => d.state === "Available")
+      .map((d) => d.dayOfWeek)
+  );
+}, [availabilityData]);
   const checkRuleAvailability = useCallback(
     async (start, end) => {
       if (!start || !end) return;
@@ -527,6 +534,7 @@ const handleConfirmActiveToggle = useCallback(async () => {
     availabilityData,
     selectedDays,
     toggleDay,
+    handleSelectAllAvailableDays,
     isFetchingAvailability,
     handleUpdateAddSlot,
     addSlotData,

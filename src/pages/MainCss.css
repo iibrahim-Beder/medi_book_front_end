@@ -2029,3 +2029,76 @@ display: none;
   font-size: 16px;
   margin: 0 !important;
 }
+
+
+.remote-location{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+} 
+.remote-location .remote-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 7px;
+    background: #ecebff ;
+    color: #4d4aa8;
+    border-radius: 5px;
+    /* font-size: 18px; */
+    /* font-weight: 600; */
+    user-select: none;
+}
+
+.info-box {
+  /* display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 22px 24px;
+
+  background: #eef5ff;
+  border: 1px solid #c9dcff;
+  border-radius: 18px;
+
+  color: #2f63d7; */
+      display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px;
+    background: #eef5ff;
+    border: 1px solid #c9dcff;
+    border-radius: 6px;
+    margin: 0 -10px;
+    margin-top: 10px;
+}
+
+.info-icon {
+  /* width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #2f63d7;
+  border-radius: 50%;
+
+  font-size: 22px;
+  color: #2f63d7;
+
+  flex-shrink: 0; */
+  font-size: 19px;
+    color: #2f63d7;
+    margin-bottom: auto ;
+}
+
+.info-content {
+  font-size: 13px;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.info-content strong {
+  font-weight: 700;
+  color: #4d4aa8;
+}
