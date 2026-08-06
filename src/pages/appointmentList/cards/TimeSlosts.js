@@ -4,10 +4,9 @@ import { useTranslation } from "react-i18next";
 import SelectField from "../../ui/form-fields/SelectField";
 
 const statusColors = {
-  completed: "#66BB6A", // Green
-  cancelled: "#EF5350", // Red
-  Scheduled: "#4FC3F7", // Light Blue
+  Reserved: "#FFA726",  // Orange (Temporary Hold)
   Booked: "#4FC3F7",    // Light Blue
+  Completed: "#66BB6A", // Green
 };
 const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedSlotId, setSelectedSlot }) => {
   const { t } = useTranslation();
@@ -19,8 +18,8 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
         name="filter"
         options={[
           { value: "All", label: t("slotStatuses.all") },
+          { value: "Available", label: t("Available") },
           { value: "Scheduled", label: t("Scheduled") },
-          { value: "Cancelled", label: t("slotStatuses.cancelled") },
           { value: "Completed", label: t("Completed") },
         ]}
         value={filter}
@@ -53,11 +52,11 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
                     // transform:
                     //   selectedSlotId === slot?.slotId ? "scale(1.05, 1.26)" : "" ,
                       backgroundColor: `${statusColors[slot.status] || ""}`,
-                      color: slot.status === "Available" ? "" : "white",
+                      color:( slot.status === "Available"|| slot.status === "Reserved") ? "" : "white",
                   }}
                 >
                   <div>
-                    <span style={{ color: slot.status === "Available" ? "#999" : "white" }}>{slot.startTime}</span>
+                    <span style={{ color: slot.status === "Available" ||slot.color === "Reserved" ? "#999" : "white" }}>{slot.startTime}</span>
 
                     <span>
                       {t("spaces")}:{" "}

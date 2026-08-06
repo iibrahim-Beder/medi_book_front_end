@@ -19,7 +19,7 @@ const SingleSlot = ({ time = "9:00 am", spaces = 0, status = "default", onClick 
         // border: `0.5px solid ${statusColors[status] || statusColors.default}`,
         // backgroundColor: `${statusColors[status] || statusColors.default}20`,
                   backgroundColor: `${statusColors[status] || ""}`,
-                  color: status === "Available" ? "" : "white",
+                  color: ( status === "Available"|| status === "Reserved") ? "" : "white",
       }}
     >
       <div>
