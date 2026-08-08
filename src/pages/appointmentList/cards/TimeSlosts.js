@@ -18,7 +18,7 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
         name="filter"
         options={[
           { value: "All", label: t("slotStatuses.all") },
-          { value: "Available", label: t("Available") },
+          { value: "Available", label: t("Free") },
           { value: "Scheduled", label: t("Scheduled") },
           { value: "Completed", label: t("Completed") },
         ]}
