@@ -7,7 +7,7 @@ const statusColors = {
   Reserved: "#FFA726",  // Orange (Temporary Hold)
   Booked: "#4FC3F7",    // Light Blue
   Completed: "#66BB6A", // Green
-  Expired: "#6B3A1E",   // Red
+  Expired: "#B8A39A",   // Red
 };
 const statusLabels = {
   Reserved: "Reserved",
