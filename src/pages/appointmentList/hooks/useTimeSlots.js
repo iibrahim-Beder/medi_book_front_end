@@ -29,7 +29,7 @@ const handleFilterChange = (value) => {
 const handleDateChange = (value) => {
   setSearchParams((prev) => {
     prev.set("date", formatDateForAPI(value));
-    return prev;
+    return prev; 
   });
 };
 const handleSelectSlot = (slot) => {
