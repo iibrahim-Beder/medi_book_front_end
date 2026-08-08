@@ -116,18 +116,6 @@ let iconSize=20;
     access: ["All"],
   },
   {
-    to: "/pationt-information",
-    label: t("sidebar.pationtInformation"),
-    icon: (
-      <InfomationIcon
-        width={iconSize}
-        height={iconSize}
-        className="icon"
-      />
-    ),
-    access: ["All"],
-  },
-  {
     to: "/chat",
     label: t("sidebar.messages"),
     icon: <HiOutlineChatBubbleOvalLeft className="icon" />,

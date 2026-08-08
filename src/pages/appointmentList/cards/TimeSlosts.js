@@ -7,7 +7,7 @@ const statusColors = {
   Reserved: "#FFA726",  // Orange (Temporary Hold)
   Booked: "#4FC3F7",    // Light Blue
   Completed: "#66BB6A", // Green
-  Expired: "#9E9E9E",   // Red
+  Expired: "#6B3A1E",   // Red
 };
 const statusLabels = {
   Reserved: "Reserved",
@@ -67,7 +67,7 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
                     <span style={{ color: slot.status === "Available" ||slot.color === "Reserved" ? "#999" : "white" }}>{slot.startTime}</span>
 
                     <span>
-                      {t("spaces")}:{" "}
+                      {t("duration")}:{" "}
                       {slot?.duration?.toString().padStart(2, "0")}
                     </span>
                   </div>
