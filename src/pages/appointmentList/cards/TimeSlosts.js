@@ -7,6 +7,13 @@ const statusColors = {
   Reserved: "#FFA726",  // Orange (Temporary Hold)
   Booked: "#4FC3F7",    // Light Blue
   Completed: "#66BB6A", // Green
+  Expired: "#9E9E9E",   // Red
+};
+const statusLabels = {
+  Reserved: "Reserved",
+  Booked: "Booked",
+  Completed: "Completed",
+  Expired: "Expired",
 };
 const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedSlotId, setSelectedSlot }) => {
   const { t } = useTranslation();
@@ -21,6 +28,7 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
           { value: "Available", label: t("Free") },
           { value: "Scheduled", label: t("Scheduled") },
           { value: "Completed", label: t("Completed") },
+          { value: "Expired", label: t("Expired") },
         ]}
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
@@ -66,6 +74,17 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
                 </a>
               </li>
             ))}
+           <div className="status-legend w-100 pt-3">
+            {Object.entries(statusColors).map(([status, color]) => (
+              <div key={status} className="status-item">
+                <span
+                  className="status-color"
+                  style={{ backgroundColor: color }}
+                />
+                <span>{statusLabels[status]}</span>
+              </div>
+            ))}
+        </div>
       </ul>
     </div>
   );
