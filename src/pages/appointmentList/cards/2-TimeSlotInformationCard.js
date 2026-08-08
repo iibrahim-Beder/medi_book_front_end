@@ -23,7 +23,7 @@ const TimeSlotInformationCard = ({
   Scheduled: "#4FC3F7", // Light Blue
   Booked: "#4FC3F7",    // Light Blue
   Available: "#999",    // Light Blue
-  Expired: "#6D2900",   
+  Expired: "#9b9b9b",   
   }[status] || "#000";
 
   return (

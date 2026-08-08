@@ -7,7 +7,7 @@ const statusColors = {
   Reserved: "#FFA726",  // Orange (Temporary Hold)
   Booked: "#4FC3F7",    // Light Blue
   Completed: "#66BB6A", // Green
-  Expired: "#B8A39A",   // Red
+  Expired: "#bdbbbb9b",   
 };
 const statusLabels = {
   Reserved: "Reserved",
@@ -59,12 +59,12 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
                   style={{
                     // transform:
                     //   selectedSlotId === slot?.slotId ? "scale(1.05, 1.26)" : "" ,
-                      backgroundColor: `${statusColors[slot.status] || ""}`,
-                      color:( slot.status === "Available"|| slot.status === "Reserved") ? "" : "white",
+                      backgroundColor: `${ slot.status === "Expired" ? "" : statusColors[slot.status] || ""}`,
+                      color:( slot.status === "Available"|| slot.status === "Reserved") ? "var(--terthemecolor)" : slot.status === "Expired" ? "#bdbbbbd6" :  "white",
                   }}
                 >
                   <div>
-                    <span style={{ color: slot.status === "Available" ||slot.color === "Reserved" ? "#999" : "white" }}>{slot.startTime}</span>
+                    <span style={{ color: slot.status === "Available" ||slot.color === "Reserved" ? "var(--terthemecolor)" : slot.status === "Expired" ? "#bdbbbbd6 " :  "white", }}>{slot.startTime}</span>
 
                     <span>
                       {t("duration")}:{" "}

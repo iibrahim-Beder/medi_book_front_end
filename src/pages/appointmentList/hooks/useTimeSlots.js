@@ -1,5 +1,4 @@
-// src/hooks/useTimeSlots.js
-
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   useGetTimeSlotsForWebQuery,
@@ -8,38 +7,18 @@ import { formatDateForAPI } from "../../shared/utils";
 import { useSearchParams } from "react-router-dom";
 
 export function useTimeSlots() {
-
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isPolling, setIsPolling] = useState(false);
 
-const date =
-  searchParams.get("date")
+  const date = searchParams.get("date")
     ? new Date(searchParams.get("date"))
     : new Date();
 
-const filter = searchParams.get("filter") || "All";
-
-const slotId = searchParams.get("slotId");
-
-const handleFilterChange = (value) => {
-  setSearchParams((prev) => {
-    prev.set("filter", value);
-    return prev;
-  });
-};
-const handleDateChange = (value) => {
-  setSearchParams((prev) => {
-    prev.set("date", formatDateForAPI(value));
-    return prev; 
-  });
-};
-const handleSelectSlot = (slot) => {
-  setSearchParams((prev) => {
-    prev.set("slotId", slot.slotId);
-    return prev;
-  });
-};
+  const filter = searchParams.get("filter") || "All";
+  const slotId = searchParams.get("slotId");
 
   const doctorId = useSelector((state) => state.auth.doctorId);
+
   const {
     data: slotsData,
     isLoading,
@@ -48,24 +27,70 @@ const handleSelectSlot = (slot) => {
     error,
     refetch,
   } = useGetTimeSlotsForWebQuery({
-    doctorId: doctorId,
+    doctorId,
     date: formatDateForAPI(date),
-    filter: filter,
+    filter,
   });
-  const selectedSlot = slotsData?.find((slot) => slot.slotId === slotId);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      setIsPolling(true);
+
+      try {
+        await refetch();
+      } finally {
+        setIsPolling(false);
+      }
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  const handleFilterChange = (value) => {
+    setSearchParams((prev) => {
+      prev.set("filter", value);
+      return prev;
+    });
+  };
+
+  const handleDateChange = (value) => {
+    setSearchParams((prev) => {
+      prev.set("date", formatDateForAPI(value));
+      return prev;
+    });
+  };
+
+  const handleSelectSlot = (slot) => {
+    setSearchParams((prev) => {
+      prev.set("slotId", slot.slotId);
+      return prev;
+    });
+  };
+
+  const selectedSlot = slotsData?.find(
+    (slot) => slot.slotId === slotId
+  );
+
   return {
     date,
     filter,
     selectedSlot,
     slotsData,
+
     isLoading,
-    isFetching,
+
+    // Fetch API → true
+    // Polling → false
+    isFetching: isPolling ? false : isFetching,
+
     isError,
     error,
     refetch,
+
     handleDateChange,
     handleFilterChange,
     handleSelectSlot,
-    slotId:Number(slotId),
+
+    slotId: Number(slotId),
   };
 }

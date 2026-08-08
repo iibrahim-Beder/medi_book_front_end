@@ -75,6 +75,7 @@ GetBookingOverviewForWeb: builder.query({
 
 export const {
   useGetTimeSlotsForWebQuery,
+  useLazyGetTimeSlotsForWebQuery,
   useGetTimeSlotDetailsForWebQuery,
   useGetBookingOverviewForWebQuery
 } = doctorApi;

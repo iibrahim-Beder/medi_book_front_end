@@ -1,8 +1,8 @@
 const statusColors = {
-  completed: "#66BB6A", // Green
-  cancelled: "#EF5350", // Red
-  Scheduled: "#4FC3F7", // Light Blue
+  Reserved: "#FFA726",  // Orange (Temporary Hold)
   Booked: "#4FC3F7",    // Light Blue
+  Completed: "#66BB6A", // Green
+  Expired: "#bdbbbb9b",   
 };
 const SingleSlot = ({ time = "9:00 am", spaces = 0, status = "default", onClick }) => {
   return (
