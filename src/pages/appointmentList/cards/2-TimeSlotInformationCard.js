@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import "../../MainCss.css";
-import { formatDate } from "../../shared/utils";
+import { formatDate, formatTimeForDisplay } from "../../shared/utils";
 
 const TimeSlotInformationCard = ({
   status,
@@ -27,7 +27,7 @@ const TimeSlotInformationCard = ({
   }[status] || "#000";
 
   return (
-    <div className="dc-user-grid ml-0">
+    <div className="dc-user-grid ml-0" style={{ opacity: status === "Expired" ? 0.7 : 1}}>
       <div className="dc-user-info">
         <div className="dc-title">
           <h4>{t("slot.status")}:</h4>
@@ -47,14 +47,14 @@ const TimeSlotInformationCard = ({
       <div className="dc-user-info">
         <div className="dc-title">
           <h4>{t("slot.startTime")}:</h4>
-          <span>{startTime || "—"}</span>
+          <span>{formatTimeForDisplay(startTime) || "—"}</span>
         </div>
       </div>
 
       <div className="dc-user-info">
         <div className="dc-title">
           <h4>{t("slot.endTime")}:</h4>
-          <span>{endTime || "—"}</span>
+          <span>{formatTimeForDisplay(endTime) || "—"}</span>
         </div>
       </div>
 

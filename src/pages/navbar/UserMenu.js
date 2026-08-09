@@ -106,7 +106,7 @@ function UserMenu({ setShowPopupClose }) {
             </li>
 
             <li>
-              <Link to="/Generate-Doctor-Slots">
+              <Link to="/Generate-Doctor-Rules">
                 <i>
                   <PiClockUserThin className="icon" />
                 </i>

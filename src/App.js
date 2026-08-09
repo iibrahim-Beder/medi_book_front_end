@@ -177,7 +177,7 @@ if(isCurrentStepLoading ){
                       element={<DoctorFinancialDashboard />}
                     />
                     <Route
-                      path="Generate-Doctor-Slots"
+                      path="Generate-Doctor-Rules"
                       element={<WeeklyTimeSlots />}
                     />
                     <Route

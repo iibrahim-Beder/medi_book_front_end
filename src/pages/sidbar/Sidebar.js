@@ -104,7 +104,7 @@ let iconSize=20;
     access: ["Locations"],
   },
   {
-    to: "/Generate-Doctor-Slots",
+    to: "/Generate-Doctor-Rules",
     label: t("sidebar.makeSlots"),
     icon: <PiClockUserThin className="icon" />,
     access: ["Shifts"],

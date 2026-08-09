@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useTranslation } from "react-i18next";
 import SelectField from "../../ui/form-fields/SelectField";
+import { formatTimeForDisplay } from "../../shared/utils";
 
 const statusColors = {
   Reserved: "#FFA726",  // Orange (Temporary Hold)
@@ -60,13 +61,12 @@ const TimeSlosts = ({ slots = [], isLoading = false ,filter, setFilter,selectedS
                     // transform:
                     //   selectedSlotId === slot?.slotId ? "scale(1.05, 1.26)" : "" ,
                       backgroundColor: `${ slot.status === "Expired" ? "" : statusColors[slot.status] || ""}`,
-                      color:( slot.status === "Available"|| slot.status === "Reserved") ? "var(--terthemecolor)" : slot.status === "Expired" ? "#bdbbbbd6" :  "white",
+                      color:( slot.status === "Available"|| slot.status === "Reserved"||slot.status === "Expired") ? "var(--terthemecolor)" : "white",
+                      opacity:slot.status === "Expired" ? 0.5 : 1
                   }}
                 >
                   <div>
-                    <span style={{ color: slot.status === "Available" ||slot.color === "Reserved" ? "var(--terthemecolor)" : slot.status === "Expired" ? "#bdbbbbd6 " :  "white", }}>{slot.startTime}</span>
-
-                    <span>
+                    <span style={{ color: slot.status === "Available" ||slot.status === "Expired" ||slot.color === "Reserved" ? "var(--terthemecolor)" :  "white" }}>{formatTimeForDisplay(slot?.startTime)}</span>                    <span>
                       {t("duration")}:{" "}
                       {slot?.duration?.toString().padStart(2, "0")}
                     </span>

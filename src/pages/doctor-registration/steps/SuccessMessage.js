@@ -16,7 +16,7 @@ const SuccessMessage = ({ setOpenStepRegister }) => {
       <h5 style={{ fontWeight: "500" }}>{t("success.message2")} </h5>
       <br />
       <div className="btns">
-         <Link to="/Generate-Doctor-Slots">
+         <Link to="/Generate-Doctor-Rules">
           <Button
            onClick={() => setOpenStepRegister(false)}
             variant="contained"
