@@ -52,6 +52,7 @@ export const patientReviewsApi = baseApi.injectEndpoints({
       }) => {
         const params = {
           PatientId: patientId,
+          doctorId: 1,
           ...(filter.minRating && { 'Filters.MinRating': filter.minRating }),
           ...(filter.maxRating && { 'Filters.MaxRating': filter.maxRating }),
           ...(filter.appointmentType !== undefined && { 'Filters.AppointmentType': filter.appointmentType }),

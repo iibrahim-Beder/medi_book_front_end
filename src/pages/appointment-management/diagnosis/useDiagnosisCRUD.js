@@ -13,9 +13,9 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getErrorMessage } from "../../utils/api-errors";
 
-const PATIENT_ID = 4;
+// const PATIENT_ID = 4;
 
-export const useDiagnosisCRUD = (setCurrentItems) => {
+export const useDiagnosisCRUD = (setCurrentItems,PATIENT_ID) => {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState(null);
   const [editingDiagnosis, setEditingDiagnosis] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);

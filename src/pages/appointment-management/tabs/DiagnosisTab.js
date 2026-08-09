@@ -23,7 +23,9 @@ const DiagnosisMobileView = () => {
   // API Call
 
   const [currentItems, setCurrentItems] = useState([]);
-
+  const {
+    patient,
+} = useTimeSlotDetails(Number(appointmentId), useGetBookingOverviewForWebQuery);
   const {
     selectedDiagnosis,
     editingDiagnosis,
@@ -47,11 +49,9 @@ const DiagnosisMobileView = () => {
     setCurrentPage,
     setRowsPerPage,
     currentPage
-  } = useDiagnosisCRUD(setCurrentItems,checkAndRefetch);
+  } = useDiagnosisCRUD(setCurrentItems,patient?.patientId);
 
-  const {
-    patient,
-} = useTimeSlotDetails(Number(appointmentId), useGetBookingOverviewForWebQuery);
+
   const[ lastPage,setLastPage] = useState (1);
   useEffect(() => {
   if (selectedDiagnosis === null && diagnosesData?.data) {
