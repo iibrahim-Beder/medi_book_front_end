@@ -1287,6 +1287,7 @@ width: 100%;
 	display: block;
 	border-radius: 50%;
 	min-height: 45px;
+	object-fit: cover;
 }
 .dc-username{
 	overflow: hidden;
@@ -5071,14 +5072,15 @@ a.dc-back:hover{color: #55acee;}
 .dc-offersmessages .dc-ad figure{
 	margin: 0;
 	float: left;
-	width: 40px;
+	width: 50px;
 	border-radius: 50px;
 }
 .dc-offersmessages .dc-ad figure img{
 	width: 100%;
 	display: block;
 	border-radius: 50px;
-	min-height: 40px;
+	min-height: 50px;
+	object-fit: cover;
 }
 .dc-offersmessages .dc-verticalscrollbar .mCSB_scrollTools{width: 0;}
 .dc-adcontent{
@@ -5202,6 +5204,7 @@ top: 50%;
 .dc-offerermessage figure img{
 	width: 60px;
 	height: 60px;
+	object-fit: cover;
 }
 .dc-offerermessage figure{left: 0;}
 .dc-memessage figure{right: 0;}
