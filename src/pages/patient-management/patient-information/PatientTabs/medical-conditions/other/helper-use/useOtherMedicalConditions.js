@@ -122,8 +122,13 @@ const mappedMedicalConditionsData = useMemo(() => {
   const handleSearch = (filters) => {
     setCurrentPage(1);
     if (filters && typeof filters === "object") {
-      setAppliedFilters(filters);
-      setCurrentFilters(filters);
+  const mappedFilters = {
+        ...currentFilters,
+        ...filters,
+      };
+
+      setAppliedFilters(mappedFilters);
+      setCurrentFilters(mappedFilters);
     } else {
       setAppliedFilters(currentFilters);
     }
