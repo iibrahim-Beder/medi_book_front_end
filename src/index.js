@@ -24,6 +24,32 @@ import './i18n';
 import { Toaster } from "react-hot-toast";
 window.$ = window.jQuery = $;
 
+const OriginalDate = Date;
+
+const fakeToday = new OriginalDate(2026, 7, 10);
+
+function FakeDate(...args) {
+  if (new.target) {
+    // new Date()
+    if (args.length === 0) {
+      return new OriginalDate(fakeToday);
+    }
+
+    // new Date(value), new Date(year, month, day), etc.
+    return new OriginalDate(...args);
+  }
+
+  // Date() بدون new
+  return new OriginalDate(fakeToday).toString();
+}
+
+FakeDate.prototype = OriginalDate.prototype;
+
+FakeDate.now = () => fakeToday.getTime();
+FakeDate.parse = OriginalDate.parse;
+FakeDate.UTC = OriginalDate.UTC;
+
+window.Date = FakeDate;
 
 
 const applyInitialTheme = () => {
